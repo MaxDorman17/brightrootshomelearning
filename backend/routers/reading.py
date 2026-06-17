@@ -1,13 +1,27 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from typing import List, Optional
+import os
+import uuid
 from database import get_db
 from models import ReadingLog, ReadingWorksheet, User
 from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut
 from auth import get_current_user, require_parent
 
 router = APIRouter(prefix="/api/reading", tags=["reading"])
+
+UPLOAD_DIR = "./uploads/worksheets"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+ALLOWED_CONTENT_TYPES = {
+    "application/pdf",
+    "image/jpeg", "image/png", "image/gif", "image/webp",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+}
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
 @router.get("/", response_model=List[ReadingLogOut])
@@ -108,6 +122,46 @@ def list_all_worksheets(
     current_user: User = Depends(get_current_user),
 ):
     return db.query(ReadingWorksheet).order_by(ReadingWorksheet.book_id, ReadingWorksheet.created_at).all()
+
+
+@router.post("/{book_id}/worksheets/upload", response_model=ReadingWorksheetOut, status_code=201)
+async def upload_worksheet_file(
+    book_id: int,
+    title: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    book = db.query(ReadingLog).filter(ReadingLog.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    if file.content_type not in ALLOWED_CONTENT_TYPES:
+        raise HTTPException(status_code=400, detail="File type not allowed. Use PDF, Word, or image files.")
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="File too large (max 10 MB)")
+    raw_name = file.filename or ""
+    ext = raw_name.rsplit(".", 1)[-1].lower() if "." in raw_name else "pdf"
+    if ext not in {"pdf", "doc", "docx", "jpg", "jpeg", "png", "gif", "webp"}:
+        ext = "pdf"
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+    with open(filepath, "wb") as f:
+        f.write(content)
+    ws = ReadingWorksheet(book_id=book_id, title=title.strip(), url=f"/api/reading/files/{filename}")
+    db.add(ws)
+    db.commit()
+    db.refresh(ws)
+    return ws
+
+
+@router.get("/files/{filename}")
+def serve_worksheet_file(filename: str):
+    filename = os.path.basename(filename)
+    filepath = os.path.join(UPLOAD_DIR, filename)
+    if not os.path.exists(filepath):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(filepath)
 
 
 @router.post("/{book_id}/worksheets", response_model=ReadingWorksheetOut, status_code=201)

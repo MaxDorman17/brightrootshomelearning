@@ -93,6 +93,14 @@ export const deleteBook = (id: number) => api.delete(`/api/reading/${id}`);
 export const getWorksheets = () => api.get("/api/reading/worksheets");
 export const addWorksheet = (bookId: number, data: { title: string; url: string }) =>
   api.post(`/api/reading/${bookId}/worksheets`, data);
+export const uploadWorksheet = (bookId: number, title: string, file: File) => {
+  const form = new FormData();
+  form.append("title", title);
+  form.append("file", file);
+  return api.post(`/api/reading/${bookId}/worksheets/upload`, form, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
 export const deleteWorksheet = (worksheetId: number) =>
   api.delete(`/api/reading/worksheets/${worksheetId}`);
 

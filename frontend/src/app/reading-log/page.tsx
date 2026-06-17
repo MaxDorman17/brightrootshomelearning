@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, deleteWorksheet, getChildren } from "@/lib/api";
+import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, getChildren } from "@/lib/api";
 import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
@@ -61,8 +61,10 @@ export default function ReadingLogPage() {
   // Worksheets
   const [worksheets, setWorksheets] = useState<ReadingWorksheet[]>([]);
   const [addingWsFor, setAddingWsFor] = useState<number | null>(null);
+  const [wsMode, setWsMode] = useState<"url" | "upload">("url");
   const [wsTitle, setWsTitle] = useState("");
   const [wsUrl, setWsUrl] = useState("");
+  const [wsFile, setWsFile] = useState<File | null>(null);
   const [savingWs, setSavingWs] = useState(false);
 
   // Inline child note editing
@@ -174,12 +176,19 @@ export default function ReadingLogPage() {
   };
 
   const handleAddWorksheet = async (bookId: number) => {
-    if (!wsTitle.trim() || !wsUrl.trim()) return;
+    if (!wsTitle.trim()) return;
+    if (wsMode === "url" && !wsUrl.trim()) return;
+    if (wsMode === "upload" && !wsFile) return;
     setSavingWs(true);
     try {
-      const res = await addWorksheet(bookId, { title: wsTitle.trim(), url: wsUrl.trim() });
+      let res;
+      if (wsMode === "upload" && wsFile) {
+        res = await uploadWorksheet(bookId, wsTitle.trim(), wsFile);
+      } else {
+        res = await addWorksheet(bookId, { title: wsTitle.trim(), url: wsUrl.trim() });
+      }
       setWorksheets(prev => [...prev, res.data]);
-      setWsTitle(""); setWsUrl(""); setAddingWsFor(null);
+      setWsTitle(""); setWsUrl(""); setWsFile(null); setWsMode("url"); setAddingWsFor(null);
     } finally { setSavingWs(false); }
   };
 
@@ -430,12 +439,12 @@ export default function ReadingLogPage() {
                               {bookWs.map(ws => (
                                 <div key={ws.id} className="flex items-center gap-2">
                                   <a
-                                    href={ws.url}
+                                    href={ws.url.startsWith("/api/") ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${ws.url}` : ws.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex-1 text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
                                   >
-                                    📄 {ws.title}
+                                    {ws.url.startsWith("/api/reading/files/") ? "📥" : "📄"} {ws.title}
                                   </a>
                                   {isParent && (
                                     <button
@@ -455,6 +464,19 @@ export default function ReadingLogPage() {
                         {isParent && (
                           addingWsFor === book.id ? (
                             <div className="space-y-2">
+                              {/* Mode toggle */}
+                              <div className="flex gap-0.5 bg-gray-100 rounded-lg p-0.5">
+                                <button
+                                  onClick={() => { setWsMode("url"); setWsFile(null); }}
+                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "url" ? "bg-white shadow-sm text-[#2F5D3A]" : "text-gray-500 hover:text-gray-700"}`}>
+                                  Paste link
+                                </button>
+                                <button
+                                  onClick={() => { setWsMode("upload"); setWsUrl(""); }}
+                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "upload" ? "bg-white shadow-sm text-[#2F5D3A]" : "text-gray-500 hover:text-gray-700"}`}>
+                                  Upload file
+                                </button>
+                              </div>
                               <input
                                 autoFocus
                                 value={wsTitle}
@@ -462,23 +484,35 @@ export default function ReadingLogPage() {
                                 placeholder="Worksheet name"
                                 className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                               />
-                              <input
-                                value={wsUrl}
-                                onChange={e => setWsUrl(e.target.value)}
-                                placeholder="https://… (Google Doc, PDF link, etc.)"
-                                type="url"
-                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
-                              />
+                              {wsMode === "url" ? (
+                                <input
+                                  value={wsUrl}
+                                  onChange={e => setWsUrl(e.target.value)}
+                                  placeholder="https://… (Google Doc, PDF link, etc.)"
+                                  type="url"
+                                  className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
+                                />
+                              ) : (
+                                <div>
+                                  <input
+                                    type="file"
+                                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp"
+                                    onChange={e => setWsFile(e.target.files?.[0] ?? null)}
+                                    className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#A8C67A]/20 file:text-[#2F5D3A] hover:file:bg-[#A8C67A]/30 cursor-pointer"
+                                  />
+                                  <p className="text-[10px] text-gray-400 mt-0.5">PDF, Word, or image · max 10 MB</p>
+                                </div>
+                              )}
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => handleAddWorksheet(book.id)}
-                                  disabled={savingWs || !wsTitle.trim() || !wsUrl.trim()}
+                                  disabled={savingWs || !wsTitle.trim() || (wsMode === "url" ? !wsUrl.trim() : !wsFile)}
                                   className="text-xs px-3 py-1.5 gradient-btn disabled:opacity-50"
                                 >
                                   {savingWs ? "…" : "Add"}
                                 </button>
                                 <button
-                                  onClick={() => { setAddingWsFor(null); setWsTitle(""); setWsUrl(""); }}
+                                  onClick={() => { setAddingWsFor(null); setWsTitle(""); setWsUrl(""); setWsFile(null); setWsMode("url"); }}
                                   className="text-xs px-3 py-1.5 border border-gray-200 rounded-lg text-gray-500"
                                 >
                                   Cancel
@@ -487,7 +521,7 @@ export default function ReadingLogPage() {
                             </div>
                           ) : (
                             <button
-                              onClick={() => { setAddingWsFor(book.id); setWsTitle(""); setWsUrl(""); }}
+                              onClick={() => { setAddingWsFor(book.id); setWsTitle(""); setWsUrl(""); setWsMode("url"); setWsFile(null); }}
                               className="text-xs font-bold text-[#6EA76E] hover:text-[#2F5D3A] transition-colors"
                             >
                               + Add worksheet
