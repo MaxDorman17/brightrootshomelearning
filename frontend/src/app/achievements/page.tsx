@@ -1,0 +1,253 @@
+"use client";
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { isAuthenticated, getRole } from "@/lib/auth";
+import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff } from "@/lib/api";
+import { PlannerEntry } from "@/types";
+import Navbar from "@/components/Navbar";
+import { format } from "date-fns";
+
+const SEEN_KEY = "seen_badges";
+
+// CODING_KEY removed — progress is now fetched from the backend
+
+// Track lesson IDs by track for badge checking
+const SCRATCH_IDS  = ["s1","s2","s3","s4"];
+const CODEORG_IDS  = ["c1","c2","c3","c4","c5"];
+const PYTHON_IDS   = ["p1","p2","p3","p4","p5","p6","p7","p8"];
+const WEB_IDS      = ["w1","w2","w3","w4","w5","w6"];
+
+interface Badge {
+  id: string;
+  icon: string;
+  title: string;
+  desc: string;
+  color: string;
+  check: (data: BadgeData) => boolean;
+}
+
+interface BadgeData {
+  totalComplete: number;
+  streak: number;
+  submitted: number;
+  coding: Set<string>;
+}
+
+const BADGES: Badge[] = [
+  { id: "first",       icon: "🎯", title: "First Step!",         desc: "Completed your very first lesson",       color: "from-blue-400 to-blue-500",     check: d => d.totalComplete >= 1 },
+  { id: "five",        icon: "⚡", title: "Getting Going",        desc: "Completed 5 lessons",                    color: "from-yellow-400 to-amber-500",   check: d => d.totalComplete >= 5 },
+  { id: "ten",         icon: "💪", title: "Double Digits",        desc: "Completed 10 lessons",                   color: "from-orange-400 to-orange-500",  check: d => d.totalComplete >= 10 },
+  { id: "twentyfive",  icon: "📚", title: "Bookworm",             desc: "Completed 25 lessons",                   color: "from-green-400 to-emerald-500",  check: d => d.totalComplete >= 25 },
+  { id: "fifty",       icon: "🌟", title: "Star Pupil",           desc: "Completed 50 lessons",                   color: "from-violet-500 to-purple-600",  check: d => d.totalComplete >= 50 },
+  { id: "hundred",     icon: "👑", title: "Century!",             desc: "Completed 100 lessons",                  color: "from-amber-400 to-yellow-500",   check: d => d.totalComplete >= 100 },
+  { id: "hat_trick",   icon: "🎩", title: "Hat Trick",            desc: "3-day learning streak",                  color: "from-pink-400 to-rose-500",      check: d => d.streak >= 3 },
+  { id: "school_week", icon: "🏆", title: "School Week",          desc: "Full 5-day streak",                      color: "from-indigo-500 to-violet-600",  check: d => d.streak >= 5 },
+  { id: "two_weeks",   icon: "🔥", title: "On Fire!",             desc: "10-day learning streak",                 color: "from-red-500 to-orange-500",     check: d => d.streak >= 10 },
+  { id: "show_work",   icon: "📎", title: "Show Your Work",       desc: "Submitted your first piece of work",     color: "from-teal-400 to-cyan-500",      check: d => d.submitted >= 1 },
+  { id: "over_achieve",icon: "🏅", title: "Over-Achiever",        desc: "Submitted 10 pieces of work",            color: "from-blue-500 to-indigo-600",    check: d => d.submitted >= 10 },
+  { id: "hello_world", icon: "💻", title: "Hello World!",         desc: "Completed your first coding lesson",     color: "from-gray-600 to-gray-800",      check: d => d.coding.size >= 1 },
+  { id: "scratch_star",icon: "🐱", title: "Scratch Star",         desc: "Completed all Scratch lessons",          color: "from-orange-400 to-amber-500",   check: d => SCRATCH_IDS.every(id => d.coding.has(id)) },
+  { id: "codeorg",     icon: "🕹️", title: "Code.org Champion",   desc: "Completed all Hour of Code lessons",     color: "from-blue-400 to-blue-600",      check: d => CODEORG_IDS.every(id => d.coding.has(id)) },
+  { id: "pythonista",  icon: "🐍", title: "Pythonista",           desc: "Completed all Python lessons",           color: "from-green-500 to-emerald-600",  check: d => PYTHON_IDS.every(id => d.coding.has(id)) },
+  { id: "web_dev",     icon: "🌐", title: "Web Developer",        desc: "Completed all Web Dev lessons",          color: "from-purple-500 to-violet-600",  check: d => WEB_IDS.every(id => d.coding.has(id)) },
+  { id: "full_coding", icon: "🚀", title: "Future Coder",         desc: "Completed the entire coding curriculum", color: "from-violet-600 to-indigo-700",  check: d => d.coding.size >= 23 },
+];
+
+function computeStreak(entries: PlannerEntry[], daysOff: Set<string> = new Set()): number {
+  const today = format(new Date(), "yyyy-MM-dd");
+  const byDate: Record<string, PlannerEntry[]> = {};
+  entries.forEach(e => {
+    if (!byDate[e.scheduled_date]) byDate[e.scheduled_date] = [];
+    byDate[e.scheduled_date].push(e);
+  });
+  const todayDone = (byDate[today] || []).length > 0 && (byDate[today] || []).every(e => e.is_complete);
+  const pastDates = Object.keys(byDate).filter(d => d < today).sort().reverse();
+  let streak = (todayDone || daysOff.has(today)) ? 1 : 0;
+  for (const d of pastDates) {
+    if (daysOff.has(d)) { streak++; continue; }
+    if (byDate[d].length > 0 && byDate[d].every(e => e.is_complete)) streak++;
+    else break;
+  }
+  return streak;
+}
+
+export default function AchievementsPage() {
+  const router = useRouter();
+  const [role, setRole] = useState("");
+  const [entries, setEntries] = useState<PlannerEntry[]>([]);
+  const [coding, setCoding] = useState<Set<string>>(new Set());
+  const [daysOff, setDaysOff] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+  const [newlyUnlocked, setNewlyUnlocked] = useState<string[]>([]);
+  const celebrateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated()) { router.replace("/login"); return; }
+    const r = getRole() || "";
+    setRole(r);
+
+    const entriesFetch = r === "parent" ? getAllEntries() : getAllMyEntries();
+    Promise.all([entriesFetch, getCodingProgress(), getDaysOff()]).then(([eRes, cRes, dRes]) => {
+      setEntries(eRes.data);
+      setCoding(new Set(cRes.data as string[]));
+      setDaysOff(new Set((dRes.data as { date: string }[]).map(d => d.date)));
+      setLoading(false);
+    });
+  }, [router]);
+
+  // Detect newly unlocked badges and show animation
+  useEffect(() => {
+    if (loading) return;
+    const totalComplete = entries.filter(e => e.is_complete).length;
+    const submitted = entries.filter(e => e.completed_work_url).length;
+    const streak = computeStreak(entries, daysOff);
+    const data: BadgeData = { totalComplete, streak, submitted, coding };
+    const earned = BADGES.filter(b => b.check(data)).map(b => b.id);
+
+    const seen: string[] = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
+    const fresh = earned.filter(id => !seen.includes(id));
+    if (fresh.length > 0) {
+      setNewlyUnlocked(fresh);
+      localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
+      celebrateTimeout.current = setTimeout(() => setNewlyUnlocked([]), 4000);
+    } else {
+      localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
+    }
+    return () => { if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current); };
+  }, [loading, entries, coding]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const totalComplete = entries.filter(e => e.is_complete).length;
+  const submitted = entries.filter(e => e.completed_work_url).length;
+  const streak = computeStreak(entries, daysOff);
+  const data: BadgeData = { totalComplete, streak, submitted, coding };
+  const earned = BADGES.filter(b => b.check(data));
+  const locked = BADGES.filter(b => !b.check(data));
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+
+      {/* New badge unlock banner */}
+      {newlyUnlocked.length > 0 && (
+        <div className="fixed inset-x-0 top-16 z-40 flex justify-center px-4 pointer-events-none">
+          <div className="relative bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400 text-white rounded-2xl px-6 py-4 shadow-2xl shadow-amber-300/60 pointer-events-auto max-w-sm w-full">
+            {/* Confetti particles */}
+            {["🌟","✨","🎉","⭐","🏆","💫"].map((emoji, i) => (
+              <span key={i} className="confetti-particle text-xl"
+                style={{ left: `${10 + i * 15}%`, top: "-8px", animationDelay: `${i * 0.1}s` }}>
+                {emoji}
+              </span>
+            ))}
+            <p className="text-lg font-extrabold text-center">🎉 New badge{newlyUnlocked.length > 1 ? "s" : ""} unlocked!</p>
+            <div className="flex justify-center gap-3 mt-2 flex-wrap">
+              {newlyUnlocked.map(id => {
+                const b = BADGES.find(x => x.id === id);
+                return b ? (
+                  <span key={id} className="text-2xl" title={b.title}>{b.icon}</span>
+                ) : null;
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-extrabold text-gray-900">🏆 Achievements</h1>
+          <p className="text-gray-500 font-medium mt-1">
+            {role === "parent" ? "Oscar's badges and learning milestones" : "Your badges and milestones — keep going!"}
+          </p>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-16 text-gray-400">Loading…</div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl p-5 text-white shadow-lg shadow-purple-300/40 text-center">
+                <p className="text-3xl font-extrabold">{totalComplete}</p>
+                <p className="text-xs text-white/80 font-bold mt-1">Lessons Done</p>
+              </div>
+              <div className="bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl p-5 text-white shadow-lg shadow-orange-300/40 text-center">
+                <p className="text-3xl font-extrabold">{streak}</p>
+                <p className="text-xs text-white/80 font-bold mt-1">Day Streak 🔥</p>
+              </div>
+              <div className="bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl p-5 text-white shadow-lg shadow-teal-300/40 text-center">
+                <p className="text-3xl font-extrabold">{submitted}</p>
+                <p className="text-xs text-white/80 font-bold mt-1">Work Submitted</p>
+              </div>
+              <div className="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg shadow-indigo-300/40 text-center">
+                <p className="text-3xl font-extrabold">{coding.size}</p>
+                <p className="text-xs text-white/80 font-bold mt-1">Coding Lessons</p>
+              </div>
+            </div>
+
+            {/* Streak bar */}
+            {streak > 0 && (
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-200 rounded-2xl p-5 mb-8 flex items-center gap-4">
+                <div className="text-4xl">{streak >= 10 ? "🔥" : streak >= 5 ? "🏆" : streak >= 3 ? "⚡" : "✨"}</div>
+                <div>
+                  <p className="font-extrabold text-orange-800 text-lg">{streak}-day streak!</p>
+                  <p className="text-orange-600 text-sm font-semibold">
+                    {streak >= 10 ? "Incredible — over two weeks!" : streak >= 5 ? "A full school week — amazing!" : streak >= 3 ? "Hat trick unlocked!" : "Keep it going!"}
+                  </p>
+                </div>
+                <div className="ml-auto flex gap-1">
+                  {Array.from({ length: Math.min(streak, 10) }, (_, i) => (
+                    <div key={i} className="w-3 h-8 bg-gradient-to-t from-orange-500 to-yellow-400 rounded-sm shadow-sm" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Earned badges */}
+            {earned.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-4">
+                  Earned ({earned.length}/{BADGES.length})
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {earned.map(b => (
+                    <div key={b.id}
+                      className={`bg-gradient-to-br ${b.color} rounded-2xl p-4 text-white shadow-lg text-center transition-all ${
+                        newlyUnlocked.includes(b.id)
+                          ? "ring-4 ring-yellow-300 ring-offset-2 scale-105 shadow-2xl"
+                          : ""
+                      }`}>
+                      <p className="text-4xl mb-2">{b.icon}</p>
+                      <p className="font-extrabold text-sm leading-tight">{b.title}</p>
+                      <p className="text-xs text-white/75 mt-1 leading-snug">{b.desc}</p>
+                      {newlyUnlocked.includes(b.id) && (
+                        <p className="text-xs font-extrabold mt-2 bg-white/25 rounded-lg py-0.5">NEW! 🎉</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Locked badges */}
+            {locked.length > 0 && (
+              <div>
+                <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-4">
+                  Locked — keep going!
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {locked.map(b => (
+                    <div key={b.id}
+                      className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 text-center border-2 border-dashed border-gray-200 opacity-60">
+                      <p className="text-4xl mb-2 grayscale">{b.icon}</p>
+                      <p className="font-bold text-sm text-gray-600 leading-tight">{b.title}</p>
+                      <p className="text-xs text-gray-400 mt-1 leading-snug">{b.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
