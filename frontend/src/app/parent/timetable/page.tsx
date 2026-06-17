@@ -12,7 +12,7 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Tuesday:   ["Maths", "English", "Science", "Geography", "Cooking"],
   Wednesday: ["Maths", "English", "Science", "Art & Design", "Design and Technology"],
   Thursday:  ["Maths", "English", "Science", "History", "Life Skills"],
-  Friday:    ["Maths", "English", "Science", "Languages"],
+  Friday:    ["Maths", "English", "Science", "RSHE (PSHE)"],
 };
 
 const SUBJECT_COLORS: Record<string, string> = {
@@ -27,6 +27,7 @@ const SUBJECT_COLORS: Record<string, string> = {
   "Design and Technology": "bg-red-50 border-red-200 text-red-700",
   "Life Skills": "bg-teal-50 border-teal-200 text-teal-700",
   Languages: "bg-rose-50 border-rose-200 text-rose-700",
+  "RSHE (PSHE)": "bg-violet-50 border-violet-200 text-violet-700",
 };
 
 function subjectColor(subject: string) {
