@@ -57,6 +57,7 @@ if [ ! -f "$APP_DIR/backend/.env" ]; then
 SECRET_KEY=${SECRET_KEY}
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=10080
+DATABASE_URL=sqlite:///./homeschool.db
 EOF
     echo "      Created backend/.env with generated SECRET_KEY"
 else
