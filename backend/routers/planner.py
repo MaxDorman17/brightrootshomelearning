@@ -12,6 +12,11 @@ from pydantic import BaseModel
 router = APIRouter(prefix="/api/planner", tags=["planner"])
 
 
+class ShiftDayRequest(BaseModel):
+    from_date: date
+    to_date: date
+
+
 class SubmitWorkUrl(BaseModel):
     completed_work_url: str
 
@@ -74,6 +79,21 @@ def annotate_single(entry: PlannerEntry, user: User, db: Session) -> PlannerEntr
         PlannerCompletion.user_id == user.id,
     ).first()
     return _to_out_with_comp(entry, comp)
+
+
+@router.post("/shift-day")
+def shift_day(
+    body: ShiftDayRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    entries = db.query(PlannerEntry).filter(
+        PlannerEntry.scheduled_date == body.from_date
+    ).all()
+    for e in entries:
+        e.scheduled_date = body.to_date
+    db.commit()
+    return {"moved": len(entries)}
 
 
 @router.post("/", response_model=PlannerEntryOut, status_code=201)

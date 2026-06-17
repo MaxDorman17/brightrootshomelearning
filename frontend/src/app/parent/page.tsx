@@ -7,7 +7,7 @@ import {
   getWeekEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
-  getTimetable,
+  getTimetable, shiftDay,
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
@@ -90,6 +90,21 @@ interface SlotModal {
   existingEntry: PlannerEntry | null;
 }
 
+interface ShiftConfirm {
+  fromDate: string;
+  toDate: string;
+  fromLabel: string;
+  toLabel: string;
+  count: number;
+  targetHasLessons: boolean;
+}
+
+function nextWeekday(dateStr: string): string {
+  const d = new Date(dateStr + "T12:00:00");
+  do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
+  return format(d, "yyyy-MM-dd");
+}
+
 export default function ParentPlanner() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
@@ -115,6 +130,9 @@ export default function ParentPlanner() {
   const [selectedHolidayGroups, setSelectedHolidayGroups] = useState<number[]>(
     Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i)
   );
+
+  const [shiftConfirm, setShiftConfirm] = useState<ShiftConfirm | null>(null);
+  const [shifting, setShifting] = useState(false);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
 
@@ -255,6 +273,16 @@ export default function ParentPlanner() {
       }
       setShowHolidayPanel(false);
     } finally { setImportingHolidays(false); }
+  };
+
+  const handleShiftDay = async () => {
+    if (!shiftConfirm) return;
+    setShifting(true);
+    try {
+      await shiftDay(shiftConfirm.fromDate, shiftConfirm.toDate);
+      await loadData();
+      setShiftConfirm(null);
+    } finally { setShifting(false); }
   };
 
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
@@ -427,6 +455,29 @@ export default function ParentPlanner() {
                             🏖️
                           </button>
                         )}
+                        {!dayOff && (() => {
+                          const dayStr = format(dayDate, "yyyy-MM-dd");
+                          const count = entries.filter(e => e.scheduled_date === dayStr).length;
+                          if (count === 0) return null;
+                          const toDate = nextWeekday(dayStr);
+                          const toLabel = format(new Date(toDate + "T12:00:00"), "EEE d MMM");
+                          const targetHasLessons = entries.some(e => e.scheduled_date === toDate);
+                          return (
+                            <button
+                              onClick={() => setShiftConfirm({
+                                fromDate: dayStr,
+                                toDate,
+                                fromLabel: format(dayDate, "EEE d MMM"),
+                                toLabel,
+                                count,
+                                targetHasLessons,
+                              })}
+                              title={`Move ${count} lesson${count !== 1 ? "s" : ""} to ${toLabel}`}
+                              className="text-xs px-1.5 py-0.5 rounded-md font-bold bg-black/10 hover:bg-black/20 text-gray-600 transition-all">
+                              →
+                            </button>
+                          );
+                        })()}
                       </div>
                     </div>
                   );
@@ -564,6 +615,35 @@ export default function ParentPlanner() {
           </div>
         </div>
       </div>
+
+      {/* Shift day confirmation */}
+      {shiftConfirm && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+          onClick={e => e.target === e.currentTarget && setShiftConfirm(null)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
+            <p className="text-lg font-extrabold text-gray-900 mb-2">📅 Move lessons forward</p>
+            <p className="text-sm text-gray-600 mb-3">
+              Move <strong>{shiftConfirm.count} lesson{shiftConfirm.count !== 1 ? "s" : ""}</strong> from{" "}
+              <strong>{shiftConfirm.fromLabel}</strong> to <strong>{shiftConfirm.toLabel}</strong>?
+            </p>
+            {shiftConfirm.targetHasLessons && (
+              <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-4">
+                ⚠️ {shiftConfirm.toLabel} already has lessons — they will be merged together.
+              </p>
+            )}
+            <div className="flex gap-3">
+              <button onClick={handleShiftDay} disabled={shifting}
+                className="flex-1 bg-[#2F5D3A] text-white py-2.5 rounded-xl font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
+                {shifting ? "Moving…" : "Yes, move them"}
+              </button>
+              <button onClick={() => setShiftConfirm(null)}
+                className="px-4 py-2.5 border border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Slot modal */}
       {modal && (
