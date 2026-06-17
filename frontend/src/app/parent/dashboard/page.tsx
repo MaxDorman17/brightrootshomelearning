@@ -13,12 +13,14 @@ const TOTAL_CODING = 23;
 const TIMETABLE_SUBJECTS = new Set([
   "Maths", "English", "Science", "History", "Computing",
   "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
+  "RSHE (PSHE)", "Languages",
 ]);
 
 const QUICK_LINKS = [
   { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
   { href: "/parent/extra-work", label: "Extra Work", icon: "📋", desc: "Projects & tasks", from: "from-amber-500", to: "to-orange-500" },
   { href: "/coding", label: "Coding", icon: "💻", desc: "Coding curriculum", from: "from-emerald-500", to: "to-teal-500" },
+  { href: "/spellings", label: "Spellings", icon: "🔤", desc: "Weekly word test", from: "from-violet-500", to: "to-purple-600" },
   { href: "/parent/report", label: "Report", icon: "📈", desc: "Analytics", from: "from-blue-500", to: "to-cyan-500" },
   { href: "/parent/progress", label: "Progress", icon: "📊", desc: "Submitted work", from: "from-pink-500", to: "to-rose-500" },
 ];
@@ -138,13 +140,18 @@ export default function ParentDashboardPage() {
               : (
                 <div className="space-y-2">
                   {todayEntries.map(e => (
-                    <div key={e.id} className="flex items-center gap-2">
-                      <span className={`w-4 h-4 rounded-full shrink-0 flex items-center justify-center ${e.is_complete ? "bg-emerald-500" : "bg-gray-200"}`}>
+                    <div key={e.id} className="flex items-start gap-2">
+                      <span className={`mt-0.5 w-4 h-4 rounded-full shrink-0 flex items-center justify-center ${e.is_complete ? "bg-emerald-500" : "bg-gray-200"}`}>
                         {e.is_complete && <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                       </span>
-                      <span className={`text-xs font-semibold ${e.is_complete ? "line-through text-gray-400" : "text-gray-700"}`}>
-                        {e.lesson.subject}
-                      </span>
+                      <div className="min-w-0">
+                        <p className={`text-xs font-bold leading-tight ${e.is_complete ? "line-through text-gray-400" : "text-gray-700"}`}>
+                          {e.lesson.title !== e.lesson.subject ? e.lesson.title : e.lesson.subject}
+                        </p>
+                        {e.lesson.title !== e.lesson.subject && (
+                          <p className="text-[10px] text-gray-400 font-semibold mt-0.5">{e.lesson.subject}</p>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -239,7 +246,7 @@ export default function ParentDashboardPage() {
 
         {/* Quick links */}
         <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">Quick Access</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {QUICK_LINKS.map(l => (
             <Link key={l.href} href={l.href}
               className={`bg-gradient-to-br ${l.from} ${l.to} rounded-2xl p-4 text-white shadow-md hover:shadow-xl hover:scale-[1.03] transition-all active:scale-100`}>

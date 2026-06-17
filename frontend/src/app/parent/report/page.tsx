@@ -10,6 +10,7 @@ import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isW
 const TIMETABLE_SUBJECTS = [
   "Maths", "English", "Science", "History", "Computing",
   "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
+  "RSHE (PSHE)", "Languages",
 ];
 
 const SUBJECT_COLOR: Record<string, string> = {
