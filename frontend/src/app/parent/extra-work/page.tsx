@@ -2,8 +2,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { createLesson, createPlannerEntry, getAllEntries, deletePlannerEntry } from "@/lib/api";
-import { PlannerEntry } from "@/types";
+import { createLesson, createPlannerEntry, getAllEntries, deletePlannerEntry, getChildren } from "@/lib/api";
+import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfDay } from "date-fns";
 
@@ -26,6 +26,8 @@ const CATEGORY_COLOR: Record<string, string> = {
 export default function ExtraWorkParentPage() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
+  const [children, setChildren] = useState<Child[]>([]);
+  const [filterChildId, setFilterChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
@@ -34,6 +36,7 @@ export default function ExtraWorkParentPage() {
   const [link, setLink] = useState("");
   const [notes, setNotes] = useState("");
   const [dueDate, setDueDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [assignedChildId, setAssignedChildId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
 
   const loadData = useCallback(async () => {
@@ -44,6 +47,7 @@ export default function ExtraWorkParentPage() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
+    getChildren().then(res => setChildren(res.data)).catch(() => {});
     loadData();
   }, [loadData, router]);
 
@@ -57,9 +61,9 @@ export default function ExtraWorkParentPage() {
         description: notes || undefined,
         lesson_url: link || undefined,
       });
-      await createPlannerEntry({ lesson_id: lessonRes.data.id, scheduled_date: dueDate });
+      await createPlannerEntry({ lesson_id: lessonRes.data.id, scheduled_date: dueDate, assigned_to: assignedChildId ?? undefined });
       setTitle(""); setCategory(CATEGORIES[0]); setLink(""); setNotes("");
-      setDueDate(format(new Date(), "yyyy-MM-dd"));
+      setDueDate(format(new Date(), "yyyy-MM-dd")); setAssignedChildId(null);
       setShowForm(false);
       await loadData();
     } finally {
@@ -73,8 +77,11 @@ export default function ExtraWorkParentPage() {
     await loadData();
   };
 
-  const pending = entries.filter(e => !e.is_complete);
-  const done = entries.filter(e => e.is_complete);
+  const visibleEntries = filterChildId
+    ? entries.filter(e => e.assigned_to === filterChildId || e.assigned_to === null)
+    : entries;
+  const pending = visibleEntries.filter(e => !e.is_complete);
+  const done = visibleEntries.filter(e => e.is_complete);
 
   return (
     <div className="min-h-screen">
@@ -90,6 +97,22 @@ export default function ExtraWorkParentPage() {
             + Add Task
           </button>
         </div>
+
+        {/* Child filter */}
+        {children.length > 0 && (
+          <div className="flex gap-2 mb-5 flex-wrap">
+            <button onClick={() => setFilterChildId(null)}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${!filterChildId ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+              All children
+            </button>
+            {children.map(c => (
+              <button key={c.id} onClick={() => setFilterChildId(c.id)}
+                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${filterChildId === c.id ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+                {c.username}
+              </button>
+            ))}
+          </div>
+        )}
 
         {showForm && (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
@@ -114,6 +137,16 @@ export default function ExtraWorkParentPage() {
                 <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
+              {children.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Assign to</label>
+                  <select value={assignedChildId ?? ""} onChange={e => setAssignedChildId(e.target.value ? parseInt(e.target.value) : null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]">
+                    <option value="">All children</option>
+                    {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                  </select>
+                </div>
+              )}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Link (optional)</label>
                 <input type="url" value={link} onChange={e => setLink(e.target.value)} placeholder="https://…"
@@ -158,6 +191,13 @@ export default function ExtraWorkParentPage() {
                               {e.lesson.subject}
                             </span>
                             <span className="text-xs text-gray-400">Due {format(parseISO(e.scheduled_date), "d MMM yyyy")}</span>
+                            {e.assigned_to ? (
+                              <span className="text-xs bg-[#A8C67A]/20 text-[#2F5D3A] px-2 py-0.5 rounded-full font-semibold">
+                                {children.find(c => c.id === e.assigned_to)?.username ?? "Child"}
+                              </span>
+                            ) : (
+                              <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-semibold">All</span>
+                            )}
                             {!e.is_complete && parseISO(e.scheduled_date) < startOfDay(new Date()) && (
                               <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">OVERDUE</span>
                             )}

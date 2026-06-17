@@ -138,6 +138,19 @@ class ReadingWorksheet(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class PlannerCompletion(Base):
+    """Per-user completion record for planner entries assigned to all children (assigned_to=NULL)."""
+    __tablename__ = "planner_completions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    entry_id = Column(Integer, ForeignKey("planner_entries.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    completed_at = Column(DateTime(timezone=True), server_default=func.now())
+    completed_work_url = Column(String(512), nullable=True)
+    completed_note = Column(Text, nullable=True)
+    __table_args__ = (UniqueConstraint("entry_id", "user_id", name="uq_entry_user_completion"),)
+
+
 class TimetableConfig(Base):
     __tablename__ = "timetable_config"
 

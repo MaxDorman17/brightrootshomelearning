@@ -4,8 +4,8 @@ from sqlalchemy import or_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 from database import get_db
-from models import PlannerEntry, Lesson, User, WorkFeedback
-from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut
+from models import PlannerEntry, Lesson, User, WorkFeedback, PlannerCompletion
+from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from pydantic import BaseModel
 
@@ -26,6 +26,56 @@ def load_entry(db: Session, entry_id: int) -> PlannerEntry:
     ).first()
 
 
+def _to_out(e: PlannerEntry) -> PlannerEntryOut:
+    return PlannerEntryOut(
+        id=e.id, lesson_id=e.lesson_id, assigned_to=e.assigned_to,
+        scheduled_date=e.scheduled_date, is_complete=e.is_complete,
+        completed_at=e.completed_at, completed_work_url=e.completed_work_url,
+        completed_note=e.completed_note, lesson=LessonOut.model_validate(e.lesson),
+    )
+
+
+def _to_out_with_comp(e: PlannerEntry, comp) -> PlannerEntryOut:
+    return PlannerEntryOut(
+        id=e.id, lesson_id=e.lesson_id, assigned_to=e.assigned_to,
+        scheduled_date=e.scheduled_date, is_complete=comp is not None,
+        completed_at=comp.completed_at if comp else None,
+        completed_work_url=comp.completed_work_url if comp else None,
+        completed_note=comp.completed_note if comp else None,
+        lesson=LessonOut.model_validate(e.lesson),
+    )
+
+
+def annotate_for_user(entries: list, user: User, db: Session) -> List[PlannerEntryOut]:
+    """Return entries with per-user completion for null-assigned entries when user is a child."""
+    if user.role != "child":
+        return [_to_out(e) for e in entries]
+    null_ids = [e.id for e in entries if e.assigned_to is None]
+    comp_map: dict = {}
+    if null_ids:
+        comp_map = {
+            c.entry_id: c
+            for c in db.query(PlannerCompletion).filter(
+                PlannerCompletion.entry_id.in_(null_ids),
+                PlannerCompletion.user_id == user.id,
+            ).all()
+        }
+    return [
+        _to_out_with_comp(e, comp_map.get(e.id)) if e.assigned_to is None else _to_out(e)
+        for e in entries
+    ]
+
+
+def annotate_single(entry: PlannerEntry, user: User, db: Session) -> PlannerEntryOut:
+    if user.role != "child" or entry.assigned_to is not None:
+        return _to_out(entry)
+    comp = db.query(PlannerCompletion).filter(
+        PlannerCompletion.entry_id == entry.id,
+        PlannerCompletion.user_id == user.id,
+    ).first()
+    return _to_out_with_comp(entry, comp)
+
+
 @router.post("/", response_model=PlannerEntryOut, status_code=201)
 def create_entry(
     entry_in: PlannerEntryCreate,
@@ -43,7 +93,7 @@ def create_entry(
     db.add(entry)
     db.commit()
     db.refresh(entry)
-    return load_entry(db, entry.id)
+    return _to_out(load_entry(db, entry.id))
 
 
 @router.get("/week", response_model=List[PlannerEntryOut])
@@ -70,7 +120,8 @@ def get_week(
         query = query.filter(
             or_(PlannerEntry.assigned_to == child_id, PlannerEntry.assigned_to.is_(None))
         )
-    return query.order_by(PlannerEntry.scheduled_date).all()
+    entries = query.order_by(PlannerEntry.scheduled_date).all()
+    return annotate_for_user(entries, current_user, db)
 
 
 @router.get("/mine", response_model=List[PlannerEntryOut])
@@ -78,13 +129,13 @@ def get_mine(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """All entries for the current user — child gets their own, parent gets all."""
     query = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson))
     if current_user.role == "child":
         query = query.filter(
             or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
         )
-    return query.order_by(PlannerEntry.scheduled_date.desc()).all()
+    entries = query.order_by(PlannerEntry.scheduled_date.desc()).all()
+    return annotate_for_user(entries, current_user, db)
 
 
 @router.get("/today", response_model=List[PlannerEntryOut])
@@ -100,7 +151,8 @@ def get_today(
         query = query.filter(
             or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
         )
-    return query.order_by(PlannerEntry.id).all()
+    entries = query.order_by(PlannerEntry.id).all()
+    return annotate_for_user(entries, current_user, db)
 
 
 @router.get("/all", response_model=List[PlannerEntryOut])
@@ -108,9 +160,10 @@ def get_all(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    return db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).order_by(
+    entries = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).order_by(
         PlannerEntry.scheduled_date.desc()
     ).all()
+    return [_to_out(e) for e in entries]
 
 
 @router.get("/submission-count")
@@ -135,16 +188,34 @@ def mark_complete(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = db.query(PlannerEntry).filter(PlannerEntry.id == entry_id).first()
+    entry = load_entry(db, entry_id)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
     if current_user.role == "child" and entry.assigned_to is not None and entry.assigned_to != current_user.id:
         raise HTTPException(status_code=403, detail="Not your lesson")
 
+    if current_user.role == "child" and entry.assigned_to is None:
+        comp = db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id == entry_id,
+            PlannerCompletion.user_id == current_user.id,
+        ).first()
+        if comp:
+            db.delete(comp)
+            db.flush()
+        else:
+            db.add(PlannerCompletion(entry_id=entry_id, user_id=current_user.id))
+            db.flush()
+        any_done = db.query(PlannerCompletion).filter(PlannerCompletion.entry_id == entry_id).count() > 0
+        entry.is_complete = any_done
+        entry.completed_at = datetime.utcnow() if any_done else None
+        db.commit()
+        db.refresh(entry)
+        return annotate_single(entry, current_user, db)
+
     entry.is_complete = not entry.is_complete
     entry.completed_at = datetime.utcnow() if entry.is_complete else None
     db.commit()
-    return load_entry(db, entry_id)
+    return _to_out(load_entry(db, entry_id))
 
 
 @router.patch("/{entry_id}/submit-work", response_model=PlannerEntryOut)
@@ -154,15 +225,28 @@ def submit_work(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = db.query(PlannerEntry).filter(PlannerEntry.id == entry_id).first()
+    entry = load_entry(db, entry_id)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
     if current_user.role == "child" and entry.assigned_to is not None and entry.assigned_to != current_user.id:
         raise HTTPException(status_code=403, detail="Not your lesson")
 
+    if current_user.role == "child" and entry.assigned_to is None:
+        comp = db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id == entry_id,
+            PlannerCompletion.user_id == current_user.id,
+        ).first()
+        if not comp:
+            comp = PlannerCompletion(entry_id=entry_id, user_id=current_user.id)
+            db.add(comp)
+        comp.completed_work_url = body.completed_work_url
+        db.commit()
+        db.refresh(entry)
+        return annotate_single(entry, current_user, db)
+
     entry.completed_work_url = body.completed_work_url
     db.commit()
-    return load_entry(db, entry_id)
+    return _to_out(load_entry(db, entry_id))
 
 
 @router.patch("/{entry_id}/note", response_model=PlannerEntryOut)
@@ -172,12 +256,26 @@ def submit_note(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = db.query(PlannerEntry).filter(PlannerEntry.id == entry_id).first()
+    entry = load_entry(db, entry_id)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
+
+    if current_user.role == "child" and entry.assigned_to is None:
+        comp = db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id == entry_id,
+            PlannerCompletion.user_id == current_user.id,
+        ).first()
+        if not comp:
+            comp = PlannerCompletion(entry_id=entry_id, user_id=current_user.id)
+            db.add(comp)
+        comp.completed_note = body.completed_note
+        db.commit()
+        db.refresh(entry)
+        return annotate_single(entry, current_user, db)
+
     entry.completed_note = body.completed_note
     db.commit()
-    return load_entry(db, entry_id)
+    return _to_out(load_entry(db, entry_id))
 
 
 @router.put("/{entry_id}", response_model=PlannerEntryOut)
@@ -193,7 +291,7 @@ def update_entry(
     for field, value in entry_in.model_dump(exclude_unset=True).items():
         setattr(entry, field, value)
     db.commit()
-    return load_entry(db, entry_id)
+    return _to_out(load_entry(db, entry_id))
 
 
 @router.delete("/{entry_id}", status_code=204)

@@ -30,6 +30,29 @@ def run_migrations():
 run_migrations()
 Base.metadata.create_all(bind=engine)
 
+
+def migrate_coding_progress():
+    """One-time: copy old shared coding_progress rows to user_coding_progress for all children."""
+    insp = sa_inspect(engine)
+    tables = insp.get_table_names()
+    if "coding_progress" not in tables or "user_coding_progress" not in tables:
+        return
+    with engine.connect() as conn:
+        old_rows = conn.execute(text("SELECT lesson_id FROM coding_progress")).fetchall()
+        if not old_rows:
+            return
+        child_ids = [r[0] for r in conn.execute(text("SELECT id FROM users WHERE role = 'child'")).fetchall()]
+        for lesson_row in old_rows:
+            for child_id in child_ids:
+                conn.execute(
+                    text("INSERT OR IGNORE INTO user_coding_progress (user_id, lesson_id) VALUES (:uid, :lid)"),
+                    {"uid": child_id, "lid": lesson_row[0]},
+                )
+        conn.commit()
+
+
+migrate_coding_progress()
+
 app = FastAPI(title="Homeschool API", version="1.0.0")
 
 app.add_middleware(

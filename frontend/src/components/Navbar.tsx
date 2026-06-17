@@ -21,6 +21,7 @@ const PARENT_MORE = [
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/children", label: "Children" },
   { href: "/parent/timetable", label: "Timetable" },
+  { href: "/parent/print", label: "Print week" },
 ];
 
 const CHILD_MAIN = [
