@@ -83,7 +83,7 @@ export default function ExtraWorkParentPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Extra Work</h1>
-            <p className="text-gray-500 mt-1">Assign reading, projects, and additional tasks for Oscar</p>
+            <p className="text-gray-500 mt-1">Assign reading, projects, and additional tasks for your child</p>
           </div>
           <button onClick={() => setShowForm(v => !v)}
             className="bg-[#2F5D3A] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#6EA76E] transition-colors">
@@ -120,7 +120,7 @@ export default function ExtraWorkParentPage() {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Notes for Oscar (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Notes for your child (optional)</label>
                 <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Any instructions…"
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
@@ -173,7 +173,7 @@ export default function ExtraWorkParentPage() {
                           )}
                           {e.completed_work_url && (
                             <div className="mt-3 p-3 bg-green-50 rounded-xl border border-green-100">
-                              <p className="text-xs font-semibold text-green-700 mb-1">Oscar&apos;s submitted work:</p>
+                              <p className="text-xs font-semibold text-green-700 mb-1">your child&apos;s submitted work:</p>
                               <a href={e.completed_work_url} target="_blank" rel="noopener noreferrer"
                                 className="text-sm text-green-800 hover:underline break-all">{e.completed_work_url}</a>
                             </div>

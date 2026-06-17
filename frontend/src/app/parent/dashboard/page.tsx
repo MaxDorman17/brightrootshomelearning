@@ -18,7 +18,7 @@ const TIMETABLE_SUBJECTS = new Set([
 const QUICK_LINKS = [
   { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
   { href: "/parent/extra-work", label: "Extra Work", icon: "📋", desc: "Projects & tasks", from: "from-amber-500", to: "to-orange-500" },
-  { href: "/coding", label: "Coding", icon: "💻", desc: "Oscar's coding", from: "from-emerald-500", to: "to-teal-500" },
+  { href: "/coding", label: "Coding", icon: "💻", desc: "Coding curriculum", from: "from-emerald-500", to: "to-teal-500" },
   { href: "/parent/report", label: "Report", icon: "📈", desc: "Analytics", from: "from-blue-500", to: "to-cyan-500" },
   { href: "/parent/progress", label: "Progress", icon: "📊", desc: "Submitted work", from: "from-pink-500", to: "to-rose-500" },
 ];

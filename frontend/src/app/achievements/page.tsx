@@ -156,7 +156,7 @@ export default function AchievementsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-extrabold text-gray-900">🏆 Achievements</h1>
           <p className="text-gray-500 font-medium mt-1">
-            {role === "parent" ? "Oscar's badges and learning milestones" : "Your badges and milestones — keep going!"}
+            {role === "parent" ? "Badges and learning milestones" : "Your badges and milestones — keep going!"}
           </p>
         </div>
 

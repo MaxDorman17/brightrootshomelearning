@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress } from "@/lib/api";
-import { PlannerEntry } from "@/types";
+import { getAllEntries, getCodingProgress, getChildren } from "@/lib/api";
+import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
 
@@ -32,20 +32,29 @@ type Period = "week" | "month" | "all";
 export default function ReportPage() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
+  const [children, setChildren] = useState<Child[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("week");
   const [codingDone, setCodingDone] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    Promise.all([getAllEntries(), getCodingProgress()]).then(([eRes, cRes]) => {
+    Promise.all([getAllEntries(), getCodingProgress(), getChildren()]).then(([eRes, cRes, childRes]) => {
       setEntries(eRes.data);
       setCodingDone((cRes.data as string[]).length);
+      setChildren(childRes.data);
       setLoading(false);
     });
   }, [router]);
 
-  const filtered = entries.filter(e => {
+  const selectedChild = children.find(c => c.id === selectedChildId);
+
+  const childEntries = selectedChildId
+    ? entries.filter(e => e.assigned_to === null || e.assigned_to === selectedChildId)
+    : entries;
+
+  const filtered = childEntries.filter(e => {
     const d = parseISO(e.scheduled_date);
     const now = new Date();
     if (period === "week") return isWithinInterval(d, { start: startOfWeek(now, { weekStartsOn: 1 }), end: endOfWeek(now, { weekStartsOn: 1 }) });
@@ -65,7 +74,7 @@ export default function ReportPage() {
     return { subject, total: s.length, done, pct: s.length === 0 ? 0 : Math.round((done / s.length) * 100) };
   }).filter(s => s.total > 0).sort((a, b) => b.pct - a.pct);
 
-  const allSubmitted = entries.filter(e => e.completed_work_url);
+  const allSubmitted = childEntries.filter(e => e.completed_work_url);
 
   // Attendance heatmap: last 16 weeks of school days
   const heatmapWeeks = Array.from({ length: 16 }, (_, i) => {
@@ -73,7 +82,7 @@ export default function ReportPage() {
     return eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 4) }); // Mon–Fri only
   });
   const byDate: Record<string, PlannerEntry[]> = {};
-  entries.forEach(e => {
+  childEntries.forEach(e => {
     if (!byDate[e.scheduled_date]) byDate[e.scheduled_date] = [];
     byDate[e.scheduled_date].push(e);
   });
@@ -93,7 +102,7 @@ export default function ReportPage() {
   const weeklyTrend = Array.from({ length: 8 }, (_, i) => {
     const weekStart = startOfWeek(subWeeks(new Date(), 7 - i), { weekStartsOn: 1 });
     const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
-    const weekEntries = entries.filter(e => {
+    const weekEntries = childEntries.filter(e => {
       const d = parseISO(e.scheduled_date);
       return isWithinInterval(d, { start: weekStart, end: weekEnd });
     });
@@ -106,15 +115,32 @@ export default function ReportPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Report</h1>
-            <p className="text-gray-500 mt-1">Oscar&apos;s learning progress and analytics</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {selectedChild ? `${selectedChild.username}'s Report` : "Report"}
+            </h1>
+            <p className="text-gray-500 mt-1">Learning progress and analytics</p>
           </div>
-          <button onClick={() => window.print()}
-            className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
-            🖨 Print
-          </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            {children.length > 0 && (
+              <div className="flex items-center gap-2 bg-white/80 border border-white/60 rounded-xl px-3 py-1.5 shadow-sm">
+                <span className="text-xs font-bold text-gray-500">Viewing:</span>
+                <select
+                  value={selectedChildId ?? ""}
+                  onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
+                  className="text-sm font-semibold text-gray-800 bg-transparent focus:outline-none cursor-pointer"
+                >
+                  <option value="">All children</option>
+                  {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                </select>
+              </div>
+            )}
+            <button onClick={() => window.print()}
+              className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+              🖨 Print
+            </button>
+          </div>
         </div>
 
         {/* Period selector */}
@@ -179,7 +205,7 @@ export default function ReportPage() {
             </div>
 
             {/* Attendance heatmap */}
-            {entries.length > 0 && (
+            {childEntries.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Attendance — Last 16 Weeks</h2>
                 <div className="overflow-x-auto">
@@ -210,7 +236,7 @@ export default function ReportPage() {
             )}
 
             {/* Weekly trend chart */}
-            {entries.length > 0 && (
+            {childEntries.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">Weekly Trend (Last 8 Weeks)</h2>
                 <div className="flex items-end justify-between gap-2 h-40">

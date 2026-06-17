@@ -446,7 +446,7 @@ export default function ParentPlanner() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Notes for Oscar (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Notes for child (optional)</label>
                 <textarea
                   value={slotNotes}
                   onChange={e => setSlotNotes(e.target.value)}

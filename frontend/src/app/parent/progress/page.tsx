@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getFeedback, createFeedback, deleteFeedback } from "@/lib/api";
-import { PlannerEntry, WorkFeedback } from "@/types";
+import { getAllEntries, getFeedback, createFeedback, deleteFeedback, getChildren } from "@/lib/api";
+import { PlannerEntry, WorkFeedback, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO } from "date-fns";
 
@@ -24,6 +24,8 @@ export default function ProgressPage() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
   const [allFeedback, setAllFeedback] = useState<WorkFeedback[]>([]);
+  const [children, setChildren] = useState<Child[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "submitted" | "complete" | "incomplete">("all");
 
@@ -35,9 +37,10 @@ export default function ProgressPage() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    Promise.all([getAllEntries(), getFeedback()]).then(([eRes, fRes]) => {
+    Promise.all([getAllEntries(), getFeedback(), getChildren()]).then(([eRes, fRes, cRes]) => {
       setEntries(eRes.data);
       setAllFeedback(fRes.data);
+      setChildren(cRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -61,23 +64,45 @@ export default function ProgressPage() {
     setAllFeedback(prev => prev.filter(f => f.id !== id));
   };
 
-  const filtered = entries.filter((e) => {
+  const childEntries = selectedChildId
+    ? entries.filter(e => e.assigned_to === null || e.assigned_to === selectedChildId)
+    : entries;
+
+  const filtered = childEntries.filter((e) => {
     if (filter === "submitted") return !!e.completed_work_url;
     if (filter === "complete") return e.is_complete;
     if (filter === "incomplete") return !e.is_complete;
     return true;
   });
 
-  const totalComplete = entries.filter((e) => e.is_complete).length;
-  const totalSubmitted = entries.filter((e) => e.completed_work_url).length;
+  const totalComplete = childEntries.filter((e) => e.is_complete).length;
+  const totalSubmitted = childEntries.filter((e) => e.completed_work_url).length;
+  const selectedChild = children.find(c => c.id === selectedChildId);
 
   return (
     <div className="min-h-screen">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-extrabold text-gray-900">Oscar&apos;s Progress</h1>
-          <p className="text-gray-500 mt-1">All lessons, submitted work, and your feedback</p>
+        <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
+          <div>
+            <h1 className="text-2xl font-extrabold text-gray-900">
+              {selectedChild ? `${selectedChild.username}'s Progress` : "Progress"}
+            </h1>
+            <p className="text-gray-500 mt-1">All lessons, submitted work, and your feedback</p>
+          </div>
+          {children.length > 0 && (
+            <div className="flex items-center gap-2 bg-white/80 border border-white/60 rounded-xl px-3 py-1.5 shadow-sm">
+              <span className="text-xs font-bold text-gray-500">Viewing:</span>
+              <select
+                value={selectedChildId ?? ""}
+                onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
+                className="text-sm font-semibold text-gray-800 bg-transparent focus:outline-none cursor-pointer"
+              >
+                <option value="">All children</option>
+                {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+              </select>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
@@ -143,10 +168,12 @@ export default function ProgressPage() {
                           className="text-xs text-[#6EA76E] hover:underline mt-1 block">🔗 Lesson link</a>
                       )}
 
-                      {/* Oscar's note */}
+                      {/* Child's note */}
                       {entry.completed_note && (
                         <div className="mt-2 p-2.5 bg-[#F7F9F7] rounded-xl border border-[#A8C67A]/30">
-                          <p className="text-xs font-bold text-[#2F5D3A] mb-0.5">📝 Oscar&apos;s note:</p>
+                          <p className="text-xs font-bold text-[#2F5D3A] mb-0.5">
+                            📝 {entry.assigned_to ? (children.find(c => c.id === entry.assigned_to)?.username ?? "Child") : "Note"}:
+                          </p>
                           <p className="text-sm text-gray-700">{entry.completed_note}</p>
                         </div>
                       )}
@@ -154,7 +181,7 @@ export default function ProgressPage() {
                       {/* Submitted work */}
                       {entry.completed_work_url ? (
                         <div className="mt-2 p-2.5 bg-green-50 rounded-xl border border-green-100">
-                          <p className="text-xs font-bold text-green-700 mb-0.5">📎 Oscar&apos;s submitted work:</p>
+                          <p className="text-xs font-bold text-green-700 mb-0.5">📎 Submitted work:</p>
                           <a href={entry.completed_work_url} target="_blank" rel="noopener noreferrer"
                             className="text-sm text-green-800 hover:underline font-medium break-all">{entry.completed_work_url}</a>
                         </div>
@@ -206,7 +233,7 @@ export default function ProgressPage() {
                       ) : (
                         <button onClick={() => { setFeedbackOpen(entry.id); setFeedbackMsg(""); setFeedbackEmoji("⭐"); }}
                           className="mt-2 text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold hover:bg-[#F7F9F7] px-3 py-1 rounded-lg transition-colors border border-[#A8C67A]/30">
-                          {entryFeedback.length > 0 ? "💬 Add another" : "💬 Leave feedback for Oscar"}
+                          {entryFeedback.length > 0 ? "💬 Add another" : "💬 Leave feedback"}
                         </button>
                       )}
                     </div>

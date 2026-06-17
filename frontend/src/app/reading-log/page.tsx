@@ -218,7 +218,7 @@ export default function ReadingLogPage() {
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">📚 Reading Log</h1>
             <p className="text-gray-500 font-medium mt-1">
-              {isParent ? "Track books Oscar is reading" : "Your books — past, present and future reads"}
+              {isParent ? "Track books your children are reading" : "Your books — past, present and future reads"}
             </p>
           </div>
           {isParent && (

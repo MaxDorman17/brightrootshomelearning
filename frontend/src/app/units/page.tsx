@@ -93,7 +93,7 @@ export default function UnitsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-extrabold text-gray-900">📖 Current Units</h1>
           <p className="text-gray-500 font-medium mt-1">
-            {isParent ? "Click any subject to set the current unit and link for Oscar" : "What you're studying in each subject right now"}
+            {isParent ? "Click any subject to set the current unit and link" : "What you're studying in each subject right now"}
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export default function UnitsPage() {
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Notes (optional)</label>
                 <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)}
-                  placeholder="Any context for Oscar…"
+                  placeholder="Any context for the children…"
                   className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
             </div>

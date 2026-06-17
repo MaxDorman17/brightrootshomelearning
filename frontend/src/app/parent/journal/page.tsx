@@ -66,7 +66,7 @@ export default function JournalPage() {
 
         <div className="mb-6">
           <h1 className="text-2xl font-extrabold text-gray-900">📔 Daily Journal</h1>
-          <p className="text-gray-500 font-medium mt-1">Your private notes on Oscar&apos;s learning — what worked, what didn&apos;t, observations to remember.</p>
+          <p className="text-gray-500 font-medium mt-1">Your private notes on your child&apos;s learning — what worked, what didn&apos;t, observations to remember.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -97,7 +97,7 @@ export default function JournalPage() {
               <textarea
                 value={content}
                 onChange={e => { setContent(e.target.value); setSaved(false); }}
-                placeholder={`How did today go? What did Oscar learn? Any observations worth remembering…`}
+                placeholder={`How did today go? What did your child learn? Any observations worth remembering…`}
                 rows={12}
                 className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-800 focus:outline-none focus:border-[#6EA76E] resize-none transition-colors leading-relaxed"
               />
