@@ -98,7 +98,7 @@ export default function CodingPage() {
         setCompleted(prev => { const n = new Set(prev); n.delete(id); return n; });
       } else {
         await markCodingComplete(id);
-        setCompleted(prev => new Set([...prev, id]));
+        setCompleted(prev => { const n = new Set(prev); n.add(id); return n; });
       }
     } finally { setToggling(null); }
   };
