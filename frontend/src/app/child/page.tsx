@@ -63,6 +63,26 @@ interface SlotModal {
   entry: PlannerEntry;
 }
 
+function CompletionRing({ done, total }: { done: number; total: number }) {
+  const r = 34;
+  const circ = 2 * Math.PI * r;
+  const offset = total === 0 ? circ : circ * (1 - done / total);
+  return (
+    <div className="relative w-20 h-20 shrink-0">
+      <svg className="w-20 h-20 -rotate-90 absolute inset-0" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="8" />
+        <circle cx="40" cy="40" r={r} fill="none" stroke="white" strokeWidth="8"
+          strokeDasharray={circ} strokeDashoffset={offset}
+          strokeLinecap="round" className="transition-all duration-700" />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-xl font-extrabold text-white leading-none">{done}</span>
+        <span className="text-[9px] text-white/65 font-bold leading-none mt-0.5">of {total}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function ChildDashboard() {
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -78,6 +98,7 @@ export default function ChildDashboard() {
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
   const [modal, setModal] = useState<SlotModal | null>(null);
   const [toggling, setToggling] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
   const [workUrl, setWorkUrl] = useState("");
   const [submittingUrl, setSubmittingUrl] = useState(false);
   const [note, setNote] = useState("");
@@ -138,6 +159,10 @@ export default function ChildDashboard() {
       const res = await toggleComplete(modal.entry.id);
       setModal({ entry: res.data });
       setEntries(prev => prev.map(e => e.id === res.data.id ? res.data : e));
+      if (res.data.is_complete) {
+        setCelebrating(true);
+        setTimeout(() => setCelebrating(false), 2200);
+      }
     } finally { setToggling(false); }
   };
 
@@ -197,33 +222,81 @@ export default function ChildDashboard() {
 
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
 
+  const todayStr2 = format(new Date(), "yyyy-MM-dd");
+  const todayLessons = entries.filter(e => e.scheduled_date === todayStr2);
+  const todayDoneCount = todayLessons.filter(e => e.is_complete).length;
+  const todayTotalCount = todayLessons.length;
+  const nextLesson = todayLessons.find(e => !e.is_complete) ?? null;
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-20 md:pb-0">
       <Navbar />
+
+      {/* Lesson completion celebration */}
+      {celebrating && (
+        <div className="fixed inset-0 pointer-events-none z-[60] overflow-hidden">
+          {["🌟","✨","🎉","⭐","💫","🏆","🎊","🌈"].map((emoji, i) => (
+            <span key={i} className="confetti-particle text-3xl"
+              style={{ left: `${6 + i * 12}%`, top: "-10px", animationDelay: `${i * 0.08}s` }}>
+              {emoji}
+            </span>
+          ))}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white rounded-3xl px-8 py-6 shadow-2xl text-center">
+              <p className="text-5xl mb-2">⭐</p>
+              <p className="text-xl font-extrabold text-[#2F5D3A]">Lesson done!</p>
+              <p className="text-sm text-gray-500 font-semibold mt-1">Keep it up! 🎉</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {/* Hero header */}
-        <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] rounded-3xl p-5 mb-5 text-white shadow-xl shadow-green-900/20">
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <div>
-              <p className="text-white/75 text-sm font-semibold">{getGreeting()}, {username}! 👋</p>
-              <h1 className="text-xl font-extrabold mt-0.5">This Week&apos;s Timetable</h1>
-              <p className="text-white/60 text-xs mt-0.5">{format(new Date(), "EEEE, MMMM d, yyyy")}</p>
-            </div>
-            <div className="flex items-center gap-3 flex-wrap">
+        <div className="bg-gradient-to-br from-[#2F5D3A] via-[#3d7a4e] to-[#6EA76E] rounded-3xl p-5 mb-4 text-white shadow-xl shadow-green-900/30">
+          <div className="flex items-center gap-5 flex-wrap">
+            <div className="flex-1 min-w-0">
+              <p className="text-white/60 text-xs font-bold uppercase tracking-wider">{format(new Date(), "EEEE, d MMMM yyyy")}</p>
+              <h1 className="text-2xl font-extrabold mt-0.5">{getGreeting()}, {username}! 👋</h1>
+              {todayTotalCount > 0 ? (
+                <p className="text-white/80 text-sm font-semibold mt-1">
+                  {todayDoneCount === todayTotalCount
+                    ? "🎉 All done today — brilliant work!"
+                    : `${todayTotalCount - todayDoneCount} lesson${todayTotalCount - todayDoneCount !== 1 ? "s" : ""} left today`}
+                </p>
+              ) : (
+                <p className="text-white/60 text-sm mt-1">No lessons scheduled today</p>
+              )}
               {streak > 0 && (
-                <div className="flex items-center gap-2 bg-white/20 rounded-xl px-3 py-1.5">
-                  <span className="text-lg">{streak >= 5 ? "🔥" : "⚡"}</span>
-                  <span className="text-sm font-bold">{streak}-day streak!</span>
+                <div className="flex items-center gap-1.5 mt-2.5 bg-white/15 rounded-xl px-3 py-1.5 w-fit">
+                  <span>{streak >= 10 ? "🔥" : streak >= 5 ? "⚡" : "✨"}</span>
+                  <span className="text-sm font-extrabold">{streak}-day streak!</span>
                 </div>
               )}
-              <div className="hidden sm:block text-xs text-white/60 italic max-w-xs text-right">
-                {QUOTES[quoteIdx]}
-              </div>
+            </div>
+            {todayTotalCount > 0 && <CompletionRing done={todayDoneCount} total={todayTotalCount} />}
+            <div className="hidden xl:block max-w-[180px] text-right shrink-0">
+              <p className="text-xs text-white/50 italic leading-relaxed">{QUOTES[quoteIdx]}</p>
             </div>
           </div>
         </div>
+
+        {/* Up next card */}
+        {nextLesson && (
+          <div className="mb-4 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl px-4 py-3 flex items-center gap-4 shadow-sm">
+            <span className="text-2xl shrink-0">▶️</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-extrabold text-amber-700 mb-0.5">Up next</p>
+              <p className="text-sm font-extrabold text-amber-900 truncate">{nextLesson.lesson.title}</p>
+              <p className="text-xs text-amber-600 font-semibold">{nextLesson.lesson.subject}</p>
+            </div>
+            <button onClick={() => openModal(nextLesson)}
+              className="text-sm px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold transition-colors shadow-sm shrink-0">
+              Open →
+            </button>
+          </div>
+        )}
 
         {/* Unread feedback banner */}
         {unreadFeedback.length > 0 && (

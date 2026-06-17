@@ -17,6 +17,27 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
 };
 
+const SCOTTISH_HOLIDAYS: { label: string; start: string; end: string }[] = [
+  { label: "Autumn break",          start: "2025-10-13", end: "2025-10-17" },
+  { label: "Christmas & New Year",  start: "2025-12-22", end: "2026-01-02" },
+  { label: "February break",        start: "2026-02-16", end: "2026-02-20" },
+  { label: "Easter break",          start: "2026-04-02", end: "2026-04-17" },
+  { label: "May Day",               start: "2026-05-04", end: "2026-05-04" },
+];
+
+function eachWeekday(start: string, end: string): string[] {
+  const dates: string[] = [];
+  const s = new Date(start + "T00:00:00");
+  const e = new Date(end + "T00:00:00");
+  const cur = new Date(s);
+  while (cur <= e) {
+    const d = cur.getDay();
+    if (d >= 1 && d <= 5) dates.push(format(cur, "yyyy-MM-dd"));
+    cur.setDate(cur.getDate() + 1);
+  }
+  return dates;
+}
+
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const SUBJECT_COLORS: Record<string, string> = {
@@ -67,6 +88,10 @@ export default function ParentPlanner() {
   const [slotNotes, setSlotNotes] = useState("");
   const [slotAssignedTo, setSlotAssignedTo] = useState<number | null>(null);
   const [slotSaving, setSlotSaving] = useState(false);
+
+  const [showHolidayPanel, setShowHolidayPanel] = useState(false);
+  const [importingHolidays, setImportingHolidays] = useState(false);
+  const [selectedHolidayGroups, setSelectedHolidayGroups] = useState<number[]>([0, 1, 2, 3, 4]);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
 
@@ -195,6 +220,20 @@ export default function ParentPlanner() {
     setGoals(prev => prev.filter(g => g.id !== id));
   };
 
+  const handleImportHolidays = async () => {
+    setImportingHolidays(true);
+    try {
+      const existing = new Set(daysOff.map(d => d.date));
+      const selected = SCOTTISH_HOLIDAYS.filter((_, i) => selectedHolidayGroups.includes(i));
+      const fresh = selected.flatMap(h => eachWeekday(h.start, h.end)).filter(d => !existing.has(d));
+      for (const date of fresh) {
+        const res = await addDayOff({ date, reason: "School holiday" });
+        setDaysOff(prev => [...prev, res.data]);
+      }
+      setShowHolidayPanel(false);
+    } finally { setImportingHolidays(false); }
+  };
+
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
   const selectedChild = children.find(c => c.id === selectedChildId);
 
@@ -226,6 +265,10 @@ export default function ParentPlanner() {
               </div>
             )}
 
+            <button onClick={() => setShowHolidayPanel(v => !v)}
+              className={`px-3 py-1.5 text-sm border rounded-xl font-semibold shadow-sm transition-all ${showHolidayPanel ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white/80 border-white/60 hover:bg-white"}`}>
+              🏴󠁧󠁢󠁳󠁣󠁴󠁿 Holidays
+            </button>
             <button onClick={() => setWeekStart(d => addDays(d, -7))}
               className="px-3 py-1.5 text-sm bg-white/80 border border-white/60 rounded-xl hover:bg-white font-semibold shadow-sm transition-all">
               ← Prev
@@ -241,6 +284,70 @@ export default function ParentPlanner() {
             </button>
           </div>
         </div>
+
+        {/* Scottish holiday import panel */}
+        {showHolidayPanel && (
+          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+            <p className="text-sm font-extrabold text-gray-800 mb-0.5">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish School Holidays 2025–26</p>
+            <p className="text-xs text-gray-500 mb-3">Select breaks to bulk-add as days off. Dates are typical Scottish council dates — adjust for your local authority if needed.</p>
+            <div className="space-y-2 mb-4">
+              {SCOTTISH_HOLIDAYS.map((h, i) => (
+                <label key={i} className="flex items-center gap-3 cursor-pointer group">
+                  <input type="checkbox" checked={selectedHolidayGroups.includes(i)}
+                    onChange={e => setSelectedHolidayGroups(prev =>
+                      e.target.checked ? [...prev, i] : prev.filter(x => x !== i)
+                    )}
+                    className="w-4 h-4 accent-[#2F5D3A] rounded cursor-pointer" />
+                  <span className="text-sm font-semibold text-gray-800 group-hover:text-[#2F5D3A] transition-colors">{h.label}</span>
+                  <span className="text-xs text-gray-400">{h.start === h.end ? h.start : `${h.start} → ${h.end}`}</span>
+                </label>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button onClick={handleImportHolidays}
+                disabled={importingHolidays || selectedHolidayGroups.length === 0}
+                className="px-4 py-2 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
+                {importingHolidays ? "Adding…" : `Add ${selectedHolidayGroups.length} break${selectedHolidayGroups.length !== 1 ? "s" : ""}`}
+              </button>
+              <button onClick={() => setShowHolidayPanel(false)}
+                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Today at a glance strip */}
+        {(() => {
+          const todayDate = format(new Date(), "yyyy-MM-dd");
+          const todayEnt = entries.filter(e => e.scheduled_date === todayDate);
+          if (todayEnt.length === 0) return null;
+          const done = todayEnt.filter(e => e.is_complete).length;
+          const total = todayEnt.length;
+          const submitted = todayEnt.filter(e => e.completed_work_url).length;
+          return (
+            <div className="flex gap-3 mb-4 overflow-x-auto pb-1">
+              <div className="flex-1 min-w-[80px] bg-white/80 rounded-2xl border border-white/60 shadow-sm px-4 py-3 text-center shrink-0">
+                <p className="text-2xl font-extrabold text-[#2F5D3A]">{done}/{total}</p>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-0.5">Done today</p>
+              </div>
+              <div className="flex-1 min-w-[80px] bg-white/80 rounded-2xl border border-white/60 shadow-sm px-4 py-3 text-center shrink-0">
+                <p className="text-2xl font-extrabold text-orange-500">{total - done}</p>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-0.5">Remaining</p>
+              </div>
+              <div className="flex-1 min-w-[80px] bg-white/80 rounded-2xl border border-white/60 shadow-sm px-4 py-3 text-center shrink-0">
+                <p className="text-2xl font-extrabold text-teal-500">{submitted}</p>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-0.5">Submitted</p>
+              </div>
+              {done === total && (
+                <div className="flex-1 min-w-[80px] bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl px-4 py-3 text-center shadow-sm shrink-0">
+                  <p className="text-2xl">🎉</p>
+                  <p className="text-[10px] text-white font-extrabold uppercase tracking-wide mt-0.5">Perfect!</p>
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Timetable grid */}
         <div className="grid grid-cols-5 gap-3">

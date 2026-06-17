@@ -85,6 +85,7 @@ export default function Navbar() {
   const isActive = (href: string) => pathname === href;
 
   return (
+    <>
     <nav className="bg-white border-b border-[#A8C67A]/40 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -201,5 +202,33 @@ export default function Navbar() {
         )}
       </div>
     </nav>
+
+    {/* Child mobile bottom tab bar */}
+    {role === "child" && (
+      <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl">
+        <div className="flex items-stretch justify-around px-1 pt-2 pb-3">
+          {[
+            { href: "/child",        label: "Today",    icon: "🏠" },
+            { href: "/units",        label: "Units",    icon: "📖" },
+            { href: "/reading-log",  label: "Reading",  icon: "📚" },
+            { href: "/coding",       label: "Coding",   icon: "💻" },
+            { href: "/achievements", label: "Badges",   icon: "🏆" },
+          ].map(tab => {
+            const active = pathname === tab.href;
+            return (
+              <Link key={tab.href} href={tab.href}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all min-w-[52px] ${active ? "bg-[#2F5D3A]/10" : ""}`}>
+                <span className={`text-[22px] leading-none transition-transform ${active ? "scale-110" : ""}`}>{tab.icon}</span>
+                <span className={`text-[9px] font-extrabold leading-none mt-0.5 ${active ? "text-[#2F5D3A]" : "text-gray-400"}`}>
+                  {tab.label}
+                </span>
+                {active && <div className="w-1 h-1 rounded-full bg-[#2F5D3A] mt-0.5" />}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    )}
+  </>
   );
 }
