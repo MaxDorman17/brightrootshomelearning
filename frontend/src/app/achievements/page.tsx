@@ -31,26 +31,52 @@ interface BadgeData {
   streak: number;
   submitted: number;
   coding: Set<string>;
+  subjectCounts: Record<string, number>;
 }
 
 const BADGES: Badge[] = [
-  { id: "first",       icon: "🎯", title: "First Step!",         desc: "Completed your very first lesson",       color: "from-blue-400 to-blue-500",     check: d => d.totalComplete >= 1 },
-  { id: "five",        icon: "⚡", title: "Getting Going",        desc: "Completed 5 lessons",                    color: "from-yellow-400 to-amber-500",   check: d => d.totalComplete >= 5 },
-  { id: "ten",         icon: "💪", title: "Double Digits",        desc: "Completed 10 lessons",                   color: "from-orange-400 to-orange-500",  check: d => d.totalComplete >= 10 },
-  { id: "twentyfive",  icon: "📚", title: "Bookworm",             desc: "Completed 25 lessons",                   color: "from-green-400 to-emerald-500",  check: d => d.totalComplete >= 25 },
-  { id: "fifty",       icon: "🌟", title: "Star Pupil",           desc: "Completed 50 lessons",                   color: "from-[#2F5D3A] to-[#6EA76E]",   check: d => d.totalComplete >= 50 },
-  { id: "hundred",     icon: "👑", title: "Century!",             desc: "Completed 100 lessons",                  color: "from-amber-400 to-yellow-500",   check: d => d.totalComplete >= 100 },
-  { id: "hat_trick",   icon: "🎩", title: "Hat Trick",            desc: "3-day learning streak",                  color: "from-pink-400 to-rose-500",      check: d => d.streak >= 3 },
-  { id: "school_week", icon: "🏆", title: "School Week",          desc: "Full 5-day streak",                      color: "from-[#F5B841] to-amber-500",    check: d => d.streak >= 5 },
-  { id: "two_weeks",   icon: "🔥", title: "On Fire!",             desc: "10-day learning streak",                 color: "from-red-500 to-orange-500",     check: d => d.streak >= 10 },
-  { id: "show_work",   icon: "📎", title: "Show Your Work",       desc: "Submitted your first piece of work",     color: "from-teal-400 to-cyan-500",      check: d => d.submitted >= 1 },
-  { id: "over_achieve",icon: "🏅", title: "Over-Achiever",        desc: "Submitted 10 pieces of work",            color: "from-blue-500 to-cyan-600",      check: d => d.submitted >= 10 },
-  { id: "hello_world", icon: "💻", title: "Hello World!",         desc: "Completed your first coding lesson",     color: "from-gray-600 to-gray-800",      check: d => d.coding.size >= 1 },
-  { id: "scratch_star",icon: "🐱", title: "Scratch Star",         desc: "Completed all Scratch lessons",          color: "from-orange-400 to-amber-500",   check: d => SCRATCH_IDS.every(id => d.coding.has(id)) },
-  { id: "codeorg",     icon: "🕹️", title: "Code.org Champion",   desc: "Completed all Hour of Code lessons",     color: "from-blue-400 to-blue-600",      check: d => CODEORG_IDS.every(id => d.coding.has(id)) },
-  { id: "pythonista",  icon: "🐍", title: "Pythonista",           desc: "Completed all Python lessons",           color: "from-green-500 to-emerald-600",  check: d => PYTHON_IDS.every(id => d.coding.has(id)) },
-  { id: "web_dev",     icon: "🌐", title: "Web Developer",        desc: "Completed all Web Dev lessons",          color: "from-[#6EA76E] to-[#2F5D3A]",   check: d => WEB_IDS.every(id => d.coding.has(id)) },
-  { id: "full_coding", icon: "🚀", title: "Future Coder",         desc: "Completed the entire coding curriculum", color: "from-[#2F5D3A] to-[#7A5C3E]",   check: d => d.coding.size >= 23 },
+  // --- Lesson milestones ---
+  { id: "first",        icon: "🎯", title: "First Step!",          desc: "Completed your very first lesson",          color: "from-blue-400 to-blue-500",      check: d => d.totalComplete >= 1 },
+  { id: "five",         icon: "⚡", title: "Getting Going",         desc: "Completed 5 lessons",                       color: "from-yellow-400 to-amber-500",    check: d => d.totalComplete >= 5 },
+  { id: "ten",          icon: "💪", title: "Double Digits",         desc: "Completed 10 lessons",                      color: "from-orange-400 to-orange-500",   check: d => d.totalComplete >= 10 },
+  { id: "twentyfive",   icon: "📚", title: "Bookworm",              desc: "Completed 25 lessons",                      color: "from-green-400 to-emerald-500",   check: d => d.totalComplete >= 25 },
+  { id: "fifty",        icon: "🌟", title: "Star Pupil",            desc: "Completed 50 lessons",                      color: "from-[#2F5D3A] to-[#6EA76E]",    check: d => d.totalComplete >= 50 },
+  { id: "hundred",      icon: "👑", title: "Century!",              desc: "Completed 100 lessons",                     color: "from-amber-400 to-yellow-500",    check: d => d.totalComplete >= 100 },
+  { id: "seventy_five", icon: "🌈", title: "Three Quarters",        desc: "Completed 75 lessons",                      color: "from-violet-400 to-purple-500",   check: d => d.totalComplete >= 75 },
+  { id: "one_fifty",    icon: "💎", title: "Diamond Student",       desc: "Completed 150 lessons",                     color: "from-cyan-400 to-blue-500",       check: d => d.totalComplete >= 150 },
+  { id: "two_hun",      icon: "🦁", title: "Legend",                desc: "Completed 200 lessons",                     color: "from-rose-500 to-pink-600",       check: d => d.totalComplete >= 200 },
+
+  // --- Streaks ---
+  { id: "hat_trick",    icon: "🎩", title: "Hat Trick",             desc: "3-day learning streak",                     color: "from-pink-400 to-rose-500",       check: d => d.streak >= 3 },
+  { id: "school_week",  icon: "🏆", title: "School Week",           desc: "Full 5-day streak",                         color: "from-[#F5B841] to-amber-500",     check: d => d.streak >= 5 },
+  { id: "on_fire",      icon: "🔥", title: "On Fire!",              desc: "10-day learning streak",                    color: "from-red-500 to-orange-500",      check: d => d.streak >= 10 },
+  { id: "fortnight",    icon: "🗓️", title: "Fortnight",            desc: "14-day learning streak",                    color: "from-purple-500 to-violet-600",   check: d => d.streak >= 14 },
+  { id: "three_weeks",  icon: "🌙", title: "Three-Week Wonder",     desc: "21-day learning streak",                    color: "from-indigo-500 to-blue-600",     check: d => d.streak >= 21 },
+  { id: "monthly",      icon: "🏰", title: "Month of Learning",     desc: "30-day learning streak",                    color: "from-[#7A5C3E] to-amber-700",     check: d => d.streak >= 30 },
+
+  // --- Work submissions ---
+  { id: "show_work",    icon: "📎", title: "Show Your Work",        desc: "Submitted your first piece of work",        color: "from-teal-400 to-cyan-500",       check: d => d.submitted >= 1 },
+  { id: "five_sub",     icon: "📬", title: "Getting Noticed",       desc: "Submitted 5 pieces of work",               color: "from-sky-400 to-cyan-500",        check: d => d.submitted >= 5 },
+  { id: "over_achieve", icon: "🏅", title: "Over-Achiever",         desc: "Submitted 10 pieces of work",              color: "from-blue-500 to-cyan-600",       check: d => d.submitted >= 10 },
+  { id: "twenty_sub",   icon: "🎓", title: "Work Ethic",            desc: "Submitted 25 pieces of work",              color: "from-emerald-500 to-green-600",   check: d => d.submitted >= 25 },
+
+  // --- Subject badges ---
+  { id: "maths_star",   icon: "🔢", title: "Number Cruncher",       desc: "Completed 5 Maths lessons",                color: "from-blue-400 to-indigo-500",     check: d => (d.subjectCounts["Maths"] || 0) >= 5 },
+  { id: "science_star", icon: "🔬", title: "Lab Rat",               desc: "Completed 5 Science lessons",              color: "from-lime-500 to-green-600",      check: d => (d.subjectCounts["Science"] || 0) >= 5 },
+  { id: "english_star", icon: "✍️", title: "Word Smith",            desc: "Completed 5 English lessons",              color: "from-violet-400 to-purple-600",   check: d => (d.subjectCounts["English"] || 0) >= 5 },
+  { id: "history_star", icon: "🏺", title: "History Buff",          desc: "Completed 5 History lessons",              color: "from-amber-600 to-yellow-700",    check: d => (d.subjectCounts["History"] || 0) >= 5 },
+  { id: "geo_star",     icon: "🌍", title: "Explorer",              desc: "Completed 5 Geography lessons",            color: "from-teal-500 to-cyan-600",       check: d => (d.subjectCounts["Geography"] || 0) >= 5 },
+  { id: "all_rounder",  icon: "🎨", title: "All Rounder",           desc: "Completed lessons in 5 different subjects", color: "from-fuchsia-500 to-pink-600",    check: d => Object.keys(d.subjectCounts).filter(s => d.subjectCounts[s] > 0).length >= 5 },
+
+  // --- Coding ---
+  { id: "hello_world",  icon: "💻", title: "Hello World!",          desc: "Completed your first coding lesson",        color: "from-gray-600 to-gray-800",       check: d => d.coding.size >= 1 },
+  { id: "code_five",    icon: "🖥️", title: "Code Explorer",         desc: "Completed 5 coding lessons",               color: "from-slate-500 to-gray-700",      check: d => d.coding.size >= 5 },
+  { id: "code_ten",     icon: "⚙️", title: "Code Builder",          desc: "Completed 10 coding lessons",              color: "from-zinc-600 to-slate-700",      check: d => d.coding.size >= 10 },
+  { id: "scratch_star", icon: "🐱", title: "Scratch Star",          desc: "Completed all Scratch lessons",             color: "from-orange-400 to-amber-500",    check: d => SCRATCH_IDS.every(id => d.coding.has(id)) },
+  { id: "codeorg",      icon: "🕹️", title: "Code.org Champion",    desc: "Completed all Hour of Code lessons",        color: "from-blue-400 to-blue-600",       check: d => CODEORG_IDS.every(id => d.coding.has(id)) },
+  { id: "pythonista",   icon: "🐍", title: "Pythonista",            desc: "Completed all Python lessons",              color: "from-green-500 to-emerald-600",   check: d => PYTHON_IDS.every(id => d.coding.has(id)) },
+  { id: "web_dev",      icon: "🌐", title: "Web Developer",         desc: "Completed all Web Dev lessons",             color: "from-[#6EA76E] to-[#2F5D3A]",    check: d => WEB_IDS.every(id => d.coding.has(id)) },
+  { id: "full_coding",  icon: "🚀", title: "Future Coder",          desc: "Completed the entire coding curriculum",    color: "from-[#2F5D3A] to-[#7A5C3E]",    check: d => d.coding.size >= 23 },
 ];
 
 function computeStreak(entries: PlannerEntry[], daysOff: Set<string> = new Set()): number {
@@ -114,7 +140,12 @@ export default function AchievementsPage() {
     const totalComplete = filtered.filter(e => e.is_complete).length;
     const submitted = filtered.filter(e => e.completed_work_url).length;
     const streak = computeStreak(filtered, daysOff);
-    const data: BadgeData = { totalComplete, streak, submitted, coding };
+    const subjectCounts: Record<string, number> = {};
+    filtered.filter(e => e.is_complete).forEach(e => {
+      const s = e.lesson.subject;
+      subjectCounts[s] = (subjectCounts[s] || 0) + 1;
+    });
+    const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts };
     const earned = BADGES.filter(b => b.check(data)).map(b => b.id);
 
     const seen: string[] = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
@@ -136,7 +167,12 @@ export default function AchievementsPage() {
   const totalComplete = entries.filter(e => e.is_complete).length;
   const submitted = entries.filter(e => e.completed_work_url).length;
   const streak = computeStreak(entries, daysOff);
-  const data: BadgeData = { totalComplete, streak, submitted, coding };
+  const subjectCounts: Record<string, number> = {};
+  entries.filter(e => e.is_complete).forEach(e => {
+    const s = e.lesson.subject;
+    subjectCounts[s] = (subjectCounts[s] || 0) + 1;
+  });
+  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts };
   const earned = BADGES.filter(b => b.check(data));
   const locked = BADGES.filter(b => !b.check(data));
 
