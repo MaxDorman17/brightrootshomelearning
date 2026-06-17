@@ -1,7 +1,9 @@
+import re
 import httpx
 import concurrent.futures
 from fastapi import APIRouter, Depends, HTTPException, Query
-from auth import get_current_user
+from pydantic import BaseModel
+from auth import get_current_user, require_parent
 from models import User
 from config import settings
 
@@ -108,3 +110,56 @@ def search_lessons(
 
     results.sort(key=lambda r: (r["unitTitle"], r["title"]))
     return results
+
+
+class ImportUnitRequest(BaseModel):
+    unit_url: str
+
+
+@router.post("/import-unit")
+async def import_unit(
+    body: ImportUnitRequest,
+    current_user: User = Depends(require_parent),
+):
+    if not settings.OAK_API_KEY:
+        raise HTTPException(status_code=503, detail="OAK_API_KEY not configured on server")
+    match = re.search(r"/programmes/([^/?#]+)/units/([^/?#]+)", body.unit_url)
+    if not match:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not parse unit URL — paste a thenational.academy unit link",
+        )
+    programme_slug = match.group(1)
+    unit_slug = match.group(2)
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.get(
+                f"{settings.OAK_BASE_URL}/units/{unit_slug}/summary",
+                headers=OAK_HEADERS,
+                timeout=15.0,
+            )
+        except httpx.RequestError as exc:
+            raise HTTPException(status_code=502, detail=f"Could not reach Oak API: {exc}")
+    if resp.status_code == 404:
+        raise HTTPException(status_code=404, detail="Unit not found — check the URL")
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail=f"Oak API returned {resp.status_code}")
+    data = resp.json()
+    lessons = []
+    for lesson in data.get("unitLessons", []):
+        slug = lesson.get("lessonSlug", "")
+        title = lesson.get("lessonTitle", "")
+        order = lesson.get("lessonOrder", 0)
+        if slug and title and lesson.get("state") == "published":
+            pupil_url = (
+                f"https://www.thenational.academy/pupils/programmes/"
+                f"{programme_slug}/units/{unit_slug}/lessons/{slug}"
+            )
+            lessons.append({"title": title, "url": pupil_url, "order": order})
+    lessons.sort(key=lambda x: x["order"])
+    return {
+        "lessons": lessons,
+        "unit_slug": unit_slug,
+        "unit_title": data.get("unitTitle", ""),
+        "programme_slug": programme_slug,
+    }

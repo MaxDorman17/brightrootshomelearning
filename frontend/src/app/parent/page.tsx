@@ -7,7 +7,7 @@ import {
   getWeekEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
-  getTimetable, shiftDay,
+  getTimetable, shiftDay, importOakUnit,
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
@@ -98,6 +98,42 @@ interface ShiftConfirm {
   direction: "forward" | "backward";
 }
 
+interface OakLessonItem { title: string; url: string; }
+interface ScheduledItem { lesson: OakLessonItem; date: string; dayName: string; }
+
+function buildSchedule(
+  lessons: OakLessonItem[],
+  subject: string,
+  startDateStr: string,
+  timetableConfig: Record<string, string[]>,
+  daysOffList: DayOff[],
+): ScheduledItem[] {
+  const subjectDays = DAYS.filter(d => (timetableConfig[d] ?? []).includes(subject));
+  if (!subjectDays.length || !lessons.length) return [];
+  const daysOffSet = new Set(daysOffList.map(d => d.date));
+  const result: ScheduledItem[] = [];
+  const cur = new Date(startDateStr + "T12:00:00");
+  for (const lesson of lessons) {
+    let placed = false;
+    for (let safety = 0; safety < 500; safety++) {
+      const dow = cur.getDay();
+      if (dow >= 1 && dow <= 5) {
+        const dayName = DAYS[dow - 1];
+        const dateStr = format(cur, "yyyy-MM-dd");
+        if (subjectDays.includes(dayName) && !daysOffSet.has(dateStr)) {
+          result.push({ lesson, date: dateStr, dayName });
+          placed = true;
+          cur.setDate(cur.getDate() + 1);
+          break;
+        }
+      }
+      cur.setDate(cur.getDate() + 1);
+    }
+    if (!placed) break;
+  }
+  return result;
+}
+
 function nextWeekday(dateStr: string): string {
   const d = new Date(dateStr + "T12:00:00");
   do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
@@ -146,6 +182,17 @@ export default function ParentPlanner() {
   const [qaAssignedTo, setQaAssignedTo] = useState<number | null>(null);
   const [qaSaving, setQaSaving] = useState(false);
   const [showBookmarklet, setShowBookmarklet] = useState(false);
+
+  const [showOakImport, setShowOakImport] = useState(false);
+  const [oakUrl, setOakUrl] = useState("");
+  const [oakFetching, setOakFetching] = useState(false);
+  const [oakError, setOakError] = useState("");
+  const [oakLessons, setOakLessons] = useState<OakLessonItem[]>([]);
+  const [oakUnitTitle, setOakUnitTitle] = useState("");
+  const [oakSubject, setOakSubject] = useState("");
+  const [oakStartDate, setOakStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [oakAssignedTo, setOakAssignedTo] = useState<number | null>(null);
+  const [oakAdding, setOakAdding] = useState(false);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
 
@@ -333,8 +380,62 @@ export default function ParentPlanner() {
     } finally { setShifting(false); }
   };
 
+  const handleOakFetch = async () => {
+    setOakError("");
+    setOakLessons([]);
+    setOakUnitTitle("");
+    if (!oakUrl.trim()) return;
+    setOakFetching(true);
+    try {
+      const res = await importOakUnit(oakUrl.trim());
+      const data = res.data;
+      if (!data.lessons?.length) {
+        setOakError("No published lessons found in this unit — check the URL.");
+        return;
+      }
+      setOakLessons(data.lessons);
+      setOakUnitTitle(data.unit_title || "");
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { detail?: string } } };
+      setOakError(err?.response?.data?.detail || "Could not fetch lessons — check the URL.");
+    } finally {
+      setOakFetching(false);
+    }
+  };
+
+  const handleOakAdd = async () => {
+    if (!oakSchedule.length) return;
+    setOakAdding(true);
+    try {
+      for (const { lesson, date } of oakSchedule) {
+        const lessonRes = await createLesson({
+          title: lesson.title,
+          subject: oakSubject,
+          lesson_url: lesson.url,
+        });
+        await createPlannerEntry({
+          lesson_id: lessonRes.data.id,
+          scheduled_date: date,
+          assigned_to: oakAssignedTo ?? undefined,
+        });
+      }
+      await loadData();
+      setOakLessons([]);
+      setOakUrl("");
+      setOakUnitTitle("");
+      setOakSubject("");
+      setShowOakImport(false);
+    } finally {
+      setOakAdding(false);
+    }
+  };
+
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
   const selectedChild = children.find(c => c.id === selectedChildId);
+  const allTimetableSubjects = Array.from(new Set(Object.values(timetable).flat())).sort();
+  const oakSchedule: ScheduledItem[] = oakLessons.length > 0 && oakSubject && oakStartDate
+    ? buildSchedule(oakLessons, oakSubject, oakStartDate, timetable, daysOff)
+    : [];
 
   return (
     <div className="min-h-screen">
@@ -364,6 +465,11 @@ export default function ParentPlanner() {
               </div>
             )}
 
+            <button onClick={() => setShowOakImport(v => !v)}
+              title="Import a full Oak Academy unit"
+              className={`px-3 py-1.5 text-sm border rounded-xl font-semibold shadow-sm transition-all ${showOakImport ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white/80 border-white/60 hover:bg-white"}`}>
+              🌳 Oak Unit
+            </button>
             <button onClick={() => setShowBookmarklet(v => !v)}
               title="One-click lesson importer"
               className={`px-3 py-1.5 text-sm border rounded-xl font-semibold shadow-sm transition-all ${showBookmarklet ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white/80 border-white/60 hover:bg-white"}`}>
@@ -410,6 +516,124 @@ export default function ParentPlanner() {
             <p className="text-xs text-gray-400 mt-3">
               Works on Oak National Academy, BBC Bitesize, YouTube, and any other site.
             </p>
+          </div>
+        )}
+
+        {/* Oak Unit import panel */}
+        {showOakImport && (
+          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+            <p className="text-sm font-extrabold text-gray-800 mb-1">🌳 Import Oak Academy Unit</p>
+            <p className="text-xs text-gray-500 mb-4">
+              Paste a unit URL from Oak National Academy and all its lessons will be scheduled automatically on the correct days.
+            </p>
+
+            {/* Step 1: URL input */}
+            <div className="flex gap-2 mb-3">
+              <input
+                value={oakUrl}
+                onChange={e => { setOakUrl(e.target.value); setOakLessons([]); setOakError(""); }}
+                onKeyDown={e => e.key === "Enter" && handleOakFetch()}
+                placeholder="https://www.thenational.academy/pupils/programmes/…/units/…"
+                className="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] transition-colors"
+              />
+              <button
+                onClick={handleOakFetch}
+                disabled={oakFetching || !oakUrl.trim()}
+                className="px-4 py-2 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors shrink-0">
+                {oakFetching ? "Loading…" : "Load lessons"}
+              </button>
+            </div>
+
+            {oakError && (
+              <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2 mb-3">{oakError}</p>
+            )}
+
+            {/* Step 2: schedule options (shown after lessons loaded) */}
+            {oakLessons.length > 0 && (
+              <div className="border-t border-gray-100 pt-4 mt-2 space-y-4">
+                <div className="bg-[#A8C67A]/20 rounded-xl px-3 py-2 text-sm font-bold text-[#2F5D3A]">
+                  📚 {oakUnitTitle ? `${oakUnitTitle} — ` : ""}{oakLessons.length} lesson{oakLessons.length !== 1 ? "s" : ""} found
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1.5">Subject</label>
+                    <select
+                      value={oakSubject}
+                      onChange={e => setOakSubject(e.target.value)}
+                      className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E]">
+                      <option value="">Pick subject…</option>
+                      {allTimetableSubjects.map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1.5">Start from</label>
+                    <input
+                      type="date"
+                      value={oakStartDate}
+                      onChange={e => setOakStartDate(e.target.value)}
+                      className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E]"
+                    />
+                  </div>
+                </div>
+
+                {children.length > 0 && (
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 mb-1.5">Assign to</label>
+                    <select
+                      value={oakAssignedTo ?? ""}
+                      onChange={e => setOakAssignedTo(e.target.value ? Number(e.target.value) : null)}
+                      className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E]">
+                      <option value="">All children</option>
+                      {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                    </select>
+                  </div>
+                )}
+
+                {/* Schedule preview */}
+                {oakSubject && oakSchedule.length > 0 && (
+                  <div>
+                    <p className="text-xs font-bold text-gray-500 mb-2">Schedule preview</p>
+                    <div className="max-h-48 overflow-y-auto space-y-1 pr-1">
+                      {oakSchedule.slice(0, 6).map((item, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs text-gray-700 bg-gray-50 rounded-lg px-3 py-1.5">
+                          <span className="font-bold text-[#2F5D3A] shrink-0">{item.date}</span>
+                          <span className="text-gray-400 shrink-0">{item.dayName.slice(0, 3)}</span>
+                          <span className="truncate">{item.lesson.title}</span>
+                        </div>
+                      ))}
+                      {oakSchedule.length > 6 && (
+                        <p className="text-xs text-gray-400 pl-3">…and {oakSchedule.length - 6} more</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {oakSubject && oakSchedule.length === 0 && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
+                    ⚠️ &ldquo;{oakSubject}&rdquo; doesn&apos;t appear on your timetable — add it in the Timetable page first.
+                  </p>
+                )}
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={handleOakAdd}
+                    disabled={oakAdding || !oakSubject || oakSchedule.length === 0}
+                    className="flex-1 bg-[#2F5D3A] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
+                    {oakAdding
+                      ? "Adding to planner…"
+                      : `Add ${oakSchedule.length} lesson${oakSchedule.length !== 1 ? "s" : ""} to planner`}
+                  </button>
+                  <button
+                    onClick={() => { setOakLessons([]); setOakUrl(""); setOakSubject(""); setShowOakImport(false); }}
+                    className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

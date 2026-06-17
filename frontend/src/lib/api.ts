@@ -142,3 +142,9 @@ export const deleteUnit = (subject: string) => api.delete(`/api/units/${encodeUR
 // Timetable
 export const getTimetable = () => api.get("/api/timetable/");
 export const saveTimetable = (config: Record<string, string[]>) => api.put("/api/timetable/", { config });
+
+// Oak National Academy
+export const searchOakLessons = (q: string, subject: string, year: string) =>
+  api.get("/api/oak/search", { params: { q, subject, year } });
+export const importOakUnit = (unit_url: string) =>
+  api.post("/api/oak/import-unit", { unit_url });
