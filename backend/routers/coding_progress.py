@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from database import get_db
-from models import CodingProgress, User
+from models import UserCodingProgress, User
 from schemas import CodingProgressOut
 from auth import get_current_user
 
@@ -11,10 +11,15 @@ router = APIRouter(prefix="/api/coding-progress", tags=["coding-progress"])
 
 @router.get("/", response_model=List[str])
 def get_progress(
+    child_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    rows = db.query(CodingProgress).all()
+    if current_user.role == "parent" and child_id:
+        user_id = child_id
+    else:
+        user_id = current_user.id
+    rows = db.query(UserCodingProgress).filter(UserCodingProgress.user_id == user_id).all()
     return [r.lesson_id for r in rows]
 
 
@@ -24,10 +29,13 @@ def mark_complete(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    existing = db.query(CodingProgress).filter(CodingProgress.lesson_id == lesson_id).first()
+    existing = db.query(UserCodingProgress).filter(
+        UserCodingProgress.user_id == current_user.id,
+        UserCodingProgress.lesson_id == lesson_id,
+    ).first()
     if existing:
         return existing
-    row = CodingProgress(lesson_id=lesson_id)
+    row = UserCodingProgress(user_id=current_user.id, lesson_id=lesson_id)
     db.add(row)
     db.commit()
     db.refresh(row)
@@ -40,7 +48,10 @@ def mark_incomplete(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    row = db.query(CodingProgress).filter(CodingProgress.lesson_id == lesson_id).first()
+    row = db.query(UserCodingProgress).filter(
+        UserCodingProgress.user_id == current_user.id,
+        UserCodingProgress.lesson_id == lesson_id,
+    ).first()
     if row:
         db.delete(row)
         db.commit()

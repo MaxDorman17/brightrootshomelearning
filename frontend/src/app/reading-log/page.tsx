@@ -2,8 +2,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, deleteWorksheet } from "@/lib/api";
-import { ReadingLogBook, ReadingWorksheet } from "@/types";
+import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, deleteWorksheet, getChildren } from "@/lib/api";
+import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
@@ -70,6 +70,10 @@ export default function ReadingLogPage() {
   const [noteText, setNoteText] = useState("");
   const [savingNote, setSavingNote] = useState<number | null>(null);
 
+  const [children, setChildren] = useState<Child[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
+  const [fChildId, setFChildId] = useState<number | null>(null);
+
   const isParent = role === "parent";
 
   const load = useCallback(async () => {
@@ -81,7 +85,11 @@ export default function ReadingLogPage() {
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
-    setRole(getRole() || "");
+    const r = getRole() || "";
+    setRole(r);
+    if (r === "parent") {
+      getChildren().then(res => setChildren(res.data)).catch(() => {});
+    }
     load();
   }, [load, router]);
 
@@ -89,6 +97,7 @@ export default function ReadingLogPage() {
     setEditing(null);
     setFTitle(""); setFAuthor(""); setFPages(""); setFStatus("wishlist");
     setFStartDate(""); setFFinishDate(""); setFNotes("");
+    setFChildId(selectedChildId);
     setModal(true);
   };
 
@@ -118,6 +127,7 @@ export default function ReadingLogPage() {
         start_date: fStartDate || undefined,
         finish_date: fFinishDate || undefined,
         notes: fNotes.trim() || undefined,
+        child_id: fChildId ?? undefined,
       };
       if (editing) {
         await updateBook(editing.id, payload);
@@ -183,7 +193,7 @@ export default function ReadingLogPage() {
     const monthDate = subMonths(new Date(), 5 - i);
     const start = startOfMonth(monthDate);
     const end = endOfMonth(monthDate);
-    const finished = books.filter(b =>
+    const finished = visibleBooks.filter(b =>
       b.status === "completed" && b.finish_date &&
       isWithinInterval(parseISO(b.finish_date), { start, end })
     );
@@ -191,9 +201,13 @@ export default function ReadingLogPage() {
     return { label: format(monthDate, "MMM"), count: finished.length, pages };
   });
   const maxBooks = Math.max(...monthlyStats.map(m => m.count), 1);
-  const totalPages = books.filter(b => b.status === "completed").reduce((s, b) => s + (b.pages ?? 0), 0);
+  const totalPages = visibleBooks.filter(b => b.status === "completed").reduce((s, b) => s + (b.pages ?? 0), 0);
 
-  const displayed = books
+  const visibleBooks = isParent && selectedChildId
+    ? books.filter(b => b.child_id === selectedChildId || b.child_id === null)
+    : books;
+
+  const displayed = visibleBooks
     .filter(b => filter === "all" || b.status === filter)
     .sort((a, b) => {
       if (sort === "title") return a.title.localeCompare(b.title);
@@ -202,10 +216,10 @@ export default function ReadingLogPage() {
     });
 
   const stats = {
-    total: books.length,
-    reading: books.filter(b => b.status === "reading").length,
-    completed: books.filter(b => b.status === "completed").length,
-    wishlist: books.filter(b => b.status === "wishlist").length,
+    total: visibleBooks.length,
+    reading: visibleBooks.filter(b => b.status === "reading").length,
+    completed: visibleBooks.filter(b => b.status === "completed").length,
+    wishlist: visibleBooks.filter(b => b.status === "wishlist").length,
   };
 
   return (
@@ -227,6 +241,22 @@ export default function ReadingLogPage() {
             </button>
           )}
         </div>
+
+        {/* Child selector (parent only) */}
+        {isParent && children.length > 0 && (
+          <div className="flex gap-2 mb-5 flex-wrap">
+            <button onClick={() => setSelectedChildId(null)}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${!selectedChildId ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+              All children
+            </button>
+            {children.map(c => (
+              <button key={c.id} onClick={() => setSelectedChildId(c.id)}
+                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${selectedChildId === c.id ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+                {c.username}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Stats strip */}
         <div className="grid grid-cols-4 gap-3 mb-6">
@@ -516,6 +546,16 @@ export default function ReadingLogPage() {
             </h3>
 
             <div className="space-y-4">
+              {children.length > 0 && (
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1.5">For</label>
+                  <select value={fChildId ?? ""} onChange={e => setFChildId(e.target.value ? parseInt(e.target.value) : null)}
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors">
+                    <option value="">All children</option>
+                    {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                  </select>
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Title *</label>
                 <input autoFocus value={fTitle} onChange={e => setFTitle(e.target.value)}

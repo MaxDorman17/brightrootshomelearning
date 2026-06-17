@@ -2,8 +2,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff } from "@/lib/api";
-import { PlannerEntry } from "@/types";
+import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren } from "@/lib/api";
+import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format } from "date-fns";
 
@@ -74,12 +74,14 @@ function computeStreak(entries: PlannerEntry[], daysOff: Set<string> = new Set()
 export default function AchievementsPage() {
   const router = useRouter();
   const [role, setRole] = useState("");
-  const [entries, setEntries] = useState<PlannerEntry[]>([]);
+  const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [coding, setCoding] = useState<Set<string>>(new Set());
   const [daysOff, setDaysOff] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [newlyUnlocked, setNewlyUnlocked] = useState<string[]>([]);
   const celebrateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [children, setChildren] = useState<Child[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
@@ -88,19 +90,30 @@ export default function AchievementsPage() {
 
     const entriesFetch = r === "parent" ? getAllEntries() : getAllMyEntries();
     Promise.all([entriesFetch, getCodingProgress(), getDaysOff()]).then(([eRes, cRes, dRes]) => {
-      setEntries(eRes.data);
+      setAllEntries(eRes.data);
       setCoding(new Set(cRes.data as string[]));
       setDaysOff(new Set((dRes.data as { date: string }[]).map(d => d.date)));
       setLoading(false);
     });
+    if (r === "parent") {
+      getChildren().then(res => setChildren(res.data)).catch(() => {});
+    }
   }, [router]);
+
+  useEffect(() => {
+    if (role !== "parent" || !selectedChildId) return;
+    getCodingProgress(selectedChildId).then(res => setCoding(new Set(res.data as string[]))).catch(() => {});
+  }, [selectedChildId, role]);
 
   // Detect newly unlocked badges and show animation
   useEffect(() => {
     if (loading) return;
-    const totalComplete = entries.filter(e => e.is_complete).length;
-    const submitted = entries.filter(e => e.completed_work_url).length;
-    const streak = computeStreak(entries, daysOff);
+    const filtered = role === "parent" && selectedChildId
+      ? allEntries.filter(e => e.assigned_to === selectedChildId || e.assigned_to === null)
+      : allEntries;
+    const totalComplete = filtered.filter(e => e.is_complete).length;
+    const submitted = filtered.filter(e => e.completed_work_url).length;
+    const streak = computeStreak(filtered, daysOff);
     const data: BadgeData = { totalComplete, streak, submitted, coding };
     const earned = BADGES.filter(b => b.check(data)).map(b => b.id);
 
@@ -114,7 +127,11 @@ export default function AchievementsPage() {
       localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
     }
     return () => { if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current); };
-  }, [loading, entries, coding]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, allEntries, coding, selectedChildId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const entries = role === "parent" && selectedChildId
+    ? allEntries.filter(e => e.assigned_to === selectedChildId || e.assigned_to === null)
+    : allEntries;
 
   const totalComplete = entries.filter(e => e.is_complete).length;
   const submitted = entries.filter(e => e.completed_work_url).length;
@@ -153,12 +170,28 @@ export default function AchievementsPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-2xl font-extrabold text-gray-900">🏆 Achievements</h1>
           <p className="text-gray-500 font-medium mt-1">
             {role === "parent" ? "Badges and learning milestones" : "Your badges and milestones — keep going!"}
           </p>
         </div>
+
+        {/* Child selector (parent only) */}
+        {role === "parent" && children.length > 0 && (
+          <div className="flex gap-2 mb-6 flex-wrap">
+            <button onClick={() => setSelectedChildId(null)}
+              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${!selectedChildId ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+              All children
+            </button>
+            {children.map(c => (
+              <button key={c.id} onClick={() => setSelectedChildId(c.id)}
+                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${selectedChildId === c.id ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+                {c.username}
+              </button>
+            ))}
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-16 text-gray-400">Loading…</div>

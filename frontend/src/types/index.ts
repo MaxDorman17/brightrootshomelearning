@@ -64,6 +64,7 @@ export interface ReadingLogBook {
   rating: number | null;
   notes: string | null;
   added_by: number;
+  child_id: number | null;
   created_at: string;
 }
 

@@ -233,6 +233,7 @@ class ReadingLogCreate(BaseModel):
     start_date: Optional[date] = None
     finish_date: Optional[date] = None
     notes: Optional[str] = None
+    child_id: Optional[int] = None
 
 
 class ReadingLogUpdate(BaseModel):
@@ -258,6 +259,7 @@ class ReadingLogOut(BaseModel):
     rating: Optional[int]
     notes: Optional[str]
     added_by: int
+    child_id: Optional[int] = None
     created_at: datetime
 
     class Config:

@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import or_
-from typing import List
+from sqlalchemy import or_, exists as sa_exists, select
+from typing import List, Optional
 from datetime import date, timedelta, datetime
 from database import get_db
-from models import PlannerEntry, Lesson, User
+from models import PlannerEntry, Lesson, User, WorkFeedback
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut
 from auth import get_current_user, require_parent
 from pydantic import BaseModel
-from typing import Optional
 
 router = APIRouter(prefix="/api/planner", tags=["planner"])
 
@@ -112,6 +111,22 @@ def get_all(
     return db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).order_by(
         PlannerEntry.scheduled_date.desc()
     ).all()
+
+
+@router.get("/submission-count")
+def get_submission_count(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    child_ids = [c.id for c in db.query(User).filter(User.parent_id == current_user.id).all()]
+    has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
+    count = db.query(PlannerEntry).filter(
+        PlannerEntry.is_complete == True,
+        PlannerEntry.completed_work_url.is_not(None),
+        or_(PlannerEntry.assigned_to.in_(child_ids), PlannerEntry.assigned_to.is_(None)),
+        ~has_feedback,
+    ).count()
+    return {"count": count}
 
 
 @router.patch("/{entry_id}/complete", response_model=PlannerEntryOut)

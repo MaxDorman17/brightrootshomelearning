@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, Date, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Boolean, Date, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
@@ -85,6 +85,16 @@ class CodingProgress(Base):
     completed_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class UserCodingProgress(Base):
+    __tablename__ = "user_coding_progress"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    lesson_id = Column(String(20), nullable=False)
+    completed_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("user_id", "lesson_id", name="uq_user_lesson_progress"),)
+
+
 class DayOff(Base):
     __tablename__ = "days_off"
 
@@ -150,4 +160,5 @@ class ReadingLog(Base):
     rating = Column(Integer, nullable=True)  # 1–5
     notes = Column(Text, nullable=True)
     added_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

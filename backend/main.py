@@ -20,6 +20,12 @@ def run_migrations():
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE users ADD COLUMN parent_id INTEGER REFERENCES users(id)"))
                 conn.commit()
+    if "reading_log" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
+        if "child_id" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE reading_log ADD COLUMN child_id INTEGER REFERENCES users(id)"))
+                conn.commit()
 
 run_migrations()
 Base.metadata.create_all(bind=engine)

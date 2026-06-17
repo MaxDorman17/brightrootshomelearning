@@ -4,7 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { clearAuth, getUsername, getRole } from "@/lib/auth";
-import { getUnreadFeedbackCount } from "@/lib/api";
+import { getUnreadFeedbackCount, getSubmissionCount } from "@/lib/api";
 
 const PARENT_MAIN = [
   { href: "/parent/dashboard", label: "Dashboard" },
@@ -32,6 +32,7 @@ const CHILD_MAIN = [
 ];
 const CHILD_MORE = [
   { href: "/achievements", label: "Achievements" },
+  { href: "/child/progress", label: "My Progress" },
 ];
 
 export default function Navbar() {
@@ -42,6 +43,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [submissionCount, setSubmissionCount] = useState(0);
   const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,6 +52,9 @@ export default function Navbar() {
     setRole(r);
     if (r === "child") {
       getUnreadFeedbackCount().then(res => setUnreadCount(res.data.count)).catch(() => {});
+    }
+    if (r === "parent") {
+      getSubmissionCount().then(res => setSubmissionCount(res.data.count)).catch(() => {});
     }
   }, []);
 
@@ -106,18 +111,22 @@ export default function Navbar() {
                   )}
                 </Link>
               ))}
-
               {/* More dropdown */}
               {moreLinks.length > 0 && (
                 <div ref={moreRef} className="relative">
                   <button
                     onClick={() => setMoreOpen(v => !v)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1 ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1 relative ${
                       moreActive || moreOpen
                         ? "bg-[#2F5D3A] text-white shadow-sm"
                         : "text-[#2F5D3A]/70 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"
                     }`}>
                     More
+                    {submissionCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
+                        {submissionCount > 9 ? "9+" : submissionCount}
+                      </span>
+                    )}
                     <svg className={`w-3.5 h-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>

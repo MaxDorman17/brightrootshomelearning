@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from sqlalchemy import or_
+from typing import List, Optional
 from database import get_db
 from models import ReadingLog, ReadingWorksheet, User
 from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut
@@ -11,10 +12,18 @@ router = APIRouter(prefix="/api/reading", tags=["reading"])
 
 @router.get("/", response_model=List[ReadingLogOut])
 def list_books(
+    child_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(ReadingLog).order_by(ReadingLog.created_at.desc()).all()
+    query = db.query(ReadingLog)
+    if current_user.role == "child":
+        query = query.filter(
+            or_(ReadingLog.child_id == current_user.id, ReadingLog.child_id.is_(None))
+        )
+    elif child_id:
+        query = query.filter(ReadingLog.child_id == child_id)
+    return query.order_by(ReadingLog.created_at.desc()).all()
 
 
 @router.post("/", response_model=ReadingLogOut)
@@ -32,6 +41,7 @@ def add_book(
         finish_date=book_in.finish_date,
         notes=book_in.notes,
         added_by=current_user.id,
+        child_id=book_in.child_id,
     )
     db.add(book)
     db.commit()
