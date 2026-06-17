@@ -58,7 +58,7 @@ export default function PrintPage() {
       e.scheduled_date === format(dayDate, "yyyy-MM-dd") && e.lesson.subject === subject
     ) ?? null;
 
-  const allSubjects = [...new Set(DAYS.flatMap(d => timetable[d] ?? []))];
+  const allSubjects = Array.from(new Set(DAYS.flatMap(d => timetable[d] ?? [])));
 
   return (
     <div className="min-h-screen bg-white">
