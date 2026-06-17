@@ -17,12 +17,33 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
 };
 
-const SCOTTISH_HOLIDAYS: { label: string; start: string; end: string }[] = [
-  { label: "Autumn break",          start: "2025-10-13", end: "2025-10-17" },
-  { label: "Christmas & New Year",  start: "2025-12-22", end: "2026-01-02" },
-  { label: "February break",        start: "2026-02-16", end: "2026-02-20" },
-  { label: "Easter break",          start: "2026-04-02", end: "2026-04-17" },
-  { label: "May Day",               start: "2026-05-04", end: "2026-05-04" },
+interface FifeHoliday { label: string; start: string; end: string; inservice?: boolean; group: string; }
+
+const FIFE_HOLIDAYS: FifeHoliday[] = [
+  // 2025–26
+  { group: "2025–26", inservice: true, label: "In-service days",         start: "2025-08-18", end: "2025-08-19" },
+  { group: "2025–26",                  label: "Autumn break",            start: "2025-10-13", end: "2025-10-24" },
+  { group: "2025–26", inservice: true, label: "In-service day (14 Nov)", start: "2025-11-14", end: "2025-11-14" },
+  { group: "2025–26",                  label: "Christmas & New Year",    start: "2025-12-22", end: "2026-01-02" },
+  { group: "2025–26", inservice: true, label: "In-service day (11 Feb)", start: "2026-02-11", end: "2026-02-11" },
+  { group: "2025–26",                  label: "February additional",     start: "2026-02-12", end: "2026-02-13" },
+  { group: "2025–26",                  label: "Spring break",            start: "2026-04-03", end: "2026-04-17" },
+  { group: "2025–26",                  label: "May Day",                 start: "2026-05-04", end: "2026-05-04" },
+  { group: "2025–26", inservice: true, label: "In-service day (7 May)",  start: "2026-05-07", end: "2026-05-07" },
+  { group: "2025–26",                  label: "June holiday",            start: "2026-06-01", end: "2026-06-01" },
+  { group: "2025–26",                  label: "Summer 2026",             start: "2026-07-06", end: "2026-08-14" },
+  // 2026–27
+  { group: "2026–27", inservice: true, label: "In-service days",         start: "2026-08-17", end: "2026-08-18" },
+  { group: "2026–27",                  label: "Autumn break",            start: "2026-10-12", end: "2026-10-23" },
+  { group: "2026–27", inservice: true, label: "In-service day (13 Nov)", start: "2026-11-13", end: "2026-11-13" },
+  { group: "2026–27",                  label: "Christmas & New Year",    start: "2026-12-23", end: "2027-01-05" },
+  { group: "2026–27", inservice: true, label: "In-service day (10 Feb)", start: "2027-02-10", end: "2027-02-10" },
+  { group: "2026–27",                  label: "February additional",     start: "2027-02-11", end: "2027-02-12" },
+  { group: "2026–27",                  label: "Spring break",            start: "2027-03-26", end: "2027-04-09" },
+  { group: "2026–27",                  label: "May Day",                 start: "2027-05-03", end: "2027-05-03" },
+  { group: "2026–27", inservice: true, label: "In-service day (6 May)",  start: "2027-05-06", end: "2027-05-06" },
+  { group: "2026–27",                  label: "June holiday",            start: "2027-06-07", end: "2027-06-07" },
+  { group: "2026–27",                  label: "Summer 2027",             start: "2027-07-05", end: "2027-08-13" },
 ];
 
 function eachWeekday(start: string, end: string): string[] {
@@ -91,7 +112,9 @@ export default function ParentPlanner() {
 
   const [showHolidayPanel, setShowHolidayPanel] = useState(false);
   const [importingHolidays, setImportingHolidays] = useState(false);
-  const [selectedHolidayGroups, setSelectedHolidayGroups] = useState<number[]>([0, 1, 2, 3, 4]);
+  const [selectedHolidayGroups, setSelectedHolidayGroups] = useState<number[]>(
+    Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i)
+  );
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
 
@@ -224,7 +247,7 @@ export default function ParentPlanner() {
     setImportingHolidays(true);
     try {
       const existing = new Set(daysOff.map(d => d.date));
-      const selected = SCOTTISH_HOLIDAYS.filter((_, i) => selectedHolidayGroups.includes(i));
+      const selected = FIFE_HOLIDAYS.filter((_, i) => selectedHolidayGroups.includes(i));
       const fresh = selected.flatMap(h => eachWeekday(h.start, h.end)).filter(d => !existing.has(d));
       for (const date of fresh) {
         const res = await addDayOff({ date, reason: "School holiday" });
@@ -288,29 +311,54 @@ export default function ParentPlanner() {
         {/* Scottish holiday import panel */}
         {showHolidayPanel && (
           <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
-            <p className="text-sm font-extrabold text-gray-800 mb-0.5">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish School Holidays 2025–26</p>
-            <p className="text-xs text-gray-500 mb-3">Select breaks to bulk-add as days off. Dates are typical Scottish council dates — adjust for your local authority if needed.</p>
-            <div className="space-y-2 mb-4">
-              {SCOTTISH_HOLIDAYS.map((h, i) => (
-                <label key={i} className="flex items-center gap-3 cursor-pointer group">
-                  <input type="checkbox" checked={selectedHolidayGroups.includes(i)}
-                    onChange={e => setSelectedHolidayGroups(prev =>
-                      e.target.checked ? [...prev, i] : prev.filter(x => x !== i)
+            <p className="text-sm font-extrabold text-gray-800 mb-0.5">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Fife Council School Holidays</p>
+            <p className="text-xs text-gray-500 mb-3">Tick the dates to add as days off. Uncheck Summer if you school year-round.</p>
+            <div className="max-h-72 overflow-y-auto mb-4 space-y-0.5 pr-1">
+              {FIFE_HOLIDAYS.map((h, i) => {
+                const showHeader = i === 0 || FIFE_HOLIDAYS[i - 1].group !== h.group;
+                return (
+                  <div key={i}>
+                    {showHeader && (
+                      <p className={`text-[10px] font-extrabold text-[#2F5D3A] uppercase tracking-widest pb-1 ${i > 0 ? "pt-3 border-t border-gray-100 mt-2" : ""}`}>
+                        {h.group}
+                      </p>
                     )}
-                    className="w-4 h-4 accent-[#2F5D3A] rounded cursor-pointer" />
-                  <span className="text-sm font-semibold text-gray-800 group-hover:text-[#2F5D3A] transition-colors">{h.label}</span>
-                  <span className="text-xs text-gray-400">{h.start === h.end ? h.start : `${h.start} → ${h.end}`}</span>
-                </label>
-              ))}
+                    <label className="flex items-center gap-2.5 cursor-pointer group py-0.5">
+                      <input type="checkbox" checked={selectedHolidayGroups.includes(i)}
+                        onChange={e => setSelectedHolidayGroups(prev =>
+                          e.target.checked ? [...prev, i] : prev.filter(x => x !== i)
+                        )}
+                        className="w-4 h-4 accent-[#2F5D3A] rounded cursor-pointer shrink-0" />
+                      <span className="text-sm font-semibold text-gray-800 group-hover:text-[#2F5D3A] transition-colors">
+                        {h.label}
+                      </span>
+                      {h.inservice && (
+                        <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full shrink-0">in-service</span>
+                      )}
+                      <span className="text-xs text-gray-400 ml-auto shrink-0">
+                        {h.start === h.end ? h.start : `${h.start} → ${h.end}`}
+                      </span>
+                    </label>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <button onClick={handleImportHolidays}
                 disabled={importingHolidays || selectedHolidayGroups.length === 0}
                 className="px-4 py-2 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
-                {importingHolidays ? "Adding…" : `Add ${selectedHolidayGroups.length} break${selectedHolidayGroups.length !== 1 ? "s" : ""}`}
+                {importingHolidays ? "Adding…" : `Add ${selectedHolidayGroups.length} selected`}
+              </button>
+              <button onClick={() => setSelectedHolidayGroups(Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i))}
+                className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors">
+                Select all
+              </button>
+              <button onClick={() => setSelectedHolidayGroups([])}
+                className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors">
+                Clear
               </button>
               <button onClick={() => setShowHolidayPanel(false)}
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors ml-auto">
                 Cancel
               </button>
             </div>
