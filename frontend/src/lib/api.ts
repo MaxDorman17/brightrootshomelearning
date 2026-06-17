@@ -148,3 +148,15 @@ export const searchOakLessons = (q: string, subject: string, year: string) =>
   api.get("/api/oak/search", { params: { q, subject, year } });
 export const importOakUnit = (unit_url: string) =>
   api.post("/api/oak/import-unit", { unit_url });
+
+// Spellings
+export const getSpellingWords = (week_start: string) =>
+  api.get("/api/spellings/words", { params: { week_start } });
+export const addSpellingWord = (data: { week_start: string; word: string }) =>
+  api.post("/api/spellings/words", data);
+export const deleteSpellingWord = (id: number) =>
+  api.delete(`/api/spellings/words/${id}`);
+export const saveSpellingResult = (data: { week_start: string; score: number; total: number; wrong_words: string[]; child_id?: number }) =>
+  api.post("/api/spellings/results", data);
+export const getSpellingResults = (params?: { week_start?: string; child_id?: number }) =>
+  api.get("/api/spellings/results", { params });

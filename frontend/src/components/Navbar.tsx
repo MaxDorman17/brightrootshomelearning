@@ -23,6 +23,7 @@ const PARENT_MORE = [
   { href: "/parent/timetable", label: "Timetable" },
   { href: "/parent/print", label: "Print week" },
   { href: "/polish", label: "🇵🇱 Polish" },
+  { href: "/spellings", label: "🔤 Spellings" },
 ];
 
 const CHILD_MAIN = [
@@ -32,6 +33,7 @@ const CHILD_MAIN = [
   { href: "/reading-log", label: "Reading" },
   { href: "/coding", label: "Coding" },
   { href: "/polish", label: "🇵🇱 Polish" },
+  { href: "/spellings", label: "🔤 Spellings" },
 ];
 const CHILD_MORE = [
   { href: "/achievements", label: "Achievements" },
@@ -210,17 +212,18 @@ export default function Navbar() {
       <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl">
         <div className="flex items-stretch justify-around px-1 pt-2 pb-3">
           {[
-            { href: "/child",        label: "Today",    icon: "🏠" },
-            { href: "/units",        label: "Units",    icon: "📖" },
-            { href: "/reading-log",  label: "Reading",  icon: "📚" },
-            { href: "/coding",       label: "Coding",   icon: "💻" },
-            { href: "/polish",       label: "Polish",   icon: "🇵🇱" },
-            { href: "/achievements", label: "Badges",   icon: "🏆" },
+            { href: "/child",        label: "Today",   icon: "🏠" },
+            { href: "/units",        label: "Units",   icon: "📖" },
+            { href: "/reading-log",  label: "Reading", icon: "📚" },
+            { href: "/coding",       label: "Coding",  icon: "💻" },
+            { href: "/polish",       label: "Polish",  icon: "🇵🇱" },
+            { href: "/spellings",    label: "Spell",   icon: "🔤" },
+            { href: "/achievements", label: "Badges",  icon: "🏆" },
           ].map(tab => {
             const active = pathname === tab.href;
             return (
               <Link key={tab.href} href={tab.href}
-                className={`flex flex-col items-center gap-0.5 px-1.5 py-1 rounded-xl transition-all min-w-[44px] ${active ? "bg-[#2F5D3A]/10" : ""}`}>
+                className={`flex flex-col items-center gap-0.5 px-1 py-1 rounded-xl transition-all min-w-[38px] ${active ? "bg-[#2F5D3A]/10" : ""}`}>
                 <span className={`text-[22px] leading-none transition-transform ${active ? "scale-110" : ""}`}>{tab.icon}</span>
                 <span className={`text-[9px] font-extrabold leading-none mt-0.5 ${active ? "text-[#2F5D3A]" : "text-gray-400"}`}>
                   {tab.label}

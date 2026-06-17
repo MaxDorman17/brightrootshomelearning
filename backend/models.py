@@ -187,3 +187,27 @@ class ReadingLog(Base):
     added_by = Column(Integer, ForeignKey("users.id"), nullable=False)
     child_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SpellingWord(Base):
+    __tablename__ = "spelling_words"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    week_start = Column(Date, nullable=False)
+    word = Column(String(200), nullable=False)
+    position = Column(Integer, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SpellingResult(Base):
+    __tablename__ = "spelling_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    week_start = Column(Date, nullable=False)
+    score = Column(Integer, nullable=False)
+    total = Column(Integer, nullable=False)
+    wrong_words = Column(Text, nullable=True)  # JSON array
+    taken_at = Column(DateTime(timezone=True), server_default=func.now())

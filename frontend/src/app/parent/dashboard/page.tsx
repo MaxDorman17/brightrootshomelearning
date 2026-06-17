@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getWeekEntries, getAllEntries, getCodingProgress } from "@/lib/api";
+import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
@@ -30,19 +30,26 @@ export default function ParentDashboardPage() {
   const [codingDone, setCodingDone] = useState(0);
   const [loading, setLoading] = useState(true);
   const [parentName, setParentName] = useState("Max");
+  const [spellingResults, setSpellingResults] = useState<{id: number; child_id: number; score: number; total: number; taken_at: string}[]>([]);
+  const [dashChildren, setDashChildren] = useState<{id: number; username: string}[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
     setParentName(getUsername() || "Max");
     const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const weekStartStr = format(weekStart, "yyyy-MM-dd");
     Promise.all([
-      getWeekEntries(format(weekStart, "yyyy-MM-dd")),
+      getWeekEntries(weekStartStr),
       getAllEntries(),
       getCodingProgress(),
-    ]).then(([wRes, aRes, cRes]) => {
+      getSpellingResults({ week_start: weekStartStr }),
+      getChildren(),
+    ]).then(([wRes, aRes, cRes, sRes, kidRes]) => {
       setWeekEntries(wRes.data);
       setAllEntries(aRes.data);
       setCodingDone((cRes.data as string[]).length);
+      setSpellingResults(sRes.data);
+      setDashChildren(kidRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -205,6 +212,30 @@ export default function ParentDashboardPage() {
               )}
           </div>
         </div>
+
+        {/* Spellings this week */}
+        {!loading && spellingResults.length > 0 && (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">🔤 Spelling Results — This Week</h2>
+              <Link href="/spellings" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Practice →</Link>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {spellingResults.map(r => {
+                const pct = Math.round((r.score / r.total) * 100);
+                const child = dashChildren.find(c => c.id === r.child_id);
+                return (
+                  <div key={r.id} className={`flex items-center gap-3 rounded-xl px-4 py-2.5 border ${pct === 100 ? "bg-emerald-50 border-emerald-200" : pct >= 70 ? "bg-[#A8C67A]/15 border-[#A8C67A]/40" : "bg-orange-50 border-orange-200"}`}>
+                    <span className={`text-xl font-extrabold ${pct === 100 ? "text-emerald-600" : pct >= 70 ? "text-[#2F5D3A]" : "text-orange-500"}`}>
+                      {r.score}/{r.total}
+                    </span>
+                    {child && <span className="text-xs text-gray-500 font-semibold">{child.username}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Quick links */}
         <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">Quick Access</h2>

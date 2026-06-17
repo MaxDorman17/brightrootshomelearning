@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text, inspect as sa_inspect
 from database import engine, Base
-from routers import auth, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak
+from routers import auth, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -81,6 +81,7 @@ app.include_router(children.router)
 app.include_router(timetable.router)
 app.include_router(polish.router)
 app.include_router(oak.router)
+app.include_router(spellings.router)
 
 
 @app.get("/health")

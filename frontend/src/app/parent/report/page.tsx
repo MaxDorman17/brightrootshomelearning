@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
@@ -37,13 +37,15 @@ export default function ReportPage() {
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("week");
   const [codingDone, setCodingDone] = useState(0);
+  const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string}[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    Promise.all([getAllEntries(), getCodingProgress(), getChildren()]).then(([eRes, cRes, childRes]) => {
+    Promise.all([getAllEntries(), getCodingProgress(), getChildren(), getSpellingResults()]).then(([eRes, cRes, childRes, sRes]) => {
       setEntries(eRes.data);
       setCodingDone((cRes.data as string[]).length);
       setChildren(childRes.data);
+      setAllSpellingResults(sRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -315,6 +317,67 @@ export default function ReportPage() {
                 </div>
               </div>
             )}
+
+            {/* Spelling scores */}
+            {(() => {
+              const spellingFiltered = allSpellingResults.filter(r =>
+                selectedChildId ? r.child_id === selectedChildId : true
+              );
+              if (spellingFiltered.length === 0) return null;
+              const byWeek: Record<string, typeof spellingFiltered> = {};
+              spellingFiltered.forEach(r => {
+                if (!byWeek[r.week_start]) byWeek[r.week_start] = [];
+                byWeek[r.week_start].push(r);
+              });
+              const weeks = Object.keys(byWeek).sort((a, b) => b.localeCompare(a));
+              return (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">🔤 Spelling Test Scores</h2>
+                    <a href="/spellings" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Go to Spellings →</a>
+                  </div>
+                  <div className="space-y-3">
+                    {weeks.map(week => (
+                      <div key={week}>
+                        <p className="text-xs font-bold text-gray-400 mb-1.5">Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}</p>
+                        <div className="space-y-1.5">
+                          {byWeek[week].map(r => {
+                            const pct = Math.round((r.score / r.total) * 100);
+                            const child = children.find(c => c.id === r.child_id);
+                            return (
+                              <div key={r.id} className="flex items-center gap-3">
+                                <div className="w-8 text-right">
+                                  <span className={`text-xs font-extrabold ${pct === 100 ? "text-emerald-600" : pct >= 70 ? "text-[#6EA76E]" : "text-orange-500"}`}>
+                                    {pct}%
+                                  </span>
+                                </div>
+                                <div className="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                                  <div
+                                    className={`h-2.5 rounded-full transition-all ${pct === 100 ? "bg-emerald-500" : pct >= 70 ? "bg-[#6EA76E]" : "bg-orange-400"}`}
+                                    style={{ width: `${pct}%` }}
+                                  />
+                                </div>
+                                <span className="text-xs text-gray-500 w-10 text-right shrink-0">{r.score}/{r.total}</span>
+                                {!selectedChildId && child && (
+                                  <span className="text-xs text-gray-400 font-semibold w-16 truncate shrink-0">{child.username}</span>
+                                )}
+                                {r.wrong_words.length > 0 && (
+                                  <div className="flex gap-1 flex-wrap max-w-[35%]">
+                                    {r.wrong_words.map((w, i) => (
+                                      <span key={i} className="text-[10px] bg-red-50 text-red-500 border border-red-200 px-1 rounded font-semibold">{w}</span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Submitted work */}
             {allSubmitted.length > 0 && (
