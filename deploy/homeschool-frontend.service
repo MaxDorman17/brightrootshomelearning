@@ -1,0 +1,14 @@
+[Unit]
+Description=Bright Roots Homeschool Frontend (Next.js)
+After=network.target
+
+[Service]
+User=REPLACE_WITH_YOUR_USER
+WorkingDirectory=/opt/brightrootshomelearning/frontend
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/node node_modules/.bin/next start -p 3000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
