@@ -87,11 +87,12 @@ def shift_day(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
+    delta = timedelta(days=(body.to_date - body.from_date).days)
     entries = db.query(PlannerEntry).filter(
-        PlannerEntry.scheduled_date == body.from_date
+        PlannerEntry.scheduled_date >= body.from_date
     ).all()
     for e in entries:
-        e.scheduled_date = body.to_date
+        e.scheduled_date = e.scheduled_date + delta
     db.commit()
     return {"moved": len(entries)}
 

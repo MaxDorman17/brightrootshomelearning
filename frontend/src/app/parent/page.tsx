@@ -95,8 +95,6 @@ interface ShiftConfirm {
   toDate: string;
   fromLabel: string;
   toLabel: string;
-  count: number;
-  targetHasLessons: boolean;
 }
 
 function nextWeekday(dateStr: string): string {
@@ -457,11 +455,8 @@ export default function ParentPlanner() {
                         )}
                         {!dayOff && (() => {
                           const dayStr = format(dayDate, "yyyy-MM-dd");
-                          const count = entries.filter(e => e.scheduled_date === dayStr).length;
-                          if (count === 0) return null;
                           const toDate = nextWeekday(dayStr);
                           const toLabel = format(new Date(toDate + "T12:00:00"), "EEE d MMM");
-                          const targetHasLessons = entries.some(e => e.scheduled_date === toDate);
                           return (
                             <button
                               onClick={() => setShiftConfirm({
@@ -469,10 +464,8 @@ export default function ParentPlanner() {
                                 toDate,
                                 fromLabel: format(dayDate, "EEE d MMM"),
                                 toLabel,
-                                count,
-                                targetHasLessons,
                               })}
-                              title={`Move ${count} lesson${count !== 1 ? "s" : ""} to ${toLabel}`}
+                              title={`Shift all lessons from ${format(dayDate, "EEE d MMM")} onwards forward 1 day`}
                               className="text-xs px-1.5 py-0.5 rounded-md font-bold bg-black/10 hover:bg-black/20 text-gray-600 transition-all">
                               →
                             </button>
@@ -621,16 +614,13 @@ export default function ParentPlanner() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
           onClick={e => e.target === e.currentTarget && setShiftConfirm(null)}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <p className="text-lg font-extrabold text-gray-900 mb-2">📅 Move lessons forward</p>
+            <p className="text-lg font-extrabold text-gray-900 mb-2">📅 Push schedule forward</p>
             <p className="text-sm text-gray-600 mb-3">
-              Move <strong>{shiftConfirm.count} lesson{shiftConfirm.count !== 1 ? "s" : ""}</strong> from{" "}
-              <strong>{shiftConfirm.fromLabel}</strong> to <strong>{shiftConfirm.toLabel}</strong>?
+              Push <strong>all lessons from {shiftConfirm.fromLabel} onwards</strong> forward by 1 day to start on <strong>{shiftConfirm.toLabel}</strong>?
             </p>
-            {shiftConfirm.targetHasLessons && (
-              <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-4">
-                ⚠️ {shiftConfirm.toLabel} already has lessons — they will be merged together.
-              </p>
-            )}
+            <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2 mb-4">
+              This includes every future week too — the whole schedule shifts, nothing gets lost.
+            </p>
             <div className="flex gap-3">
               <button onClick={handleShiftDay} disabled={shifting}
                 className="flex-1 bg-[#2F5D3A] text-white py-2.5 rounded-xl font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
