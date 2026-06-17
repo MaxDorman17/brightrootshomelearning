@@ -106,6 +106,12 @@ export const uploadWorksheet = (bookId: number, title: string, file: File) => {
 export const deleteWorksheet = (worksheetId: number) =>
   api.delete(`/api/reading/worksheets/${worksheetId}`);
 
+// Polish / Duolingo
+export const getPolishSessions = () => api.get("/api/polish/");
+export const logPolishSession = (data: { date: string; xp?: number; notes?: string }) =>
+  api.post("/api/polish/", data);
+export const deletePolishSession = (id: number) => api.delete(`/api/polish/${id}`);
+
 // Children
 export const getChildren = () => api.get("/api/children/");
 export const addChild = (data: { username: string; email: string; password: string }) =>

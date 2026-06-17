@@ -160,6 +160,18 @@ class TimetableConfig(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
+class PolishSession(Base):
+    __tablename__ = "polish_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    date = Column(Date, nullable=False)
+    xp = Column(Integer, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("user_id", "date", name="uq_polish_user_date"),)
+
+
 class ReadingLog(Base):
     __tablename__ = "reading_log"
 
