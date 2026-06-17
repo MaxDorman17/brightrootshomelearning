@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { login, register } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 
@@ -49,13 +50,13 @@ export default function LoginPage() {
       <div className="relative w-full max-w-md">
         {/* Logo section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl mb-4 text-4xl shadow-xl">
-            🏫
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-4 shadow-xl p-2">
+            <Image src="/logo.png" alt="Bright Roots" width={80} height={80} className="rounded-2xl" />
           </div>
           <h1 className="text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
-            Homeschool
+            Bright Roots
           </h1>
-          <p className="text-white/75 mt-2 font-medium">Oscar&apos;s learning hub</p>
+          <p className="text-white/75 mt-2 font-medium">Home Learning</p>
         </div>
 
         {/* Card */}

@@ -9,8 +9,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Homeschool Academy",
-  description: "Oscar's learning hub",
+  title: "Bright Roots Home Learning",
+  description: "Oscar's home learning hub",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

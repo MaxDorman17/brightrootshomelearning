@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { clearAuth, getUsername, getRole } from "@/lib/auth";
 import { getUnreadFeedbackCount } from "@/lib/api";
 
@@ -83,8 +84,8 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-1 min-w-0">
             <Link href={home} className="flex items-center gap-2 text-white font-extrabold text-lg shrink-0 mr-2">
-              <span className="text-2xl">🏫</span>
-              <span className="hidden sm:block">Homeschool</span>
+              <Image src="/logo.png" alt="Bright Roots" width={36} height={36} className="rounded-lg" />
+              <span className="hidden sm:block">Bright Roots</span>
             </Link>
 
             {/* Desktop nav links */}
