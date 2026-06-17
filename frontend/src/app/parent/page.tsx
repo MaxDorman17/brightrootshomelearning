@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
   createLesson, updateLesson,
-  getWeekEntries, createPlannerEntry, deletePlannerEntry,
+  getWeekEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
 } from "@/lib/api";
@@ -66,6 +66,7 @@ export default function ParentPlanner() {
   const [slotTitle, setSlotTitle] = useState("");
   const [slotUrl, setSlotUrl] = useState("");
   const [slotNotes, setSlotNotes] = useState("");
+  const [slotAssignedTo, setSlotAssignedTo] = useState<number | null>(null);
   const [slotSaving, setSlotSaving] = useState(false);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
@@ -107,20 +108,26 @@ export default function ParentPlanner() {
     setSlotTitle(existing?.lesson.title ?? "");
     setSlotUrl(existing?.lesson.lesson_url ?? "");
     setSlotNotes(existing?.lesson.description ?? "");
+    setSlotAssignedTo(existing?.assigned_to ?? selectedChildId ?? null);
   };
 
-  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotNotes(""); };
+  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotNotes(""); setSlotAssignedTo(null); };
 
   const handleSaveSlot = async () => {
     if (!modal || !slotTitle.trim()) return;
     setSlotSaving(true);
     try {
       if (modal.existingEntry) {
-        await updateLesson(modal.existingEntry.lesson.id, {
-          title: slotTitle,
-          lesson_url: slotUrl || undefined,
-          description: slotNotes || undefined,
-        });
+        await Promise.all([
+          updateLesson(modal.existingEntry.lesson.id, {
+            title: slotTitle,
+            lesson_url: slotUrl || undefined,
+            description: slotNotes || undefined,
+          }),
+          updatePlannerEntry(modal.existingEntry.id, {
+            assigned_to: slotAssignedTo ?? null,
+          }),
+        ]);
       } else {
         const lessonRes = await createLesson({
           title: slotTitle,
@@ -131,7 +138,7 @@ export default function ParentPlanner() {
         await createPlannerEntry({
           lesson_id: lessonRes.data.id,
           scheduled_date: format(modal.dayDate, "yyyy-MM-dd"),
-          assigned_to: selectedChildId ?? undefined,
+          assigned_to: slotAssignedTo ?? undefined,
         });
       }
       await loadData();
@@ -429,15 +436,20 @@ export default function ParentPlanner() {
                 />
               </div>
 
-              {/* Assigned to — only shown when there are multiple children */}
-              {children.length > 0 && !modal.existingEntry && (
+              {/* Assign to child */}
+              {children.length > 0 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Assign to</label>
-                  <p className="text-xs text-gray-500">
-                    {selectedChildId
-                      ? `Will be assigned to ${selectedChild?.username}`
-                      : "Will be visible to all children (no specific assignment)"}
-                  </p>
+                  <select
+                    value={slotAssignedTo ?? ""}
+                    onChange={e => setSlotAssignedTo(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E] text-sm font-medium"
+                  >
+                    <option value="">All children</option>
+                    {children.map(c => (
+                      <option key={c.id} value={c.id}>{c.username}</option>
+                    ))}
+                  </select>
                 </div>
               )}
             </div>

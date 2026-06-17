@@ -51,7 +51,7 @@ export const getAllEntries = () => api.get("/api/planner/all");
 export const getAllMyEntries = () => api.get("/api/planner/mine");
 export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number }) =>
   api.post("/api/planner/", data);
-export const updatePlannerEntry = (id: number, data: { scheduled_date?: string; assigned_to?: number }) =>
+export const updatePlannerEntry = (id: number, data: { scheduled_date?: string; assigned_to?: number | null }) =>
   api.put(`/api/planner/${id}`, data);
 export const deletePlannerEntry = (id: number) => api.delete(`/api/planner/${id}`);
 export const toggleComplete = (id: number) => api.patch(`/api/planner/${id}/complete`);
