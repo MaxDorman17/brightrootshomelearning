@@ -1,4 +1,5 @@
 import re
+import json
 import httpx
 import concurrent.futures
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -121,8 +122,6 @@ async def import_unit(
     body: ImportUnitRequest,
     current_user: User = Depends(require_parent),
 ):
-    if not settings.OAK_API_KEY:
-        raise HTTPException(status_code=503, detail="OAK_API_KEY not configured on server")
     match = re.search(r"/programmes/([^/?#]+)/units/([^/?#]+)", body.unit_url)
     if not match:
         raise HTTPException(
@@ -131,35 +130,62 @@ async def import_unit(
         )
     programme_slug = match.group(1)
     unit_slug = match.group(2)
-    async with httpx.AsyncClient() as client:
+
+    # Fetch the public pupil unit page and extract __NEXT_DATA__
+    lessons_url = (
+        f"https://www.thenational.academy/pupils/programmes/"
+        f"{programme_slug}/units/{unit_slug}/lessons"
+    )
+    async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
         try:
             resp = await client.get(
-                f"{settings.OAK_BASE_URL}/units/{unit_slug}/summary",
-                headers=OAK_HEADERS,
-                timeout=15.0,
+                lessons_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; HomeschoolApp/1.0)"},
             )
         except httpx.RequestError as exc:
-            raise HTTPException(status_code=502, detail=f"Could not reach Oak API: {exc}")
-    if resp.status_code == 404:
-        raise HTTPException(status_code=404, detail="Unit not found — check the URL")
+            raise HTTPException(status_code=502, detail=f"Could not reach Oak website: {exc}")
+
     if resp.status_code != 200:
-        raise HTTPException(status_code=502, detail=f"Oak API returned {resp.status_code}")
-    data = resp.json()
+        raise HTTPException(status_code=404, detail="Unit not found — check the URL")
+
+    m = re.search(
+        r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
+        resp.text,
+        re.DOTALL,
+    )
+    if not m:
+        raise HTTPException(status_code=502, detail="Could not parse lesson data from Oak page")
+
+    try:
+        page_data = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=502, detail="Could not parse lesson data from Oak page")
+
+    browse_data = page_data.get("props", {}).get("pageProps", {}).get("browseData", [])
+    if not browse_data:
+        raise HTTPException(status_code=404, detail="No lesson data found on this page")
+
+    first = browse_data[0]
+    lesson_list = first.get("supplementaryData", {}).get("staticLessonList", [])
+    unit_title = first.get("unitData", {}).get("title", "")
+
     lessons = []
-    for lesson in data.get("unitLessons", []):
-        slug = lesson.get("lessonSlug", "")
-        title = lesson.get("lessonTitle", "")
-        order = lesson.get("lessonOrder", 0)
-        if slug and title and lesson.get("state") == "published":
-            pupil_url = (
-                f"https://www.thenational.academy/pupils/programmes/"
-                f"{programme_slug}/units/{unit_slug}/lessons/{slug}"
-            )
-            lessons.append({"title": title, "url": pupil_url, "order": order})
+    for lesson in lesson_list:
+        if lesson.get("_state") == "published":
+            slug = lesson.get("slug", "")
+            title = lesson.get("title", "")
+            order = lesson.get("order", 0)
+            if slug and title:
+                pupil_url = (
+                    f"https://www.thenational.academy/pupils/programmes/"
+                    f"{programme_slug}/units/{unit_slug}/lessons/{slug}"
+                )
+                lessons.append({"title": title, "url": pupil_url, "order": order})
+
     lessons.sort(key=lambda x: x["order"])
     return {
         "lessons": lessons,
         "unit_slug": unit_slug,
-        "unit_title": data.get("unitTitle", ""),
+        "unit_title": unit_title,
         "programme_slug": programme_slug,
     }
