@@ -59,6 +59,7 @@ export default function ParentPlanner() {
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
   const [newGoal, setNewGoal] = useState("");
+  const [goalAssignedTo, setGoalAssignedTo] = useState<number | null>(null);
   const [addingGoal, setAddingGoal] = useState(false);
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
   const [modal, setModal] = useState<SlotModal | null>(null);
@@ -178,7 +179,7 @@ export default function ParentPlanner() {
       const res = await createGoal({
         week_start: weekStartStr,
         title: newGoal.trim(),
-        assigned_to: selectedChildId ?? undefined,
+        assigned_to: goalAssignedTo ?? undefined,
       });
       setGoals(prev => [...prev, res.data]);
       setNewGoal("");
@@ -332,30 +333,49 @@ export default function ParentPlanner() {
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-lg font-extrabold text-gray-900">🎯 Weekly Goals</h2>
             <span className="text-sm text-gray-500 font-medium">{weekLabel}</span>
-            {selectedChild && (
-              <span className="text-xs bg-[#A8C67A]/20 text-[#2F5D3A] px-2 py-0.5 rounded-full font-bold">
-                for {selectedChild.username}
-              </span>
-            )}
           </div>
 
           <div className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5">
             {/* Add goal input */}
-            <div className="flex gap-2 mb-4">
-              <input
-                value={newGoal}
-                onChange={e => setNewGoal(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleAddGoal()}
-                placeholder={`Add a goal for this week${selectedChild ? ` for ${selectedChild.username}` : ""}…`}
-                className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] transition-colors"
-              />
-              <button
-                onClick={handleAddGoal}
-                disabled={addingGoal || !newGoal.trim()}
-                className="gradient-btn text-sm px-4 py-2 disabled:opacity-50"
-              >
-                {addingGoal ? "…" : "Add"}
-              </button>
+            <div className="flex flex-col gap-2 mb-4">
+              <div className="flex gap-2">
+                <input
+                  value={newGoal}
+                  onChange={e => setNewGoal(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleAddGoal()}
+                  placeholder="Add a goal for this week…"
+                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] transition-colors"
+                />
+                <button
+                  onClick={handleAddGoal}
+                  disabled={addingGoal || !newGoal.trim()}
+                  className="gradient-btn text-sm px-4 py-2 disabled:opacity-50"
+                >
+                  {addingGoal ? "…" : "Add"}
+                </button>
+              </div>
+              {children.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500 font-medium shrink-0">For:</span>
+                  <div className="flex gap-1.5 flex-wrap">
+                    <button
+                      onClick={() => setGoalAssignedTo(null)}
+                      className={`text-xs px-3 py-1 rounded-lg font-semibold border transition-all ${goalAssignedTo === null ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white border-gray-200 text-gray-600 hover:border-[#A8C67A]"}`}
+                    >
+                      Everyone
+                    </button>
+                    {children.map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => setGoalAssignedTo(c.id)}
+                        className={`text-xs px-3 py-1 rounded-lg font-semibold border transition-all ${goalAssignedTo === c.id ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white border-gray-200 text-gray-600 hover:border-[#A8C67A]"}`}
+                      >
+                        {c.username}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {goals.length === 0 ? (
@@ -377,9 +397,9 @@ export default function ParentPlanner() {
                     <span className={`flex-1 text-sm font-semibold ${goal.is_complete ? "line-through text-gray-400" : "text-gray-800"}`}>
                       {goal.title}
                     </span>
-                    {goal.assigned_to && children.length > 0 && (
-                      <span className="text-xs text-gray-400">
-                        {children.find(c => c.id === goal.assigned_to)?.username}
+                    {children.length > 0 && (
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${goal.assigned_to ? "bg-[#A8C67A]/20 text-[#2F5D3A]" : "bg-gray-100 text-gray-500"}`}>
+                        {goal.assigned_to ? children.find(c => c.id === goal.assigned_to)?.username ?? "?" : "Everyone"}
                       </span>
                     )}
                     <button onClick={() => handleDeleteGoal(goal.id)} className="text-gray-300 hover:text-red-400 transition-colors text-sm shrink-0">✕</button>
