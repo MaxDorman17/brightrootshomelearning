@@ -128,6 +128,15 @@ class ReadingWorksheet(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class TimetableConfig(Base):
+    __tablename__ = "timetable_config"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+    config = Column(Text, nullable=False)  # JSON string
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
 class ReadingLog(Base):
     __tablename__ = "reading_log"
 

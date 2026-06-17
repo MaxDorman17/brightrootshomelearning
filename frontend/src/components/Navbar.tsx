@@ -20,6 +20,7 @@ const PARENT_MORE = [
   { href: "/achievements", label: "Achievements" },
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/children", label: "Children" },
+  { href: "/parent/timetable", label: "Timetable" },
 ];
 
 const CHILD_MAIN = [

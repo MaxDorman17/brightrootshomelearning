@@ -5,18 +5,14 @@ import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
   submitWorkUrl, submitNote, getFeedback, markFeedbackRead, getDaysOff,
-  getGoals, toggleGoal,
+  getGoals, toggleGoal, getTimetable,
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, addDays, startOfWeek, isToday } from "date-fns";
 
-const TIMETABLE: Record<string, string[]> = {
-  Monday:    ["Maths", "English", "Science", "History", "Computing"],
-  Tuesday:   ["Maths", "English", "Science", "Geography", "Cooking"],
-  Wednesday: ["Maths", "English", "Science", "Art & Design", "Design and Technology"],
-  Thursday:  ["Maths", "English", "Science", "History", "Life Skills"],
-  Friday:    ["Maths", "English", "Science", "Languages"],
+const DEFAULT_TIMETABLE: Record<string, string[]> = {
+  Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
 };
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -75,6 +71,7 @@ export default function ChildDashboard() {
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [feedbackList, setFeedbackList] = useState<WorkFeedback[]>([]);
   const [daysOffSet, setDaysOffSet] = useState<Set<string>>(new Set());
+  const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [loading, setLoading] = useState(true);
   const [quoteIdx, setQuoteIdx] = useState(0);
 
@@ -109,6 +106,8 @@ export default function ChildDashboard() {
         setDaysOffSet(new Set((daysOffRes.data as { date: string }[]).map((d: { date: string }) => d.date)));
       })
       .catch(() => {});
+
+    getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
 
     // Load this week's goals
     const weekMon = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
@@ -305,7 +304,7 @@ export default function ChildDashboard() {
           <div className="grid grid-cols-5 gap-3">
             {DAYS.map((dayName, dayIndex) => {
               const dayDate = weekDates[dayIndex];
-              const subjects = TIMETABLE[dayName];
+              const subjects = timetable[dayName] ?? [];
               const today = isToday(dayDate);
               const dayOff = daysOffSet.has(format(dayDate, "yyyy-MM-dd"));
 

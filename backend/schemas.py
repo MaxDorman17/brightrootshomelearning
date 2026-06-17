@@ -200,6 +200,15 @@ class WeeklyGoalOut(BaseModel):
         from_attributes = True
 
 
+class TimetableConfigSave(BaseModel):
+    config: dict
+
+
+class TimetableConfigOut(BaseModel):
+    config: dict
+    updated_at: Optional[datetime] = None
+
+
 class ReadingWorksheetCreate(BaseModel):
     title: str
     url: str

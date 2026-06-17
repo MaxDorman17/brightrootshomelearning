@@ -7,17 +7,14 @@ import {
   getWeekEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
+  getTimetable,
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, addDays, startOfWeek, isToday } from "date-fns";
 
-const TIMETABLE: Record<string, string[]> = {
-  Monday:    ["Maths", "English", "Science", "History", "Computing"],
-  Tuesday:   ["Maths", "English", "Science", "Geography", "Cooking"],
-  Wednesday: ["Maths", "English", "Science", "Art & Design", "Design and Technology"],
-  Thursday:  ["Maths", "English", "Science", "History", "Life Skills"],
-  Friday:    ["Maths", "English", "Science", "Languages"],
+const DEFAULT_TIMETABLE: Record<string, string[]> = {
+  Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
 };
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -55,6 +52,7 @@ export default function ParentPlanner() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
   const [daysOff, setDaysOff] = useState<DayOff[]>([]);
+  const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
@@ -91,6 +89,7 @@ export default function ParentPlanner() {
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
     getChildren().then(res => setChildren(res.data)).catch(() => {});
+    getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
     loadData();
     loadGoals();
   }, [loadData, loadGoals, router]);
@@ -247,7 +246,7 @@ export default function ParentPlanner() {
         <div className="grid grid-cols-5 gap-3">
           {DAYS.map((dayName, dayIndex) => {
             const dayDate = weekDates[dayIndex];
-            const subjects = TIMETABLE[dayName];
+            const subjects = timetable[dayName] ?? [];
             const today = isToday(dayDate);
 
             return (

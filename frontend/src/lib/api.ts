@@ -119,3 +119,7 @@ export const getUnits = () => api.get("/api/units/");
 export const upsertUnit = (data: { subject: string; title: string; unit_url?: string; notes?: string }) =>
   api.post("/api/units/", data);
 export const deleteUnit = (subject: string) => api.delete(`/api/units/${encodeURIComponent(subject)}`);
+
+// Timetable
+export const getTimetable = () => api.get("/api/timetable/");
+export const saveTimetable = (config: Record<string, string[]>) => api.put("/api/timetable/", { config });
