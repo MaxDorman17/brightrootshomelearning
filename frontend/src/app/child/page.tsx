@@ -205,7 +205,7 @@ export default function ChildDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {/* Hero header */}
-        <div className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-3xl p-5 mb-5 text-white shadow-xl shadow-indigo-300/40">
+        <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] rounded-3xl p-5 mb-5 text-white shadow-xl shadow-green-900/20">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <p className="text-white/75 text-sm font-semibold">{getGreeting()}, {username}! 👋</p>
@@ -257,7 +257,7 @@ export default function ChildDashboard() {
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all ${
                     goal.is_complete
                       ? "bg-emerald-50 border-2 border-emerald-200"
-                      : "bg-gray-50 border-2 border-gray-200 hover:border-indigo-300"
+                      : "bg-gray-50 border-2 border-gray-200 hover:border-[#A8C67A]"
                   }`}
                 >
                   <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold transition-all ${
@@ -316,7 +316,7 @@ export default function ChildDashboard() {
                     dayOff
                       ? "bg-gradient-to-b from-amber-400 to-orange-400 text-white shadow-orange-200/60"
                       : today
-                      ? "bg-gradient-to-b from-violet-600 to-indigo-600 text-white shadow-indigo-300/40"
+                      ? "bg-gradient-to-b from-[#2F5D3A] to-[#6EA76E] text-white shadow-green-900/20"
                       : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-700"
                   }`}>
                     <p className="text-xs font-extrabold uppercase tracking-wide opacity-80">{dayName.slice(0, 3)}</p>
@@ -419,7 +419,7 @@ export default function ChildDashboard() {
                 href={modal.entry.lesson.lesson_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
+                className="flex items-center gap-3 bg-[#2F5D3A] hover:bg-[#6EA76E] text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
               >
                 <span className="text-lg">▶</span>
                 Open Lesson
@@ -448,7 +448,7 @@ export default function ChildDashboard() {
                   value={workUrl}
                   onChange={e => setWorkUrl(e.target.value)}
                   placeholder="https://…"
-                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-400 bg-white"
+                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] bg-white"
                 />
                 <button
                   onClick={handleSubmitWork}
@@ -472,18 +472,18 @@ export default function ChildDashboard() {
                   value={note}
                   onChange={e => setNote(e.target.value)}
                   placeholder="What did you learn? What was tricky?"
-                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-400 resize-none bg-white"
+                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] resize-none bg-white"
                 />
                 <button
                   onClick={handleSaveNote}
                   disabled={savingNote || !note.trim()}
-                  className="text-sm px-3 py-2 bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-xl font-bold shadow-sm disabled:opacity-40 self-start"
+                  className="text-sm px-3 py-2 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white rounded-xl font-bold shadow-sm disabled:opacity-40 self-start"
                 >
                   {savingNote ? "…" : "Save"}
                 </button>
               </div>
               {modal.entry.completed_note && (
-                <p className="text-xs text-violet-600 font-bold mt-1.5">✓ Note saved!</p>
+                <p className="text-xs text-[#6EA76E] font-bold mt-1.5">✓ Note saved!</p>
               )}
             </div>
           </div>

@@ -81,12 +81,12 @@ export default function JournalPage() {
                     type="date"
                     value={selectedDate}
                     onChange={e => setSelectedDate(e.target.value)}
-                    className="block mt-1 border border-gray-300 rounded-xl px-3 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    className="block mt-1 border border-gray-300 rounded-xl px-3 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                   />
                 </div>
                 <div className="ml-auto text-right">
                   {isToday && (
-                    <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">Today</span>
+                    <span className="text-xs font-bold text-[#2F5D3A] bg-[#A8C67A]/20 px-2 py-1 rounded-lg">Today</span>
                   )}
                   {hasEntry && !isToday && (
                     <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Entry saved</span>
@@ -99,7 +99,7 @@ export default function JournalPage() {
                 onChange={e => { setContent(e.target.value); setSaved(false); }}
                 placeholder={`How did today go? What did Oscar learn? Any observations worth remembering…`}
                 rows={12}
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-800 focus:outline-none focus:border-indigo-400 resize-none transition-colors leading-relaxed"
+                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-800 focus:outline-none focus:border-[#6EA76E] resize-none transition-colors leading-relaxed"
               />
 
               <div className="flex items-center gap-3 mt-4">
@@ -140,14 +140,14 @@ export default function JournalPage() {
                     onClick={() => setSelectedDate(e.entry_date)}
                     className={`w-full text-left rounded-xl px-4 py-3 border-2 transition-all ${
                       selectedDate === e.entry_date
-                        ? "border-indigo-400 bg-indigo-50"
-                        : "border-white/60 bg-white/80 hover:border-indigo-200 hover:bg-white"
+                        ? "border-[#6EA76E] bg-[#A8C67A]/10"
+                        : "border-white/60 bg-white/80 hover:border-[#A8C67A] hover:bg-white"
                     }`}
                   >
                     <p className="text-xs font-extrabold text-gray-500">
                       {format(parseISO(e.entry_date), "EEE, d MMM yyyy")}
                       {e.entry_date === format(new Date(), "yyyy-MM-dd") && (
-                        <span className="ml-2 text-indigo-500">Today</span>
+                        <span className="ml-2 text-[#6EA76E]">Today</span>
                       )}
                     </p>
                     <p className="text-sm text-gray-700 mt-1 line-clamp-2 font-medium">{e.content}</p>

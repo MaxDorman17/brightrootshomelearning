@@ -231,7 +231,7 @@ export default function ReadingLogPage() {
         {/* Stats strip */}
         <div className="grid grid-cols-4 gap-3 mb-6">
           {[
-            { label: "Total", value: stats.total, color: "from-violet-500 to-purple-600", shadow: "shadow-purple-200" },
+            { label: "Total", value: stats.total, color: "from-[#2F5D3A] to-[#6EA76E]", shadow: "shadow-green-200" },
             { label: "Reading",  value: stats.reading,  color: "from-blue-500 to-indigo-600", shadow: "shadow-blue-200" },
             { label: "Done",     value: stats.completed, color: "from-emerald-500 to-teal-600", shadow: "shadow-emerald-200" },
             { label: "Wishlist", value: stats.wishlist,  color: "from-gray-400 to-gray-500",    shadow: "shadow-gray-200" },
@@ -249,7 +249,7 @@ export default function ReadingLogPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider">Books Finished — Last 6 Months</h2>
               {totalPages > 0 && (
-                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold text-[#2F5D3A] bg-[#A8C67A]/10 px-3 py-1 rounded-full">
                   📄 {totalPages.toLocaleString()} pages read
                 </span>
               )}
@@ -260,7 +260,7 @@ export default function ReadingLogPage() {
                   <span className="text-xs font-bold text-gray-600">{m.count > 0 ? m.count : ""}</span>
                   <div className="w-full flex flex-col justify-end" style={{ height: "64px" }}>
                     <div
-                      className={`w-full rounded-t-lg transition-all duration-500 ${m.count > 0 ? "bg-gradient-to-t from-violet-500 to-indigo-400" : "bg-gray-100"}`}
+                      className={`w-full rounded-t-lg transition-all duration-500 ${m.count > 0 ? "bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E]" : "bg-gray-100"}`}
                       style={{ height: `${m.count === 0 ? 4 : Math.max(8, Math.round((m.count / maxBooks) * 64))}px` }}
                     />
                   </div>
@@ -278,8 +278,8 @@ export default function ReadingLogPage() {
               <button key={f} onClick={() => setFilter(f)}
                 className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all capitalize ${
                   filter === f
-                    ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md"
-                    : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-indigo-300 shadow-sm"
+                    ? "bg-[#2F5D3A] text-white shadow-md"
+                    : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
                 }`}>
                 {f === "all" ? "All" : STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].icon + " " + STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].label}
               </button>
@@ -289,7 +289,7 @@ export default function ReadingLogPage() {
             {([["recent", "Recent"], ["title", "A–Z"], ["rating", "★ Rating"]] as [SortKey, string][]).map(([k, l]) => (
               <button key={k} onClick={() => setSort(k)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  sort === k ? "bg-indigo-100 text-indigo-700 border border-indigo-200" : "bg-white/70 text-gray-500 border border-white/60 hover:border-gray-300"
+                  sort === k ? "bg-[#A8C67A]/20 text-[#2F5D3A] border border-[#A8C67A]/30" : "bg-white/70 text-gray-500 border border-white/60 hover:border-gray-300"
                 }`}>
                 {l}
               </button>
@@ -323,7 +323,7 @@ export default function ReadingLogPage() {
                     {isParent && (
                       <div className="flex gap-1.5">
                         <button onClick={() => openEdit(book)}
-                          className="text-xs text-gray-400 hover:text-indigo-500 transition-colors font-bold px-2 py-0.5 rounded-lg hover:bg-indigo-50">
+                          className="text-xs text-gray-400 hover:text-[#6EA76E] transition-colors font-bold px-2 py-0.5 rounded-lg hover:bg-[#A8C67A]/10">
                           ✏️
                         </button>
                         <button onClick={() => handleDelete(book.id)}
@@ -371,13 +371,13 @@ export default function ReadingLogPage() {
                         value={noteText}
                         onChange={e => setNoteText(e.target.value)}
                         placeholder="What did you think?"
-                        className="w-full text-sm border-2 border-indigo-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-indigo-400 font-medium bg-white resize-none"
+                        className="w-full text-sm border-2 border-[#A8C67A]/40 rounded-xl px-3 py-1.5 focus:outline-none focus:border-[#6EA76E] font-medium bg-white resize-none"
                         autoFocus
                       />
                       <div className="flex gap-2 mt-1.5">
                         <button onClick={() => handleSaveNote(book.id)}
                           disabled={savingNote === book.id || !noteText.trim()}
-                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-lg font-bold disabled:opacity-40">
+                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white rounded-lg font-bold disabled:opacity-40">
                           {savingNote === book.id ? "…" : "Save"}
                         </button>
                         <button onClick={() => setEditingNote(null)}
@@ -403,7 +403,7 @@ export default function ReadingLogPage() {
                                     href={ws.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline truncate"
+                                    className="flex-1 text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
                                   >
                                     📄 {ws.title}
                                   </a>
@@ -430,14 +430,14 @@ export default function ReadingLogPage() {
                                 value={wsTitle}
                                 onChange={e => setWsTitle(e.target.value)}
                                 placeholder="Worksheet name"
-                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                               />
                               <input
                                 value={wsUrl}
                                 onChange={e => setWsUrl(e.target.value)}
                                 placeholder="https://… (Google Doc, PDF link, etc.)"
                                 type="url"
-                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                               />
                               <div className="flex gap-2">
                                 <button
@@ -458,7 +458,7 @@ export default function ReadingLogPage() {
                           ) : (
                             <button
                               onClick={() => { setAddingWsFor(book.id); setWsTitle(""); setWsUrl(""); }}
-                              className="text-xs font-bold text-indigo-500 hover:text-indigo-700 transition-colors"
+                              className="text-xs font-bold text-[#6EA76E] hover:text-[#2F5D3A] transition-colors"
                             >
                               + Add worksheet
                             </button>
@@ -494,7 +494,7 @@ export default function ReadingLogPage() {
                           setEditingNote(book.id);
                           setNoteText(book.notes ?? "");
                         }}
-                        className="text-xs px-3 py-1.5 border-2 border-violet-200 text-violet-600 rounded-lg font-bold hover:bg-violet-50">
+                        className="text-xs px-3 py-1.5 border-2 border-[#A8C67A]/40 text-[#6EA76E] rounded-lg font-bold hover:bg-[#A8C67A]/10">
                         📝 {book.notes ? "Edit Note" : "Add Note"}
                       </button>
                     </div>
@@ -520,25 +520,25 @@ export default function ReadingLogPage() {
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Title *</label>
                 <input autoFocus value={fTitle} onChange={e => setFTitle(e.target.value)}
                   placeholder="e.g. Charlie and the Chocolate Factory"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Author</label>
                 <input value={fAuthor} onChange={e => setFAuthor(e.target.value)}
                   placeholder="e.g. Roald Dahl"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Pages</label>
                   <input type="number" min={1} value={fPages} onChange={e => setFPages(e.target.value)}
                     placeholder="e.g. 224"
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Status</label>
                   <select value={fStatus} onChange={e => setFStatus(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors">
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors">
                     <option value="wishlist">📋 Wishlist</option>
                     <option value="reading">📖 Reading</option>
                     <option value="completed">✅ Completed</option>
@@ -549,19 +549,19 @@ export default function ReadingLogPage() {
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Start date</label>
                   <input type="date" value={fStartDate} onChange={e => setFStartDate(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Finish date</label>
                   <input type="date" value={fFinishDate} onChange={e => setFFinishDate(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Notes</label>
                 <textarea rows={2} value={fNotes} onChange={e => setFNotes(e.target.value)}
                   placeholder="Any notes about this book…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors resize-none" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors resize-none" />
               </div>
             </div>
 

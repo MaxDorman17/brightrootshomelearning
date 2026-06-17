@@ -122,7 +122,7 @@ export default function ReportPage() {
           {(["week", "month", "all"] as Period[]).map(p => (
             <button key={p} onClick={() => setPeriod(p)}
               className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
-                period === p ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-indigo-300 shadow-sm"
+                period === p ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
               }`}>
               {p === "week" ? "This Week" : p === "month" ? "This Month" : "All Time"}
             </button>
@@ -136,7 +136,7 @@ export default function ReportPage() {
             {/* Summary stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-indigo-600">{filtered.length}</p>
+                <p className="text-3xl font-bold text-[#2F5D3A]">{filtered.length}</p>
                 <p className="text-sm text-gray-500 mt-1">Lessons Assigned</p>
               </div>
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
@@ -148,30 +148,30 @@ export default function ReportPage() {
                 <p className="text-sm text-gray-500 mt-1">Completion Rate</p>
               </div>
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-purple-600">{totalSubmitted}</p>
+                <p className="text-3xl font-bold text-[#7A5C3E]">{totalSubmitted}</p>
                 <p className="text-sm text-gray-500 mt-1">Work Submitted</p>
               </div>
             </div>
 
             {/* Coding card */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100 shadow-sm p-6 mb-6">
+            <div className="bg-[#F7F9F7] rounded-2xl border border-[#A8C67A]/40 shadow-sm p-6 mb-6">
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">💻</span>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-indigo-800">Coding Curriculum</h2>
-                    <span className="text-sm font-bold text-indigo-600">{codingDone} / {TOTAL_CODING} lessons</span>
+                    <h2 className="font-bold text-[#2F5D3A]">Coding Curriculum</h2>
+                    <span className="text-sm font-bold text-[#6EA76E]">{codingDone} / {TOTAL_CODING} lessons</span>
                   </div>
-                  <div className="w-full bg-white/60 rounded-full h-2.5 mt-2">
-                    <div className="bg-indigo-500 h-2.5 rounded-full transition-all"
+                  <div className="w-full bg-[#A8C67A]/20 rounded-full h-2.5 mt-2">
+                    <div className="bg-[#2F5D3A] h-2.5 rounded-full transition-all"
                       style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }} />
                   </div>
                 </div>
               </div>
               <div className="grid grid-cols-4 gap-3 mt-3">
                 {TRACKS.map(t => (
-                  <div key={t.name} className="bg-white/70 rounded-xl p-3 text-center">
-                    <p className="text-xs font-medium text-indigo-700">{t.name}</p>
+                  <div key={t.name} className="bg-white rounded-xl p-3 text-center border border-[#A8C67A]/20">
+                    <p className="text-xs font-medium text-[#2F5D3A]">{t.name}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{t.count} lessons</p>
                   </div>
                 ))}
@@ -219,7 +219,7 @@ export default function ReportPage() {
                       <span className="text-xs font-bold text-gray-600">{w.pct > 0 ? `${w.pct}%` : ""}</span>
                       <div className="w-full flex flex-col justify-end" style={{ height: "100px" }}>
                         <div
-                          className={`w-full rounded-t-lg transition-all duration-500 ${w.pct === 100 ? "bg-gradient-to-t from-emerald-500 to-green-400" : w.pct >= 50 ? "bg-gradient-to-t from-indigo-500 to-violet-400" : w.total === 0 ? "bg-gray-100" : "bg-gradient-to-t from-orange-400 to-yellow-300"}`}
+                          className={`w-full rounded-t-lg transition-all duration-500 ${w.pct === 100 ? "bg-gradient-to-t from-emerald-500 to-green-400" : w.pct >= 50 ? "bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E]" : w.total === 0 ? "bg-gray-100" : "bg-gradient-to-t from-orange-400 to-yellow-300"}`}
                           style={{ height: `${w.total === 0 ? 4 : Math.max(4, w.pct)}px` }}
                         />
                       </div>
@@ -229,7 +229,7 @@ export default function ReportPage() {
                 </div>
                 <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-100">
                   <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-emerald-500 to-green-400 inline-block" /><span className="text-xs text-gray-500">100%</span></div>
-                  <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-indigo-500 to-violet-400 inline-block" /><span className="text-xs text-gray-500">50%+</span></div>
+                  <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E] inline-block" /><span className="text-xs text-gray-500">50%+</span></div>
                   <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-orange-400 to-yellow-300 inline-block" /><span className="text-xs text-gray-500">Under 50%</span></div>
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function ReportPage() {
                         </div>
                         <div className="flex items-center gap-3 text-sm">
                           <span className="text-gray-400">{s.done}/{s.total}</span>
-                          <span className={`font-bold w-10 text-right ${s.pct === 100 ? "text-green-600" : s.pct >= 50 ? "text-indigo-600" : "text-red-500"}`}>
+                          <span className={`font-bold w-10 text-right ${s.pct === 100 ? "text-green-600" : s.pct >= 50 ? "text-[#6EA76E]" : "text-red-500"}`}>
                             {s.pct}%
                           </span>
                         </div>
@@ -307,7 +307,7 @@ export default function ReportPage() {
                         </div>
                         <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
                         <a href={e.completed_work_url!} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-indigo-500 hover:underline break-all">{e.completed_work_url}</a>
+                          className="text-xs text-[#6EA76E] hover:underline break-all">{e.completed_work_url}</a>
                       </div>
                     </div>
                   ))}

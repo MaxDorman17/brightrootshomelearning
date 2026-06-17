@@ -247,7 +247,7 @@ export default function ParentPlanner() {
                 {(() => {
                   const dayOff = isDayOff(dayDate);
                   return (
-                    <div className={`rounded-2xl px-3 py-2.5 mb-2 text-center shadow-sm ${dayOff ? "bg-gradient-to-b from-amber-400 to-orange-400 text-white shadow-orange-200/60" : today ? "bg-gradient-to-b from-violet-600 to-indigo-600 text-white shadow-indigo-300/40" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-700"}`}>
+                    <div className={`rounded-2xl px-3 py-2.5 mb-2 text-center shadow-sm ${dayOff ? "bg-gradient-to-b from-amber-400 to-orange-400 text-white shadow-orange-200/60" : today ? "bg-gradient-to-b from-[#2F5D3A] to-[#6EA76E] text-white shadow-green-900/20" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-700"}`}>
                       <p className="text-xs font-extrabold uppercase tracking-wide opacity-80">{dayName.slice(0, 3)}</p>
                       <p className="text-lg font-extrabold">{format(dayDate, "d")}</p>
                       <p className="text-xs opacity-70 font-semibold">{format(dayDate, "MMM")}</p>
@@ -281,7 +281,7 @@ export default function ParentPlanner() {
                       <button
                         key={subject}
                         onClick={() => openModal(dayIndex, subject)}
-                        className={`w-full text-left rounded-xl border-2 p-3 transition-all hover:shadow-md hover:scale-[1.02] active:scale-100 ${hasLesson ? colorClass : "bg-white/60 border-dashed border-gray-200 hover:border-indigo-300 hover:bg-white/80"}`}
+                        className={`w-full text-left rounded-xl border-2 p-3 transition-all hover:shadow-md hover:scale-[1.02] active:scale-100 ${hasLesson ? colorClass : "bg-white/60 border-dashed border-gray-200 hover:border-[#A8C67A] hover:bg-white/80"}`}
                       >
                         <div className="flex items-center gap-1.5 mb-1">
                           <span className={`w-2 h-2 rounded-full shrink-0 ${dotClass}`} />
@@ -326,7 +326,7 @@ export default function ParentPlanner() {
             <h2 className="text-lg font-extrabold text-gray-900">🎯 Weekly Goals</h2>
             <span className="text-sm text-gray-500 font-medium">{weekLabel}</span>
             {selectedChild && (
-              <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">
+              <span className="text-xs bg-[#A8C67A]/20 text-[#2F5D3A] px-2 py-0.5 rounded-full font-bold">
                 for {selectedChild.username}
               </span>
             )}
@@ -340,7 +340,7 @@ export default function ParentPlanner() {
                 onChange={e => setNewGoal(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleAddGoal()}
                 placeholder={`Add a goal for this week${selectedChild ? ` for ${selectedChild.username}` : ""}…`}
-                className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-400 transition-colors"
+                className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] transition-colors"
               />
               <button
                 onClick={handleAddGoal}
@@ -362,7 +362,7 @@ export default function ParentPlanner() {
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
                         goal.is_complete
                           ? "bg-emerald-500 border-emerald-500 text-white"
-                          : "border-gray-300 hover:border-indigo-400"
+                          : "border-gray-300 hover:border-[#6EA76E]"
                       }`}
                     >
                       {goal.is_complete && <span className="text-xs font-bold">✓</span>}
@@ -405,7 +405,7 @@ export default function ParentPlanner() {
                   onChange={e => setSlotTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSaveSlot()}
                   placeholder={`e.g. ${modal.subject} — Introduction`}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                 />
               </div>
               <div>
@@ -415,7 +415,7 @@ export default function ParentPlanner() {
                   onChange={e => setSlotUrl(e.target.value)}
                   placeholder="https://www.thenational.academy/…"
                   type="url"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                 />
               </div>
               <div>
@@ -425,7 +425,7 @@ export default function ParentPlanner() {
                   onChange={e => setSlotNotes(e.target.value)}
                   rows={2}
                   placeholder="Any extra instructions…"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                 />
               </div>
 
@@ -444,7 +444,7 @@ export default function ParentPlanner() {
 
             <div className="flex gap-3 mt-6">
               <button onClick={handleSaveSlot} disabled={slotSaving || !slotTitle.trim()}
-                className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50">
+                className="flex-1 bg-[#2F5D3A] text-white py-2 rounded-lg font-medium hover:bg-[#6EA76E] transition-colors disabled:opacity-50">
                 {slotSaving ? "Saving…" : modal.existingEntry ? "Save Changes" : "Add Lesson"}
               </button>
               {modal.existingEntry && (

@@ -91,7 +91,7 @@ export default function ChildExtraWorkPage() {
                     <div key={e.id} className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
                       <div className="flex items-start gap-3">
                         <button onClick={() => handleToggle(e.id)} disabled={toggling === e.id}
-                          className="mt-0.5 w-6 h-6 rounded-full border-2 border-gray-300 hover:border-indigo-400 shrink-0 transition-colors" />
+                          className="mt-0.5 w-6 h-6 rounded-full border-2 border-gray-300 hover:border-[#6EA76E] shrink-0 transition-colors" />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <span className={`text-xs px-2 py-0.5 rounded-full font-medium border ${CATEGORY_COLOR[e.lesson.subject] || "bg-gray-100 border-gray-200 text-gray-700"}`}>
@@ -110,7 +110,7 @@ export default function ChildExtraWorkPage() {
                           )}
                           {e.lesson.lesson_url && (
                             <a href={e.lesson.lesson_url} target="_blank" rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm px-4 py-1.5 rounded-lg mt-3 hover:bg-indigo-700 font-medium transition-colors">
+                              className="inline-flex items-center gap-2 bg-[#2F5D3A] text-white text-sm px-4 py-1.5 rounded-lg mt-3 hover:bg-[#6EA76E] font-medium transition-colors">
                               ▶ Open Link
                             </a>
                           )}
@@ -121,7 +121,7 @@ export default function ChildExtraWorkPage() {
                                 value={workUrls[e.id] || ""}
                                 onChange={ev => setWorkUrls(p => ({ ...p, [e.id]: ev.target.value }))}
                                 placeholder="https://…"
-                                className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
                               />
                               <button onClick={() => handleSubmit(e.id)} disabled={submitting === e.id || !workUrls[e.id]?.trim()}
                                 className="text-sm px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-40 font-medium transition-colors">

@@ -120,7 +120,7 @@ export default function UnitsPage() {
                     {unit.unit_url && (
                       <a href={unit.unit_url} target="_blank" rel="noopener noreferrer"
                         onClick={e => e.stopPropagation()}
-                        className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100 transition-colors">
+                        className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#2F5D3A] hover:text-[#6EA76E] bg-[#A8C67A]/10 px-2.5 py-1 rounded-lg border border-[#A8C67A]/30 transition-colors">
                         🔗 Open Unit
                       </a>
                     )}
@@ -158,19 +158,19 @@ export default function UnitsPage() {
                 <input autoFocus value={title} onChange={e => setTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSave()}
                   placeholder={`e.g. Year 7 Algebra — Unit 2`}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Unit link (optional)</label>
                 <input type="url" value={url} onChange={e => setUrl(e.target.value)}
                   placeholder="https://www.thenational.academy/…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Notes (optional)</label>
                 <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)}
                   placeholder="Any context for Oscar…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-indigo-400 font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
             </div>
 

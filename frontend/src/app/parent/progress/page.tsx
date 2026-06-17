@@ -82,7 +82,7 @@ export default function ProgressPage() {
 
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-            <p className="text-3xl font-bold text-indigo-600">{entries.length}</p>
+            <p className="text-3xl font-bold text-[#2F5D3A]">{entries.length}</p>
             <p className="text-sm text-gray-500 mt-1">Total Lessons</p>
           </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
@@ -100,8 +100,8 @@ export default function ProgressPage() {
             <button key={f} onClick={() => setFilter(f)}
               className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all capitalize ${
                 filter === f
-                  ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md"
-                  : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-indigo-300 shadow-sm"
+                  ? "bg-[#2F5D3A] text-white shadow-md"
+                  : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
               }`}>
               {f === "submitted" ? "Work Submitted" : f}
             </button>
@@ -140,14 +140,14 @@ export default function ProgressPage() {
 
                       {entry.lesson.lesson_url && (
                         <a href={entry.lesson.lesson_url} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-indigo-500 hover:underline mt-1 block">🔗 Lesson link</a>
+                          className="text-xs text-[#6EA76E] hover:underline mt-1 block">🔗 Lesson link</a>
                       )}
 
                       {/* Oscar's note */}
                       {entry.completed_note && (
-                        <div className="mt-2 p-2.5 bg-violet-50 rounded-xl border border-violet-100">
-                          <p className="text-xs font-bold text-violet-700 mb-0.5">📝 Oscar&apos;s note:</p>
-                          <p className="text-sm text-violet-800">{entry.completed_note}</p>
+                        <div className="mt-2 p-2.5 bg-[#F7F9F7] rounded-xl border border-[#A8C67A]/30">
+                          <p className="text-xs font-bold text-[#2F5D3A] mb-0.5">📝 Oscar&apos;s note:</p>
+                          <p className="text-sm text-gray-700">{entry.completed_note}</p>
                         </div>
                       )}
 
@@ -178,11 +178,11 @@ export default function ProgressPage() {
 
                       {/* Feedback form */}
                       {isOpen ? (
-                        <div className="mt-3 bg-indigo-50 border border-indigo-100 rounded-xl p-3">
+                        <div className="mt-3 bg-[#F7F9F7] border border-[#A8C67A]/30 rounded-xl p-3">
                           <div className="flex gap-1.5 mb-2 flex-wrap">
                             {EMOJIS.map(e => (
                               <button key={e} onClick={() => setFeedbackEmoji(e)}
-                                className={`text-xl rounded-lg p-1 transition-all ${feedbackEmoji === e ? "bg-indigo-200 scale-110" : "hover:bg-indigo-100"}`}>
+                                className={`text-xl rounded-lg p-1 transition-all ${feedbackEmoji === e ? "bg-[#A8C67A]/40 scale-110" : "hover:bg-[#A8C67A]/20"}`}>
                                 {e}
                               </button>
                             ))}
@@ -190,7 +190,7 @@ export default function ProgressPage() {
                           <textarea rows={2} value={feedbackMsg} onChange={e => setFeedbackMsg(e.target.value)}
                             placeholder="Great work on this lesson! Next time try…"
                             autoFocus
-                            className="w-full text-sm border-2 border-indigo-200 rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-400 font-medium resize-none bg-white" />
+                            className="w-full text-sm border-2 border-[#A8C67A]/40 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] font-medium resize-none bg-white" />
                           <div className="flex gap-2 mt-2">
                             <button onClick={() => handleSendFeedback(entry.id)}
                               disabled={sendingFeedback || !feedbackMsg.trim()}
@@ -205,7 +205,7 @@ export default function ProgressPage() {
                         </div>
                       ) : (
                         <button onClick={() => { setFeedbackOpen(entry.id); setFeedbackMsg(""); setFeedbackEmoji("⭐"); }}
-                          className="mt-2 text-xs text-indigo-500 hover:text-indigo-700 font-bold hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors border border-indigo-100">
+                          className="mt-2 text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold hover:bg-[#F7F9F7] px-3 py-1 rounded-lg transition-colors border border-[#A8C67A]/30">
                           {entryFeedback.length > 0 ? "💬 Add another" : "💬 Leave feedback for Oscar"}
                         </button>
                       )}

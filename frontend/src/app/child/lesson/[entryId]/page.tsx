@@ -57,7 +57,7 @@ export default function LessonDetailPage() {
       <div className="max-w-3xl mx-auto px-4 py-8">
 
         <button onClick={() => router.push("/child")}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-indigo-600 mb-6 transition-colors">
+          className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#6EA76E] mb-6 transition-colors">
           ← Back to today&apos;s lessons
         </button>
 
@@ -66,7 +66,7 @@ export default function LessonDetailPage() {
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">
+                <span className="text-xs bg-[#A8C67A]/20 text-[#2F5D3A] px-2 py-0.5 rounded-full font-medium">
                   {entry.lesson.subject}
                 </span>
                 {oakUrl && (
@@ -81,7 +81,7 @@ export default function LessonDetailPage() {
             <button
               onClick={handleToggle}
               disabled={completing}
-              className={`shrink-0 px-5 py-2 rounded-xl font-medium text-sm transition-colors ${entry.is_complete ? "bg-green-100 text-green-700 hover:bg-green-200" : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
+              className={`shrink-0 px-5 py-2 rounded-xl font-medium text-sm transition-colors ${entry.is_complete ? "bg-green-100 text-green-700 hover:bg-green-200" : "bg-[#2F5D3A] text-white hover:bg-[#6EA76E]"}`}
             >
               {completing ? "…" : entry.is_complete ? "✓ Completed" : "Mark Done"}
             </button>
@@ -102,12 +102,12 @@ export default function LessonDetailPage() {
               href={oakUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl p-6 transition-colors shadow-sm"
+              className="flex items-center gap-5 bg-[#2F5D3A] hover:bg-[#6EA76E] text-white rounded-2xl p-6 transition-colors shadow-sm"
             >
               <span className="text-4xl">▶️</span>
               <div>
                 <p className="font-bold text-lg">Open Lesson</p>
-                <p className="text-indigo-200 text-sm">Click to open the lesson link</p>
+                <p className="text-white/60 text-sm">Click to open the lesson link</p>
               </div>
               <span className="ml-auto text-2xl">→</span>
             </a>

@@ -125,10 +125,10 @@ export default function CodingPage() {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="font-semibold text-gray-700">Overall Progress</span>
-            <span className="text-indigo-600 font-bold">{totalDone} / {TOTAL} lessons · {overallPct}%</span>
+            <span className="text-[#2F5D3A] font-bold">{totalDone} / {TOTAL} lessons · {overallPct}%</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-4 rounded-full transition-all duration-500"
+            <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-4 rounded-full transition-all duration-500"
               style={{ width: `${overallPct}%` }} />
           </div>
           {totalDone === TOTAL && (

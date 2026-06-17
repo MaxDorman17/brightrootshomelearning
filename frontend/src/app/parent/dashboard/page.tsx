@@ -16,10 +16,10 @@ const TIMETABLE_SUBJECTS = new Set([
 ]);
 
 const QUICK_LINKS = [
-  { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-violet-500", to: "to-purple-600" },
+  { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
   { href: "/parent/extra-work", label: "Extra Work", icon: "📋", desc: "Projects & tasks", from: "from-amber-500", to: "to-orange-500" },
   { href: "/coding", label: "Coding", icon: "💻", desc: "Oscar's coding", from: "from-emerald-500", to: "to-teal-500" },
-  { href: "/parent/report", label: "Report", icon: "📈", desc: "Analytics", from: "from-blue-500", to: "to-indigo-500" },
+  { href: "/parent/report", label: "Report", icon: "📈", desc: "Analytics", from: "from-blue-500", to: "to-cyan-500" },
   { href: "/parent/progress", label: "Progress", icon: "📊", desc: "Submitted work", from: "from-pink-500", to: "to-rose-500" },
 ];
 
@@ -72,9 +72,9 @@ export default function ParentDashboardPage() {
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM")}`;
 
   const statCards = [
-    { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-violet-500", to: "to-purple-600", shadow: "shadow-purple-300/50" },
+    { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-[#2F5D3A]", to: "to-[#6EA76E]", shadow: "shadow-green-900/20" },
     { label: "Completed", value: loading ? "—" : weekComplete, icon: "✅", from: "from-emerald-400", to: "to-teal-500", shadow: "shadow-emerald-300/50" },
-    { label: "Week Progress", value: loading ? "—" : `${weekPct}%`, icon: "📈", from: "from-blue-400", to: "to-indigo-500", shadow: "shadow-blue-300/50" },
+    { label: "Week Progress", value: loading ? "—" : `${weekPct}%`, icon: "📈", from: "from-[#F5B841]", to: "to-amber-500", shadow: "shadow-yellow-400/30" },
     { label: "Work Submitted", value: loading ? "—" : totalSubmitted, icon: "📎", from: "from-orange-400", to: "to-pink-500", shadow: "shadow-orange-300/50" },
   ];
 
@@ -106,10 +106,10 @@ export default function ParentDashboardPage() {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
           <div className="flex justify-between text-sm mb-2">
             <span className="font-bold text-gray-700">Week of {weekLabel}</span>
-            <span className="text-indigo-600 font-extrabold">{weekComplete} / {weekTotal}</span>
+            <span className="text-[#2F5D3A] font-extrabold">{weekComplete} / {weekTotal}</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div className="bg-gradient-to-r from-violet-500 to-indigo-500 h-4 rounded-full transition-all duration-700 shadow-inner"
+            <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-4 rounded-full transition-all duration-700 shadow-inner"
               style={{ width: `${weekPct}%` }} />
           </div>
           {weekTotal > 0 && weekComplete === weekTotal && (
@@ -123,7 +123,7 @@ export default function ParentDashboardPage() {
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Today — {format(new Date(), "EEEE")}</h2>
               {todayEntries.length > 0 && (
-                <span className="text-xs font-bold text-indigo-600">{todayDone}/{todayEntries.length}</span>
+                <span className="text-xs font-bold text-[#2F5D3A]">{todayDone}/{todayEntries.length}</span>
               )}
             </div>
             {loading ? <p className="text-sm text-gray-400">Loading…</p>
@@ -145,17 +145,17 @@ export default function ParentDashboardPage() {
           </div>
 
           {/* Coding progress */}
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100 shadow-sm p-5">
-            <h2 className="text-sm font-extrabold text-indigo-800 mb-1">💻 Coding Progress</h2>
-            <p className="text-xs text-indigo-500 font-semibold mb-4">{codingDone} of {TOTAL_CODING} lessons</p>
-            <div className="w-full bg-indigo-100 rounded-full h-3 mb-3 overflow-hidden">
-              <div className="bg-gradient-to-r from-indigo-500 to-violet-500 h-3 rounded-full transition-all"
+          <div className="bg-[#F7F9F7] rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+            <h2 className="text-sm font-extrabold text-[#2F5D3A] mb-1">💻 Coding Progress</h2>
+            <p className="text-xs text-[#6EA76E] font-semibold mb-4">{codingDone} of {TOTAL_CODING} lessons</p>
+            <div className="w-full bg-[#A8C67A]/20 rounded-full h-3 mb-3 overflow-hidden">
+              <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-3 rounded-full transition-all"
                 style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }} />
             </div>
-            <p className="text-2xl font-extrabold text-indigo-700">
+            <p className="text-2xl font-extrabold text-[#2F5D3A]">
               {Math.round((codingDone / TOTAL_CODING) * 100)}%
             </p>
-            <Link href="/coding" className="text-xs text-indigo-500 hover:text-indigo-700 font-bold mt-2 block">View curriculum →</Link>
+            <Link href="/coding" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold mt-2 block">View curriculum →</Link>
           </div>
 
           {/* Recent submissions */}
@@ -169,10 +169,10 @@ export default function ParentDashboardPage() {
                     <div key={e.id}>
                       <p className="text-xs text-gray-400 font-semibold">{e.lesson.subject} · {format(parseISO(e.scheduled_date), "d MMM")}</p>
                       <a href={e.completed_work_url!} target="_blank" rel="noopener noreferrer"
-                        className="text-sm text-indigo-600 hover:underline font-bold line-clamp-1">{e.lesson.title}</a>
+                        className="text-sm text-[#2F5D3A] hover:underline font-bold line-clamp-1">{e.lesson.title}</a>
                     </div>
                   ))}
-                  <Link href="/parent/progress" className="text-xs text-indigo-500 hover:text-indigo-700 font-bold pt-1 block">View all →</Link>
+                  <Link href="/parent/progress" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold pt-1 block">View all →</Link>
                 </div>
               )}
           </div>
@@ -200,7 +200,7 @@ export default function ParentDashboardPage() {
                       </div>
                     );
                   })}
-                  <Link href="/parent/extra-work" className="text-xs text-indigo-500 hover:text-indigo-700 font-bold pt-1 block">Manage →</Link>
+                  <Link href="/parent/extra-work" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold pt-1 block">Manage →</Link>
                 </div>
               )}
           </div>

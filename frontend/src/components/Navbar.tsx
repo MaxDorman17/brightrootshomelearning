@@ -78,12 +78,12 @@ export default function Navbar() {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <nav className="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 shadow-lg shadow-indigo-500/30 sticky top-0 z-50">
+    <nav className="bg-white border-b border-[#A8C67A]/40 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-1 min-w-0">
-            <Link href={home} className="flex items-center gap-2 text-white font-extrabold text-lg shrink-0 mr-2">
+            <Link href={home} className="flex items-center gap-2 font-extrabold text-lg shrink-0 mr-2 text-[#2F5D3A]">
               <Image src="/logo.png" alt="Bright Roots" width={36} height={36} className="rounded-lg" />
               <span className="hidden sm:block">Bright Roots</span>
             </Link>
@@ -94,11 +94,10 @@ export default function Navbar() {
                 <Link key={link.href} href={link.href}
                   className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all relative ${
                     isActive(link.href)
-                      ? "bg-white/25 text-white shadow-inner"
-                      : "text-white/70 hover:bg-white/15 hover:text-white"
+                      ? "bg-[#2F5D3A] text-white shadow-sm"
+                      : "text-[#2F5D3A]/70 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"
                   }`}>
                   {link.label}
-                  {/* Notification dot on "Today" for child when there's unread feedback */}
                   {link.href === "/child" && unreadCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
                       {unreadCount > 9 ? "9+" : unreadCount}
@@ -114,8 +113,8 @@ export default function Navbar() {
                     onClick={() => setMoreOpen(v => !v)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1 ${
                       moreActive || moreOpen
-                        ? "bg-white/25 text-white shadow-inner"
-                        : "text-white/70 hover:bg-white/15 hover:text-white"
+                        ? "bg-[#2F5D3A] text-white shadow-sm"
+                        : "text-[#2F5D3A]/70 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"
                     }`}>
                     More
                     <svg className={`w-3.5 h-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -123,14 +122,14 @@ export default function Navbar() {
                     </svg>
                   </button>
                   {moreOpen && (
-                    <div className="absolute top-full left-0 mt-1.5 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    <div className="absolute top-full left-0 mt-1.5 w-44 bg-white rounded-2xl shadow-xl border border-[#A8C67A]/30 overflow-hidden z-50">
                       {moreLinks.map(link => (
                         <Link key={link.href} href={link.href}
                           onClick={() => setMoreOpen(false)}
                           className={`block px-4 py-2.5 text-sm font-semibold transition-colors ${
                             isActive(link.href)
-                              ? "bg-indigo-50 text-indigo-700"
-                              : "text-gray-700 hover:bg-gray-50"
+                              ? "bg-[#A8C67A]/20 text-[#2F5D3A]"
+                              : "text-gray-700 hover:bg-[#F7F9F7]"
                           }`}>
                           {link.label}
                         </Link>
@@ -145,19 +144,19 @@ export default function Navbar() {
           {/* Right: avatar + logout */}
           <div className="flex items-center gap-2">
             {username && (
-              <div className="flex items-center gap-2 bg-white/15 rounded-full pl-1 pr-3 py-1">
+              <div className="flex items-center gap-2 bg-[#F7F9F7] rounded-full pl-1 pr-3 py-1 border border-[#A8C67A]/30">
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${avatarColor}`}>
                   {username[0]?.toUpperCase()}
                 </div>
-                <span className="text-sm text-white font-semibold hidden sm:block">{username}</span>
+                <span className="text-sm text-[#2F5D3A] font-semibold hidden sm:block">{username}</span>
               </div>
             )}
             <button onClick={handleLogout}
-              className="text-white/70 hover:text-white text-sm px-3 py-1.5 rounded-lg hover:bg-white/15 transition-all font-semibold">
+              className="text-[#2F5D3A]/60 hover:text-[#2F5D3A] text-sm px-3 py-1.5 rounded-lg hover:bg-[#A8C67A]/20 transition-all font-semibold">
               Log out
             </button>
             <button onClick={() => setMenuOpen(v => !v)}
-              className="md:hidden text-white p-1.5 rounded-lg hover:bg-white/15 transition-all">
+              className="md:hidden text-[#2F5D3A] p-1.5 rounded-lg hover:bg-[#A8C67A]/20 transition-all">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 {menuOpen
                   ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -168,16 +167,16 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile dropdown — all links flat */}
+        {/* Mobile dropdown */}
         {menuOpen && (
-          <div className="md:hidden pb-3 border-t border-white/20 pt-2 space-y-0.5">
+          <div className="md:hidden pb-3 border-t border-[#A8C67A]/30 pt-2 space-y-0.5">
             {allLinks.map((link) => (
               <Link key={link.href} href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`block px-3 py-2 rounded-lg text-sm font-semibold transition-all relative ${
                   isActive(link.href)
-                    ? "bg-white/25 text-white"
-                    : "text-white/75 hover:bg-white/15 hover:text-white"
+                    ? "bg-[#2F5D3A] text-white"
+                    : "text-[#2F5D3A]/70 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"
                 }`}>
                 {link.label}
                 {link.href === "/child" && unreadCount > 0 && (

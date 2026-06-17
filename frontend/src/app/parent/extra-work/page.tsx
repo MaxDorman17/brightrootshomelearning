@@ -86,7 +86,7 @@ export default function ExtraWorkParentPage() {
             <p className="text-gray-500 mt-1">Assign reading, projects, and additional tasks for Oscar</p>
           </div>
           <button onClick={() => setShowForm(v => !v)}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors">
+            className="bg-[#2F5D3A] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#6EA76E] transition-colors">
             + Add Task
           </button>
         </div>
@@ -100,34 +100,34 @@ export default function ExtraWorkParentPage() {
                 <input autoFocus value={title} onChange={e => setTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSave()}
                   placeholder="e.g. Read Chapter 5 of Matilda"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                 <select value={category} onChange={e => setCategory(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]">
                   {CATEGORIES.map(c => <option key={c}>{c}</option>)}
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Due date</label>
                 <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Link (optional)</label>
                 <input type="url" value={link} onChange={e => setLink(e.target.value)} placeholder="https://…"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Notes for Oscar (optional)</label>
                 <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Any instructions…"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]" />
               </div>
             </div>
             <div className="flex gap-3">
               <button onClick={handleSave} disabled={saving || !title.trim()}
-                className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors">
+                className="bg-[#2F5D3A] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
                 {saving ? "Saving…" : "Add Task"}
               </button>
               <button onClick={() => setShowForm(false)}
@@ -169,7 +169,7 @@ export default function ExtraWorkParentPage() {
                           )}
                           {e.lesson.lesson_url && (
                             <a href={e.lesson.lesson_url} target="_blank" rel="noopener noreferrer"
-                              className="text-xs text-indigo-500 hover:underline mt-1 block truncate">🔗 {e.lesson.lesson_url}</a>
+                              className="text-xs text-[#6EA76E] hover:underline mt-1 block truncate">🔗 {e.lesson.lesson_url}</a>
                           )}
                           {e.completed_work_url && (
                             <div className="mt-3 p-3 bg-green-50 rounded-xl border border-green-100">
@@ -201,7 +201,7 @@ export default function ExtraWorkParentPage() {
                       </div>
                       {e.completed_work_url && (
                         <a href={e.completed_work_url} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-indigo-500 hover:underline shrink-0">View work →</a>
+                          className="text-xs text-[#6EA76E] hover:underline shrink-0">View work →</a>
                       )}
                     </div>
                   ))}
