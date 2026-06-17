@@ -13,7 +13,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401 && typeof window !== "undefined") {
+    if (err.response?.status === 401 && typeof window !== "undefined" && !err.config?.url?.includes("/auth/login")) {
       localStorage.clear();
       window.location.href = "/login";
     }

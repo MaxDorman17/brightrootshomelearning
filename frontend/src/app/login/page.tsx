@@ -123,10 +123,11 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Quick hint */}
-          <p className="text-xs text-gray-400 text-center mt-5 font-medium">
-            {mode === "login" ? "Max & Oscar — use your username and password 1973" : "Ask Max to set up your account"}
-          </p>
+          {mode === "register" && (
+            <p className="text-xs text-gray-400 text-center mt-5 font-medium">
+              Ask Max to set up your account
+            </p>
+          )}
         </div>
       </div>
     </div>
