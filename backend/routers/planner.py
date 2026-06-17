@@ -15,6 +15,7 @@ router = APIRouter(prefix="/api/planner", tags=["planner"])
 class ShiftDayRequest(BaseModel):
     from_date: date
     to_date: date
+    direction: str = "forward"
 
 
 class SubmitWorkUrl(BaseModel):
@@ -88,6 +89,13 @@ def _next_weekday(d: date) -> date:
     return d
 
 
+def _prev_weekday(d: date) -> date:
+    d = d - timedelta(days=1)
+    while d.weekday() >= 5:
+        d -= timedelta(days=1)
+    return d
+
+
 @router.post("/shift-day")
 def shift_day(
     body: ShiftDayRequest,
@@ -98,7 +106,7 @@ def shift_day(
         PlannerEntry.scheduled_date >= body.from_date
     ).all()
     for e in entries:
-        e.scheduled_date = _next_weekday(e.scheduled_date)
+        e.scheduled_date = _prev_weekday(e.scheduled_date) if body.direction == "backward" else _next_weekday(e.scheduled_date)
     db.commit()
     return {"moved": len(entries)}
 

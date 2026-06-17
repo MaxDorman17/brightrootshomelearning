@@ -95,11 +95,18 @@ interface ShiftConfirm {
   toDate: string;
   fromLabel: string;
   toLabel: string;
+  direction: "forward" | "backward";
 }
 
 function nextWeekday(dateStr: string): string {
   const d = new Date(dateStr + "T12:00:00");
   do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
+  return format(d, "yyyy-MM-dd");
+}
+
+function prevWeekday(dateStr: string): string {
+  const d = new Date(dateStr + "T12:00:00");
+  do { d.setDate(d.getDate() - 1); } while (d.getDay() === 0 || d.getDay() === 6);
   return format(d, "yyyy-MM-dd");
 }
 
@@ -277,7 +284,7 @@ export default function ParentPlanner() {
     if (!shiftConfirm) return;
     setShifting(true);
     try {
-      await shiftDay(shiftConfirm.fromDate, shiftConfirm.toDate);
+      await shiftDay(shiftConfirm.fromDate, shiftConfirm.toDate, shiftConfirm.direction);
       await loadData();
       setShiftConfirm(null);
     } finally { setShifting(false); }
@@ -455,20 +462,36 @@ export default function ParentPlanner() {
                         )}
                         {!dayOff && (() => {
                           const dayStr = format(dayDate, "yyyy-MM-dd");
-                          const toDate = nextWeekday(dayStr);
-                          const toLabel = format(new Date(toDate + "T12:00:00"), "EEE d MMM");
+                          const toFwd = nextWeekday(dayStr);
+                          const toBwd = prevWeekday(dayStr);
+                          const fromLabel = format(dayDate, "EEE d MMM");
                           return (
-                            <button
-                              onClick={() => setShiftConfirm({
-                                fromDate: dayStr,
-                                toDate,
-                                fromLabel: format(dayDate, "EEE d MMM"),
-                                toLabel,
-                              })}
-                              title={`Shift all lessons from ${format(dayDate, "EEE d MMM")} onwards forward 1 day`}
-                              className="text-xs px-1.5 py-0.5 rounded-md font-bold bg-black/10 hover:bg-black/20 text-gray-600 transition-all">
-                              →
-                            </button>
+                            <>
+                              <button
+                                onClick={() => setShiftConfirm({
+                                  fromDate: dayStr,
+                                  toDate: toBwd,
+                                  fromLabel,
+                                  toLabel: format(new Date(toBwd + "T12:00:00"), "EEE d MMM"),
+                                  direction: "backward",
+                                })}
+                                title={`Shift all lessons from ${fromLabel} onwards back 1 day`}
+                                className="text-xs px-1.5 py-0.5 rounded-md font-bold bg-black/10 hover:bg-black/20 text-gray-600 transition-all">
+                                ←
+                              </button>
+                              <button
+                                onClick={() => setShiftConfirm({
+                                  fromDate: dayStr,
+                                  toDate: toFwd,
+                                  fromLabel,
+                                  toLabel: format(new Date(toFwd + "T12:00:00"), "EEE d MMM"),
+                                  direction: "forward",
+                                })}
+                                title={`Shift all lessons from ${fromLabel} onwards forward 1 day`}
+                                className="text-xs px-1.5 py-0.5 rounded-md font-bold bg-black/10 hover:bg-black/20 text-gray-600 transition-all">
+                                →
+                              </button>
+                            </>
                           );
                         })()}
                       </div>
@@ -614,9 +637,13 @@ export default function ParentPlanner() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
           onClick={e => e.target === e.currentTarget && setShiftConfirm(null)}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <p className="text-lg font-extrabold text-gray-900 mb-2">📅 Push schedule forward</p>
+            <p className="text-lg font-extrabold text-gray-900 mb-2">
+              {shiftConfirm.direction === "forward" ? "📅 Push schedule forward" : "📅 Pull schedule back"}
+            </p>
             <p className="text-sm text-gray-600 mb-3">
-              Push <strong>all lessons from {shiftConfirm.fromLabel} onwards</strong> forward by 1 day to start on <strong>{shiftConfirm.toLabel}</strong>?
+              Move <strong>all lessons from {shiftConfirm.fromLabel} onwards</strong>{" "}
+              {shiftConfirm.direction === "forward" ? "forward" : "back"} 1 day
+              {" "}(to start on <strong>{shiftConfirm.toLabel}</strong>)?
             </p>
             <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2 mb-4">
               This includes every future week too — the whole schedule shifts, nothing gets lost.
