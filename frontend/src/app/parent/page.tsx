@@ -139,6 +139,14 @@ export default function ParentPlanner() {
   const [shiftConfirm, setShiftConfirm] = useState<ShiftConfirm | null>(null);
   const [shifting, setShifting] = useState(false);
 
+  const [quickAdd, setQuickAdd] = useState<{ title: string; url: string } | null>(null);
+  const [qaTitle, setQaTitle] = useState("");
+  const [qaSubject, setQaSubject] = useState("");
+  const [qaDayIndex, setQaDayIndex] = useState(0);
+  const [qaAssignedTo, setQaAssignedTo] = useState<number | null>(null);
+  const [qaSaving, setQaSaving] = useState(false);
+  const [showBookmarklet, setShowBookmarklet] = useState(false);
+
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
 
   const loadData = useCallback(async () => {
@@ -163,6 +171,18 @@ export default function ParentPlanner() {
     getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
     loadData();
     loadGoals();
+    // Detect bookmarklet params
+    const params = new URLSearchParams(window.location.search);
+    const lt = params.get("lesson_title");
+    const lu = params.get("lesson_url");
+    if (lt && lu) {
+      const dow = new Date().getDay();
+      const defaultDay = dow >= 1 && dow <= 5 ? dow - 1 : 0;
+      setQuickAdd({ title: lt, url: lu });
+      setQaTitle(lt);
+      setQaDayIndex(defaultDay);
+      window.history.replaceState({}, "", "/parent");
+    }
   }, [loadData, loadGoals, router]);
 
   const weekDates = DAYS.map((_, i) => addDays(weekStart, i));
@@ -280,6 +300,29 @@ export default function ParentPlanner() {
     } finally { setImportingHolidays(false); }
   };
 
+  const handleQuickAdd = async () => {
+    if (!quickAdd || !qaTitle.trim() || !qaSubject) return;
+    setQaSaving(true);
+    try {
+      const dayDate = weekDates[qaDayIndex];
+      const lessonRes = await createLesson({
+        title: qaTitle.trim(),
+        subject: qaSubject,
+        lesson_url: quickAdd.url || undefined,
+      });
+      await createPlannerEntry({
+        lesson_id: lessonRes.data.id,
+        scheduled_date: format(dayDate, "yyyy-MM-dd"),
+        assigned_to: qaAssignedTo ?? undefined,
+      });
+      await loadData();
+      setQuickAdd(null);
+      setQaTitle("");
+      setQaSubject("");
+      setQaAssignedTo(null);
+    } finally { setQaSaving(false); }
+  };
+
   const handleShiftDay = async () => {
     if (!shiftConfirm) return;
     setShifting(true);
@@ -321,6 +364,11 @@ export default function ParentPlanner() {
               </div>
             )}
 
+            <button onClick={() => setShowBookmarklet(v => !v)}
+              title="One-click lesson importer"
+              className={`px-3 py-1.5 text-sm border rounded-xl font-semibold shadow-sm transition-all ${showBookmarklet ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white/80 border-white/60 hover:bg-white"}`}>
+              🔗 Bookmarklet
+            </button>
             <button onClick={() => setShowHolidayPanel(v => !v)}
               className={`px-3 py-1.5 text-sm border rounded-xl font-semibold shadow-sm transition-all ${showHolidayPanel ? "bg-[#2F5D3A] text-white border-[#2F5D3A]" : "bg-white/80 border-white/60 hover:bg-white"}`}>
               🏴󠁧󠁢󠁳󠁣󠁴󠁿 Holidays
@@ -340,6 +388,30 @@ export default function ParentPlanner() {
             </button>
           </div>
         </div>
+
+        {/* Bookmarklet panel */}
+        {showBookmarklet && (
+          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+            <p className="text-sm font-extrabold text-gray-800 mb-1">🔗 One-click lesson importer</p>
+            <p className="text-xs text-gray-500 mb-4">
+              Drag the button below to your browser&apos;s bookmarks bar. Then when you&apos;re on Oak Academy (or any lesson site),
+              click it and the lesson title and link will be sent straight to the planner for you.
+            </p>
+            <div className="flex items-center gap-4 flex-wrap">
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a
+                href={`javascript:(function(){var t=encodeURIComponent(document.title);var u=encodeURIComponent(location.href);location.href='https://brightrootshomelearning.co.uk/parent?lesson_title='+t+'&lesson_url='+u;})();`}
+                className="inline-flex items-center gap-2 bg-[#2F5D3A] text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm cursor-grab active:cursor-grabbing select-none"
+                onClick={e => { e.preventDefault(); alert("Drag this button to your bookmarks bar — don't click it here!"); }}>
+                📎 Add to Bright Roots
+              </a>
+              <p className="text-xs text-gray-400 italic">← drag this to your bookmarks bar</p>
+            </div>
+            <p className="text-xs text-gray-400 mt-3">
+              Works on Oak National Academy, BBC Bitesize, YouTube, and any other site.
+            </p>
+          </div>
+        )}
 
         {/* Scottish holiday import panel */}
         {showHolidayPanel && (
@@ -631,6 +703,75 @@ export default function ParentPlanner() {
           </div>
         </div>
       </div>
+
+      {/* Quick Add modal — from bookmarklet */}
+      {quickAdd && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+          onClick={e => e.target === e.currentTarget && setQuickAdd(null)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="text-2xl">📎</span>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Add to Planner</h3>
+                <p className="text-xs text-gray-400 truncate max-w-xs">{quickAdd.url}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Lesson title</label>
+                <input
+                  autoFocus
+                  value={qaTitle}
+                  onChange={e => setQaTitle(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E] text-sm"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Day</label>
+                  <select value={qaDayIndex} onChange={e => setQaDayIndex(Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E] text-sm">
+                    {DAYS.map((d, i) => (
+                      <option key={d} value={i}>{d} {format(weekDates[i], "d MMM")}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                  <select value={qaSubject} onChange={e => setQaSubject(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E] text-sm">
+                    <option value="">Pick subject…</option>
+                    {Array.from(new Set(Object.values(timetable).flat())).sort().map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {children.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Assign to</label>
+                  <select value={qaAssignedTo ?? ""}
+                    onChange={e => setQaAssignedTo(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6EA76E] text-sm">
+                    <option value="">All children</option>
+                    {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                  </select>
+                </div>
+              )}
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={handleQuickAdd} disabled={qaSaving || !qaTitle.trim() || !qaSubject}
+                className="flex-1 bg-[#2F5D3A] text-white py-2.5 rounded-xl font-bold hover:bg-[#6EA76E] transition-colors disabled:opacity-50">
+                {qaSaving ? "Adding…" : "Add to Planner"}
+              </button>
+              <button onClick={() => setQuickAdd(null)}
+                className="px-4 py-2.5 border border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Shift day confirmation */}
       {shiftConfirm && (
