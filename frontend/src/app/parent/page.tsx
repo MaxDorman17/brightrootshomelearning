@@ -73,6 +73,7 @@ const SUBJECT_COLORS: Record<string, string> = {
   "Design and Technology": "bg-red-50 border-red-200 text-red-800",
   "Life Skills": "bg-teal-50 border-teal-200 text-teal-800",
   Languages: "bg-rose-50 border-rose-200 text-rose-800",
+  "RSHE (PSHE)": "bg-violet-50 border-violet-200 text-violet-800",
 };
 
 const subjectDot: Record<string, string> = {
@@ -81,6 +82,7 @@ const subjectDot: Record<string, string> = {
   Cooking: "bg-orange-400", "Art & Design": "bg-pink-400",
   "Design and Technology": "bg-red-400", "Life Skills": "bg-teal-400",
   Languages: "bg-rose-400",
+  "RSHE (PSHE)": "bg-violet-400",
 };
 
 interface SlotModal {
