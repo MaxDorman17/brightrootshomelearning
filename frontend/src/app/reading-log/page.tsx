@@ -197,6 +197,10 @@ export default function ReadingLogPage() {
     setWorksheets(prev => prev.filter(w => w.id !== id));
   };
 
+  const visibleBooks = isParent && selectedChildId
+    ? books.filter(b => b.child_id === selectedChildId || b.child_id === null)
+    : books;
+
   // Monthly stats: completed books per month over last 6 months
   const monthlyStats = Array.from({ length: 6 }, (_, i) => {
     const monthDate = subMonths(new Date(), 5 - i);
@@ -211,10 +215,6 @@ export default function ReadingLogPage() {
   });
   const maxBooks = Math.max(...monthlyStats.map(m => m.count), 1);
   const totalPages = visibleBooks.filter(b => b.status === "completed").reduce((s, b) => s + (b.pages ?? 0), 0);
-
-  const visibleBooks = isParent && selectedChildId
-    ? books.filter(b => b.child_id === selectedChildId || b.child_id === null)
-    : books;
 
   const displayed = visibleBooks
     .filter(b => filter === "all" || b.status === filter)
