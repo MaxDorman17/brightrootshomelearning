@@ -81,18 +81,24 @@ def annotate_single(entry: PlannerEntry, user: User, db: Session) -> PlannerEntr
     return _to_out_with_comp(entry, comp)
 
 
+def _next_weekday(d: date) -> date:
+    d = d + timedelta(days=1)
+    while d.weekday() >= 5:
+        d += timedelta(days=1)
+    return d
+
+
 @router.post("/shift-day")
 def shift_day(
     body: ShiftDayRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    delta = timedelta(days=(body.to_date - body.from_date).days)
     entries = db.query(PlannerEntry).filter(
         PlannerEntry.scheduled_date >= body.from_date
     ).all()
     for e in entries:
-        e.scheduled_date = e.scheduled_date + delta
+        e.scheduled_date = _next_weekday(e.scheduled_date)
     db.commit()
     return {"moved": len(entries)}
 
