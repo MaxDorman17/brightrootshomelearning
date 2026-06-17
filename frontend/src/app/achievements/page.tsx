@@ -2,10 +2,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren } from "@/lib/api";
+import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren, getPolishSessions } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 
 const SEEN_KEY = "seen_badges";
 
@@ -32,6 +32,9 @@ interface BadgeData {
   submitted: number;
   coding: Set<string>;
   subjectCounts: Record<string, number>;
+  polishSessions: number;
+  polishStreak: number;
+  polishXp: number;
 }
 
 const BADGES: Badge[] = [
@@ -77,7 +80,28 @@ const BADGES: Badge[] = [
   { id: "pythonista",   icon: "🐍", title: "Pythonista",            desc: "Completed all Python lessons",              color: "from-green-500 to-emerald-600",   check: d => PYTHON_IDS.every(id => d.coding.has(id)) },
   { id: "web_dev",      icon: "🌐", title: "Web Developer",         desc: "Completed all Web Dev lessons",             color: "from-[#6EA76E] to-[#2F5D3A]",    check: d => WEB_IDS.every(id => d.coding.has(id)) },
   { id: "full_coding",  icon: "🚀", title: "Future Coder",          desc: "Completed the entire coding curriculum",    color: "from-[#2F5D3A] to-[#7A5C3E]",    check: d => d.coding.size >= 23 },
+
+  // --- Polish / Duolingo ---
+  { id: "dzien_dobry",  icon: "🇵🇱", title: "Dzień Dobry!",          desc: "Logged your first Polish practice session",  color: "from-red-500 to-rose-600",         check: d => d.polishSessions >= 1 },
+  { id: "polish_week",  icon: "🗣️", title: "Polska Week",            desc: "7-day Polish practice streak",              color: "from-red-600 to-red-700",          check: d => d.polishStreak >= 7 },
+  { id: "polish_fort",  icon: "🌍", title: "Language Learner",       desc: "14-day Polish practice streak",             color: "from-rose-500 to-red-700",         check: d => d.polishStreak >= 14 },
+  { id: "polish_month", icon: "🏅", title: "Miesiąc!",               desc: "30-day Polish practice streak",             color: "from-red-700 to-rose-900",         check: d => d.polishStreak >= 30 },
+  { id: "polish_ten",   icon: "📖", title: "Getting Fluent",         desc: "Practiced Polish 10 times",                 color: "from-orange-400 to-red-500",       check: d => d.polishSessions >= 10 },
+  { id: "polish_fifty", icon: "🎓", title: "Polyglot in Training",   desc: "Practiced Polish 50 times",                 color: "from-amber-500 to-red-600",        check: d => d.polishSessions >= 50 },
+  { id: "xp_500",       icon: "⚡", title: "XP Hunter",              desc: "Earned 500 XP on Duolingo",                 color: "from-yellow-400 to-orange-500",    check: d => d.polishXp >= 500 },
+  { id: "xp_1000",      icon: "💎", title: "XP Legend",              desc: "Earned 1,000 XP on Duolingo",              color: "from-amber-400 to-yellow-600",     check: d => d.polishXp >= 1000 },
 ];
+
+function computePolishStreak(dates: Set<string>): number {
+  let streak = 0;
+  let check = new Date();
+  check.setHours(0, 0, 0, 0);
+  while (dates.has(format(check, "yyyy-MM-dd"))) {
+    streak++;
+    check = subDays(check, 1);
+  }
+  return streak;
+}
 
 function computeStreak(entries: PlannerEntry[], daysOff: Set<string> = new Set()): number {
   const today = format(new Date(), "yyyy-MM-dd");
@@ -108,6 +132,7 @@ export default function AchievementsPage() {
   const celebrateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
+  const [polishSessions, setPolishSessions] = useState<{ date: string; xp: number | null }[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
@@ -115,10 +140,11 @@ export default function AchievementsPage() {
     setRole(r);
 
     const entriesFetch = r === "parent" ? getAllEntries() : getAllMyEntries();
-    Promise.all([entriesFetch, getCodingProgress(), getDaysOff()]).then(([eRes, cRes, dRes]) => {
+    Promise.all([entriesFetch, getCodingProgress(), getDaysOff(), getPolishSessions()]).then(([eRes, cRes, dRes, pRes]) => {
       setAllEntries(eRes.data);
       setCoding(new Set(cRes.data as string[]));
       setDaysOff(new Set((dRes.data as { date: string }[]).map(d => d.date)));
+      setPolishSessions(pRes.data);
       setLoading(false);
     });
     if (r === "parent") {
@@ -145,7 +171,10 @@ export default function AchievementsPage() {
       const s = e.lesson.subject;
       subjectCounts[s] = (subjectCounts[s] || 0) + 1;
     });
-    const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts };
+    const polishDates = new Set(polishSessions.map(s => s.date));
+    const polishStreak = computePolishStreak(polishDates);
+    const polishXp = polishSessions.reduce((sum, s) => sum + (s.xp ?? 0), 0);
+    const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, polishSessions: polishSessions.length, polishStreak, polishXp };
     const earned = BADGES.filter(b => b.check(data)).map(b => b.id);
 
     const seen: string[] = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
@@ -158,7 +187,7 @@ export default function AchievementsPage() {
       localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
     }
     return () => { if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current); };
-  }, [loading, allEntries, coding, selectedChildId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, allEntries, coding, selectedChildId, polishSessions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const entries = role === "parent" && selectedChildId
     ? allEntries.filter(e => e.assigned_to === selectedChildId || e.assigned_to === null)
@@ -172,7 +201,10 @@ export default function AchievementsPage() {
     const s = e.lesson.subject;
     subjectCounts[s] = (subjectCounts[s] || 0) + 1;
   });
-  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts };
+  const polishDates = new Set(polishSessions.map(s => s.date));
+  const polishStreak = computePolishStreak(polishDates);
+  const polishXp = polishSessions.reduce((sum, s) => sum + (s.xp ?? 0), 0);
+  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, polishSessions: polishSessions.length, polishStreak, polishXp };
   const earned = BADGES.filter(b => b.check(data));
   const locked = BADGES.filter(b => !b.check(data));
 
@@ -251,6 +283,21 @@ export default function AchievementsPage() {
                 <p className="text-xs text-white/80 font-bold mt-1">Coding Lessons</p>
               </div>
             </div>
+
+            {/* Polish stats strip */}
+            {polishSessions.length > 0 && (
+              <div className="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl px-5 py-3 mb-4 flex items-center gap-4 flex-wrap">
+                <span className="text-2xl">🇵🇱</span>
+                <div>
+                  <p className="font-extrabold text-red-800 text-sm">Polish with Duolingo</p>
+                  <p className="text-red-600 text-xs font-semibold">
+                    {polishSessions.length} session{polishSessions.length !== 1 ? "s" : ""}
+                    {polishStreak > 0 ? ` · 🔥 ${polishStreak}-day streak` : ""}
+                    {polishXp > 0 ? ` · ${polishXp} XP` : ""}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Streak bar */}
             {streak > 0 && (
