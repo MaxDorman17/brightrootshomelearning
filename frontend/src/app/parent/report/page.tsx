@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults } from "@/lib/api";
-import { PlannerEntry, Child } from "@/types";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults } from "@/lib/api";
+import { PlannerEntry, Child, OakQuizResult } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
 
@@ -30,6 +30,22 @@ const TOTAL_CODING = TRACKS.reduce((s, t) => s + t.count, 0);
 
 type Period = "week" | "month" | "all";
 
+const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
+
+function QuizScoreBadge({ label, score, total }: { label: string; score: number; total: number }) {
+  const pct = total === 0 ? 0 : Math.round((score / total) * 100);
+  const colors = pct >= 80
+    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+    : pct >= 50
+    ? "bg-amber-50 text-amber-700 border-amber-200"
+    : "bg-red-50 text-red-600 border-red-200";
+  return (
+    <span className={`inline-flex items-center gap-1 text-[11px] font-bold border rounded-full px-2 py-0.5 ${colors}`}>
+      {label} {score}/{total}
+    </span>
+  );
+}
+
 export default function ReportPage() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
@@ -39,16 +55,26 @@ export default function ReportPage() {
   const [period, setPeriod] = useState<Period>("week");
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string}[]>([]);
+  const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    Promise.all([getAllEntries(), getCodingProgress(), getChildren(), getSpellingResults()]).then(([eRes, cRes, childRes, sRes]) => {
+    const toMap = (rows: OakQuizResult[]) =>
+      Object.fromEntries(rows.map(r => [r.url, r]));
+    Promise.all([getAllEntries(), getCodingProgress(), getChildren(), getSpellingResults(), getOakQuizResults()]).then(([eRes, cRes, childRes, sRes, qRes]) => {
       setEntries(eRes.data);
       setCodingDone((cRes.data as string[]).length);
       setChildren(childRes.data);
       setAllSpellingResults(sRes.data);
+      setQuizResults(toMap(qRes.data));
       setLoading(false);
     });
+    // Fetch scores for any share links that aren't cached yet, then reload
+    refreshOakQuizResults().then(res => {
+      if (res.data.added > 0) {
+        getOakQuizResults().then(qRes => setQuizResults(toMap(qRes.data)));
+      }
+    }).catch(() => {});
   }, [router]);
 
   const selectedChild = children.find(c => c.id === selectedChildId);
@@ -396,6 +422,21 @@ export default function ReportPage() {
                           <span className="text-xs text-gray-400">{format(parseISO(e.scheduled_date), "d MMM yyyy")}</span>
                         </div>
                         <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
+                        {(() => {
+                          const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
+                          const r = shareUrl ? quizResults[shareUrl] : undefined;
+                          if (!r) return null;
+                          return (
+                            <div className="flex items-center gap-1.5 flex-wrap mt-1 mb-0.5">
+                              {r.starter_total != null && r.starter_score != null && (
+                                <QuizScoreBadge label="Starter quiz" score={r.starter_score} total={r.starter_total} />
+                              )}
+                              {r.exit_total != null && r.exit_score != null && (
+                                <QuizScoreBadge label="Exit quiz" score={r.exit_score} total={r.exit_total} />
+                              )}
+                            </div>
+                          );
+                        })()}
                         <a href={e.completed_work_url!} target="_blank" rel="noopener noreferrer"
                           className="text-xs text-[#6EA76E] hover:underline break-all">{e.completed_work_url}</a>
                       </div>

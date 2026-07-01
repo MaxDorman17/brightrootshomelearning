@@ -1,11 +1,14 @@
 import re
 import json
+import asyncio
 import httpx
 import concurrent.futures
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 from auth import get_current_user, require_parent
-from models import User
+from database import get_db, SessionLocal
+from models import User, OakQuizResult, PlannerEntry, PlannerCompletion
 from config import settings
 
 router = APIRouter(prefix="/api/oak", tags=["oak"])
@@ -189,3 +192,138 @@ async def import_unit(
         "unit_title": unit_title,
         "programme_slug": programme_slug,
     }
+
+
+# ---------------------------------------------------------------------------
+# Quiz results from Oak "share my results" links
+# ---------------------------------------------------------------------------
+
+OAK_SHARE_RE = re.compile(
+    r"https?://(?:www\.)?thenational\.academy/pupils/lessons/[^/?#]+/results/[^/?#]+/share"
+)
+
+SHARE_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; HomeschoolApp/1.0)"}
+
+
+def _extract_quiz_scores(html: str) -> dict | None:
+    """Pull starter/exit quiz scores out of the share page's embedded JSON.
+
+    The page contains: "sectionResults":{..."starter-quiz":{"grade":2,"numQuestions":6,...},
+    "exit-quiz":{"grade":5,"numQuestions":6,...}}
+    """
+    anchor = html.find('"sectionResults"')
+    if anchor == -1:
+        return None
+    region = html[anchor:]
+
+    def section(name: str):
+        i = region.find(f'"{name}"')
+        if i == -1:
+            return None, None
+        chunk = region[i:i + 200]
+        grade = re.search(r'"grade":(\d+)', chunk)
+        total = re.search(r'"numQuestions":(\d+)', chunk)
+        return (
+            int(grade.group(1)) if grade else None,
+            int(total.group(1)) if total else None,
+        )
+
+    starter_score, starter_total = section("starter-quiz")
+    exit_score, exit_total = section("exit-quiz")
+    if starter_total is None and exit_total is None:
+        return None
+    return {
+        "starter_score": starter_score,
+        "starter_total": starter_total,
+        "exit_score": exit_score,
+        "exit_total": exit_total,
+    }
+
+
+async def _fetch_share_scores(client: httpx.AsyncClient, url: str) -> dict | None:
+    try:
+        resp = await client.get(url, headers=SHARE_HEADERS)
+        if resp.status_code != 200:
+            return None
+        return _extract_quiz_scores(resp.text)
+    except httpx.RequestError:
+        return None
+
+
+def _upsert_result(db: Session, url: str, scores: dict) -> None:
+    row = db.query(OakQuizResult).filter(OakQuizResult.url == url).first()
+    if row:
+        for k, v in scores.items():
+            setattr(row, k, v)
+    else:
+        db.add(OakQuizResult(url=url, **scores))
+    db.commit()
+
+
+async def fetch_and_store_share_result(url: str) -> None:
+    """Background task: fetch one share link and cache its quiz scores."""
+    async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
+        scores = await _fetch_share_scores(client, url)
+    if scores is None:
+        return
+    db = SessionLocal()
+    try:
+        _upsert_result(db, url, scores)
+    finally:
+        db.close()
+
+
+@router.get("/quiz-results")
+def get_quiz_results(
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    rows = db.query(OakQuizResult).all()
+    return [
+        {
+            "url": r.url,
+            "starter_score": r.starter_score,
+            "starter_total": r.starter_total,
+            "exit_score": r.exit_score,
+            "exit_total": r.exit_total,
+        }
+        for r in rows
+    ]
+
+
+@router.post("/quiz-results/refresh")
+async def refresh_quiz_results(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_parent),
+):
+    """Fetch quiz scores for any submitted Oak share links not yet cached."""
+    urls: set = set()
+    for (u,) in db.query(PlannerEntry.completed_work_url).filter(
+        PlannerEntry.completed_work_url.is_not(None)
+    ).all():
+        if u and OAK_SHARE_RE.search(u):
+            urls.add(OAK_SHARE_RE.search(u).group(0))
+    for (u,) in db.query(PlannerCompletion.completed_work_url).filter(
+        PlannerCompletion.completed_work_url.is_not(None)
+    ).all():
+        if u and OAK_SHARE_RE.search(u):
+            urls.add(OAK_SHARE_RE.search(u).group(0))
+
+    cached = {r.url for r in db.query(OakQuizResult).all()}
+    missing = sorted(urls - cached)
+
+    added = 0
+    if missing:
+        sem = asyncio.Semaphore(6)
+        async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
+            async def fetch_one(u: str):
+                async with sem:
+                    return u, await _fetch_share_scores(client, u)
+
+            results = await asyncio.gather(*(fetch_one(u) for u in missing))
+        for u, scores in results:
+            if scores is not None:
+                _upsert_result(db, u, scores)
+                added += 1
+
+    return {"checked": len(missing), "added": added, "total_cached": len(cached) + added}

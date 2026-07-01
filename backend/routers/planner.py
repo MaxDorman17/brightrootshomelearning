@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_, exists as sa_exists, select
 from typing import List, Optional
@@ -7,6 +7,7 @@ from database import get_db
 from models import PlannerEntry, Lesson, User, WorkFeedback, PlannerCompletion
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
+from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/api/planner", tags=["planner"])
@@ -257,6 +258,7 @@ def mark_complete(
 def submit_work(
     entry_id: int,
     body: SubmitWorkUrl,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -265,6 +267,11 @@ def submit_work(
         raise HTTPException(status_code=404, detail="Entry not found")
     if current_user.role == "child" and entry.assigned_to is not None and entry.assigned_to != current_user.id:
         raise HTTPException(status_code=403, detail="Not your lesson")
+
+    # If this is an Oak "share my results" link, fetch quiz scores in the background
+    share_match = OAK_SHARE_RE.search(body.completed_work_url or "")
+    if share_match:
+        background_tasks.add_task(fetch_and_store_share_result, share_match.group(0))
 
     if current_user.role == "child" and entry.assigned_to is None:
         comp = db.query(PlannerCompletion).filter(

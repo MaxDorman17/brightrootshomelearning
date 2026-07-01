@@ -20,6 +20,14 @@ export interface PlannerEntry {
   lesson: Lesson;
 }
 
+export interface OakQuizResult {
+  url: string;
+  starter_score: number | null;
+  starter_total: number | null;
+  exit_score: number | null;
+  exit_total: number | null;
+}
+
 export interface Unit {
   id: number;
   subject: string;

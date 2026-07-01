@@ -200,6 +200,19 @@ class SpellingWord(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class OakQuizResult(Base):
+    """Cached quiz scores scraped from an Oak National Academy results share link."""
+    __tablename__ = "oak_quiz_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    url = Column(String(512), nullable=False, unique=True, index=True)
+    starter_score = Column(Integer, nullable=True)
+    starter_total = Column(Integer, nullable=True)
+    exit_score = Column(Integer, nullable=True)
+    exit_total = Column(Integer, nullable=True)
+    fetched_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class SpellingResult(Base):
     __tablename__ = "spelling_results"
 

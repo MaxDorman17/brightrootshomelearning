@@ -148,6 +148,8 @@ export const searchOakLessons = (q: string, subject: string, year: string) =>
   api.get("/api/oak/search", { params: { q, subject, year } });
 export const importOakUnit = (unit_url: string) =>
   api.post("/api/oak/import-unit", { unit_url });
+export const getOakQuizResults = () => api.get("/api/oak/quiz-results");
+export const refreshOakQuizResults = () => api.post("/api/oak/quiz-results/refresh");
 
 // Spellings
 export const getSpellingWords = (week_start: string) =>
