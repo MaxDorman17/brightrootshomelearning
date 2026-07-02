@@ -4,7 +4,15 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { clearAuth, getUsername, getRole } from "@/lib/auth";
-import { getUnreadFeedbackCount, getSubmissionCount } from "@/lib/api";
+import { getUnreadFeedbackCount, getPendingFeedback } from "@/lib/api";
+
+interface PendingItem {
+  entry_id: number;
+  title: string;
+  subject: string;
+  date: string;
+  child: string | null;
+}
 
 const PARENT_MAIN = [
   { href: "/parent/dashboard", label: "Dashboard" },
@@ -16,13 +24,13 @@ const PARENT_MAIN = [
 ];
 const PARENT_MORE = [
   { href: "/parent/report", label: "Report" },
-  { href: "/parent/progress", label: "Progress" },
+  { href: "/parent/progress", label: "Review & Feedback" },
   { href: "/achievements", label: "Achievements" },
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/children", label: "Children" },
   { href: "/parent/timetable", label: "Timetable" },
   { href: "/parent/print", label: "Print week" },
-  { href: "/polish", label: "🇵🇱 Polish" },
+  { href: "/polish", label: "🌍 Languages" },
   { href: "/spellings", label: "🔤 Spellings" },
 ];
 
@@ -32,7 +40,7 @@ const CHILD_MAIN = [
   { href: "/child/extra-work", label: "Extra Work" },
   { href: "/reading-log", label: "Reading" },
   { href: "/coding", label: "Coding" },
-  { href: "/polish", label: "🇵🇱 Polish" },
+  { href: "/polish", label: "🌍 Languages" },
   { href: "/spellings", label: "🔤 Spellings" },
 ];
 const CHILD_MORE = [
@@ -48,8 +56,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [submissionCount, setSubmissionCount] = useState(0);
+  const [pending, setPending] = useState<PendingItem[]>([]);
+  const [notifOpen, setNotifOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setUsername(getUsername() || "");
@@ -59,20 +69,28 @@ export default function Navbar() {
       getUnreadFeedbackCount().then(res => setUnreadCount(res.data.count)).catch(() => {});
     }
     if (r === "parent") {
-      getSubmissionCount().then(res => setSubmissionCount(res.data.count)).catch(() => {});
+      getPendingFeedback().then(res => setPending(res.data)).catch(() => {});
     }
   }, []);
 
-  // Close "More" dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
         setMoreOpen(false);
       }
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const openPendingEntry = (item: PendingItem) => {
+    setNotifOpen(false);
+    router.push(`/parent/progress?filter=submitted&entry=${item.entry_id}`);
+  };
 
   const handleLogout = () => { clearAuth(); router.push("/login"); };
 
@@ -128,11 +146,6 @@ export default function Navbar() {
                         : "text-[#2F5D3A]/70 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"
                     }`}>
                     More
-                    {submissionCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
-                        {submissionCount > 9 ? "9+" : submissionCount}
-                      </span>
-                    )}
                     <svg className={`w-3.5 h-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -157,8 +170,54 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Right: avatar + logout */}
+          {/* Right: notifications + avatar + logout */}
           <div className="flex items-center gap-2">
+            {role === "parent" && (
+              <div ref={notifRef} className="relative">
+                <button onClick={() => setNotifOpen(v => !v)}
+                  title="Work waiting for your feedback"
+                  className={`relative p-2 rounded-lg transition-all ${notifOpen ? "bg-[#A8C67A]/25 text-[#2F5D3A]" : "text-[#2F5D3A]/60 hover:bg-[#A8C67A]/20 hover:text-[#2F5D3A]"}`}>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-4-5.7V5a2 2 0 10-4 0v.3A6 6 0 006 11v3.2a2 2 0 01-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  {pending.length > 0 && (
+                    <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-0.5 bg-red-500 rounded-full text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
+                      {pending.length > 9 ? "9+" : pending.length}
+                    </span>
+                  )}
+                </button>
+                {notifOpen && (
+                  <div className="absolute top-full right-0 mt-1.5 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-[#A8C67A]/30 overflow-hidden z-50">
+                    <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between">
+                      <p className="text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waiting for feedback</p>
+                      {pending.length > 0 && (
+                        <span className="text-xs font-bold text-[#6EA76E]">{pending.length}</span>
+                      )}
+                    </div>
+                    {pending.length === 0 ? (
+                      <p className="px-4 py-6 text-sm text-gray-400 text-center">All caught up — nothing waiting 🎉</p>
+                    ) : (
+                      <div className="max-h-80 overflow-y-auto">
+                        {pending.slice(0, 10).map(item => (
+                          <button key={item.entry_id} onClick={() => openPendingEntry(item)}
+                            className="w-full text-left px-4 py-2.5 hover:bg-[#F7F9F7] transition-colors border-b border-gray-50 last:border-0">
+                            <p className="text-sm font-semibold text-gray-800 truncate">{item.title}</p>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {item.subject}{item.child ? ` · ${item.child}` : ""} · {item.date}
+                            </p>
+                          </button>
+                        ))}
+                        {pending.length > 10 && (
+                          <p className="px-4 py-2 text-xs text-gray-400 text-center">
+                            +{pending.length - 10} more on the Progress page
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
             {username && (
               <div className="flex items-center gap-2 bg-[#F7F9F7] rounded-full pl-1 pr-3 py-1 border border-[#A8C67A]/30">
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${avatarColor}`}>
@@ -216,7 +275,7 @@ export default function Navbar() {
             { href: "/units",        label: "Units",   icon: "📖" },
             { href: "/reading-log",  label: "Reading", icon: "📚" },
             { href: "/coding",       label: "Coding",  icon: "💻" },
-            { href: "/polish",       label: "Polish",  icon: "🇵🇱" },
+            { href: "/polish",       label: "Languages", icon: "🌍" },
             { href: "/spellings",    label: "Spell",   icon: "🔤" },
             { href: "/achievements", label: "Badges",  icon: "🏆" },
           ].map(tab => {

@@ -28,6 +28,7 @@ export default function ProgressPage() {
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "submitted" | "complete" | "incomplete">("all");
+  const [highlightId, setHighlightId] = useState<number | null>(null);
 
   // Feedback form state
   const [feedbackOpen, setFeedbackOpen] = useState<number | null>(null);
@@ -37,11 +38,23 @@ export default function ProgressPage() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
+    // Deep link support: /parent/progress?filter=submitted&entry=123 (from the notification bell)
+    const params = new URLSearchParams(window.location.search);
+    const f = params.get("filter");
+    if (f === "submitted" || f === "complete" || f === "incomplete") setFilter(f);
+    const entryParam = params.get("entry");
+    const entryId = entryParam ? Number(entryParam) : null;
+    if (entryId) setHighlightId(entryId);
     Promise.all([getAllEntries(), getFeedback(), getChildren()]).then(([eRes, fRes, cRes]) => {
       setEntries(eRes.data);
       setAllFeedback(fRes.data);
       setChildren(cRes.data);
       setLoading(false);
+      if (entryId) {
+        setTimeout(() => {
+          document.getElementById(`entry-${entryId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 150);
+      }
     });
   }, [router]);
 
@@ -86,7 +99,7 @@ export default function ProgressPage() {
         <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">
-              {selectedChild ? `${selectedChild.username}'s Progress` : "Progress"}
+              {selectedChild ? `${selectedChild.username} — Review & Feedback` : "Review & Feedback"}
             </h1>
             <p className="text-gray-500 mt-1">All lessons, submitted work, and your feedback</p>
           </div>
@@ -145,7 +158,10 @@ export default function ProgressPage() {
               const entryFeedback = getFeedbackForEntry(entry.id);
               const isOpen = feedbackOpen === entry.id;
               return (
-                <div key={entry.id} className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
+                <div key={entry.id} id={`entry-${entry.id}`}
+                  className={`bg-white/80 backdrop-blur-sm rounded-2xl border shadow-sm p-5 transition-all ${
+                    highlightId === entry.id ? "border-[#6EA76E] ring-2 ring-[#A8C67A]/50" : "border-white/60"
+                  }`}>
                   <div className="flex items-start gap-4 flex-wrap">
                     <div className={`mt-1 w-5 h-5 rounded-full shrink-0 flex items-center justify-center ${entry.is_complete ? "bg-green-500" : "bg-gray-200"}`}>
                       {entry.is_complete && (

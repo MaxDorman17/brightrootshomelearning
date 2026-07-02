@@ -218,6 +218,34 @@ def get_submission_count(
     return {"count": count}
 
 
+@router.get("/pending-feedback")
+def get_pending_feedback(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Submitted work that has no feedback yet — powers the notification bell."""
+    children = db.query(User).filter(User.parent_id == current_user.id).all()
+    child_ids = [c.id for c in children]
+    child_names = {c.id: c.username for c in children}
+    has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
+    entries = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).filter(
+        PlannerEntry.is_complete == True,
+        PlannerEntry.completed_work_url.is_not(None),
+        or_(PlannerEntry.assigned_to.in_(child_ids), PlannerEntry.assigned_to.is_(None)),
+        ~has_feedback,
+    ).order_by(PlannerEntry.scheduled_date.desc()).all()
+    return [
+        {
+            "entry_id": e.id,
+            "title": e.lesson.title,
+            "subject": e.lesson.subject,
+            "date": e.scheduled_date.isoformat(),
+            "child": child_names.get(e.assigned_to) if e.assigned_to else None,
+        }
+        for e in entries
+    ]
+
+
 @router.patch("/{entry_id}/complete", response_model=PlannerEntryOut)
 def mark_complete(
     entry_id: int,

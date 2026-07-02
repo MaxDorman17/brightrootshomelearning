@@ -80,8 +80,8 @@ export default function PolishPage() {
       {/* Hero */}
       <div className="bg-gradient-to-br from-[#2F5D3A] to-[#6EA76E] text-white">
         <div className="max-w-2xl mx-auto px-4 py-10 text-center">
-          <div className="text-6xl mb-3">🇵🇱</div>
-          <h1 className="text-3xl font-extrabold mb-1">Polish with Duolingo</h1>
+          <div className="text-6xl mb-3">🌍</div>
+          <h1 className="text-3xl font-extrabold mb-1">Languages with Duolingo</h1>
           <p className="text-white/70 font-semibold mb-6">Track your daily practice and build your streak!</p>
 
           {/* Stats row */}
@@ -195,7 +195,7 @@ export default function PolishPage() {
           <p className="text-gray-400 text-center py-8">Loading…</p>
         ) : sessions.length === 0 ? (
           <div className="text-center py-12 bg-white/60 rounded-2xl border border-dashed border-gray-200">
-            <p className="text-4xl mb-2">🇵🇱</p>
+            <p className="text-4xl mb-2">🌍</p>
             <p className="font-bold text-gray-500">No sessions yet</p>
             <p className="text-sm text-gray-400 mt-1">Open Duolingo and log your first practice above!</p>
           </div>
@@ -206,7 +206,7 @@ export default function PolishPage() {
               const label = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : format(parseISO(s.date), "EEE d MMM yyyy");
               return (
                 <div key={s.id} className="bg-white/80 border border-white/60 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-xl bg-[#A8C67A]/30 flex items-center justify-center text-lg shrink-0">🇵🇱</div>
+                  <div className="w-9 h-9 rounded-xl bg-[#A8C67A]/30 flex items-center justify-center text-lg shrink-0">🌍</div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-gray-900 text-sm">{label}</p>
                     {(s.xp || s.notes) && (

@@ -30,6 +30,15 @@ const TOTAL_CODING = TRACKS.reduce((s, t) => s + t.count, 0);
 
 type Period = "week" | "month" | "all";
 
+type Tab = "overview" | "attendance" | "work" | "spellings";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "overview", label: "📊 Overview" },
+  { id: "attendance", label: "📅 Attendance" },
+  { id: "work", label: "📝 Submitted Work" },
+  { id: "spellings", label: "🔤 Spellings" },
+];
+
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
 
 function QuizScoreBadge({ label, score, total }: { label: string; score: number; total: number }) {
@@ -53,6 +62,8 @@ export default function ReportPage() {
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("week");
+  const [tab, setTab] = useState<Tab>("overview");
+  const [workWeeksBack, setWorkWeeksBack] = useState(0); // 0 = this week, 1 = last week…
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
@@ -61,9 +72,8 @@ export default function ReportPage() {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
     const toMap = (rows: OakQuizResult[]) =>
       Object.fromEntries(rows.map(r => [r.url, r]));
-    Promise.all([getAllEntries(), getCodingProgress(), getChildren(), getSpellingResults(), getOakQuizResults()]).then(([eRes, cRes, childRes, sRes, qRes]) => {
+    Promise.all([getAllEntries(), getChildren(), getSpellingResults(), getOakQuizResults()]).then(([eRes, childRes, sRes, qRes]) => {
       setEntries(eRes.data);
-      setCodingDone((cRes.data as string[]).length);
       setChildren(childRes.data);
       setAllSpellingResults(sRes.data);
       setQuizResults(toMap(qRes.data));
@@ -76,6 +86,20 @@ export default function ReportPage() {
       }
     }).catch(() => {});
   }, [router]);
+
+  // Coding progress is per child — show the selected child's, or the union across all children
+  useEffect(() => {
+    if (children.length === 0) return;
+    if (selectedChildId) {
+      getCodingProgress(selectedChildId).then(res => setCodingDone((res.data as string[]).length));
+    } else {
+      Promise.all(children.map(c => getCodingProgress(c.id))).then(results => {
+        const done = new Set<string>();
+        results.forEach(r => (r.data as string[]).forEach(id => done.add(id)));
+        setCodingDone(done.size);
+      });
+    }
+  }, [selectedChildId, children]);
 
   const selectedChild = children.find(c => c.id === selectedChildId);
 
@@ -104,6 +128,14 @@ export default function ReportPage() {
   }).filter(s => s.total > 0).sort((a, b) => b.pct - a.pct);
 
   const allSubmitted = childEntries.filter(e => e.completed_work_url);
+
+  // Submitted work, one week at a time
+  const workWeekStart = startOfWeek(subWeeks(new Date(), workWeeksBack), { weekStartsOn: 1 });
+  const workWeekEnd = endOfWeek(workWeekStart, { weekStartsOn: 1 });
+  const weekSubmitted = allSubmitted.filter(e =>
+    isWithinInterval(parseISO(e.scheduled_date), { start: workWeekStart, end: workWeekEnd })
+  );
+  const workWeekLabel = workWeeksBack === 0 ? "This Week" : workWeeksBack === 1 ? "Last Week" : `Week of ${format(workWeekStart, "d MMM yyyy")}`;
 
   // Attendance heatmap: last 16 weeks of school days
   const heatmapWeeks = Array.from({ length: 16 }, (_, i) => {
@@ -172,7 +204,8 @@ export default function ReportPage() {
           </div>
         </div>
 
-        {/* Period selector */}
+        {/* Period selector (Submitted Work tab has its own week navigation) */}
+        {tab !== "work" && (
         <div className="flex gap-2 mb-6">
           {(["week", "month", "all"] as Period[]).map(p => (
             <button key={p} onClick={() => setPeriod(p)}
@@ -180,6 +213,19 @@ export default function ReportPage() {
                 period === p ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
               }`}>
               {p === "week" ? "This Week" : p === "month" ? "This Month" : "All Time"}
+            </button>
+          ))}
+        </div>
+        )}
+
+        {/* Tab bar */}
+        <div className="flex gap-1 mb-6 bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl p-1.5 shadow-sm overflow-x-auto">
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={`flex-1 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
+                tab === t.id ? "bg-[#2F5D3A] text-white shadow" : "text-gray-500 hover:bg-[#A8C67A]/15 hover:text-[#2F5D3A]"
+              }`}>
+              {t.label}
             </button>
           ))}
         </div>
@@ -209,6 +255,7 @@ export default function ReportPage() {
             </div>
 
             {/* Coding card */}
+            {tab === "overview" && (
             <div className="bg-[#F7F9F7] rounded-2xl border border-[#A8C67A]/40 shadow-sm p-6 mb-6">
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">💻</span>
@@ -232,9 +279,10 @@ export default function ReportPage() {
                 ))}
               </div>
             </div>
+            )}
 
             {/* Attendance heatmap */}
-            {childEntries.length > 0 && (
+            {tab === "attendance" && childEntries.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Attendance — Last 16 Weeks</h2>
                 <div className="overflow-x-auto">
@@ -265,7 +313,7 @@ export default function ReportPage() {
             )}
 
             {/* Weekly trend chart */}
-            {childEntries.length > 0 && (
+            {tab === "attendance" && childEntries.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">Weekly Trend (Last 8 Weeks)</h2>
                 <div className="flex items-end justify-between gap-2 h-40">
@@ -291,7 +339,7 @@ export default function ReportPage() {
             )}
 
             {/* Subject breakdown */}
-            {subjectStats.length > 0 && (
+            {tab === "overview" && subjectStats.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">By Subject</h2>
                 <div className="space-y-4">
@@ -320,7 +368,7 @@ export default function ReportPage() {
             )}
 
             {/* Extra work summary */}
-            {extra.length > 0 && (
+            {tab === "overview" && extra.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Extra Work</h2>
                 <div className="flex items-center gap-4">
@@ -346,11 +394,16 @@ export default function ReportPage() {
             )}
 
             {/* Spelling scores */}
-            {(() => {
+            {tab === "spellings" && (() => {
               const spellingFiltered = allSpellingResults.filter(r =>
                 selectedChildId ? r.child_id === selectedChildId : true
               );
-              if (spellingFiltered.length === 0) return null;
+              if (spellingFiltered.length === 0) return (
+                <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
+                  <p className="text-4xl mb-3">🔤</p>
+                  <p className="text-gray-500">No spelling test scores yet.</p>
+                </div>
+              );
               const byWeek: Record<string, typeof spellingFiltered> = {};
               spellingFiltered.forEach(r => {
                 if (!byWeek[r.week_start]) byWeek[r.week_start] = [];
@@ -406,14 +459,38 @@ export default function ReportPage() {
               );
             })()}
 
-            {/* Submitted work */}
-            {allSubmitted.length > 0 && (
+            {/* Submitted work — one week at a time */}
+            {tab === "work" && (
+              <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm px-4 py-3 mb-6">
+                <button onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
+                  className="px-4 py-2 rounded-xl text-sm font-bold text-[#2F5D3A] hover:bg-[#A8C67A]/15 transition-colors">
+                  ← Previous week
+                </button>
+                <div className="text-center">
+                  <p className="text-sm font-bold text-gray-800">{workWeekLabel}</p>
+                  <p className="text-xs text-gray-400">{format(workWeekStart, "d MMM")} – {format(workWeekEnd, "d MMM yyyy")}</p>
+                </div>
+                <button onClick={() => setWorkWeeksBack(Math.max(0, workWeeksBack - 1))} disabled={workWeeksBack === 0}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
+                    workWeeksBack === 0 ? "text-gray-300 cursor-not-allowed" : "text-[#2F5D3A] hover:bg-[#A8C67A]/15"
+                  }`}>
+                  Next week →
+                </button>
+              </div>
+            )}
+            {tab === "work" && weekSubmitted.length === 0 && (
+              <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
+                <p className="text-4xl mb-3">📝</p>
+                <p className="text-gray-500">No work submitted {workWeeksBack === 0 ? "yet this week" : "this week"}.</p>
+              </div>
+            )}
+            {tab === "work" && weekSubmitted.length > 0 && (
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6">
                 <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                  All Submitted Work ({allSubmitted.length})
+                  Submitted Work — {workWeekLabel} ({weekSubmitted.length})
                 </h2>
                 <div className="space-y-3">
-                  {allSubmitted.slice(0, 15).map(e => (
+                  {weekSubmitted.map(e => (
                     <div key={e.id} className="flex items-start gap-3 border-b border-gray-50 pb-3 last:border-0 last:pb-0">
                       <span className={`mt-1 w-2 h-2 rounded-full shrink-0 ${SUBJECT_COLOR[e.lesson.subject] || "bg-gray-400"}`} />
                       <div className="flex-1 min-w-0">
@@ -442,16 +519,11 @@ export default function ReportPage() {
                       </div>
                     </div>
                   ))}
-                  {allSubmitted.length > 15 && (
-                    <p className="text-xs text-gray-400 text-center pt-1">
-                      Showing 15 of {allSubmitted.length} — visit Progress page for the full list.
-                    </p>
-                  )}
                 </div>
               </div>
             )}
 
-            {filtered.length === 0 && (
+            {((tab === "overview" && filtered.length === 0) || (tab === "attendance" && childEntries.length === 0)) && (
               <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
                 <p className="text-4xl mb-3">📊</p>
                 <p className="text-gray-500">No data for this period yet.</p>

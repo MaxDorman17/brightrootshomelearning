@@ -49,6 +49,7 @@ export const getWeekEntries = (startDate?: string, childId?: number) =>
 export const getTodayEntries = () => api.get("/api/planner/today");
 export const getAllEntries = () => api.get("/api/planner/all");
 export const getSubmissionCount = () => api.get("/api/planner/submission-count");
+export const getPendingFeedback = () => api.get("/api/planner/pending-feedback");
 export const getAllMyEntries = () => api.get("/api/planner/mine");
 export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number }) =>
   api.post("/api/planner/", data);
@@ -74,8 +75,10 @@ export const deleteFeedback = (id: number) => api.delete(`/api/feedback/${id}`);
 // Coding Progress (DB-backed, per-user)
 export const getCodingProgress = (childId?: number) =>
   api.get("/api/coding-progress/", { params: childId ? { child_id: childId } : {} });
-export const markCodingComplete = (lessonId: string) => api.post(`/api/coding-progress/${lessonId}`);
-export const markCodingIncomplete = (lessonId: string) => api.delete(`/api/coding-progress/${lessonId}`);
+export const markCodingComplete = (lessonId: string, childId?: number) =>
+  api.post(`/api/coding-progress/${lessonId}`, undefined, { params: childId ? { child_id: childId } : {} });
+export const markCodingIncomplete = (lessonId: string, childId?: number) =>
+  api.delete(`/api/coding-progress/${lessonId}`, { params: childId ? { child_id: childId } : {} });
 
 // Days Off
 export const getDaysOff = () => api.get("/api/days-off/");

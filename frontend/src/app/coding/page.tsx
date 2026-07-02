@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib/auth";
-import { getCodingProgress, markCodingComplete, markCodingIncomplete } from "@/lib/api";
+import { isAuthenticated, getRole } from "@/lib/auth";
+import { getCodingProgress, markCodingComplete, markCodingIncomplete, getChildren } from "@/lib/api";
+import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
 
 interface Lesson {
@@ -81,23 +82,51 @@ export default function CodingPage() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [isParent, setIsParent] = useState(false);
+  const [children, setChildren] = useState<Child[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
-    getCodingProgress().then(res => {
+    const parent = getRole() === "parent";
+    setIsParent(parent);
+    if (parent) {
+      // Parents view a child's progress — default to the first child
+      getChildren().then(res => {
+        const kids: Child[] = res.data;
+        setChildren(kids);
+        if (kids.length > 0) {
+          setSelectedChildId(kids[0].id);
+        } else {
+          setLoading(false);
+        }
+      });
+    } else {
+      getCodingProgress().then(res => {
+        setCompleted(new Set(res.data as string[]));
+        setLoading(false);
+      });
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!selectedChildId) return;
+    setLoading(true);
+    getCodingProgress(selectedChildId).then(res => {
       setCompleted(new Set(res.data as string[]));
       setLoading(false);
     });
-  }, [router]);
+  }, [selectedChildId]);
 
   const toggle = async (id: string) => {
     setToggling(id);
+    const childArg = isParent && selectedChildId ? selectedChildId : undefined;
     try {
       if (completed.has(id)) {
-        await markCodingIncomplete(id);
+        await markCodingIncomplete(id, childArg);
         setCompleted(prev => { const n = new Set(prev); n.delete(id); return n; });
       } else {
-        await markCodingComplete(id);
+        await markCodingComplete(id, childArg);
         setCompleted(prev => { const n = new Set(prev); n.add(id); return n; });
       }
     } finally { setToggling(null); }
@@ -117,9 +146,23 @@ export default function CodingPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">💻 Coding Curriculum</h1>
-          <p className="text-gray-500 mt-1">Learn to code step by step — from block coding all the way to Python and the web</p>
+        <div className="mb-6 flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">💻 Coding Curriculum</h1>
+            <p className="text-gray-500 mt-1">Learn to code step by step — from block coding all the way to Python and the web</p>
+          </div>
+          {isParent && children.length > 0 && (
+            <div className="flex items-center gap-2 bg-white/80 border border-white/60 rounded-xl px-3 py-1.5 shadow-sm">
+              <span className="text-xs font-bold text-gray-500">Viewing:</span>
+              <select
+                value={selectedChildId ?? ""}
+                onChange={e => setSelectedChildId(Number(e.target.value))}
+                className="text-sm font-semibold text-gray-800 bg-transparent focus:outline-none cursor-pointer"
+              >
+                {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+              </select>
+            </div>
+          )}
         </div>
 
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-8">
