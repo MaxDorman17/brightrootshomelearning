@@ -6,6 +6,7 @@ import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
+import { useMounted } from "@/lib/useMounted";
 import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
 
 const TOTAL_CODING = 23;
@@ -27,6 +28,7 @@ const QUICK_LINKS = [
 
 export default function ParentDashboardPage() {
   const router = useRouter();
+  const mounted = useMounted();
   const [weekEntries, setWeekEntries] = useState<PlannerEntry[]>([]);
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [codingDone, setCodingDone] = useState(0);
@@ -97,7 +99,7 @@ export default function ParentDashboardPage() {
           <h1 className="text-3xl font-extrabold text-gray-800">
             Welcome back, {parentName}! 👋
           </h1>
-          <p className="text-gray-500 font-medium mt-1">{format(new Date(), "EEEE, MMMM d, yyyy")}</p>
+          <p className="text-gray-500 font-medium mt-1">{mounted ? format(new Date(), "EEEE, MMMM d, yyyy") : " "}</p>
         </div>
 
         {/* Stat cards */}
@@ -114,7 +116,7 @@ export default function ParentDashboardPage() {
         {/* Week progress bar */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
           <div className="flex justify-between text-sm mb-2">
-            <span className="font-bold text-gray-700">Week of {weekLabel}</span>
+            <span className="font-bold text-gray-700">Week of {mounted ? weekLabel : " "}</span>
             <span className="text-[#2F5D3A] font-extrabold">{weekComplete} / {weekTotal}</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
@@ -130,7 +132,7 @@ export default function ParentDashboardPage() {
           {/* Today's lessons */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Today — {format(new Date(), "EEEE")}</h2>
+              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Today{mounted ? ` — ${format(new Date(), "EEEE")}` : ""}</h2>
               {todayEntries.length > 0 && (
                 <span className="text-xs font-bold text-[#2F5D3A]">{todayDone}/{todayEntries.length}</span>
               )}

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getWeekEntries, getTimetable, getChildren } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
+import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek } from "date-fns";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -28,6 +29,7 @@ function subjectColor(s: string) {
 
 export default function PrintPage() {
   const router = useRouter();
+  const mounted = useMounted();
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
@@ -160,7 +162,7 @@ export default function PrintPage() {
 
         {/* Print footer */}
         <div className="mt-6 pt-4 border-t border-gray-200 hidden print:block text-xs text-gray-400">
-          Bright Roots Home Learning · Printed {format(new Date(), "d MMMM yyyy")}
+          Bright Roots Home Learning · Printed {mounted ? format(new Date(), "d MMMM yyyy") : ""}
         </div>
       </div>
     </div>

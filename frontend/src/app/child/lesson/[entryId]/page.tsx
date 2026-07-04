@@ -5,11 +5,13 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getTodayEntries, toggleComplete } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
+import { useMounted } from "@/lib/useMounted";
 import { format } from "date-fns";
 
 export default function LessonDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const mounted = useMounted();
   const entryId = Number(params.entryId);
 
   const [entry, setEntry] = useState<PlannerEntry | null>(null);
@@ -74,7 +76,7 @@ export default function LessonDetailPage() {
                     🔗 Has Link
                   </span>
                 )}
-                <span className="text-xs text-gray-400">{format(new Date(), "EEEE, d MMMM")}</span>
+                <span className="text-xs text-gray-400">{mounted ? format(new Date(), "EEEE, d MMMM") : " "}</span>
               </div>
               <h1 className="text-xl font-bold text-gray-900">{entry.lesson.title}</h1>
             </div>

@@ -9,6 +9,7 @@ import {
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
+import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek, isToday } from "date-fns";
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
@@ -85,6 +86,7 @@ function CompletionRing({ done, total }: { done: number; total: number }) {
 
 export default function ChildDashboard() {
   const router = useRouter();
+  const mounted = useMounted();
   const [username, setUsername] = useState("");
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
@@ -257,8 +259,8 @@ export default function ChildDashboard() {
         <div className="bg-gradient-to-br from-[#2F5D3A] via-[#3d7a4e] to-[#6EA76E] rounded-3xl p-5 mb-4 text-white shadow-xl shadow-green-900/30">
           <div className="flex items-center gap-5 flex-wrap">
             <div className="flex-1 min-w-0">
-              <p className="text-white/60 text-xs font-bold uppercase tracking-wider">{format(new Date(), "EEEE, d MMMM yyyy")}</p>
-              <h1 className="text-2xl font-extrabold mt-0.5">{getGreeting()}, {username}! 👋</h1>
+              <p className="text-white/60 text-xs font-bold uppercase tracking-wider">{mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}</p>
+              <h1 className="text-2xl font-extrabold mt-0.5">{mounted ? getGreeting() : "Hello"}, {username}! 👋</h1>
               {todayTotalCount > 0 ? (
                 <p className="text-white/80 text-sm font-semibold mt-1">
                   {todayDoneCount === todayTotalCount
