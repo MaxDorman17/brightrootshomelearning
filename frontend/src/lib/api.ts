@@ -163,7 +163,9 @@ export const addSpellingWord = (data: { week_start: string; word: string }) =>
   api.post("/api/spellings/words", data);
 export const deleteSpellingWord = (id: number) =>
   api.delete(`/api/spellings/words/${id}`);
-export const saveSpellingResult = (data: { week_start: string; score: number; total: number; wrong_words: string[]; child_id?: number }) =>
+export const saveSpellingResult = (data: { week_start: string; score: number; total: number; wrong_words: string[]; child_id?: number; is_practice_round?: boolean }) =>
   api.post("/api/spellings/results", data);
 export const getSpellingResults = (params?: { week_start?: string; child_id?: number }) =>
   api.get("/api/spellings/results", { params });
+export const getWeakWords = (child_id: number, limit?: number) =>
+  api.get("/api/spellings/weak-words", { params: { child_id, ...(limit ? { limit } : {}) } });

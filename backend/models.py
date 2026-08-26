@@ -224,4 +224,5 @@ class SpellingResult(Base):
     score = Column(Integer, nullable=False)
     total = Column(Integer, nullable=False)
     wrong_words = Column(Text, nullable=True)  # JSON array
+    is_practice_round = Column(Boolean, default=False)
     taken_at = Column(DateTime(timezone=True), server_default=func.now())

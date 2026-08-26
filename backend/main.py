@@ -32,6 +32,12 @@ def run_migrations():
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE planner_entries ADD COLUMN is_extra BOOLEAN DEFAULT 0"))
                 conn.commit()
+    if "spelling_results" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("spelling_results")]
+        if "is_practice_round" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE spelling_results ADD COLUMN is_practice_round BOOLEAN DEFAULT 0"))
+                conn.commit()
 
 run_migrations()
 Base.metadata.create_all(bind=engine)

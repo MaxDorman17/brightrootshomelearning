@@ -65,7 +65,7 @@ export default function ReportPage() {
   const [tab, setTab] = useState<Tab>("overview");
   const [workWeeksBack, setWorkWeeksBack] = useState(0); // 0 = this week, 1 = last week…
   const [codingDone, setCodingDone] = useState(0);
-  const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string}[]>([]);
+  const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [exporting, setExporting] = useState(false);
 
@@ -455,14 +455,21 @@ export default function ReportPage() {
                           {byWeek[week].map(r => {
                             const pct = Math.round((r.score / r.total) * 100);
                             const child = children.find(c => c.id === r.child_id);
+                            const firstNormal = byWeek[week]
+                              .filter(x => x.child_id === r.child_id && !x.is_practice_round)
+                              .sort((a, b) => new Date(a.taken_at).getTime() - new Date(b.taken_at).getTime())[0];
+                            const isFirstNormal = !r.is_practice_round && firstNormal?.id === r.id;
+                            const delta = !r.is_practice_round && !isFirstNormal && firstNormal
+                              ? pct - Math.round((firstNormal.score / firstNormal.total) * 100)
+                              : null;
                             return (
-                              <div key={r.id} className="flex items-center gap-3">
+                              <div key={r.id} className="flex items-center gap-3 flex-wrap">
                                 <div className="w-8 text-right">
                                   <span className={`text-xs font-extrabold ${pct === 100 ? "text-emerald-600" : pct >= 70 ? "text-[#6EA76E]" : "text-orange-500"}`}>
                                     {pct}%
                                   </span>
                                 </div>
-                                <div className="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                                <div className="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden min-w-[60px]">
                                   <div
                                     className={`h-2.5 rounded-full transition-all ${pct === 100 ? "bg-emerald-500" : pct >= 70 ? "bg-[#6EA76E]" : "bg-orange-400"}`}
                                     style={{ width: `${pct}%` }}
@@ -471,6 +478,16 @@ export default function ReportPage() {
                                 <span className="text-xs text-gray-500 w-10 text-right shrink-0">{r.score}/{r.total}</span>
                                 {!selectedChildId && child && (
                                   <span className="text-xs text-gray-400 font-semibold w-16 truncate shrink-0">{child.username}</span>
+                                )}
+                                {r.is_practice_round && (
+                                  <span className="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold shrink-0">🔁 Practice</span>
+                                )}
+                                {delta !== null && (
+                                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
+                                    delta > 0 ? "bg-emerald-100 text-emerald-700" : delta < 0 ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-500"
+                                  }`}>
+                                    {delta > 0 ? `▲ +${delta}%` : delta < 0 ? `▼ ${delta}%` : "= no change"}
+                                  </span>
                                 )}
                                 {r.wrong_words.length > 0 && (
                                   <div className="flex gap-1 flex-wrap max-w-[35%]">

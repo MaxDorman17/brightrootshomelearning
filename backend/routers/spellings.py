@@ -12,6 +12,10 @@ from models import User, SpellingWord, SpellingResult
 
 router = APIRouter(prefix="/api/spellings", tags=["spellings"])
 
+# Safety ceiling, not a meaningful weekly target — prevents unbounded growth
+# from a runaway client loop while removing the old hard 10-word limit.
+MAX_WORDS_PER_WEEK = 50
+
 
 class AddWordRequest(BaseModel):
     week_start: date
@@ -24,6 +28,7 @@ class SaveResultRequest(BaseModel):
     total: int
     wrong_words: List[str] = []
     child_id: Optional[int] = None
+    is_practice_round: bool = False
 
 
 @router.get("/words")
@@ -58,8 +63,8 @@ def add_word(
         .filter(SpellingWord.parent_id == current_user.id, SpellingWord.week_start == body.week_start)
         .count()
     )
-    if existing_count >= 10:
-        raise HTTPException(status_code=400, detail="Maximum 10 words per week")
+    if existing_count >= MAX_WORDS_PER_WEEK:
+        raise HTTPException(status_code=400, detail=f"Maximum {MAX_WORDS_PER_WEEK} words per week")
     word = body.word.strip()
     if not word:
         raise HTTPException(status_code=400, detail="Word cannot be empty")
@@ -124,6 +129,7 @@ def save_result(
         score=body.score,
         total=body.total,
         wrong_words=json.dumps(body.wrong_words),
+        is_practice_round=body.is_practice_round,
     )
     db.add(result)
     db.commit()
@@ -135,6 +141,7 @@ def save_result(
         "score": result.score,
         "total": result.total,
         "wrong_words": body.wrong_words,
+        "is_practice_round": bool(result.is_practice_round),
         "taken_at": result.taken_at.isoformat() if result.taken_at else None,
     }
 
@@ -160,7 +167,40 @@ def get_results(
             "score": r.score,
             "total": r.total,
             "wrong_words": json.loads(r.wrong_words or "[]"),
+            "is_practice_round": bool(r.is_practice_round),
             "taken_at": r.taken_at.isoformat() if r.taken_at else None,
         }
         for r in results
     ]
+
+
+@router.get("/weak-words")
+def get_weak_words(
+    child_id: int,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Words this child has most often gotten wrong recently, ranked by frequency.
+    Derived entirely from existing SpellingResult.wrong_words history — no new
+    table. Family-scoped: 403s if child_id isn't one of this parent's own children."""
+    child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id).first()
+    if not child:
+        raise HTTPException(status_code=403, detail="Not your child")
+
+    recent = (
+        db.query(SpellingResult)
+        .filter(SpellingResult.child_id == child_id, SpellingResult.parent_id == current_user.id)
+        .order_by(SpellingResult.taken_at.desc())
+        .limit(50)
+        .all()
+    )
+    counts: dict = {}
+    for r in recent:
+        for w in json.loads(r.wrong_words or "[]"):
+            key = w.strip()
+            if key:
+                counts[key] = counts.get(key, 0) + 1
+
+    ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))
+    return [{"word": w, "times_wrong": c} for w, c in ranked[:limit]]

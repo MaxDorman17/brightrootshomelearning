@@ -9,17 +9,20 @@ import {
   deleteSpellingWord,
   saveSpellingResult,
   getSpellingResults,
+  getWeakWords,
   getChildren,
 } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import { format, startOfWeek, addWeeks, subWeeks } from "date-fns";
 
 interface SpellingWord { id: number; word: string; position: number; week_start: string; }
-interface SpellingResult { id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string; }
+interface SpellingResult { id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string; }
 interface Child { id: number; username: string; }
 interface TestEntry { word: string; answer: string; correct: boolean; }
 
-type TestView = "idle" | "testing" | "done";
+type TestView = "idle" | "learning" | "testing" | "done";
+
+const MAX_WORDS = 50;
 
 export default function SpellingsPage() {
   const router = useRouter();
@@ -31,23 +34,47 @@ export default function SpellingsPage() {
   const [results, setResults] = useState<SpellingResult[]>([]);
   const [children, setChildren] = useState<Child[]>([]);
   const [loading, setLoading] = useState(true);
+  const [speechSupported, setSpeechSupported] = useState(false);
 
   // Parent word management
   const [newWord, setNewWord] = useState("");
   const [adding, setAdding] = useState(false);
+  const [copying, setCopying] = useState(false);
+  const [weakWordsChildId, setWeakWordsChildId] = useState<number | null>(null);
+  const [loadingWeak, setLoadingWeak] = useState(false);
 
-  // Test state
+  // Learn mode state
+  const [learnIndex, setLearnIndex] = useState(0);
+  const [learnPracticeInput, setLearnPracticeInput] = useState("");
+
+  // Test state — operates on testWords, which is either the full weekly list
+  // (normal test) or a synthetic subset of just the previously-wrong words
+  // (weak-word practice round). words itself is never mutated by testing.
   const [testView, setTestView] = useState<TestView>("idle");
+  const [testWords, setTestWords] = useState<SpellingWord[]>([]);
+  const [practiceMode, setPracticeMode] = useState(false);
   const [testIndex, setTestIndex] = useState(0);
   const [testInput, setTestInput] = useState("");
   const [testEntries, setTestEntries] = useState<TestEntry[]>([]);
   const [checked, setChecked] = useState(false);
-  const [peekCountdown, setPeekCountdown] = useState(0);
   const [saveChildId, setSaveChildId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
+
+  useEffect(() => {
+    setSpeechSupported(typeof window !== "undefined" && "speechSynthesis" in window);
+  }, []);
+
+  const speak = useCallback((text: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || !text) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-GB";
+    utter.rate = 0.9;
+    window.speechSynthesis.speak(utter);
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -62,7 +89,10 @@ export default function SpellingsPage() {
         setResults(resultsRes.data);
         const kids: Child[] = childrenRes.data;
         setChildren(kids);
-        if (kids.length > 0) setSaveChildId(kids[0].id);
+        if (kids.length > 0) {
+          setSaveChildId(kids[0].id);
+          setWeakWordsChildId(prev => prev ?? kids[0].id);
+        }
       }
     } catch {
       // ignore
@@ -76,27 +106,31 @@ export default function SpellingsPage() {
     loadData();
   }, [loadData, router]);
 
-  // Reset test when week changes
+  // Reset test/learn state when week changes
   useEffect(() => {
     setTestView("idle");
+    setTestWords([]);
+    setPracticeMode(false);
     setTestIndex(0);
     setTestInput("");
     setTestEntries([]);
     setChecked(false);
-    setPeekCountdown(0);
     setSaved(false);
+    setLearnIndex(0);
+    setLearnPracticeInput("");
   }, [weekStartStr]);
 
-  // Peek countdown
+  // Speak the current test word whenever a new word is reached (not yet checked)
   useEffect(() => {
-    if (peekCountdown <= 0) return;
-    const timer = setTimeout(() => setPeekCountdown(c => c - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [peekCountdown]);
+    if (testView === "testing" && !checked) {
+      const w = testWords[testIndex]?.word;
+      if (w) speak(w);
+    }
+  }, [testView, testIndex, testWords, checked, speak]);
 
   const handleAddWord = async () => {
     const trimmed = newWord.trim();
-    if (!trimmed || words.length >= 10) return;
+    if (!trimmed || words.length >= MAX_WORDS) return;
     setAdding(true);
     try {
       const res = await addSpellingWord({ week_start: weekStartStr, word: trimmed });
@@ -112,34 +146,102 @@ export default function SpellingsPage() {
     setWords(prev => prev.filter(w => w.id !== id));
   };
 
-  const startTest = () => {
+  const handleCopyLastWeek = async () => {
+    setCopying(true);
+    try {
+      const prevWeekStr = format(subWeeks(weekStart, 1), "yyyy-MM-dd");
+      const prevRes = await getSpellingWords(prevWeekStr);
+      const existingLower = new Set(words.map(w => w.word.toLowerCase()));
+      const room = Math.max(0, MAX_WORDS - words.length);
+      const toAdd = (prevRes.data as SpellingWord[])
+        .filter(w => !existingLower.has(w.word.toLowerCase()))
+        .slice(0, room);
+      for (const w of toAdd) {
+        const res = await addSpellingWord({ week_start: weekStartStr, word: w.word });
+        setWords(prev => [...prev, res.data]);
+      }
+    } finally {
+      setCopying(false);
+    }
+  };
+
+  const handleAddWeakWords = async () => {
+    if (!weakWordsChildId) return;
+    setLoadingWeak(true);
+    try {
+      const res = await getWeakWords(weakWordsChildId, 10);
+      const existingLower = new Set(words.map(w => w.word.toLowerCase()));
+      const room = Math.max(0, MAX_WORDS - words.length);
+      const toAdd = (res.data as { word: string; times_wrong: number }[])
+        .filter(w => !existingLower.has(w.word.toLowerCase()))
+        .slice(0, room);
+      for (const w of toAdd) {
+        const added = await addSpellingWord({ week_start: weekStartStr, word: w.word });
+        setWords(prev => [...prev, added.data]);
+      }
+    } finally {
+      setLoadingWeak(false);
+    }
+  };
+
+  const startLearning = () => {
     if (words.length === 0) return;
+    setLearnIndex(0);
+    setLearnPracticeInput("");
+    setTestView("learning");
+  };
+
+  const learnNext = () => {
+    setLearnPracticeInput("");
+    setLearnIndex(i => Math.min(i + 1, words.length - 1));
+  };
+
+  const learnPrev = () => {
+    setLearnPracticeInput("");
+    setLearnIndex(i => Math.max(i - 1, 0));
+  };
+
+  const startTest = (wordList: SpellingWord[], practice: boolean = false) => {
+    if (wordList.length === 0) return;
+    setTestWords(wordList);
+    setPracticeMode(practice);
     setTestIndex(0);
     setTestInput("");
     setTestEntries([]);
     setChecked(false);
-    setPeekCountdown(0);
     setSaved(false);
     setTestView("testing");
   };
 
+  const startWeakWordPractice = () => {
+    const wrong = testEntries.filter(e => !e.correct);
+    if (wrong.length === 0) return;
+    const weakWords: SpellingWord[] = wrong.map((e, i) => ({
+      id: -1 - i,
+      word: e.word,
+      position: i,
+      week_start: weekStartStr,
+    }));
+    startTest(weakWords, true);
+  };
+
   const handleCheck = () => {
-    const word = words[testIndex].word;
+    const current = testWords[testIndex];
+    if (!current) return;
     const answer = testInput.trim();
-    const correct = answer.toLowerCase() === word.toLowerCase();
-    setTestEntries(prev => [...prev, { word, answer, correct }]);
+    const correct = answer.toLowerCase() === current.word.toLowerCase();
+    setTestEntries(prev => [...prev, { word: current.word, answer, correct }]);
     setChecked(true);
   };
 
   const handleNext = () => {
     const next = testIndex + 1;
-    if (next >= words.length) {
+    if (next >= testWords.length) {
       setTestView("done");
     } else {
       setTestIndex(next);
       setTestInput("");
       setChecked(false);
-      setPeekCountdown(0);
     }
   };
 
@@ -153,6 +255,7 @@ export default function SpellingsPage() {
         score,
         total: testEntries.length,
         wrong_words: wrongWords,
+        is_practice_round: practiceMode,
         ...(isParent && saveChildId ? { child_id: saveChildId } : {}),
       });
       setSaved(true);
@@ -166,15 +269,15 @@ export default function SpellingsPage() {
   };
 
   const score = testEntries.filter(e => e.correct).length;
-  const currentWord = testView === "testing" ? words[testIndex]?.word ?? "" : "";
-  const isPeeking = peekCountdown > 0;
+  const currentWord = testView === "testing" ? testWords[testIndex]?.word ?? "" : "";
   const lastEntry = testEntries[testEntries.length - 1];
+  const wrongCount = testEntries.filter(e => !e.correct).length;
 
-  const scoreMsg = score === words.length
+  const scoreMsg = score === testWords.length
     ? "Perfect score! Amazing! 🏆"
-    : score >= words.length * 0.8
+    : score >= testWords.length * 0.8
     ? "Great job! ⭐"
-    : score >= words.length * 0.5
+    : score >= testWords.length * 0.5
     ? "Good effort — keep practising! 💪"
     : "Keep practising — you'll get there! 💪";
 
@@ -188,7 +291,7 @@ export default function SpellingsPage() {
           <p className="text-5xl mb-2">🔤</p>
           <h1 className="text-3xl font-extrabold mb-1">Weekly Spellings</h1>
           <p className="text-white/70 font-semibold">
-            {isParent ? "Set words and track scores" : "Study your words, then test yourself!"}
+            {isParent ? "Set words and track scores" : "Learn your words, then test yourself!"}
           </p>
         </div>
       </div>
@@ -219,8 +322,8 @@ export default function SpellingsPage() {
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-extrabold text-gray-900">📝 Word List</h2>
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${words.length >= 10 ? "bg-red-100 text-red-600" : "bg-[#A8C67A]/30 text-[#2F5D3A]"}`}>
-                    {words.length}/10 words
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#A8C67A]/30 text-[#2F5D3A]">
+                    {words.length} word{words.length !== 1 ? "s" : ""}
                   </span>
                 </div>
 
@@ -239,8 +342,8 @@ export default function SpellingsPage() {
                   </div>
                 )}
 
-                {words.length < 10 && (
-                  <div className="flex gap-2">
+                {words.length < MAX_WORDS && (
+                  <div className="flex gap-2 mb-3">
                     <input
                       value={newWord}
                       onChange={e => setNewWord(e.target.value)}
@@ -254,6 +357,27 @@ export default function SpellingsPage() {
                     </button>
                   </div>
                 )}
+
+                <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100">
+                  <button onClick={handleCopyLastWeek} disabled={copying || words.length >= MAX_WORDS}
+                    className="text-xs px-3 py-1.5 border border-gray-200 rounded-lg font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-40 transition-colors">
+                    {copying ? "Copying…" : "📋 Copy last week's words"}
+                  </button>
+                  {children.length > 0 && (
+                    <>
+                      <select
+                        value={weakWordsChildId ?? ""}
+                        onChange={e => setWeakWordsChildId(e.target.value ? Number(e.target.value) : null)}
+                        className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 font-semibold text-gray-600 focus:outline-none">
+                        {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                      </select>
+                      <button onClick={handleAddWeakWords} disabled={loadingWeak || !weakWordsChildId || words.length >= MAX_WORDS}
+                        className="text-xs px-3 py-1.5 border border-gray-200 rounded-lg font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-40 transition-colors">
+                        {loadingWeak ? "Loading…" : "🎯 Add their weak words"}
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             )}
 
@@ -278,21 +402,89 @@ export default function SpellingsPage() {
                 <p className="text-4xl mb-2">🔤</p>
                 <p className="font-bold text-gray-500">No words set for this week</p>
                 <p className="text-sm text-gray-400 mt-1">
-                  {isParent ? "Add up to 10 words above to get started" : "Ask your parent to add spelling words"}
+                  {isParent ? "Add words above to get started" : "Ask your parent to add spelling words"}
                 </p>
               </div>
             )}
 
-            {/* ─── Start test button (idle) ─── */}
+            {/* ─── Learn / Start test buttons (idle) ─── */}
             {testView === "idle" && words.length > 0 && (
-              <div className="text-center mb-6">
-                <button onClick={startTest}
-                  className="px-10 py-4 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white font-extrabold text-lg rounded-2xl shadow-lg hover:scale-105 transition-all active:scale-100">
+              <div className="text-center mb-6 flex flex-col sm:flex-row gap-3 justify-center">
+                <button onClick={startLearning}
+                  className="px-8 py-4 bg-white border-2 border-[#2F5D3A] text-[#2F5D3A] font-extrabold text-lg rounded-2xl shadow-sm hover:bg-[#A8C67A]/10 transition-all">
+                  📖 Learn These Words
+                </button>
+                <button onClick={() => startTest(words)}
+                  className="px-8 py-4 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white font-extrabold text-lg rounded-2xl shadow-lg hover:scale-105 transition-all active:scale-100">
                   ✏️ Start Spelling Test
                 </button>
-                {!isParent && (
-                  <p className="text-xs text-gray-400 mt-2">Your score will be saved when you finish</p>
-                )}
+              </div>
+            )}
+
+            {/* ─── LEARN MODE ─── */}
+            {testView === "learning" && words.length > 0 && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-xl p-6 mb-5">
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    Learning word {learnIndex + 1} of {words.length}
+                  </span>
+                  <div className="flex gap-1">
+                    {words.map((_, i) => (
+                      <div key={i} className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                        i === learnIndex ? "bg-[#2F5D3A]" : i < learnIndex ? "bg-[#A8C67A]" : "bg-gray-200"
+                      }`} />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="text-center mb-6">
+                  <p className="text-5xl font-extrabold text-[#2F5D3A] tracking-wide mb-3">{words[learnIndex]?.word}</p>
+                  {speechSupported && (
+                    <button onClick={() => speak(words[learnIndex]?.word ?? "")}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#A8C67A]/15 border border-[#A8C67A]/40 text-[#2F5D3A] rounded-xl text-sm font-bold hover:bg-[#A8C67A]/25 transition-colors">
+                      🔊 Hear it
+                    </button>
+                  )}
+                </div>
+
+                <div className="mb-6">
+                  <p className="text-xs font-medium text-gray-500 mb-1.5 text-center">Practise typing it here:</p>
+                  <input
+                    key={learnIndex}
+                    value={learnPracticeInput}
+                    onChange={e => setLearnPracticeInput(e.target.value)}
+                    placeholder="Type the word…"
+                    className={`w-full text-center text-2xl font-bold border-2 rounded-xl px-4 py-3.5 focus:outline-none transition-colors ${
+                      learnPracticeInput.length === 0
+                        ? "border-gray-200 focus:border-[#6EA76E]"
+                        : words[learnIndex]?.word.toLowerCase().startsWith(learnPracticeInput.toLowerCase())
+                        ? "border-emerald-400"
+                        : "border-red-300"
+                    }`}
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <button onClick={learnPrev} disabled={learnIndex === 0}
+                    className="px-4 py-3 border border-gray-200 rounded-xl font-bold text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40 transition-colors">
+                    ← Previous
+                  </button>
+                  {learnIndex + 1 < words.length ? (
+                    <button onClick={learnNext}
+                      className="flex-1 py-3 bg-[#2F5D3A] text-white font-extrabold rounded-xl hover:bg-[#6EA76E] transition-colors">
+                      Next Word →
+                    </button>
+                  ) : (
+                    <button onClick={() => startTest(words)}
+                      className="flex-1 py-3 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white font-extrabold rounded-xl hover:scale-[1.02] transition-all">
+                      ✅ I&apos;m ready — start test
+                    </button>
+                  )}
+                </div>
+                <button onClick={() => setTestView("idle")}
+                  className="w-full mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors">
+                  Cancel
+                </button>
               </div>
             )}
 
@@ -302,10 +494,10 @@ export default function SpellingsPage() {
                 {/* Progress header */}
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Word {testIndex + 1} of {words.length}
+                    {practiceMode ? "🔁 Practice round · " : ""}Word {testIndex + 1} of {testWords.length}
                   </span>
                   <div className="flex gap-1">
-                    {words.map((_, i) => (
+                    {testWords.map((_, i) => (
                       <div key={i} className={`w-2.5 h-2.5 rounded-full transition-colors ${
                         i < testEntries.length
                           ? testEntries[i].correct ? "bg-emerald-400" : "bg-red-400"
@@ -315,24 +507,24 @@ export default function SpellingsPage() {
                   </div>
                 </div>
 
-                {/* Word reveal */}
+                {/* Speak / fallback */}
                 <div className="text-center mb-8">
-                  {isPeeking ? (
+                  {speechSupported ? (
                     <div>
-                      <p className="text-5xl font-extrabold text-[#2F5D3A] mb-2 tracking-wide">{currentWord}</p>
-                      <p className="text-sm text-[#6EA76E] font-bold">Hiding in {peekCountdown}s…</p>
+                      <p className="text-7xl mb-3">🔊</p>
+                      <button
+                        onClick={() => speak(currentWord)}
+                        disabled={checked}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#A8C67A]/15 border border-[#A8C67A]/40 text-[#2F5D3A] rounded-xl text-sm font-bold hover:bg-[#A8C67A]/25 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                        🔁 Repeat word
+                      </button>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-4xl font-extrabold text-gray-200 mb-3 tracking-[0.3em]">
-                        {"•".repeat(Math.min(currentWord.length, 8))}
+                      <p className="text-xs text-amber-600 font-semibold mb-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 inline-block">
+                        🔇 Speech isn&apos;t available on this device — here&apos;s your word:
                       </p>
-                      <button
-                        onClick={() => !checked && setPeekCountdown(5)}
-                        disabled={checked}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl text-sm font-bold hover:bg-amber-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                        👁 Peek at word (5 seconds)
-                      </button>
+                      <p className="text-4xl font-extrabold text-[#2F5D3A] tracking-wide">{currentWord}</p>
                     </div>
                   )}
                 </div>
@@ -375,7 +567,7 @@ export default function SpellingsPage() {
                     )}
                     <button onClick={handleNext}
                       className="w-full py-3.5 bg-[#2F5D3A] text-white font-extrabold text-base rounded-xl hover:bg-[#6EA76E] transition-colors">
-                      {testIndex + 1 >= words.length ? "See Results →" : "Next Word →"}
+                      {testIndex + 1 >= testWords.length ? "See Results →" : "Next Word →"}
                     </button>
                   </div>
                 )}
@@ -387,16 +579,21 @@ export default function SpellingsPage() {
               <div className="bg-white rounded-2xl border border-gray-100 shadow-xl p-6 mb-5">
                 <div className="text-center mb-6">
                   <p className="text-5xl mb-3">
-                    {score === testEntries.length ? "🏆" : score >= testEntries.length * 0.7 ? "⭐" : "💪"}
+                    {score === testWords.length ? "🏆" : score >= testWords.length * 0.7 ? "⭐" : "💪"}
                   </p>
+                  {practiceMode && (
+                    <p className="text-xs font-bold text-purple-600 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 inline-block mb-2">
+                      🔁 Practice round
+                    </p>
+                  )}
                   <p className="text-5xl font-extrabold text-[#2F5D3A] mb-2">
-                    {score}/{testEntries.length}
+                    {score}/{testWords.length}
                   </p>
                   <p className="text-gray-500 font-semibold">{scoreMsg}</p>
                 </div>
 
                 {/* Wrong words */}
-                {testEntries.some(e => !e.correct) && (
+                {wrongCount > 0 && (
                   <div className="mb-5 p-4 bg-red-50 rounded-xl border border-red-100">
                     <p className="text-xs font-bold text-red-600 uppercase tracking-wide mb-2">Words to practise more:</p>
                     <div className="flex flex-wrap gap-2">
@@ -407,6 +604,14 @@ export default function SpellingsPage() {
                       ))}
                     </div>
                   </div>
+                )}
+
+                {/* Weak-word practice offer — only right after a normal (non-practice) test */}
+                {!practiceMode && wrongCount > 0 && (
+                  <button onClick={startWeakWordPractice}
+                    className="w-full mb-4 py-3 bg-purple-50 border-2 border-purple-200 text-purple-700 font-extrabold rounded-xl hover:bg-purple-100 transition-colors">
+                    🔁 Practice the {wrongCount} tricky word{wrongCount !== 1 ? "s" : ""}
+                  </button>
                 )}
 
                 {/* Parent child selector */}
@@ -443,7 +648,7 @@ export default function SpellingsPage() {
                       ✓ Score Saved!
                     </div>
                   )}
-                  <button onClick={startTest}
+                  <button onClick={() => startTest(testWords, practiceMode)}
                     className="px-5 py-3.5 border border-gray-200 rounded-xl font-bold text-sm text-gray-600 hover:bg-gray-50 transition-colors">
                     Try Again
                   </button>
@@ -460,33 +665,54 @@ export default function SpellingsPage() {
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
                 <h2 className="font-extrabold text-gray-900 mb-4">📊 Test Results This Week</h2>
                 <div className="space-y-2">
-                  {results.map(r => {
-                    const child = children.find(c => c.id === r.child_id);
-                    const pct = Math.round((r.score / r.total) * 100);
-                    const takenAt = new Date(r.taken_at);
-                    return (
-                      <div key={r.id} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-white font-extrabold text-sm shrink-0 ${
-                          pct === 100 ? "bg-emerald-500" : pct >= 70 ? "bg-[#6EA76E]" : "bg-orange-400"
-                        }`}>
-                          {pct}%
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-gray-800 text-sm">{child?.username ?? "Child"}</p>
-                          <p className="text-xs text-gray-400">
-                            {r.score}/{r.total} correct · {format(takenAt, "d MMM, HH:mm")}
-                          </p>
-                        </div>
-                        {r.wrong_words.length > 0 && (
-                          <div className="flex gap-1 flex-wrap justify-end max-w-[45%]">
-                            {r.wrong_words.map((w, i) => (
-                              <span key={i} className="text-xs bg-red-50 text-red-600 border border-red-200 px-1.5 py-0.5 rounded font-semibold">{w}</span>
-                            ))}
+                  {[...results]
+                    .sort((a, b) => new Date(a.taken_at).getTime() - new Date(b.taken_at).getTime())
+                    .map(r => {
+                      const child = children.find(c => c.id === r.child_id);
+                      const pct = Math.round((r.score / r.total) * 100);
+                      const takenAt = new Date(r.taken_at);
+                      const firstNormal = results
+                        .filter(x => x.child_id === r.child_id && !x.is_practice_round)
+                        .sort((a, b) => new Date(a.taken_at).getTime() - new Date(b.taken_at).getTime())[0];
+                      const isFirstNormal = !r.is_practice_round && firstNormal?.id === r.id;
+                      const delta = !r.is_practice_round && !isFirstNormal && firstNormal
+                        ? pct - Math.round((firstNormal.score / firstNormal.total) * 100)
+                        : null;
+                      return (
+                        <div key={r.id} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                          <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-white font-extrabold text-sm shrink-0 ${
+                            pct === 100 ? "bg-emerald-500" : pct >= 70 ? "bg-[#6EA76E]" : "bg-orange-400"
+                          }`}>
+                            {pct}%
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <p className="font-bold text-gray-800 text-sm">{child?.username ?? "Child"}</p>
+                              {r.is_practice_round && (
+                                <span className="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold">🔁 Practice round</span>
+                              )}
+                              {delta !== null && (
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                                  delta > 0 ? "bg-emerald-100 text-emerald-700" : delta < 0 ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-500"
+                                }`}>
+                                  {delta > 0 ? `▲ +${delta}%` : delta < 0 ? `▼ ${delta}%` : "= no change"} vs first attempt
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-400">
+                              {r.score}/{r.total} correct · {format(takenAt, "d MMM, HH:mm")}
+                            </p>
+                          </div>
+                          {r.wrong_words.length > 0 && (
+                            <div className="flex gap-1 flex-wrap justify-end max-w-[45%]">
+                              {r.wrong_words.map((w, i) => (
+                                <span key={i} className="text-xs bg-red-50 text-red-600 border border-red-200 px-1.5 py-0.5 rounded font-semibold">{w}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             )}
