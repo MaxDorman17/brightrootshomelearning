@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, getChildren } from "@/lib/api";
+import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, downloadReadingFile, getChildren } from "@/lib/api";
 import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
@@ -195,6 +195,23 @@ export default function ReadingLogPage() {
   const handleDeleteWorksheet = async (id: number) => {
     await deleteWorksheet(id);
     setWorksheets(prev => prev.filter(w => w.id !== id));
+  };
+
+  const handleDownloadWorksheet = async (ws: ReadingWorksheet) => {
+    try {
+      const res = await downloadReadingFile(ws.url);
+      const blobUrl = window.URL.createObjectURL(new Blob([res.data]));
+      const ext = ws.url.includes(".") ? ws.url.split(".").pop() : "";
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = ext ? `${ws.title}.${ext}` : ws.title;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch {
+      alert("Could not download this file.");
+    }
   };
 
   const visibleBooks = isParent && selectedChildId
@@ -438,14 +455,23 @@ export default function ReadingLogPage() {
                             <div className="space-y-1.5">
                               {bookWs.map(ws => (
                                 <div key={ws.id} className="flex items-center gap-2">
-                                  <a
-                                    href={ws.url.startsWith("/api/") ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${ws.url}` : ws.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex-1 text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
-                                  >
-                                    {ws.url.startsWith("/api/reading/files/") ? "📥" : "📄"} {ws.title}
-                                  </a>
+                                  {ws.url.startsWith("/api/reading/files/") ? (
+                                    <button
+                                      onClick={() => handleDownloadWorksheet(ws)}
+                                      className="flex-1 text-left text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
+                                    >
+                                      📥 {ws.title}
+                                    </button>
+                                  ) : (
+                                    <a
+                                      href={ws.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex-1 text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
+                                    >
+                                      📄 {ws.title}
+                                    </a>
+                                  )}
                                   {isParent && (
                                     <button
                                       onClick={() => handleDeleteWorksheet(ws.id)}

@@ -106,6 +106,11 @@ export const uploadWorksheet = (bookId: number, title: string, file: File) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+// GET /api/reading/files/{filename} now requires auth, so uploaded worksheets
+// must be fetched through the authenticated client (as a blob) rather than
+// linked to directly with a plain <a href> — a bare link can't carry the
+// Bearer token.
+export const downloadReadingFile = (url: string) => api.get(url, { responseType: "blob" });
 export const deleteWorksheet = (worksheetId: number) =>
   api.delete(`/api/reading/worksheets/${worksheetId}`);
 

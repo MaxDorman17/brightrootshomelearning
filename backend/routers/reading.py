@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from typing import List, Optional
 import os
 import uuid
@@ -24,19 +24,31 @@ ALLOWED_CONTENT_TYPES = {
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
+def _family_book_filter(current_user: User):
+    """SQLAlchemy filter: true for ReadingLog rows belonging to this user's
+    family. ReadingLog.added_by is always the owning parent's own id (only
+    require_parent-gated routes ever set it), so — unlike planner, which has
+    to go via Lesson.created_by — ownership here is a single direct column."""
+    if current_user.role == "child":
+        return and_(
+            ReadingLog.added_by == current_user.parent_id,
+            or_(ReadingLog.child_id == current_user.id, ReadingLog.child_id.is_(None)),
+        )
+    return ReadingLog.added_by == current_user.id
+
+
 @router.get("/", response_model=List[ReadingLogOut])
 def list_books(
     child_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    query = db.query(ReadingLog)
-    if current_user.role == "child":
-        query = query.filter(
-            or_(ReadingLog.child_id == current_user.id, ReadingLog.child_id.is_(None))
-        )
-    elif child_id:
-        query = query.filter(ReadingLog.child_id == child_id)
+    query = db.query(ReadingLog).filter(_family_book_filter(current_user))
+    if current_user.role == "parent" and child_id:
+        child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id).first()
+        if not child:
+            raise HTTPException(status_code=403, detail="Not your child")
+        query = query.filter(or_(ReadingLog.child_id == child_id, ReadingLog.child_id.is_(None)))
     return query.order_by(ReadingLog.created_at.desc()).all()
 
 
@@ -46,6 +58,10 @@ def add_book(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
+    if book_in.child_id is not None:
+        child = db.query(User).filter(User.id == book_in.child_id, User.parent_id == current_user.id).first()
+        if not child:
+            raise HTTPException(status_code=403, detail="Not your child")
     book = ReadingLog(
         title=book_in.title,
         author=book_in.author,
@@ -70,7 +86,7 @@ def update_book(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    book = db.query(ReadingLog).filter(ReadingLog.id == book_id).first()
+    book = db.query(ReadingLog).filter(ReadingLog.id == book_id, _family_book_filter(current_user)).first()
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
 
@@ -107,7 +123,7 @@ def delete_book(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    book = db.query(ReadingLog).filter(ReadingLog.id == book_id).first()
+    book = db.query(ReadingLog).filter(ReadingLog.id == book_id, _family_book_filter(current_user)).first()
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     db.delete(book)
@@ -117,11 +133,17 @@ def delete_book(
 # --- Worksheets ---
 
 @router.get("/worksheets", response_model=List[ReadingWorksheetOut])
-def list_all_worksheets(
+def list_worksheets(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(ReadingWorksheet).order_by(ReadingWorksheet.book_id, ReadingWorksheet.created_at).all()
+    return (
+        db.query(ReadingWorksheet)
+        .join(ReadingLog, ReadingWorksheet.book_id == ReadingLog.id)
+        .filter(_family_book_filter(current_user))
+        .order_by(ReadingWorksheet.book_id, ReadingWorksheet.created_at)
+        .all()
+    )
 
 
 @router.post("/{book_id}/worksheets/upload", response_model=ReadingWorksheetOut, status_code=201)
@@ -132,7 +154,7 @@ async def upload_worksheet_file(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    book = db.query(ReadingLog).filter(ReadingLog.id == book_id).first()
+    book = db.query(ReadingLog).filter(ReadingLog.id == book_id, _family_book_filter(current_user)).first()
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     if file.content_type not in ALLOWED_CONTENT_TYPES:
@@ -156,11 +178,35 @@ async def upload_worksheet_file(
 
 
 @router.get("/files/{filename}")
-def serve_worksheet_file(filename: str):
-    filename = os.path.basename(filename)
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(filepath):
+def serve_worksheet_file(
+    filename: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # os.path.basename strips any directory components, so a value like
+    # "../../etc/passwd" collapses to just "passwd" before it's ever used
+    # to build a filesystem path.
+    safe_name = os.path.basename(filename)
+
+    ws = (
+        db.query(ReadingWorksheet)
+        .join(ReadingLog, ReadingWorksheet.book_id == ReadingLog.id)
+        .filter(
+            ReadingWorksheet.url == f"/api/reading/files/{safe_name}",
+            _family_book_filter(current_user),
+        )
+        .first()
+    )
+    if not ws:
         raise HTTPException(status_code=404, detail="File not found")
+
+    # Defense-in-depth: confirm the resolved path is still inside UPLOAD_DIR
+    # before serving it, regardless of how safe_name was constructed above.
+    upload_root = os.path.realpath(UPLOAD_DIR)
+    filepath = os.path.realpath(os.path.join(UPLOAD_DIR, safe_name))
+    if os.path.commonpath([filepath, upload_root]) != upload_root or not os.path.isfile(filepath):
+        raise HTTPException(status_code=404, detail="File not found")
+
     return FileResponse(filepath)
 
 
@@ -171,7 +217,7 @@ def add_worksheet(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    book = db.query(ReadingLog).filter(ReadingLog.id == book_id).first()
+    book = db.query(ReadingLog).filter(ReadingLog.id == book_id, _family_book_filter(current_user)).first()
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     ws = ReadingWorksheet(book_id=book_id, title=body.title.strip(), url=body.url.strip())
@@ -187,7 +233,12 @@ def delete_worksheet(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    ws = db.query(ReadingWorksheet).filter(ReadingWorksheet.id == worksheet_id).first()
+    ws = (
+        db.query(ReadingWorksheet)
+        .join(ReadingLog, ReadingWorksheet.book_id == ReadingLog.id)
+        .filter(ReadingWorksheet.id == worksheet_id, _family_book_filter(current_user))
+        .first()
+    )
     if not ws:
         raise HTTPException(status_code=404, detail="Worksheet not found")
     db.delete(ws)
