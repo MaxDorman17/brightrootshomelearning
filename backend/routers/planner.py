@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import or_, exists as sa_exists, select
+from sqlalchemy import or_, and_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 from database import get_db
@@ -51,6 +51,51 @@ def _to_out_with_comp(e: PlannerEntry, comp) -> PlannerEntryOut:
         completed_note=comp.completed_note if comp else None,
         lesson=LessonOut.model_validate(e.lesson),
     )
+
+
+def _to_out_with_shared_completion(e: PlannerEntry, comp) -> PlannerEntryOut:
+    """For a shared (assigned_to=NULL) entry, is_complete/completed_at are already
+    kept correct on PlannerEntry itself (mark_complete writes the any-child-done
+    aggregate there). completed_work_url/completed_note, however, are only ever
+    written to PlannerCompletion for these entries, so backfill them from the
+    best matching completion (picked by the caller)."""
+    return PlannerEntryOut(
+        id=e.id, lesson_id=e.lesson_id, assigned_to=e.assigned_to,
+        scheduled_date=e.scheduled_date, is_complete=e.is_complete,
+        completed_at=e.completed_at,
+        completed_work_url=comp.completed_work_url if comp else e.completed_work_url,
+        completed_note=comp.completed_note if comp else e.completed_note,
+        lesson=LessonOut.model_validate(e.lesson),
+    )
+
+
+def _child_ids_for_parent(db: Session, parent: User) -> List[int]:
+    return [c.id for c in db.query(User).filter(User.parent_id == parent.id).all()]
+
+
+def _best_shared_completions(db: Session, entry_ids: List[int], child_ids: List[int]) -> dict:
+    """For each shared entry, pick the one PlannerCompletion (among this parent's
+    own children) that best represents 'the' submitted work: prefer a completion
+    with a URL, tie-broken by most recently completed."""
+    best: dict = {}
+    if not entry_ids or not child_ids:
+        return best
+    completions = db.query(PlannerCompletion).filter(
+        PlannerCompletion.entry_id.in_(entry_ids),
+        PlannerCompletion.user_id.in_(child_ids),
+    ).all()
+    for comp in completions:
+        current = best.get(comp.entry_id)
+        if current is None:
+            best[comp.entry_id] = comp
+            continue
+        current_has_url = current.completed_work_url is not None
+        comp_has_url = comp.completed_work_url is not None
+        if comp_has_url and not current_has_url:
+            best[comp.entry_id] = comp
+        elif comp_has_url == current_has_url and (comp.completed_at or datetime.min) > (current.completed_at or datetime.min):
+            best[comp.entry_id] = comp
+    return best
 
 
 def annotate_for_user(entries: list, user: User, db: Session) -> List[PlannerEntryOut]:
@@ -196,10 +241,25 @@ def get_all(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    entries = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).order_by(
+    child_ids = _child_ids_for_parent(db, current_user)
+    entries = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
+        joinedload(PlannerEntry.lesson)
+    ).filter(
+        or_(
+            PlannerEntry.assigned_to.in_(child_ids),
+            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+        )
+    ).order_by(
         PlannerEntry.scheduled_date.desc()
     ).all()
-    return [_to_out(e) for e in entries]
+
+    shared_ids = [e.id for e in entries if e.assigned_to is None]
+    best_completion = _best_shared_completions(db, shared_ids, child_ids)
+
+    return [
+        _to_out_with_shared_completion(e, best_completion.get(e.id)) if e.assigned_to is None else _to_out(e)
+        for e in entries
+    ]
 
 
 @router.get("/submission-count")
@@ -207,12 +267,22 @@ def get_submission_count(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    child_ids = [c.id for c in db.query(User).filter(User.parent_id == current_user.id).all()]
+    child_ids = _child_ids_for_parent(db, current_user)
     has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
-    count = db.query(PlannerEntry).filter(
+    has_shared_submission = sa_exists(
+        select(PlannerCompletion.id).where(
+            PlannerCompletion.entry_id == PlannerEntry.id,
+            PlannerCompletion.user_id.in_(child_ids),
+            PlannerCompletion.completed_work_url.is_not(None),
+        ).correlate(PlannerEntry)
+    )
+    count = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).filter(
         PlannerEntry.is_complete == True,
-        PlannerEntry.completed_work_url.is_not(None),
-        or_(PlannerEntry.assigned_to.in_(child_ids), PlannerEntry.assigned_to.is_(None)),
+        or_(PlannerEntry.completed_work_url.is_not(None), has_shared_submission),
+        or_(
+            PlannerEntry.assigned_to.in_(child_ids),
+            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+        ),
         ~has_feedback,
     ).count()
     return {"count": count}
@@ -228,19 +298,50 @@ def get_pending_feedback(
     child_ids = [c.id for c in children]
     child_names = {c.id: c.username for c in children}
     has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
-    entries = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).filter(
+    has_shared_submission = sa_exists(
+        select(PlannerCompletion.id).where(
+            PlannerCompletion.entry_id == PlannerEntry.id,
+            PlannerCompletion.user_id.in_(child_ids),
+            PlannerCompletion.completed_work_url.is_not(None),
+        ).correlate(PlannerEntry)
+    )
+    entries = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
+        joinedload(PlannerEntry.lesson)
+    ).filter(
         PlannerEntry.is_complete == True,
-        PlannerEntry.completed_work_url.is_not(None),
-        or_(PlannerEntry.assigned_to.in_(child_ids), PlannerEntry.assigned_to.is_(None)),
+        or_(PlannerEntry.completed_work_url.is_not(None), has_shared_submission),
+        or_(
+            PlannerEntry.assigned_to.in_(child_ids),
+            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+        ),
         ~has_feedback,
     ).order_by(PlannerEntry.scheduled_date.desc()).all()
+
+    # For shared entries, resolve which of this parent's children actually submitted.
+    shared_ids = [e.id for e in entries if e.assigned_to is None]
+    submitters: dict = {}
+    if shared_ids and child_ids:
+        completions = db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id.in_(shared_ids),
+            PlannerCompletion.user_id.in_(child_ids),
+            PlannerCompletion.completed_work_url.is_not(None),
+        ).all()
+        for comp in completions:
+            submitters.setdefault(comp.entry_id, []).append(child_names.get(comp.user_id))
+
+    def child_label(e: PlannerEntry) -> Optional[str]:
+        if e.assigned_to:
+            return child_names.get(e.assigned_to)
+        names = submitters.get(e.id)
+        return ", ".join(n for n in names if n) if names else None
+
     return [
         {
             "entry_id": e.id,
             "title": e.lesson.title,
             "subject": e.lesson.subject,
             "date": e.scheduled_date.isoformat(),
-            "child": child_names.get(e.assigned_to) if e.assigned_to else None,
+            "child": child_label(e),
         }
         for e in entries
     ]
