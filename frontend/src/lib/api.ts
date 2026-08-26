@@ -51,7 +51,7 @@ export const getAllEntries = () => api.get("/api/planner/all");
 export const getSubmissionCount = () => api.get("/api/planner/submission-count");
 export const getPendingFeedback = () => api.get("/api/planner/pending-feedback");
 export const getAllMyEntries = () => api.get("/api/planner/mine");
-export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number }) =>
+export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number; is_extra?: boolean }) =>
   api.post("/api/planner/", data);
 export const updatePlannerEntry = (id: number, data: { scheduled_date?: string; assigned_to?: number | null }) =>
   api.put(`/api/planner/${id}`, data);

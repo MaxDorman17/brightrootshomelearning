@@ -77,6 +77,7 @@ class PlannerEntryCreate(BaseModel):
     lesson_id: int
     assigned_to: Optional[int] = None
     scheduled_date: date
+    is_extra: bool = False
 
 
 class PlannerEntryUpdate(BaseModel):
@@ -93,6 +94,7 @@ class PlannerEntryOut(BaseModel):
     completed_at: Optional[datetime]
     completed_work_url: Optional[str]
     completed_note: Optional[str]
+    is_extra: bool
     lesson: LessonOut
 
     class Config:

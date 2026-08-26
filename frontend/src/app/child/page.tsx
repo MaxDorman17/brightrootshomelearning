@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
@@ -10,7 +11,7 @@ import {
 import { PlannerEntry, WorkFeedback, WeeklyGoal } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
-import { format, addDays, startOfWeek, isToday } from "date-fns";
+import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
@@ -460,6 +461,71 @@ export default function ChildDashboard() {
           <span className="flex items-center gap-1">📎 Work submitted</span>
           <span className="ml-auto text-gray-400">Tap a lesson to open it</span>
         </div>
+
+        {/* Extra Work — separate from the normal timetable above */}
+        {(() => {
+          const extraEntries = allEntries.filter(e => e.is_extra);
+          if (extraEntries.length === 0) return null;
+          const extraPending = extraEntries.filter(e => !e.is_complete);
+          const extraDone = extraEntries.filter(e => e.is_complete);
+          return (
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-extrabold text-gray-900">📋 Extra Work</h2>
+                <Link href="/child/extra-work" className="text-sm text-[#6EA76E] hover:text-[#2F5D3A] font-bold">
+                  See all →
+                </Link>
+              </div>
+              <div className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5">
+                {extraPending.length === 0 ? (
+                  <p className="text-sm text-gray-400 text-center py-4">No extra work to do right now 🎉</p>
+                ) : (
+                  <div className="space-y-2">
+                    {extraPending.map(e => {
+                      const overdue = parseISO(e.scheduled_date) < startOfDay(new Date());
+                      return (
+                        <button key={e.id} onClick={() => openModal(e)}
+                          className="w-full text-left flex items-center gap-3 rounded-xl px-3 py-2.5 bg-gray-50 hover:bg-[#A8C67A]/10 transition-colors">
+                          <span className="w-5 h-5 rounded-full border-2 border-gray-300 shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                              <span className="text-xs font-semibold text-gray-500">{e.lesson.subject}</span>
+                              <span className="text-xs text-gray-400">Due {format(parseISO(e.scheduled_date), "d MMM")}</span>
+                              {overdue && (
+                                <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">OVERDUE</span>
+                              )}
+                            </div>
+                            <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
+                          </div>
+                          {e.completed_work_url && <span className="text-xs opacity-60 shrink-0">📎</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {extraDone.length > 0 && (
+                  <details className="mt-3 pt-3 border-t border-gray-100">
+                    <summary className="text-xs font-bold text-gray-400 uppercase tracking-wider cursor-pointer">
+                      Completed ({extraDone.length})
+                    </summary>
+                    <div className="space-y-2 mt-2 opacity-70">
+                      {extraDone.map(e => (
+                        <button key={e.id} onClick={() => openModal(e)}
+                          className="w-full text-left flex items-center gap-3 rounded-xl px-3 py-2 bg-emerald-50 hover:bg-emerald-100 transition-colors">
+                          <span className="text-green-500">✓</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-600 line-through truncate">{e.lesson.title}</p>
+                            <span className="text-xs text-gray-400">{e.lesson.subject}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Lesson modal */}

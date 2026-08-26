@@ -46,6 +46,7 @@ class PlannerEntry(Base):
     completed_at = Column(DateTime(timezone=True), nullable=True)
     completed_work_url = Column(String(512), nullable=True)
     completed_note = Column(Text, nullable=True)
+    is_extra = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lesson = relationship("Lesson", back_populates="planner_entries")

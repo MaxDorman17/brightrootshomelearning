@@ -116,8 +116,8 @@ export default function ReportPage() {
     return true;
   });
 
-  const timetable = filtered.filter(e => TIMETABLE_SUBJECTS.includes(e.lesson.subject));
-  const extra = filtered.filter(e => !TIMETABLE_SUBJECTS.includes(e.lesson.subject));
+  const timetable = filtered.filter(e => !e.is_extra);
+  const extra = filtered.filter(e => e.is_extra);
   const totalComplete = filtered.filter(e => e.is_complete).length;
   const totalSubmitted = filtered.filter(e => e.completed_work_url).length;
   const completionPct = filtered.length === 0 ? 0 : Math.round((totalComplete / filtered.length) * 100);

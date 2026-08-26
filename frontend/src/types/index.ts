@@ -17,6 +17,7 @@ export interface PlannerEntry {
   completed_at: string | null;
   completed_work_url: string | null;
   completed_note: string | null;
+  is_extra: boolean;
   lesson: Lesson;
 }
 

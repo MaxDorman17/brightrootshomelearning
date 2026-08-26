@@ -38,7 +38,8 @@ def _to_out(e: PlannerEntry) -> PlannerEntryOut:
         id=e.id, lesson_id=e.lesson_id, assigned_to=e.assigned_to,
         scheduled_date=e.scheduled_date, is_complete=e.is_complete,
         completed_at=e.completed_at, completed_work_url=e.completed_work_url,
-        completed_note=e.completed_note, lesson=LessonOut.model_validate(e.lesson),
+        completed_note=e.completed_note, is_extra=bool(e.is_extra),
+        lesson=LessonOut.model_validate(e.lesson),
     )
 
 
@@ -49,6 +50,7 @@ def _to_out_with_comp(e: PlannerEntry, comp) -> PlannerEntryOut:
         completed_at=comp.completed_at if comp else None,
         completed_work_url=comp.completed_work_url if comp else None,
         completed_note=comp.completed_note if comp else None,
+        is_extra=bool(e.is_extra),
         lesson=LessonOut.model_validate(e.lesson),
     )
 
@@ -65,6 +67,7 @@ def _to_out_with_shared_completion(e: PlannerEntry, comp) -> PlannerEntryOut:
         completed_at=e.completed_at,
         completed_work_url=comp.completed_work_url if comp else e.completed_work_url,
         completed_note=comp.completed_note if comp else e.completed_note,
+        is_extra=bool(e.is_extra),
         lesson=LessonOut.model_validate(e.lesson),
     )
 
@@ -170,6 +173,7 @@ def create_entry(
         lesson_id=entry_in.lesson_id,
         assigned_to=entry_in.assigned_to,
         scheduled_date=entry_in.scheduled_date,
+        is_extra=entry_in.is_extra,
     )
     db.add(entry)
     db.commit()

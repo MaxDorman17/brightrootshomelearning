@@ -7,11 +7,6 @@ import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfDay } from "date-fns";
 
-const TIMETABLE_SUBJECTS = new Set([
-  "Maths", "English", "Science", "History", "Computing",
-  "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
-]);
-
 const CATEGORY_COLOR: Record<string, string> = {
   Reading: "bg-blue-100 border-blue-200 text-blue-800",
   Project: "bg-purple-100 border-purple-200 text-purple-800",
@@ -31,7 +26,7 @@ export default function ChildExtraWorkPage() {
 
   const loadData = useCallback(async () => {
     const res = await getAllMyEntries();
-    const extra = res.data.filter((e: PlannerEntry) => !TIMETABLE_SUBJECTS.has(e.lesson.subject));
+    const extra = res.data.filter((e: PlannerEntry) => e.is_extra);
     setEntries(extra);
     const initial: Record<number, string> = {};
     extra.forEach((e: PlannerEntry) => { if (e.completed_work_url) initial[e.id] = e.completed_work_url; });

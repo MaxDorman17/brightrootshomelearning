@@ -26,6 +26,12 @@ def run_migrations():
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE reading_log ADD COLUMN child_id INTEGER REFERENCES users(id)"))
                 conn.commit()
+    if "planner_entries" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("planner_entries")]
+        if "is_extra" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE planner_entries ADD COLUMN is_extra BOOLEAN DEFAULT 0"))
+                conn.commit()
 
 run_migrations()
 Base.metadata.create_all(bind=engine)
@@ -52,6 +58,46 @@ def migrate_coding_progress():
 
 
 migrate_coding_progress()
+
+
+# The exact, closed list of `subject` values the Extra Work creation form has ever
+# written (see CATEGORIES in frontend/src/app/parent/extra-work/page.tsx). Used only
+# to identify pre-existing Extra Work rows now that is_extra exists — deliberately an
+# allow-list, not "anything not in the normal timetable", so an unrelated/unknown
+# subject can never be mis-flagged as extra work.
+HISTORICAL_EXTRA_WORK_SUBJECTS = ["Reading", "Project", "Research", "Practice", "Creative Writing", "Other"]
+
+
+def backfill_extra_work_flag():
+    """One-time, idempotent: flag pre-existing planner entries created through the
+    Extra Work form as is_extra=1, based on their Lesson.subject. Only ever sets
+    is_extra to 1 (never back to 0) and only ever touches the is_extra column —
+    safe to run on every startup."""
+    insp = sa_inspect(engine)
+    tables = insp.get_table_names()
+    if "planner_entries" not in tables or "lessons" not in tables:
+        return
+    existing_cols = [c["name"] for c in insp.get_columns("planner_entries")]
+    if "is_extra" not in existing_cols:
+        return
+    params = {f"subj{i}": s for i, s in enumerate(HISTORICAL_EXTRA_WORK_SUBJECTS)}
+    placeholders = ", ".join(f":{k}" for k in params)
+    with engine.connect() as conn:
+        conn.execute(
+            text(f"""
+                UPDATE planner_entries
+                SET is_extra = 1
+                WHERE (is_extra = 0 OR is_extra IS NULL)
+                  AND lesson_id IN (
+                      SELECT id FROM lessons WHERE subject IN ({placeholders})
+                  )
+            """),
+            params,
+        )
+        conn.commit()
+
+
+backfill_extra_work_flag()
 
 app = FastAPI(title="Homeschool API", version="1.0.0")
 

@@ -7,11 +7,6 @@ import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfDay } from "date-fns";
 
-const TIMETABLE_SUBJECTS = new Set([
-  "Maths", "English", "Science", "History", "Computing",
-  "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
-]);
-
 const CATEGORIES = ["Reading", "Project", "Research", "Practice", "Creative Writing", "Other"];
 
 const CATEGORY_COLOR: Record<string, string> = {
@@ -41,7 +36,7 @@ export default function ExtraWorkParentPage() {
 
   const loadData = useCallback(async () => {
     const res = await getAllEntries();
-    setEntries(res.data.filter((e: PlannerEntry) => !TIMETABLE_SUBJECTS.has(e.lesson.subject)));
+    setEntries(res.data.filter((e: PlannerEntry) => e.is_extra));
     setLoading(false);
   }, []);
 
@@ -61,7 +56,7 @@ export default function ExtraWorkParentPage() {
         description: notes || undefined,
         lesson_url: link || undefined,
       });
-      await createPlannerEntry({ lesson_id: lessonRes.data.id, scheduled_date: dueDate, assigned_to: assignedChildId ?? undefined });
+      await createPlannerEntry({ lesson_id: lessonRes.data.id, scheduled_date: dueDate, assigned_to: assignedChildId ?? undefined, is_extra: true });
       setTitle(""); setCategory(CATEGORIES[0]); setLink(""); setNotes("");
       setDueDate(format(new Date(), "yyyy-MM-dd")); setAssignedChildId(null);
       setShowForm(false);
