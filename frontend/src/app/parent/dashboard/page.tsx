@@ -3,19 +3,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren } from "@/lib/api";
-import { PlannerEntry } from "@/types";
+import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks } from "@/lib/api";
+import { PlannerEntry, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
 
 const TOTAL_CODING = 23;
-
-const TIMETABLE_SUBJECTS = new Set([
-  "Maths", "English", "Science", "History", "Computing",
-  "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
-  "RSHE (PSHE)", "Languages",
-]);
 
 const QUICK_LINKS = [
   { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
@@ -36,6 +30,7 @@ export default function ParentDashboardPage() {
   const [parentName, setParentName] = useState("Max");
   const [spellingResults, setSpellingResults] = useState<{id: number; child_id: number; score: number; total: number; taken_at: string}[]>([]);
   const [dashChildren, setDashChildren] = useState<{id: number; username: string}[]>([]);
+  const [books, setBooks] = useState<ReadingLogBook[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -48,12 +43,14 @@ export default function ParentDashboardPage() {
       getCodingProgress(),
       getSpellingResults({ week_start: weekStartStr }),
       getChildren(),
-    ]).then(([wRes, aRes, cRes, sRes, kidRes]) => {
+      getBooks(),
+    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes]) => {
       setWeekEntries(wRes.data);
       setAllEntries(aRes.data);
       setCodingDone((cRes.data as string[]).length);
       setSpellingResults(sRes.data);
       setDashChildren(kidRes.data);
+      setBooks(booksRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -67,12 +64,13 @@ export default function ParentDashboardPage() {
   const todayDone = todayEntries.filter(e => e.is_complete).length;
   const recentSubmissions = allEntries.filter(e => e.completed_work_url).slice(0, 5);
 
-  // Upcoming extra work due in next 7 days
+  // Upcoming Extra Work due in next 7 days — is_extra, not a subject-name guess,
+  // so a genuine timetable lesson can never be mistaken for Extra Work here.
   const todayStr = format(new Date(), "yyyy-MM-dd");
   const in7 = format(addDays(new Date(), 7), "yyyy-MM-dd");
   const upcomingDue = allEntries
     .filter(e =>
-      !TIMETABLE_SUBJECTS.has(e.lesson.subject) &&
+      e.is_extra &&
       !e.is_complete &&
       e.scheduled_date >= todayStr &&
       e.scheduled_date <= in7
@@ -81,6 +79,8 @@ export default function ParentDashboardPage() {
     .slice(0, 5);
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM")}`;
+
+  const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
 
   const statCards = [
     { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-[#2F5D3A]", to: "to-[#6EA76E]", shadow: "shadow-green-900/20" },
@@ -193,9 +193,9 @@ export default function ParentDashboardPage() {
               )}
           </div>
 
-          {/* Upcoming due dates */}
+          {/* Upcoming due dates — Extra Work only */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
-            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">Due This Week</h2>
+            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">📋 Extra Work Due</h2>
             {loading ? <p className="text-sm text-gray-400">Loading…</p>
               : upcomingDue.length === 0 ? <p className="text-sm text-gray-400">No extra work due soon.</p>
               : (
@@ -221,6 +221,37 @@ export default function ParentDashboardPage() {
               )}
           </div>
         </div>
+
+        {/* Reading — sourced from the real Reading Log, never Extra Work or spellings */}
+        {!loading && (
+          <Link href="/reading-log"
+            className="block bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6 hover:shadow-md hover:border-[#A8C67A]/60 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">📚 Reading</h2>
+              <span className="text-xs text-[#6EA76E] font-bold">Go to Reading Log →</span>
+            </div>
+            {readingBook ? (
+              <div className="flex items-center gap-3">
+                <span className="text-2xl shrink-0">
+                  {readingBook.status === "completed" ? "✅" : readingBook.status === "reading" ? "📖" : "📋"}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-bold text-gray-800 truncate">{readingBook.title}</p>
+                  {readingBook.author && <p className="text-xs text-gray-400 truncate">{readingBook.author}</p>}
+                  <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    readingBook.status === "reading" ? "bg-blue-100 text-blue-800"
+                      : readingBook.status === "completed" ? "bg-emerald-100 text-emerald-800"
+                      : "bg-gray-100 text-gray-700"
+                  }`}>
+                    {readingBook.status === "reading" ? "Currently Reading" : readingBook.status === "completed" ? "Completed" : "Wishlist"}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">No books in the Reading Log yet.</p>
+            )}
+          </Link>
+        )}
 
         {/* Spellings this week */}
         {!loading && spellingResults.length > 0 && (

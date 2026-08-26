@@ -6,9 +6,9 @@ import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
   submitWorkUrl, submitNote, getFeedback, markFeedbackRead, getDaysOff,
-  getGoals, toggleGoal, getTimetable,
+  getGoals, toggleGoal, getTimetable, getBooks,
 } from "@/lib/api";
-import { PlannerEntry, WorkFeedback, WeeklyGoal } from "@/types";
+import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
@@ -94,6 +94,7 @@ export default function ChildDashboard() {
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [feedbackList, setFeedbackList] = useState<WorkFeedback[]>([]);
   const [daysOffSet, setDaysOffSet] = useState<Set<string>>(new Set());
+  const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [loading, setLoading] = useState(true);
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -123,11 +124,12 @@ export default function ChildDashboard() {
     loadWeek();
 
     // Non-critical data loaded separately so failures don't block the timetable
-    Promise.all([getAllMyEntries(), getFeedback(), getDaysOff()])
-      .then(([allRes, fbRes, daysOffRes]) => {
+    Promise.all([getAllMyEntries(), getFeedback(), getDaysOff(), getBooks()])
+      .then(([allRes, fbRes, daysOffRes, booksRes]) => {
         setAllEntries(allRes.data);
         setFeedbackList(fbRes.data);
         setDaysOffSet(new Set((daysOffRes.data as { date: string }[]).map((d: { date: string }) => d.date)));
+        setBooks(booksRes.data);
       })
       .catch(() => {});
 
@@ -226,10 +228,14 @@ export default function ChildDashboard() {
   const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
 
   const todayStr2 = format(new Date(), "yyyy-MM-dd");
-  const todayLessons = entries.filter(e => e.scheduled_date === todayStr2);
+  // Excludes Extra Work (is_extra) so an Extra Work item can never stand in
+  // for a real timetable lesson in "Up next" or the today completion count.
+  const todayLessons = entries.filter(e => e.scheduled_date === todayStr2 && !e.is_extra);
   const todayDoneCount = todayLessons.filter(e => e.is_complete).length;
   const todayTotalCount = todayLessons.length;
   const nextLesson = todayLessons.find(e => !e.is_complete) ?? null;
+
+  const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
 
   return (
     <div className="min-h-screen pb-20 md:pb-0">
@@ -461,6 +467,37 @@ export default function ChildDashboard() {
           <span className="flex items-center gap-1">📎 Work submitted</span>
           <span className="ml-auto text-gray-400">Tap a lesson to open it</span>
         </div>
+
+        {/* Reading — sourced from the real Reading Log, never spellings or Extra Work */}
+        {readingBook && (
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-extrabold text-gray-900">📚 Reading</h2>
+              <Link href="/reading-log" className="text-sm text-[#6EA76E] hover:text-[#2F5D3A] font-bold">
+                Go to Reading Log →
+              </Link>
+            </div>
+            <Link href="/reading-log"
+              className="block bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5 hover:shadow-md hover:border-[#A8C67A]/60 transition-all">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl shrink-0">
+                  {readingBook.status === "completed" ? "✅" : readingBook.status === "reading" ? "📖" : "📋"}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-bold text-gray-900 truncate">{readingBook.title}</p>
+                  {readingBook.author && <p className="text-sm text-gray-400 truncate">{readingBook.author}</p>}
+                  <span className={`inline-block mt-1.5 text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                    readingBook.status === "reading" ? "bg-blue-100 text-blue-800"
+                      : readingBook.status === "completed" ? "bg-emerald-100 text-emerald-800"
+                      : "bg-gray-100 text-gray-700"
+                  }`}>
+                    {readingBook.status === "reading" ? "Currently Reading" : readingBook.status === "completed" ? "Completed" : "Wishlist"}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        )}
 
         {/* Extra Work — separate from the normal timetable above */}
         {(() => {
