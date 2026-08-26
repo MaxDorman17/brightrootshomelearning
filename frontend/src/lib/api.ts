@@ -30,8 +30,8 @@ export const login = (username: string, password: string) => {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });
 };
-export const register = (data: { email: string; username: string; password: string; role: string }) =>
-  api.post("/api/auth/register", data);
+// Public self-registration is disabled server-side (see backend/routers/auth.py) —
+// no register() helper here since nothing should call it.
 
 // Lessons
 export const getLessons = () => api.get("/api/lessons/");

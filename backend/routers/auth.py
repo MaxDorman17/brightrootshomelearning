@@ -3,29 +3,23 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
-from schemas import Token, UserCreate, UserOut
-from auth import hash_password, verify_password, create_access_token, get_current_user
+from schemas import Token, UserOut
+from auth import verify_password, create_access_token, get_current_user
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserOut, status_code=201)
-def register(user_in: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == user_in.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
-    if db.query(User).filter(User.username == user_in.username).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
-
-    user = User(
-        email=user_in.email,
-        username=user_in.username,
-        hashed_password=hash_password(user_in.password),
-        role=user_in.role,
+@router.post("/register")
+def register():
+    """Public self-registration is permanently disabled. Accounts are created
+    directly by the site owner (see backend/add_users.py), not through this
+    API. The route is kept (rather than removed) in case anything internal
+    ever references the path — it always rejects, before touching the
+    database at all."""
+    raise HTTPException(
+        status_code=403,
+        detail="Public registration is disabled. Contact the site owner to get an account created.",
     )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
 
 
 @router.post("/login", response_model=Token)
