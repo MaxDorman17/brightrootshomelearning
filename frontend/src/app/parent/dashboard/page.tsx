@@ -3,13 +3,27 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks } from "@/lib/api";
+import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks, getTodayOakQuizResults } from "@/lib/api";
 import { PlannerEntry, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
 
 const TOTAL_CODING = 23;
+
+interface TodayQuizRow {
+  entry_id: number;
+  child_id: number;
+  child: string;
+  lesson_title: string;
+  subject: string;
+  is_complete: boolean;
+  completed: boolean;
+  starter_score: number | null;
+  starter_total: number | null;
+  exit_score: number | null;
+  exit_total: number | null;
+}
 
 const QUICK_LINKS = [
   { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
@@ -31,6 +45,7 @@ export default function ParentDashboardPage() {
   const [spellingResults, setSpellingResults] = useState<{id: number; child_id: number; score: number; total: number; taken_at: string}[]>([]);
   const [dashChildren, setDashChildren] = useState<{id: number; username: string}[]>([]);
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
+  const [todayQuiz, setTodayQuiz] = useState<TodayQuizRow[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -44,13 +59,15 @@ export default function ParentDashboardPage() {
       getSpellingResults({ week_start: weekStartStr }),
       getChildren(),
       getBooks(),
-    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes]) => {
+      getTodayOakQuizResults(),
+    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes, quizRes]) => {
       setWeekEntries(wRes.data);
       setAllEntries(aRes.data);
       setCodingDone((cRes.data as string[]).length);
       setSpellingResults(sRes.data);
       setDashChildren(kidRes.data);
       setBooks(booksRes.data);
+      setTodayQuiz(quizRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -251,6 +268,45 @@ export default function ParentDashboardPage() {
               <p className="text-sm text-gray-400">No books in the Reading Log yet.</p>
             )}
           </Link>
+        )}
+
+        {/* Today's Oak quiz results */}
+        {!loading && todayQuiz.length > 0 && (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
+            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">🧠 Today&apos;s Oak Quiz Results</h2>
+            <div className="space-y-2.5">
+              {todayQuiz.map(r => {
+                const starterPct = r.starter_score != null && r.starter_total ? Math.round((r.starter_score / r.starter_total) * 100) : null;
+                const exitPct = r.exit_score != null && r.exit_total ? Math.round((r.exit_score / r.exit_total) * 100) : null;
+                return (
+                  <div key={`${r.entry_id}-${r.child_id}`} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5 flex-wrap">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-gray-800 truncate">{r.lesson_title}</p>
+                      <p className="text-xs text-gray-400">{r.subject} · {r.child}</p>
+                    </div>
+                    {r.completed ? (
+                      <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                        {r.starter_total != null && (
+                          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                            Starter {r.starter_score}/{r.starter_total}{starterPct != null ? ` (${starterPct}%)` : ""}
+                          </span>
+                        )}
+                        {r.exit_total != null && (
+                          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                            Exit {r.exit_score}/{r.exit_total}{exitPct != null ? ` (${exitPct}%)` : ""}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 shrink-0">
+                        {r.is_complete ? "No quiz link submitted" : "Not completed yet"}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
 
         {/* Spellings this week */}

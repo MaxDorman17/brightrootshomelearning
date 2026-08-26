@@ -8,7 +8,7 @@ from datetime import date
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, func
 from sqlalchemy.orm import Session, joinedload
 from openpyxl import Workbook
 from openpyxl.styles import Font
@@ -519,3 +519,118 @@ async def export_oak_results(
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+# ---------------------------------------------------------------------------
+# Today's Oak quiz results — compact parent dashboard summary
+# ---------------------------------------------------------------------------
+
+# Matches an assigned Oak pupil-lesson link (what a lesson is scheduled with),
+# not the share-results link pattern (OAK_SHARE_RE) — those are different URL
+# shapes, so this never collides with a submitted share link.
+OAK_LESSON_URL_RE = re.compile(
+    r"https?://(?:www\.)?thenational\.academy/pupils/programmes/[^/?#]+/units/[^/?#]+/lessons/[^/?#]+"
+)
+
+
+@router.get("/today-quiz-results")
+def get_today_quiz_results(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Today's Oak lesson quiz results for Oscar specifically — this
+    dashboard feature is scoped to one named child, not every child in the
+    family. Everything below (direct/shared attribution, family scoping,
+    cache-only reads) is unchanged from before; only which child_ids get
+    considered has changed, so a shared entry now only ever expands to
+    Oscar's own PlannerCompletion, never a sibling's.
+
+    Resolved by username within this parent's own children (never a
+    hardcoded numeric id) — there's no existing 'selected/active child'
+    concept on this dashboard to reuse, so this is the smallest safe way to
+    identify which child the card is for. If this parent has no child named
+    Oscar, returns an empty list rather than falling back to every child."""
+    today = date.today()
+    oscar = (
+        db.query(User)
+        .filter(User.parent_id == current_user.id, func.lower(User.username) == "oscar")
+        .first()
+    )
+    if not oscar:
+        return []
+    child_ids = [oscar.id]
+    child_names = {oscar.id: oscar.username}
+
+    entries = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(
+            PlannerEntry.scheduled_date == today,
+            Lesson.lesson_url.is_not(None),
+            or_(
+                PlannerEntry.assigned_to.in_(child_ids),
+                and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+            ),
+        )
+        .all()
+    )
+    # Only entries whose assigned lesson link is an actual Oak pupil lesson —
+    # excludes custom (non-Oak) lessons scheduled today.
+    entries = [e for e in entries if OAK_LESSON_URL_RE.search(e.lesson.lesson_url or "")]
+
+    shared_ids = [e.id for e in entries if e.assigned_to is None]
+    comps_lookup: dict = {}
+    if shared_ids and child_ids:
+        for comp in db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id.in_(shared_ids),
+            PlannerCompletion.user_id.in_(child_ids),
+        ).all():
+            comps_lookup[(comp.entry_id, comp.user_id)] = comp
+
+    # First pass: resolve each (entry, child)'s completion state and Oak share URL.
+    pending = []
+    for e in entries:
+        targets = [e.assigned_to] if e.assigned_to is not None else child_ids
+        for child_id in targets:
+            if e.assigned_to is not None:
+                url, is_complete = e.completed_work_url, e.is_complete
+            else:
+                comp = comps_lookup.get((e.id, child_id))
+                url = comp.completed_work_url if comp else None
+                is_complete = comp is not None
+            share_match = OAK_SHARE_RE.search(url) if url else None
+            pending.append({
+                "entry_id": e.id,
+                "child_id": child_id,
+                "lesson": e.lesson,
+                "is_complete": is_complete,
+                "share_url": share_match.group(0) if share_match else None,
+            })
+
+    # Bulk-fetch cached scores for every distinct share URL found — same
+    # canonical_urls/cached pattern export_oak_results uses.
+    canonical_urls = {p["share_url"] for p in pending if p["share_url"]}
+    cached = {
+        r.url: r for r in db.query(OakQuizResult).filter(OakQuizResult.url.in_(canonical_urls)).all()
+    } if canonical_urls else {}
+
+    rows = []
+    for p in pending:
+        result = cached.get(p["share_url"]) if p["share_url"] else None
+        rows.append({
+            "entry_id": p["entry_id"],
+            "child_id": p["child_id"],
+            "child": child_names.get(p["child_id"], "Unknown"),
+            "lesson_title": p["lesson"].title,
+            "subject": p["lesson"].subject,
+            "is_complete": p["is_complete"],
+            "completed": result is not None,
+            "starter_score": result.starter_score if result else None,
+            "starter_total": result.starter_total if result else None,
+            "exit_score": result.exit_score if result else None,
+            "exit_total": result.exit_total if result else None,
+        })
+
+    rows.sort(key=lambda r: (r["child"], r["lesson_title"]))
+    return rows

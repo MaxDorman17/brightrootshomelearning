@@ -160,6 +160,7 @@ export const getOakQuizResults = () => api.get("/api/oak/quiz-results");
 export const refreshOakQuizResults = () => api.post("/api/oak/quiz-results/refresh");
 export const exportOakResults = (params?: { child_id?: number; start_date?: string; end_date?: string }) =>
   api.get("/api/oak/export", { params, responseType: "blob" });
+export const getTodayOakQuizResults = () => api.get("/api/oak/today-quiz-results");
 
 // Spellings
 export const getSpellingWords = (week_start: string) =>
