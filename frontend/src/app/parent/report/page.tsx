@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults } from "@/lib/api";
 import { PlannerEntry, Child, OakQuizResult } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
@@ -67,6 +67,7 @@ export default function ReportPage() {
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -172,6 +173,32 @@ export default function ReportPage() {
     return { label: format(weekStart, "d MMM"), total: weekEntries.length, done, pct };
   });
 
+  const handleExportOak = async () => {
+    setExporting(true);
+    try {
+      const params: { child_id?: number; start_date?: string; end_date?: string } = {};
+      if (selectedChildId) params.child_id = selectedChildId;
+      if (period === "week") {
+        params.start_date = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
+        params.end_date = format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
+      } else if (period === "month") {
+        params.start_date = format(startOfMonth(new Date()), "yyyy-MM-dd");
+        params.end_date = format(endOfMonth(new Date()), "yyyy-MM-dd");
+      }
+      const res = await exportOakResults(params);
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `bright-roots-oak-results-${format(new Date(), "yyyy-MM-dd")}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -197,6 +224,10 @@ export default function ReportPage() {
                 </select>
               </div>
             )}
+            <button onClick={handleExportOak} disabled={exporting}
+              className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50">
+              {exporting ? "Exporting…" : "⬇ Export Oak Results"}
+            </button>
             <button onClick={() => window.print()}
               className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
               🖨 Print

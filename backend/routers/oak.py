@@ -1,14 +1,21 @@
 import re
+import io
 import json
 import asyncio
 import httpx
 import concurrent.futures
-from fastapi import APIRouter, Depends, HTTPException, Query
+from datetime import date
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from sqlalchemy import or_, and_
+from sqlalchemy.orm import Session, joinedload
+from openpyxl import Workbook
+from openpyxl.styles import Font
+from openpyxl.utils import get_column_letter
 from auth import get_current_user, require_parent
 from database import get_db, SessionLocal
-from models import User, OakQuizResult, PlannerEntry, PlannerCompletion
+from models import User, OakQuizResult, PlannerEntry, PlannerCompletion, Lesson
 from config import settings
 
 router = APIRouter(prefix="/api/oak", tags=["oak"])
@@ -327,3 +334,188 @@ async def refresh_quiz_results(
                 added += 1
 
     return {"checked": len(missing), "added": added, "total_cached": len(cached) + added}
+
+
+# ---------------------------------------------------------------------------
+# Excel export of Oak quiz results — homeschool evidence record
+# ---------------------------------------------------------------------------
+
+EXPORT_HEADERS = [
+    "Scheduled Date", "Completed Date", "Child", "Subject", "Lesson Title",
+    "Assignment Type", "Starter Score", "Starter Total", "Starter %",
+    "Exit Score", "Exit Total", "Exit %", "Oak Results URL", "Note",
+]
+EXPORT_COLUMN_WIDTHS = [14, 18, 14, 16, 34, 14, 12, 12, 10, 10, 10, 8, 48, 30]
+
+
+@router.get("/export")
+async def export_oak_results(
+    child_id: Optional[int] = None,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Export this parent's children's Oak quiz results as a formatted .xlsx.
+
+    Directly-assigned entries are attributed via PlannerEntry.assigned_to.
+    Shared (assigned_to=NULL) entries are attributed by enumerating every
+    matching PlannerCompletion row individually — one export row per child
+    completion — so a second child's submission is never silently dropped
+    the way a single 'best' pick would. All queries are scoped to this
+    parent's own children (direct) or their own lessons (shared), so one
+    family's export can never include another family's data.
+    """
+    children = db.query(User).filter(User.parent_id == current_user.id).all()
+    child_ids = [c.id for c in children]
+    child_names = {c.id: c.username for c in children}
+
+    if child_id is not None and child_id not in child_ids:
+        raise HTTPException(status_code=403, detail="Not your child")
+    target_child_ids = [child_id] if child_id is not None else child_ids
+
+    query = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
+        joinedload(PlannerEntry.lesson)
+    ).filter(
+        or_(
+            PlannerEntry.assigned_to.in_(target_child_ids),
+            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+        )
+    )
+    if start_date:
+        query = query.filter(PlannerEntry.scheduled_date >= start_date)
+    if end_date:
+        query = query.filter(PlannerEntry.scheduled_date <= end_date)
+    entries = query.order_by(PlannerEntry.scheduled_date).all()
+
+    # Bulk-fetch every PlannerCompletion for the shared entries in this set —
+    # never just the 'best' one — scoped to this parent's own children.
+    shared_ids = [e.id for e in entries if e.assigned_to is None]
+    comps_by_entry: dict = {}
+    if shared_ids and target_child_ids:
+        for comp in db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id.in_(shared_ids),
+            PlannerCompletion.user_id.in_(target_child_ids),
+            PlannerCompletion.completed_work_url.is_not(None),
+        ).all():
+            comps_by_entry.setdefault(comp.entry_id, []).append(comp)
+
+    # Build one candidate row per (entry, child) submission that has an Oak share link.
+    candidates = []
+    for e in entries:
+        if e.assigned_to is not None:
+            url = e.completed_work_url
+            match = OAK_SHARE_RE.search(url) if url else None
+            if match:
+                candidates.append({
+                    "child_id": e.assigned_to,
+                    "url": match.group(0),
+                    "note": e.completed_note,
+                    "completed_at": e.completed_at,
+                    "scheduled_date": e.scheduled_date,
+                    "lesson": e.lesson,
+                    "assignment_type": "Direct",
+                })
+        else:
+            for comp in comps_by_entry.get(e.id, []):
+                url = comp.completed_work_url
+                match = OAK_SHARE_RE.search(url) if url else None
+                if match:
+                    candidates.append({
+                        "child_id": comp.user_id,
+                        "url": match.group(0),
+                        "note": comp.completed_note,
+                        "completed_at": comp.completed_at,
+                        "scheduled_date": e.scheduled_date,
+                        "lesson": e.lesson,
+                        "assignment_type": "Shared",
+                    })
+
+    # Reuse the existing share-page fetch/cache logic (same as quiz-results/refresh)
+    # rather than writing a second scraper — scoped to just this export's URLs.
+    canonical_urls = {c["url"] for c in candidates}
+    cached = {
+        r.url: r for r in db.query(OakQuizResult).filter(OakQuizResult.url.in_(canonical_urls)).all()
+    } if canonical_urls else {}
+    missing = sorted(canonical_urls - cached.keys())
+    if missing:
+        sem = asyncio.Semaphore(6)
+        async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
+            async def fetch_one(u: str):
+                async with sem:
+                    return u, await _fetch_share_scores(client, u)
+
+            results = await asyncio.gather(*(fetch_one(u) for u in missing))
+        for u, scores in results:
+            if scores is not None:
+                _upsert_result(db, u, scores)
+        cached = {
+            r.url: r for r in db.query(OakQuizResult).filter(OakQuizResult.url.in_(canonical_urls)).all()
+        }
+
+    candidates.sort(key=lambda c: (c["scheduled_date"], child_names.get(c["child_id"], "")))
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Oak Results"
+    ws.append(EXPORT_HEADERS)
+    for cell in ws[1]:
+        cell.font = Font(bold=True)
+
+    for c in candidates:
+        result = cached.get(c["url"])
+        starter_score = result.starter_score if result else None
+        starter_total = result.starter_total if result else None
+        exit_score = result.exit_score if result else None
+        exit_total = result.exit_total if result else None
+        starter_pct = (starter_score / starter_total) if (starter_score is not None and starter_total) else None
+        exit_pct = (exit_score / exit_total) if (exit_score is not None and exit_total) else None
+        completed_at = c["completed_at"]
+        if completed_at is not None and completed_at.tzinfo is not None:
+            completed_at = completed_at.replace(tzinfo=None)  # Excel doesn't support tz-aware datetimes
+
+        ws.append([
+            c["scheduled_date"],
+            completed_at,
+            child_names.get(c["child_id"], "Unknown"),
+            c["lesson"].subject,
+            c["lesson"].title,
+            c["assignment_type"],
+            starter_score,
+            starter_total,
+            starter_pct,
+            exit_score,
+            exit_total,
+            exit_pct,
+            c["url"],
+            c["note"] or "",
+        ])
+
+    last_row = ws.max_row
+    if last_row > 1:
+        for row in ws.iter_rows(min_row=2, max_row=last_row, min_col=1, max_col=1):
+            for cell in row:
+                cell.number_format = "yyyy-mm-dd"
+        for row in ws.iter_rows(min_row=2, max_row=last_row, min_col=2, max_col=2):
+            for cell in row:
+                cell.number_format = "yyyy-mm-dd hh:mm"
+        for col_idx in (9, 12):  # Starter %, Exit %
+            for row in ws.iter_rows(min_row=2, max_row=last_row, min_col=col_idx, max_col=col_idx):
+                for cell in row:
+                    cell.number_format = "0%"
+
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = ws.dimensions
+    for i, width in enumerate(EXPORT_COLUMN_WIDTHS, start=1):
+        ws.column_dimensions[get_column_letter(i)].width = width
+
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+
+    filename = f"bright-roots-oak-results-{date.today().isoformat()}.xlsx"
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
