@@ -161,6 +161,8 @@ export const refreshOakQuizResults = () => api.post("/api/oak/quiz-results/refre
 export const exportOakResults = (params?: { child_id?: number; start_date?: string; end_date?: string }) =>
   api.get("/api/oak/export", { params, responseType: "blob" });
 export const getTodayOakQuizResults = () => api.get("/api/oak/today-quiz-results");
+export const checkOakWorksheet = (lesson_url: string) =>
+  api.get("/api/oak/has-worksheet", { params: { lesson_url } });
 
 // Spellings
 export const getSpellingWords = (week_start: string) =>

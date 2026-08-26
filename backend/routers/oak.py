@@ -6,6 +6,7 @@ import httpx
 import concurrent.futures
 from datetime import date
 from typing import Optional
+from urllib.parse import urlparse
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel
 from sqlalchemy import or_, and_, func
@@ -634,3 +635,90 @@ def get_today_quiz_results(
 
     rows.sort(key=lambda r: (r["child"], r["lesson_title"]))
     return rows
+
+
+# ---------------------------------------------------------------------------
+# Worksheet availability check — planner "Open Worksheet" button
+# ---------------------------------------------------------------------------
+
+_OAK_HOSTS = {"www.thenational.academy", "thenational.academy"}
+_OAK_LESSON_PATH_RE = re.compile(r"^/pupils/programmes/[^/]+/units/[^/]+/lessons/[^/]+$")
+
+
+def _validate_oak_lesson_url(url: str) -> Optional[str]:
+    """Return a safe, canonical URL to fetch, or None if `url` isn't exactly
+    an Oak pupil-lesson page. Rebuilds the URL from validated components
+    (scheme/host/path only — query, fragment, userinfo, port all dropped)
+    rather than ever trusting the raw client-supplied string, so this can
+    never become a fetch of an arbitrary attacker-chosen URL/host."""
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    if parsed.scheme != "https":
+        return None
+    if parsed.hostname not in _OAK_HOSTS:
+        return None
+    if parsed.port is not None:
+        return None
+    if not _OAK_LESSON_PATH_RE.match(parsed.path):
+        return None
+    return f"https://{parsed.hostname}{parsed.path}"
+
+
+@router.get("/has-worksheet")
+async def has_worksheet(
+    lesson_url: str = Query(...),
+    _: User = Depends(get_current_user),
+):
+    """Check whether an Oak pupil lesson has a downloadable worksheet, by
+    fetching the lesson's own public page server-side and reading
+    __NEXT_DATA__.props.pageProps.hasWorksheet — the same technique
+    import_unit already uses to read that page's embedded JSON. lesson_url
+    is strictly validated first (see _validate_oak_lesson_url); anything
+    that isn't exactly an Oak pupil-lesson URL is rejected before any
+    network call, so this is never a generic fetch-any-URL endpoint. No DB
+    reads or writes, and no worksheet content is stored or proxied — only
+    a boolean plus the lesson's own /intro page URL is ever returned.
+
+    Oak's base lesson URL (the shape we validate/store) permanently
+    redirects (308) to its /overview sub-page — confirmed live: the base
+    URL alone never returns real content, so redirects must be followed to
+    reach the page that actually contains hasWorksheet. The redirect is
+    same-origin/relative, but as a safety net for following it at all, the
+    final resolved host is re-checked against the same allow-list used
+    before the fetch, and the redirect chain is capped."""
+    safe_url = _validate_oak_lesson_url(lesson_url)
+    if not safe_url:
+        raise HTTPException(status_code=400, detail="Not a valid Oak pupil lesson URL")
+
+    try:
+        async with httpx.AsyncClient(follow_redirects=True, max_redirects=5, timeout=10.0) as client:
+            resp = await client.get(
+                safe_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; HomeschoolApp/1.0)"},
+            )
+    except httpx.RequestError:
+        return {"has_worksheet": False, "intro_url": None}
+
+    if resp.status_code != 200 or resp.url.host not in _OAK_HOSTS:
+        return {"has_worksheet": False, "intro_url": None}
+
+    m = re.search(
+        r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>',
+        resp.text,
+        re.DOTALL,
+    )
+    if not m:
+        return {"has_worksheet": False, "intro_url": None}
+
+    try:
+        page_data = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return {"has_worksheet": False, "intro_url": None}
+
+    has_ws = bool(page_data.get("props", {}).get("pageProps", {}).get("hasWorksheet"))
+    return {
+        "has_worksheet": has_ws,
+        "intro_url": f"{safe_url}/intro" if has_ws else None,
+    }

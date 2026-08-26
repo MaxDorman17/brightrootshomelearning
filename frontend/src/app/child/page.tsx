@@ -1,17 +1,22 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
   submitWorkUrl, submitNote, getFeedback, markFeedbackRead, getDaysOff,
-  getGoals, toggleGoal, getTimetable, getBooks,
+  getGoals, toggleGoal, getTimetable, getBooks, checkOakWorksheet,
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
+
+interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
+
+const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/programmes\/[^/?#]+\/units\/[^/?#]+\/lessons\/[^/?#]+$/;
+const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
@@ -108,6 +113,9 @@ export default function ChildDashboard() {
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
 
+  const [worksheetCache, setWorksheetCache] = useState<Record<string, WorksheetInfo>>({});
+  const worksheetRequested = useRef<Set<string>>(new Set());
+
   const loadWeek = useCallback(async () => {
     setLoading(true);
     try {
@@ -142,6 +150,22 @@ export default function ChildDashboard() {
     const timer = setInterval(() => setQuoteIdx(i => (i + 1) % QUOTES.length), 8000);
     return () => clearInterval(timer);
   }, [loadWeek, router]);
+
+  // Check worksheet availability once per distinct Oak lesson URL — the ref
+  // tracks what's already been requested so re-renders (or a week reload
+  // returning the same URLs) never re-fire a check that's already in flight
+  // or cached.
+  useEffect(() => {
+    entries.forEach(e => {
+      const url = e.lesson.lesson_url;
+      if (isOakLessonUrl(url) && !worksheetRequested.current.has(url)) {
+        worksheetRequested.current.add(url);
+        checkOakWorksheet(url)
+          .then(res => setWorksheetCache(prev => ({ ...prev, [url]: res.data })))
+          .catch(() => setWorksheetCache(prev => ({ ...prev, [url]: { has_worksheet: false, intro_url: null } })));
+      }
+    });
+  }, [entries]);
 
   const weekDates = DAYS.map((_, i) => addDays(weekStart, i));
 
@@ -603,6 +627,23 @@ export default function ChildDashboard() {
                 <span className="ml-auto opacity-70">→</span>
               </a>
             )}
+
+            {(() => {
+              const url = modal.entry.lesson.lesson_url;
+              const ws = url ? worksheetCache[url] : undefined;
+              return ws?.has_worksheet && ws.intro_url ? (
+                <a
+                  href={ws.intro_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 bg-white border-2 border-[#A8C67A]/40 hover:bg-[#A8C67A]/10 text-[#2F5D3A] rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
+                >
+                  <span className="text-lg">📄</span>
+                  Open Worksheet
+                  <span className="ml-auto opacity-70">→</span>
+                </a>
+              ) : null;
+            })()}
 
             {/* Mark done */}
             <button
