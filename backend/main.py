@@ -135,7 +135,6 @@ app.include_router(polish.router)
 app.include_router(oak.router)
 app.include_router(spellings.router)
 app.include_router(oak_week_scores.router)
-app.include_router(oak_week_scores.router)
 
 
 @app.get("/health")
