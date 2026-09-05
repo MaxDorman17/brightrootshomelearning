@@ -217,7 +217,7 @@ export default function ParentPlanner() {
         getOakQuizResults(),
         getWeekQuizScores(weekStartStr, weekEndStr, selectedChildId ?? undefined),
       ]);
-      setQuizResults(qr.data.reduce((acc, r) => ({ ...acc, [r.url]: r }), {}));
+      setQuizResults(qr.data.reduce<Record<string, OakQuizResult>>((acc, r) => ({ ...acc, [r.url]: r }), {}));
       setWeekQuizScores(ws.data);
     } catch { /* non-fatal */ }
     finally { setQuizLoading(false); }
