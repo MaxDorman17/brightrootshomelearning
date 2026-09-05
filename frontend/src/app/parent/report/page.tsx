@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults } from "@/lib/api";
-import { PlannerEntry, Child, OakQuizResult } from "@/types";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores } from "@/lib/api";
+import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
 
@@ -30,13 +30,14 @@ const TOTAL_CODING = TRACKS.reduce((s, t) => s + t.count, 0);
 
 type Period = "week" | "month" | "all";
 
-type Tab = "overview" | "attendance" | "work" | "spellings";
+type Tab = "overview" | "attendance" | "work" | "spellings" | "days";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "📊 Overview" },
   { id: "attendance", label: "📅 Attendance" },
   { id: "work", label: "📝 Submitted Work" },
   { id: "spellings", label: "🔤 Spellings" },
+  { id: "days", label: "📅 Day View" },
 ];
 
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
@@ -67,17 +68,26 @@ export default function ReportPage() {
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
+  const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
+    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
+    const weekStartStr = format(weekStart, "yyyy-MM-dd");
+    const weekEndStr = format(weekEnd, "yyyy-MM-dd");
     const toMap = (rows: OakQuizResult[]) =>
       Object.fromEntries(rows.map(r => [r.url, r]));
-    Promise.all([getAllEntries(), getChildren(), getSpellingResults(), getOakQuizResults()]).then(([eRes, childRes, sRes, qRes]) => {
+    Promise.all([
+      getAllEntries(), getChildren(), getSpellingResults(), getOakQuizResults(),
+      getWeekQuizScores(weekStartStr, weekEndStr),
+    ]).then(([eRes, childRes, sRes, qRes, wsRes]) => {
       setEntries(eRes.data);
       setChildren(childRes.data);
       setAllSpellingResults(sRes.data);
       setQuizResults(toMap(qRes.data));
+      setWeekQuizScores(wsRes.data);
       setLoading(false);
     });
     // Fetch scores for any share links that aren't cached yet, then reload
@@ -570,6 +580,83 @@ export default function ReportPage() {
                 </div>
               </div>
             )}
+
+            {/* Day View — week grid with quiz scores per lesson */}
+            {tab === "days" && (() => {
+              const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+              const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
+              const weekStartStr = format(weekStart, "yyyy-MM-dd");
+              const weekEndStr = format(weekEnd, "yyyy-MM-dd");
+              const days = weekQuizScores?.days ?? [];
+              const totalPossible = weekQuizScores?.grand_total_possible ?? 0;
+              const totalScore = weekQuizScores?.grand_total_score ?? 0;
+              return (
+                <>
+                  {/* Week header — grand total */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Quiz Scores — Day View</h2>
+                        <p className="text-xs text-gray-400 mt-0.5">{format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-2xl font-extrabold text-[#2F5D3A]">{totalPossible > 0 ? Math.round((totalScore / totalPossible) * 100) : 0}%</p>
+                        <p className="text-xs text-gray-500">{totalScore} / {totalPossible} this week</p>
+                      </div>
+                    </div>
+                    {/* Day-of-week columns */}
+                    <div className="grid grid-cols-5 gap-3">
+                      {days.map(day => {
+                        const dayPct = day.total_possible > 0 ? Math.round((day.total_score! / day.total_possible) * 100) : 0;
+                        const isToday = day.date === format(new Date(), "yyyy-MM-dd");
+                        return (
+                          <div key={day.date}
+                            className={`rounded-xl border p-3 ${isToday ? "bg-[#2F5D3A] border-[#2F5D3A] text-white" : day.total === 0 ? "bg-gray-50 border-gray-200 text-gray-400" : "bg-white border-gray-200 text-gray-700"}`}>
+                            <p className={`text-xs font-extrabold uppercase tracking-wide ${isToday ? "text-white/80" : "text-gray-500"}`}>
+                              {format(parseISO(day.date), "EEE")}
+                            </p>
+                            <p className={`text-2xl font-extrabold mt-1 ${isToday ? "text-white" : "text-[#2F5D3A]"}`}>
+                              {dayPct}%
+                            </p>
+                            <p className={`text-xs font-medium mt-0.5 ${isToday ? "text-white/70" : "text-gray-400"}`}>
+                              {day.completed}/{day.total}
+                            </p>
+                            {day.total > 0 && (
+                              <p className={`text-xs font-bold mt-0.5 ${isToday ? "text-white/80" : "text-gray-500"}`}>
+                                {day.total_score} / {day.total_possible}
+                              </p>
+                            )}
+                            {/* Lesson rows */}
+                            {day.entries.map(entry => {
+                              const ss = entry.starter_score;
+                              const st = entry.starter_total;
+                              const es = entry.exit_score;
+                              const et = entry.exit_total;
+                              return (
+                                <div key={`${entry.entry_id}-${entry.child_id}`}
+                                  className={`mt-2 pt-2 border-t border-gray-100 ${isToday ? "border-white/20" : ""}`}>
+                                  <p className={`text-xs font-semibold truncate ${isToday ? "text-white/90" : "text-gray-700"}`}>
+                                    {entry.lesson_title}
+                                  </p>
+                                  <div className="flex items-center gap-1 mt-0.5 flex-wrap">
+                                    <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${ss != null && st ? (ss/st >= 0.8 ? "bg-emerald-100 text-emerald-700" : ss/st >= 0.5 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600") : "bg-gray-100 text-gray-400"}`}>
+                                      S: {ss != null ? `${ss}/${st ?? 6}` : "—/6"}
+                                    </span>
+                                    <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${es != null && et ? (es/et >= 0.8 ? "bg-emerald-100 text-emerald-700" : es/et >= 0.5 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600") : "bg-gray-100 text-gray-400"}`}>
+                                      E: {es != null ? `${es}/${et ?? 6}` : "—/6"}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
 
             {((tab === "overview" && filtered.length === 0) || (tab === "attendance" && childEntries.length === 0)) && (
               <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">

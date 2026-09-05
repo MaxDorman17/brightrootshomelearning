@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks, getTodayOakQuizResults } from "@/lib/api";
-import { PlannerEntry, ReadingLogBook } from "@/types";
+import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks, getTodayOakQuizResults, getWeekQuizScores } from "@/lib/api";
+import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
@@ -46,6 +46,7 @@ export default function ParentDashboardPage() {
   const [dashChildren, setDashChildren] = useState<{id: number; username: string}[]>([]);
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [todayQuiz, setTodayQuiz] = useState<TodayQuizRow[]>([]);
+  const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -60,7 +61,8 @@ export default function ParentDashboardPage() {
       getChildren(),
       getBooks(),
       getTodayOakQuizResults(),
-    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes, quizRes]) => {
+      getWeekQuizScores(weekStartStr, format(addDays(weekStart, 4), "yyyy-MM-dd")),
+    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes, quizRes, wsRes]) => {
       setWeekEntries(wRes.data);
       setAllEntries(aRes.data);
       setCodingDone((cRes.data as string[]).length);
@@ -68,6 +70,7 @@ export default function ParentDashboardPage() {
       setDashChildren(kidRes.data);
       setBooks(booksRes.data);
       setTodayQuiz(quizRes.data);
+      setWeekQuizScores(wsRes.data);
       setLoading(false);
     });
   }, [router]);
@@ -102,9 +105,26 @@ export default function ParentDashboardPage() {
   const statCards = [
     { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-[#2F5D3A]", to: "to-[#6EA76E]", shadow: "shadow-green-900/20" },
     { label: "Completed", value: loading ? "—" : weekComplete, icon: "✅", from: "from-emerald-400", to: "to-teal-500", shadow: "shadow-emerald-300/50" },
-    { label: "Week Progress", value: loading ? "—" : `${weekPct}%`, icon: "📈", from: "from-[#F5B841]", to: "to-amber-500", shadow: "shadow-yellow-400/30" },
+    {
+      label: "Quiz Score",
+      value: loading ? "—" : weekScoreLabel,
+      sub: weekQuizScores && weekQuizScores.grand_total_possible > 0
+        ? `${weekQuizScores.grand_starter_score}/${weekQuizScores.grand_starter_total} start · ${weekQuizScores.grand_exit_score}/${weekQuizScores.grand_exit_total} exit`
+        : undefined,
+      icon: "🧠",
+      from: weekScorePct >= 80 ? "from-emerald-500" : weekScorePct >= 50 ? "from-amber-500" : "from-red-500",
+      to: weekScorePct >= 80 ? "to-green-500" : weekScorePct >= 50 ? "to-amber-400" : "to-red-400",
+      shadow: weekScorePct >= 80 ? "shadow-emerald-300/50" : weekScorePct >= 50 ? "shadow-amber-300/50" : "shadow-red-300/50",
+    },
     { label: "Work Submitted", value: loading ? "—" : totalSubmitted, icon: "📎", from: "from-orange-400", to: "to-pink-500", shadow: "shadow-orange-300/50" },
   ];
+
+  const weekScoreLabel = weekQuizScores && weekQuizScores.grand_total_possible > 0
+    ? `${weekQuizScores.grand_total_score} / ${weekQuizScores.grand_total_possible}`
+    : "—";
+  const weekScorePct = weekQuizScores && weekQuizScores.grand_total_possible > 0
+    ? Math.round((weekQuizScores.grand_total_score / weekQuizScores.grand_total_possible) * 100)
+    : 0;
 
   return (
     <div className="min-h-screen">
@@ -126,9 +146,39 @@ export default function ParentDashboardPage() {
               <p className="text-3xl mb-2">{c.icon}</p>
               <p className="text-3xl font-extrabold">{c.value}</p>
               <p className="text-sm text-white/80 font-semibold mt-1">{c.label}</p>
+              {c.sub && <p className="text-xs text-white/70 font-medium mt-0.5">{c.sub}</p>}
             </div>
           ))}
         </div>
+
+        {/* Week quiz score breakdown by day */}
+        {!loading && weekQuizScores && weekQuizScores.days.length > 0 && (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Quiz Scores — {weekLabel}</h2>
+              <Link href="/parent/report" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Full report →</Link>
+            </div>
+            <div className="grid grid-cols-5 gap-2">
+              {weekQuizScores.days.map(day => {
+                const dayPct = day.total_possible > 0 ? Math.round((day.total_score! / day.total_possible) * 100) : 0;
+                const done = day.total > 0 ? `${day.completed}/${day.total}` : "—";
+                return (
+                  <div key={day.date}
+                    className={`rounded-xl p-3 text-center border ${day.is_today ? "bg-[#2F5D3A] border-[#2F5D3A] text-white" : day.total === 0 ? "bg-gray-50 border-gray-200 text-gray-400" : "bg-white border-gray-200 text-gray-700"}`}>
+                    <p className="text-xs font-extrabold uppercase opacity-80">{day.day_name.slice(0, 3)}</p>
+                    <p className="text-lg font-extrabold mt-1">{dayPct}%</p>
+                    <p className="text-xs mt-0.5 opacity-70">{done} lessons</p>
+                    {day.total > 0 && (
+                      <p className={`text-xs font-bold mt-0.5 ${day.is_today ? "text-white/80" : "text-gray-500"}`}>
+                        {day.total_score} / {day.total_possible}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Week progress bar */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">

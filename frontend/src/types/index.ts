@@ -29,6 +29,47 @@ export interface OakQuizResult {
   exit_total: number | null;
 }
 
+export interface WeekQuizDay {
+  date: string;
+  day_name: string;
+  is_today: boolean;
+  entries: WeekQuizEntry[];
+  total: number;
+  completed: number;
+  starter_score: number | null;
+  starter_total: number | null;
+  exit_score: number | null;
+  exit_total: number | null;
+  total_score: number | null;
+  total_possible: number;
+}
+
+export interface WeekQuizEntry {
+  entry_id: number;
+  child_id: number;
+  lesson_title: string;
+  subject: string;
+  scheduled_date: string;
+  is_complete: boolean;
+  has_share_url: boolean;
+  starter_score: number | null;
+  starter_total: number | null;
+  exit_score: number | null;
+  exit_total: number | null;
+}
+
+export interface WeekQuizScores {
+  days: WeekQuizDay[];
+  grand_total: number;
+  grand_completed: number;
+  grand_starter_score: number;
+  grand_starter_total: number;
+  grand_exit_score: number;
+  grand_exit_total: number;
+  grand_total_score: number;
+  grand_total_possible: number;
+}
+
 export interface Unit {
   id: number;
   subject: string;

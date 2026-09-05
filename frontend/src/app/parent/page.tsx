@@ -8,8 +8,9 @@ import {
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
   getTimetable, shiftDay, importOakUnit, checkOakWorksheet,
+  getOakQuizResults, getWeekQuizScores,
 } from "@/lib/api";
-import { DayOff, PlannerEntry, Child, WeeklyGoal } from "@/types";
+import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, addDays, startOfWeek, isToday } from "date-fns";
 
@@ -203,8 +204,24 @@ export default function ParentPlanner() {
 
   const [worksheetCache, setWorksheetCache] = useState<Record<string, WorksheetInfo>>({});
   const worksheetRequested = useRef<Set<string>>(new Set());
+  const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
+  const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
+  const [quizLoading, setQuizLoading] = useState(true);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
+  const weekEndStr = format(addDays(weekStart, 4), "yyyy-MM-dd");
+
+  const loadQuizData = useCallback(async () => {
+    try {
+      const [qr, ws] = await Promise.all([
+        getOakQuizResults(),
+        getWeekQuizScores(weekStartStr, weekEndStr, selectedChildId ?? undefined),
+      ]);
+      setQuizResults(qr.data.reduce((acc, r) => ({ ...acc, [r.url]: r }), {}));
+      setWeekQuizScores(ws.data);
+    } catch { /* non-fatal */ }
+    finally { setQuizLoading(false); }
+  }, [weekStartStr, selectedChildId]);
 
   const loadData = useCallback(async () => {
     const [entriesRes, daysOffRes] = await Promise.all([
@@ -228,6 +245,7 @@ export default function ParentPlanner() {
     getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
     loadData();
     loadGoals();
+    loadQuizData();
     // Detect bookmarklet params
     const params = new URLSearchParams(window.location.search);
     const lt = params.get("lesson_title");
@@ -849,6 +867,17 @@ export default function ParentPlanner() {
                                 <span className="text-xs opacity-60">
                                   {children.find(c => c.id === entry.assigned_to)?.username}
                                 </span>
+                              )}
+                              {/* Quiz scores from cached OakQuizResult */}
+                              {entry.completed_work_url && quizResults[entry.completed_work_url] && (
+                                <>
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200">
+                                    S:{quizResults[entry.completed_work_url].starter_score}/{quizResults[entry.completed_work_url].starter_total ?? 6}
+                                  </span>
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                    E:{quizResults[entry.completed_work_url].exit_score}/{quizResults[entry.completed_work_url].exit_total ?? 6}
+                                  </span>
+                                </>
                               )}
                             </div>
                           </>
