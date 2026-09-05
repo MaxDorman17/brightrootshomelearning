@@ -102,6 +102,13 @@ export default function ParentDashboardPage() {
 
   const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
 
+  const weekScoreLabel = weekQuizScores && weekQuizScores.grand_total_possible > 0
+    ? `${weekQuizScores.grand_total_score} / ${weekQuizScores.grand_total_possible}`
+    : "—";
+  const weekScorePct = weekQuizScores && weekQuizScores.grand_total_possible > 0
+    ? Math.round((weekQuizScores.grand_total_score / weekQuizScores.grand_total_possible) * 100)
+    : 0;
+
   const statCards = [
     { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-[#2F5D3A]", to: "to-[#6EA76E]", shadow: "shadow-green-900/20" },
     { label: "Completed", value: loading ? "—" : weekComplete, icon: "✅", from: "from-emerald-400", to: "to-teal-500", shadow: "shadow-emerald-300/50" },
@@ -118,13 +125,6 @@ export default function ParentDashboardPage() {
     },
     { label: "Work Submitted", value: loading ? "—" : totalSubmitted, icon: "📎", from: "from-orange-400", to: "to-pink-500", shadow: "shadow-orange-300/50" },
   ];
-
-  const weekScoreLabel = weekQuizScores && weekQuizScores.grand_total_possible > 0
-    ? `${weekQuizScores.grand_total_score} / ${weekQuizScores.grand_total_possible}`
-    : "—";
-  const weekScorePct = weekQuizScores && weekQuizScores.grand_total_possible > 0
-    ? Math.round((weekQuizScores.grand_total_score / weekQuizScores.grand_total_possible) * 100)
-    : 0;
 
   return (
     <div className="min-h-screen">
