@@ -1,15 +1,37 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getWeekEntries, getAllEntries, getCodingProgress, getSpellingResults, getChildren, getBooks, getTodayOakQuizResults, getWeekQuizScores } from "@/lib/api";
+import {
+  getAllEntries,
+  getBooks,
+  getChildren,
+  getSpellingResults,
+  getTodayOakQuizResults,
+  getTimetable,
+  getWeekEntries,
+  getWeekQuizScores,
+} from "@/lib/api";
+import {
+  isAuthenticated,
+  getRole,
+  getUsername,
+} from "@/lib/auth";
 import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
-import { format, startOfWeek, addDays, parseISO, isAfter, startOfDay } from "date-fns";
+import {
+  addDays,
+  format,
+  parseISO,
+  startOfWeek,
+} from "date-fns";
 
-const TOTAL_CODING = 23;
+interface ChildItem {
+  id: number;
+  username: string;
+}
 
 interface TodayQuizRow {
   entry_id: number;
@@ -25,377 +47,640 @@ interface TodayQuizRow {
   exit_total: number | null;
 }
 
-const QUICK_LINKS = [
-  { href: "/parent", label: "Planner", icon: "📅", desc: "Weekly timetable", from: "from-[#2F5D3A]", to: "to-[#6EA76E]" },
-  { href: "/parent/extra-work", label: "Extra Work", icon: "📋", desc: "Projects & tasks", from: "from-amber-500", to: "to-orange-500" },
-  { href: "/coding", label: "Coding", icon: "💻", desc: "Coding curriculum", from: "from-emerald-500", to: "to-teal-500" },
-  { href: "/spellings", label: "Spellings", icon: "🔤", desc: "Weekly word test", from: "from-violet-500", to: "to-purple-600" },
-  { href: "/parent/report", label: "Report", icon: "📈", desc: "Analytics", from: "from-blue-500", to: "to-cyan-500" },
-  { href: "/parent/progress", label: "Progress", icon: "📊", desc: "Submitted work", from: "from-pink-500", to: "to-rose-500" },
-];
+interface SpellingResult {
+  id: number;
+  child_id: number;
+  score: number;
+  total: number;
+  taken_at: string;
+}
 
 export default function ParentDashboardPage() {
   const router = useRouter();
   const mounted = useMounted();
+
+  const [parentName, setParentName] = useState("Parent");
+  const [children, setChildren] = useState<ChildItem[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
+
   const [weekEntries, setWeekEntries] = useState<PlannerEntry[]>([]);
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
-  const [codingDone, setCodingDone] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [parentName, setParentName] = useState("Max");
-  const [spellingResults, setSpellingResults] = useState<{id: number; child_id: number; score: number; total: number; taken_at: string}[]>([]);
-  const [dashChildren, setDashChildren] = useState<{id: number; username: string}[]>([]);
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [todayQuiz, setTodayQuiz] = useState<TodayQuizRow[]>([]);
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
+  const [spellingResults, setSpellingResults] = useState<SpellingResult[]>([]);
+  const [timetable, setTimetable] = useState<Record<string, string[]>>({});
+
+  const [loading, setLoading] = useState(true);
+
+  const weekStart = useMemo(
+    () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+    []
+  );
+
+  const weekStartStr = format(weekStart, "yyyy-MM-dd");
+  const weekEndStr = format(addDays(weekStart, 4), "yyyy-MM-dd");
 
   useEffect(() => {
-    if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    setParentName(getUsername() || "Max");
-    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-    const weekStartStr = format(weekStart, "yyyy-MM-dd");
-    Promise.all([
-      getWeekEntries(weekStartStr),
-      getAllEntries(),
-      getCodingProgress(),
-      getSpellingResults({ week_start: weekStartStr }),
-      getChildren(),
-      getBooks(),
-      getTodayOakQuizResults(),
-      getWeekQuizScores(weekStartStr, format(addDays(weekStart, 4), "yyyy-MM-dd")),
-    ]).then(([wRes, aRes, cRes, sRes, kidRes, booksRes, quizRes, wsRes]) => {
-      setWeekEntries(wRes.data);
-      setAllEntries(aRes.data);
-      setCodingDone((cRes.data as string[]).length);
-      setSpellingResults(sRes.data);
-      setDashChildren(kidRes.data);
-      setBooks(booksRes.data);
-      setTodayQuiz(quizRes.data);
-      setWeekQuizScores(wsRes.data);
-      setLoading(false);
-    });
+    if (!isAuthenticated() || getRole() !== "parent") {
+      router.replace("/login");
+      return;
+    }
+
+    setParentName(getUsername() || "Parent");
+
+    getChildren()
+      .then((res) => setChildren(res.data))
+      .catch(() => {});
+
+    getTimetable()
+      .then((res) => setTimetable(res.data.config ?? {}))
+      .catch(() => {});
   }, [router]);
 
-  const weekComplete = weekEntries.filter(e => e.is_complete).length;
-  const weekTotal = weekEntries.length;
-  const weekPct = weekTotal === 0 ? 0 : Math.round((weekComplete / weekTotal) * 100);
-  const totalSubmitted = allEntries.filter(e => e.completed_work_url).length;
-  const today = format(new Date(), "yyyy-MM-dd");
-  const todayEntries = weekEntries.filter(e => e.scheduled_date === today);
-  const todayDone = todayEntries.filter(e => e.is_complete).length;
-  const recentSubmissions = allEntries.filter(e => e.completed_work_url).slice(0, 5);
+  useEffect(() => {
+    if (!isAuthenticated() || getRole() !== "parent") return;
 
-  // Upcoming Extra Work due in next 7 days — is_extra, not a subject-name guess,
-  // so a genuine timetable lesson can never be mistaken for Extra Work here.
+    setLoading(true);
+
+    Promise.all([
+      getWeekEntries(
+        weekStartStr,
+        selectedChildId ?? undefined
+      ),
+      getAllEntries(),
+      getBooks(selectedChildId ?? undefined),
+      getTodayOakQuizResults(),
+      getWeekQuizScores(
+        weekStartStr,
+        weekEndStr,
+        selectedChildId ?? undefined
+      ),
+      getSpellingResults({
+        week_start: weekStartStr,
+        ...(selectedChildId
+          ? { child_id: selectedChildId }
+          : {}),
+      }),
+    ])
+      .then(
+        ([
+          weekRes,
+          allRes,
+          booksRes,
+          quizRes,
+          weekQuizRes,
+          spellingRes,
+        ]) => {
+          setWeekEntries(weekRes.data);
+          setAllEntries(allRes.data);
+          setBooks(booksRes.data);
+          setTodayQuiz(quizRes.data);
+          setWeekQuizScores(weekQuizRes.data);
+          setSpellingResults(spellingRes.data);
+        }
+      )
+      .finally(() => setLoading(false));
+  }, [
+    selectedChildId,
+    weekStartStr,
+    weekEndStr,
+  ]);
+
   const todayStr = format(new Date(), "yyyy-MM-dd");
-  const in7 = format(addDays(new Date(), 7), "yyyy-MM-dd");
-  const upcomingDue = allEntries
-    .filter(e =>
-      e.is_extra &&
-      !e.is_complete &&
-      e.scheduled_date >= todayStr &&
-      e.scheduled_date <= in7
+
+  const todayDayName = format(new Date(), "EEEE");
+  const todaySubjects = timetable[todayDayName] ?? [];
+
+  const todayEntries = todaySubjects
+    .map((subject) =>
+      weekEntries.find(
+        (entry) =>
+          entry.scheduled_date === todayStr &&
+          entry.lesson.subject === subject
+      )
     )
-    .sort((a, b) => a.scheduled_date.localeCompare(b.scheduled_date))
-    .slice(0, 5);
-  const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-  const weekLabel = `${format(weekStart, "d MMM")} – ${format(addDays(weekStart, 4), "d MMM")}`;
+    .filter((entry): entry is PlannerEntry => Boolean(entry));
 
-  const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
+  const todayComplete = todayEntries.filter(
+    (entry) => entry.is_complete
+  ).length;
 
-  const weekScoreLabel = weekQuizScores && weekQuizScores.grand_total_possible > 0
-    ? `${weekQuizScores.grand_total_score} / ${weekQuizScores.grand_total_possible}`
-    : "—";
-  const weekScorePct = weekQuizScores && weekQuizScores.grand_total_possible > 0
-    ? Math.round((weekQuizScores.grand_total_score / weekQuizScores.grand_total_possible) * 100)
-    : 0;
+  const weekComplete = weekEntries.filter(
+    (entry) => entry.is_complete
+  ).length;
 
-  const statCards = [
-    { label: "Lessons This Week", value: loading ? "—" : weekTotal, icon: "📚", from: "from-[#2F5D3A]", to: "to-[#6EA76E]", shadow: "shadow-green-900/20" },
-    { label: "Completed", value: loading ? "—" : weekComplete, icon: "✅", from: "from-emerald-400", to: "to-teal-500", shadow: "shadow-emerald-300/50" },
-    {
-      label: "Quiz Score",
-      value: loading ? "—" : weekScoreLabel,
-      sub: weekQuizScores && weekQuizScores.grand_total_possible > 0
-        ? `${weekQuizScores.grand_starter_score}/${weekQuizScores.grand_starter_total} start · ${weekQuizScores.grand_exit_score}/${weekQuizScores.grand_exit_total} exit`
-        : undefined,
-      icon: "🧠",
-      from: weekScorePct >= 80 ? "from-emerald-500" : weekScorePct >= 50 ? "from-amber-500" : "from-red-500",
-      to: weekScorePct >= 80 ? "to-green-500" : weekScorePct >= 50 ? "to-amber-400" : "to-red-400",
-      shadow: weekScorePct >= 80 ? "shadow-emerald-300/50" : weekScorePct >= 50 ? "shadow-amber-300/50" : "shadow-red-300/50",
-    },
-    { label: "Work Submitted", value: loading ? "—" : totalSubmitted, icon: "📎", from: "from-orange-400", to: "to-pink-500", shadow: "shadow-orange-300/50" },
-  ];
+  const weekPercent =
+    weekEntries.length === 0
+      ? 0
+      : Math.round(
+          (weekComplete / weekEntries.length) * 100
+        );
+
+  const todayPercent =
+    todayEntries.length === 0
+      ? 0
+      : Math.round(
+          (todayComplete / todayEntries.length) * 100
+        );
+
+  const childAllEntries = selectedChildId
+    ? allEntries.filter(
+        (entry) =>
+          entry.assigned_to === null ||
+          entry.assigned_to === selectedChildId
+      )
+    : allEntries;
+
+  const submittedThisWeek = childAllEntries.filter(
+    (entry) =>
+      entry.completed_work_url &&
+      entry.scheduled_date >= weekStartStr &&
+      entry.scheduled_date <= weekEndStr
+  ).length;
+
+  const selectedTodayQuiz = selectedChildId
+    ? todayQuiz.filter(
+        (row) => row.child_id === selectedChildId
+      )
+    : todayQuiz;
+
+  const oakPossible =
+    weekQuizScores?.grand_total_possible ?? 0;
+
+  const oakScore =
+    weekQuizScores?.grand_total_score ?? 0;
+
+  const oakPercent =
+    oakPossible > 0
+      ? Math.round((oakScore / oakPossible) * 100)
+      : null;
+
+  const currentBook =
+    books.find((book) => book.status === "reading") ??
+    books[0] ??
+    null;
+
+  const latestSpelling =
+    spellingResults.length > 0
+      ? [...spellingResults].sort(
+          (a, b) =>
+            new Date(b.taken_at).getTime() -
+            new Date(a.taken_at).getTime()
+        )[0]
+      : null;
+
+  const selectedChild = children.find(
+    (child) => child.id === selectedChildId
+  );
+
+  const displayName = selectedChild
+    ? selectedChild.username
+    : "everyone";
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-brand-cream">
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
 
-        {/* Welcome header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-800">
-            Welcome back, {parentName}! 👋
-          </h1>
-          <p className="text-gray-500 font-medium mt-1">{mounted ? format(new Date(), "EEEE, MMMM d, yyyy") : " "}</p>
-        </div>
-
-        {/* Stat cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {statCards.map(c => (
-            <div key={c.label} className={`bg-gradient-to-br ${c.from} ${c.to} rounded-2xl p-5 text-white shadow-lg ${c.shadow}`}>
-              <p className="text-3xl mb-2">{c.icon}</p>
-              <p className="text-3xl font-extrabold">{c.value}</p>
-              <p className="text-sm text-white/80 font-semibold mt-1">{c.label}</p>
-              {c.sub && <p className="text-xs text-white/70 font-medium mt-0.5">{c.sub}</p>}
-            </div>
-          ))}
-        </div>
-
-        {/* Week quiz score breakdown by day */}
-        {!loading && weekQuizScores && weekQuizScores.days.length > 0 && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Quiz Scores — {weekLabel}</h2>
-              <Link href="/parent/report" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Full report →</Link>
-            </div>
-            <div className="grid grid-cols-5 gap-2">
-              {weekQuizScores.days.map(day => {
-                const dayPct = day.total_possible > 0 ? Math.round((day.total_score! / day.total_possible) * 100) : 0;
-                const done = day.total > 0 ? `${day.completed}/${day.total}` : "—";
-                return (
-                  <div key={day.date}
-                    className={`rounded-xl p-3 text-center border ${day.is_today ? "bg-[#2F5D3A] border-[#2F5D3A] text-white" : day.total === 0 ? "bg-gray-50 border-gray-200 text-gray-400" : "bg-white border-gray-200 text-gray-700"}`}>
-                    <p className="text-xs font-extrabold uppercase opacity-80">{day.day_name.slice(0, 3)}</p>
-                    <p className="text-lg font-extrabold mt-1">{dayPct}%</p>
-                    <p className="text-xs mt-0.5 opacity-70">{done} lessons</p>
-                    {day.total > 0 && (
-                      <p className={`text-xs font-bold mt-0.5 ${day.is_today ? "text-white/80" : "text-gray-500"}`}>
-                        {day.total_score} / {day.total_possible}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Week progress bar */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="font-bold text-gray-700">Week of {mounted ? weekLabel : " "}</span>
-            <span className="text-[#2F5D3A] font-extrabold">{weekComplete} / {weekTotal}</span>
-          </div>
-          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-4 rounded-full transition-all duration-700 shadow-inner"
-              style={{ width: `${weekPct}%` }} />
-          </div>
-          {weekTotal > 0 && weekComplete === weekTotal && (
-            <p className="text-emerald-600 text-sm font-bold mt-2 text-center">Perfect week — all done! 🎉</p>
-          )}
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-5 mb-6">
-          {/* Today's lessons */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Today{mounted ? ` — ${format(new Date(), "EEEE")}` : ""}</h2>
-              {todayEntries.length > 0 && (
-                <span className="text-xs font-bold text-[#2F5D3A]">{todayDone}/{todayEntries.length}</span>
-              )}
-            </div>
-            {loading ? <p className="text-sm text-gray-400">Loading…</p>
-              : todayEntries.length === 0 ? <p className="text-sm text-gray-400">No lessons today.</p>
-              : (
-                <div className="space-y-2">
-                  {todayEntries.map(e => (
-                    <div key={e.id} className="flex items-start gap-2">
-                      <span className={`mt-0.5 w-4 h-4 rounded-full shrink-0 flex items-center justify-center ${e.is_complete ? "bg-emerald-500" : "bg-gray-200"}`}>
-                        {e.is_complete && <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
-                      </span>
-                      <div className="min-w-0">
-                        <p className={`text-xs font-bold leading-tight ${e.is_complete ? "line-through text-gray-400" : "text-gray-700"}`}>
-                          {e.lesson.title !== e.lesson.subject ? e.lesson.title : e.lesson.subject}
-                        </p>
-                        {e.lesson.title !== e.lesson.subject && (
-                          <p className="text-[10px] text-gray-400 font-semibold mt-0.5">{e.lesson.subject}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-          </div>
-
-          {/* Coding progress */}
-          <div className="bg-[#F7F9F7] rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
-            <h2 className="text-sm font-extrabold text-[#2F5D3A] mb-1">💻 Coding Progress</h2>
-            <p className="text-xs text-[#6EA76E] font-semibold mb-4">{codingDone} of {TOTAL_CODING} lessons</p>
-            <div className="w-full bg-[#A8C67A]/20 rounded-full h-3 mb-3 overflow-hidden">
-              <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-3 rounded-full transition-all"
-                style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }} />
-            </div>
-            <p className="text-2xl font-extrabold text-[#2F5D3A]">
-              {Math.round((codingDone / TOTAL_CODING) * 100)}%
+      <main className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+        <section className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-brand-terracotta">
+              Bright Roots
             </p>
-            <Link href="/coding" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold mt-2 block">View curriculum →</Link>
+
+            <h1 className="text-3xl font-extrabold tracking-tight text-brand-charcoal md:text-4xl">
+              Welcome back, {parentName}
+            </h1>
+
+            <p className="mt-2 text-brand-earth/70">
+              {mounted
+                ? format(
+                    new Date(),
+                    "EEEE, d MMMM yyyy"
+                  )
+                : " "}
+            </p>
           </div>
 
-          {/* Recent submissions */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
-            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">Recent Work</h2>
-            {loading ? <p className="text-sm text-gray-400">Loading…</p>
-              : recentSubmissions.length === 0 ? <p className="text-sm text-gray-400">No work submitted yet.</p>
-              : (
-                <div className="space-y-2.5">
-                  {recentSubmissions.map(e => (
-                    <div key={e.id}>
-                      <p className="text-xs text-gray-400 font-semibold">{e.lesson.subject} · {format(parseISO(e.scheduled_date), "d MMM")}</p>
-                      <a href={e.completed_work_url!} target="_blank" rel="noopener noreferrer"
-                        className="text-sm text-[#2F5D3A] hover:underline font-bold line-clamp-1">{e.lesson.title}</a>
-                    </div>
-                  ))}
-                  <Link href="/parent/progress" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold pt-1 block">View all →</Link>
-                </div>
-              )}
-          </div>
+          {children.length > 0 && (
+            <div className="brand-card flex items-center gap-3 px-4 py-3">
+              <span className="text-sm font-bold text-brand-earth/70">
+                Viewing
+              </span>
 
-          {/* Upcoming due dates — Extra Work only */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5">
-            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">📋 Extra Work Due</h2>
-            {loading ? <p className="text-sm text-gray-400">Loading…</p>
-              : upcomingDue.length === 0 ? <p className="text-sm text-gray-400">No extra work due soon.</p>
-              : (
-                <div className="space-y-2.5">
-                  {upcomingDue.map(e => {
-                    const isToday = e.scheduled_date === todayStr;
-                    const overdue = isAfter(startOfDay(new Date()), parseISO(e.scheduled_date));
-                    return (
-                      <div key={e.id} className="flex items-start gap-2">
-                        <span className={`mt-0.5 text-xs font-extrabold shrink-0 ${overdue ? "text-red-500" : isToday ? "text-orange-500" : "text-gray-400"}`}>
-                          {format(parseISO(e.scheduled_date), "d MMM")}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-gray-700 truncate">{e.lesson.title}</p>
-                          <p className="text-xs text-gray-400">{e.lesson.subject}</p>
-                        </div>
-                        {overdue && <span className="text-xs bg-red-100 text-red-600 font-bold px-1.5 rounded-full shrink-0">!</span>}
-                      </div>
-                    );
-                  })}
-                  <Link href="/parent/extra-work" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold pt-1 block">Manage →</Link>
-                </div>
-              )}
-          </div>
-        </div>
+              <select
+                value={selectedChildId ?? ""}
+                onChange={(event) =>
+                  setSelectedChildId(
+                    event.target.value
+                      ? Number(event.target.value)
+                      : null
+                  )
+                }
+                className="bg-transparent text-sm font-extrabold text-brand-sage outline-none"
+              >
+                <option value="">All children</option>
 
-        {/* Reading — sourced from the real Reading Log, never Extra Work or spellings */}
-        {!loading && (
-          <Link href="/reading-log"
-            className="block bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6 hover:shadow-md hover:border-[#A8C67A]/60 transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">📚 Reading</h2>
-              <span className="text-xs text-[#6EA76E] font-bold">Go to Reading Log →</span>
+                {children.map((child) => (
+                  <option
+                    key={child.id}
+                    value={child.id}
+                  >
+                    {child.username}
+                  </option>
+                ))}
+              </select>
             </div>
-            {readingBook ? (
-              <div className="flex items-center gap-3">
-                <span className="text-2xl shrink-0">
-                  {readingBook.status === "completed" ? "✅" : readingBook.status === "reading" ? "📖" : "📋"}
-                </span>
-                <div className="min-w-0">
-                  <p className="font-bold text-gray-800 truncate">{readingBook.title}</p>
-                  {readingBook.author && <p className="text-xs text-gray-400 truncate">{readingBook.author}</p>}
-                  <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    readingBook.status === "reading" ? "bg-blue-100 text-blue-800"
-                      : readingBook.status === "completed" ? "bg-emerald-100 text-emerald-800"
-                      : "bg-gray-100 text-gray-700"
-                  }`}>
-                    {readingBook.status === "reading" ? "Currently Reading" : readingBook.status === "completed" ? "Completed" : "Wishlist"}
-                  </span>
-                </div>
+          )}
+        </section>
+
+        <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <DashboardStat
+            label="Today"
+            value={
+              loading
+                ? "..."
+                : `${todayComplete}/${todayEntries.length}`
+            }
+            detail={
+              todayEntries.length > 0
+                ? `${todayPercent}% complete`
+                : "No lessons planned"
+            }
+          />
+
+          <DashboardStat
+            label="This Week"
+            value={
+              loading
+                ? "..."
+                : `${weekPercent}%`
+            }
+            detail={`${weekComplete} of ${weekEntries.length} lessons`}
+          />
+
+          <DashboardStat
+            label="Oak Results"
+            value={
+              loading
+                ? "..."
+                : oakPercent !== null
+                ? `${oakPercent}%`
+                : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â"
+            }
+            detail={
+              oakPossible > 0
+                ? `${oakScore} of ${oakPossible} points`
+                : "No quiz results yet"
+            }
+          />
+
+          <DashboardStat
+            label="Work Submitted"
+            value={
+              loading
+                ? "..."
+                : submittedThisWeek
+            }
+            detail="This week"
+          />
+        </section>
+
+        <section className="mb-8 grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
+          <div className="brand-card p-6">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-terracotta">
+                  Today
+                </p>
+
+                <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">
+                  Today&apos;s learning
+                </h2>
+
+                <p className="mt-1 text-sm text-brand-earth/65">
+                  Showing {displayName}
+                </p>
+              </div>
+
+              <Link
+                href="/parent"
+                className="rounded-xl bg-brand-sage px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-softsage"
+              >
+                Open planner
+              </Link>
+            </div>
+
+            {loading ? (
+              <p className="py-8 text-center text-sm text-brand-earth/60">
+                Loading today&apos;s learning...
+              </p>
+            ) : todayEntries.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-brand-softsage/35 bg-brand-cream/70 px-5 py-10 text-center">
+                <p className="font-bold text-brand-charcoal">
+                  Nothing planned for today.
+                </p>
+
+                <p className="mt-1 text-sm text-brand-earth/60">
+                  Add lessons from the planner whenever you&apos;re ready.
+                </p>
               </div>
             ) : (
-              <p className="text-sm text-gray-400">No books in the Reading Log yet.</p>
-            )}
-          </Link>
-        )}
-
-        {/* Today's Oak quiz results */}
-        {!loading && todayQuiz.length > 0 && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-            <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide mb-3">🧠 Today&apos;s Oak Quiz Results</h2>
-            <div className="space-y-2.5">
-              {todayQuiz.map(r => {
-                const starterPct = r.starter_score != null && r.starter_total ? Math.round((r.starter_score / r.starter_total) * 100) : null;
-                const exitPct = r.exit_score != null && r.exit_total ? Math.round((r.exit_score / r.exit_total) * 100) : null;
-                return (
-                  <div key={`${r.entry_id}-${r.child_id}`} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5 flex-wrap">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-gray-800 truncate">{r.lesson_title}</p>
-                      <p className="text-xs text-gray-400">{r.subject} · {r.child}</p>
+              <div className="space-y-3">
+                {todayEntries.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="flex items-start gap-4 rounded-2xl border border-brand-softsage/15 bg-brand-white p-4"
+                  >
+                    <div
+                      className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                        entry.is_complete
+                          ? "bg-brand-softsage/20 text-brand-sage"
+                          : "bg-brand-terracotta/15 text-brand-terracotta"
+                      }`}
+                    >
+                      {entry.is_complete ? (
+                        <svg
+                          className="h-5 w-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        <span className="h-2.5 w-2.5 rounded-full bg-current" />
+                      )}
                     </div>
-                    {r.completed ? (
-                      <div className="flex items-center gap-1.5 flex-wrap justify-end">
-                        {r.starter_total != null && (
-                          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                            Starter {r.starter_score}/{r.starter_total}{starterPct != null ? ` (${starterPct}%)` : ""}
-                          </span>
-                        )}
-                        {r.exit_total != null && (
-                          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                            Exit {r.exit_score}/{r.exit_total}{exitPct != null ? ` (${exitPct}%)` : ""}
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-extrabold uppercase tracking-wide text-brand-earth/55">
+                          {entry.lesson.subject}
+                        </span>
+
+                        {entry.assigned_to && (
+                          <span className="rounded-full bg-brand-gold/20 px-2 py-0.5 text-[10px] font-extrabold text-brand-earth">
+                            {
+                              children.find(
+                                (child) =>
+                                  child.id ===
+                                  entry.assigned_to
+                              )?.username
+                            }
                           </span>
                         )}
                       </div>
-                    ) : (
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 shrink-0">
-                        {r.is_complete ? "No quiz link submitted" : "Not completed yet"}
-                      </span>
-                    )}
+
+                      <p
+                        className={`mt-1 font-bold ${
+                          entry.is_complete
+                            ? "text-brand-earth/50 line-through"
+                            : "text-brand-charcoal"
+                        }`}
+                      >
+                        {entry.lesson.title}
+                      </p>
+
+                      <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-brand-earth/60">
+                        {entry.lesson.lesson_url && (
+                          <span>Lesson link</span>
+                        )}
+
+                        {entry.completed_work_url && (
+                          <span>Work submitted</span>
+                        )}
+
+                        {entry.is_complete && (
+                          <span className="text-brand-sage">
+                            Complete
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                );
-              })}
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            <div className="brand-card p-6">
+              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-gold">
+                Week progress
+              </p>
+
+              <div className="mt-3 flex items-end justify-between">
+                <div>
+                  <p className="text-3xl font-extrabold text-brand-charcoal">
+                    {weekPercent}%
+                  </p>
+
+                  <p className="mt-1 text-sm text-brand-earth/60">
+                    {weekComplete} of{" "}
+                    {weekEntries.length} lessons
+                  </p>
+                </div>
+
+                <span className="text-sm font-bold text-brand-sage">
+                  {format(weekStart, "d MMM")} to{" "}
+                  {format(
+                    addDays(weekStart, 4),
+                    "d MMM"
+                  )}
+                </span>
+              </div>
+
+              <div className="mt-5 h-3 overflow-hidden rounded-full bg-brand-softsage/15">
+                <div
+                  className="h-full rounded-full bg-brand-sage transition-all"
+                  style={{
+                    width: `${weekPercent}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="brand-card p-6">
+              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-terracotta">
+                Snapshot
+              </p>
+
+              <div className="mt-4 space-y-4">
+                <SnapshotRow
+                  label="Oak today"
+                  value={
+                    selectedTodayQuiz.length > 0
+                      ? `${selectedTodayQuiz.filter((row) => row.completed).length}/${selectedTodayQuiz.length} completed`
+                      : "No Oak results today"
+                  }
+                />
+
+                <SnapshotRow
+                  label="Reading"
+                  value={
+                    currentBook
+                      ? currentBook.title
+                      : "No current book"
+                  }
+                />
+
+                <SnapshotRow
+                  label="Latest spelling"
+                  value={
+                    latestSpelling
+                      ? `${latestSpelling.score}/${latestSpelling.total}`
+                      : "No spelling result"
+                  }
+                />
+              </div>
             </div>
           </div>
-        )}
+        </section>
 
-        {/* Spellings this week */}
-        {!loading && spellingResults.length > 0 && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">🔤 Spelling Results — This Week</h2>
-              <Link href="/spellings" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Practice →</Link>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {spellingResults.map(r => {
-                const pct = Math.round((r.score / r.total) * 100);
-                const child = dashChildren.find(c => c.id === r.child_id);
-                return (
-                  <div key={r.id} className={`flex items-center gap-3 rounded-xl px-4 py-2.5 border ${pct === 100 ? "bg-emerald-50 border-emerald-200" : pct >= 70 ? "bg-[#A8C67A]/15 border-[#A8C67A]/40" : "bg-orange-50 border-orange-200"}`}>
-                    <span className={`text-xl font-extrabold ${pct === 100 ? "text-emerald-600" : pct >= 70 ? "text-[#2F5D3A]" : "text-orange-500"}`}>
-                      {r.score}/{r.total}
-                    </span>
-                    {child && <span className="text-xs text-gray-500 font-semibold">{child.username}</span>}
-                  </div>
-                );
-              })}
-            </div>
+        <section>
+          <div className="mb-4">
+            <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-terracotta">
+              Quick access
+            </p>
+
+            <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">
+              Where do you want to go?
+            </h2>
           </div>
-        )}
 
-        {/* Quick links */}
-        <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">Quick Access</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {QUICK_LINKS.map(l => (
-            <Link key={l.href} href={l.href}
-              className={`bg-gradient-to-br ${l.from} ${l.to} rounded-2xl p-4 text-white shadow-md hover:shadow-xl hover:scale-[1.03] transition-all active:scale-100`}>
-              <p className="text-2xl mb-2">{l.icon}</p>
-              <p className="font-extrabold text-sm">{l.label}</p>
-              <p className="text-xs text-white/75 font-semibold mt-0.5">{l.desc}</p>
-            </Link>
-          ))}
-        </div>
-      </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <QuickCard
+              href="/parent"
+              title="Planner"
+              description="Plan and manage the learning week."
+            />
+
+            <QuickCard
+              href="/parent/report"
+              title="Reports"
+              description="See progress, Oak results and learning history."
+            />
+
+            <QuickCard
+              href="/units"
+              title="Oak Units"
+              description="Add and manage Oak Academy learning."
+            />
+
+            <QuickCard
+              href="/reading-log"
+              title="Reading"
+              description="Books, reading progress and worksheets."
+            />
+
+            <QuickCard
+              href="/spellings"
+              title="Spellings"
+              description="Weekly words, tests and weak-word practice."
+            />
+
+            <QuickCard
+              href="/parent/progress"
+              title="Review Work"
+              description="Review submitted work and leave feedback."
+            />
+          </div>
+        </section>
+      </main>
     </div>
+  );
+}
+
+function DashboardStat({
+  label,
+  value,
+  detail,
+}: {
+  label: string;
+  value: string | number;
+  detail: string;
+}) {
+  return (
+    <div className="brand-card p-5">
+      <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-brand-earth/55">
+        {label}
+      </p>
+
+      <p className="mt-3 text-3xl font-extrabold text-brand-sage">
+        {value}
+      </p>
+
+      <p className="mt-1 text-sm font-semibold text-brand-earth/65">
+        {detail}
+      </p>
+    </div>
+  );
+}
+
+function SnapshotRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-brand-softsage/15 pb-3 last:border-0 last:pb-0">
+      <span className="text-sm font-semibold text-brand-earth/65">
+        {label}
+      </span>
+
+      <span className="max-w-[60%] text-right text-sm font-extrabold text-brand-charcoal">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function QuickCard({
+  href,
+  title,
+  description,
+}: {
+  href: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group brand-card p-5 transition-all hover:-translate-y-0.5 hover:border-brand-softsage/45 hover:shadow-md"
+    >
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-softsage/15 text-brand-sage transition-colors group-hover:bg-brand-sage group-hover:text-white">
+        <svg
+          className="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </div>
+
+      <h3 className="font-extrabold text-brand-charcoal">
+        {title}
+      </h3>
+
+      <p className="mt-1 text-sm leading-relaxed text-brand-earth/65">
+        {description}
+      </p>
+    </Link>
   );
 }

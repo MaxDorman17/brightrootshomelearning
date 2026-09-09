@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_, and_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
+import json
 from database import get_db
-from models import PlannerEntry, Lesson, User, WorkFeedback, PlannerCompletion
+from models import PlannerEntry, Lesson, User, WorkFeedback, PlannerCompletion, DayOff, TimetableConfig
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
@@ -151,14 +152,137 @@ def shift_day(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    entries = db.query(PlannerEntry).filter(
-        PlannerEntry.scheduled_date >= body.from_date
-    ).all()
-    for e in entries:
-        e.scheduled_date = _prev_weekday(e.scheduled_date) if body.direction == "backward" else _next_weekday(e.scheduled_date)
-    db.commit()
-    return {"moved": len(entries)}
+    timetable_row = db.query(TimetableConfig).filter(
+        TimetableConfig.parent_id == current_user.id
+    ).first()
 
+    if timetable_row:
+        timetable = json.loads(timetable_row.config)
+    else:
+        timetable = {
+            "Monday": ["Maths", "English", "Science", "History", "Computing"],
+            "Tuesday": ["Maths", "English", "Science", "Geography", "Cooking"],
+            "Wednesday": ["Maths", "English", "Science", "Art & Design", "Design and Technology"],
+            "Thursday": ["Maths", "English", "Science", "History", "Life Skills"],
+            "Friday": ["Maths", "English", "Science", "Languages"],
+        }
+
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+    days_off = {
+        row.date
+        for row in db.query(DayOff).all()
+    }
+
+    entries = (
+        db.query(PlannerEntry)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(
+            PlannerEntry.scheduled_date >= body.from_date,
+            PlannerEntry.is_extra.is_(False),
+            PlannerEntry.lesson.has(Lesson.created_by == current_user.id),
+        )
+        .order_by(
+            PlannerEntry.scheduled_date.asc(),
+            PlannerEntry.id.asc(),
+        )
+        .all()
+    )
+
+    if not entries:
+        return {"moved": 0}
+
+    occupied = {
+        (
+            row.scheduled_date,
+            row.lesson.subject,
+            row.assigned_to,
+        )
+        for row in (
+            db.query(PlannerEntry)
+            .options(joinedload(PlannerEntry.lesson))
+            .filter(
+                PlannerEntry.scheduled_date < body.from_date,
+                PlannerEntry.is_extra.is_(False),
+                PlannerEntry.lesson.has(Lesson.created_by == current_user.id),
+            )
+            .all()
+        )
+    }
+
+    def valid_for_subject(target: date, subject: str) -> bool:
+        if target.weekday() >= 5:
+            return False
+
+        if target in days_off:
+            return False
+
+        day_name = day_names[target.weekday()]
+        return subject in (timetable.get(day_name) or [])
+
+    def find_slot(
+        start: date,
+        subject: str,
+        assigned_to: Optional[int],
+        direction: str,
+    ) -> date:
+        step = 1 if direction == "forward" else -1
+        target = start + timedelta(days=step)
+
+        for _ in range(730):
+            key = (target, subject, assigned_to)
+
+            if valid_for_subject(target, subject) and key not in occupied:
+                return target
+
+            target += timedelta(days=step)
+
+        raise HTTPException(
+            status_code=400,
+            detail=f"Could not find another timetable slot for {subject}.",
+        )
+
+    if body.direction == "backward":
+        entries = list(reversed(entries))
+
+    moved = 0
+
+    try:
+        for entry in entries:
+            old_key = (
+                entry.scheduled_date,
+                entry.lesson.subject,
+                entry.assigned_to,
+            )
+
+            occupied.discard(old_key)
+
+            new_date = find_slot(
+                entry.scheduled_date,
+                entry.lesson.subject,
+                entry.assigned_to,
+                body.direction,
+            )
+
+            entry.scheduled_date = new_date
+
+            occupied.add(
+                (
+                    new_date,
+                    entry.lesson.subject,
+                    entry.assigned_to,
+                )
+            )
+
+            moved += 1
+
+        db.commit()
+
+    except Exception:
+        db.rollback()
+        raise
+
+    return {"moved": moved}
 
 @router.post("/", response_model=PlannerEntryOut, status_code=201)
 def create_entry(
@@ -297,7 +421,7 @@ def get_pending_feedback(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    """Submitted work that has no feedback yet — powers the notification bell."""
+    """Submitted work that has no feedback yet - powers the notification bell."""
     children = db.query(User).filter(User.parent_id == current_user.id).all()
     child_ids = [c.id for c in children]
     child_names = {c.id: c.username for c in children}
