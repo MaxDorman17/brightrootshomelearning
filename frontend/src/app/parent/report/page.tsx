@@ -30,14 +30,15 @@ const TOTAL_CODING = TRACKS.reduce((s, t) => s + t.count, 0);
 
 type Period = "week" | "month" | "all";
 
-type Tab = "overview" | "attendance" | "work" | "spellings" | "days";
+type Tab = "home" | "progress" | "oak" | "work" | "attendance" | "export";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "overview", label: "📊 Overview" },
-  { id: "attendance", label: "📅 Attendance" },
-  { id: "work", label: "📝 Submitted Work" },
-  { id: "spellings", label: "🔤 Spellings" },
-  { id: "days", label: "📅 Day View" },
+  { id: "home", label: "Report Home" },
+  { id: "progress", label: "Progress" },
+  { id: "oak", label: "Oak Results" },
+  { id: "work", label: "Work" },
+  { id: "attendance", label: "Attendance" },
+  { id: "export", label: "Print / Export" },
 ];
 
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
@@ -63,7 +64,7 @@ export default function ReportPage() {
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("week");
-  const [tab, setTab] = useState<Tab>("overview");
+  const [tab, setTab] = useState<Tab>("home");
   const [workWeeksBack, setWorkWeeksBack] = useState(0); // 0 = this week, 1 = last week…
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
@@ -211,196 +212,552 @@ export default function ReportPage() {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {selectedChild ? `${selectedChild.username}'s Report` : "Report"}
-            </h1>
-            <p className="text-gray-500 mt-1">Learning progress and analytics</p>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
+      <div className="print:hidden"><Navbar /></div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-7 print:hidden">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+                Learning Reports
+              </p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
+                {selectedChild ? `${selectedChild.username}'s Report` : "Family Learning Report"}
+              </h1>
+              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+                A clear view of progress, Oak results, submitted work and attendance.
+              </p>
+            </div>
+
             {children.length > 0 && (
-              <div className="flex items-center gap-2 bg-white/80 border border-white/60 rounded-xl px-3 py-1.5 shadow-sm">
-                <span className="text-xs font-bold text-gray-500">Viewing:</span>
+              <div className="brand-card px-4 py-3 flex items-center gap-3">
+                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                  Viewing
+                </span>
                 <select
                   value={selectedChildId ?? ""}
                   onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
-                  className="text-sm font-semibold text-gray-800 bg-transparent focus:outline-none cursor-pointer"
+                  className="bg-transparent text-sm font-semibold text-[#2E342F] focus:outline-none cursor-pointer"
                 >
                   <option value="">All children</option>
-                  {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                  {children.map(c => (
+                    <option key={c.id} value={c.id}>{c.username}</option>
+                  ))}
                 </select>
               </div>
             )}
-            <button onClick={handleExportOak} disabled={exporting}
-              className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50">
-              {exporting ? "Exporting…" : "⬇ Export Oak Results"}
-            </button>
-            <button onClick={() => window.print()}
-              className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
-              🖨 Print
-            </button>
           </div>
         </div>
 
-        {/* Period selector (Submitted Work tab has its own week navigation) */}
-        {tab !== "work" && (
-        <div className="flex gap-2 mb-6">
-          {(["week", "month", "all"] as Period[]).map(p => (
-            <button key={p} onClick={() => setPeriod(p)}
-              className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
-                period === p ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
-              }`}>
-              {p === "week" ? "This Week" : p === "month" ? "This Month" : "All Time"}
-            </button>
-          ))}
+        <div className="brand-card p-2 mb-5 overflow-x-auto print:hidden">
+          <div className="flex min-w-max gap-1">
+            {TABS.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${
+                  tab === t.id
+                    ? "bg-[#3F5D46] text-white"
+                    : "text-[#6E5A46] hover:bg-[#F7F2E8] hover:text-[#3F5D46]"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
-        )}
 
-        {/* Tab bar */}
-        <div className="flex gap-1 mb-6 bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl p-1.5 shadow-sm overflow-x-auto">
-          {TABS.map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex-1 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
-                tab === t.id ? "bg-[#2F5D3A] text-white shadow" : "text-gray-500 hover:bg-[#A8C67A]/15 hover:text-[#2F5D3A]"
-              }`}>
-              {t.label}
-            </button>
-          ))}
-        </div>
+        {tab !== "work" && tab !== "export" && (
+          <div className="flex flex-wrap gap-2 mb-6 print:hidden">
+            {(["week", "month", "all"] as Period[]).map(p => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                  period === p
+                    ? "bg-[#3F5D46] border-[#3F5D46] text-white"
+                    : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                }`}
+              >
+                {p === "week" ? "This Week" : p === "month" ? "This Month" : "All Time"}
+              </button>
+            ))}
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-16 text-gray-400">Loading…</div>
         ) : (
           <>
-            {/* Summary stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-[#2F5D3A]">{filtered.length}</p>
-                <p className="text-sm text-gray-500 mt-1">Lessons Assigned</p>
+            {/* Printable learning report */}
+            <div className="hidden print:block text-black">
+              <div className="border-b-2 border-black pb-4 mb-5">
+                <h1 className="text-2xl font-bold">Bright Roots Home Learning</h1>
+                <p className="text-lg font-semibold mt-1">
+                  {selectedChild ? `${selectedChild.username}'s Learning Report` : "Family Learning Report"}
+                </p>
+                <p className="text-sm mt-1">
+                  {period === "week" ? "This Week" : period === "month" ? "This Month" : "All Time"}
+                </p>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-green-600">{totalComplete}</p>
-                <p className="text-sm text-gray-500 mt-1">Completed</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-blue-600">{completionPct}%</p>
-                <p className="text-sm text-gray-500 mt-1">Completion Rate</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 text-center">
-                <p className="text-3xl font-bold text-[#7A5C3E]">{totalSubmitted}</p>
-                <p className="text-sm text-gray-500 mt-1">Work Submitted</p>
-              </div>
-            </div>
 
-            {/* Coding card */}
-            {tab === "overview" && (
-            <div className="bg-[#F7F9F7] rounded-2xl border border-[#A8C67A]/40 shadow-sm p-6 mb-6">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">💻</span>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-[#2F5D3A]">Coding Curriculum</h2>
-                    <span className="text-sm font-bold text-[#6EA76E]">{codingDone} / {TOTAL_CODING} lessons</span>
-                  </div>
-                  <div className="w-full bg-[#A8C67A]/20 rounded-full h-2.5 mt-2">
-                    <div className="bg-[#2F5D3A] h-2.5 rounded-full transition-all"
-                      style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }} />
-                  </div>
+              <div className="grid grid-cols-4 gap-3 mb-6">
+                <div className="border border-gray-400 p-3">
+                  <p className="text-xs font-bold uppercase">Assigned</p>
+                  <p className="text-xl font-bold mt-1">{filtered.length}</p>
+                </div>
+                <div className="border border-gray-400 p-3">
+                  <p className="text-xs font-bold uppercase">Completed</p>
+                  <p className="text-xl font-bold mt-1">{totalComplete}</p>
+                </div>
+                <div className="border border-gray-400 p-3">
+                  <p className="text-xs font-bold uppercase">Completion</p>
+                  <p className="text-xl font-bold mt-1">{completionPct}%</p>
+                </div>
+                <div className="border border-gray-400 p-3">
+                  <p className="text-xs font-bold uppercase">Work Submitted</p>
+                  <p className="text-xl font-bold mt-1">{totalSubmitted}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-4 gap-3 mt-3">
-                {TRACKS.map(t => (
-                  <div key={t.name} className="bg-white rounded-xl p-3 text-center border border-[#A8C67A]/20">
-                    <p className="text-xs font-medium text-[#2F5D3A]">{t.name}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{t.count} lessons</p>
-                  </div>
-                ))}
-              </div>
+
+              <section className="mb-6">
+                <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
+                  Subject Progress
+                </h2>
+                {subjectStats.length > 0 ? (
+                  <table className="w-full border-collapse text-sm">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-400 px-2 py-1 text-left">Subject</th>
+                        <th className="border border-gray-400 px-2 py-1 text-right">Completed</th>
+                        <th className="border border-gray-400 px-2 py-1 text-right">Assigned</th>
+                        <th className="border border-gray-400 px-2 py-1 text-right">Rate</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subjectStats.map(s => (
+                        <tr key={s.subject}>
+                          <td className="border border-gray-400 px-2 py-1">{s.subject}</td>
+                          <td className="border border-gray-400 px-2 py-1 text-right">{s.done}</td>
+                          <td className="border border-gray-400 px-2 py-1 text-right">{s.total}</td>
+                          <td className="border border-gray-400 px-2 py-1 text-right">{s.pct}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-sm">No subject progress for this period.</p>
+                )}
+              </section>
+
+              <section className="mb-6">
+                <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
+                  Oak Quiz Results
+                </h2>
+                {(() => {
+                  const printDays = (weekQuizScores?.days ?? []).filter(day => {
+                    const dow = parseISO(day.date).getDay();
+                    return dow >= 1 && dow <= 5;
+                  });
+
+                  const printPossible = weekQuizScores?.grand_total_possible ?? 0;
+                  const printScore = weekQuizScores?.grand_total_score ?? 0;
+
+                  return (
+                    <>
+                      <p className="text-sm mb-3">
+                        Weekly score: {printScore} / {printPossible}
+                        {printPossible > 0 ? ` (${Math.round((printScore / printPossible) * 100)}%)` : ""}
+                      </p>
+
+                      <table className="w-full border-collapse text-xs">
+                        <thead>
+                          <tr>
+                            <th className="border border-gray-400 px-2 py-1 text-left">Day</th>
+                            <th className="border border-gray-400 px-2 py-1 text-left">Lesson</th>
+                            <th className="border border-gray-400 px-2 py-1 text-left">Starter</th>
+                            <th className="border border-gray-400 px-2 py-1 text-left">Exit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {printDays.flatMap(day =>
+                            day.entries.map(entry => (
+                              <tr key={`${day.date}-${entry.entry_id}-${entry.child_id}`}>
+                                <td className="border border-gray-400 px-2 py-1">
+                                  {format(parseISO(day.date), "EEE d MMM")}
+                                </td>
+                                <td className="border border-gray-400 px-2 py-1">
+                                  {entry.lesson_title}
+                                </td>
+                                <td className="border border-gray-400 px-2 py-1">
+                                  {entry.starter_score != null
+                                    ? `${entry.starter_score}/${entry.starter_total ?? 6}`
+                                    : "No score"}
+                                </td>
+                                <td className="border border-gray-400 px-2 py-1">
+                                  {entry.exit_score != null
+                                    ? `${entry.exit_score}/${entry.exit_total ?? 6}`
+                                    : "No score"}
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </>
+                  );
+                })()}
+              </section>
+
+              <section>
+                <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
+                  Submitted Work
+                </h2>
+                {allSubmitted.length > 0 ? (
+                  <table className="w-full border-collapse text-xs">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-400 px-2 py-1 text-left">Date</th>
+                        <th className="border border-gray-400 px-2 py-1 text-left">Subject</th>
+                        <th className="border border-gray-400 px-2 py-1 text-left">Lesson</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allSubmitted
+                        .filter(e => {
+                          if (period === "all") return true;
+                          return filtered.some(f => f.id === e.id);
+                        })
+                        .map(e => (
+                          <tr key={e.id}>
+                            <td className="border border-gray-400 px-2 py-1">
+                              {format(parseISO(e.scheduled_date), "d MMM yyyy")}
+                            </td>
+                            <td className="border border-gray-400 px-2 py-1">
+                              {e.lesson.subject}
+                            </td>
+                            <td className="border border-gray-400 px-2 py-1">
+                              {e.lesson.title}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-sm">No submitted work for this period.</p>
+                )}
+              </section>
+
+              <p className="text-xs text-gray-500 border-t border-gray-400 mt-6 pt-3">
+                Bright Roots Home Learning
+              </p>
             </div>
+
+            {/* Report Home summary */}
+            {tab === "home" && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="brand-card p-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Assigned</p>
+                  <p className="text-3xl font-bold text-[#2E342F] mt-2">{filtered.length}</p>
+                  <p className="text-sm text-[#6E5A46] mt-1">Lessons in this period</p>
+                </div>
+
+                <div className="brand-card p-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Completed</p>
+                  <p className="text-3xl font-bold text-[#3F5D46] mt-2">{totalComplete}</p>
+                  <p className="text-sm text-[#6E5A46] mt-1">Finished lessons</p>
+                </div>
+
+                <div className="brand-card p-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Completion</p>
+                  <p className="text-3xl font-bold text-[#D88C64] mt-2">{completionPct}%</p>
+                  <p className="text-sm text-[#6E5A46] mt-1">Overall completion rate</p>
+                </div>
+
+                <div className="brand-card p-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
+                  <p className="text-3xl font-bold text-[#E3B554] mt-2">{totalSubmitted}</p>
+                  <p className="text-sm text-[#6E5A46] mt-1">Pieces submitted</p>
+                </div>
+              </div>
             )}
 
-            {/* Attendance heatmap */}
-            {tab === "attendance" && childEntries.length > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Attendance — Last 16 Weeks</h2>
-                <div className="overflow-x-auto">
-                  <div className="flex gap-1.5 min-w-max">
-                    {/* Day labels */}
-                    <div className="flex flex-col gap-1.5 mr-1">
-                      {["M", "T", "W", "T", "F"].map((d, i) => (
-                        <div key={i} className="w-4 h-4 text-xs text-gray-400 font-bold flex items-center justify-center">{d}</div>
+            {tab === "home" && (
+              <div className="grid lg:grid-cols-2 gap-6 mb-6">
+                <div className="brand-card p-6">
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Snapshot</p>
+                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
+                    </div>
+                    <button
+                      onClick={() => setTab("progress")}
+                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                    >
+                      View progress
+                    </button>
+                  </div>
+
+                  {subjectStats.length > 0 ? (
+                    <div className="space-y-4">
+                      {subjectStats.slice(0, 5).map(s => (
+                        <div key={s.subject}>
+                          <div className="flex items-center justify-between gap-3 mb-1.5">
+                            <span className="text-sm font-semibold text-[#2E342F]">{s.subject}</span>
+                            <span className="text-xs font-bold text-[#6E5A46]">
+                              {s.done}/{s.total} / {s.pct}%
+                            </span>
+                          </div>
+                          <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-[#8FA382]"
+                              style={{ width: `${s.pct}%` }}
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
-                    {heatmapWeeks.map((week, wi) => (
-                      <div key={wi} className="flex flex-col gap-1.5">
-                        {week.map((day, di) => (
-                          <div key={di} title={format(day, "d MMM yyyy")}
-                            className={`w-4 h-4 rounded-sm transition-all ${heatmapColor(day)}`} />
+                  ) : (
+                    <p className="text-sm text-[#6E5A46]">No subject progress for this period yet.</p>
+                  )}
+                </div>
+
+                <div className="brand-card p-6">
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Latest</p>
+                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Recent Learning</h2>
+                    </div>
+                    <button
+                      onClick={() => setTab("work")}
+                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                    >
+                      View work
+                    </button>
+                  </div>
+
+                  {filtered.length > 0 ? (
+                    <div className="space-y-3">
+                      {[...filtered]
+                        .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date))
+                        .slice(0, 5)
+                        .map(e => (
+                          <div
+                            key={e.id}
+                            className="flex items-start justify-between gap-4 py-2 border-b border-[#EEE6D9] last:border-0"
+                          >
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-[#2E342F] truncate">{e.lesson.title}</p>
+                              <p className="text-xs text-[#8FA382] mt-0.5">
+                                {e.lesson.subject} / {format(parseISO(e.scheduled_date), "d MMM yyyy")}
+                              </p>
+                            </div>
+                            <span
+                              className={`shrink-0 text-xs font-bold px-2 py-1 rounded-full ${
+                                e.is_complete
+                                  ? "bg-[#E8F0E8] text-[#3F5D46]"
+                                  : "bg-[#F7F2E8] text-[#6E5A46]"
+                              }`}
+                            >
+                              {e.is_complete ? "Done" : "Planned"}
+                            </span>
+                          </div>
                         ))}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
-                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-emerald-500 inline-block" />All done</span>
-                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-yellow-400 inline-block" />Partial</span>
-                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-red-300 inline-block" />None done</span>
-                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gray-100 inline-block" />No lessons</span>
-                  </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[#6E5A46]">No recent learning for this period yet.</p>
+                  )}
                 </div>
               </div>
             )}
 
-            {/* Weekly trend chart */}
-            {tab === "attendance" && childEntries.length > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">Weekly Trend (Last 8 Weeks)</h2>
-                <div className="flex items-end justify-between gap-2 h-40">
-                  {weeklyTrend.map((w, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
-                      <span className="text-xs font-bold text-gray-600">{w.pct > 0 ? `${w.pct}%` : ""}</span>
-                      <div className="w-full flex flex-col justify-end" style={{ height: "100px" }}>
-                        <div
-                          className={`w-full rounded-t-lg transition-all duration-500 ${w.pct === 100 ? "bg-gradient-to-t from-emerald-500 to-green-400" : w.pct >= 50 ? "bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E]" : w.total === 0 ? "bg-gray-100" : "bg-gradient-to-t from-orange-400 to-yellow-300"}`}
-                          style={{ height: `${w.total === 0 ? 4 : Math.max(4, w.pct)}px` }}
-                        />
-                      </div>
-                      <span className="text-xs text-gray-400 font-medium leading-tight text-center">{w.label}</span>
+            {/* Coding progress */}
+            {tab === "progress" && (
+              <div className="brand-card p-6 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Coding</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Coding Curriculum</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      Progress across the full coding pathway.
+                    </p>
+                  </div>
+
+                  <div className="sm:text-right">
+                    <p className="text-2xl font-bold text-[#3F5D46]">
+                      {codingDone} / {TOTAL_CODING}
+                    </p>
+                    <p className="text-xs text-[#8FA382] font-semibold">lessons completed</p>
+                  </div>
+                </div>
+
+                <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mb-5">
+                  <div
+                    className="h-full rounded-full bg-[#3F5D46] transition-all"
+                    style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {TRACKS.map(t => (
+                    <div key={t.name} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
+                      <p className="text-sm font-bold text-[#2E342F]">{t.name}</p>
+                      <p className="text-xs text-[#6E5A46] mt-1">{t.count} lessons</p>
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-100">
-                  <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-emerald-500 to-green-400 inline-block" /><span className="text-xs text-gray-500">100%</span></div>
-                  <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E] inline-block" /><span className="text-xs text-gray-500">50%+</span></div>
-                  <div className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-gradient-to-t from-orange-400 to-yellow-300 inline-block" /><span className="text-xs text-gray-500">Under 50%</span></div>
+              </div>
+            )}
+
+            {/* Attendance */}
+            {tab === "attendance" && childEntries.length > 0 && (
+              <div className="space-y-6">
+                <div className="brand-card p-6">
+                  <div className="mb-5">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Attendance</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Last 16 Weeks</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      A day-by-day view of completed learning across recent school weeks.
+                    </p>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <div className="flex gap-2 min-w-max">
+                      <div className="flex flex-col gap-2 mr-1">
+                        {["M", "T", "W", "T", "F"].map((d, i) => (
+                          <div
+                            key={i}
+                            className="w-5 h-5 text-xs text-[#8FA382] font-bold flex items-center justify-center"
+                          >
+                            {d}
+                          </div>
+                        ))}
+                      </div>
+
+                      {heatmapWeeks.map((week, wi) => (
+                        <div key={wi} className="flex flex-col gap-2">
+                          {week.map((day, di) => (
+                            <div
+                              key={di}
+                              title={format(day, "d MMM yyyy")}
+                              className={`w-5 h-5 rounded-md transition-all ${heatmapColor(day)}`}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 mt-5 pt-4 border-t border-[#EEE6D9] text-xs text-[#6E5A46]">
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-emerald-500 inline-block" />
+                      All done
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-yellow-400 inline-block" />
+                      Partial
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-red-300 inline-block" />
+                      None done
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-gray-100 inline-block" />
+                      No lessons
+                    </span>
+                  </div>
+                </div>
+
+                <div className="brand-card p-6">
+                  <div className="mb-5">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Trend</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Weekly Completion</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      Completion percentage across the last eight weeks.
+                    </p>
+                  </div>
+
+                  <div className="flex items-end justify-between gap-2 h-44">
+                    {weeklyTrend.map((w, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-2 min-w-0">
+                        <span className="text-xs font-bold text-[#3F5D46]">
+                          {w.pct > 0 ? `${w.pct}%` : ""}
+                        </span>
+
+                        <div className="w-full flex flex-col justify-end" style={{ height: "110px" }}>
+                          <div
+                            className={`w-full rounded-t-lg transition-all ${
+                              w.total === 0
+                                ? "bg-[#F0EADF]"
+                                : w.pct === 100
+                                ? "bg-[#3F5D46]"
+                                : w.pct >= 50
+                                ? "bg-[#8FA382]"
+                                : "bg-[#D88C64]"
+                            }`}
+                            style={{ height: `${w.total === 0 ? 4 : Math.max(4, w.pct)}px` }}
+                          />
+                        </div>
+
+                        <span className="text-[10px] sm:text-xs text-[#8FA382] font-semibold leading-tight text-center">
+                          {w.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 mt-4 pt-4 border-t border-[#EEE6D9] text-xs text-[#6E5A46]">
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-[#3F5D46] inline-block" />
+                      100%
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-[#8FA382] inline-block" />
+                      50%+
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-sm bg-[#D88C64] inline-block" />
+                      Under 50%
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Subject breakdown */}
-            {tab === "overview" && subjectStats.length > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">By Subject</h2>
-                <div className="space-y-4">
+            {/* Subject progress */}
+            {tab === "progress" && subjectStats.length > 0 && (
+              <div className="brand-card p-6 mb-6">
+                <div className="mb-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">
+                    Completion across the subjects in this reporting period.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
                   {subjectStats.map(s => (
                     <div key={s.subject}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-2.5 h-2.5 rounded-full ${SUBJECT_COLOR[s.subject] || "bg-gray-400"}`} />
-                          <span className="text-sm font-medium text-gray-700">{s.subject}</span>
+                      <div className="flex items-center justify-between gap-4 mb-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="w-2.5 h-2.5 rounded-full bg-[#8FA382] shrink-0" />
+                          <span className="text-sm font-semibold text-[#2E342F] truncate">
+                            {s.subject}
+                          </span>
                         </div>
-                        <div className="flex items-center gap-3 text-sm">
-                          <span className="text-gray-400">{s.done}/{s.total}</span>
-                          <span className={`font-bold w-10 text-right ${s.pct === 100 ? "text-green-600" : s.pct >= 50 ? "text-[#6EA76E]" : "text-red-500"}`}>
+
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-xs text-[#6E5A46]">{s.done}/{s.total}</span>
+                          <span className="text-sm font-bold text-[#3F5D46] w-11 text-right">
                             {s.pct}%
                           </span>
                         </div>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
-                        <div className={`h-2 rounded-full transition-all duration-300 ${SUBJECT_COLOR[s.subject] || "bg-gray-400"}`}
-                          style={{ width: `${s.pct}%` }} />
+
+                      <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-[#8FA382] transition-all"
+                          style={{ width: `${s.pct}%` }}
+                        />
                       </div>
                     </div>
                   ))}
@@ -409,59 +766,101 @@ export default function ReportPage() {
             )}
 
             {/* Extra work summary */}
-            {tab === "overview" && extra.length > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Extra Work</h2>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-800">{extra.length}</p>
-                    <p className="text-xs text-gray-500">Assigned</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-green-600">{extra.filter(e => e.is_complete).length}</p>
-                    <p className="text-xs text-gray-500">Completed</p>
-                  </div>
-                  <div className="flex-1">
-                    <div className="w-full bg-gray-100 rounded-full h-3">
-                      <div className="bg-yellow-400 h-3 rounded-full transition-all"
-                        style={{ width: `${extra.length === 0 ? 0 : Math.round((extra.filter(e => e.is_complete).length / extra.length) * 100)}%` }} />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1">
-                      {extra.length === 0 ? 0 : Math.round((extra.filter(e => e.is_complete).length / extra.length) * 100)}% complete
+            {tab === "progress" && extra.length > 0 && (
+              <div className="brand-card p-6 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Extra Work</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Independent Learning</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      Extra activities completed outside the main timetable.
                     </p>
                   </div>
+
+                  <div className="flex gap-6">
+                    <div>
+                      <p className="text-2xl font-bold text-[#2E342F]">{extra.length}</p>
+                      <p className="text-xs text-[#8FA382] font-semibold">Assigned</p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-[#3F5D46]">
+                        {extra.filter(e => e.is_complete).length}
+                      </p>
+                      <p className="text-xs text-[#8FA382] font-semibold">Completed</p>
+                    </div>
+                  </div>
                 </div>
+
+                <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-[#E3B554] transition-all"
+                    style={{
+                      width: `${extra.length === 0
+                        ? 0
+                        : Math.round((extra.filter(e => e.is_complete).length / extra.length) * 100)}%`
+                    }}
+                  />
+                </div>
+
+                <p className="text-xs text-[#6E5A46] mt-2">
+                  {extra.length === 0
+                    ? 0
+                    : Math.round((extra.filter(e => e.is_complete).length / extra.length) * 100)}% complete
+                </p>
               </div>
             )}
 
-            {/* Spelling scores */}
-            {tab === "spellings" && (() => {
+            {/* Spelling results */}
+            {tab === "progress" && (() => {
               const spellingFiltered = allSpellingResults.filter(r =>
                 selectedChildId ? r.child_id === selectedChildId : true
               );
+
               if (spellingFiltered.length === 0) return (
-                <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
-                  <p className="text-4xl mb-3">🔤</p>
-                  <p className="text-gray-500">No spelling test scores yet.</p>
+                <div className="brand-card p-10 text-center mb-6">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
+                  <h2 className="text-lg font-bold text-[#2E342F] mt-2">No spelling results yet</h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">
+                    Completed spelling tests will appear here.
+                  </p>
                 </div>
               );
+
               const byWeek: Record<string, typeof spellingFiltered> = {};
               spellingFiltered.forEach(r => {
                 if (!byWeek[r.week_start]) byWeek[r.week_start] = [];
                 byWeek[r.week_start].push(r);
               });
+
               const weeks = Object.keys(byWeek).sort((a, b) => b.localeCompare(a));
+
               return (
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6 mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">🔤 Spelling Test Scores</h2>
-                    <a href="/spellings" className="text-xs text-[#6EA76E] hover:text-[#2F5D3A] font-bold">Go to Spellings →</a>
+                <div className="brand-card p-6 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
+                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Spelling Results</h2>
+                      <p className="text-sm text-[#6E5A46] mt-1">
+                        Test scores, practice rounds and improvements over time.
+                      </p>
+                    </div>
+
+                    <a
+                      href="/spellings"
+                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                    >
+                      Go to Spellings
+                    </a>
                   </div>
-                  <div className="space-y-3">
+
+                  <div className="space-y-5">
                     {weeks.map(week => (
-                      <div key={week}>
-                        <p className="text-xs font-bold text-gray-400 mb-1.5">Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}</p>
-                        <div className="space-y-1.5">
+                      <div key={week} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                          Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}
+                        </p>
+
+                        <div className="space-y-3">
                           {byWeek[week].map(r => {
                             const pct = Math.round((r.score / r.total) * 100);
                             const child = children.find(c => c.id === r.child_id);
@@ -472,37 +871,63 @@ export default function ReportPage() {
                             const delta = !r.is_practice_round && !isFirstNormal && firstNormal
                               ? pct - Math.round((firstNormal.score / firstNormal.total) * 100)
                               : null;
+
                             return (
-                              <div key={r.id} className="flex items-center gap-3 flex-wrap">
-                                <div className="w-8 text-right">
-                                  <span className={`text-xs font-extrabold ${pct === 100 ? "text-emerald-600" : pct >= 70 ? "text-[#6EA76E]" : "text-orange-500"}`}>
+                              <div key={r.id} className="border-t border-[#EEE6D9] first:border-0 first:pt-0 pt-3">
+                                <div className="flex items-center gap-3 flex-wrap">
+                                  <span className="text-sm font-bold text-[#3F5D46] w-12 shrink-0">
                                     {pct}%
                                   </span>
-                                </div>
-                                <div className="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden min-w-[60px]">
-                                  <div
-                                    className={`h-2.5 rounded-full transition-all ${pct === 100 ? "bg-emerald-500" : pct >= 70 ? "bg-[#6EA76E]" : "bg-orange-400"}`}
-                                    style={{ width: `${pct}%` }}
-                                  />
-                                </div>
-                                <span className="text-xs text-gray-500 w-10 text-right shrink-0">{r.score}/{r.total}</span>
-                                {!selectedChildId && child && (
-                                  <span className="text-xs text-gray-400 font-semibold w-16 truncate shrink-0">{child.username}</span>
-                                )}
-                                {r.is_practice_round && (
-                                  <span className="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold shrink-0">🔁 Practice</span>
-                                )}
-                                {delta !== null && (
-                                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
-                                    delta > 0 ? "bg-emerald-100 text-emerald-700" : delta < 0 ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-500"
-                                  }`}>
-                                    {delta > 0 ? `▲ +${delta}%` : delta < 0 ? `▼ ${delta}%` : "= no change"}
+
+                                  <div className="flex-1 min-w-[100px] h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
+                                    <div
+                                      className="h-full rounded-full bg-[#8FA382]"
+                                      style={{ width: `${pct}%` }}
+                                    />
+                                  </div>
+
+                                  <span className="text-xs font-semibold text-[#6E5A46] shrink-0">
+                                    {r.score}/{r.total}
                                   </span>
-                                )}
+
+                                  {!selectedChildId && child && (
+                                    <span className="text-xs font-semibold text-[#6E5A46] shrink-0">
+                                      {child.username}
+                                    </span>
+                                  )}
+
+                                  {r.is_practice_round && (
+                                    <span className="text-[10px] bg-[#F7F2E8] text-[#6E5A46] px-2 py-1 rounded-full font-bold shrink-0">
+                                      Practice
+                                    </span>
+                                  )}
+
+                                  {delta !== null && (
+                                    <span className={`text-[10px] px-2 py-1 rounded-full font-bold shrink-0 ${
+                                      delta > 0
+                                        ? "bg-[#E8F0E8] text-[#3F5D46]"
+                                        : delta < 0
+                                        ? "bg-[#FBEDE6] text-[#B66443]"
+                                        : "bg-[#F2EFEA] text-[#6E5A46]"
+                                    }`}>
+                                      {delta > 0
+                                        ? `Up ${delta}%`
+                                        : delta < 0
+                                        ? `Down ${Math.abs(delta)}%`
+                                        : "No change"}
+                                    </span>
+                                  )}
+                                </div>
+
                                 {r.wrong_words.length > 0 && (
-                                  <div className="flex gap-1 flex-wrap max-w-[35%]">
+                                  <div className="flex gap-1.5 flex-wrap mt-2">
                                     {r.wrong_words.map((w, i) => (
-                                      <span key={i} className="text-[10px] bg-red-50 text-red-500 border border-red-200 px-1 rounded font-semibold">{w}</span>
+                                      <span
+                                        key={i}
+                                        className="text-[10px] bg-[#FBEDE6] text-[#B66443] border border-[#F1C7B4] px-2 py-1 rounded-full font-semibold"
+                                      >
+                                        {w}
+                                      </span>
                                     ))}
                                   </div>
                                 )}
@@ -517,148 +942,324 @@ export default function ReportPage() {
               );
             })()}
 
-            {/* Submitted work — one week at a time */}
+            {/* Submitted work */}
             {tab === "work" && (
-              <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm px-4 py-3 mb-6">
-                <button onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
-                  className="px-4 py-2 rounded-xl text-sm font-bold text-[#2F5D3A] hover:bg-[#A8C67A]/15 transition-colors">
-                  ← Previous week
-                </button>
-                <div className="text-center">
-                  <p className="text-sm font-bold text-gray-800">{workWeekLabel}</p>
-                  <p className="text-xs text-gray-400">{format(workWeekStart, "d MMM")} – {format(workWeekEnd, "d MMM yyyy")}</p>
-                </div>
-                <button onClick={() => setWorkWeeksBack(Math.max(0, workWeeksBack - 1))} disabled={workWeeksBack === 0}
-                  className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
-                    workWeeksBack === 0 ? "text-gray-300 cursor-not-allowed" : "text-[#2F5D3A] hover:bg-[#A8C67A]/15"
-                  }`}>
-                  Next week →
-                </button>
-              </div>
-            )}
-            {tab === "work" && weekSubmitted.length === 0 && (
-              <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
-                <p className="text-4xl mb-3">📝</p>
-                <p className="text-gray-500">No work submitted {workWeeksBack === 0 ? "yet this week" : "this week"}.</p>
-              </div>
-            )}
-            {tab === "work" && weekSubmitted.length > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-6">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                  Submitted Work — {workWeekLabel} ({weekSubmitted.length})
-                </h2>
-                <div className="space-y-3">
-                  {weekSubmitted.map(e => (
-                    <div key={e.id} className="flex items-start gap-3 border-b border-gray-50 pb-3 last:border-0 last:pb-0">
-                      <span className={`mt-1 w-2 h-2 rounded-full shrink-0 ${SUBJECT_COLOR[e.lesson.subject] || "bg-gray-400"}`} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                          <span className="text-xs font-medium text-gray-600">{e.lesson.subject}</span>
-                          <span className="text-xs text-gray-400">{format(parseISO(e.scheduled_date), "d MMM yyyy")}</span>
-                        </div>
-                        <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
-                        {(() => {
-                          const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
-                          const r = shareUrl ? quizResults[shareUrl] : undefined;
-                          if (!r) return null;
-                          return (
-                            <div className="flex items-center gap-1.5 flex-wrap mt-1 mb-0.5">
-                              {r.starter_total != null && r.starter_score != null && (
-                                <QuizScoreBadge label="Starter quiz" score={r.starter_score} total={r.starter_total} />
-                              )}
-                              {r.exit_total != null && r.exit_score != null && (
-                                <QuizScoreBadge label="Exit quiz" score={r.exit_score} total={r.exit_total} />
-                              )}
-                            </div>
-                          );
-                        })()}
-                        <a href={e.completed_work_url!} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-[#6EA76E] hover:underline break-all">{e.completed_work_url}</a>
-                      </div>
+              <>
+                <div className="brand-card p-4 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <button
+                      onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
+                      className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                    >
+                      Previous week
+                    </button>
+
+                    <div className="text-center">
+                      <p className="text-sm font-bold text-[#2E342F]">{workWeekLabel}</p>
+                      <p className="text-xs text-[#8FA382] mt-1">
+                        {format(workWeekStart, "d MMM")} to {format(workWeekEnd, "d MMM yyyy")}
+                      </p>
                     </div>
-                  ))}
+
+                    <button
+                      onClick={() => setWorkWeeksBack(Math.max(0, workWeeksBack - 1))}
+                      disabled={workWeeksBack === 0}
+                      className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                        workWeeksBack === 0
+                          ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
+                          : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                      }`}
+                    >
+                      Next week
+                    </button>
+                  </div>
                 </div>
+
+                {weekSubmitted.length === 0 ? (
+                  <div className="brand-card p-10 text-center">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Submitted Work</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-2">Nothing submitted this week</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      Completed work links will appear here when they are submitted.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="brand-card p-6">
+                    <div className="mb-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
+                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">
+                        Submitted Work
+                      </h2>
+                      <p className="text-sm text-[#6E5A46] mt-1">
+                        {weekSubmitted.length} item{weekSubmitted.length === 1 ? "" : "s"} submitted for {workWeekLabel.toLowerCase()}.
+                      </p>
+                    </div>
+
+                    <div className="space-y-4">
+                      {weekSubmitted.map(e => (
+                        <div
+                          key={e.id}
+                          className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                        >
+                          <div className="flex items-start gap-3">
+                            <span className="mt-1.5 w-2.5 h-2.5 rounded-full bg-[#8FA382] shrink-0" />
+
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                  {e.lesson.subject}
+                                </span>
+                                <span className="text-xs text-[#6E5A46]">
+                                  {format(parseISO(e.scheduled_date), "d MMM yyyy")}
+                                </span>
+                              </div>
+
+                              <p className="text-sm font-bold text-[#2E342F]">
+                                {e.lesson.title}
+                              </p>
+
+                              {(() => {
+                                const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
+                                const r = shareUrl ? quizResults[shareUrl] : undefined;
+                                if (!r) return null;
+
+                                return (
+                                  <div className="flex items-center gap-2 flex-wrap mt-2">
+                                    {r.starter_total != null && r.starter_score != null && (
+                                      <QuizScoreBadge
+                                        label="Starter quiz"
+                                        score={r.starter_score}
+                                        total={r.starter_total}
+                                      />
+                                    )}
+                                    {r.exit_total != null && r.exit_score != null && (
+                                      <QuizScoreBadge
+                                        label="Exit quiz"
+                                        score={r.exit_score}
+                                        total={r.exit_total}
+                                      />
+                                    )}
+                                  </div>
+                                );
+                              })()}
+
+                              <a
+                                href={e.completed_work_url!}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline break-all mt-2"
+                              >
+                                Open submitted work
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Print and export */}
+            {tab === "export" && (
+              <div className="print:hidden">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="brand-card p-6">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Export</p>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Oak Results Spreadsheet</h2>
+                  <p className="text-sm text-[#6E5A46] mt-2">
+                    Download Oak quiz results as an Excel spreadsheet for your records.
+                  </p>
+
+                  <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current selection</p>
+                    <p className="text-sm font-semibold text-[#2E342F] mt-1">
+                      {selectedChild ? selectedChild.username : "All children"}
+                    </p>
+                    <p className="text-xs text-[#6E5A46] mt-1">
+                      {period === "week" ? "This week" : period === "month" ? "This month" : "All time"}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleExportOak}
+                    disabled={exporting}
+                    className="w-full mt-5 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50"
+                  >
+                    {exporting ? "Exporting..." : "Export Oak Results"}
+                  </button>
+                </div>
+
+                <div className="brand-card p-6">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Print</p>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Print Report</h2>
+                  <p className="text-sm text-[#6E5A46] mt-2">
+                    Print the current report view for a paper copy or save it as a PDF from your browser.
+                  </p>
+
+                  <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
+                    <p className="text-sm font-semibold text-[#2E342F]">Tip</p>
+                    <p className="text-xs text-[#6E5A46] mt-1">
+                      Choose Save as PDF in the print window if you want a digital copy.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => window.print()}
+                    className="w-full mt-5 px-5 py-3 rounded-xl border border-[#3F5D46] text-[#3F5D46] bg-[#FFFDF8] text-sm font-bold hover:bg-[#F7F2E8] transition-colors"
+                  >
+                    Print Report
+                  </button>
+                </div>
+              </div>
               </div>
             )}
 
-            {/* Day View — week grid with quiz scores per lesson */}
-            {tab === "days" && (() => {
+            {/* Oak results */}
+            {tab === "oak" && (() => {
               const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
               const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
-              const weekStartStr = format(weekStart, "yyyy-MM-dd");
-              const weekEndStr = format(weekEnd, "yyyy-MM-dd");
-              const days = weekQuizScores?.days ?? [];
+              const days = (weekQuizScores?.days ?? []).filter(day => { const dow = parseISO(day.date).getDay(); return dow >= 1 && dow <= 5; });
               const totalPossible = weekQuizScores?.grand_total_possible ?? 0;
               const totalScore = weekQuizScores?.grand_total_score ?? 0;
+              const totalPct = totalPossible > 0
+                ? Math.round((totalScore / totalPossible) * 100)
+                : 0;
+
               return (
-                <>
-                  {/* Week header — grand total */}
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-                    <div className="flex items-center justify-between mb-4">
+                <div className="space-y-6">
+                  <div className="brand-card p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
                       <div>
-                        <h2 className="text-sm font-extrabold text-gray-700 uppercase tracking-wide">Quiz Scores — Day View</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">{format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Oak National Academy</p>
+                        <h2 className="text-xl font-bold text-[#2E342F] mt-1">Weekly Quiz Results</h2>
+                        <p className="text-sm text-[#6E5A46] mt-1">
+                          {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
+                        </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-extrabold text-[#2F5D3A]">{totalPossible > 0 ? Math.round((totalScore / totalPossible) * 100) : 0}%</p>
-                        <p className="text-xs text-gray-500">{totalScore} / {totalPossible} this week</p>
+
+                      <div className="sm:text-right">
+                        <p className="text-4xl font-bold text-[#3F5D46]">{totalPct}%</p>
+                        <p className="text-sm font-semibold text-[#6E5A46] mt-1">
+                          {totalScore} / {totalPossible} points
+                        </p>
                       </div>
                     </div>
-                    {/* Day-of-week columns */}
-                    <div className="grid grid-cols-5 gap-3">
-                      {days.map(day => {
-                        const dayPct = day.total_possible > 0 ? Math.round((day.total_score! / day.total_possible) * 100) : 0;
-                        const isToday = day.date === format(new Date(), "yyyy-MM-dd");
-                        return (
-                          <div key={day.date}
-                            className={`rounded-xl border p-3 ${isToday ? "bg-[#2F5D3A] border-[#2F5D3A] text-white" : day.total === 0 ? "bg-gray-50 border-gray-200 text-gray-400" : "bg-white border-gray-200 text-gray-700"}`}>
-                            <p className={`text-xs font-extrabold uppercase tracking-wide ${isToday ? "text-white/80" : "text-gray-500"}`}>
-                              {format(parseISO(day.date), "EEE")}
-                            </p>
-                            <p className={`text-2xl font-extrabold mt-1 ${isToday ? "text-white" : "text-[#2F5D3A]"}`}>
+
+                    <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
+                      <div
+                        className="h-full rounded-full bg-[#8FA382]"
+                        style={{ width: `${totalPct}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+                    {days.map(day => {
+                      const dayPct = day.total_possible > 0
+                        ? Math.round((day.total_score! / day.total_possible) * 100)
+                        : 0;
+                      const isToday = day.date === format(new Date(), "yyyy-MM-dd");
+
+                      return (
+                        <div
+                          key={day.date}
+                          className={`rounded-2xl border p-4 ${
+                            isToday
+                              ? "bg-[#3F5D46] border-[#3F5D46] text-white"
+                              : "bg-[#FFFDF8] border-[#E7DFD1]"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className={`text-xs font-bold uppercase tracking-wide ${
+                                isToday ? "text-white/70" : "text-[#8FA382]"
+                              }`}>
+                                {format(parseISO(day.date), "EEEE")}
+                              </p>
+                              <p className={`text-xs mt-1 ${
+                                isToday ? "text-white/70" : "text-[#6E5A46]"
+                              }`}>
+                                {format(parseISO(day.date), "d MMM")}
+                              </p>
+                            </div>
+
+                            <span className={`text-2xl font-bold ${
+                              isToday ? "text-white" : "text-[#3F5D46]"
+                            }`}>
                               {dayPct}%
+                            </span>
+                          </div>
+
+                          <div className={`mt-3 pt-3 border-t ${
+                            isToday ? "border-white/20" : "border-[#EEE6D9]"
+                          }`}>
+                            <p className={`text-xs font-semibold ${
+                              isToday ? "text-white/75" : "text-[#6E5A46]"
+                            }`}>
+                              {day.completed}/{day.total} lessons
                             </p>
-                            <p className={`text-xs font-medium mt-0.5 ${isToday ? "text-white/70" : "text-gray-400"}`}>
-                              {day.completed}/{day.total}
-                            </p>
+
                             {day.total > 0 && (
-                              <p className={`text-xs font-bold mt-0.5 ${isToday ? "text-white/80" : "text-gray-500"}`}>
-                                {day.total_score} / {day.total_possible}
+                              <p className={`text-xs font-bold mt-1 ${
+                                isToday ? "text-white/90" : "text-[#2E342F]"
+                              }`}>
+                                {day.total_score} / {day.total_possible} points
                               </p>
                             )}
-                            {/* Lesson rows */}
+                          </div>
+
+                          <div className="space-y-3 mt-3">
                             {day.entries.map(entry => {
                               const ss = entry.starter_score;
                               const st = entry.starter_total;
                               const es = entry.exit_score;
                               const et = entry.exit_total;
+
                               return (
-                                <div key={`${entry.entry_id}-${entry.child_id}`}
-                                  className={`mt-2 pt-2 border-t border-gray-100 ${isToday ? "border-white/20" : ""}`}>
-                                  <p className={`text-xs font-semibold truncate ${isToday ? "text-white/90" : "text-gray-700"}`}>
+                                <div
+                                  key={`${entry.entry_id}-${entry.child_id}`}
+                                  className={`pt-3 border-t ${
+                                    isToday ? "border-white/20" : "border-[#EEE6D9]"
+                                  }`}
+                                >
+                                  <p className={`text-xs font-semibold ${
+                                    isToday ? "text-white/90" : "text-[#2E342F]"
+                                  }`}>
                                     {entry.lesson_title}
                                   </p>
-                                  <div className="flex items-center gap-1 mt-0.5 flex-wrap">
-                                    <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${ss != null && st ? (ss/st >= 0.8 ? "bg-emerald-100 text-emerald-700" : ss/st >= 0.5 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600") : "bg-gray-100 text-gray-400"}`}>
-                                      S: {ss != null ? `${ss}/${st ?? 6}` : "—/6"}
+
+                                  <div className="flex gap-2 flex-wrap mt-2">
+                                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${
+                                      isToday
+                                        ? "bg-white/15 text-white"
+                                        : "bg-[#F7F2E8] text-[#6E5A46]"
+                                    }`}>
+                                      Starter: {ss != null ? `${ss}/${st ?? 6}` : "No score"}
                                     </span>
-                                    <span className={`text-[10px] font-bold px-1 py-0.5 rounded ${es != null && et ? (es/et >= 0.8 ? "bg-emerald-100 text-emerald-700" : es/et >= 0.5 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600") : "bg-gray-100 text-gray-400"}`}>
-                                      E: {es != null ? `${es}/${et ?? 6}` : "—/6"}
+
+                                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${
+                                      isToday
+                                        ? "bg-white/15 text-white"
+                                        : "bg-[#F7F2E8] text-[#6E5A46]"
+                                    }`}>
+                                      Exit: {es != null ? `${es}/${et ?? 6}` : "No score"}
                                     </span>
                                   </div>
                                 </div>
                               );
                             })}
                           </div>
-                        );
-                      })}
-                    </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                </>
+                </div>
               );
             })()}
 
-            {((tab === "overview" && filtered.length === 0) || (tab === "attendance" && childEntries.length === 0)) && (
+            {((tab === "home" && filtered.length === 0) || (tab === "attendance" && childEntries.length === 0)) && (
               <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
                 <p className="text-4xl mb-3">📊</p>
                 <p className="text-gray-500">No data for this period yet.</p>
