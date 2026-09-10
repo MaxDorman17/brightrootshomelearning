@@ -108,6 +108,12 @@ export interface ReadingLogBook {
   title: string;
   author: string | null;
   pages: number | null;
+  total_chapters: number | null;
+  completed_chapters: number;
+  reading_journal: string | null;
+  question_1_answer: string | null;
+  question_2_answer: string | null;
+  question_3_answer: string | null;
   status: "wishlist" | "reading" | "completed";
   start_date: string | null;
   finish_date: string | null;

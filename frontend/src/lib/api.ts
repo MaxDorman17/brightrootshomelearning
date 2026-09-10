@@ -88,9 +88,9 @@ export const removeDayOff = (id: number) => api.delete(`/api/days-off/${id}`);
 // Reading Log
 export const getBooks = (childId?: number) =>
   api.get("/api/reading/", { params: childId ? { child_id: childId } : {} });
-export const addBook = (data: { title: string; author?: string; pages?: number; status?: string; start_date?: string; finish_date?: string; notes?: string; child_id?: number | null }) =>
+export const addBook = (data: { title: string; author?: string; pages?: number; total_chapters?: number; status?: string; start_date?: string; finish_date?: string; notes?: string; child_id?: number | null }) =>
   api.post("/api/reading/", data);
-export const updateBook = (id: number, data: { title?: string; author?: string; pages?: number; status?: string; start_date?: string; finish_date?: string; finish_date_clear?: boolean; rating?: number; notes?: string }) =>
+export const updateBook = (id: number, data: { title?: string; author?: string; pages?: number; total_chapters?: number; completed_chapters?: number; reading_journal?: string; question_1_answer?: string; question_2_answer?: string; question_3_answer?: string; status?: string; start_date?: string; finish_date?: string; finish_date_clear?: boolean; rating?: number; notes?: string }) =>
   api.patch(`/api/reading/${id}`, data);
 export const deleteBook = (id: number) => api.delete(`/api/reading/${id}`);
 

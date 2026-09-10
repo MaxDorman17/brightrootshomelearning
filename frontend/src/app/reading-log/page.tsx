@@ -11,9 +11,27 @@ type Status = "all" | "reading" | "completed" | "wishlist";
 type SortKey = "recent" | "title" | "rating";
 
 const STATUS_CONFIG = {
-  wishlist:  { label: "Wishlist",  icon: "📋", badge: "bg-gray-100 text-gray-700",    bar: "bg-gray-400",    card: "border-gray-200 bg-gray-50/50" },
-  reading:   { label: "Reading",   icon: "📖", badge: "bg-blue-100 text-blue-800",    bar: "bg-blue-500",    card: "border-blue-200 bg-blue-50/50" },
-  completed: { label: "Completed", icon: "✅", badge: "bg-emerald-100 text-emerald-800", bar: "bg-emerald-500", card: "border-emerald-200 bg-emerald-50/50" },
+  wishlist: {
+    label: "Wishlist",
+    icon: "○",
+    badge: "bg-[#EFE9DF] text-[#6E5A46]",
+    bar: "bg-[#C8BBAA]",
+    card: "border-[#DDD3C4] bg-[#FFFDF8]",
+  },
+  reading: {
+    label: "Reading",
+    icon: "◐",
+    badge: "bg-[#E5ECE2] text-[#3F5D46]",
+    bar: "bg-[#8FA382]",
+    card: "border-[#C9D4C5] bg-[#FFFDF8]",
+  },
+  completed: {
+    label: "Completed",
+    icon: "✓",
+    badge: "bg-[#E7EFE7] text-[#3F5D46]",
+    bar: "bg-[#3F5D46]",
+    card: "border-[#BFD0BE] bg-[#FFFDF8]",
+  },
 } as const;
 
 function Stars({ rating, onRate }: { rating: number | null; onRate?: (n: number) => void }) {
@@ -52,11 +70,18 @@ export default function ReadingLogPage() {
   const [fTitle, setFTitle] = useState("");
   const [fAuthor, setFAuthor] = useState("");
   const [fPages, setFPages] = useState("");
+  const [fTotalChapters, setFTotalChapters] = useState("");
   const [fStatus, setFStatus] = useState<string>("wishlist");
   const [fStartDate, setFStartDate] = useState("");
   const [fFinishDate, setFFinishDate] = useState("");
   const [fNotes, setFNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [journeyBookId, setJourneyBookId] = useState<number | null>(null);
+  const [journeyJournal, setJourneyJournal] = useState("");
+  const [journeyQ1, setJourneyQ1] = useState("");
+  const [journeyQ2, setJourneyQ2] = useState("");
+  const [journeyQ3, setJourneyQ3] = useState("");
+  const [savingJourney, setSavingJourney] = useState(false);
 
   // Worksheets
   const [worksheets, setWorksheets] = useState<ReadingWorksheet[]>([]);
@@ -97,7 +122,7 @@ export default function ReadingLogPage() {
 
   const openAdd = () => {
     setEditing(null);
-    setFTitle(""); setFAuthor(""); setFPages(""); setFStatus("wishlist");
+    setFTitle(""); setFAuthor(""); setFPages(""); setFTotalChapters(""); setFStatus("wishlist");
     setFStartDate(""); setFFinishDate(""); setFNotes("");
     setFChildId(selectedChildId);
     setModal(true);
@@ -108,6 +133,7 @@ export default function ReadingLogPage() {
     setFTitle(book.title);
     setFAuthor(book.author ?? "");
     setFPages(book.pages?.toString() ?? "");
+    setFTotalChapters(book.total_chapters?.toString() ?? "");
     setFStatus(book.status);
     setFStartDate(book.start_date ?? "");
     setFFinishDate(book.finish_date ?? "");
@@ -117,6 +143,14 @@ export default function ReadingLogPage() {
 
   const closeModal = () => { setModal(false); setEditing(null); };
 
+  const openJourney = (book: ReadingLogBook) => {
+    setJourneyBookId(book.id);
+    setJourneyJournal(book.reading_journal ?? "");
+    setJourneyQ1(book.question_1_answer ?? "");
+    setJourneyQ2(book.question_2_answer ?? "");
+    setJourneyQ3(book.question_3_answer ?? "");
+  };
+
   const handleSave = async () => {
     if (!fTitle.trim()) return;
     setSaving(true);
@@ -125,6 +159,7 @@ export default function ReadingLogPage() {
         title: fTitle.trim(),
         author: fAuthor.trim() || undefined,
         pages: fPages ? parseInt(fPages) : undefined,
+        total_chapters: fTotalChapters ? parseInt(fTotalChapters) : undefined,
         status: fStatus,
         start_date: fStartDate || undefined,
         finish_date: fFinishDate || undefined,
@@ -139,6 +174,26 @@ export default function ReadingLogPage() {
       await load();
       closeModal();
     } finally { setSaving(false); }
+  };  const handleChapterProgress = async (book: ReadingLogBook, chapter: number) => {
+    const current = book.completed_chapters ?? 0;
+    const next = chapter <= current ? chapter - 1 : chapter;
+    const res = await updateBook(book.id, { completed_chapters: next });
+    setBooks(prev => prev.map(b => b.id === book.id ? res.data : b));
+  };
+
+  const handleSaveJourney = async (book: ReadingLogBook) => {
+    setSavingJourney(true);
+    try {
+      const res = await updateBook(book.id, {
+        reading_journal: journeyJournal,
+        question_1_answer: journeyQ1,
+        question_2_answer: journeyQ2,
+        question_3_answer: journeyQ3,
+      });
+      setBooks(prev => prev.map(b => b.id === book.id ? res.data : b));
+    } finally {
+      setSavingJourney(false);
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -252,32 +307,50 @@ export default function ReadingLogPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 py-8">
-
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">📚 Reading Log</h1>
-            <p className="text-gray-500 font-medium mt-1">
-              {isParent ? "Track books your children are reading" : "Your books — past, present and future reads"}
-            </p>
+        <div className="brand-card p-6 mb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D88C64]">Reading</p>
+              <h1 className="brand-heading text-3xl mt-1">Reading Log</h1>
+              <p className="text-[#6E5A46] mt-2 max-w-2xl">
+                {isParent ? "Track reading progress, books, worksheets and Reading Journeys." : "Keep your books, progress and Reading Journeys all in one place."}
+              </p>
+            </div>
+            {isParent && (
+              <button
+                onClick={openAdd}
+                className="inline-flex items-center justify-center rounded-xl bg-[#3F5D46] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#334C39]"
+              >
+                + Add Book
+              </button>
+            )}
           </div>
-          {isParent && (
-            <button onClick={openAdd} className="gradient-btn px-5 py-2.5 text-sm">
-              + Add Book
-            </button>
-          )}
         </div>
 
         {/* Child selector (parent only) */}
         {isParent && children.length > 0 && (
-          <div className="flex gap-2 mb-5 flex-wrap">
-            <button onClick={() => setSelectedChildId(null)}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${!selectedChildId ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+          <div className="mb-6 flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedChildId(null)}
+              className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
+                !selectedChildId
+                  ? "border-[#3F5D46] bg-[#3F5D46] text-white"
+                  : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"
+              }`}
+            >
               All children
             </button>
             {children.map(c => (
-              <button key={c.id} onClick={() => setSelectedChildId(c.id)}
-                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${selectedChildId === c.id ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+              <button
+                key={c.id}
+                onClick={() => setSelectedChildId(c.id)}
+                className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
+                  selectedChildId === c.id
+                    ? "border-[#3F5D46] bg-[#3F5D46] text-white"
+                    : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"
+                }`}
+              >
                 {c.username}
               </button>
             ))}
@@ -285,79 +358,90 @@ export default function ReadingLogPage() {
         )}
 
         {/* Stats strip */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-4">
           {[
-            { label: "Total", value: stats.total, color: "from-[#2F5D3A] to-[#6EA76E]", shadow: "shadow-green-200" },
-            { label: "Reading",  value: stats.reading,  color: "from-blue-500 to-indigo-600", shadow: "shadow-blue-200" },
-            { label: "Done",     value: stats.completed, color: "from-emerald-500 to-teal-600", shadow: "shadow-emerald-200" },
-            { label: "Wishlist", value: stats.wishlist,  color: "from-gray-400 to-gray-500",    shadow: "shadow-gray-200" },
+            { label: "Total", value: stats.total, accent: "bg-[#3F5D46]" },
+            { label: "Reading", value: stats.reading, accent: "bg-[#8FA382]" },
+            { label: "Completed", value: stats.completed, accent: "bg-[#D88C64]" },
+            { label: "Wishlist", value: stats.wishlist, accent: "bg-[#E3B554]" },
           ].map(s => (
-            <div key={s.label} className={`bg-gradient-to-br ${s.color} rounded-2xl p-4 text-white shadow-lg ${s.shadow} text-center`}>
-              <p className="text-2xl font-extrabold">{s.value}</p>
-              <p className="text-xs text-white/80 font-bold mt-0.5">{s.label}</p>
+            <div key={s.label} className="brand-card p-4">
+              <div className={`mb-3 h-1.5 w-10 rounded-full ${s.accent}`} />
+              <p className="text-2xl font-extrabold text-[#2E342F]">{s.value}</p>
+              <p className="mt-0.5 text-xs font-bold uppercase tracking-wide text-[#6E5A46]">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Monthly stats chart */}
         {stats.completed > 0 && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider">Books Finished — Last 6 Months</h2>
+          <div className="brand-card p-5 mb-6">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D88C64]">Reading History</p>
+                <h2 className="text-lg font-extrabold text-[#2E342F] mt-1">Books finished in the last 6 months</h2>
+              </div>
               {totalPages > 0 && (
-                <span className="text-xs font-bold text-[#2F5D3A] bg-[#A8C67A]/10 px-3 py-1 rounded-full">
-                  📄 {totalPages.toLocaleString()} pages read
+                <span className="self-start rounded-full bg-[#E5ECE2] px-3 py-1 text-xs font-bold text-[#3F5D46]">
+                  {totalPages.toLocaleString()} pages read
                 </span>
               )}
             </div>
-            <div className="flex items-end gap-3 h-24">
+            <div className="flex items-end gap-3 h-28">
               {monthlyStats.map((m, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-xs font-bold text-gray-600">{m.count > 0 ? m.count : ""}</span>
-                  <div className="w-full flex flex-col justify-end" style={{ height: "64px" }}>
+                <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
+                  <span className="text-xs font-bold text-[#6E5A46]">{m.count > 0 ? m.count : ""}</span>
+                  <div className="w-full flex flex-col justify-end" style={{ height: "72px" }}>
                     <div
-                      className={`w-full rounded-t-lg transition-all duration-500 ${m.count > 0 ? "bg-gradient-to-t from-[#2F5D3A] to-[#6EA76E]" : "bg-gray-100"}`}
-                      style={{ height: `${m.count === 0 ? 4 : Math.max(8, Math.round((m.count / maxBooks) * 64))}px` }}
+                      className={`w-full rounded-t-xl transition-all duration-500 ${m.count > 0 ? "bg-[#8FA382]" : "bg-[#EFE9DF]"}`}
+                      style={{ height: `${m.count === 0 ? 4 : Math.max(8, Math.round((m.count / maxBooks) * 72))}px` }}
                     />
                   </div>
-                  <span className="text-xs text-gray-400 font-semibold">{m.label}</span>
+                  <span className="text-xs font-semibold text-[#8A7A69]">{m.label}</span>
                 </div>
               ))}
             </div>
           </div>
         )}
-
         {/* Filters + sort */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          <div className="flex gap-1.5">
+        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#DDD3C4] bg-[#FFFDF8] p-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
             {(["all", "reading", "completed", "wishlist"] as Status[]).map(f => (
-              <button key={f} onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all capitalize ${
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
                   filter === f
-                    ? "bg-[#2F5D3A] text-white shadow-md"
-                    : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"
-                }`}>
-                {f === "all" ? "All" : STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].icon + " " + STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].label}
+                    ? "border-[#3F5D46] bg-[#3F5D46] text-white"
+                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-[#8FA382]"
+                }`}
+              >
+                {f === "all" ? "All" : `${STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].icon} ${STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].label}`}
               </button>
             ))}
           </div>
-          <div className="ml-auto flex gap-1.5">
-            {([["recent", "Recent"], ["title", "A–Z"], ["rating", "★ Rating"]] as [SortKey, string][]).map(([k, l]) => (
-              <button key={k} onClick={() => setSort(k)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  sort === k ? "bg-[#A8C67A]/20 text-[#2F5D3A] border border-[#A8C67A]/30" : "bg-white/70 text-gray-500 border border-white/60 hover:border-gray-300"
-                }`}>
+
+          <div className="flex flex-wrap gap-2">
+            {([["recent", "Recent"], ["title", "A-Z"], ["rating", "★ Rating"]] as [SortKey, string][]).map(([k, l]) => (
+              <button
+                key={k}
+                onClick={() => setSort(k)}
+                className={`rounded-xl border px-3 py-2 text-xs font-bold transition-colors ${
+                  sort === k
+                    ? "border-[#D88C64] bg-[#F5E4DA] text-[#9A5E3E]"
+                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-[#8FA382]"
+                }`}
+              >
                 {l}
               </button>
             ))}
           </div>
         </div>
-
         {/* Book list */}
         {loading ? (
           <div className="text-center py-16 text-gray-400 text-lg">Loading…</div>
         ) : displayed.length === 0 ? (
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/60 shadow-sm p-12 text-center">
+          <div className="brand-card p-12 text-center">
             <p className="text-5xl mb-3">📚</p>
             <p className="text-gray-500 font-semibold">
               {filter === "all" ? (isParent ? "No books yet — click \"Add Book\" to get started!" : "No books in the log yet — ask Max to add some!") : `No ${filter} books.`}
@@ -369,48 +453,222 @@ export default function ReadingLogPage() {
               const cfg = STATUS_CONFIG[book.status] || STATUS_CONFIG.wishlist;
               return (
                 <div key={book.id}
-                  className={`rounded-2xl border-2 p-5 transition-all shadow-sm ${cfg.card}`}>
+                  className={`rounded-2xl border p-5 transition-colors ${cfg.card}`}>
 
                   {/* Top row: status badge + parent edit/delete */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${cfg.badge}`}>
-                      {cfg.icon} {cfg.label}
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${cfg.badge}`}>
+                      <span>{cfg.icon}</span>
+                      <span>{cfg.label}</span>
                     </span>
+
                     {isParent && (
-                      <div className="flex gap-1.5">
-                        <button onClick={() => openEdit(book)}
-                          className="text-xs text-gray-400 hover:text-[#6EA76E] transition-colors font-bold px-2 py-0.5 rounded-lg hover:bg-[#A8C67A]/10">
-                          ✏️
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => openEdit(book)}
+                          className="rounded-lg border border-[#D8D1C4] bg-white px-2.5 py-1.5 text-xs font-bold text-[#3F5D46] transition-colors hover:border-[#8FA382] hover:bg-[#F7F2E8]"
+                        >
+                          Edit
                         </button>
-                        <button onClick={() => handleDelete(book.id)}
-                          className="text-xs text-gray-400 hover:text-red-500 transition-colors font-bold px-2 py-0.5 rounded-lg hover:bg-red-50">
-                          🗑️
+                        <button
+                          onClick={() => handleDelete(book.id)}
+                          className="rounded-lg border border-[#E5CFC3] bg-white px-2.5 py-1.5 text-xs font-bold text-[#A85F46] transition-colors hover:bg-[#FAEEE8]"
+                        >
+                          Remove
                         </button>
                       </div>
                     )}
                   </div>
 
                   {/* Title + author */}
-                  <h3 className="font-extrabold text-gray-900 leading-snug">{book.title}</h3>
-                  {book.author && <p className="text-sm text-gray-500 font-medium mt-0.5">by {book.author}</p>}
+                  <h3 className="text-lg font-extrabold leading-snug text-[#2E342F]">{book.title}</h3>
+                  {book.author && (
+                    <p className="mt-1 text-sm font-medium text-[#6E5A46]">by {book.author}</p>
+                  )}
 
-                  {/* Meta: pages + dates */}
-                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-2 text-xs text-gray-400 font-medium">
-                    {book.pages && <span>📄 {book.pages} pages</span>}
-                    {book.start_date && <span>Started {format(parseISO(book.start_date), "d MMM yyyy")}</span>}
-                    {book.finish_date && <span>Finished {format(parseISO(book.finish_date), "d MMM yyyy")}</span>}
+                  {/* Meta: pages + chapters + dates */}
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[#7A6B5C]">
+                    {book.pages && (
+                      <span className="rounded-full bg-[#F7F2E8] px-2.5 py-1">
+                        {book.pages} pages
+                      </span>
+                    )}
+                    {book.total_chapters && (
+                      <span className="rounded-full bg-[#E5ECE2] px-2.5 py-1 text-[#3F5D46]">
+                        {book.total_chapters} chapters
+                      </span>
+                    )}
+                    {book.start_date && (
+                      <span className="rounded-full bg-white px-2.5 py-1 border border-[#E6DED2]">
+                        Started {format(parseISO(book.start_date), "d MMM yyyy")}
+                      </span>
+                    )}
+                    {book.finish_date && (
+                      <span className="rounded-full bg-white px-2.5 py-1 border border-[#E6DED2]">
+                        Finished {format(parseISO(book.finish_date), "d MMM yyyy")}
+                      </span>
+                    )}
                   </div>
-
                   {/* Rating */}
-                  <div className="mt-3">
+                  <div className="mt-4">
                     <Stars
                       rating={book.rating}
                       onRate={!isParent ? (n) => handleRate(book, n) : undefined}
                     />
                     {!book.rating && !isParent && book.status === "completed" && (
                       <p className="text-xs text-gray-400 mt-0.5">Tap a star to rate!</p>
-                    )}
-                  </div>
+                    )}                  </div>
+
+                  {book.total_chapters && book.total_chapters > 0 && (
+                    <div className="mt-4 rounded-xl border border-[#C9D4C5] bg-[#F7F2E8] p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wide text-[#3F5D46]">Reading Journey</p>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            {book.completed_chapters ?? 0} of {book.total_chapters} chapters complete
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => journeyBookId === book.id ? setJourneyBookId(null) : openJourney(book)}
+                          className="text-xs px-3 py-1.5 rounded-lg bg-[#3F5D46] text-white font-bold hover:bg-[#2F4B37] transition-colors"
+                        >
+                          {journeyBookId === book.id ? "Close Journey" : "Open Journey"}
+                        </button>
+                      </div>
+                      <div className="mt-2 h-2 rounded-full bg-[#E6E0D5] overflow-hidden">
+                        <div
+                          className="h-full bg-[#8FA382] transition-all"
+                          style={{ width: `${Math.min(100, ((book.completed_chapters ?? 0) / book.total_chapters) * 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {journeyBookId === book.id && book.total_chapters && book.total_chapters > 0 && (
+                    <div className="mt-3 rounded-2xl border border-[#8FA382]/30 bg-[#FFFDF8] p-4 space-y-5">
+                      <div>
+                        <div className="flex items-center justify-between gap-3 mb-3">
+                          <div>
+                            <h4 className="font-extrabold text-[#2E342F]">Chapter Progress</h4>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                              Tick each chapter as you finish it.
+                            </p>
+                          </div>
+                          <span className="text-xs font-bold text-[#3F5D46] bg-[#8FA382]/15 px-2.5 py-1 rounded-full">
+                            {book.completed_chapters ?? 0}/{book.total_chapters}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {Array.from({ length: book.total_chapters }, (_, i) => i + 1).map(chapter => {
+                            const complete = chapter <= (book.completed_chapters ?? 0);
+                            return (
+                              <button
+                                key={chapter}
+                                type="button"
+                                disabled={isParent}
+                                onClick={() => handleChapterProgress(book, chapter)}
+                                className={`min-w-10 h-10 px-2 rounded-xl text-sm font-bold border transition-colors ${
+                                  complete
+                                    ? "bg-[#3F5D46] border-[#3F5D46] text-white"
+                                    : "bg-white border-[#8FA382]/40 text-[#3F5D46] hover:bg-[#8FA382]/10"
+                                } disabled:cursor-default`}
+                                title={`Chapter ${chapter}`}
+                              >
+                                {complete ? "✓" : chapter}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="mb-2">
+                          <h4 className="font-extrabold text-[#2E342F]">My Reading Journal</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            Write about the story, characters, favourite parts, or anything you noticed.
+                          </p>
+                        </div>
+                        <div className="bg-white border border-[#D8D1C4] rounded-xl shadow-sm overflow-hidden">
+                          <div className="h-8 border-b border-[#E8E2D8] bg-[#F7F2E8] flex items-center px-3">
+                            <span className="text-[11px] font-semibold text-[#6E5A46]">Reading Journal</span>
+                          </div>
+                          <textarea
+                            value={journeyJournal}
+                            onChange={e => setJourneyJournal(e.target.value)}
+                            readOnly={isParent}
+                            rows={12}
+                            placeholder="Start writing here..."
+                            className="w-full px-5 py-4 text-sm leading-7 text-[#2E342F] bg-white focus:outline-none resize-y read-only:bg-[#FFFDF8]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-extrabold text-[#2E342F]">Reading Questions</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            Answer these in your own words.
+                          </p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                            1. What happened in this part of the book?
+                          </label>
+                          <textarea
+                            value={journeyQ1}
+                            onChange={e => setJourneyQ1(e.target.value)}
+                            readOnly={isParent}
+                            rows={3}
+                            placeholder="Write your answer..."
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                            2. What did you think about it and why?
+                          </label>
+                          <textarea
+                            value={journeyQ2}
+                            onChange={e => setJourneyQ2(e.target.value)}
+                            readOnly={isParent}
+                            rows={3}
+                            placeholder="Write your answer..."
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                            3. What do you think will happen next?
+                          </label>
+                          <textarea
+                            value={journeyQ3}
+                            onChange={e => setJourneyQ3(e.target.value)}
+                            readOnly={isParent}
+                            rows={3}
+                            placeholder="Write your answer..."
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                          />
+                        </div>
+                      </div>
+
+                      {!isParent && (
+                        <div className="flex justify-end pt-1">
+                          <button
+                            type="button"
+                            onClick={() => handleSaveJourney(book)}
+                            disabled={savingJourney}
+                            className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#2F4B37] disabled:opacity-50 transition-colors"
+                          >
+                            {savingJourney ? "Saving..." : "Save Reading Journey"}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Notes */}
                   {book.notes && editingNote !== book.id && (
@@ -421,7 +679,7 @@ export default function ReadingLogPage() {
 
                   {/* Child: inline note editor */}
                   {!isParent && editingNote === book.id && (
-                    <div className="mt-3">
+                    <div className="mt-4">
                       <textarea
                         rows={2}
                         value={noteText}
@@ -556,27 +814,31 @@ export default function ReadingLogPage() {
                         )}
                       </div>
                     ) : null;
-                  })()}
-
-                  {/* Child action buttons */}
+                  })()}                  {/* Child action buttons */}
                   {!isParent && (
-                    <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-white/60">
+                    <div className="mt-4 flex flex-wrap gap-2 border-t border-[#E6DED2] pt-4">
                       {book.status === "wishlist" && (
-                        <button onClick={() => handleStatusChange(book, "reading")}
-                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-bold shadow-sm">
-                          📖 Start Reading
+                        <button
+                          onClick={() => handleStatusChange(book, "reading")}
+                          className="rounded-xl bg-[#3F5D46] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#334C39]"
+                        >
+                          Start Reading
                         </button>
                       )}
                       {book.status === "reading" && (
-                        <button onClick={() => handleStatusChange(book, "completed")}
-                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg font-bold shadow-sm">
-                          ✅ Mark Done
+                        <button
+                          onClick={() => handleStatusChange(book, "completed")}
+                          className="rounded-xl bg-[#3F5D46] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#334C39]"
+                        >
+                          Mark Done
                         </button>
                       )}
                       {book.status === "completed" && (
-                        <button onClick={() => handleStatusChange(book, "reading")}
-                          className="text-xs px-3 py-1.5 border border-gray-200 text-gray-500 rounded-lg font-bold hover:bg-gray-50">
-                          ↩ Re-reading
+                        <button
+                          onClick={() => handleStatusChange(book, "reading")}
+                          className="rounded-xl border border-[#C9D4C5] bg-[#E5ECE2] px-3.5 py-2 text-xs font-bold text-[#3F5D46] transition-colors hover:bg-[#DCE6D9]"
+                        >
+                          Read Again
                         </button>
                       )}
                       <button
@@ -584,8 +846,9 @@ export default function ReadingLogPage() {
                           setEditingNote(book.id);
                           setNoteText(book.notes ?? "");
                         }}
-                        className="text-xs px-3 py-1.5 border-2 border-[#A8C67A]/40 text-[#6EA76E] rounded-lg font-bold hover:bg-[#A8C67A]/10">
-                        📝 {book.notes ? "Edit Note" : "Add Note"}
+                        className="rounded-xl border border-[#D8D1C4] bg-white px-3.5 py-2 text-xs font-bold text-[#6E5A46] transition-colors hover:border-[#8FA382] hover:bg-[#F7F2E8]"
+                      >
+                        {book.notes ? "Edit Note" : "Add Note"}
                       </button>
                     </div>
                   )}
@@ -629,11 +892,18 @@ export default function ReadingLogPage() {
                   className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1.5">Pages</label>
-                  <input type="number" min={1} value={fPages} onChange={e => setFPages(e.target.value)}
-                    placeholder="e.g. 224"
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1.5">Pages</label>
+                    <input type="number" min={1} value={fPages} onChange={e => setFPages(e.target.value)}
+                      placeholder="e.g. 224"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1.5">Total Chapters</label>
+                    <input type="number" min={1} value={fTotalChapters} onChange={e => setFTotalChapters(e.target.value)}
+                      placeholder="e.g. 18"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Status</label>
@@ -644,7 +914,6 @@ export default function ReadingLogPage() {
                     <option value="completed">✅ Completed</option>
                   </select>
                 </div>
-              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Start date</label>
