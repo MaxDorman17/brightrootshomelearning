@@ -237,24 +237,30 @@ export default function AchievementsPage() {
       )}
 
       <div className="max-w-4xl mx-auto px-4 py-8">
+
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-extrabold text-gray-900">🏆 Achievements</h1>
-          <p className="text-gray-500 font-medium mt-1">
-            {role === "parent" ? "Badges and learning milestones" : "Your badges and milestones — keep going!"}
-          </p>
+        <div className="brand-card p-6 mb-6">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D88C64]">Progress</p>
+            <h1 className="brand-heading text-3xl mt-1">Achievements</h1>
+            <p className="text-[#6E5A46] mt-2 max-w-2xl">
+              {role === "parent"
+                ? "Celebrate learning milestones, streaks, badges and progress across every subject."
+                : "Collect badges, build streaks and celebrate every milestone along the way."}
+            </p>
+          </div>
         </div>
 
-        {/* Child selector (parent only) */}
+{/* Child selector (parent only) */}
         {role === "parent" && children.length > 0 && (
           <div className="flex gap-2 mb-6 flex-wrap">
             <button onClick={() => setSelectedChildId(null)}
-              className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${!selectedChildId ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+              className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${!selectedChildId ? "border-[#3F5D46] bg-[#3F5D46] text-white" : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"}`}>
               All children
             </button>
             {children.map(c => (
               <button key={c.id} onClick={() => setSelectedChildId(c.id)}
-                className={`px-4 py-1.5 rounded-xl text-sm font-bold transition-all ${selectedChildId === c.id ? "bg-[#2F5D3A] text-white shadow-md" : "bg-white/80 border border-white/60 text-gray-600 hover:border-[#A8C67A] shadow-sm"}`}>
+                className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${selectedChildId === c.id ? "border-[#3F5D46] bg-[#3F5D46] text-white" : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"}`}>
                 {c.username}
               </button>
             ))}
@@ -265,54 +271,58 @@ export default function AchievementsPage() {
           <div className="text-center py-16 text-gray-400">Loading…</div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-gradient-to-br from-[#2F5D3A] to-[#6EA76E] rounded-2xl p-5 text-white shadow-lg shadow-green-900/20 text-center">
-                <p className="text-3xl font-extrabold">{totalComplete}</p>
-                <p className="text-xs text-white/80 font-bold mt-1">Lessons Done</p>
-              </div>
-              <div className="bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl p-5 text-white shadow-lg shadow-orange-300/40 text-center">
-                <p className="text-3xl font-extrabold">{streak}</p>
-                <p className="text-xs text-white/80 font-bold mt-1">Day Streak 🔥</p>
-              </div>
-              <div className="bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl p-5 text-white shadow-lg shadow-teal-300/40 text-center">
-                <p className="text-3xl font-extrabold">{submitted}</p>
-                <p className="text-xs text-white/80 font-bold mt-1">Work Submitted</p>
-              </div>
-              <div className="bg-gradient-to-br from-[#F5B841] to-amber-500 rounded-2xl p-5 text-white shadow-lg shadow-yellow-400/30 text-center">
-                <p className="text-3xl font-extrabold">{coding.size}</p>
-                <p className="text-xs text-white/80 font-bold mt-1">Coding Lessons</p>
-              </div>
-            </div>
-
-            {/* Polish stats strip */}
+            <div className="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-4">
+              {[
+                { label: "Lessons Done", value: totalComplete, accent: "bg-[#3F5D46]" },
+                { label: "Day Streak", value: streak, accent: "bg-[#D88C64]" },
+                { label: "Work Submitted", value: submitted, accent: "bg-[#8FA382]" },
+                { label: "Coding Lessons", value: coding.size, accent: "bg-[#E3B554]" },
+              ].map(s => (
+                <div key={s.label} className="brand-card p-4">
+                  <div className={`mb-3 h-1.5 w-10 rounded-full ${s.accent}`} />
+                  <p className="text-2xl font-extrabold text-[#2E342F]">{s.value}</p>
+                  <p className="mt-0.5 text-xs font-bold uppercase tracking-wide text-[#6E5A46]">{s.label}</p>
+                </div>
+              ))}
+            </div>{/* Polish stats strip */}
             {polishSessions.length > 0 && (
-              <div className="bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl px-5 py-3 mb-4 flex items-center gap-4 flex-wrap">
-                <span className="text-2xl">🇵🇱</span>
-                <div>
-                  <p className="font-extrabold text-red-800 text-sm">Polish with Duolingo</p>
-                  <p className="text-red-600 text-xs font-semibold">
-                    {polishSessions.length} session{polishSessions.length !== 1 ? "s" : ""}
-                    {polishStreak > 0 ? ` · 🔥 ${polishStreak}-day streak` : ""}
-                    {polishXp > 0 ? ` · ${polishXp} XP` : ""}
-                  </p>
+              <div className="brand-card p-5 mb-6">
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F5E4DA] text-xl">
+                    {"\uD83C\uDDF5\uD83C\uDDF1"}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D88C64]">Language Learning</p>
+                    <p className="mt-1 font-extrabold text-[#2E342F]">Polish with Duolingo</p>
+                    <p className="mt-1 text-sm font-semibold text-[#6E5A46]">
+                      {polishSessions.length} session{polishSessions.length !== 1 ? "s" : ""}
+                      {polishStreak > 0 ? ` \u00B7 ${polishStreak}-day streak` : ""}
+                      {polishXp > 0 ? ` \u00B7 ${polishXp} XP` : ""}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* Streak bar */}
             {streak > 0 && (
-              <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-200 rounded-2xl p-5 mb-8 flex items-center gap-4">
-                <div className="text-4xl">{streak >= 10 ? "🔥" : streak >= 5 ? "🏆" : streak >= 3 ? "⚡" : "✨"}</div>
-                <div>
-                  <p className="font-extrabold text-orange-800 text-lg">{streak}-day streak!</p>
-                  <p className="text-orange-600 text-sm font-semibold">
-                    {streak >= 10 ? "Incredible — over two weeks!" : streak >= 5 ? "A full school week — amazing!" : streak >= 3 ? "Hat trick unlocked!" : "Keep it going!"}
-                  </p>
-                </div>
-                <div className="ml-auto flex gap-1">
-                  {Array.from({ length: Math.min(streak, 10) }, (_, i) => (
-                    <div key={i} className="w-3 h-8 bg-gradient-to-t from-orange-500 to-yellow-400 rounded-sm shadow-sm" />
-                  ))}
+              <div className="brand-card p-5 mb-8">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F5E4DA] text-2xl">
+                    {"\uD83D\uDD25"}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D88C64]">Learning Streak</p>
+                    <p className="mt-1 text-lg font-extrabold text-[#2E342F]">{streak}-day streak</p>
+                    <p className="mt-1 text-sm font-semibold text-[#6E5A46]">
+                      {streak >= 10 ? "Incredible, over two weeks!" : streak >= 5 ? "A full school week, amazing!" : streak >= 3 ? "Hat trick unlocked!" : "Keep it going!"}
+                    </p>
+                  </div>
+                  <div className="flex gap-1 sm:ml-auto">
+                    {Array.from({ length: Math.min(streak, 10) }, (_, i) => (
+                      <div key={i} className="h-8 w-2.5 rounded-full bg-[#D88C64]" />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -320,22 +330,35 @@ export default function AchievementsPage() {
             {/* Earned badges */}
             {earned.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-4">
-                  Earned ({earned.length}/{BADGES.length})
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D88C64]">Badge Collection</p>
+                    <h2 className="mt-1 text-lg font-extrabold text-[#2E342F]">Earned achievements</h2>
+                  </div>
+                  <span className="rounded-full bg-[#E5ECE2] px-3 py-1 text-xs font-bold text-[#3F5D46]">
+                    {earned.length}/{BADGES.length}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                   {earned.map(b => (
-                    <div key={b.id}
-                      className={`bg-gradient-to-br ${b.color} rounded-2xl p-4 text-white shadow-lg text-center transition-all ${
+                    <div
+                      key={b.id}
+                      className={`brand-card p-4 text-center transition-all ${
                         newlyUnlocked.includes(b.id)
-                          ? "ring-4 ring-yellow-300 ring-offset-2 scale-105 shadow-2xl"
+                          ? "ring-2 ring-[#E3B554] ring-offset-2"
                           : ""
-                      }`}>
-                      <p className="text-4xl mb-2">{b.icon}</p>
-                      <p className="font-extrabold text-sm leading-tight">{b.title}</p>
-                      <p className="text-xs text-white/75 mt-1 leading-snug">{b.desc}</p>
+                      }`}
+                    >
+                      <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F2E8] text-3xl">
+                        {b.icon}
+                      </div>
+                      <p className="text-sm font-extrabold leading-tight text-[#2E342F]">{b.title}</p>
+                      <p className="mt-1 text-xs leading-snug text-[#6E5A46]">{b.desc}</p>
                       {newlyUnlocked.includes(b.id) && (
-                        <p className="text-xs font-extrabold mt-2 bg-white/25 rounded-lg py-0.5">NEW! 🎉</p>
+                        <p className="mt-3 rounded-full bg-[#FFF3D6] px-2 py-1 text-[11px] font-extrabold uppercase tracking-wide text-[#9A6A1E]">
+                          New
+                        </p>
                       )}
                     </div>
                   ))}
@@ -346,16 +369,22 @@ export default function AchievementsPage() {
             {/* Locked badges */}
             {locked.length > 0 && (
               <div>
-                <h2 className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-4">
-                  Locked — keep going!
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#8A7A69]">Still to unlock</p>
+                  <h2 className="mt-1 text-lg font-extrabold text-[#2E342F]">Keep going</h2>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                   {locked.map(b => (
-                    <div key={b.id}
-                      className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 text-center border-2 border-dashed border-gray-200 opacity-60">
-                      <p className="text-4xl mb-2 grayscale">{b.icon}</p>
-                      <p className="font-bold text-sm text-gray-600 leading-tight">{b.title}</p>
-                      <p className="text-xs text-gray-400 mt-1 leading-snug">{b.desc}</p>
+                    <div
+                      key={b.id}
+                      className="rounded-2xl border border-dashed border-[#D8D1C4] bg-[#FFFDF8]/70 p-4 text-center"
+                    >
+                      <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EFE9DF] text-3xl grayscale opacity-50">
+                        {b.icon}
+                      </div>
+                      <p className="text-sm font-extrabold leading-tight text-[#6E5A46]">{b.title}</p>
+                      <p className="mt-1 text-xs leading-snug text-[#9A8B7C]">{b.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -367,3 +396,10 @@ export default function AchievementsPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
