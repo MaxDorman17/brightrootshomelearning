@@ -22,10 +22,20 @@ def run_migrations():
                 conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
-        if "child_id" not in existing_cols:
-            with engine.connect() as conn:
-                conn.execute(text("ALTER TABLE reading_log ADD COLUMN child_id INTEGER REFERENCES users(id)"))
-                conn.commit()
+        reading_columns = {
+            "child_id": "ALTER TABLE reading_log ADD COLUMN child_id INTEGER REFERENCES users(id)",
+            "total_chapters": "ALTER TABLE reading_log ADD COLUMN total_chapters INTEGER",
+            "completed_chapters": "ALTER TABLE reading_log ADD COLUMN completed_chapters INTEGER NOT NULL DEFAULT 0",
+            "reading_journal": "ALTER TABLE reading_log ADD COLUMN reading_journal TEXT",
+            "question_1_answer": "ALTER TABLE reading_log ADD COLUMN question_1_answer TEXT",
+            "question_2_answer": "ALTER TABLE reading_log ADD COLUMN question_2_answer TEXT",
+            "question_3_answer": "ALTER TABLE reading_log ADD COLUMN question_3_answer TEXT",
+        }
+        with engine.connect() as conn:
+            for column_name, statement in reading_columns.items():
+                if column_name not in existing_cols:
+                    conn.execute(text(statement))
+            conn.commit()
     if "planner_entries" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("planner_entries")]
         if "is_extra" not in existing_cols:

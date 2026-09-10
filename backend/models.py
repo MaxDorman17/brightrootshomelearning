@@ -180,6 +180,12 @@ class ReadingLog(Base):
     title = Column(String(255), nullable=False)
     author = Column(String(255), nullable=True)
     pages = Column(Integer, nullable=True)
+    total_chapters = Column(Integer, nullable=True)
+    completed_chapters = Column(Integer, nullable=False, default=0)
+    reading_journal = Column(Text, nullable=True)
+    question_1_answer = Column(Text, nullable=True)
+    question_2_answer = Column(Text, nullable=True)
+    question_3_answer = Column(Text, nullable=True)
     status = Column(String(50), nullable=False, default="wishlist")  # wishlist / reading / completed
     start_date = Column(Date, nullable=True)
     finish_date = Column(Date, nullable=True)

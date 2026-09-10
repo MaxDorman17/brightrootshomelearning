@@ -231,6 +231,12 @@ class ReadingLogCreate(BaseModel):
     title: str
     author: Optional[str] = None
     pages: Optional[int] = None
+    total_chapters: Optional[int] = None
+    completed_chapters: Optional[int] = 0
+    reading_journal: Optional[str] = None
+    question_1_answer: Optional[str] = None
+    question_2_answer: Optional[str] = None
+    question_3_answer: Optional[str] = None
     status: str = "wishlist"
     start_date: Optional[date] = None
     finish_date: Optional[date] = None
@@ -242,6 +248,12 @@ class ReadingLogUpdate(BaseModel):
     title: Optional[str] = None
     author: Optional[str] = None
     pages: Optional[int] = None
+    total_chapters: Optional[int] = None
+    completed_chapters: Optional[int] = None
+    reading_journal: Optional[str] = None
+    question_1_answer: Optional[str] = None
+    question_2_answer: Optional[str] = None
+    question_3_answer: Optional[str] = None
     status: Optional[str] = None
     start_date: Optional[date] = None
     finish_date: Optional[date] = None
@@ -255,6 +267,12 @@ class ReadingLogOut(BaseModel):
     title: str
     author: Optional[str]
     pages: Optional[int]
+    total_chapters: Optional[int]
+    completed_chapters: int
+    reading_journal: Optional[str]
+    question_1_answer: Optional[str]
+    question_2_answer: Optional[str]
+    question_3_answer: Optional[str]
     status: str
     start_date: Optional[date]
     finish_date: Optional[date]
