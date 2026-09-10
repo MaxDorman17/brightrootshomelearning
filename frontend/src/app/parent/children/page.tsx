@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
@@ -9,153 +10,300 @@ import { format, parseISO } from "date-fns";
 
 export default function ChildrenPage() {
   const router = useRouter();
+
   const [children, setChildren] = useState<Child[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    getChildren().then(res => { setChildren(res.data); setLoading(false); });
+    if (!isAuthenticated() || getRole() !== "parent") {
+      router.replace("/login");
+      return;
+    }
+
+    getChildren()
+      .then(res => setChildren(res.data))
+      .finally(() => setLoading(false));
   }, [router]);
 
   const handleAdd = async () => {
-    if (!username.trim() || !password.trim() || !email.trim()) return;
+    if (!username.trim() || !email.trim() || !password.trim()) return;
+
     setSaving(true);
     setError("");
+
     try {
-      const res = await addChild({ username: username.trim(), email: email.trim(), password: password.trim() });
+      const res = await addChild({
+        username: username.trim(),
+        email: email.trim(),
+        password: password.trim(),
+      });
+
       setChildren(prev => [...prev, res.data]);
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
       setShowModal(false);
-      setUsername(""); setEmail(""); setPassword("");
     } catch (err: unknown) {
-      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      const detail = (
+        err as { response?: { data?: { detail?: string } } }
+      )?.response?.data?.detail;
+
       setError(detail || "Something went wrong");
-    } finally { setSaving(false); }
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleRemove = async (id: number, name: string) => {
-    if (!confirm(`Remove ${name}'s account? This will delete all their data.`)) return;
+    if (!confirm(`Remove ${name}'s account? This will delete all their data.`)) {
+      return;
+    }
+
     await removeChild(id);
-    setChildren(prev => prev.filter(c => c.id !== id));
+    setChildren(prev => prev.filter(child => child.id !== id));
   };
 
-  const closeModal = () => { setShowModal(false); setUsername(""); setEmail(""); setPassword(""); setError(""); };
+  const closeModal = () => {
+    setShowModal(false);
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="max-w-2xl mx-auto px-4 py-8">
 
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-extrabold text-gray-900">👦 Children</h1>
-            <p className="text-gray-500 font-medium mt-1">Manage the child accounts linked to your parent account.</p>
-          </div>
-          <button onClick={() => setShowModal(true)} className="gradient-btn text-sm px-4 py-2">
-            + Add Child
-          </button>
-        </div>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <section className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+                Family Accounts
+              </p>
 
-        {loading ? (
-          <div className="text-center py-16 text-gray-400">Loading…</div>
-        ) : children.length === 0 ? (
-          <div className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl p-10 text-center shadow-sm">
-            <p className="text-5xl mb-3">👦</p>
-            <p className="font-semibold text-gray-700 mb-1">No child accounts yet</p>
-            <p className="text-sm text-gray-500 mb-4">Add a child account so they can log in and see their lessons.</p>
-            <button onClick={() => setShowModal(true)} className="gradient-btn text-sm px-5 py-2">
-              Add your first child
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {children.map(child => (
-              <div key={child.id} className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl p-5 shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-extrabold text-lg shadow-sm">
-                  {child.username[0].toUpperCase()}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-extrabold text-gray-900">{child.username}</p>
-                  <p className="text-sm text-gray-500">{child.email}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Added {format(parseISO(child.created_at), "d MMM yyyy")}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleRemove(child.id, child.username)}
-                  className="text-sm text-red-400 hover:text-red-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all"
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
+                Children
+              </h1>
 
-        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-4">
-          <p className="text-xs font-bold text-amber-700 mb-1">💡 How it works</p>
-          <p className="text-sm text-amber-800">
-            Each child gets their own login. When you add lessons to the planner you can assign them to a specific child, or leave unassigned so all children see them.
-          </p>
-        </div>
-      </div>
-
-      {/* Add child modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={e => e.target === e.currentTarget && closeModal()}>
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Add a Child Account</h3>
-
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name / Username</label>
-                <input
-                  autoFocus
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
-                  placeholder="e.g. oscar"
-                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="oscar@example.com"
-                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Choose a password they can remember"
-                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
-                />
-              </div>
-              {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+                Manage the child accounts connected to your Bright Roots family.
+              </p>
             </div>
 
-            <div className="flex gap-3 mt-5">
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+            >
+              <span className="text-lg leading-none">+</span>
+              Add Child
+            </button>
+          </div>
+        </section>
+
+        <section className="brand-card overflow-hidden">
+          <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1] flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                Linked Accounts
+              </p>
+              <h2 className="text-xl font-bold text-[#2E342F] mt-1">
+                Your Children
+              </h2>
+            </div>
+
+            {!loading && (
+              <div className="rounded-full bg-[#F7F2E8] px-3 py-1.5 text-xs font-bold text-[#6E5A46]">
+                {children.length} {children.length === 1 ? "child" : "children"}
+              </div>
+            )}
+          </div>
+
+          {loading ? (
+            <div className="py-16 text-center text-sm text-[#8FA382]">
+              Loading...
+            </div>
+          ) : children.length === 0 ? (
+            <div className="px-6 py-14 text-center">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#F7F2E8] flex items-center justify-center text-[#3F5D46] text-xl font-bold">
+                BR
+              </div>
+
+              <h3 className="text-lg font-bold text-[#2E342F] mt-4">
+                No child accounts yet
+              </h3>
+
+              <p className="text-sm text-[#6E5A46] mt-2 max-w-md mx-auto">
+                Add a child account so they can sign in and see the lessons assigned to them.
+              </p>
+
               <button
-                onClick={handleAdd}
-                disabled={saving || !username.trim() || !email.trim() || !password.trim()}
-                className="flex-1 gradient-btn text-sm py-2 disabled:opacity-50"
+                onClick={() => setShowModal(true)}
+                className="mt-5 px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
               >
-                {saving ? "Creating…" : "Create Account"}
+                Add your first child
               </button>
-              <button onClick={closeModal} className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
-                Cancel
-              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-[#EEE6D9]">
+              {children.map(child => (
+                <div
+                  key={child.id}
+                  className="px-5 sm:px-6 py-5 flex items-center gap-4 hover:bg-[#FFFDF8] transition-colors"
+                >
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#E8EDE4] border border-[#D9E1D4] flex items-center justify-center text-[#3F5D46] text-lg font-bold">
+                    {child.username.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <p className="font-bold text-[#2E342F]">
+                        {child.username}
+                      </p>
+
+                      <span className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382] bg-[#F7F2E8] rounded-full px-2 py-1">
+                        Child account
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-[#6E5A46] mt-1 truncate">
+                      {child.email}
+                    </p>
+
+                    <p className="text-xs text-[#8FA382] mt-1">
+                      Added {format(parseISO(child.created_at), "d MMMM yyyy")}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => handleRemove(child.id, child.username)}
+                    className="shrink-0 px-3 py-2 rounded-xl text-sm font-semibold text-[#B45F50] hover:bg-[#FBEFEB] transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="mt-6 rounded-2xl border border-[#E7DFD1] bg-[#F7F2E8] p-5 sm:p-6">
+          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+            How it works
+          </p>
+
+          <p className="text-sm text-[#6E5A46] mt-2 leading-relaxed">
+            Each child gets their own login. Lessons can be assigned to a specific child in the Planner, or left unassigned so they are available to everyone.
+          </p>
+        </section>
+      </main>
+
+      {showModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 px-4 flex items-center justify-center"
+          onClick={event => {
+            if (event.target === event.currentTarget) closeModal();
+          }}
+        >
+          <div className="w-full max-w-md rounded-3xl bg-[#FFFDF8] border border-[#E7DFD1] shadow-2xl overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E7DFD1]">
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                New Account
+              </p>
+
+              <h2 className="text-xl font-bold text-[#2E342F] mt-1">
+                Add a Child
+              </h2>
+
+              <p className="text-sm text-[#6E5A46] mt-1">
+                Create their Bright Roots login details.
+              </p>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    Name / Username
+                  </label>
+
+                  <input
+                    autoFocus
+                    value={username}
+                    onChange={event => setUsername(event.target.value)}
+                    placeholder="e.g. oscar"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={event => setEmail(event.target.value)}
+                    placeholder="oscar@example.com"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    Password
+                  </label>
+
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={event => setPassword(event.target.value)}
+                    placeholder="Choose a password they can remember"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                  />
+                </div>
+
+                {error && (
+                  <div className="rounded-xl border border-[#E9B8AE] bg-[#FBEFEB] px-4 py-3">
+                    <p className="text-sm font-semibold text-[#A64F42]">
+                      {error}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
+                <button
+                  onClick={closeModal}
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-[#F7F2E8] transition-colors"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleAdd}
+                  disabled={
+                    saving ||
+                    !username.trim() ||
+                    !email.trim() ||
+                    !password.trim()
+                  }
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {saving ? "Creating..." : "Create Account"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
