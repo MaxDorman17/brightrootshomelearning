@@ -104,6 +104,8 @@ def update_book(
             book.author = body.author
         if body.pages is not None:
             book.pages = body.pages
+        if body.total_chapters is not None:
+            book.total_chapters = body.total_chapters
         if body.start_date is not None:
             book.start_date = body.start_date
         if body.finish_date is not None:
@@ -117,6 +119,16 @@ def update_book(
         book.rating = body.rating
     if body.notes is not None:
         book.notes = body.notes
+    if body.completed_chapters is not None:
+        book.completed_chapters = body.completed_chapters
+    if body.reading_journal is not None:
+        book.reading_journal = body.reading_journal
+    if body.question_1_answer is not None:
+        book.question_1_answer = body.question_1_answer
+    if body.question_2_answer is not None:
+        book.question_2_answer = body.question_2_answer
+    if body.question_3_answer is not None:
+        book.question_3_answer = body.question_3_answer
 
     db.commit()
     db.refresh(book)
