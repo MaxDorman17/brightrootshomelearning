@@ -21,7 +21,12 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
 const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/programmes\/[^/?#]+\/units\/[^/?#]+\/lessons\/[^/?#]+$/;
+const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
+const getOakQuizResult = (url: string | null | undefined, results: Record<string, OakQuizResult>) => {
+  const shareUrl = url?.match(OAK_SHARE_RE)?.[0];
+  return shareUrl ? results[shareUrl] : undefined;
+};
 
 interface FifeHoliday { label: string; start: string; end: string; inservice?: boolean; group: string; }
 
@@ -1070,73 +1075,94 @@ export default function ParentPlanner() {
                       const entry = getEntry(dayDate, subject);
                       const hasLesson = !!entry;
                       const dotClass = subjectDot[subject] || "bg-gray-400";
+                      const quizResult = entry ? getOakQuizResult(entry.completed_work_url, quizResults) : undefined;
+                      const childName = entry?.assigned_to
+                        ? children.find(c => c.id === entry.assigned_to)?.username
+                        : null;
 
                       return (
                         <button
                           key={subject}
                           onClick={() => openModal(dayIndex, subject)}
-                          className={`w-full text-left rounded-2xl border p-4 transition-all ${
+                          className={`w-full text-left rounded-2xl border transition-all overflow-hidden ${
                             hasLesson
-                              ? "bg-brand-white border-brand-softsage/20 hover:border-brand-sage/40 hover:shadow-sm"
+                              ? entry.is_complete
+                                ? "bg-brand-white border-brand-sage/30 hover:border-brand-sage/60 hover:shadow-sm"
+                                : "bg-brand-white border-brand-softsage/20 hover:border-brand-sage/40 hover:shadow-sm"
                               : "bg-brand-white/60 border-dashed border-brand-softsage/30 hover:bg-brand-white hover:border-brand-sage/50"
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${dotClass}`} />
-                            <span className="text-xs font-extrabold text-brand-earth/70 truncate">
-                              {subject}
-                            </span>
-                          </div>
-
-                          {hasLesson ? (
-                            <>
-                              <p className="text-sm font-bold leading-snug text-brand-charcoal mt-2 line-clamp-2">
-                                {entry.lesson.title}
-                              </p>
-
-                              <div className="flex items-center gap-1.5 mt-3 flex-wrap">
-                                {entry.lesson.lesson_url && (
-                                  <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-cream text-brand-earth">
-                                    Lesson link
+                          <div className="p-4">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${dotClass}`} />
+                                  <span className="text-xs font-extrabold text-brand-earth/70 truncate">
+                                    {subject}
                                   </span>
-                                )}
+                                </div>
 
-                                {entry.is_complete && (
-                                  <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-sage text-white">
-                                    Complete
-                                  </span>
-                                )}
-
-                                {entry.completed_work_url && (
-                                  <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/20 text-brand-earth">
-                                    Work submitted
-                                  </span>
-                                )}
-
-                                {entry.assigned_to && (
-                                  <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
-                                    {children.find(c => c.id === entry.assigned_to)?.username}
-                                  </span>
-                                )}
-
-                                {entry.completed_work_url && quizResults[entry.completed_work_url] && (
-                                  <>
-                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
-                                      Starter {quizResults[entry.completed_work_url].starter_score}/{quizResults[entry.completed_work_url].starter_total ?? 6}
-                                    </span>
-
-                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                      Exit {quizResults[entry.completed_work_url].exit_score}/{quizResults[entry.completed_work_url].exit_total ?? 6}
-                                    </span>
-                                  </>
+                                {hasLesson ? (
+                                  <p className="text-sm font-bold leading-snug text-brand-charcoal mt-2 line-clamp-2">
+                                    {entry.lesson.title}
+                                  </p>
+                                ) : (
+                                  <p className="text-xs font-semibold text-brand-earth/45 mt-2">
+                                    + Add lesson
+                                  </p>
                                 )}
                               </div>
-                            </>
-                          ) : (
-                            <p className="text-xs font-semibold text-brand-earth/45 mt-2">
-                              + Add lesson
-                            </p>
-                          )}
+
+                              {hasLesson && (
+                                <span className={`shrink-0 text-[10px] font-extrabold px-2.5 py-1 rounded-full ${
+                                  entry.is_complete
+                                    ? "bg-brand-sage text-white"
+                                    : "bg-brand-cream text-brand-earth"
+                                }`}>
+                                  {entry.is_complete ? "Complete" : "To do"}
+                                </span>
+                              )}
+                            </div>
+
+                            {hasLesson && (
+                              <>
+                                <div className="flex items-center gap-1.5 mt-3 flex-wrap">
+                                  {childName && (
+                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
+                                      {childName}
+                                    </span>
+                                  )}
+                                  {entry.lesson.lesson_url && (
+                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-cream text-brand-earth">
+                                      Lesson link
+                                    </span>
+                                  )}
+                                  {entry.completed_work_url && (
+                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/20 text-brand-earth">
+                                      Work submitted
+                                    </span>
+                                  )}
+                                </div>
+
+                                {quizResult && (
+                                  <div className="grid grid-cols-2 gap-2 mt-3">
+                                    <div className="rounded-xl border border-blue-100 bg-blue-50 px-3 py-2">
+                                      <p className="text-[10px] font-bold uppercase tracking-wide text-blue-600">Starter</p>
+                                      <p className="text-sm font-extrabold text-blue-800 mt-0.5">
+                                        {quizResult.starter_score ?? "–"}/{quizResult.starter_total ?? "–"}
+                                      </p>
+                                    </div>
+                                    <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2">
+                                      <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-600">Exit</p>
+                                      <p className="text-sm font-extrabold text-emerald-800 mt-0.5">
+                                        {quizResult.exit_score ?? "–"}/{quizResult.exit_total ?? "–"}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
                         </button>
                       );
                     })}
