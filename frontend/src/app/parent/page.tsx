@@ -1085,7 +1085,10 @@ export default function ParentPlanner() {
                       const entry = getEntry(dayDate, subject);
                       const hasLesson = !!entry;
                       const dotClass = subjectDot[subject] || "bg-gray-400";
-                      const quizResult = entry ? getOakQuizResult(entry.completed_work_url, quizResults) : undefined;
+                      const weekQuizEntry = entry
+                        ? (weekQuizScores?.days ?? []).flatMap(day => day.entries).find(q => q.entry_id === entry.id)
+                        : undefined;
+                      const quizResult = weekQuizEntry ?? (entry ? getOakQuizResult(entry.completed_work_url, quizResults) : undefined);
                       const childName = entry?.assigned_to
                         ? children.find(c => c.id === entry.assigned_to)?.username
                         : null;
