@@ -1210,6 +1210,136 @@ export default function ParentPlanner() {
                         </div>
                       );
                     })}
+
+                    {(() => {
+                      const normalSubjects = new Set(subjects);
+                      const movedEntries = entries.filter(e =>
+                        e.scheduled_date === format(dayDate, "yyyy-MM-dd") &&
+                        !e.is_extra &&
+                        !normalSubjects.has(e.lesson.subject)
+                      );
+
+                      if (movedEntries.length === 0) return null;
+
+                      return (
+                        <div className="mt-4 rounded-2xl border border-brand-gold/30 bg-brand-gold/5 p-3">
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <div>
+                              <p className="text-[10px] font-extrabold uppercase tracking-wide text-brand-earth/60">
+                                Moved lessons
+                              </p>
+                              <p className="text-xs text-brand-earth/55">
+                                Lessons manually moved onto this day
+                              </p>
+                            </div>
+                            <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/15 text-brand-earth">
+                              {movedEntries.length}
+                            </span>
+                          </div>
+
+                          <div className="space-y-2">
+                            {movedEntries.map(entry => {
+                              const quizEntry = (weekQuizScores?.days ?? [])
+                                .flatMap(day => day.entries)
+                                .find(q => q.entry_id === entry.id);
+                              const fallbackQuiz = getOakQuizResult(entry.completed_work_url, quizResults);
+                              const result = quizEntry ?? fallbackQuiz;
+                              const childName = entry.assigned_to
+                                ? children.find(c => c.id === entry.assigned_to)?.username
+                                : null;
+                              const dotClass = subjectDot[entry.lesson.subject] || "bg-gray-400";
+
+                              return (
+                                <div key={entry.id} className="rounded-xl border border-brand-softsage/25 bg-brand-white p-3">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const subjectIndex = subjects.indexOf(entry.lesson.subject);
+                                      if (subjectIndex >= 0) openModal(dayIndex, entry.lesson.subject);
+                                    }}
+                                    className="w-full text-left"
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="min-w-0">
+                                        <div className="flex items-center gap-2">
+                                          <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${dotClass}`} />
+                                          <span className="text-xs font-extrabold text-brand-earth/70 truncate">
+                                            {entry.lesson.subject}
+                                          </span>
+                                        </div>
+                                        <p className="text-sm font-bold leading-snug text-brand-charcoal mt-1.5 line-clamp-2">
+                                          {entry.lesson.title}
+                                        </p>
+                                      </div>
+
+                                      <span className={`shrink-0 text-[10px] font-extrabold px-2.5 py-1 rounded-full ${
+                                        entry.is_complete
+                                          ? "bg-brand-sage text-white"
+                                          : "bg-brand-cream text-brand-earth"
+                                      }`}>
+                                        {entry.is_complete ? "Complete" : "To do"}
+                                      </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                                      {childName && (
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
+                                          {childName}
+                                        </span>
+                                      )}
+                                      {entry.lesson.lesson_url && (
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-cream text-brand-earth">
+                                          Lesson link
+                                        </span>
+                                      )}
+                                      {entry.completed_work_url && (
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/20 text-brand-earth">
+                                          Work submitted
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {result && (
+                                      <div className="grid grid-cols-2 gap-2 mt-2">
+                                        <div className="rounded-lg border border-blue-100 bg-blue-50 px-2.5 py-1.5">
+                                          <p className="text-[9px] font-bold uppercase tracking-wide text-blue-600">Starter</p>
+                                          <p className="text-xs font-extrabold text-blue-800">
+                                            {result.starter_score ?? "–"}/{result.starter_total ?? "–"}
+                                          </p>
+                                        </div>
+                                        <div className="rounded-lg border border-emerald-100 bg-emerald-50 px-2.5 py-1.5">
+                                          <p className="text-[9px] font-bold uppercase tracking-wide text-emerald-600">Exit</p>
+                                          <p className="text-xs font-extrabold text-emerald-800">
+                                            {result.exit_score ?? "–"}/{result.exit_total ?? "–"}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </button>
+
+                                  <div className="grid grid-cols-2 gap-1.5 mt-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleMoveSingleLesson(entry.id, "backward")}
+                                      className="rounded-lg border border-brand-softsage/25 bg-brand-white/70 px-2 py-1.5 text-[10px] font-bold text-brand-earth hover:border-brand-sage hover:bg-brand-white"
+                                    >
+                                      ← Move back
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleMoveSingleLesson(entry.id, "forward")}
+                                      className="rounded-lg border border-brand-softsage/25 bg-brand-white/70 px-2 py-1.5 text-[10px] font-bold text-brand-earth hover:border-brand-sage hover:bg-brand-white"
+                                    >
+                                      Move forward →
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               );
