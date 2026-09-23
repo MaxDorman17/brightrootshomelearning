@@ -58,6 +58,8 @@ export const updatePlannerEntry = (id: number, data: { scheduled_date?: string; 
 export const deletePlannerEntry = (id: number) => api.delete(`/api/planner/${id}`);
 export const shiftDay = (from_date: string, to_date: string, direction: "forward" | "backward" = "forward") =>
   api.post("/api/planner/shift-day", { from_date, to_date, direction });
+export const movePlannerEntry = (id: number, direction: "forward" | "backward") =>
+  api.post(`/api/planner/${id}/move`, { direction });
 export const toggleComplete = (id: number) => api.patch(`/api/planner/${id}/complete`);
 export const submitWorkUrl = (id: number, completed_work_url: string) =>
   api.patch(`/api/planner/${id}/submit-work`, { completed_work_url });
