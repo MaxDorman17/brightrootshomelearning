@@ -321,16 +321,42 @@ def get_week(
         PlannerEntry.scheduled_date >= start_date,
         PlannerEntry.scheduled_date <= end_date,
     )
+
     if current_user.role == "child":
         query = query.filter(
             or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
         )
-    elif child_id:
+        entries = query.order_by(PlannerEntry.scheduled_date).all()
+        return annotate_for_user(entries, current_user, db)
+
+    if child_id is not None:
+        allowed_child_ids = _child_ids_for_parent(db, current_user)
+        if child_id not in allowed_child_ids:
+            raise HTTPException(status_code=403, detail="Not your child")
+
         query = query.filter(
             or_(PlannerEntry.assigned_to == child_id, PlannerEntry.assigned_to.is_(None))
         )
+        entries = query.order_by(PlannerEntry.scheduled_date).all()
+
+        shared_ids = [e.id for e in entries if e.assigned_to is None]
+        comp_map = {}
+        if shared_ids:
+            comp_map = {
+                c.entry_id: c
+                for c in db.query(PlannerCompletion).filter(
+                    PlannerCompletion.entry_id.in_(shared_ids),
+                    PlannerCompletion.user_id == child_id,
+                ).all()
+            }
+
+        return [
+            _to_out_with_comp(e, comp_map.get(e.id)) if e.assigned_to is None else _to_out(e)
+            for e in entries
+        ]
+
     entries = query.order_by(PlannerEntry.scheduled_date).all()
-    return annotate_for_user(entries, current_user, db)
+    return [_to_out(e) for e in entries]
 
 
 @router.get("/mine", response_model=List[PlannerEntryOut])
