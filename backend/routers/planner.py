@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import or_, and_, exists as sa_exists, select
+from sqlalchemy import or_, and_, exists as sa_exists, select, func
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
