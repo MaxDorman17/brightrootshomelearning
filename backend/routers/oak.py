@@ -214,39 +214,81 @@ SHARE_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; HomeschoolApp/1.0)"}
 
 
 def _extract_quiz_scores(html: str) -> dict | None:
-    """Pull starter/exit quiz scores out of the share page's embedded JSON.
+    """Pull starter/exit quiz scores out of Oak's embedded sectionResults JSON.
 
-    The page contains: "sectionResults":{..."starter-quiz":{"grade":2,"numQuestions":6,...},
-    "exit-quiz":{"grade":5,"numQuestions":6,...}}
+    Oak serialises the results inside the page rather than exposing a separate
+    results API. Parse the sectionResults object with JSONDecoder instead of
+    relying on field order or a fixed-size text window.
     """
     anchor = html.find('"sectionResults"')
     if anchor == -1:
         return None
-    region = html[anchor:]
 
-    def section(name: str):
-        i = region.find(f'"{name}"')
-        if i == -1:
+    colon = html.find(":", anchor)
+    if colon == -1:
+        return None
+
+    start = colon + 1
+    while start < len(html) and html[start].isspace():
+        start += 1
+
+    try:
+        section_results, _ = json.JSONDecoder().raw_decode(html[start:])
+    except (json.JSONDecodeError, TypeError):
+        return None
+
+    if not isinstance(section_results, dict):
+        return None
+
+    def find_section(node, name: str):
+        if isinstance(node, dict):
+            direct = node.get(name)
+            if isinstance(direct, dict):
+                return direct
+            for value in node.values():
+                found = find_section(value, name)
+                if found is not None:
+                    return found
+        elif isinstance(node, list):
+            for value in node:
+                found = find_section(value, name)
+                if found is not None:
+                    return found
+        return None
+
+    def score_and_total(name: str):
+        section = find_section(section_results, name)
+        if not isinstance(section, dict):
             return None, None
-        chunk = region[i:i + 200]
-        grade = re.search(r'"grade":(\d+)', chunk)
-        total = re.search(r'"numQuestions":(\d+)', chunk)
-        return (
-            int(grade.group(1)) if grade else None,
-            int(total.group(1)) if total else None,
-        )
 
-    starter_score, starter_total = section("starter-quiz")
-    exit_score, exit_total = section("exit-quiz")
+        score = section.get("grade")
+        total = section.get("numQuestions")
+
+        def as_int(value):
+            if isinstance(value, bool):
+                return None
+            if isinstance(value, int):
+                return value
+            if isinstance(value, float) and value.is_integer():
+                return int(value)
+            if isinstance(value, str) and value.isdigit():
+                return int(value)
+            return None
+
+        return as_int(score), as_int(total)
+
+    starter_score, starter_total = score_and_total("starter-quiz")
+    exit_score, exit_total = score_and_total("exit-quiz")
+
     if starter_total is None and exit_total is None:
         return None
+
     return {
         "starter_score": starter_score,
         "starter_total": starter_total,
         "exit_score": exit_score,
         "exit_total": exit_total,
     }
-
 
 async def _fetch_share_scores(client: httpx.AsyncClient, url: str) -> dict | None:
     try:
@@ -304,7 +346,7 @@ async def refresh_quiz_results(
     db: Session = Depends(get_db),
     _: User = Depends(require_parent),
 ):
-    """Fetch quiz scores for any submitted Oak share links not yet cached."""
+    """Re-fetch submitted Oak share links and update cached quiz scores."""
     urls: set = set()
     for (u,) in db.query(PlannerEntry.completed_work_url).filter(
         PlannerEntry.completed_work_url.is_not(None)
@@ -317,25 +359,27 @@ async def refresh_quiz_results(
         if u and OAK_SHARE_RE.search(u):
             urls.add(OAK_SHARE_RE.search(u).group(0))
 
-    cached = {r.url for r in db.query(OakQuizResult).all()}
-    missing = sorted(urls - cached)
+    to_refresh = sorted(urls)
 
-    added = 0
-    if missing:
+    updated = 0
+    if to_refresh:
         sem = asyncio.Semaphore(6)
         async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
             async def fetch_one(u: str):
                 async with sem:
                     return u, await _fetch_share_scores(client, u)
 
-            results = await asyncio.gather(*(fetch_one(u) for u in missing))
+            results = await asyncio.gather(*(fetch_one(u) for u in to_refresh))
         for u, scores in results:
             if scores is not None:
                 _upsert_result(db, u, scores)
-                added += 1
+                updated += 1
 
-    return {"checked": len(missing), "added": added, "total_cached": len(cached) + added}
-
+    return {
+        "checked": len(to_refresh),
+        "updated": updated,
+        "total_cached": db.query(OakQuizResult).count(),
+    }
 
 # ---------------------------------------------------------------------------
 # Excel export of Oak quiz results — homeschool evidence record
