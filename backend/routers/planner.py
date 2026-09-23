@@ -20,6 +20,10 @@ class ShiftDayRequest(BaseModel):
     direction: str = "forward"
 
 
+class MoveEntryRequest(BaseModel):
+    direction: str = "forward"
+
+
 class SubmitWorkUrl(BaseModel):
     completed_work_url: str
 
@@ -144,6 +148,61 @@ def _prev_weekday(d: date) -> date:
     while d.weekday() >= 5:
         d -= timedelta(days=1)
     return d
+
+
+@router.post("/{entry_id}/move")
+def move_single_entry(
+    entry_id: int,
+    body: MoveEntryRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Move one planner lesson by one available school day.
+
+    This is intentionally independent of the timetable subject pattern: it
+    simply moves the selected lesson to the next/previous weekday that is not
+    marked as a day off. Other planner entries are left untouched.
+    """
+    if body.direction not in {"forward", "backward"}:
+        raise HTTPException(status_code=400, detail="Direction must be forward or backward")
+
+    entry = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(
+            PlannerEntry.id == entry_id,
+            Lesson.created_by == current_user.id,
+        )
+        .first()
+    )
+    if not entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+
+    days_off = {
+        row.date
+        for row in db.query(DayOff).all()
+    }
+
+    step = 1 if body.direction == "forward" else -1
+    target = entry.scheduled_date + timedelta(days=step)
+
+    for _ in range(730):
+        if target.weekday() < 5 and target not in days_off:
+            break
+        target += timedelta(days=step)
+    else:
+        raise HTTPException(status_code=400, detail="Could not find another school day")
+
+    entry.scheduled_date = target
+    db.commit()
+    db.refresh(entry)
+
+    return {
+        "entry_id": entry.id,
+        "scheduled_date": entry.scheduled_date.isoformat(),
+        "direction": body.direction,
+    }
 
 
 @router.post("/shift-day")
