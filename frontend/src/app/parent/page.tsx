@@ -257,7 +257,17 @@ export default function ParentPlanner() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    getChildren().then(res => setChildren(res.data)).catch(() => {});
+    getChildren().then(res => {
+      setChildren(res.data);
+      const oscar = (res.data as Child[]).find(
+        child => child.username.trim().toLowerCase() === "oscar"
+      );
+      if (oscar) {
+        setSelectedChildId(current => current ?? oscar.id);
+        setQaAssignedTo(current => current ?? oscar.id);
+        setOakAssignedTo(current => current ?? oscar.id);
+      }
+    }).catch(() => {});
     getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
     loadData();
     loadGoals();
