@@ -7,7 +7,7 @@ import {
   getWeekEntries, getAllEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
-  getTimetable, shiftDay, importOakUnit, checkOakWorksheet,
+  getTimetable, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
   getOakQuizResults, getWeekQuizScores,
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
@@ -362,6 +362,15 @@ export default function ParentPlanner() {
       await loadData();
       closeModal();
     } finally { setSlotSaving(false); }
+  };
+
+  const handleMoveSingleLesson = async (entryId: number, direction: "forward" | "backward") => {
+    try {
+      await movePlannerEntry(entryId, direction);
+      await Promise.all([loadData(), loadQuizData()]);
+    } catch {
+      alert("Could not move that lesson. Please try again.");
+    }
   };
 
   const isDayOff = (date: Date) => daysOff.some(d => d.date === format(date, "yyyy-MM-dd"));
@@ -1094,10 +1103,10 @@ export default function ParentPlanner() {
                         : null;
 
                       return (
-                        <button
-                          key={subject}
-                          onClick={() => openModal(dayIndex, subject)}
-                          className={`w-full text-left rounded-2xl border transition-all overflow-hidden ${
+                        <div key={subject} className="space-y-1.5">
+                          <button
+                            onClick={() => openModal(dayIndex, subject)}
+                            className={`w-full text-left rounded-2xl border transition-all overflow-hidden ${
                             hasLesson
                               ? entry.is_complete
                                 ? "bg-brand-white border-brand-sage/30 hover:border-brand-sage/60 hover:shadow-sm"
@@ -1175,8 +1184,30 @@ export default function ParentPlanner() {
                                 )}
                               </>
                             )}
-                          </div>
-                        </button>
+                            </div>
+                          </button>
+
+                          {hasLesson && (
+                            <div className="grid grid-cols-2 gap-1.5 px-1">
+                              <button
+                                type="button"
+                                onClick={() => handleMoveSingleLesson(entry.id, "backward")}
+                                className="rounded-lg border border-brand-softsage/25 bg-brand-white/70 px-2 py-1.5 text-[10px] font-bold text-brand-earth hover:border-brand-sage hover:bg-brand-white"
+                                title="Move only this lesson to the previous available school day"
+                              >
+                                ← Move back
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleMoveSingleLesson(entry.id, "forward")}
+                                className="rounded-lg border border-brand-softsage/25 bg-brand-white/70 px-2 py-1.5 text-[10px] font-bold text-brand-earth hover:border-brand-sage hover:bg-brand-white"
+                                title="Move only this lesson to the next available school day"
+                              >
+                                Move forward →
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       );
                     })}
                   </div>
