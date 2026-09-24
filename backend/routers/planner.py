@@ -5,7 +5,7 @@ from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
 from database import get_db
-from models import PlannerEntry, Lesson, User, WorkFeedback, PlannerCompletion, DayOff, TimetableConfig
+from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
@@ -511,6 +511,12 @@ def get_submission_count(
 ):
     child_ids = _child_ids_for_parent(db, current_user)
     has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
+    has_review = sa_exists(
+        select(WorkReview.id).where(
+            WorkReview.entry_id == PlannerEntry.id,
+            WorkReview.parent_id == current_user.id,
+        ).correlate(PlannerEntry)
+    )
     has_shared_submission = sa_exists(
         select(PlannerCompletion.id).where(
             PlannerCompletion.entry_id == PlannerEntry.id,
@@ -526,6 +532,7 @@ def get_submission_count(
             and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
         ),
         ~has_feedback,
+        ~has_review,
     ).count()
     return {"count": count}
 
@@ -540,6 +547,12 @@ def get_pending_feedback(
     child_ids = [c.id for c in children]
     child_names = {c.id: c.username for c in children}
     has_feedback = sa_exists(select(WorkFeedback.id).where(WorkFeedback.entry_id == PlannerEntry.id).correlate(PlannerEntry))
+    has_review = sa_exists(
+        select(WorkReview.id).where(
+            WorkReview.entry_id == PlannerEntry.id,
+            WorkReview.parent_id == current_user.id,
+        ).correlate(PlannerEntry)
+    )
     has_shared_submission = sa_exists(
         select(PlannerCompletion.id).where(
             PlannerCompletion.entry_id == PlannerEntry.id,
@@ -557,6 +570,7 @@ def get_pending_feedback(
             and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
         ),
         ~has_feedback,
+        ~has_review,
     ).order_by(PlannerEntry.scheduled_date.desc()).all()
 
     # For shared entries, resolve which of this parent's children actually submitted.
