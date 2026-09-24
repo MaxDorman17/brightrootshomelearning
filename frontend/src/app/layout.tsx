@@ -9,20 +9,35 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Bright Roots Home Learning",
+  title: {
+    default: "Bright Roots Home Learning",
+    template: "%s | Bright Roots",
+  },
   description: "Bright Roots Home Learning Hub",
+  applicationName: "Bright Roots",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/logo-new.png", type: "image/png" },
+    ],
+    shortcut: ["/logo-new.png"],
+    apple: [
+      { url: "/logo-new.png", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Bright Roots",
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={nunito.className}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2F5D3A" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Homeschool" />
       </head>
       <body className="min-h-screen text-gray-900 antialiased">{children}</body>
     </html>
