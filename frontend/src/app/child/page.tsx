@@ -271,6 +271,11 @@ export default function ChildDashboard() {
   const todayTotalCount = todayLessons.length;
   const nextLesson = todayLessons.find(e => !e.is_complete) ?? null;
 
+  const weekLessons = entries.filter(e => !e.is_extra);
+  const weekDoneCount = weekLessons.filter(e => e.is_complete).length;
+  const weekTotalCount = weekLessons.length;
+  const weekPercent = weekTotalCount > 0 ? Math.round((weekDoneCount / weekTotalCount) * 100) : 0;
+
   const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
 
   const selectedDate = weekDates[selectedDayIndex];
@@ -413,31 +418,52 @@ export default function ChildDashboard() {
           </div>
         )}
 
-        {/* Week navigation */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <button onClick={() => setWeekStart(d => addDays(d, -7))}
-              className="px-3 py-1.5 text-sm bg-white/80 border border-white/60 rounded-xl hover:bg-white font-semibold shadow-sm transition-all">
-              ← Prev
-            </button>
-            <span className="text-sm font-bold text-gray-700 min-w-40 text-center">{weekLabel}</span>
-            <button onClick={() => setWeekStart(d => addDays(d, 7))}
-              className="px-3 py-1.5 text-sm bg-white/80 border border-white/60 rounded-xl hover:bg-white font-semibold shadow-sm transition-all">
-              Next →
-            </button>
-            <button onClick={() => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }))}
-              className="px-3 py-1.5 text-sm gradient-btn">
-              Today
-            </button>
-          </div>
-        </div>
+        {/* Week calendar */}
+        <div className="brand-card p-4 mb-5">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setWeekStart(d => addDays(d, -7))}
+                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+              >
+                ←
+              </button>
 
-        {/* Day-focused timetable */}
-        {loading ? (
-          <div className="brand-card p-12 text-center text-[#8A7A69]">Loading week…</div>
-        ) : (
-          <div className="space-y-5">
-            <div className="grid grid-cols-5 gap-2">
+              <div className="px-2 sm:px-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8FA382]">Week calendar</p>
+                <p className="text-sm font-bold text-[#2E342F] mt-0.5">{weekLabel}</p>
+              </div>
+
+              <button
+                onClick={() => setWeekStart(d => addDays(d, 7))}
+                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+              >
+                →
+              </button>
+
+              <button
+                onClick={() => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }))}
+                className="px-3 py-2 text-xs font-bold rounded-xl bg-[#E8F0E8] text-[#3F5D46]"
+              >
+                This week
+              </button>
+            </div>
+
+            <div className="lg:w-72">
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="font-semibold text-[#6E5A46]">Week progress</span>
+                <span className="font-bold text-[#3F5D46]">{weekDoneCount}/{weekTotalCount} complete</span>
+              </div>
+              <div className="h-2.5 rounded-full bg-[#EEE8DD] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-[#8FA382] transition-all"
+                  style={{ width: `${weekPercent}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-5 gap-2">
               {DAYS.map((dayName, dayIndex) => {
                 const dayDate = weekDates[dayIndex];
                 const dateStr = format(dayDate, "yyyy-MM-dd");
@@ -446,28 +472,62 @@ export default function ChildDashboard() {
                 const dayOff = daysOffSet.has(dateStr);
                 const active = selectedDayIndex === dayIndex;
                 const today = isToday(dayDate);
+                const allDone = dayEntries.length > 0 && complete === dayEntries.length;
 
                 return (
                   <button
                     key={dayName}
                     onClick={() => setSelectedDayIndex(dayIndex)}
-                    className={`rounded-2xl border p-3 text-center transition-all ${
+                    className={`relative rounded-2xl border p-3 text-center transition-all ${
                       active
-                        ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md"
+                        ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md -translate-y-0.5"
                         : dayOff
                         ? "bg-[#FFF5E8] border-[#F0D4A8] text-[#8A624B]"
+                        : allDone
+                        ? "bg-[#F1F6EF] border-[#D1DED0] text-[#3F5D46]"
                         : "bg-[#FFFDF8] border-[#E7DFD1] text-[#2E342F] hover:border-[#8FA382]"
                     }`}
                   >
+                    {today && (
+                      <span className={`absolute top-2 right-2 w-2 h-2 rounded-full ${
+                        active ? "bg-white" : "bg-[#D19A32]"
+                      }`} />
+                    )}
+
                     <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName.slice(0,3)}</p>
                     <p className="text-lg font-bold mt-0.5">{format(dayDate, "d")}</p>
                     <p className="text-[10px] opacity-70">{format(dayDate, "MMM")}</p>
-                    <div className="mt-2 text-[10px] font-bold">
-                      {dayOff ? "Day off" : dayEntries.length > 0 ? `${complete}/${dayEntries.length} done` : "No lessons"}
+
+                    <div className="flex justify-center gap-1 mt-2 min-h-2">
+                      {dayOff ? (
+                        <span className="text-[10px]">🌤️</span>
+                      ) : dayEntries.length > 0 ? (
+                        dayEntries.slice(0, 6).map((entry, i) => (
+                          <span
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              entry.is_complete
+                                ? active ? "bg-white" : "bg-[#5F8A68]"
+                                : active ? "bg-white/35" : "bg-[#D8D1C4]"
+                            }`}
+                          />
+                        ))
+                      ) : (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#DDD3C4]" />
+                      )}
                     </div>
-                    {today && !dayOff && (
+
+                    <p className="mt-1.5 text-[10px] font-bold">
+                      {dayOff
+                        ? "Day off"
+                        : dayEntries.length > 0
+                        ? allDone ? "All done" : `${complete}/${dayEntries.length} done`
+                        : "No lessons"}
+                    </p>
+
+                    {today && (
                       <span className={`inline-block mt-1 text-[9px] font-bold uppercase tracking-wide ${
-                        active ? "text-white/80" : "text-[#3F5D46]"
+                        active ? "text-white/80" : "text-[#A3752C]"
                       }`}>
                         Today
                       </span>
@@ -475,7 +535,8 @@ export default function ChildDashboard() {
                   </button>
                 );
               })}
-            </div>
+          </div>
+        </div>
 
             <div className="brand-card p-5">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
