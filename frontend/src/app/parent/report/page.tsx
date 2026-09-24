@@ -306,6 +306,11 @@ export default function ReportPage() {
   const fullyCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "complete").length;
   const partiallyCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "partial").length;
   const noLearningCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "not-started").length;
+  const upcomingLearningDays = learningWeekDays.filter(d => {
+    const key = format(d, "yyyy-MM-dd");
+    const day = byDate[key];
+    return learningDayStatus(d) === "future" && !!day && day.length > 0;
+  }).length;
 
   // Weekly trend: last 8 weeks
   const weeklyTrend = Array.from({ length: 8 }, (_, i) => {
@@ -856,22 +861,26 @@ export default function ReportPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
                     <div className="rounded-xl bg-[#F7F2E8] p-4">
                       <p className="text-2xl font-bold text-[#2E342F]">{scheduledLearningDays.length}</p>
-                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Scheduled learning days</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Scheduled days</p>
                     </div>
                     <div className="rounded-xl bg-[#F7F2E8] p-4">
                       <p className="text-2xl font-bold text-[#3F5D46]">{fullyCompletedDays}</p>
-                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">All lessons complete</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Complete</p>
                     </div>
                     <div className="rounded-xl bg-[#F7F2E8] p-4">
                       <p className="text-2xl font-bold text-[#D19A32]">{partiallyCompletedDays}</p>
-                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Partially completed</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Partial</p>
                     </div>
                     <div className="rounded-xl bg-[#F7F2E8] p-4">
                       <p className="text-2xl font-bold text-[#B66443]">{noLearningCompletedDays}</p>
-                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">No lessons completed</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">None completed</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#8FA382]">{upcomingLearningDays}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Upcoming</p>
                     </div>
                   </div>
 
@@ -1382,56 +1391,88 @@ export default function ReportPage() {
 
             {/* Print and export */}
             {tab === "records" && recordsView === "export" && (
-              <div className="print:hidden">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="print:hidden space-y-6">
                 <div className="brand-card p-6">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Export</p>
-                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Oak Results Spreadsheet</h2>
-                  <p className="text-sm text-[#6E5A46] mt-2">
-                    Download Oak quiz results as an Excel spreadsheet for your records.
-                  </p>
+                  <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current Report</p>
+                      <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
+                        {selectedChild ? `${selectedChild.username}'s learning record` : "Family learning record"}
+                      </h2>
+                      <p className="text-sm text-[#6E5A46] mt-1">
+                        {period === "week" ? "This week" : period === "month" ? "This month" : "All time"}
+                      </p>
+                    </div>
 
-                  <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current selection</p>
-                    <p className="text-sm font-semibold text-[#2E342F] mt-1">
-                      {selectedChild ? selectedChild.username : "All children"}
-                    </p>
-                    <p className="text-xs text-[#6E5A46] mt-1">
-                      {period === "week" ? "This week" : period === "month" ? "This month" : "All time"}
-                    </p>
+                    <div className="grid grid-cols-3 gap-3 min-w-full lg:min-w-[420px]">
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#2E342F]">{filtered.length}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Planned</p>
+                      </div>
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#3F5D46]">{totalComplete}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Completed</p>
+                      </div>
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#D19A32]">{totalSubmitted}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Submitted</p>
+                      </div>
+                    </div>
                   </div>
-
-                  <button
-                    onClick={handleExportOak}
-                    disabled={exporting}
-                    className="w-full mt-5 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50"
-                  >
-                    {exporting ? "Exporting..." : "Export Oak Results"}
-                  </button>
                 </div>
 
-                <div className="brand-card p-6">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Print</p>
-                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Print Report</h2>
-                  <p className="text-sm text-[#6E5A46] mt-2">
-                    Print the current report view for a paper copy or save it as a PDF from your browser.
-                  </p>
-
-                  <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
-                    <p className="text-sm font-semibold text-[#2E342F]">Tip</p>
-                    <p className="text-xs text-[#6E5A46] mt-1">
-                      Choose Save as PDF in the print window if you want a digital copy.
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="brand-card p-6">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spreadsheet</p>
+                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">Export Oak Results</h2>
+                    <p className="text-sm text-[#6E5A46] mt-2">
+                      Download the selected child's Oak quiz results for the chosen reporting period as an Excel file.
                     </p>
+
+                    <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Includes</p>
+                      <p className="text-sm font-semibold text-[#2E342F] mt-1">
+                        Starter and exit quiz scores
+                      </p>
+                      <p className="text-xs text-[#6E5A46] mt-1">
+                        Filtered to {selectedChild ? selectedChild.username : "all children"} · {period === "week" ? "this week" : period === "month" ? "this month" : "all time"}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={handleExportOak}
+                      disabled={exporting}
+                      className="w-full mt-5 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50"
+                    >
+                      {exporting ? "Exporting..." : "Download Excel"}
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => window.print()}
-                    className="w-full mt-5 px-5 py-3 rounded-xl border border-[#3F5D46] text-[#3F5D46] bg-[#FFFDF8] text-sm font-bold hover:bg-[#F7F2E8] transition-colors"
-                  >
-                    Print Report
-                  </button>
+                  <div className="brand-card p-6">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Printable Report</p>
+                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">Print or Save as PDF</h2>
+                    <p className="text-sm text-[#6E5A46] mt-2">
+                      Create a clean paper or PDF copy of the selected learning report.
+                    </p>
+
+                    <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Report includes</p>
+                      <p className="text-sm font-semibold text-[#2E342F] mt-1">
+                        Progress, Oak results and submitted work
+                      </p>
+                      <p className="text-xs text-[#6E5A46] mt-1">
+                        Use “Save as PDF” in your browser's print window for a digital copy.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => window.print()}
+                      className="w-full mt-5 px-5 py-3 rounded-xl border border-[#3F5D46] text-[#3F5D46] bg-[#FFFDF8] text-sm font-bold hover:bg-[#F7F2E8] transition-colors"
+                    >
+                      Print / Save PDF
+                    </button>
+                  </div>
                 </div>
-              </div>
               </div>
             )}
 
