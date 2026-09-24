@@ -634,8 +634,6 @@ export default function ChildDashboard() {
                 </div>
               )}
             </div>
-          </div>
-        )}
 
         {/* Legend */}
         <div className="mt-5 flex flex-wrap gap-3 text-xs text-gray-500">
