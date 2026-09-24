@@ -189,25 +189,48 @@ export default function AchievementsPage() {
     } else {
       localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
     }
-    return (
+    return () => { if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current); };
+  }, [loading, allEntries, coding, selectedChildId, polishSessions]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const entries = role === "parent" && selectedChildId
+    ? allEntries.filter(e => e.assigned_to === selectedChildId || e.assigned_to === null)
+    : allEntries;
+
+  const totalComplete = entries.filter(e => e.is_complete).length;
+  const submitted = entries.filter(e => e.completed_work_url).length;
+  const streak = computeStreak(entries, daysOff);
+  const subjectCounts: Record<string, number> = {};
+  entries.filter(e => e.is_complete).forEach(e => {
+    const s = e.lesson.subject;
+    subjectCounts[s] = (subjectCounts[s] || 0) + 1;
+  });
+  const polishDates = new Set(polishSessions.map(s => s.date));
+  const polishStreak = computePolishStreak(polishDates);
+  const polishXp = polishSessions.reduce((sum, s) => sum + (s.xp ?? 0), 0);
+  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, polishSessions: polishSessions.length, polishStreak, polishXp };
+  const earned = BADGES.filter(b => b.check(data));
+  const locked = BADGES.filter(b => !b.check(data));
+  const categoryOptions = ["All", "Lessons", "Streaks", "Work", "Subjects", "Coding", "Languages"];
+  const sourceBadges = badgeView === "earned" ? earned : badgeView === "locked" ? locked : BADGES;
+  const visibleBadges = sourceBadges.filter(
+    b => badgeCategory === "All" || b.category === badgeCategory
+  );
+
+  return (
     <div className="min-h-screen">
       <Navbar />
 
       {newlyUnlocked.length > 0 && (
         <div className="fixed inset-x-0 top-16 z-40 flex justify-center px-4 pointer-events-none">
           <div className="brand-card relative px-6 py-4 shadow-xl pointer-events-auto max-w-sm w-full border-[#E3B554]">
-            <p className="text-xs font-bold uppercase tracking-wide text-[#D19A32] text-center">
-              New achievement
-            </p>
+            <p className="text-xs font-bold uppercase tracking-wide text-[#D19A32] text-center">New achievement</p>
             <p className="text-lg font-bold text-[#2E342F] text-center mt-1">
               Badge{newlyUnlocked.length > 1 ? "s" : ""} unlocked
             </p>
             <div className="flex justify-center gap-3 mt-3 flex-wrap">
               {newlyUnlocked.map(id => {
                 const b = BADGES.find(x => x.id === id);
-                return b ? (
-                  <span key={id} className="text-3xl" title={b.title}>{b.icon}</span>
-                ) : null;
+                return b ? <span key={id} className="text-3xl" title={b.title}>{b.icon}</span> : null;
               })}
             </div>
           </div>
@@ -218,9 +241,7 @@ export default function AchievementsPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
-                More
-              </p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">More</p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Achievements</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Celebrate milestones, learning streaks, subject progress and special achievements.
@@ -307,7 +328,7 @@ export default function AchievementsPage() {
                     ["earned", "Earned"],
                     ["locked", "Locked"],
                     ["all", "All badges"],
-                  ] as const).map(([value,label]) => (
+                  ] as const).map(([value, label]) => (
                     <button
                       key={value}
                       onClick={() => setBadgeView(value)}
@@ -347,17 +368,10 @@ export default function AchievementsPage() {
                     {badgeView === "earned" ? "Trophy cabinet" : badgeView === "locked" ? "Still to unlock" : "Badge collection"}
                   </p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
-                    {badgeView === "earned"
-                      ? "Earned achievements"
-                      : badgeView === "locked"
-                      ? "Keep going"
-                      : "All achievements"}
+                    {badgeView === "earned" ? "Earned achievements" : badgeView === "locked" ? "Keep going" : "All achievements"}
                   </h2>
                 </div>
-
-                <span className="text-sm font-bold text-[#3F5D46]">
-                  {visibleBadges.length}
-                </span>
+                <span className="text-sm font-bold text-[#3F5D46]">{visibleBadges.length}</span>
               </div>
 
               {visibleBadges.length === 0 ? (
@@ -375,33 +389,23 @@ export default function AchievementsPage() {
                           isEarned
                             ? "bg-[#FFFDF8] border-[#D8D1C4]"
                             : "bg-[#FBF8F1] border-dashed border-[#DDD3C4]"
-                        } ${
-                          newlyUnlocked.includes(b.id) ? "ring-2 ring-[#E3B554]" : ""
-                        }`}
+                        } ${newlyUnlocked.includes(b.id) ? "ring-2 ring-[#E3B554]" : ""}`}
                       >
                         <div className={`mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl text-3xl ${
                           isEarned ? "bg-[#F7F2E8]" : "bg-[#EFE9DF] grayscale opacity-50"
                         }`}>
                           {b.icon}
                         </div>
-
-                        <p className={`text-sm font-bold leading-tight ${
-                          isEarned ? "text-[#2E342F]" : "text-[#6E5A46]"
-                        }`}>
+                        <p className={`text-sm font-bold leading-tight ${isEarned ? "text-[#2E342F]" : "text-[#6E5A46]"}`}>
                           {b.title}
                         </p>
                         <p className="mt-1 text-xs leading-snug text-[#8A7A69]">{b.desc}</p>
-
                         <div className="mt-3">
-                          {isEarned ? (
-                            <span className="inline-flex px-2.5 py-1 rounded-full bg-[#E8F0E8] text-[#3F5D46] text-[10px] font-bold uppercase tracking-wide">
-                              Earned
-                            </span>
-                          ) : (
-                            <span className="inline-flex px-2.5 py-1 rounded-full bg-[#F0ECE6] text-[#8A7A69] text-[10px] font-bold uppercase tracking-wide">
-                              Locked
-                            </span>
-                          )}
+                          <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
+                            isEarned ? "bg-[#E8F0E8] text-[#3F5D46]" : "bg-[#F0ECE6] text-[#8A7A69]"
+                          }`}>
+                            {isEarned ? "Earned" : "Locked"}
+                          </span>
                         </div>
                       </div>
                     );
