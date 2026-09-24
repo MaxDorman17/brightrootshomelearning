@@ -12,17 +12,10 @@ const SUBJECTS = [
   "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
 ];
 
-const SUBJECT_STYLE: Record<string, { from: string; to: string; dot: string; light: string }> = {
-  Maths:                  { from: "from-blue-500",   to: "to-blue-600",   dot: "bg-blue-500",   light: "bg-blue-50 border-blue-200" },
-  English:                { from: "from-purple-500", to: "to-purple-600", dot: "bg-purple-500", light: "bg-purple-50 border-purple-200" },
-  Science:                { from: "from-green-500",  to: "to-green-600",  dot: "bg-green-500",  light: "bg-green-50 border-green-200" },
-  History:                { from: "from-yellow-500", to: "to-amber-500",  dot: "bg-yellow-500", light: "bg-yellow-50 border-yellow-200" },
-  Computing:              { from: "from-indigo-500", to: "to-indigo-600", dot: "bg-indigo-500", light: "bg-indigo-50 border-indigo-200" },
-  Geography:              { from: "from-cyan-500",   to: "to-cyan-600",   dot: "bg-cyan-500",   light: "bg-cyan-50 border-cyan-200" },
-  Cooking:                { from: "from-orange-500", to: "to-orange-600", dot: "bg-orange-500", light: "bg-orange-50 border-orange-200" },
-  "Art & Design":         { from: "from-pink-500",   to: "to-pink-600",   dot: "bg-pink-500",   light: "bg-pink-50 border-pink-200" },
-  "Design and Technology":{ from: "from-red-500",    to: "to-red-600",    dot: "bg-red-500",    light: "bg-red-50 border-red-200" },
-  "Life Skills":          { from: "from-teal-500",   to: "to-teal-600",   dot: "bg-teal-500",   light: "bg-teal-50 border-teal-200" },
+const SUBJECT_PRIORITY: Record<string, number> = {
+  Maths: 0,
+  English: 1,
+  Science: 2,
 };
 
 interface Modal { subject: string; existing: Unit | null }
@@ -86,107 +79,250 @@ export default function UnitsPage() {
 
   const getUnit = (subject: string) => units.find(u => u.subject === subject);
 
+  const activeUnits = SUBJECTS.filter(subject => !!getUnit(subject)).length;
+  const emptyUnits = SUBJECTS.length - activeUnits;
+
+  const orderedSubjects = [...SUBJECTS].sort((a, b) => {
+    const aPriority = SUBJECT_PRIORITY[a] ?? 99;
+    const bPriority = SUBJECT_PRIORITY[b] ?? 99;
+    if (aPriority !== bPriority) return aPriority - bPriority;
+    return a.localeCompare(b);
+  });
+
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-extrabold text-gray-900">📖 Current Units</h1>
-          <p className="text-gray-500 font-medium mt-1">
-            {isParent ? "Click any subject to set the current unit and link" : "What you're studying in each subject right now"}
-          </p>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-7">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+                Learning
+              </p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
+                Oak Units
+              </h1>
+              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+                {isParent
+                  ? "Keep each subject's current Oak unit and link in one tidy place."
+                  : "The current units you are studying across each subject."}
+              </p>
+            </div>
+
+            <div className="brand-card px-5 py-4 flex items-center gap-6">
+              <div>
+                <p className="text-2xl font-bold text-[#3F5D46]">{activeUnits}</p>
+                <p className="text-xs font-semibold text-[#6E5A46]">Units set</p>
+              </div>
+              <div className="w-px h-10 bg-[#E7DFD1]" />
+              <div>
+                <p className="text-2xl font-bold text-[#8FA382]">{emptyUnits}</p>
+                <p className="text-xs font-semibold text-[#6E5A46]">Not set</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SUBJECTS.map(subject => {
-            const unit = getUnit(subject);
-            const s = SUBJECT_STYLE[subject] || { from: "from-gray-400", to: "to-gray-500", dot: "bg-gray-400", light: "bg-gray-50 border-gray-200" };
-            return (
-              <div key={subject}
-                onClick={() => openModal(subject)}
-                className={`rounded-2xl border-2 p-5 transition-all ${isParent ? "cursor-pointer hover:shadow-lg hover:scale-[1.02]" : "cursor-default"} ${unit ? s.light : "bg-white/70 border-dashed border-gray-200"}`}>
-                {/* Subject header */}
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${s.from} ${s.to} flex items-center justify-center shrink-0`}>
-                    <span className={`w-2.5 h-2.5 rounded-full bg-white`} />
-                  </div>
-                  <span className="font-extrabold text-gray-800">{subject}</span>
-                  {isParent && <span className="ml-auto text-gray-300 text-lg">{unit ? "✏️" : "+"}</span>}
+        {loading ? (
+          <div className="brand-card p-12 text-center text-[#8A7A69]">Loading units…</div>
+        ) : (
+          <>
+            <div className="brand-card p-6 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current Learning</p>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Current Units</h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">
+                    Maths, English and Science stay at the top, with the remaining subjects below.
+                  </p>
                 </div>
 
-                {unit ? (
-                  <>
-                    <p className="font-bold text-gray-800 text-sm leading-snug">{unit.title}</p>
-                    {unit.unit_url && (
-                      <a href={unit.unit_url} target="_blank" rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        className="inline-flex items-center gap-1.5 mt-2 text-xs font-bold text-[#2F5D3A] hover:text-[#6EA76E] bg-[#A8C67A]/10 px-2.5 py-1 rounded-lg border border-[#A8C67A]/30 transition-colors">
-                        🔗 Open Unit
-                      </a>
-                    )}
-                    {unit.notes && (
-                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">{unit.notes}</p>
-                    )}
-                    <p className="text-xs text-gray-400 mt-2 font-medium">
-                      Updated {format(parseISO(unit.updated_at), "d MMM yyyy")}
-                    </p>
-                  </>
-                ) : (
-                  <p className="text-sm text-gray-400 font-medium">{isParent ? "Click to add current unit" : "Not set yet"}</p>
+                {isParent && (
+                  <p className="text-xs font-semibold text-[#8FA382]">
+                    Select Edit unit to update a subject
+                  </p>
                 )}
               </div>
-            );
-          })}
-        </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {orderedSubjects.map((subject, index) => {
+                  const unit = getUnit(subject);
+                  const isCore = index < 3;
+
+                  return (
+                    <div
+                      key={subject}
+                      className={`rounded-2xl border p-5 transition-colors ${
+                        unit
+                          ? isCore
+                            ? "bg-[#F7F2E8] border-[#D8D1C4]"
+                            : "bg-[#FFFDF8] border-[#E7DFD1]"
+                          : "bg-[#FBF8F1] border-dashed border-[#DDD3C4]"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-full ${
+                              unit ? "bg-[#8FA382]" : "bg-[#D8D1C4]"
+                            }`} />
+                            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                              {subject}
+                            </p>
+                          </div>
+
+                          {unit ? (
+                            <>
+                              <h3 className="text-base font-bold text-[#2E342F] mt-3 leading-snug">
+                                {unit.title}
+                              </h3>
+
+                              {unit.notes && (
+                                <p className="text-sm text-[#6E5A46] mt-2 leading-relaxed line-clamp-2">
+                                  {unit.notes}
+                                </p>
+                              )}
+
+                              <p className="text-xs text-[#8A7A69] mt-3">
+                                Updated {format(parseISO(unit.updated_at), "d MMM yyyy")}
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <h3 className="text-base font-bold text-[#8A7A69] mt-3">No unit set</h3>
+                              <p className="text-sm text-[#A69A8D] mt-1">
+                                {isParent ? "Add the current unit when ready." : "Nothing has been set yet."}
+                              </p>
+                            </>
+                          )}
+                        </div>
+
+                        {isCore && (
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382] bg-[#E8F0E8] px-2 py-1 rounded-full shrink-0">
+                            Core
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-5 pt-4 border-t border-[#E7DFD1]">
+                        {unit?.unit_url && (
+                          <a
+                            href={unit.unit_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-3 py-2 rounded-xl bg-[#3F5D46] text-white text-xs font-bold hover:bg-[#354F3B] transition-colors"
+                          >
+                            Open unit
+                          </a>
+                        )}
+
+                        {isParent && (
+                          <button
+                            onClick={() => openModal(subject)}
+                            className="inline-flex items-center justify-center px-3 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-xs font-bold hover:border-[#8FA382] transition-colors"
+                          >
+                            {unit ? "Edit unit" : "Set unit"}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Edit modal */}
       {modal && isParent && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-          onClick={e => e.target === e.currentTarget && closeModal()}>
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${SUBJECT_STYLE[modal.subject]?.from || "from-gray-400"} ${SUBJECT_STYLE[modal.subject]?.to || "to-gray-500"} flex items-center justify-center`}>
-                <span className="w-3 h-3 rounded-full bg-white" />
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={e => e.target === e.currentTarget && closeModal()}
+        >
+          <div className="brand-card w-full max-w-lg p-6 shadow-2xl">
+            <div className="flex items-start justify-between gap-4 mb-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current Unit</p>
+                <h3 className="text-2xl font-bold text-[#2E342F] mt-1">{modal.subject}</h3>
+                <p className="text-sm text-[#6E5A46] mt-1">
+                  Keep the current topic and Oak link up to date.
+                </p>
               </div>
-              <h3 className="text-lg font-extrabold text-gray-900">{modal.subject}</h3>
+              <button
+                onClick={closeModal}
+                className="text-[#8A7A69] hover:text-[#2E342F] text-xl leading-none"
+                aria-label="Close"
+              >
+                ×
+              </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1.5">Unit / Topic title *</label>
-                <input autoFocus value={title} onChange={e => setTitle(e.target.value)}
+                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                  Unit / topic title
+                </label>
+                <input
+                  autoFocus
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSave()}
-                  placeholder={`e.g. Year 7 Algebra — Unit 2`}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  placeholder="e.g. Algebraic notation"
+                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                />
               </div>
+
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1.5">Unit link (optional)</label>
-                <input type="url" value={url} onChange={e => setUrl(e.target.value)}
+                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                  Unit link
+                </label>
+                <input
+                  type="url"
+                  value={url}
+                  onChange={e => setUrl(e.target.value)}
                   placeholder="https://www.thenational.academy/…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                />
               </div>
+
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1.5">Notes (optional)</label>
-                <textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)}
-                  placeholder="Any context for the children…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                  Notes
+                </label>
+                <textarea
+                  rows={3}
+                  value={notes}
+                  onChange={e => setNotes(e.target.value)}
+                  placeholder="Optional context for this unit…"
+                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                />
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} disabled={saving || !title.trim()}
-                className="flex-1 gradient-btn py-2.5 disabled:opacity-50">
-                {saving ? "Saving…" : modal.existing ? "Save Changes" : "Set Unit"}
+            <div className="flex flex-wrap gap-3 mt-6">
+              <button
+                onClick={handleSave}
+                disabled={saving || !title.trim()}
+                className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50 transition-colors"
+              >
+                {saving ? "Saving…" : modal.existing ? "Save changes" : "Set unit"}
               </button>
+
               {modal.existing && (
-                <button onClick={handleDelete} disabled={saving}
-                  className="px-4 py-2.5 border-2 border-red-200 text-red-500 rounded-xl font-bold hover:bg-red-50 transition-colors">
-                  Clear
+                <button
+                  onClick={handleDelete}
+                  disabled={saving}
+                  className="px-5 py-2.5 rounded-xl border border-[#E5CFC3] bg-[#FFFDF8] text-[#A85F46] text-sm font-bold hover:bg-[#FAEEE8]"
+                >
+                  Clear unit
                 </button>
               )}
-              <button onClick={closeModal}
-                className="px-4 py-2.5 border-2 border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-colors">
+
+              <button
+                onClick={closeModal}
+                className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+              >
                 Cancel
               </button>
             </div>
