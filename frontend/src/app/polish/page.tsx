@@ -77,110 +77,122 @@ export default function PolishPage() {
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-[#2F5D3A] to-[#6EA76E] text-white">
-        <div className="max-w-2xl mx-auto px-4 py-10 text-center">
-          <div className="text-6xl mb-3">🌍</div>
-          <h1 className="text-3xl font-extrabold mb-1">Languages with Duolingo</h1>
-          <p className="text-white/70 font-semibold mb-6">Track your daily practice and build your streak!</p>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-7">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+                Learning
+              </p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Languages</h1>
+              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+                Track Polish practice, Duolingo XP and daily learning streaks.
+              </p>
+            </div>
 
-          {/* Stats row */}
-          <div className="flex justify-center gap-4 mb-6 flex-wrap">
-            <div className="bg-white/15 rounded-2xl px-6 py-3 text-center">
-              <p className="text-3xl font-extrabold">{streak > 0 ? `🔥 ${streak}` : "—"}</p>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-wide mt-0.5">Day streak</p>
-            </div>
-            <div className="bg-white/15 rounded-2xl px-6 py-3 text-center">
-              <p className="text-3xl font-extrabold">{totalDays}</p>
-              <p className="text-xs font-bold text-white/70 uppercase tracking-wide mt-0.5">Days practiced</p>
-            </div>
-            {totalXp > 0 && (
-              <div className="bg-white/15 rounded-2xl px-6 py-3 text-center">
-                <p className="text-3xl font-extrabold">{totalXp}</p>
-                <p className="text-xs font-bold text-white/70 uppercase tracking-wide mt-0.5">Total XP</p>
-              </div>
-            )}
+            <a
+              href="https://www.duolingo.com/course/pl/en/Learn-Polish"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+            >
+              Open Duolingo
+            </a>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="brand-card p-4">
+            <p className="text-2xl font-bold text-[#3F5D46]">{streak}</p>
+            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Day streak</p>
           </div>
 
-          {/* Open Duolingo button */}
-          <a
-            href="https://www.duolingo.com/course/pl/en/Learn-Polish"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#58CC02] hover:bg-[#46A302] text-white font-extrabold text-lg px-8 py-3.5 rounded-2xl shadow-lg transition-all hover:scale-105 active:scale-100">
-            Open Duolingo
-            <span className="text-2xl">→</span>
-          </a>
+          <div className="brand-card p-4">
+            <p className="text-2xl font-bold text-[#2E342F]">{totalDays}</p>
+            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Days practiced</p>
+          </div>
+
+          <div className="brand-card p-4">
+            <p className="text-2xl font-bold text-[#D19A32]">{totalXp}</p>
+            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Total XP</p>
+          </div>
         </div>
-      </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-6">
+        <div className="brand-card p-6 mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Today</p>
 
-        {/* Today's log */}
-        <div className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5 mb-6">
-          {todaySession ? (
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-2xl shrink-0">✅</div>
-              <div className="flex-1 min-w-0">
-                <p className="font-extrabold text-gray-900">Practice logged for today!</p>
-                <p className="text-sm text-gray-500">
-                  {todaySession.xp ? `${todaySession.xp} XP · ` : ""}
-                  {todaySession.notes || "Good work — keep the streak going!"}
-                </p>
-              </div>
-              <button
-                onClick={() => setShowForm(true)}
-                className="text-xs text-[#2F5D3A] font-bold hover:underline shrink-0">
-                Edit
-              </button>
+              {todaySession ? (
+                <>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Practice logged for today</h2>
+                  <p className="text-sm text-[#6E5A46] mt-2">
+                    {todaySession.xp ? `${todaySession.xp} XP` : "Session recorded"}
+                    {todaySession.notes ? ` · ${todaySession.notes}` : ""}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">No practice logged yet</h2>
+                  <p className="text-sm text-[#6E5A46] mt-2">
+                    Log today’s Polish practice to keep the learning record up to date.
+                  </p>
+                </>
+              )}
             </div>
-          ) : (
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl shrink-0">📖</div>
-              <div className="flex-1">
-                <p className="font-extrabold text-gray-900">Did you practice today?</p>
-                <p className="text-sm text-gray-500">Log your Duolingo session to keep your streak!</p>
-              </div>
-              <button
-                onClick={() => setShowForm(v => !v)}
-                className="gradient-btn text-sm px-4 py-2 shrink-0">
-                + Log it
-              </button>
-            </div>
-          )}
+
+            <button
+              onClick={() => setShowForm(v => !v)}
+              className="px-4 py-2.5 rounded-xl border border-[#3F5D46] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold hover:bg-[#F7F2E8]"
+            >
+              {showForm ? "Close" : todaySession ? "Edit today" : "+ Log practice"}
+            </button>
+          </div>
 
           {showForm && (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
-              <div className="flex gap-3">
-                <div className="flex-1">
-                  <label className="block text-xs font-bold text-gray-500 mb-1">XP earned (optional)</label>
+            <div className="mt-6 pt-6 border-t border-[#EEE6D9]">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                    XP earned
+                  </label>
                   <input
                     type="number"
                     min="0"
                     value={xpInput}
                     onChange={e => setXpInput(e.target.value)}
                     placeholder="e.g. 50"
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#6EA76E]"
+                    className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                    What was practised?
+                  </label>
+                  <input
+                    value={notesInput}
+                    onChange={e => setNotesInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleLog()}
+                    placeholder="e.g. Greetings, numbers, colours"
+                    className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">What did you learn? (optional)</label>
-                <input
-                  value={notesInput}
-                  onChange={e => setNotesInput(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && handleLog()}
-                  placeholder="e.g. Colours, greetings, numbers…"
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#6EA76E]"
-                />
-              </div>
-              <div className="flex gap-2">
-                <button onClick={handleLog} disabled={logging}
-                  className="flex-1 bg-[#2F5D3A] text-white py-2.5 rounded-xl font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
-                  {logging ? "Saving…" : todaySession ? "Update" : "Log practice ✓"}
+
+              <div className="flex flex-wrap gap-3 mt-5">
+                <button
+                  onClick={handleLog}
+                  disabled={logging}
+                  className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50"
+                >
+                  {logging ? "Saving…" : todaySession ? "Update practice" : "Save practice"}
                 </button>
-                <button onClick={() => setShowForm(false)}
-                  className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50">
+
+                <button
+                  onClick={() => setShowForm(false)}
+                  className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+                >
                   Cancel
                 </button>
               </div>
@@ -188,49 +200,71 @@ export default function PolishPage() {
           )}
         </div>
 
-        {/* Session history */}
-        <h2 className="text-lg font-extrabold text-gray-900 mb-3">Practice history</h2>
+        <div className="brand-card p-6">
+          <div className="flex items-end justify-between gap-4 mb-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">History</p>
+              <h2 className="text-xl font-bold text-[#2E342F] mt-1">Practice history</h2>
+              <p className="text-sm text-[#6E5A46] mt-1">
+                Recent Polish practice sessions and XP earned.
+              </p>
+            </div>
 
-        {loading ? (
-          <p className="text-gray-400 text-center py-8">Loading…</p>
-        ) : sessions.length === 0 ? (
-          <div className="text-center py-12 bg-white/60 rounded-2xl border border-dashed border-gray-200">
-            <p className="text-4xl mb-2">🌍</p>
-            <p className="font-bold text-gray-500">No sessions yet</p>
-            <p className="text-sm text-gray-400 mt-1">Open Duolingo and log your first practice above!</p>
+            <span className="text-sm font-bold text-[#3F5D46]">{sessions.length}</span>
           </div>
-        ) : (
-          <div className="space-y-2">
-            {sessions.map(s => {
-              const daysAgo = differenceInCalendarDays(new Date(), parseISO(s.date));
-              const label = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : format(parseISO(s.date), "EEE d MMM yyyy");
-              return (
-                <div key={s.id} className="bg-white/80 border border-white/60 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
-                  <div className="w-9 h-9 rounded-xl bg-[#A8C67A]/30 flex items-center justify-center text-lg shrink-0">🌍</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900 text-sm">{label}</p>
-                    {(s.xp || s.notes) && (
-                      <p className="text-xs text-gray-500 truncate">
-                        {s.xp ? `${s.xp} XP` : ""}
-                        {s.xp && s.notes ? " · " : ""}
-                        {s.notes ?? ""}
+
+          {loading ? (
+            <p className="text-[#8A7A69] text-center py-8">Loading…</p>
+          ) : sessions.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-[#DDD3C4] bg-[#FBF8F1] p-8 text-center">
+              <p className="text-sm font-semibold text-[#6E5A46]">No practice sessions yet.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {sessions.map(s => {
+                const daysAgo = differenceInCalendarDays(new Date(), parseISO(s.date));
+                const label =
+                  daysAgo === 0
+                    ? "Today"
+                    : daysAgo === 1
+                    ? "Yesterday"
+                    : format(parseISO(s.date), "EEE d MMM yyyy");
+
+                return (
+                  <div
+                    key={s.id}
+                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 flex items-center gap-4"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#E8F0E8] text-[#3F5D46] flex items-center justify-center font-bold shrink-0">
+                      PL
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-[#2E342F]">{label}</p>
+                      <p className="text-xs text-[#6E5A46] mt-1 truncate">
+                        {s.notes || "Polish practice logged"}
                       </p>
+                    </div>
+
+                    {s.xp != null && (
+                      <span className="text-xs font-bold text-[#3F5D46] bg-[#E8F0E8] px-3 py-1 rounded-full shrink-0">
+                        +{s.xp} XP
+                      </span>
                     )}
+
+                    <button
+                      onClick={() => handleDelete(s.id)}
+                      className="text-[#C4BBB0] hover:text-[#A85F46] text-lg leading-none shrink-0"
+                      aria-label="Delete session"
+                    >
+                      ×
+                    </button>
                   </div>
-                  {s.xp && (
-                    <span className="text-xs font-extrabold text-[#58CC02] bg-green-50 px-2 py-0.5 rounded-full shrink-0">
-                      +{s.xp} XP
-                    </span>
-                  )}
-                  <button onClick={() => handleDelete(s.id)}
-                    className="text-gray-300 hover:text-red-400 transition-colors text-sm shrink-0 ml-1">
-                    ✕
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
