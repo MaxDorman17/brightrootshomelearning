@@ -71,6 +71,7 @@ export default function ReportPage() {
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [showSpellingHistory, setShowSpellingHistory] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -608,38 +609,27 @@ export default function ReportPage() {
 
             {/* Coding progress */}
             {tab === "progress" && (
-              <div className="brand-card p-6 mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-                  <div>
+              <div className="brand-card p-5 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex-1">
                     <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Coding</p>
-                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Coding Curriculum</h2>
-                    <p className="text-sm text-[#6E5A46] mt-1">
-                      Progress across the full coding pathway.
-                    </p>
-                  </div>
-
-                  <div className="sm:text-right">
-                    <p className="text-2xl font-bold text-[#3F5D46]">
-                      {codingDone} / {TOTAL_CODING}
-                    </p>
-                    <p className="text-xs text-[#8FA382] font-semibold">lessons completed</p>
-                  </div>
-                </div>
-
-                <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mb-5">
-                  <div
-                    className="h-full rounded-full bg-[#3F5D46] transition-all"
-                    style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {TRACKS.map(t => (
-                    <div key={t.name} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
-                      <p className="text-sm font-bold text-[#2E342F]">{t.name}</p>
-                      <p className="text-xs text-[#6E5A46] mt-1">{t.count} lessons</p>
+                    <div className="flex items-end gap-3 mt-1">
+                      <h2 className="text-lg font-bold text-[#2E342F]">Coding Curriculum</h2>
+                      <p className="text-sm font-bold text-[#3F5D46]">{codingDone}/{TOTAL_CODING}</p>
                     </div>
-                  ))}
+                    <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden mt-3">
+                      <div
+                        className="h-full rounded-full bg-[#3F5D46]"
+                        style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                  <a
+                    href="/coding"
+                    className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0"
+                  >
+                    Open coding
+                  </a>
                 </div>
               </div>
             )}
@@ -853,127 +843,112 @@ export default function ReportPage() {
               );
 
               if (spellingFiltered.length === 0) return (
-                <div className="brand-card p-10 text-center mb-6">
+                <div className="brand-card p-6 mb-6">
                   <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
-                  <h2 className="text-lg font-bold text-[#2E342F] mt-2">No spelling results yet</h2>
-                  <p className="text-sm text-[#6E5A46] mt-1">
-                    Completed spelling tests will appear here.
-                  </p>
+                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">No spelling results yet</h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">Completed spelling tests will appear here.</p>
                 </div>
               );
+
+              const sorted = [...spellingFiltered].sort(
+                (a, b) => new Date(b.taken_at).getTime() - new Date(a.taken_at).getTime()
+              );
+              const latest = sorted[0];
+              const latestPct = latest.total > 0 ? Math.round((latest.score / latest.total) * 100) : 0;
 
               const byWeek: Record<string, typeof spellingFiltered> = {};
               spellingFiltered.forEach(r => {
                 if (!byWeek[r.week_start]) byWeek[r.week_start] = [];
                 byWeek[r.week_start].push(r);
               });
-
               const weeks = Object.keys(byWeek).sort((a, b) => b.localeCompare(a));
 
               return (
-                <div className="brand-card p-6 mb-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-                    <div>
+                <div className="brand-card p-5 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex-1">
                       <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
-                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Spelling Results</h2>
-                      <p className="text-sm text-[#6E5A46] mt-1">
-                        Test scores, practice rounds and improvements over time.
-                      </p>
+                      <div className="flex items-end gap-3 mt-1">
+                        <h2 className="text-lg font-bold text-[#2E342F]">Latest Result</h2>
+                        <p className="text-2xl font-bold text-[#3F5D46]">{latestPct}%</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] pb-1">{latest.score}/{latest.total}</p>
+                      </div>
+                      <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden mt-3">
+                        <div
+                          className="h-full rounded-full bg-[#8FA382]"
+                          style={{ width: `${latestPct}%` }}
+                        />
+                      </div>
+                      {latest.wrong_words.length > 0 && (
+                        <p className="text-xs text-[#6E5A46] mt-2">
+                          {latest.wrong_words.length} word{latest.wrong_words.length === 1 ? "" : "s"} to revisit
+                        </p>
+                      )}
                     </div>
 
-                    <a
-                      href="/spellings"
-                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
-                    >
-                      Go to Spellings
-                    </a>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setShowSpellingHistory(v => !v)}
+                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                      >
+                        {showSpellingHistory ? "Hide history" : "Show history"}
+                      </button>
+                      <a href="/spellings" className="text-sm font-semibold text-[#3F5D46] hover:underline">
+                        Open spellings
+                      </a>
+                    </div>
                   </div>
 
-                  <div className="space-y-5">
-                    {weeks.map(week => (
-                      <div key={week} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
-                          Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}
-                        </p>
+                  {showSpellingHistory && (
+                    <div className="space-y-4 mt-5 pt-5 border-t border-[#EEE6D9]">
+                      {weeks.map(week => (
+                        <div key={week} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
+                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                            Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}
+                          </p>
 
-                        <div className="space-y-3">
-                          {byWeek[week].map(r => {
-                            const pct = Math.round((r.score / r.total) * 100);
-                            const child = children.find(c => c.id === r.child_id);
-                            const firstNormal = byWeek[week]
-                              .filter(x => x.child_id === r.child_id && !x.is_practice_round)
-                              .sort((a, b) => new Date(a.taken_at).getTime() - new Date(b.taken_at).getTime())[0];
-                            const isFirstNormal = !r.is_practice_round && firstNormal?.id === r.id;
-                            const delta = !r.is_practice_round && !isFirstNormal && firstNormal
-                              ? pct - Math.round((firstNormal.score / firstNormal.total) * 100)
-                              : null;
-
-                            return (
-                              <div key={r.id} className="border-t border-[#EEE6D9] first:border-0 first:pt-0 pt-3">
-                                <div className="flex items-center gap-3 flex-wrap">
-                                  <span className="text-sm font-bold text-[#3F5D46] w-12 shrink-0">
-                                    {pct}%
-                                  </span>
-
-                                  <div className="flex-1 min-w-[100px] h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
-                                    <div
-                                      className="h-full rounded-full bg-[#8FA382]"
-                                      style={{ width: `${pct}%` }}
-                                    />
+                          <div className="space-y-3">
+                            {byWeek[week].map(r => {
+                              const pct = r.total > 0 ? Math.round((r.score / r.total) * 100) : 0;
+                              const child = children.find(c => c.id === r.child_id);
+                              return (
+                                <div key={r.id} className="border-t border-[#EEE6D9] first:border-0 first:pt-0 pt-3">
+                                  <div className="flex items-center gap-3 flex-wrap">
+                                    <span className="text-sm font-bold text-[#3F5D46] w-12 shrink-0">{pct}%</span>
+                                    <div className="flex-1 min-w-[100px] h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
+                                      <div className="h-full rounded-full bg-[#8FA382]" style={{ width: `${pct}%` }} />
+                                    </div>
+                                    <span className="text-xs font-semibold text-[#6E5A46] shrink-0">{r.score}/{r.total}</span>
+                                    {!selectedChildId && child && (
+                                      <span className="text-xs font-semibold text-[#6E5A46] shrink-0">{child.username}</span>
+                                    )}
+                                    {r.is_practice_round && (
+                                      <span className="text-[10px] bg-[#F7F2E8] text-[#6E5A46] px-2 py-1 rounded-full font-bold shrink-0">
+                                        Practice
+                                      </span>
+                                    )}
                                   </div>
-
-                                  <span className="text-xs font-semibold text-[#6E5A46] shrink-0">
-                                    {r.score}/{r.total}
-                                  </span>
-
-                                  {!selectedChildId && child && (
-                                    <span className="text-xs font-semibold text-[#6E5A46] shrink-0">
-                                      {child.username}
-                                    </span>
-                                  )}
-
-                                  {r.is_practice_round && (
-                                    <span className="text-[10px] bg-[#F7F2E8] text-[#6E5A46] px-2 py-1 rounded-full font-bold shrink-0">
-                                      Practice
-                                    </span>
-                                  )}
-
-                                  {delta !== null && (
-                                    <span className={`text-[10px] px-2 py-1 rounded-full font-bold shrink-0 ${
-                                      delta > 0
-                                        ? "bg-[#E8F0E8] text-[#3F5D46]"
-                                        : delta < 0
-                                        ? "bg-[#FBEDE6] text-[#B66443]"
-                                        : "bg-[#F2EFEA] text-[#6E5A46]"
-                                    }`}>
-                                      {delta > 0
-                                        ? `Up ${delta}%`
-                                        : delta < 0
-                                        ? `Down ${Math.abs(delta)}%`
-                                        : "No change"}
-                                    </span>
+                                  {r.wrong_words.length > 0 && (
+                                    <div className="flex gap-1.5 flex-wrap mt-2">
+                                      {r.wrong_words.map((w, i) => (
+                                        <span
+                                          key={i}
+                                          className="text-[10px] bg-[#FBEDE6] text-[#B66443] border border-[#F1C7B4] px-2 py-1 rounded-full font-semibold"
+                                        >
+                                          {w}
+                                        </span>
+                                      ))}
+                                    </div>
                                   )}
                                 </div>
-
-                                {r.wrong_words.length > 0 && (
-                                  <div className="flex gap-1.5 flex-wrap mt-2">
-                                    {r.wrong_words.map((w, i) => (
-                                      <span
-                                        key={i}
-                                        className="text-[10px] bg-[#FBEDE6] text-[#B66443] border border-[#F1C7B4] px-2 py-1 rounded-full font-semibold"
-                                      >
-                                        {w}
-                                      </span>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })()}
