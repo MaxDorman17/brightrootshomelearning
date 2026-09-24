@@ -198,12 +198,13 @@ export default function ReportPage() {
     Science: 2,
   };
 
-  const subjectStats = TIMETABLE_SUBJECTS.map(subject => {
+  const reportSubjects = Array.from(new Set(timetable.map(e => e.lesson.subject)));
+
+  const subjectStats = reportSubjects.map(subject => {
     const s = timetable.filter(e => e.lesson.subject === subject);
     const done = s.filter(e => e.is_complete).length;
     return { subject, total: s.length, done, pct: s.length === 0 ? 0 : Math.round((done / s.length) * 100) };
   })
-    .filter(s => s.total > 0)
     .sort((a, b) => {
       const aPriority = SUBJECT_PRIORITY[a.subject] ?? 99;
       const bPriority = SUBJECT_PRIORITY[b.subject] ?? 99;
@@ -426,18 +427,18 @@ export default function ReportPage() {
                   Oak Quiz Results
                 </h2>
                 {(() => {
-                  const printDays = (weekQuizScores?.days ?? []).filter(day => {
+                  const printDays = (reportQuizScores?.days ?? []).filter(day => {
                     const dow = parseISO(day.date).getDay();
                     return dow >= 1 && dow <= 5;
                   });
 
-                  const printPossible = weekQuizScores?.grand_total_possible ?? 0;
-                  const printScore = weekQuizScores?.grand_total_score ?? 0;
+                  const printPossible = reportQuizScores?.grand_total_possible ?? 0;
+                  const printScore = reportQuizScores?.grand_total_score ?? 0;
 
                   return (
                     <>
                       <p className="text-sm mb-3">
-                        Weekly score: {printScore} / {printPossible}
+                        {period === "week" ? "This week" : period === "month" ? "This month" : "All time"}: {printScore} / {printPossible}
                         {printPossible > 0 ? ` (${Math.round((printScore / printPossible) * 100)}%)` : ""}
                       </p>
 
