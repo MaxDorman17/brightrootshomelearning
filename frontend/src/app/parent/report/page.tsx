@@ -1236,58 +1236,71 @@ export default function ReportPage() {
                       <h2 className="text-lg font-bold text-[#2E342F] mt-1">Submitted lesson evidence</h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {weekSubmitted.map(e => (
-                        <div
-                          key={e.id}
-                          className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
-                        >
-                          <div className="flex items-center justify-between gap-3 mb-2">
-                            <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
-                              {e.lesson.subject}
-                            </span>
-                            <span className="text-xs text-[#6E5A46]">
-                              {format(parseISO(e.scheduled_date), "d MMM")}
-                            </span>
-                          </div>
-
-                          <p className="text-sm font-bold text-[#2E342F]">{e.lesson.title}</p>
-
-                          {(() => {
-                            const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
-                            const r = shareUrl ? quizResults[shareUrl] : undefined;
-                            if (!r) return null;
-
-                            return (
-                              <div className="flex items-center gap-2 flex-wrap mt-3">
-                                {r.starter_total != null && r.starter_score != null && (
-                                  <QuizScoreBadge
-                                    label="Starter"
-                                    score={r.starter_score}
-                                    total={r.starter_total}
-                                  />
-                                )}
-                                {r.exit_total != null && r.exit_score != null && (
-                                  <QuizScoreBadge
-                                    label="Exit"
-                                    score={r.exit_score}
-                                    total={r.exit_total}
-                                  />
-                                )}
+                    <div className="space-y-6">
+                      {Array.from(new Set(weekSubmitted.map(e => e.scheduled_date)))
+                        .sort((a, b) => b.localeCompare(a))
+                        .map(date => {
+                          const dayEntries = weekSubmitted.filter(e => e.scheduled_date === date);
+                          return (
+                            <div key={date}>
+                              <div className="flex items-center gap-3 mb-3">
+                                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                  {format(parseISO(date), "EEEE d MMM")}
+                                </p>
+                                <span className="h-px flex-1 bg-[#EEE6D9]" />
                               </div>
-                            );
-                          })()}
 
-                          <a
-                            href={e.completed_work_url!}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline mt-3"
-                          >
-                            Open evidence
-                          </a>
-                        </div>
-                      ))}
+                              <div className="grid md:grid-cols-2 gap-4">
+                                {dayEntries.map(e => (
+                                  <div
+                                    key={e.id}
+                                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                                  >
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                      {e.lesson.subject}
+                                    </span>
+
+                                    <p className="text-sm font-bold text-[#2E342F] mt-2">{e.lesson.title}</p>
+
+                                    {(() => {
+                                      const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
+                                      const r = shareUrl ? quizResults[shareUrl] : undefined;
+                                      if (!r) return null;
+
+                                      return (
+                                        <div className="flex items-center gap-2 flex-wrap mt-3">
+                                          {r.starter_total != null && r.starter_score != null && (
+                                            <QuizScoreBadge
+                                              label="Starter"
+                                              score={r.starter_score}
+                                              total={r.starter_total}
+                                            />
+                                          )}
+                                          {r.exit_total != null && r.exit_score != null && (
+                                            <QuizScoreBadge
+                                              label="Exit"
+                                              score={r.exit_score}
+                                              total={r.exit_total}
+                                            />
+                                          )}
+                                        </div>
+                                      );
+                                    })()}
+
+                                    <a
+                                      href={e.completed_work_url!}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline mt-3"
+                                    >
+                                      Open evidence
+                                    </a>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 )}
