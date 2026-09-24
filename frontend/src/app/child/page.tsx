@@ -425,6 +425,7 @@ export default function ChildDashboard() {
               <button
                 onClick={() => setWeekStart(d => addDays(d, -7))}
                 className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+                aria-label="Previous week"
               >
                 ←
               </button>
@@ -437,6 +438,7 @@ export default function ChildDashboard() {
               <button
                 onClick={() => setWeekStart(d => addDays(d, 7))}
                 className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+                aria-label="Next week"
               >
                 →
               </button>
@@ -464,77 +466,77 @@ export default function ChildDashboard() {
           </div>
 
           <div className="grid grid-cols-5 gap-2">
-              {DAYS.map((dayName, dayIndex) => {
-                const dayDate = weekDates[dayIndex];
-                const dateStr = format(dayDate, "yyyy-MM-dd");
-                const dayEntries = entries.filter(e => e.scheduled_date === dateStr && !e.is_extra);
-                const complete = dayEntries.filter(e => e.is_complete).length;
-                const dayOff = daysOffSet.has(dateStr);
-                const active = selectedDayIndex === dayIndex;
-                const today = isToday(dayDate);
-                const allDone = dayEntries.length > 0 && complete === dayEntries.length;
+            {DAYS.map((dayName, dayIndex) => {
+              const dayDate = weekDates[dayIndex];
+              const dateStr = format(dayDate, "yyyy-MM-dd");
+              const dayEntries = entries.filter(e => e.scheduled_date === dateStr && !e.is_extra);
+              const complete = dayEntries.filter(e => e.is_complete).length;
+              const dayOff = daysOffSet.has(dateStr);
+              const active = selectedDayIndex === dayIndex;
+              const today = isToday(dayDate);
+              const allDone = dayEntries.length > 0 && complete === dayEntries.length;
 
-                return (
-                  <button
-                    key={dayName}
-                    onClick={() => setSelectedDayIndex(dayIndex)}
-                    className={`relative rounded-2xl border p-3 text-center transition-all ${
-                      active
-                        ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md -translate-y-0.5"
-                        : dayOff
-                        ? "bg-[#FFF5E8] border-[#F0D4A8] text-[#8A624B]"
-                        : allDone
-                        ? "bg-[#F1F6EF] border-[#D1DED0] text-[#3F5D46]"
-                        : "bg-[#FFFDF8] border-[#E7DFD1] text-[#2E342F] hover:border-[#8FA382]"
-                    }`}
-                  >
-                    {today && (
-                      <span className={`absolute top-2 right-2 w-2 h-2 rounded-full ${
-                        active ? "bg-white" : "bg-[#D19A32]"
-                      }`} />
+              return (
+                <button
+                  key={dayName}
+                  onClick={() => setSelectedDayIndex(dayIndex)}
+                  className={`relative rounded-2xl border p-3 text-center transition-all ${
+                    active
+                      ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md -translate-y-0.5"
+                      : dayOff
+                      ? "bg-[#FFF5E8] border-[#F0D4A8] text-[#8A624B]"
+                      : allDone
+                      ? "bg-[#F1F6EF] border-[#D1DED0] text-[#3F5D46]"
+                      : "bg-[#FFFDF8] border-[#E7DFD1] text-[#2E342F] hover:border-[#8FA382]"
+                  }`}
+                >
+                  {today && (
+                    <span className={`absolute top-2 right-2 w-2 h-2 rounded-full ${
+                      active ? "bg-white" : "bg-[#D19A32]"
+                    }`} />
+                  )}
+
+                  <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName.slice(0,3)}</p>
+                  <p className="text-lg font-bold mt-0.5">{format(dayDate, "d")}</p>
+                  <p className="text-[10px] opacity-70">{format(dayDate, "MMM")}</p>
+
+                  <div className="flex justify-center gap-1 mt-2 min-h-2">
+                    {dayOff ? (
+                      <span className="text-[10px]">🌤️</span>
+                    ) : dayEntries.length > 0 ? (
+                      dayEntries.slice(0, 6).map((entry, i) => (
+                        <span
+                          key={i}
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            entry.is_complete
+                              ? active ? "bg-white" : "bg-[#5F8A68]"
+                              : active ? "bg-white/35" : "bg-[#D8D1C4]"
+                          }`}
+                        />
+                      ))
+                    ) : (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#DDD3C4]" />
                     )}
+                  </div>
 
-                    <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName.slice(0,3)}</p>
-                    <p className="text-lg font-bold mt-0.5">{format(dayDate, "d")}</p>
-                    <p className="text-[10px] opacity-70">{format(dayDate, "MMM")}</p>
+                  <p className="mt-1.5 text-[10px] font-bold">
+                    {dayOff
+                      ? "Day off"
+                      : dayEntries.length > 0
+                      ? allDone ? "All done" : `${complete}/${dayEntries.length} done`
+                      : "No lessons"}
+                  </p>
 
-                    <div className="flex justify-center gap-1 mt-2 min-h-2">
-                      {dayOff ? (
-                        <span className="text-[10px]">🌤️</span>
-                      ) : dayEntries.length > 0 ? (
-                        dayEntries.slice(0, 6).map((entry, i) => (
-                          <span
-                            key={i}
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              entry.is_complete
-                                ? active ? "bg-white" : "bg-[#5F8A68]"
-                                : active ? "bg-white/35" : "bg-[#D8D1C4]"
-                            }`}
-                          />
-                        ))
-                      ) : (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#DDD3C4]" />
-                      )}
-                    </div>
-
-                    <p className="mt-1.5 text-[10px] font-bold">
-                      {dayOff
-                        ? "Day off"
-                        : dayEntries.length > 0
-                        ? allDone ? "All done" : `${complete}/${dayEntries.length} done`
-                        : "No lessons"}
-                    </p>
-
-                    {today && (
-                      <span className={`inline-block mt-1 text-[9px] font-bold uppercase tracking-wide ${
-                        active ? "text-white/80" : "text-[#A3752C]"
-                      }`}>
-                        Today
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+                  {today && (
+                    <span className={`inline-block mt-1 text-[9px] font-bold uppercase tracking-wide ${
+                      active ? "text-white/80" : "text-[#A3752C]"
+                    }`}>
+                      Today
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
