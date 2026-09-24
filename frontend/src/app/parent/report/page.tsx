@@ -1165,41 +1165,66 @@ export default function ReportPage() {
 
             {/* Submitted work */}
             {tab === "results" && resultsView === "work" && (
-              <>
-                <div className="brand-card p-4 mb-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <button
-                      onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
-                      className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
-                    >
-                      Previous week
-                    </button>
-
-                    <div className="text-center">
-                      <p className="text-sm font-bold text-[#2E342F]">{workWeekLabel}</p>
-                      <p className="text-xs text-[#8FA382] mt-1">
+              <div className="space-y-6">
+                <div className="brand-card p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Submitted Work</p>
+                      <h2 className="text-2xl font-bold text-[#2E342F] mt-1">{workWeekLabel}</h2>
+                      <p className="text-sm text-[#6E5A46] mt-1">
                         {format(workWeekStart, "d MMM")} to {format(workWeekEnd, "d MMM yyyy")}
                       </p>
                     </div>
 
-                    <button
-                      onClick={() => setWorkWeeksBack(Math.max(0, workWeeksBack - 1))}
-                      disabled={workWeeksBack === 0}
-                      className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
-                        workWeeksBack === 0
-                          ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
-                          : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
-                      }`}
-                    >
-                      Next week
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
+                        className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                      >
+                        Previous
+                      </button>
+                      <button
+                        onClick={() => setWorkWeeksBack(Math.max(0, workWeeksBack - 1))}
+                        disabled={workWeeksBack === 0}
+                        className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                          workWeeksBack === 0
+                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
+                            : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                        }`}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 mt-5">
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#2E342F]">{weekSubmitted.length}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Items submitted</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#3F5D46]">
+                        {weekSubmitted.filter(e => {
+                          const shareUrl = e.completed_work_url?.match(OAK_SHARE_RE)?.[0];
+                          const r = shareUrl ? quizResults[shareUrl] : undefined;
+                          return !!r && (r.starter_score != null || r.exit_score != null);
+                        }).length}
+                      </p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">With quiz scores</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#D19A32]">
+                        {new Set(weekSubmitted.map(e => e.lesson.subject)).size}
+                      </p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Subjects represented</p>
+                    </div>
                   </div>
                 </div>
 
                 {weekSubmitted.length === 0 ? (
-                  <div className="brand-card p-10 text-center">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Submitted Work</p>
-                    <h2 className="text-lg font-bold text-[#2E342F] mt-2">Nothing submitted this week</h2>
+                  <div className="brand-card p-6">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Nothing submitted this week</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
                       Completed work links will appear here when they are submitted.
                     </p>
@@ -1207,79 +1232,66 @@ export default function ReportPage() {
                 ) : (
                   <div className="brand-card p-6">
                     <div className="mb-5">
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
-                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">
-                        Submitted Work
-                      </h2>
-                      <p className="text-sm text-[#6E5A46] mt-1">
-                        {weekSubmitted.length} item{weekSubmitted.length === 1 ? "" : "s"} submitted for {workWeekLabel.toLowerCase()}.
-                      </p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Evidence</p>
+                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Submitted lesson evidence</h2>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                       {weekSubmitted.map(e => (
                         <div
                           key={e.id}
                           className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
                         >
-                          <div className="flex items-start gap-3">
-                            <span className="mt-1.5 w-2.5 h-2.5 rounded-full bg-[#8FA382] shrink-0" />
-
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap mb-1">
-                                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
-                                  {e.lesson.subject}
-                                </span>
-                                <span className="text-xs text-[#6E5A46]">
-                                  {format(parseISO(e.scheduled_date), "d MMM yyyy")}
-                                </span>
-                              </div>
-
-                              <p className="text-sm font-bold text-[#2E342F]">
-                                {e.lesson.title}
-                              </p>
-
-                              {(() => {
-                                const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
-                                const r = shareUrl ? quizResults[shareUrl] : undefined;
-                                if (!r) return null;
-
-                                return (
-                                  <div className="flex items-center gap-2 flex-wrap mt-2">
-                                    {r.starter_total != null && r.starter_score != null && (
-                                      <QuizScoreBadge
-                                        label="Starter quiz"
-                                        score={r.starter_score}
-                                        total={r.starter_total}
-                                      />
-                                    )}
-                                    {r.exit_total != null && r.exit_score != null && (
-                                      <QuizScoreBadge
-                                        label="Exit quiz"
-                                        score={r.exit_score}
-                                        total={r.exit_total}
-                                      />
-                                    )}
-                                  </div>
-                                );
-                              })()}
-
-                              <a
-                                href={e.completed_work_url!}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline break-all mt-2"
-                              >
-                                Open submitted work
-                              </a>
-                            </div>
+                          <div className="flex items-center justify-between gap-3 mb-2">
+                            <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                              {e.lesson.subject}
+                            </span>
+                            <span className="text-xs text-[#6E5A46]">
+                              {format(parseISO(e.scheduled_date), "d MMM")}
+                            </span>
                           </div>
+
+                          <p className="text-sm font-bold text-[#2E342F]">{e.lesson.title}</p>
+
+                          {(() => {
+                            const shareUrl = e.completed_work_url!.match(OAK_SHARE_RE)?.[0];
+                            const r = shareUrl ? quizResults[shareUrl] : undefined;
+                            if (!r) return null;
+
+                            return (
+                              <div className="flex items-center gap-2 flex-wrap mt-3">
+                                {r.starter_total != null && r.starter_score != null && (
+                                  <QuizScoreBadge
+                                    label="Starter"
+                                    score={r.starter_score}
+                                    total={r.starter_total}
+                                  />
+                                )}
+                                {r.exit_total != null && r.exit_score != null && (
+                                  <QuizScoreBadge
+                                    label="Exit"
+                                    score={r.exit_score}
+                                    total={r.exit_total}
+                                  />
+                                )}
+                              </div>
+                            );
+                          })()}
+
+                          <a
+                            href={e.completed_work_url!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline mt-3"
+                          >
+                            Open evidence
+                          </a>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
 
             {/* Print and export */}
@@ -1461,7 +1473,9 @@ export default function ReportPage() {
                                 {day.completed}/{day.total} lessons complete
                               </p>
                               <p className="text-xs font-bold text-[#2E342F]">
-                                {day.total_score} / {day.total_possible} points
+                                {day.total_possible > 0
+                                  ? `${day.total_score} / ${day.total_possible} points`
+                                  : "No quiz points yet"}
                               </p>
                             </div>
                           </div>
