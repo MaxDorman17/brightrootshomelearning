@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks } from "@/lib/api";
 import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
@@ -77,6 +77,7 @@ export default function ReportPage() {
   const [showSpellingHistory, setShowSpellingHistory] = useState(false);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
   const [readingChapters, setReadingChapters] = useState(0);
+  const [currentReadingTitle, setCurrentReadingTitle] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -181,6 +182,18 @@ export default function ReportPage() {
       .then(res => setReadingChapters(res.data.chapters ?? 0))
       .catch(() => setReadingChapters(0));
   }, [period, selectedChildId, loading]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    getBooks(selectedChildId ?? undefined)
+      .then(res => {
+        const books = res.data as Array<{ title: string; status: string }>;
+        const active = books.find(book => book.status === "reading");
+        setCurrentReadingTitle(active?.title ?? null);
+      })
+      .catch(() => setCurrentReadingTitle(null));
+  }, [selectedChildId, loading]);
 
   // Coding progress is per child — show the selected child's, or the union across all children
   useEffect(() => {
@@ -315,16 +328,26 @@ export default function ReportPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
-          <div className="flex items-end gap-3 mt-1">
-            <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
-            <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
-              chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
+          {readingChapters === 0 ? (
+            <h2 className="text-lg font-bold text-[#2E342F] mt-1">
+              No chapters logged {readingPeriodLabel}
             </h2>
-          </div>
-          <p className="text-sm text-[#6E5A46] mt-2">
-            Chapter progress is counted from the new tracker onward.
-          </p>
+          ) : (
+            <div className="flex items-end gap-3 mt-1">
+              <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
+              <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
+                chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
+              </h2>
+            </div>
+          )}
+
+          {currentReadingTitle && (
+            <p className="text-sm text-[#6E5A46] mt-2">
+              Currently reading: <span className="font-semibold text-[#2E342F]">{currentReadingTitle}</span>
+            </p>
+          )}
         </div>
+
         <a href="/reading-log" className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0">
           Open reading
         </a>
