@@ -612,7 +612,7 @@ export default function ReportPage() {
               <div className="brand-card p-5 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex-1">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Coding</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Coding · Overall</p>
                     <div className="flex items-end gap-3 mt-1">
                       <h2 className="text-lg font-bold text-[#2E342F]">Coding Curriculum</h2>
                       <p className="text-sm font-bold text-[#3F5D46]">{codingDone}/{TOTAL_CODING}</p>
@@ -838,15 +838,42 @@ export default function ReportPage() {
 
             {/* Spelling results */}
             {tab === "progress" && (() => {
-              const spellingFiltered = allSpellingResults.filter(r =>
-                selectedChildId ? r.child_id === selectedChildId : true
-              );
+              const now = new Date();
+              const periodStart =
+                period === "week"
+                  ? startOfWeek(now, { weekStartsOn: 1 })
+                  : period === "month"
+                  ? startOfMonth(now)
+                  : null;
+              const periodEnd =
+                period === "week"
+                  ? endOfWeek(now, { weekStartsOn: 1 })
+                  : period === "month"
+                  ? endOfMonth(now)
+                  : null;
+
+              const spellingFiltered = allSpellingResults.filter(r => {
+                if (selectedChildId && r.child_id !== selectedChildId) return false;
+                if (!periodStart || !periodEnd) return true;
+                const taken = new Date(r.taken_at);
+                return isWithinInterval(taken, { start: periodStart, end: periodEnd });
+              });
 
               if (spellingFiltered.length === 0) return (
                 <div className="brand-card p-6 mb-6">
                   <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
-                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">No spelling results yet</h2>
-                  <p className="text-sm text-[#6E5A46] mt-1">Completed spelling tests will appear here.</p>
+                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">
+                    {period === "week"
+                      ? "No spelling results this week"
+                      : period === "month"
+                      ? "No spelling results this month"
+                      : "No spelling results yet"}
+                  </h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">
+                    {period === "all"
+                      ? "Completed spelling tests will appear here."
+                      : "Try another reporting period to view earlier spelling results."}
+                  </p>
                 </div>
               );
 
