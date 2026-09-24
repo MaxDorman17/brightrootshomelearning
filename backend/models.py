@@ -65,6 +65,19 @@ class Unit(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
+class UnitQueue(Base):
+    __tablename__ = "unit_queue"
+
+    id = Column(Integer, primary_key=True, index=True)
+    subject = Column(String(100), nullable=False, index=True)
+    title = Column(String(255), nullable=False)
+    unit_url = Column(String(512), nullable=True)
+    notes = Column(Text, nullable=True)
+    position = Column(Integer, nullable=False, default=1)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
 class WorkFeedback(Base):
     __tablename__ = "work_feedback"
 
