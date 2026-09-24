@@ -120,6 +120,33 @@ class UnitOut(BaseModel):
         from_attributes = True
 
 
+class UnitQueueCreate(BaseModel):
+    subject: str
+    title: str
+    unit_url: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class UnitQueueUpdate(BaseModel):
+    title: Optional[str] = None
+    unit_url: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class UnitQueueOut(BaseModel):
+    id: int
+    subject: str
+    title: str
+    unit_url: Optional[str]
+    notes: Optional[str]
+    position: int
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class FeedbackCreate(BaseModel):
     entry_id: int
     message: str
