@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary } from "@/lib/api";
 import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
@@ -50,6 +50,31 @@ function QuizScoreBadge({ label, score, total }: { label: string; score: number;
     : pct >= 50
     ? "bg-amber-50 text-amber-700 border-amber-200"
     : "bg-red-50 text-red-600 border-red-200";
+  const readingPeriodLabel =
+    period === "week" ? "this week" : period === "month" ? "this month" : "tracked";
+
+  const readingCard = (
+    <div className="brand-card p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
+          <div className="flex items-end gap-3 mt-1">
+            <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
+            <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
+              chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
+            </h2>
+          </div>
+          <p className="text-sm text-[#6E5A46] mt-2">
+            Chapter progress is counted from the new tracker onward.
+          </p>
+        </div>
+        <a href="/reading-log" className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0">
+          Open reading
+        </a>
+      </div>
+    </div>
+  );
+
   return (
     <span className={`inline-flex items-center gap-1 text-[11px] font-bold border rounded-full px-2 py-0.5 ${colors}`}>
       {label} {score}/{total}
@@ -76,6 +101,7 @@ export default function ReportPage() {
   const [exporting, setExporting] = useState(false);
   const [showSpellingHistory, setShowSpellingHistory] = useState(false);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
+  const [readingChapters, setReadingChapters] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -160,6 +186,26 @@ export default function ReportPage() {
       .then(res => setReportQuizScores(res.data))
       .catch(() => setReportQuizScores(null));
   }, [period, selectedChildId, loading, entries]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const now = new Date();
+    const params: { child_id?: number; start_date?: string; end_date?: string } = {};
+    if (selectedChildId) params.child_id = selectedChildId;
+
+    if (period === "week") {
+      params.start_date = format(startOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd");
+      params.end_date = format(endOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd");
+    } else if (period === "month") {
+      params.start_date = format(startOfMonth(now), "yyyy-MM-dd");
+      params.end_date = format(endOfMonth(now), "yyyy-MM-dd");
+    }
+
+    getReadingChapterSummary(params)
+      .then(res => setReadingChapters(res.data.chapters ?? 0))
+      .catch(() => setReadingChapters(0));
+  }, [period, selectedChildId, loading]);
 
   // Coding progress is per child — show the selected child's, or the union across all children
   useEffect(() => {
@@ -967,20 +1013,23 @@ export default function ReportPage() {
               });
 
               if (spellingFiltered.length === 0) return (
-                <div className="brand-card p-6 mb-6">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
-                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">
-                    {period === "week"
-                      ? "No spelling results this week"
-                      : period === "month"
-                      ? "No spelling results this month"
-                      : "No spelling results yet"}
-                  </h2>
-                  <p className="text-sm text-[#6E5A46] mt-1">
-                    {period === "all"
-                      ? "Completed spelling tests will appear here."
-                      : "Try another reporting period to view earlier spelling results."}
-                  </p>
+                <div className="grid lg:grid-cols-2 gap-6 mb-6">
+                  <div className="brand-card p-5">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">
+                      {period === "week"
+                        ? "No spelling results this week"
+                        : period === "month"
+                        ? "No spelling results this month"
+                        : "No spelling results yet"}
+                    </h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      {period === "all"
+                        ? "Completed spelling tests will appear here."
+                        : "Try another reporting period to view earlier spelling results."}
+                    </p>
+                  </div>
+                  {readingCard}
                 </div>
               );
 
@@ -998,7 +1047,8 @@ export default function ReportPage() {
               const weeks = Object.keys(byWeek).sort((a, b) => b.localeCompare(a));
 
               return (
-                <div className="brand-card p-5 mb-6">
+                <div className="grid lg:grid-cols-2 gap-6 mb-6">
+                  <div className="brand-card p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex-1">
                       <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
@@ -1083,6 +1133,8 @@ export default function ReportPage() {
                       ))}
                     </div>
                   )}
+                  </div>
+                  {readingCard}
                 </div>
               );
             })()}
