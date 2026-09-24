@@ -95,6 +95,8 @@ export const addBook = (data: { title: string; author?: string; pages?: number; 
 export const updateBook = (id: number, data: { title?: string; author?: string; pages?: number; total_chapters?: number; completed_chapters?: number; reading_journal?: string; question_1_answer?: string; question_2_answer?: string; question_3_answer?: string; status?: string; start_date?: string; finish_date?: string; finish_date_clear?: boolean; rating?: number; notes?: string }) =>
   api.patch(`/api/reading/${id}`, data);
 export const deleteBook = (id: number) => api.delete(`/api/reading/${id}`);
+export const getReadingChapterSummary = (params?: { child_id?: number; start_date?: string; end_date?: string }) =>
+  api.get("/api/reading/chapter-summary", { params: params ?? {} });
 
 // Reading Worksheets
 export const getWorksheets = () => api.get("/api/reading/worksheets");
