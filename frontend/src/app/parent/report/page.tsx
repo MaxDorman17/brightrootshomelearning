@@ -78,6 +78,7 @@ export default function ReportPage() {
   const [showAllSubjects, setShowAllSubjects] = useState(false);
   const [readingChapters, setReadingChapters] = useState(0);
   const [currentReadingTitle, setCurrentReadingTitle] = useState<string | null>(null);
+  const [showOakDetails, setShowOakDetails] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -1340,29 +1341,43 @@ export default function ReportPage() {
             {tab === "results" && resultsView === "oak" && (() => {
               const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
               const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
-              const days = (weekQuizScores?.days ?? []).filter(day => { const dow = parseISO(day.date).getDay(); return dow >= 1 && dow <= 5; });
+              const days = (weekQuizScores?.days ?? []).filter(day => {
+                const dow = parseISO(day.date).getDay();
+                return dow >= 1 && dow <= 5;
+              });
               const totalPossible = weekQuizScores?.grand_total_possible ?? 0;
               const totalScore = weekQuizScores?.grand_total_score ?? 0;
               const totalPct = totalPossible > 0
                 ? Math.round((totalScore / totalPossible) * 100)
                 : 0;
+              const completedLessons = days.reduce((sum, day) => sum + day.completed, 0);
+              const totalLessons = days.reduce((sum, day) => sum + day.total, 0);
+              const scoredLessons = days.reduce(
+                (sum, day) => sum + day.entries.filter(entry =>
+                  entry.starter_score != null || entry.exit_score != null
+                ).length,
+                0
+              );
 
               return (
                 <div className="space-y-6">
                   <div className="brand-card p-6">
-                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+                    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Oak National Academy</p>
-                        <h2 className="text-xl font-bold text-[#2E342F] mt-1">This Week's Quiz Results</h2>
+                        <h2 className="text-2xl font-bold text-[#2E342F] mt-1">This Week's Quiz Results</h2>
                         <p className="text-sm text-[#6E5A46] mt-1">
-                          Current week · {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
+                          {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
                         </p>
                       </div>
 
-                      <div className="sm:text-right">
-                        <p className="text-4xl font-bold text-[#3F5D46]">{totalPct}%</p>
+                      <div className="lg:text-right">
+                        <div className="flex lg:justify-end items-end gap-2">
+                          <p className="text-4xl font-bold text-[#3F5D46]">{totalPct}%</p>
+                          <p className="text-xs font-semibold text-[#8FA382] pb-1">overall</p>
+                        </div>
                         <p className="text-sm font-semibold text-[#6E5A46] mt-1">
-                          {totalScore} / {totalPossible} points
+                          {totalScore} / {totalPossible} quiz points
                         </p>
                       </div>
                     </div>
@@ -1373,107 +1388,125 @@ export default function ReportPage() {
                         style={{ width: `${totalPct}%` }}
                       />
                     </div>
+
+                    <div className="grid grid-cols-3 gap-3 mt-5">
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#2E342F]">{completedLessons}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons completed</p>
+                      </div>
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#3F5D46]">{scoredLessons}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons with scores</p>
+                      </div>
+                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                        <p className="text-2xl font-bold text-[#D19A32]">{totalLessons}</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Oak lessons this week</p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-                    {days.map(day => {
-                      const dayPct = day.total_possible > 0
-                        ? Math.round((day.total_score! / day.total_possible) * 100)
-                        : 0;
-                      const isToday = day.date === format(new Date(), "yyyy-MM-dd");
+                  <div className="brand-card p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Daily Results</p>
+                        <h2 className="text-lg font-bold text-[#2E342F] mt-1">Week at a glance</h2>
+                      </div>
 
-                      return (
-                        <div
-                          key={day.date}
-                          className={`rounded-2xl border p-4 ${
-                            isToday
-                              ? "bg-[#3F5D46] border-[#3F5D46] text-white"
-                              : "bg-[#FFFDF8] border-[#E7DFD1]"
-                          }`}
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <p className={`text-xs font-bold uppercase tracking-wide ${
-                                isToday ? "text-white/70" : "text-[#8FA382]"
-                              }`}>
-                                {format(parseISO(day.date), "EEEE")}
-                              </p>
-                              <p className={`text-xs mt-1 ${
-                                isToday ? "text-white/70" : "text-[#6E5A46]"
-                              }`}>
-                                {format(parseISO(day.date), "d MMM")}
-                              </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowOakDetails(v => !v)}
+                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                      >
+                        {showOakDetails ? "Hide lesson details" : "Show lesson details"}
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+                      {days.map(day => {
+                        const dayPct = day.total_possible > 0
+                          ? Math.round((day.total_score! / day.total_possible) * 100)
+                          : 0;
+                        const isToday = day.date === format(new Date(), "yyyy-MM-dd");
+
+                        return (
+                          <div
+                            key={day.date}
+                            className={`rounded-2xl border p-4 ${
+                              isToday
+                                ? "bg-[#E8F0E8] border-[#8FA382]"
+                                : "bg-[#FFFDF8] border-[#E7DFD1]"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                  {format(parseISO(day.date), "EEEE")}
+                                </p>
+                                <p className="text-xs text-[#6E5A46] mt-1">
+                                  {format(parseISO(day.date), "d MMM")}
+                                </p>
+                              </div>
+                              <span className="text-2xl font-bold text-[#3F5D46]">{dayPct}%</span>
                             </div>
 
-                            <span className={`text-2xl font-bold ${
-                              isToday ? "text-white" : "text-[#3F5D46]"
-                            }`}>
-                              {dayPct}%
-                            </span>
-                          </div>
+                            <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden mt-4">
+                              <div
+                                className="h-full rounded-full bg-[#8FA382]"
+                                style={{ width: `${dayPct}%` }}
+                              />
+                            </div>
 
-                          <div className={`mt-3 pt-3 border-t ${
-                            isToday ? "border-white/20" : "border-[#EEE6D9]"
-                          }`}>
-                            <p className={`text-xs font-semibold ${
-                              isToday ? "text-white/75" : "text-[#6E5A46]"
-                            }`}>
-                              {day.completed}/{day.total} lessons
-                            </p>
-
-                            {day.total > 0 && (
-                              <p className={`text-xs font-bold mt-1 ${
-                                isToday ? "text-white/90" : "text-[#2E342F]"
-                              }`}>
+                            <div className="mt-3 pt-3 border-t border-[#EEE6D9] space-y-1">
+                              <p className="text-xs font-semibold text-[#6E5A46]">
+                                {day.completed}/{day.total} lessons complete
+                              </p>
+                              <p className="text-xs font-bold text-[#2E342F]">
                                 {day.total_score} / {day.total_possible} points
                               </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {showOakDetails && (
+                      <div className="mt-6 pt-6 border-t border-[#EEE6D9] space-y-5">
+                        {days.map(day => (
+                          <div key={`detail-${day.date}`}>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                              {format(parseISO(day.date), "EEEE d MMM")}
+                            </p>
+
+                            {day.entries.length === 0 ? (
+                              <p className="text-sm text-[#6E5A46]">No Oak lessons.</p>
+                            ) : (
+                              <div className="grid md:grid-cols-2 gap-3">
+                                {day.entries.map(entry => (
+                                  <div
+                                    key={`${entry.entry_id}-${entry.child_id}`}
+                                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                                  >
+                                    <p className="text-sm font-bold text-[#2E342F]">{entry.lesson_title}</p>
+                                    <div className="flex gap-2 flex-wrap mt-3">
+                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F7F2E8] text-[#6E5A46]">
+                                        Starter: {entry.starter_score != null
+                                          ? `${entry.starter_score}/${entry.starter_total ?? 6}`
+                                          : "No score"}
+                                      </span>
+                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F7F2E8] text-[#6E5A46]">
+                                        Exit: {entry.exit_score != null
+                                          ? `${entry.exit_score}/${entry.exit_total ?? 6}`
+                                          : "No score"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                             )}
                           </div>
-
-                          <div className="space-y-3 mt-3">
-                            {day.entries.map(entry => {
-                              const ss = entry.starter_score;
-                              const st = entry.starter_total;
-                              const es = entry.exit_score;
-                              const et = entry.exit_total;
-
-                              return (
-                                <div
-                                  key={`${entry.entry_id}-${entry.child_id}`}
-                                  className={`pt-3 border-t ${
-                                    isToday ? "border-white/20" : "border-[#EEE6D9]"
-                                  }`}
-                                >
-                                  <p className={`text-xs font-semibold ${
-                                    isToday ? "text-white/90" : "text-[#2E342F]"
-                                  }`}>
-                                    {entry.lesson_title}
-                                  </p>
-
-                                  <div className="flex gap-2 flex-wrap mt-2">
-                                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${
-                                      isToday
-                                        ? "bg-white/15 text-white"
-                                        : "bg-[#F7F2E8] text-[#6E5A46]"
-                                    }`}>
-                                      Starter: {ss != null ? `${ss}/${st ?? 6}` : "No score"}
-                                    </span>
-
-                                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${
-                                      isToday
-                                        ? "bg-white/15 text-white"
-                                        : "bg-[#F7F2E8] text-[#6E5A46]"
-                                    }`}>
-                                      Exit: {es != null ? `${es}/${et ?? 6}` : "No score"}
-                                    </span>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
