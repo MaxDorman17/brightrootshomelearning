@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import { format, parseISO } from "date-fns";
 
 const EMOJIS = ["👏", "⭐", "🔥", "💪", "🎉", "👍", "🌟", "🏆"];
+const PAGE_SIZE = 12;
 
 const subjectColor = (subj: string) => {
   const colors: Record<string, string> = {
@@ -34,6 +35,7 @@ export default function ProgressPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "review" | "submitted" | "complete" | "incomplete">("review");
   const [highlightId, setHighlightId] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
 
   // Feedback form state
   const [feedbackOpen, setFeedbackOpen] = useState<number | null>(null);
@@ -51,17 +53,52 @@ export default function ProgressPage() {
     const entryId = entryParam ? Number(entryParam) : null;
     if (entryId) setHighlightId(entryId);
     Promise.all([getAllEntries(), getFeedback(), getChildren()]).then(([eRes, fRes, cRes]) => {
-      setEntries(eRes.data);
-      setAllFeedback(fRes.data);
+      const loadedEntries: PlannerEntry[] = eRes.data;
+      const loadedFeedback: WorkFeedback[] = fRes.data;
+
+      setEntries(loadedEntries);
+      setAllFeedback(loadedFeedback);
       setChildren(cRes.data);
-      setLoading(false);
+
       if (entryId) {
-        setTimeout(() => {
-          document.getElementById(`entry-${entryId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 150);
+        const feedbackCount = (id: number) => loadedFeedback.filter(fb => fb.entry_id === id).length;
+        const requestedFilter =
+          f === "submitted" || f === "complete" || f === "incomplete" || f === "review"
+            ? f
+            : "review";
+
+        const matching = loadedEntries
+          .filter(entry => {
+            if (requestedFilter === "review") return !!entry.completed_work_url && feedbackCount(entry.id) === 0;
+            if (requestedFilter === "submitted") return !!entry.completed_work_url;
+            if (requestedFilter === "complete") return entry.is_complete;
+            if (requestedFilter === "incomplete") return !entry.is_complete;
+            return true;
+          })
+          .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date));
+
+        const index = matching.findIndex(entry => entry.id === entryId);
+        if (index >= 0) setPage(Math.floor(index / PAGE_SIZE));
       }
+
+      setLoading(false);
     });
   }, [router]);
+
+  useEffect(() => {
+    if (!highlightId || loading) return;
+    const timer = window.setTimeout(() => {
+      document.getElementById(`entry-${highlightId}`)?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 100);
+    return () => window.clearTimeout(timer);
+  }, [highlightId, loading, page]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [filter, selectedChildId]);
 
   const getFeedbackForEntry = (entryId: number) =>
     allFeedback.filter(f => f.entry_id === entryId);
@@ -109,6 +146,11 @@ export default function ProgressPage() {
   const totalSubmitted = childEntries.filter((e) => e.completed_work_url).length;
   const feedbackSent = childEntries.filter((e) => getFeedbackForEntry(e.id).length > 0).length;
   const selectedChild = children.find(c => c.id === selectedChildId);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, pageCount - 1);
+  const pageStart = safePage * PAGE_SIZE;
+  const visibleEntries = filtered.slice(pageStart, pageStart + PAGE_SIZE);
 
   return (
     <div className="min-h-screen">
@@ -204,7 +246,7 @@ export default function ProgressPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {filtered.map((entry) => {
+            {visibleEntries.map((entry) => {
               const entryFeedback = getFeedbackForEntry(entry.id);
               const isOpen = feedbackOpen === entry.id;
               const needsReview = !!entry.completed_work_url && entryFeedback.length === 0;
@@ -419,6 +461,36 @@ export default function ProgressPage() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {!loading && filtered.length > PAGE_SIZE && (
+          <div className="brand-card p-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-sm text-[#6E5A46]">
+              Showing {pageStart + 1}–{Math.min(pageStart + PAGE_SIZE, filtered.length)} of {filtered.length}
+            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={safePage === 0}
+                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold disabled:opacity-40"
+              >
+                Previous
+              </button>
+
+              <span className="text-xs font-bold text-[#8A7A69] px-2">
+                Page {safePage + 1} of {pageCount}
+              </span>
+
+              <button
+                onClick={() => setPage(p => Math.min(pageCount - 1, p + 1))}
+                disabled={safePage >= pageCount - 1}
+                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
       </div>
