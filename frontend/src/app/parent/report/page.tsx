@@ -150,11 +150,24 @@ export default function ReportPage() {
   const totalSubmitted = filtered.filter(e => e.completed_work_url).length;
   const completionPct = filtered.length === 0 ? 0 : Math.round((totalComplete / filtered.length) * 100);
 
+  const SUBJECT_PRIORITY: Record<string, number> = {
+    Maths: 0,
+    English: 1,
+    Science: 2,
+  };
+
   const subjectStats = TIMETABLE_SUBJECTS.map(subject => {
     const s = timetable.filter(e => e.lesson.subject === subject);
     const done = s.filter(e => e.is_complete).length;
     return { subject, total: s.length, done, pct: s.length === 0 ? 0 : Math.round((done / s.length) * 100) };
-  }).filter(s => s.total > 0).sort((a, b) => b.pct - a.pct);
+  })
+    .filter(s => s.total > 0)
+    .sort((a, b) => {
+      const aPriority = SUBJECT_PRIORITY[a.subject] ?? 99;
+      const bPriority = SUBJECT_PRIORITY[b.subject] ?? 99;
+      if (aPriority !== bPriority) return aPriority - bPriority;
+      return a.subject.localeCompare(b.subject);
+    });
 
   const allSubmitted = childEntries.filter(e => e.completed_work_url);
 
