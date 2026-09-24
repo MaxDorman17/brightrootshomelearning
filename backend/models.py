@@ -78,6 +78,16 @@ class UnitQueue(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
+class WorkReview(Base):
+    __tablename__ = "work_reviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    entry_id = Column(Integer, ForeignKey("planner_entries.id", ondelete="CASCADE"), nullable=False)
+    parent_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    reviewed_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("entry_id", "parent_id", name="uq_work_review_entry_parent"),)
+
+
 class WorkFeedback(Base):
     __tablename__ = "work_feedback"
 
