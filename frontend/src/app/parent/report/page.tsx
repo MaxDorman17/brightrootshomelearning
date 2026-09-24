@@ -70,6 +70,7 @@ export default function ReportPage() {
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
+  const [reportQuizScores, setReportQuizScores] = useState<WeekQuizScores | null>(null);
   const [exporting, setExporting] = useState(false);
   const [showSpellingHistory, setShowSpellingHistory] = useState(false);
 
@@ -116,6 +117,46 @@ export default function ReportPage() {
       .then(res => setWeekQuizScores(res.data))
       .catch(() => setWeekQuizScores(null));
   }, [selectedChildId, loading]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const now = new Date();
+    let rangeStart: Date;
+    let rangeEnd: Date;
+
+    if (period === "week") {
+      rangeStart = startOfWeek(now, { weekStartsOn: 1 });
+      rangeEnd = endOfWeek(now, { weekStartsOn: 1 });
+    } else if (period === "month") {
+      rangeStart = startOfMonth(now);
+      rangeEnd = endOfMonth(now);
+    } else {
+      const relevantEntries = selectedChildId
+        ? entries.filter(e => e.assigned_to === null || e.assigned_to === selectedChildId)
+        : entries;
+
+      if (relevantEntries.length === 0) {
+        setReportQuizScores(null);
+        return;
+      }
+
+      const dates = relevantEntries
+        .map(e => parseISO(e.scheduled_date))
+        .sort((a, b) => a.getTime() - b.getTime());
+
+      rangeStart = dates[0];
+      rangeEnd = dates[dates.length - 1];
+    }
+
+    getWeekQuizScores(
+      format(rangeStart, "yyyy-MM-dd"),
+      format(rangeEnd, "yyyy-MM-dd"),
+      selectedChildId ?? undefined,
+    )
+      .then(res => setReportQuizScores(res.data))
+      .catch(() => setReportQuizScores(null));
+  }, [period, selectedChildId, loading, entries]);
 
   // Coding progress is per child — show the selected child's, or the union across all children
   useEffect(() => {
@@ -297,7 +338,7 @@ export default function ReportPage() {
           </div>
         </div>
 
-        {tab !== "work" && tab !== "export" && tab !== "oak" && tab !== "attendance" && (
+        {tab !== "work" && tab !== "oak" && tab !== "attendance" && (
           <div className="flex flex-wrap gap-2 mb-6 print:hidden">
             {(["week", "month", "all"] as Period[]).map(p => (
               <button
