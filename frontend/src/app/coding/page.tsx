@@ -145,97 +145,186 @@ export default function CodingPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6 flex items-start justify-between flex-wrap gap-3">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">💻 Coding Curriculum</h1>
-            <p className="text-gray-500 mt-1">Learn to code step by step — from block coding all the way to Python and the web</p>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-7">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+                Learning
+              </p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Coding</h1>
+              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+                Work through Scratch, Code.org, Python and web development at your own pace.
+              </p>
+            </div>
+
+            {isParent && children.length > 0 && (
+              <div className="brand-card px-4 py-3 flex items-center gap-3">
+                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Viewing</span>
+                <select
+                  value={selectedChildId ?? ""}
+                  onChange={e => setSelectedChildId(Number(e.target.value))}
+                  className="text-sm font-semibold text-[#2E342F] bg-transparent focus:outline-none cursor-pointer"
+                >
+                  {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+                </select>
+              </div>
+            )}
           </div>
-          {isParent && children.length > 0 && (
-            <div className="flex items-center gap-2 bg-white/80 border border-white/60 rounded-xl px-3 py-1.5 shadow-sm">
-              <span className="text-xs font-bold text-gray-500">Viewing:</span>
-              <select
-                value={selectedChildId ?? ""}
-                onChange={e => setSelectedChildId(Number(e.target.value))}
-                className="text-sm font-semibold text-gray-800 bg-transparent focus:outline-none cursor-pointer"
-              >
-                {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
-              </select>
+        </div>
+
+        <div className="brand-card p-6 mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Overall Progress</p>
+              <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
+                {totalDone} of {TOTAL} lessons complete
+              </h2>
+              <p className="text-sm text-[#6E5A46] mt-1">
+                Progress across the full coding pathway.
+              </p>
+            </div>
+
+            <div className="lg:text-right">
+              <p className="text-4xl font-bold text-[#3F5D46]">{overallPct}%</p>
+              <p className="text-xs font-semibold text-[#8FA382] mt-1">curriculum complete</p>
+            </div>
+          </div>
+
+          <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
+            <div
+              className="h-full rounded-full bg-[#8FA382] transition-all duration-500"
+              style={{ width: `${overallPct}%` }}
+            />
+          </div>
+
+          {totalDone === TOTAL && (
+            <div className="rounded-xl bg-[#E8F0E8] border border-[#C9D8C6] p-4 mt-5">
+              <p className="text-sm font-bold text-[#3F5D46]">
+                Full coding pathway completed.
+              </p>
             </div>
           )}
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm p-5 mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-semibold text-gray-700">Overall Progress</span>
-            <span className="text-[#2F5D3A] font-bold">{totalDone} / {TOTAL} lessons · {overallPct}%</span>
-          </div>
-          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div className="bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] h-4 rounded-full transition-all duration-500"
-              style={{ width: `${overallPct}%` }} />
-          </div>
-          {totalDone === TOTAL && (
-            <p className="text-green-600 text-sm font-semibold mt-3 text-center">
-              Amazing — you&apos;ve completed the whole curriculum! Future coder unlocked 🚀
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
           {TRACKS.map(track => {
             const done = track.lessons.filter(l => completed.has(l.id)).length;
             const pct = Math.round((done / track.lessons.length) * 100);
+
             return (
-              <div key={track.id} className={`rounded-2xl border ${track.border} ${track.bg} p-6`}>
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{track.icon}</span>
-                    <h2 className={`text-lg font-bold ${track.textColor}`}>{track.name}</h2>
+              <div key={track.id} className="brand-card p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                      {track.name.split(" — ")[0]}
+                    </p>
+                    <p className="text-sm font-bold text-[#2E342F] mt-1">
+                      {track.name.includes(" — ") ? track.name.split(" — ")[1] : track.name}
+                    </p>
                   </div>
-                  <span className={`text-sm font-bold ${track.textColor}`}>{done}/{track.lessons.length}</span>
+                  <span className="text-lg font-bold text-[#3F5D46]">{done}/{track.lessons.length}</span>
                 </div>
-                <div className="w-full bg-white/60 rounded-full h-2 mb-5">
-                  <div className={`h-2 rounded-full transition-all duration-500 ${track.barColor}`}
-                    style={{ width: `${pct}%` }} />
+
+                <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden mt-4">
+                  <div
+                    className="h-full rounded-full bg-[#8FA382] transition-all"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="space-y-6">
+          {TRACKS.map(track => {
+            const done = track.lessons.filter(l => completed.has(l.id)).length;
+            const pct = Math.round((done / track.lessons.length) * 100);
+
+            return (
+              <div key={track.id} className="brand-card p-6">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                      Coding Pathway
+                    </p>
+                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">{track.name}</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      {done} of {track.lessons.length} lessons complete
+                    </p>
+                  </div>
+
+                  <span className="text-2xl font-bold text-[#3F5D46]">{pct}%</span>
                 </div>
 
                 <div className="space-y-3">
                   {track.lessons.map((lesson, idx) => {
                     const isDone = completed.has(lesson.id);
                     const isToggling = toggling === lesson.id;
+
                     return (
-                      <div key={lesson.id}
-                        className={`bg-white/90 rounded-xl border-2 p-4 transition-all shadow-sm ${isDone ? "opacity-75 border-green-200" : "border-white hover:border-gray-100"}`}>
-                        <div className="flex items-start gap-3">
-                          <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold border-2 transition-all mt-0.5 ${
-                            isDone ? "bg-green-500 border-green-500 text-white" : "border-gray-300 text-gray-400 bg-white"
-                          }`}>
-                            {isDone ? "✓" : idx + 1}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className={`font-semibold ${isDone ? "line-through text-gray-400" : "text-gray-900"}`}>
-                                {lesson.title}
-                              </h3>
-                              <span className="text-xs text-gray-400">⏱ {lesson.duration}</span>
+                      <div
+                        key={lesson.id}
+                        className={`rounded-xl border p-4 transition-colors ${
+                          isDone
+                            ? "bg-[#F7F2E8] border-[#D8D1C4]"
+                            : "bg-[#FFFDF8] border-[#E7DFD1]"
+                        }`}
+                      >
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                          <div className="flex items-start gap-3 flex-1 min-w-0">
+                            <div className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold mt-0.5 ${
+                              isDone
+                                ? "bg-[#3F5D46] text-white"
+                                : "bg-[#F0EADF] text-[#6E5A46]"
+                            }`}>
+                              {isDone ? "✓" : idx + 1}
                             </div>
-                            <p className="text-sm text-gray-500 mt-0.5 leading-snug">{lesson.desc}</p>
+
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className={`text-sm font-bold ${
+                                  isDone ? "text-[#6E5A46]" : "text-[#2E342F]"
+                                }`}>
+                                  {lesson.title}
+                                </h3>
+                                <span className="text-xs font-semibold text-[#8A7A69] bg-[#F0ECE6] px-2 py-1 rounded-full">
+                                  {lesson.duration}
+                                </span>
+                              </div>
+
+                              <p className="text-sm text-[#6E5A46] mt-1 leading-relaxed">
+                                {lesson.desc}
+                              </p>
+                            </div>
                           </div>
+
                           <div className="flex items-center gap-2 shrink-0">
-                            <a href={lesson.url} target="_blank" rel="noopener noreferrer"
-                              className={`text-sm px-4 py-1.5 rounded-xl font-bold transition-all ${
-                                isDone ? "bg-gray-100 text-gray-500 hover:bg-gray-200" : "gradient-btn"
-                              }`}>
-                              {isDone ? "Review" : "Start →"}
-                            </a>
-                            <button onClick={() => toggle(lesson.id)} disabled={isToggling}
-                              title={isDone ? "Mark as not done" : "Mark as done"}
-                              className={`w-9 h-9 rounded-lg text-sm font-bold border transition-colors disabled:opacity-50 ${
+                            <a
+                              href={lesson.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                                 isDone
-                                  ? "border-green-300 bg-green-50 text-green-600 hover:bg-red-50 hover:border-red-300 hover:text-red-500"
-                                  : "border-gray-200 bg-white text-gray-300 hover:border-green-400 hover:text-green-500 hover:bg-green-50"
-                              }`}>
-                              {isToggling ? "…" : isDone ? "✓" : "○"}
+                                  ? "border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] hover:border-[#8FA382]"
+                                  : "bg-[#3F5D46] text-white hover:bg-[#354F3B]"
+                              }`}
+                            >
+                              {isDone ? "Review" : "Start lesson"}
+                            </a>
+
+                            <button
+                              onClick={() => toggle(lesson.id)}
+                              disabled={isToggling}
+                              className={`px-3 py-2.5 rounded-xl text-sm font-bold border transition-colors disabled:opacity-50 ${
+                                isDone
+                                  ? "border-[#C9D8C6] bg-[#E8F0E8] text-[#3F5D46] hover:bg-[#FAEEE8] hover:border-[#E5CFC3] hover:text-[#A85F46]"
+                                  : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382] hover:text-[#3F5D46]"
+                              }`}
+                            >
+                              {isToggling ? "Saving…" : isDone ? "Completed" : "Mark done"}
                             </button>
                           </div>
                         </div>
