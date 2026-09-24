@@ -3,10 +3,11 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_
 from typing import List, Optional
+from datetime import date, datetime, timedelta
 import os
 import uuid
 from database import get_db
-from models import ReadingLog, ReadingWorksheet, User
+from models import ReadingLog, ReadingWorksheet, ReadingChapterProgress, User
 from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut
 from auth import get_current_user, require_parent
 
@@ -120,7 +121,16 @@ def update_book(
     if body.notes is not None:
         book.notes = body.notes
     if body.completed_chapters is not None:
-        book.completed_chapters = body.completed_chapters
+        previous_chapters = book.completed_chapters or 0
+        next_chapters = max(0, body.completed_chapters)
+        delta = next_chapters - previous_chapters
+        book.completed_chapters = next_chapters
+        if delta != 0:
+            db.add(ReadingChapterProgress(
+                book_id=book.id,
+                child_id=book.child_id,
+                delta=delta,
+            ))
     if body.reading_journal is not None:
         book.reading_journal = body.reading_journal
     if body.question_1_answer is not None:
@@ -146,6 +156,60 @@ def delete_book(
         raise HTTPException(status_code=404, detail="Book not found")
     db.delete(book)
     db.commit()
+
+
+@router.get("/chapter-summary")
+def chapter_summary(
+    child_id: Optional[int] = None,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    query = (
+        db.query(ReadingChapterProgress)
+        .join(ReadingLog, ReadingChapterProgress.book_id == ReadingLog.id)
+        .filter(_family_book_filter(current_user))
+    )
+
+    if current_user.role == "child":
+        query = query.filter(
+            or_(
+                ReadingChapterProgress.child_id == current_user.id,
+                ReadingChapterProgress.child_id.is_(None),
+            )
+        )
+    elif child_id is not None:
+        child = db.query(User).filter(
+            User.id == child_id,
+            User.parent_id == current_user.id,
+            User.role == "child",
+        ).first()
+        if not child:
+            raise HTTPException(status_code=403, detail="Not your child")
+        query = query.filter(
+            or_(
+                ReadingChapterProgress.child_id == child_id,
+                ReadingChapterProgress.child_id.is_(None),
+            )
+        )
+
+    if start_date is not None:
+        query = query.filter(
+            ReadingChapterProgress.created_at >= datetime.combine(start_date, datetime.min.time())
+        )
+    if end_date is not None:
+        query = query.filter(
+            ReadingChapterProgress.created_at < datetime.combine(end_date + timedelta(days=1), datetime.min.time())
+        )
+
+    rows = query.all()
+    net = sum(row.delta for row in rows)
+    return {
+        "chapters": max(0, net),
+        "changes": len(rows),
+        "tracking_started": True,
+    }
 
 
 # --- Worksheets ---
