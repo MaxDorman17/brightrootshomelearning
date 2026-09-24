@@ -50,31 +50,6 @@ function QuizScoreBadge({ label, score, total }: { label: string; score: number;
     : pct >= 50
     ? "bg-amber-50 text-amber-700 border-amber-200"
     : "bg-red-50 text-red-600 border-red-200";
-  const readingPeriodLabel =
-    period === "week" ? "this week" : period === "month" ? "this month" : "tracked";
-
-  const readingCard = (
-    <div className="brand-card p-5">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
-          <div className="flex items-end gap-3 mt-1">
-            <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
-            <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
-              chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
-            </h2>
-          </div>
-          <p className="text-sm text-[#6E5A46] mt-2">
-            Chapter progress is counted from the new tracker onward.
-          </p>
-        </div>
-        <a href="/reading-log" className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0">
-          Open reading
-        </a>
-      </div>
-    </div>
-  );
-
   return (
     <span className={`inline-flex items-center gap-1 text-[11px] font-bold border rounded-full px-2 py-0.5 ${colors}`}>
       {label} {score}/{total}
@@ -331,6 +306,31 @@ export default function ReportPage() {
       setExporting(false);
     }
   };
+
+  const readingPeriodLabel =
+    period === "week" ? "this week" : period === "month" ? "this month" : "tracked";
+
+  const readingCard = (
+    <div className="brand-card p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
+          <div className="flex items-end gap-3 mt-1">
+            <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
+            <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
+              chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
+            </h2>
+          </div>
+          <p className="text-sm text-[#6E5A46] mt-2">
+            Chapter progress is counted from the new tracker onward.
+          </p>
+        </div>
+        <a href="/reading-log" className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0">
+          Open reading
+        </a>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen">
