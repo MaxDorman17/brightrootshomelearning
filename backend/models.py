@@ -196,6 +196,16 @@ class ReadingLog(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class ReadingChapterProgress(Base):
+    __tablename__ = "reading_chapter_progress"
+
+    id = Column(Integer, primary_key=True, index=True)
+    book_id = Column(Integer, ForeignKey("reading_log.id", ondelete="CASCADE"), nullable=False)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    delta = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class SpellingWord(Base):
     __tablename__ = "spelling_words"
 
