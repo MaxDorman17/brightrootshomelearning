@@ -471,118 +471,124 @@ export default function ReportPage() {
 
             {/* Report Home summary */}
             {tab === "home" && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div className="brand-card p-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Assigned</p>
-                  <p className="text-3xl font-bold text-[#2E342F] mt-2">{filtered.length}</p>
-                  <p className="text-sm text-[#6E5A46] mt-1">Lessons in this period</p>
-                </div>
-
-                <div className="brand-card p-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Completed</p>
-                  <p className="text-3xl font-bold text-[#3F5D46] mt-2">{totalComplete}</p>
-                  <p className="text-sm text-[#6E5A46] mt-1">Finished lessons</p>
-                </div>
-
-                <div className="brand-card p-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Completion</p>
-                  <p className="text-3xl font-bold text-[#D88C64] mt-2">{completionPct}%</p>
-                  <p className="text-sm text-[#6E5A46] mt-1">Overall completion rate</p>
-                </div>
-
-                <div className="brand-card p-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
-                  <p className="text-3xl font-bold text-[#E3B554] mt-2">{totalSubmitted}</p>
-                  <p className="text-sm text-[#6E5A46] mt-1">Pieces submitted</p>
-                </div>
-              </div>
-            )}
-
-            {tab === "home" && (
-              <div className="grid lg:grid-cols-2 gap-6 mb-6">
+              <div className="space-y-6 mb-6">
                 <div className="brand-card p-6">
-                  <div className="flex items-center justify-between gap-4 mb-5">
+                  <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Snapshot</p>
-                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Overview</p>
+                      <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
+                        {selectedChild ? `${selectedChild.username}'s learning at a glance` : "Family learning at a glance"}
+                      </h2>
+                      <p className="text-sm text-[#6E5A46] mt-2 max-w-2xl">
+                        A simple snapshot of this {period === "week" ? "week" : period === "month" ? "month" : "record"}.
+                        Open a section below when you want the detail.
+                      </p>
                     </div>
-                    <button
-                      onClick={() => setTab("progress")}
-                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
-                    >
-                      View progress
-                    </button>
+
+                    <div className="flex items-end gap-2">
+                      <p className="text-4xl font-bold text-[#3F5D46]">{completionPct}%</p>
+                      <p className="text-xs font-semibold text-[#8FA382] pb-1">complete</p>
+                    </div>
                   </div>
 
-                  {subjectStats.length > 0 ? (
-                    <div className="space-y-4">
-                      {subjectStats.slice(0, 5).map(s => (
-                        <div key={s.subject}>
-                          <div className="flex items-center justify-between gap-3 mb-1.5">
-                            <span className="text-sm font-semibold text-[#2E342F]">{s.subject}</span>
-                            <span className="text-xs font-bold text-[#6E5A46]">
-                              {s.done}/{s.total} / {s.pct}%
-                            </span>
-                          </div>
-                          <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-[#8FA382]"
-                              style={{ width: `${s.pct}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-[#6E5A46]">No subject progress for this period yet.</p>
-                  )}
-                </div>
-
-                <div className="brand-card p-6">
-                  <div className="flex items-center justify-between gap-4 mb-5">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Latest</p>
-                      <h2 className="text-lg font-bold text-[#2E342F] mt-1">Recent Learning</h2>
-                    </div>
-                    <button
-                      onClick={() => setTab("work")}
-                      className="text-sm font-semibold text-[#3F5D46] hover:underline"
-                    >
-                      View work
-                    </button>
+                  <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
+                    <div
+                      className="h-full rounded-full bg-[#8FA382]"
+                      style={{ width: `${completionPct}%` }}
+                    />
                   </div>
 
-                  {filtered.length > 0 ? (
-                    <div className="space-y-3">
-                      {[...filtered]
-                        .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date))
-                        .slice(0, 5)
-                        .map(e => (
-                          <div
-                            key={e.id}
-                            className="flex items-start justify-between gap-4 py-2 border-b border-[#EEE6D9] last:border-0"
-                          >
-                            <div className="min-w-0">
-                              <p className="text-sm font-semibold text-[#2E342F] truncate">{e.lesson.title}</p>
-                              <p className="text-xs text-[#8FA382] mt-0.5">
-                                {e.lesson.subject} / {format(parseISO(e.scheduled_date), "d MMM yyyy")}
-                              </p>
+                  <div className="grid grid-cols-3 gap-3 mt-5">
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#2E342F]">{filtered.length}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Planned</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#3F5D46]">{totalComplete}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Completed</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#D39A3A]">{totalSubmitted}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Submitted</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-6">
+                  <div className="brand-card p-6">
+                    <div className="flex items-center justify-between gap-4 mb-5">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                        <h2 className="text-lg font-bold text-[#2E342F] mt-1">Current progress</h2>
+                      </div>
+                      <button
+                        onClick={() => setTab("progress")}
+                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                      >
+                        See all
+                      </button>
+                    </div>
+
+                    {subjectStats.length > 0 ? (
+                      <div className="space-y-4">
+                        {subjectStats.slice(0, 4).map(s => (
+                          <div key={s.subject}>
+                            <div className="flex items-center justify-between gap-3 mb-1.5">
+                              <span className="text-sm font-semibold text-[#2E342F]">{s.subject}</span>
+                              <span className="text-xs font-bold text-[#6E5A46]">{s.done}/{s.total}</span>
                             </div>
-                            <span
-                              className={`shrink-0 text-xs font-bold px-2 py-1 rounded-full ${
-                                e.is_complete
-                                  ? "bg-[#E8F0E8] text-[#3F5D46]"
-                                  : "bg-[#F7F2E8] text-[#6E5A46]"
-                              }`}
-                            >
-                              {e.is_complete ? "Done" : "Planned"}
-                            </span>
+                            <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden">
+                              <div
+                                className="h-full rounded-full bg-[#8FA382]"
+                                style={{ width: `${s.pct}%` }}
+                              />
+                            </div>
                           </div>
                         ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-[#6E5A46]">No subject progress for this period yet.</p>
+                    )}
+                  </div>
+
+                  <div className="brand-card p-6">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Open a report</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">More detail when you need it</h2>
+                    <p className="text-sm text-[#6E5A46] mt-2">
+                      Keep the overview simple and jump straight to the evidence you want.
+                    </p>
+
+                    <div className="grid sm:grid-cols-2 gap-3 mt-5">
+                      <button
+                        onClick={() => setTab("progress")}
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                      >
+                        <p className="text-sm font-bold text-[#2E342F]">Progress</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Subjects, coding and spellings</p>
+                      </button>
+                      <button
+                        onClick={() => setTab("oak")}
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                      >
+                        <p className="text-sm font-bold text-[#2E342F]">Oak results</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Quiz scores and lesson evidence</p>
+                      </button>
+                      <button
+                        onClick={() => setTab("work")}
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                      >
+                        <p className="text-sm font-bold text-[#2E342F]">Submitted work</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Recent completed work</p>
+                      </button>
+                      <button
+                        onClick={() => setTab("export")}
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                      >
+                        <p className="text-sm font-bold text-[#2E342F]">Print & export</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Printable records and spreadsheets</p>
+                      </button>
                     </div>
-                  ) : (
-                    <p className="text-sm text-[#6E5A46]">No recent learning for this period yet.</p>
-                  )}
+                  </div>
                 </div>
               </div>
             )}
