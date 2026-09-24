@@ -187,12 +187,41 @@ def move_single_entry(
     step = 1 if body.direction == "forward" else -1
     target = entry.scheduled_date + timedelta(days=step)
 
+    def has_subject_collision(candidate: date) -> bool:
+        q = (
+            db.query(PlannerEntry)
+            .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+            .filter(
+                PlannerEntry.id != entry.id,
+                PlannerEntry.scheduled_date == candidate,
+                Lesson.subject == entry.lesson.subject,
+                Lesson.created_by == current_user.id,
+            )
+        )
+
+        if entry.assigned_to is not None:
+            q = q.filter(
+                or_(
+                    PlannerEntry.assigned_to == entry.assigned_to,
+                    PlannerEntry.assigned_to.is_(None),
+                )
+            )
+
+        return q.first() is not None
+
     for _ in range(730):
-        if target.weekday() < 5 and target not in days_off:
+        if (
+            target.weekday() < 5
+            and target not in days_off
+            and not has_subject_collision(target)
+        ):
             break
         target += timedelta(days=step)
     else:
-        raise HTTPException(status_code=400, detail="Could not find another school day")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Could not find another school day without a {entry.lesson.subject} collision",
+        )
 
     entry.scheduled_date = target
     db.commit()
