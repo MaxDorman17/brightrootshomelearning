@@ -297,7 +297,7 @@ export default function ReportPage() {
           </div>
         </div>
 
-        {tab !== "work" && tab !== "export" && (
+        {tab !== "work" && tab !== "export" && tab !== "oak" && (
           <div className="flex flex-wrap gap-2 mb-6 print:hidden">
             {(["week", "month", "all"] as Period[]).map(p => (
               <button
@@ -1171,9 +1171,9 @@ export default function ReportPage() {
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Oak National Academy</p>
-                        <h2 className="text-xl font-bold text-[#2E342F] mt-1">Weekly Quiz Results</h2>
+                        <h2 className="text-xl font-bold text-[#2E342F] mt-1">This Week's Quiz Results</h2>
                         <p className="text-sm text-[#6E5A46] mt-1">
-                          {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
+                          Current week · {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
                         </p>
                       </div>
 
