@@ -75,6 +75,7 @@ export default function ReportPage() {
   const [reportQuizScores, setReportQuizScores] = useState<WeekQuizScores | null>(null);
   const [exporting, setExporting] = useState(false);
   const [showSpellingHistory, setShowSpellingHistory] = useState(false);
+  const [showAllSubjects, setShowAllSubjects] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -844,34 +845,48 @@ export default function ReportPage() {
             {/* Subject progress */}
             {tab === "progress" && subjectStats.length > 0 && (
               <div className="brand-card p-6 mb-6">
-                <div className="mb-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
-                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
-                  <p className="text-sm text-[#6E5A46] mt-1">
-                    Completion across the subjects in this reporting period.
-                  </p>
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">
+                      Core subjects first, with the rest available when you need the detail.
+                    </p>
+                  </div>
+
+                  {subjectStats.length > 3 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllSubjects(v => !v)}
+                      className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0"
+                    >
+                      {showAllSubjects ? "Show core subjects" : `Show all subjects (${subjectStats.length})`}
+                    </button>
+                  )}
                 </div>
 
-                <div className="space-y-5">
-                  {subjectStats.map(s => (
-                    <div key={s.subject}>
+                <div className="grid gap-4">
+                  {(showAllSubjects ? subjectStats : subjectStats.slice(0, 3)).map((s, index) => (
+                    <div
+                      key={s.subject}
+                      className={index < 3
+                        ? "rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4"
+                        : "rounded-xl border border-[#EEE6D9] p-4"}
+                    >
                       <div className="flex items-center justify-between gap-4 mb-2">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#8FA382] shrink-0" />
-                          <span className="text-sm font-semibold text-[#2E342F] truncate">
-                            {s.subject}
-                          </span>
+                        <div>
+                          <p className="text-sm font-bold text-[#2E342F]">{s.subject}</p>
+                          <p className="text-xs text-[#6E5A46] mt-0.5">
+                            {s.done} of {s.total} lessons complete
+                          </p>
                         </div>
 
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-xs text-[#6E5A46]">{s.done}/{s.total}</span>
-                          <span className="text-sm font-bold text-[#3F5D46] w-11 text-right">
-                            {s.pct}%
-                          </span>
-                        </div>
+                        <span className="text-lg font-bold text-[#3F5D46] shrink-0">
+                          {s.pct}%
+                        </span>
                       </div>
 
-                      <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
+                      <div className="h-2.5 rounded-full bg-[#EDE6DA] overflow-hidden">
                         <div
                           className="h-full rounded-full bg-[#8FA382] transition-all"
                           style={{ width: `${s.pct}%` }}
