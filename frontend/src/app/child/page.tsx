@@ -465,75 +465,104 @@ export default function ChildDashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {DAYS.map((dayName, dayIndex) => {
               const dayDate = weekDates[dayIndex];
               const dateStr = format(dayDate, "yyyy-MM-dd");
-              const dayEntries = entries.filter(e => e.scheduled_date === dateStr && !e.is_extra);
+              const dayEntries = entries
+                .filter(e => e.scheduled_date === dateStr && !e.is_extra)
+                .sort((a, b) => {
+                  const order = timetable[dayName] ?? [];
+                  const ai = order.indexOf(a.lesson.subject);
+                  const bi = order.indexOf(b.lesson.subject);
+                  if (ai === -1 && bi === -1) return a.id - b.id;
+                  if (ai === -1) return 1;
+                  if (bi === -1) return -1;
+                  return ai - bi;
+                });
               const complete = dayEntries.filter(e => e.is_complete).length;
               const dayOff = daysOffSet.has(dateStr);
               const active = selectedDayIndex === dayIndex;
               const today = isToday(dayDate);
-              const allDone = dayEntries.length > 0 && complete === dayEntries.length;
 
               return (
                 <button
                   key={dayName}
                   onClick={() => setSelectedDayIndex(dayIndex)}
-                  className={`relative rounded-2xl border p-3 text-center transition-all ${
+                  className={`text-left rounded-2xl border overflow-hidden transition-all ${
                     active
-                      ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md -translate-y-0.5"
+                      ? "border-[#3F5D46] ring-2 ring-[#DCE8DC]"
                       : dayOff
-                      ? "bg-[#FFF5E8] border-[#F0D4A8] text-[#8A624B]"
-                      : allDone
-                      ? "bg-[#F1F6EF] border-[#D1DED0] text-[#3F5D46]"
-                      : "bg-[#FFFDF8] border-[#E7DFD1] text-[#2E342F] hover:border-[#8FA382]"
+                      ? "border-[#F0D4A8]"
+                      : "border-[#E7DFD1] hover:border-[#8FA382]"
                   }`}
                 >
-                  {today && (
-                    <span className={`absolute top-2 right-2 w-2 h-2 rounded-full ${
-                      active ? "bg-white" : "bg-[#D19A32]"
-                    }`} />
-                  )}
-
-                  <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName.slice(0,3)}</p>
-                  <p className="text-lg font-bold mt-0.5">{format(dayDate, "d")}</p>
-                  <p className="text-[10px] opacity-70">{format(dayDate, "MMM")}</p>
-
-                  <div className="flex justify-center gap-1 mt-2 min-h-2">
-                    {dayOff ? (
-                      <span className="text-[10px]">🌤️</span>
-                    ) : dayEntries.length > 0 ? (
-                      dayEntries.slice(0, 6).map((entry, i) => (
-                        <span
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            entry.is_complete
-                              ? active ? "bg-white" : "bg-[#5F8A68]"
-                              : active ? "bg-white/35" : "bg-[#D8D1C4]"
-                          }`}
-                        />
-                      ))
-                    ) : (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#DDD3C4]" />
-                    )}
+                  <div className={`px-3 py-3 ${
+                    active
+                      ? "bg-[#3F5D46] text-white"
+                      : dayOff
+                      ? "bg-[#FFF3E3] text-[#8A624B]"
+                      : today
+                      ? "bg-[#E8F0E8] text-[#3F5D46]"
+                      : "bg-[#F7F3EA] text-[#2E342F]"
+                  }`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName}</p>
+                        <p className="text-lg font-bold mt-0.5">{format(dayDate, "d MMM")}</p>
+                      </div>
+                      {today && (
+                        <span className={`text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full ${
+                          active ? "bg-white/15 text-white" : "bg-white text-[#3F5D46]"
+                        }`}>
+                          Today
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[10px] font-semibold mt-2 opacity-80">
+                      {dayOff ? "Day off" : dayEntries.length > 0 ? `${complete}/${dayEntries.length} complete` : "No lessons"}
+                    </p>
                   </div>
 
-                  <p className="mt-1.5 text-[10px] font-bold">
-                    {dayOff
-                      ? "Day off"
-                      : dayEntries.length > 0
-                      ? allDone ? "All done" : `${complete}/${dayEntries.length} done`
-                      : "No lessons"}
-                  </p>
-
-                  {today && (
-                    <span className={`inline-block mt-1 text-[9px] font-bold uppercase tracking-wide ${
-                      active ? "text-white/80" : "text-[#A3752C]"
-                    }`}>
-                      Today
-                    </span>
-                  )}
+                  <div className={`p-2.5 min-h-[190px] space-y-2 ${
+                    dayOff ? "bg-[#FFF9F1]" : "bg-[#FFFDF8]"
+                  }`}>
+                    {dayOff ? (
+                      <div className="h-full min-h-[160px] flex flex-col items-center justify-center text-center">
+                        <span className="text-2xl">🌤️</span>
+                        <p className="text-xs font-bold text-[#8A624B] mt-2">No school work</p>
+                      </div>
+                    ) : dayEntries.length === 0 ? (
+                      <div className="h-full min-h-[160px] flex items-center justify-center text-center">
+                        <p className="text-xs text-[#A79B8C]">Nothing planned</p>
+                      </div>
+                    ) : (
+                      dayEntries.map(entry => (
+                        <div
+                          key={entry.id}
+                          className={`rounded-xl border px-2.5 py-2 ${
+                            entry.is_complete
+                              ? "bg-[#F1F6EF] border-[#D1DED0]"
+                              : "bg-white border-[#E7DFD1]"
+                          }`}
+                        >
+                          <div className="flex items-start gap-2">
+                            <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
+                              entry.is_complete ? "bg-[#5F8A68]" : subjectDot[entry.lesson.subject] || "bg-gray-400"
+                            }`} />
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-bold uppercase tracking-wide text-[#8A7A69]">
+                                {entry.lesson.subject}
+                              </p>
+                              <p className="text-xs font-semibold text-[#2E342F] leading-snug mt-0.5 line-clamp-2">
+                                {entry.lesson.title}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </button>
               );
             })}
