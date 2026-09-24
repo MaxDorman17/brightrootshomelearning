@@ -282,6 +282,31 @@ export default function ReportPage() {
     return "bg-red-300";
   };
 
+  const learningDayDates = heatmapWeeks
+    .flat()
+    .filter(d => format(d, "yyyy-MM-dd") <= format(new Date(), "yyyy-MM-dd"));
+
+  const scheduledLearningDays = learningDayDates.filter(d => {
+    const day = byDate[format(d, "yyyy-MM-dd")];
+    return !!day && day.length > 0;
+  });
+
+  const fullyCompletedDays = scheduledLearningDays.filter(d => {
+    const day = byDate[format(d, "yyyy-MM-dd")];
+    return day.every(e => e.is_complete);
+  }).length;
+
+  const partiallyCompletedDays = scheduledLearningDays.filter(d => {
+    const day = byDate[format(d, "yyyy-MM-dd")];
+    const done = day.filter(e => e.is_complete).length;
+    return done > 0 && done < day.length;
+  }).length;
+
+  const noLearningCompletedDays = scheduledLearningDays.filter(d => {
+    const day = byDate[format(d, "yyyy-MM-dd")];
+    return day.every(e => !e.is_complete);
+  }).length;
+
   // Weekly trend: last 8 weeks
   const weeklyTrend = Array.from({ length: 8 }, (_, i) => {
     const weekStart = startOfWeek(subWeeks(new Date(), 7 - i), { weekStartsOn: 1 });
@@ -807,6 +832,25 @@ export default function ReportPage() {
                     <p className="text-sm text-[#6E5A46] mt-1">
                       A day-by-day view of how much scheduled learning was completed.
                     </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#2E342F]">{scheduledLearningDays.length}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Scheduled learning days</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#3F5D46]">{fullyCompletedDays}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">All lessons complete</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#D19A32]">{partiallyCompletedDays}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">Partially completed</p>
+                    </div>
+                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <p className="text-2xl font-bold text-[#B66443]">{noLearningCompletedDays}</p>
+                      <p className="text-xs font-semibold text-[#6E5A46] mt-1">No lessons completed</p>
+                    </div>
                   </div>
 
                   <div className="overflow-x-auto">
