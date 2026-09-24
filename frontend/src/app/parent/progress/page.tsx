@@ -2,7 +2,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getFeedback, createFeedback, deleteFeedback, getChildren } from "@/lib/api";
+import {
+  getAllEntries,
+  getFeedback,
+  createFeedback,
+  deleteFeedback,
+  getChildren,
+  getReviewedEntryIds,
+  markEntryReviewed,
+  markEntryUnreviewed,
+} from "@/lib/api";
 import { PlannerEntry, WorkFeedback, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO } from "date-fns";
@@ -35,6 +44,8 @@ export default function ProgressPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "review" | "submitted" | "complete" | "incomplete">("review");
   const [highlightId, setHighlightId] = useState<number | null>(null);
+  const [reviewedEntryIds, setReviewedEntryIds] = useState<Set<number>>(new Set());
+  const [reviewingEntryId, setReviewingEntryId] = useState<number | null>(null);
   const [page, setPage] = useState(0);
 
   // Feedback form state
@@ -52,13 +63,15 @@ export default function ProgressPage() {
     const entryParam = params.get("entry");
     const entryId = entryParam ? Number(entryParam) : null;
     if (entryId) setHighlightId(entryId);
-    Promise.all([getAllEntries(), getFeedback(), getChildren()]).then(([eRes, fRes, cRes]) => {
+    Promise.all([getAllEntries(), getFeedback(), getChildren(), getReviewedEntryIds()]).then(([eRes, fRes, cRes, rRes]) => {
       const loadedEntries: PlannerEntry[] = eRes.data;
       const loadedFeedback: WorkFeedback[] = fRes.data;
+      const loadedReviewed = new Set<number>((rRes.data.entry_ids ?? []) as number[]);
 
       setEntries(loadedEntries);
       setAllFeedback(loadedFeedback);
       setChildren(cRes.data);
+      setReviewedEntryIds(loadedReviewed);
 
       if (entryId) {
         const feedbackCount = (id: number) => loadedFeedback.filter(fb => fb.entry_id === id).length;
@@ -69,7 +82,7 @@ export default function ProgressPage() {
 
         const matching = loadedEntries
           .filter(entry => {
-            if (requestedFilter === "review") return !!entry.completed_work_url && feedbackCount(entry.id) === 0;
+            if (requestedFilter === "review") return !!entry.completed_work_url && feedbackCount(entry.id) === 0 && !loadedReviewed.has(entry.id);
             if (requestedFilter === "submitted") return !!entry.completed_work_url;
             if (requestedFilter === "complete") return entry.is_complete;
             if (requestedFilter === "incomplete") return !entry.is_complete;
@@ -119,25 +132,54 @@ export default function ProgressPage() {
     setAllFeedback(prev => prev.filter(f => f.id !== id));
   };
 
+  const handleMarkReviewed = async (entryId: number) => {
+    setReviewingEntryId(entryId);
+    try {
+      await markEntryReviewed(entryId);
+      setReviewedEntryIds(prev => new Set(prev).add(entryId));
+    } finally {
+      setReviewingEntryId(null);
+    }
+  };
+
+  const handleMarkUnreviewed = async (entryId: number) => {
+    setReviewingEntryId(entryId);
+    try {
+      await markEntryUnreviewed(entryId);
+      setReviewedEntryIds(prev => {
+        const next = new Set(prev);
+        next.delete(entryId);
+        return next;
+      });
+    } finally {
+      setReviewingEntryId(null);
+    }
+  };
+
   const childEntries = selectedChildId
     ? entries.filter(e => e.assigned_to === null || e.assigned_to === selectedChildId)
     : entries;
 
   const awaitingReview = childEntries.filter(
-    e => !!e.completed_work_url && getFeedbackForEntry(e.id).length === 0
+    e =>
+      !!e.completed_work_url &&
+      getFeedbackForEntry(e.id).length === 0 &&
+      !reviewedEntryIds.has(e.id)
   );
 
   const filtered = childEntries
     .filter((e) => {
-      if (filter === "review") return !!e.completed_work_url && getFeedbackForEntry(e.id).length === 0;
+      if (filter === "review") {
+        return !!e.completed_work_url && getFeedbackForEntry(e.id).length === 0 && !reviewedEntryIds.has(e.id);
+      }
       if (filter === "submitted") return !!e.completed_work_url;
       if (filter === "complete") return e.is_complete;
       if (filter === "incomplete") return !e.is_complete;
       return true;
     })
     .sort((a, b) => {
-      const aNeedsReview = !!a.completed_work_url && getFeedbackForEntry(a.id).length === 0;
-      const bNeedsReview = !!b.completed_work_url && getFeedbackForEntry(b.id).length === 0;
+      const aNeedsReview = !!a.completed_work_url && getFeedbackForEntry(a.id).length === 0 && !reviewedEntryIds.has(a.id);
+      const bNeedsReview = !!b.completed_work_url && getFeedbackForEntry(b.id).length === 0 && !reviewedEntryIds.has(b.id);
       if (aNeedsReview !== bNeedsReview) return aNeedsReview ? -1 : 1;
       return b.scheduled_date.localeCompare(a.scheduled_date);
     });
@@ -249,7 +291,8 @@ export default function ProgressPage() {
             {visibleEntries.map((entry) => {
               const entryFeedback = getFeedbackForEntry(entry.id);
               const isOpen = feedbackOpen === entry.id;
-              const needsReview = !!entry.completed_work_url && entryFeedback.length === 0;
+              const isReviewed = reviewedEntryIds.has(entry.id);
+              const needsReview = !!entry.completed_work_url && entryFeedback.length === 0 && !isReviewed;
               const childName = entry.assigned_to
                 ? children.find(c => c.id === entry.assigned_to)?.username ?? "Child"
                 : "All children";
@@ -286,6 +329,11 @@ export default function ProgressPage() {
                         {entry.is_complete && !needsReview && (
                           <span className="text-xs px-2.5 py-1 rounded-full bg-[#E8F0E8] text-[#3F5D46] font-bold">
                             Completed
+                          </span>
+                        )}
+                        {isReviewed && entryFeedback.length === 0 && (
+                          <span className="text-xs px-2.5 py-1 rounded-full bg-[#E8F0E8] text-[#3F5D46] font-bold">
+                            Reviewed
                           </span>
                         )}
                       </div>
@@ -430,7 +478,9 @@ export default function ProgressPage() {
                           </p>
                           <h3 className="text-base font-bold text-[#2E342F] mt-1">
                             {needsReview
-                              ? "Feedback needed"
+                              ? "Ready to review"
+                              : isReviewed && entryFeedback.length === 0
+                              ? "Reviewed"
                               : entryFeedback.length > 0
                               ? "Feedback sent"
                               : "Ready when you are"}
@@ -438,22 +488,46 @@ export default function ProgressPage() {
 
                           <p className="text-xs text-[#6E5A46] mt-2">
                             {needsReview
-                              ? "Open the submitted work, then leave a short review."
+                              ? "Feedback is optional. Leave a comment or simply mark this as reviewed."
+                              : isReviewed && entryFeedback.length === 0
+                              ? "Checked with no feedback needed."
                               : entryFeedback.length > 0
                               ? `${entryFeedback.length} feedback message${entryFeedback.length === 1 ? "" : "s"} sent.`
                               : "You can leave feedback on this lesson at any time."}
                           </p>
 
-                          <button
-                            onClick={() => {
-                              setFeedbackOpen(entry.id);
-                              setFeedbackMsg("");
-                              setFeedbackEmoji("⭐");
-                            }}
-                            className="w-full mt-4 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B]"
-                          >
-                            {entryFeedback.length > 0 ? "Add feedback" : "Leave feedback"}
-                          </button>
+                          <div className="space-y-2 mt-4">
+                            <button
+                              onClick={() => {
+                                setFeedbackOpen(entry.id);
+                                setFeedbackMsg("");
+                                setFeedbackEmoji("⭐");
+                              }}
+                              className="w-full px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B]"
+                            >
+                              {entryFeedback.length > 0 ? "Add feedback" : "Leave feedback"}
+                            </button>
+
+                            {entry.completed_work_url && entryFeedback.length === 0 && (
+                              isReviewed ? (
+                                <button
+                                  onClick={() => handleMarkUnreviewed(entry.id)}
+                                  disabled={reviewingEntryId === entry.id}
+                                  className="w-full px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382] disabled:opacity-50"
+                                >
+                                  {reviewingEntryId === entry.id ? "Saving…" : "Mark as needing review"}
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleMarkReviewed(entry.id)}
+                                  disabled={reviewingEntryId === entry.id}
+                                  className="w-full px-4 py-2.5 rounded-xl border border-[#8FA382] bg-[#E8F0E8] text-[#3F5D46] text-sm font-bold hover:bg-[#DDE9DC] disabled:opacity-50"
+                                >
+                                  {reviewingEntryId === entry.id ? "Saving…" : "Mark reviewed · no feedback"}
+                                </button>
+                              )
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
