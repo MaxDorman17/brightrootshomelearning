@@ -79,6 +79,17 @@ export interface Unit {
   updated_at: string;
 }
 
+export interface UnitQueueItem {
+  id: number;
+  subject: string;
+  title: string;
+  unit_url: string | null;
+  notes: string | null;
+  position: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface WorkFeedback {
   id: number;
   entry_id: number;
