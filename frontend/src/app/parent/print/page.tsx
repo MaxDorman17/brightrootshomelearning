@@ -6,6 +6,7 @@ import { getWeekEntries, getTimetable, getChildren } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek } from "date-fns";
+import Navbar from "@/components/Navbar";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -63,79 +64,7 @@ export default function PrintPage() {
 
   const allSubjects = Array.from(new Set(DAYS.flatMap(d => timetable[d] ?? [])));
 
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Controls — hidden when printing */}
-      <div className="print:hidden bg-[#F7F9F7] border-b border-[#A8C67A]/30 px-4 py-3 flex flex-wrap items-center gap-3">
-        <span className="font-extrabold text-[#2F5D3A] text-lg">Print week</span>
-
-        {/* Week nav */}
-        <div className="flex items-center gap-2">
-          <button onClick={() => setWeekStart(d => addDays(d, -7))}
-            className="px-3 py-1.5 rounded-lg border border-[#A8C67A]/40 text-[#2F5D3A] font-bold text-sm hover:bg-[#A8C67A]/10">←</button>
-          <span className="text-sm font-semibold text-gray-700">
-            {format(weekStart, "d MMM")} – {format(addDays(weekStart, 4), "d MMM yyyy")}
-          </span>
-          <button onClick={() => setWeekStart(d => addDays(d, 7))}
-            className="px-3 py-1.5 rounded-lg border border-[#A8C67A]/40 text-[#2F5D3A] font-bold text-sm hover:bg-[#A8C67A]/10">→</button>
-        </div>
-
-        {/* Child selector */}
-        {children.length > 0 && (
-          <select
-            value={selectedChildId ?? ""}
-            onChange={e => setSelectedChildId(e.target.value ? parseInt(e.target.value) : null)}
-            className="border border-[#A8C67A]/40 rounded-lg px-3 py-1.5 text-sm font-semibold text-[#2F5D3A] focus:outline-none focus:border-[#6EA76E] bg-white">
-            <option value="">All children</option>
-            {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
-          </select>
-        )}
-
-        <button onClick={() => window.print()}
-          className="ml-auto px-5 py-2 bg-[#2F5D3A] text-white font-bold rounded-xl text-sm hover:bg-[#6EA76E] transition-all shadow-sm">
-          🖨️ Print
-        </button>
-      </div>
-
-      {/* Printable content */}
-      <div className="p-6 max-w-[1100px] mx-auto">
-        {/* Print header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-extrabold text-gray-900">
-            Bright Roots — Week of {format(weekStart, "d MMMM yyyy")}
-          </h1>
-          {selectedChildId && (
-            <p className="text-gray-500 mt-1 font-semibold">
-              {children.find(c => c.id === selectedChildId)?.username}&apos;s lesson plan
-            </p>
-          )}
-        </div>
-
-        {loading ? (
-          <p className="text-gray-400 print:hidden">Loading…</p>
-        ) : (
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr>
-                <th className="border border-gray-200 bg-[#2F5D3A] text-white px-3 py-2 text-left font-bold w-[120px] rounded-tl-lg">Subject</th>
-                {DAYS.map((day, i) => (
-                  <th key={day} className="border border-gray-200 bg-[#2F5D3A] text-white px-3 py-2 text-left font-bold">
-                    <div>{day}</div>
-                    <div className="text-xs font-normal text-white/70">{format(weekDates[i], "d MMM")}</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {allSubjects.map((subject, si) => (
-                <tr key={subject} className={si % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
-                  <td className={`border border-gray-200 px-3 py-2.5 font-semibold text-xs ${subjectColor(subject)}`}>
-                    {subject}
-                  </td>
-                  {DAYS.map((day, di) => {
-                    const inDay = timetable[day]?.includes(subject);
-                    const entry = inDay ? getEntry(weekDates[di], subject) : null;
-                    const plannedCount = entries.length;
+  const plannedCount = entries.length;
   const completedCount = entries.filter(e => e.is_complete).length;
   const remainingCount = Math.max(0, plannedCount - completedCount);
   const selectedChild = children.find(c => c.id === selectedChildId);
@@ -230,10 +159,8 @@ export default function PrintPage() {
               <p className="text-sm text-[#8A7A69] py-8 text-center">Loading week…</p>
             ) : (
               <WeeklyTable
-                weekStart={weekStart}
                 weekDates={weekDates}
                 timetable={timetable}
-                entries={entries}
                 allSubjects={allSubjects}
                 getEntry={getEntry}
               />
@@ -265,10 +192,8 @@ export default function PrintPage() {
 
         {!loading && (
           <WeeklyTable
-            weekStart={weekStart}
             weekDates={weekDates}
             timetable={timetable}
-            entries={entries}
             allSubjects={allSubjects}
             getEntry={getEntry}
             printMode
@@ -284,19 +209,15 @@ export default function PrintPage() {
   );
 }
 
-
 function WeeklyTable({
   weekDates,
   timetable,
-  entries,
   allSubjects,
   getEntry,
   printMode = false,
 }: {
-  weekStart: Date;
   weekDates: Date[];
   timetable: Record<string, string[]>;
-  entries: PlannerEntry[];
   allSubjects: string[];
   getEntry: (dayDate: Date, subject: string) => PlannerEntry | null;
   printMode?: boolean;
