@@ -68,6 +68,7 @@ export default function ReportPage() {
   const [resultsView, setResultsView] = useState<ResultsView>("oak");
   const [recordsView, setRecordsView] = useState<RecordsView>("days");
   const [workWeeksBack, setWorkWeeksBack] = useState(0); // 0 = this week, 1 = last week…
+  const [learningWeeksBack, setLearningWeeksBack] = useState(0);
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
@@ -260,52 +261,51 @@ export default function ReportPage() {
   );
   const workWeekLabel = workWeeksBack === 0 ? "This Week" : workWeeksBack === 1 ? "Last Week" : `Week of ${format(workWeekStart, "d MMM yyyy")}`;
 
-  // Attendance heatmap: last 16 weeks of school days
-  const heatmapWeeks = Array.from({ length: 16 }, (_, i) => {
-    const weekStart = startOfWeek(subWeeks(new Date(), 15 - i), { weekStartsOn: 1 });
-    return eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 4) }); // Mon–Fri only
-  });
+  // Learning Days: selected school week (Mon–Fri)
+  const learningWeekStart = startOfWeek(subWeeks(new Date(), learningWeeksBack), { weekStartsOn: 1 });
+  const learningWeekEnd = addDays(learningWeekStart, 4);
+  const learningWeekDays = eachDayOfInterval({ start: learningWeekStart, end: learningWeekEnd });
+  const learningWeekLabel =
+    learningWeeksBack === 0
+      ? "This Week"
+      : learningWeeksBack === 1
+      ? "Last Week"
+      : `Week of ${format(learningWeekStart, "d MMM yyyy")}`;
+
   const byDate: Record<string, PlannerEntry[]> = {};
   childEntries.forEach(e => {
     if (!byDate[e.scheduled_date]) byDate[e.scheduled_date] = [];
     byDate[e.scheduled_date].push(e);
   });
-  const heatmapColor = (d: Date) => {
+
+  const learningDayStatus = (d: Date) => {
     const key = format(d, "yyyy-MM-dd");
     const today = format(new Date(), "yyyy-MM-dd");
-    if (key > today) return "bg-gray-100"; // future
+    if (key > today) return "future";
     const day = byDate[key];
-    if (!day || day.length === 0) return "bg-gray-100"; // no lessons
+    if (!day || day.length === 0) return "none";
     const done = day.filter(e => e.is_complete).length;
-    if (done === day.length) return "bg-emerald-500";
-    if (done > 0) return "bg-yellow-400";
-    return "bg-red-300";
+    if (done === day.length) return "complete";
+    if (done > 0) return "partial";
+    return "not-started";
   };
 
-  const learningDayDates = heatmapWeeks
-    .flat()
-    .filter(d => format(d, "yyyy-MM-dd") <= format(new Date(), "yyyy-MM-dd"));
+  const learningDayColor = (d: Date) => {
+    const status = learningDayStatus(d);
+    if (status === "complete") return "bg-emerald-500";
+    if (status === "partial") return "bg-yellow-400";
+    if (status === "not-started") return "bg-red-300";
+    return "bg-gray-100";
+  };
 
-  const scheduledLearningDays = learningDayDates.filter(d => {
+  const scheduledLearningDays = learningWeekDays.filter(d => {
     const day = byDate[format(d, "yyyy-MM-dd")];
     return !!day && day.length > 0;
   });
 
-  const fullyCompletedDays = scheduledLearningDays.filter(d => {
-    const day = byDate[format(d, "yyyy-MM-dd")];
-    return day.every(e => e.is_complete);
-  }).length;
-
-  const partiallyCompletedDays = scheduledLearningDays.filter(d => {
-    const day = byDate[format(d, "yyyy-MM-dd")];
-    const done = day.filter(e => e.is_complete).length;
-    return done > 0 && done < day.length;
-  }).length;
-
-  const noLearningCompletedDays = scheduledLearningDays.filter(d => {
-    const day = byDate[format(d, "yyyy-MM-dd")];
-    return day.every(e => !e.is_complete);
-  }).length;
+  const fullyCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "complete").length;
+  const partiallyCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "partial").length;
+  const noLearningCompletedDays = learningWeekDays.filter(d => learningDayStatus(d) === "not-started").length;
 
   // Weekly trend: last 8 weeks
   const weeklyTrend = Array.from({ length: 8 }, (_, i) => {
@@ -822,16 +822,38 @@ export default function ReportPage() {
               </div>
             )}
 
-            {/* Attendance */}
+            {/* Learning Days */}
             {tab === "records" && recordsView === "days" && childEntries.length > 0 && (
               <div className="space-y-6">
                 <div className="brand-card p-6">
-                  <div className="mb-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Learning Days</p>
-                    <h2 className="text-lg font-bold text-[#2E342F] mt-1">Last 16 Weeks</h2>
-                    <p className="text-sm text-[#6E5A46] mt-1">
-                      A day-by-day view of how much scheduled learning was completed.
-                    </p>
+                  <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-5">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Learning Days</p>
+                      <h2 className="text-2xl font-bold text-[#2E342F] mt-1">{learningWeekLabel}</h2>
+                      <p className="text-sm text-[#6E5A46] mt-1">
+                        {format(learningWeekStart, "d MMM")} to {format(learningWeekEnd, "d MMM yyyy")}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setLearningWeeksBack(learningWeeksBack + 1)}
+                        className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                      >
+                        Previous
+                      </button>
+                      <button
+                        onClick={() => setLearningWeeksBack(Math.max(0, learningWeeksBack - 1))}
+                        disabled={learningWeeksBack === 0}
+                        className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                          learningWeeksBack === 0
+                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
+                            : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                        }`}
+                      >
+                        Next
+                      </button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -853,49 +875,56 @@ export default function ReportPage() {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <div className="flex gap-2 min-w-max">
-                      <div className="flex flex-col gap-2 mr-1">
-                        {["M", "T", "W", "T", "F"].map((d, i) => (
-                          <div
-                            key={i}
-                            className="w-5 h-5 text-xs text-[#8FA382] font-bold flex items-center justify-center"
-                          >
-                            {d}
-                          </div>
-                        ))}
-                      </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    {learningWeekDays.map(day => {
+                      const key = format(day, "yyyy-MM-dd");
+                      const entriesForDay = byDate[key] ?? [];
+                      const done = entriesForDay.filter(e => e.is_complete).length;
+                      const status = learningDayStatus(day);
 
-                      {heatmapWeeks.map((week, wi) => (
-                        <div key={wi} className="flex flex-col gap-2">
-                          {week.map((day, di) => (
-                            <div
-                              key={di}
-                              title={format(day, "d MMM yyyy")}
-                              className={`w-5 h-5 rounded-md transition-all ${heatmapColor(day)}`}
-                            />
-                          ))}
+                      return (
+                        <div
+                          key={key}
+                          className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                {format(day, "EEEE")}
+                              </p>
+                              <p className="text-xs text-[#6E5A46] mt-1">{format(day, "d MMM")}</p>
+                            </div>
+                            <span className={`w-3 h-3 rounded-full shrink-0 mt-1 ${learningDayColor(day)}`} />
+                          </div>
+
+                          <p className="text-sm font-bold text-[#2E342F] mt-4">
+                            {entriesForDay.length > 0
+                              ? `${done}/${entriesForDay.length} lessons complete`
+                              : status === "future"
+                              ? "Upcoming"
+                              : "No scheduled lessons"}
+                          </p>
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
 
                   <div className="flex flex-wrap items-center gap-4 mt-5 pt-4 border-t border-[#EEE6D9] text-xs text-[#6E5A46]">
                     <span className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-sm bg-emerald-500 inline-block" />
-                      All done
+                      All lessons complete
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-sm bg-yellow-400 inline-block" />
-                      Partial
+                      Some lessons complete
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-sm bg-red-300 inline-block" />
-                      None done
+                      No lessons completed
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-sm bg-gray-100 inline-block" />
-                      No lessons
+                      No scheduled lessons
                     </span>
                   </div>
                 </div>
