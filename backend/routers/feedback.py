@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
 from database import get_db
-from models import WorkFeedback, User, PlannerEntry, Lesson
+from models import WorkFeedback, WorkReview, User, PlannerEntry, Lesson
 from schemas import FeedbackCreate, FeedbackOut
 from auth import get_current_user, require_parent
 
@@ -46,6 +46,83 @@ def list_feedback(
         .order_by(WorkFeedback.created_at.desc())
         .all()
     )
+
+
+@router.get("/reviewed-entry-ids")
+def reviewed_entry_ids(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    child_ids = _child_ids(db, current_user)
+    rows = (
+        db.query(WorkReview.entry_id)
+        .join(PlannerEntry, WorkReview.entry_id == PlannerEntry.id)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(
+            WorkReview.parent_id == current_user.id,
+            _family_entry_filter(current_user, child_ids),
+        )
+        .all()
+    )
+    return {"entry_ids": [row[0] for row in rows]}
+
+
+@router.post("/review/{entry_id}", status_code=204)
+def mark_entry_reviewed(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    child_ids = _child_ids(db, current_user)
+    entry = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(PlannerEntry.id == entry_id, _family_entry_filter(current_user, child_ids))
+        .first()
+    )
+    if not entry:
+        raise HTTPException(status_code=404, detail="Planner entry not found")
+
+    existing = (
+        db.query(WorkReview)
+        .filter(
+            WorkReview.entry_id == entry_id,
+            WorkReview.parent_id == current_user.id,
+        )
+        .first()
+    )
+    if not existing:
+        db.add(WorkReview(entry_id=entry_id, parent_id=current_user.id))
+        db.commit()
+
+
+@router.delete("/review/{entry_id}", status_code=204)
+def mark_entry_unreviewed(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    child_ids = _child_ids(db, current_user)
+    entry = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(PlannerEntry.id == entry_id, _family_entry_filter(current_user, child_ids))
+        .first()
+    )
+    if not entry:
+        raise HTTPException(status_code=404, detail="Planner entry not found")
+
+    existing = (
+        db.query(WorkReview)
+        .filter(
+            WorkReview.entry_id == entry_id,
+            WorkReview.parent_id == current_user.id,
+        )
+        .first()
+    )
+    if existing:
+        db.delete(existing)
+        db.commit()
 
 
 @router.get("/unread-count")
