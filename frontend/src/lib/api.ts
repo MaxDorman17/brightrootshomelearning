@@ -73,6 +73,9 @@ export const createFeedback = (data: { entry_id: number; message: string; emoji?
   api.post("/api/feedback/", data);
 export const markFeedbackRead = (id: number) => api.patch(`/api/feedback/${id}/read`);
 export const deleteFeedback = (id: number) => api.delete(`/api/feedback/${id}`);
+export const getReviewedEntryIds = () => api.get("/api/feedback/reviewed-entry-ids");
+export const markEntryReviewed = (entryId: number) => api.post(`/api/feedback/review/${entryId}`);
+export const markEntryUnreviewed = (entryId: number) => api.delete(`/api/feedback/review/${entryId}`);
 
 // Coding Progress (DB-backed, per-user)
 export const getCodingProgress = (childId?: number) =>
