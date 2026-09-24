@@ -170,7 +170,7 @@ export default function TimetablePage() {
         {loading ? (
           <div className="brand-card p-12 text-center text-[#8A7A69]">Loading timetable…</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
             {DAYS.map(day => {
               const subjects = timetable[day] ?? [];
 
@@ -193,13 +193,13 @@ export default function TimetablePage() {
                     {subjects.map((subject, i) => (
                       <div
                         key={`${subject}-${i}`}
-                        className={`rounded-xl border p-3 flex items-center gap-3 ${subjectColor(subject)}`}
+                        className={`rounded-xl border p-3 flex items-start gap-2 ${subjectColor(subject)}`}
                       >
                         <span className="w-6 h-6 rounded-full bg-white/70 flex items-center justify-center text-[11px] font-bold shrink-0">
                           {i + 1}
                         </span>
 
-                        <span className="flex-1 min-w-0 text-sm font-bold truncate">
+                        <span className="flex-1 min-w-0 text-sm font-bold leading-snug break-words">
                           {subject}
                         </span>
 
@@ -207,7 +207,7 @@ export default function TimetablePage() {
                           <button
                             onClick={() => moveSubject(day, i, -1)}
                             disabled={i === 0}
-                            className="w-7 h-7 rounded-lg bg-white/60 hover:bg-white text-[11px] font-bold disabled:opacity-25"
+                            className="w-6 h-6 rounded-lg bg-white/60 hover:bg-white text-[10px] font-bold disabled:opacity-25"
                             aria-label={`Move ${subject} up`}
                           >
                             ↑
@@ -216,7 +216,7 @@ export default function TimetablePage() {
                           <button
                             onClick={() => moveSubject(day, i, 1)}
                             disabled={i === subjects.length - 1}
-                            className="w-7 h-7 rounded-lg bg-white/60 hover:bg-white text-[11px] font-bold disabled:opacity-25"
+                            className="w-6 h-6 rounded-lg bg-white/60 hover:bg-white text-[10px] font-bold disabled:opacity-25"
                             aria-label={`Move ${subject} down`}
                           >
                             ↓
@@ -224,7 +224,7 @@ export default function TimetablePage() {
 
                           <button
                             onClick={() => removeSubject(day, i)}
-                            className="w-7 h-7 rounded-lg bg-white/60 hover:bg-white text-sm font-bold"
+                            className="w-6 h-6 rounded-lg bg-white/60 hover:bg-white text-xs font-bold"
                             aria-label={`Remove ${subject}`}
                           >
                             ×
