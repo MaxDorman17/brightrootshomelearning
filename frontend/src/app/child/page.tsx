@@ -25,17 +25,18 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const SUBJECT_COLORS: Record<string, string> = {
-  Maths: "bg-blue-50 border-blue-200 text-blue-800",
-  English: "bg-purple-50 border-purple-200 text-purple-800",
-  Science: "bg-green-50 border-green-200 text-green-800",
-  History: "bg-yellow-50 border-yellow-200 text-yellow-800",
-  Geography: "bg-cyan-50 border-cyan-200 text-cyan-800",
-  Computing: "bg-indigo-50 border-indigo-200 text-indigo-800",
-  Cooking: "bg-orange-50 border-orange-200 text-orange-800",
-  "Art & Design": "bg-pink-50 border-pink-200 text-pink-800",
-  "Design and Technology": "bg-red-50 border-red-200 text-red-800",
-  "Life Skills": "bg-teal-50 border-teal-200 text-teal-800",
-  Languages: "bg-rose-50 border-rose-200 text-rose-800",
+  Maths: "bg-[#EAF0E7] border-[#D7E0D3] text-[#3F5D46]",
+  English: "bg-[#F3ECE8] border-[#E5D9D1] text-[#765D52]",
+  Science: "bg-[#E8F0E8] border-[#D1DED0] text-[#3F5D46]",
+  History: "bg-[#F8F0DA] border-[#EADBAE] text-[#8A6A22]",
+  Geography: "bg-[#EAF2EC] border-[#D4E1D6] text-[#48654E]",
+  Computing: "bg-[#ECECF5] border-[#DADCEC] text-[#5C607D]",
+  Cooking: "bg-[#F7EDE5] border-[#E9D7C9] text-[#8A624B]",
+  "Art & Design": "bg-[#F7E9ED] border-[#E8CCD4] text-[#8B5968]",
+  "Design and Technology": "bg-[#F4E9E6] border-[#E5D2CD] text-[#8A5A52]",
+  "Life Skills": "bg-[#E7F0ED] border-[#CFDED8] text-[#4F6E64]",
+  Languages: "bg-[#F3ECE8] border-[#E5D9D1] text-[#765D52]",
+  "RSHE (PSHE)": "bg-[#EEEAF4] border-[#DDD5E8] text-[#675E7E]",
 };
 
 const subjectDot: Record<string, string> = {
@@ -103,6 +104,10 @@ export default function ChildDashboard() {
   const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [loading, setLoading] = useState(true);
   const [quoteIdx, setQuoteIdx] = useState(0);
+  const [selectedDayIndex, setSelectedDayIndex] = useState(() => {
+    const day = new Date().getDay();
+    return day >= 1 && day <= 5 ? day - 1 : 0;
+  });
 
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
   const [modal, setModal] = useState<SlotModal | null>(null);
@@ -150,6 +155,13 @@ export default function ChildDashboard() {
     const timer = setInterval(() => setQuoteIdx(i => (i + 1) % QUOTES.length), 8000);
     return () => clearInterval(timer);
   }, [loadWeek, router]);
+
+  useEffect(() => {
+    const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const isCurrentWeek = format(currentWeekStart, "yyyy-MM-dd") === format(weekStart, "yyyy-MM-dd");
+    const day = new Date().getDay();
+    setSelectedDayIndex(isCurrentWeek && day >= 1 && day <= 5 ? day - 1 : 0);
+  }, [weekStart]);
 
   // Check worksheet availability once per distinct Oak lesson URL — the ref
   // tracks what's already been requested so re-renders (or a week reload
@@ -260,6 +272,23 @@ export default function ChildDashboard() {
   const nextLesson = todayLessons.find(e => !e.is_complete) ?? null;
 
   const readingBook = books.find(b => b.status === "reading") ?? books[0] ?? null;
+
+  const selectedDate = weekDates[selectedDayIndex];
+  const selectedDateStr = format(selectedDate, "yyyy-MM-dd");
+  const selectedDayName = DAYS[selectedDayIndex];
+  const selectedDayOff = daysOffSet.has(selectedDateStr);
+  const selectedDayEntries = entries
+    .filter(e => e.scheduled_date === selectedDateStr && !e.is_extra)
+    .sort((a, b) => {
+      const order = timetable[selectedDayName] ?? [];
+      const ai = order.indexOf(a.lesson.subject);
+      const bi = order.indexOf(b.lesson.subject);
+      if (ai === -1 && bi === -1) return a.id - b.id;
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    });
+  const selectedDoneCount = selectedDayEntries.filter(e => e.is_complete).length;
 
   return (
     <div className="min-h-screen pb-20 md:pb-0">
@@ -403,84 +432,145 @@ export default function ChildDashboard() {
           </div>
         </div>
 
-        {/* Timetable grid */}
+        {/* Day-focused timetable */}
         {loading ? (
-          <div className="text-center py-16 text-gray-400">Loading…</div>
+          <div className="brand-card p-12 text-center text-[#8A7A69]">Loading week…</div>
         ) : (
-          <div className="grid grid-cols-5 gap-3">
-            {DAYS.map((dayName, dayIndex) => {
-              const dayDate = weekDates[dayIndex];
-              const subjects = timetable[dayName] ?? [];
-              const today = isToday(dayDate);
-              const dayOff = daysOffSet.has(format(dayDate, "yyyy-MM-dd"));
+          <div className="space-y-5">
+            <div className="grid grid-cols-5 gap-2">
+              {DAYS.map((dayName, dayIndex) => {
+                const dayDate = weekDates[dayIndex];
+                const dateStr = format(dayDate, "yyyy-MM-dd");
+                const dayEntries = entries.filter(e => e.scheduled_date === dateStr && !e.is_extra);
+                const complete = dayEntries.filter(e => e.is_complete).length;
+                const dayOff = daysOffSet.has(dateStr);
+                const active = selectedDayIndex === dayIndex;
+                const today = isToday(dayDate);
 
-              return (
-                <div key={dayName}>
-                  {/* Day header */}
-                  <div className={`rounded-2xl px-3 py-2.5 mb-2 text-center shadow-sm ${
-                    dayOff
-                      ? "bg-gradient-to-b from-amber-400 to-orange-400 text-white shadow-orange-200/60"
-                      : today
-                      ? "bg-gradient-to-b from-[#2F5D3A] to-[#6EA76E] text-white shadow-green-900/20"
-                      : "bg-white/80 backdrop-blur-sm border border-white/60 text-gray-700"
-                  }`}>
-                    <p className="text-xs font-extrabold uppercase tracking-wide opacity-80">{dayName.slice(0, 3)}</p>
-                    <p className="text-lg font-extrabold">{format(dayDate, "d")}</p>
-                    <p className="text-xs opacity-70 font-semibold">{format(dayDate, "MMM")}</p>
-                    {dayOff && <p className="text-xs font-extrabold mt-0.5">🤒 Day off</p>}
-                    {today && !dayOff && <p className="text-xs font-extrabold mt-0.5 text-white/80">Today</p>}
-                  </div>
+                return (
+                  <button
+                    key={dayName}
+                    onClick={() => setSelectedDayIndex(dayIndex)}
+                    className={`rounded-2xl border p-3 text-center transition-all ${
+                      active
+                        ? "bg-[#3F5D46] border-[#3F5D46] text-white shadow-md"
+                        : dayOff
+                        ? "bg-[#FFF5E8] border-[#F0D4A8] text-[#8A624B]"
+                        : "bg-[#FFFDF8] border-[#E7DFD1] text-[#2E342F] hover:border-[#8FA382]"
+                    }`}
+                  >
+                    <p className="text-[10px] font-bold uppercase tracking-wide opacity-70">{dayName.slice(0,3)}</p>
+                    <p className="text-lg font-bold mt-0.5">{format(dayDate, "d")}</p>
+                    <p className="text-[10px] opacity-70">{format(dayDate, "MMM")}</p>
+                    <div className="mt-2 text-[10px] font-bold">
+                      {dayOff ? "Day off" : dayEntries.length > 0 ? `${complete}/${dayEntries.length} done` : "No lessons"}
+                    </div>
+                    {today && !dayOff && (
+                      <span className={`inline-block mt-1 text-[9px] font-bold uppercase tracking-wide ${
+                        active ? "text-white/80" : "text-[#3F5D46]"
+                      }`}>
+                        Today
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
 
-                  {/* Lesson slots */}
-                  <div className="space-y-2">
-                    {subjects.map(subject => {
-                      const entry = getEntry(dayDate, subject);
-                      const hasLesson = !!entry;
-                      const colorClass = SUBJECT_COLORS[subject] || "bg-gray-50 border-gray-200 text-gray-700";
-                      const dotClass = subjectDot[subject] || "bg-gray-400";
-
-                      return hasLesson ? (
-                        <button
-                          key={subject}
-                          onClick={() => openModal(entry)}
-                          className={`w-full text-left rounded-xl border-2 p-3 transition-all hover:shadow-md hover:scale-[1.02] active:scale-100 ${
-                            entry.is_complete
-                              ? "bg-green-50 border-green-200 opacity-80"
-                              : colorClass
-                          }`}
-                        >
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className={`w-2 h-2 rounded-full shrink-0 ${entry.is_complete ? "bg-green-500" : dotClass}`} />
-                            <span className="text-xs font-semibold truncate">{subject}</span>
-                          </div>
-                          <p className="text-xs font-medium leading-snug line-clamp-2 mt-1">
-                            {entry.lesson.title}
-                          </p>
-                          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                            {entry.lesson.lesson_url && <span className="text-xs opacity-70">🔗</span>}
-                            {entry.is_complete && (
-                              <span className="text-xs bg-green-500 text-white px-1.5 py-0.5 rounded-full">✓</span>
-                            )}
-                            {entry.completed_work_url && <span className="text-xs opacity-70">📎</span>}
-                          </div>
-                        </button>
-                      ) : (
-                        <div
-                          key={subject}
-                          className="w-full rounded-xl border-2 p-3 bg-white/40 border-dashed border-gray-150"
-                        >
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className={`w-2 h-2 rounded-full shrink-0 ${dotClass}`} />
-                            <span className="text-xs font-semibold text-gray-400 truncate">{subject}</span>
-                          </div>
-                          <p className="text-xs text-gray-300 mt-1">No lesson set</p>
-                        </div>
-                      );
-                    })}
-                  </div>
+            <div className="brand-card p-5">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Daily plan</p>
+                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">
+                    {selectedDayName}, {format(selectedDate, "d MMMM")}
+                  </h2>
+                  <p className="text-sm text-[#6E5A46] mt-1">
+                    {selectedDayOff
+                      ? "This day is marked as a day off."
+                      : selectedDayEntries.length === 0
+                      ? "No lessons are planned for this day."
+                      : `${selectedDoneCount} of ${selectedDayEntries.length} lessons complete`}
+                  </p>
                 </div>
-              );
-            })}
+
+                {!selectedDayOff && selectedDayEntries.length > 0 && (
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-[#3F5D46]">{selectedDoneCount}/{selectedDayEntries.length}</p>
+                    <p className="text-xs text-[#8A7A69]">complete</p>
+                  </div>
+                )}
+              </div>
+
+              {selectedDayOff ? (
+                <div className="rounded-2xl border border-dashed border-[#F0D4A8] bg-[#FFF8EE] p-8 text-center">
+                  <p className="text-2xl">🌤️</p>
+                  <p className="text-sm font-bold text-[#8A624B] mt-2">Day off</p>
+                  <p className="text-xs text-[#9B7A60] mt-1">No school work needed today.</p>
+                </div>
+              ) : selectedDayEntries.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-[#DDD3C4] bg-[#FBF8F1] p-8 text-center">
+                  <p className="text-sm font-semibold text-[#6E5A46]">Nothing planned for this day.</p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-3">
+                  {selectedDayEntries.map(entry => {
+                    const colorClass = SUBJECT_COLORS[entry.lesson.subject] || "bg-[#F0ECE6] border-[#DDD3C4] text-[#6E6256]";
+                    const dotClass = subjectDot[entry.lesson.subject] || "bg-gray-400";
+                    const normalSubjects = timetable[selectedDayName] ?? [];
+                    const movedHere = !normalSubjects.includes(entry.lesson.subject);
+
+                    return (
+                      <button
+                        key={entry.id}
+                        onClick={() => openModal(entry)}
+                        className={`w-full text-left rounded-2xl border p-4 transition-all hover:shadow-md ${
+                          entry.is_complete
+                            ? "bg-[#F2F7F0] border-[#D1DED0]"
+                            : colorClass
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${
+                            entry.is_complete ? "bg-[#5F8A68]" : dotClass
+                          }`} />
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-xs font-bold">{entry.lesson.subject}</span>
+                              {movedHere && (
+                                <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-white/70">
+                                  Moved here
+                                </span>
+                              )}
+                            </div>
+
+                            <p className="text-sm font-bold text-[#2E342F] mt-1.5 leading-snug">
+                              {entry.lesson.title}
+                            </p>
+
+                            <div className="flex flex-wrap items-center gap-2 mt-3">
+                              {entry.is_complete ? (
+                                <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-[#E1EEE0] text-[#3F5D46]">
+                                  ✓ Complete
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-white/70 text-[#6E5A46]">
+                                  To do
+                                </span>
+                              )}
+                              {entry.lesson.lesson_url && <span className="text-xs" title="Lesson link">🔗</span>}
+                              {entry.completed_work_url && <span className="text-xs" title="Work submitted">📎</span>}
+                            </div>
+                          </div>
+
+                          <span className="text-[#8FA382] font-bold">→</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -489,7 +579,7 @@ export default function ChildDashboard() {
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" /> Completed</span>
           <span className="flex items-center gap-1">🔗 Has lesson link</span>
           <span className="flex items-center gap-1">📎 Work submitted</span>
-          <span className="ml-auto text-gray-400">Tap a lesson to open it</span>
+          <span className="ml-auto text-gray-400">Choose a day, then tap a lesson to open it</span>
         </div>
 
         {/* Reading — sourced from the real Reading Log, never spellings or Extra Work */}
