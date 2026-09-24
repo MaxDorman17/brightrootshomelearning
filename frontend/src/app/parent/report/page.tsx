@@ -666,34 +666,32 @@ export default function ReportPage() {
                       Keep the overview simple and jump straight to the evidence you want.
                     </p>
 
-                    <div className="grid sm:grid-cols-2 gap-3 mt-5">
+                    <div className="grid sm:grid-cols-3 gap-3 mt-5">
                       <button
                         onClick={() => setTab("progress")}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
                       >
-                        <p className="text-sm font-bold text-[#2E342F]">Progress</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Progress</p>
+                        <p className="text-sm font-bold text-[#2E342F] mt-1">Learning progress</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Subjects, coding and spellings</p>
                       </button>
+
                       <button
                         onClick={() => { setTab("results"); setResultsView("oak"); }}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
                       >
-                        <p className="text-sm font-bold text-[#2E342F]">Oak results</p>
-                        <p className="text-xs text-[#6E5A46] mt-1">Quiz scores and lesson evidence</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Results</p>
+                        <p className="text-sm font-bold text-[#2E342F] mt-1">Quiz & submitted work</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Oak scores and lesson evidence</p>
                       </button>
+
                       <button
-                        onClick={() => { setTab("results"); setResultsView("work"); }}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
+                        onClick={() => { setTab("records"); setRecordsView("days"); }}
+                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
                       >
-                        <p className="text-sm font-bold text-[#2E342F]">Submitted work</p>
-                        <p className="text-xs text-[#6E5A46] mt-1">Recent completed work</p>
-                      </button>
-                      <button
-                        onClick={() => { setTab("records"); setRecordsView("export"); }}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
-                      >
-                        <p className="text-sm font-bold text-[#2E342F]">Print & export</p>
-                        <p className="text-xs text-[#6E5A46] mt-1">Printable records and spreadsheets</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Records</p>
+                        <p className="text-sm font-bold text-[#2E342F] mt-1">Learning records</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Learning days, print and export</p>
                       </button>
                     </div>
                   </div>
