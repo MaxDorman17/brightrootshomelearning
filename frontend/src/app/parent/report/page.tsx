@@ -37,7 +37,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "progress", label: "Progress" },
   { id: "oak", label: "Oak Results" },
   { id: "work", label: "Work" },
-  { id: "attendance", label: "Attendance" },
+  { id: "attendance", label: "Learning Days" },
   { id: "export", label: "Print / Export" },
 ];
 
@@ -297,7 +297,7 @@ export default function ReportPage() {
           </div>
         </div>
 
-        {tab !== "work" && tab !== "export" && tab !== "oak" && (
+        {tab !== "work" && tab !== "export" && tab !== "oak" && tab !== "attendance" && (
           <div className="flex flex-wrap gap-2 mb-6 print:hidden">
             {(["week", "month", "all"] as Period[]).map(p => (
               <button
@@ -639,10 +639,10 @@ export default function ReportPage() {
               <div className="space-y-6">
                 <div className="brand-card p-6">
                   <div className="mb-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Attendance</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Learning Days</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">Last 16 Weeks</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
-                      A day-by-day view of completed learning across recent school weeks.
+                      A day-by-day view of how much scheduled learning was completed.
                     </p>
                   </div>
 
