@@ -62,7 +62,12 @@ export default function PrintPage() {
       e.scheduled_date === format(dayDate, "yyyy-MM-dd") && e.lesson.subject === subject
     ) ?? null;
 
-  const allSubjects = Array.from(new Set(DAYS.flatMap(d => timetable[d] ?? [])));
+  const allSubjects = Array.from(
+    new Set([
+      ...DAYS.flatMap(d => timetable[d] ?? []),
+      ...entries.map(e => e.lesson.subject),
+    ])
+  );
 
   const plannedCount = entries.length;
   const completedCount = entries.filter(e => e.is_complete).length;
@@ -249,14 +254,14 @@ function WeeklyTable({
 
             {DAYS.map((day, di) => {
               const inDay = timetable[day]?.includes(subject);
-              const entry = inDay ? getEntry(weekDates[di], subject) : null;
+              const entry = getEntry(weekDates[di], subject);
 
               return (
                 <td
                   key={day}
                   className="border border-[#E7DFD1] bg-[#FFFDF8] px-3 py-3 align-top min-w-[150px]"
                 >
-                  {!inDay ? (
+                  {!inDay && !entry ? (
                     <span className="text-[#DDD3C4]">—</span>
                   ) : entry ? (
                     <div>
