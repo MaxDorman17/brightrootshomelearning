@@ -30,15 +30,15 @@ const TOTAL_CODING = TRACKS.reduce((s, t) => s + t.count, 0);
 
 type Period = "week" | "month" | "all";
 
-type Tab = "home" | "progress" | "oak" | "work" | "attendance" | "export";
+type Tab = "home" | "progress" | "results" | "records";
+type ResultsView = "oak" | "work";
+type RecordsView = "days" | "export";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "home", label: "Report Home" },
+  { id: "home", label: "Overview" },
   { id: "progress", label: "Progress" },
-  { id: "oak", label: "Oak Results" },
-  { id: "work", label: "Work" },
-  { id: "attendance", label: "Learning Days" },
-  { id: "export", label: "Print / Export" },
+  { id: "results", label: "Results" },
+  { id: "records", label: "Records" },
 ];
 
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
@@ -65,6 +65,8 @@ export default function ReportPage() {
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("week");
   const [tab, setTab] = useState<Tab>("home");
+  const [resultsView, setResultsView] = useState<ResultsView>("oak");
+  const [recordsView, setRecordsView] = useState<RecordsView>("days");
   const [workWeeksBack, setWorkWeeksBack] = useState(0); // 0 = this week, 1 = last week…
   const [codingDone, setCodingDone] = useState(0);
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
@@ -297,7 +299,7 @@ export default function ReportPage() {
                 {selectedChild ? `${selectedChild.username}'s Report` : "Family Learning Report"}
               </h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
-                A clear view of progress, Oak results, submitted work and attendance.
+                A clear view of progress, results, submitted work and learning records.
               </p>
             </div>
 
@@ -339,7 +341,57 @@ export default function ReportPage() {
           </div>
         </div>
 
-        {tab !== "work" && tab !== "oak" && tab !== "attendance" && (
+        {tab === "results" && (
+          <div className="flex flex-wrap gap-2 mb-6 print:hidden">
+            <button
+              onClick={() => setResultsView("oak")}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                resultsView === "oak"
+                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
+                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+              }`}
+            >
+              Oak Results
+            </button>
+            <button
+              onClick={() => setResultsView("work")}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                resultsView === "work"
+                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
+                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+              }`}
+            >
+              Submitted Work
+            </button>
+          </div>
+        )}
+
+        {tab === "records" && (
+          <div className="flex flex-wrap gap-2 mb-6 print:hidden">
+            <button
+              onClick={() => setRecordsView("days")}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                recordsView === "days"
+                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
+                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+              }`}
+            >
+              Learning Days
+            </button>
+            <button
+              onClick={() => setRecordsView("export")}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                recordsView === "export"
+                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
+                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+              }`}
+            >
+              Print & Export
+            </button>
+          </div>
+        )}
+
+        {(tab === "home" || tab === "progress" || (tab === "records" && recordsView === "export")) && (
           <div className="flex flex-wrap gap-2 mb-6 print:hidden">
             {(["week", "month", "all"] as Period[]).map(p => (
               <button
@@ -623,21 +675,21 @@ export default function ReportPage() {
                         <p className="text-xs text-[#6E5A46] mt-1">Subjects, coding and spellings</p>
                       </button>
                       <button
-                        onClick={() => setTab("oak")}
+                        onClick={() => { setTab("results"); setResultsView("oak"); }}
                         className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
                       >
                         <p className="text-sm font-bold text-[#2E342F]">Oak results</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Quiz scores and lesson evidence</p>
                       </button>
                       <button
-                        onClick={() => setTab("work")}
+                        onClick={() => { setTab("results"); setResultsView("work"); }}
                         className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
                       >
                         <p className="text-sm font-bold text-[#2E342F]">Submitted work</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Recent completed work</p>
                       </button>
                       <button
-                        onClick={() => setTab("export")}
+                        onClick={() => { setTab("records"); setRecordsView("export"); }}
                         className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382]"
                       >
                         <p className="text-sm font-bold text-[#2E342F]">Print & export</p>
@@ -677,7 +729,7 @@ export default function ReportPage() {
             )}
 
             {/* Attendance */}
-            {tab === "attendance" && childEntries.length > 0 && (
+            {tab === "records" && recordsView === "days" && childEntries.length > 0 && (
               <div className="space-y-6">
                 <div className="brand-card p-6">
                   <div className="mb-5">
@@ -1023,7 +1075,7 @@ export default function ReportPage() {
             })()}
 
             {/* Submitted work */}
-            {tab === "work" && (
+            {tab === "results" && resultsView === "work" && (
               <>
                 <div className="brand-card p-4 mb-6">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -1142,7 +1194,7 @@ export default function ReportPage() {
             )}
 
             {/* Print and export */}
-            {tab === "export" && (
+            {tab === "records" && recordsView === "export" && (
               <div className="print:hidden">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="brand-card p-6">
@@ -1197,7 +1249,7 @@ export default function ReportPage() {
             )}
 
             {/* Oak results */}
-            {tab === "oak" && (() => {
+            {tab === "results" && resultsView === "oak" && (() => {
               const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
               const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
               const days = (weekQuizScores?.days ?? []).filter(day => { const dow = parseISO(day.date).getDay(); return dow >= 1 && dow <= 5; });
@@ -1339,7 +1391,7 @@ export default function ReportPage() {
               );
             })()}
 
-            {((tab === "home" && filtered.length === 0) || (tab === "attendance" && childEntries.length === 0)) && (
+            {((tab === "home" && filtered.length === 0) || (tab === "records" && recordsView === "days" && childEntries.length === 0)) && (
               <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 text-center">
                 <p className="text-4xl mb-3">📊</p>
                 <p className="text-gray-500">No data for this period yet.</p>
