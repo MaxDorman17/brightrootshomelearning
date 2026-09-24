@@ -82,22 +82,39 @@ export default function ReportPage() {
       Object.fromEntries(rows.map(r => [r.url, r]));
     Promise.all([
       getAllEntries(), getChildren(), getSpellingResults(), getOakQuizResults(),
-      getWeekQuizScores(weekStartStr, weekEndStr),
-    ]).then(([eRes, childRes, sRes, qRes, wsRes]) => {
+    ]).then(([eRes, childRes, sRes, qRes]) => {
       setEntries(eRes.data);
       setChildren(childRes.data);
+      const oscar = (childRes.data as Child[]).find(
+        child => child.username.trim().toLowerCase() === "oscar"
+      );
+      if (oscar) {
+        setSelectedChildId(current => current ?? oscar.id);
+      }
       setAllSpellingResults(sRes.data);
       setQuizResults(toMap(qRes.data));
-      setWeekQuizScores(wsRes.data);
       setLoading(false);
     });
     // Fetch scores for any share links that aren't cached yet, then reload
     refreshOakQuizResults().then(res => {
-      if (res.data.added > 0) {
+      if (res.data.updated > 0) {
         getOakQuizResults().then(qRes => setQuizResults(toMap(qRes.data)));
       }
     }).catch(() => {});
   }, [router]);
+
+  useEffect(() => {
+    if (loading) return;
+    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
+    getWeekQuizScores(
+      format(weekStart, "yyyy-MM-dd"),
+      format(weekEnd, "yyyy-MM-dd"),
+      selectedChildId ?? undefined,
+    )
+      .then(res => setWeekQuizScores(res.data))
+      .catch(() => setWeekQuizScores(null));
+  }, [selectedChildId, loading]);
 
   // Coding progress is per child — show the selected child's, or the union across all children
   useEffect(() => {
