@@ -12,7 +12,7 @@ import {
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
-import { format, addDays, startOfWeek, isToday } from "date-fns";
+import { format, addDays, startOfWeek } from "date-fns";
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
@@ -967,7 +967,7 @@ export default function ParentPlanner() {
             {DAYS.map((dayName, dayIndex) => {
               const dayDate = weekDates[dayIndex];
               const subjects = timetable[dayName] ?? [];
-              const today = isToday(dayDate);
+              const today = format(dayDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
               const dayOff = isDayOff(dayDate);
 
               return (
