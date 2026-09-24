@@ -34,6 +34,7 @@ export default function ChildProgressPage() {
   const [coding, setCoding] = useState<Set<string>>(new Set());
   const [daysOff, setDaysOff] = useState<Set<string>>(new Set());
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
+  const [showAllSubjects, setShowAllSubjects] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "child") { router.replace("/login"); return; }
@@ -73,6 +74,7 @@ export default function ChildProgressPage() {
 
   const booksReading = books.filter(b => b.status === "reading").length;
   const booksFinished = books.filter(b => b.status === "completed").length;
+  const currentBook = books.find(b => b.status === "reading") ?? null;
 
   const todayEntries = entries.filter(e => e.scheduled_date === today);
   const todayDone = todayEntries.filter(e => e.is_complete).length;
@@ -96,8 +98,7 @@ export default function ChildProgressPage() {
       done: stats.done,
       pct: stats.total > 0 ? Math.round((stats.done / stats.total) * 100) : 0,
     }))
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 5);
+    .sort((a, b) => b.total - a.total);
 
   const statCards = [
     { label: "Lessons done", value: allDone, icon: "📚", tone: "text-[#3F5D46]" },
@@ -191,7 +192,9 @@ export default function ChildProgressPage() {
                         {goalsTotal === 0 ? "No goals set yet." : `${goalsDone} of ${goalsTotal} complete`}
                       </p>
                     </div>
-                    <p className="text-2xl font-bold text-[#3F5D46]">{goalsTotal === 0 ? "—" : `${goalsDone}/${goalsTotal}`}</p>
+                    {goalsTotal > 0 && (
+                      <p className="text-2xl font-bold text-[#3F5D46]">{goalsDone}/{goalsTotal}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -206,7 +209,7 @@ export default function ChildProgressPage() {
                 </div>
 
                 <div className="space-y-3">
-                  {subjectStats.map(item => (
+                  {(showAllSubjects ? subjectStats : subjectStats.slice(0, 3)).map(item => (
                     <div key={item.subject} className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] px-4 py-3">
                       <div className="flex items-center justify-between gap-3 mb-2">
                         <div>
@@ -223,6 +226,15 @@ export default function ChildProgressPage() {
                       </div>
                     </div>
                   ))}
+
+                  {subjectStats.length > 3 && (
+                    <button
+                      onClick={() => setShowAllSubjects(v => !v)}
+                      className="w-full rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] px-4 py-2.5 text-sm font-bold text-[#3F5D46] hover:border-[#8FA382]"
+                    >
+                      {showAllSubjects ? "Show fewer subjects" : `Show all subjects (${subjectStats.length})`}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -272,6 +284,16 @@ export default function ChildProgressPage() {
                     <p className="text-xs font-semibold text-[#6E5A46] mt-1">Books finished</p>
                   </div>
                 </div>
+
+                {currentBook && (
+                  <div className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 mt-3">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382]">Currently reading</p>
+                    <p className="text-sm font-bold text-[#2E342F] mt-1">{currentBook.title}</p>
+                    {currentBook.author && (
+                      <p className="text-xs text-[#8A7A69] mt-0.5">{currentBook.author}</p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
