@@ -1,18 +1,30 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getRole, isAuthenticated } from "@/lib/auth";
+import { getMe } from "@/lib/api";
+import { clearAuth, setAuth } from "@/lib/auth";
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      router.replace("/login");
-      return;
-    }
-    const role = getRole();
-    router.replace(role === "parent" ? "/parent/dashboard" : "/child");
+    let cancelled = false;
+
+    getMe()
+      .then((res) => {
+        if (cancelled) return;
+        setAuth(res.data.role, res.data.username);
+        router.replace(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        clearAuth();
+        router.replace("/login");
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   return (
