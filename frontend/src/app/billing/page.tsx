@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import { createBillingCheckout, createBillingPortal, getMe } from "@/lib/api";
+import { createBillingCheckout, createBillingPortal, getMe, syncBillingSubscription } from "@/lib/api";
 
 export default function BillingPage() {
   const router = useRouter();
@@ -14,7 +14,9 @@ export default function BillingPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getMe()
+    syncBillingSubscription()
+      .catch(() => null)
+      .then(() => getMe())
       .then((res) => {
         if (res.data.role !== "parent") {
           router.replace("/child");
@@ -64,7 +66,15 @@ export default function BillingPage() {
   const active = ["active", "grandfathered"].includes(account?.subscription_status);
   const trialSubscriptionAttached =
     account?.subscription_status === "trialing" && !!account?.billing_plan;
-  const membershipAttached = active || trialSubscriptionAttached;
+  const canceling = account?.subscription_status === "canceling";
+  const membershipAttached = active || trialSubscriptionAttached || canceling;
+  const cancelDate = account?.subscription_cancel_at
+    ? new Date(account.subscription_cancel_at).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : null;
 
   return (
     <div className="min-h-screen bg-brand-cream">
@@ -78,10 +88,23 @@ export default function BillingPage() {
           </p>
         </div>
 
-        {trialText && (
+        {trialText && !canceling && (
           <div className="mb-6 rounded-2xl border border-brand-gold/30 bg-brand-gold/10 p-5">
             <p className="font-extrabold text-brand-charcoal">{trialText}</p>
-            <p className="mt-1 text-sm text-brand-earth/70">Choose a plan whenever you&apos;re ready.</p>
+            <p className="mt-1 text-sm text-brand-earth/70">
+              {trialSubscriptionAttached
+                ? "Your payment method is saved and billing will begin after the trial."
+                : "Choose a plan whenever you&apos;re ready."}
+            </p>
+          </div>
+        )}
+
+        {canceling && (
+          <div className="mb-6 rounded-2xl border border-brand-terracotta/30 bg-brand-terracotta/10 p-5">
+            <p className="font-extrabold text-brand-charcoal">Subscription cancelled</p>
+            <p className="mt-1 text-sm text-brand-earth/70">
+              You&apos;ll keep Bright Roots access until {cancelDate || "the end of your current period"}, and you won&apos;t be charged after that.
+            </p>
           </div>
         )}
 
@@ -90,11 +113,17 @@ export default function BillingPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-extrabold text-brand-charcoal">
-                  {trialSubscriptionAttached ? "Subscription ready after trial" : "Membership active"}
+                  {canceling
+                    ? "Access continues until cancellation date"
+                    : trialSubscriptionAttached
+                    ? "Subscription ready after trial"
+                    : "Membership active"}
                 </p>
                 <p className="mt-1 text-sm text-brand-earth/65">
                   {account.subscription_status === "grandfathered"
                     ? "Your existing Bright Roots account has continuing access."
+                    : canceling
+                    ? `Your ${account.billing_plan === "yearly" ? "annual" : "monthly"} membership is scheduled to end${cancelDate ? ` on ${cancelDate}` : ""}.`
                     : trialSubscriptionAttached
                     ? account.billing_plan === "yearly"
                       ? "Annual membership will begin automatically when your free trial ends."
