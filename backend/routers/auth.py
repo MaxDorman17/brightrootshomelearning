@@ -4,14 +4,21 @@ from time import monotonic
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 from schemas import Token, UserOut
-from auth import SESSION_COOKIE_NAME, verify_password, create_access_token, get_current_user
+from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_current_user
 from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
 
 LOGIN_WINDOW_SECONDS = 10 * 60
 MAX_FAILURES_PER_ACCOUNT_IP = 5
@@ -143,3 +150,51 @@ def logout(response: Response, request: Request):
 @router.get("/me", response_model=UserOut)
 def me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.post("/change-password")
+def change_password(
+    body: ChangePasswordRequest,
+    response: Response,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    if not verify_password(body.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect",
+        )
+
+    if len(body.new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="New password must be at least 8 characters",
+        )
+
+    if verify_password(body.new_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="New password must be different from the current password",
+        )
+
+    current_user.hashed_password = hash_password(body.new_password)
+    current_user.session_version = (current_user.session_version or 1) + 1
+    db.commit()
+    db.refresh(current_user)
+
+    token = create_access_token(
+        {"sub": str(current_user.id), "ver": current_user.session_version}
+    )
+    secure_cookie = request.url.hostname not in {"localhost", "127.0.0.1"}
+    response.set_cookie(
+        key=SESSION_COOKIE_NAME,
+        value=token,
+        httponly=True,
+        secure=secure_cookie,
+        samesite="lax",
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        path="/",
+    )
+
+    return {"message": "Password changed. Other sessions have been signed out."}
