@@ -36,6 +36,10 @@ export const forgotPassword = (email: string) =>
   api.post("/api/auth/forgot-password", { email });
 export const resetPassword = (token: string, new_password: string) =>
   api.post("/api/auth/reset-password", { token, new_password });
+export const requestEmailVerification = () =>
+  api.post("/api/auth/request-email-verification");
+export const verifyEmail = (token: string) =>
+  api.post("/api/auth/verify-email", { token });
 // Public self-registration is disabled server-side (see backend/routers/auth.py) —
 // no register() helper here since nothing should call it.
 
