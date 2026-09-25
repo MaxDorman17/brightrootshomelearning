@@ -231,7 +231,7 @@ def move_single_entry(
 
     days_off = {
         row.date
-        for row in db.query(DayOff).all()
+        for row in db.query(DayOff).filter(DayOff.parent_id == current_user.id).all()
     }
 
     step = 1 if body.direction == "forward" else -1
@@ -309,7 +309,7 @@ def shift_day(
 
     days_off = {
         row.date
-        for row in db.query(DayOff).all()
+        for row in db.query(DayOff).filter(DayOff.parent_id == current_user.id).all()
     }
 
     entries = (
