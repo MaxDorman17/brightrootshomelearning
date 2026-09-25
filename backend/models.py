@@ -123,9 +123,11 @@ class DayOff(Base):
     __tablename__ = "days_off"
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(Date, nullable=False, unique=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    date = Column(Date, nullable=False)
     reason = Column(String(100), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("parent_id", "date", name="uq_day_off_parent_date"),)
 
 
 class JournalEntry(Base):
