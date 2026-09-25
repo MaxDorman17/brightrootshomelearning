@@ -2,6 +2,7 @@ from collections import defaultdict, deque
 from threading import Lock
 from time import monotonic
 from datetime import datetime, timedelta
+import logging
 
 import httpx
 from jose import JWTError, jwt
@@ -9,6 +10,7 @@ from jose import JWTError, jwt
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
@@ -17,6 +19,7 @@ from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_acc
 from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+logger = logging.getLogger(__name__)
 
 
 class ChangePasswordRequest(BaseModel):
@@ -139,7 +142,7 @@ def _send_password_reset_email(email: str, token: str) -> None:
     if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
         raise RuntimeError("Password reset email is not configured")
 
-    reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password?token={token}"
+    reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password#token={token}"
     html = f"""
     <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
       <h2>Reset your Bright Roots password</h2>
@@ -292,7 +295,7 @@ def forgot_password(
     _check_reset_rate_limit(client_ip)
 
     user = db.query(User).filter(
-        User.email == body.email.strip().lower(),
+        func.lower(User.email) == body.email.strip().lower(),
         User.role == "parent",
     ).first()
 
@@ -301,10 +304,7 @@ def forgot_password(
         try:
             _send_password_reset_email(user.email, token)
         except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Password reset email is temporarily unavailable. Please try again later.",
-            )
+            logger.exception("Failed to send password reset email")
 
     return {
         "message": "If a parent account exists for that email, a password reset link has been sent."
