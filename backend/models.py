@@ -16,6 +16,11 @@ class User(Base):
     session_version = Column(Integer, nullable=False, default=1, server_default="1")
     email_verified_at = Column(DateTime(timezone=True), nullable=True)
     onboarding_completed_at = Column(DateTime(timezone=True), nullable=True)
+    subscription_status = Column(String(20), nullable=True)
+    trial_ends_at = Column(DateTime(timezone=True), nullable=True)
+    billing_plan = Column(String(20), nullable=True)
+    stripe_customer_id = Column(String(255), nullable=True)
+    stripe_subscription_id = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
