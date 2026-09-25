@@ -42,7 +42,7 @@ def _price_for_plan(plan: str) -> str:
     raise HTTPException(status_code=400, detail="Invalid billing plan")
 
 
-def _stripe_post(path: str, data: list[tuple[str, str]]) -> dict:
+def _stripe_post(path: str, data: dict[str, str]) -> dict:
     response = httpx.post(
         f"https://api.stripe.com/v1/{path}",
         headers=_stripe_headers(),
@@ -73,20 +73,20 @@ def create_checkout(
     price_id = _price_for_plan(body.plan)
     frontend = settings.FRONTEND_URL.rstrip("/")
 
-    data: list[tuple[str, str]] = [
-        ("mode", "subscription"),
-        ("line_items[0][price]", price_id),
-        ("line_items[0][quantity]", "1"),
-        ("success_url", f"{frontend}/billing/success?session_id={{CHECKOUT_SESSION_ID}}"),
-        ("cancel_url", f"{frontend}/billing?cancelled=1"),
-        ("client_reference_id", str(current_user.id)),
-        ("customer_email", current_user.email),
-        ("metadata[user_id]", str(current_user.id)),
-        ("metadata[plan]", body.plan),
-        ("subscription_data[metadata][user_id]", str(current_user.id)),
-        ("subscription_data[metadata][plan]", body.plan),
-        ("allow_promotion_codes", "true"),
-    ]
+    data: dict[str, str] = {
+        "mode": "subscription",
+        "line_items[0][price]": price_id,
+        "line_items[0][quantity]": "1",
+        "success_url": f"{frontend}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
+        "cancel_url": f"{frontend}/billing?cancelled=1",
+        "client_reference_id": str(current_user.id),
+        "customer_email": current_user.email,
+        "metadata[user_id]": str(current_user.id),
+        "metadata[plan]": body.plan,
+        "subscription_data[metadata][user_id]": str(current_user.id),
+        "subscription_data[metadata][plan]": body.plan,
+        "allow_promotion_codes": "true",
+    }
 
     session = _stripe_post("checkout/sessions", data)
     return {"url": session["url"]}
@@ -104,10 +104,10 @@ def create_portal(
     frontend = settings.FRONTEND_URL.rstrip("/")
     session = _stripe_post(
         "billing_portal/sessions",
-        [
-            ("customer", current_user.stripe_customer_id),
-            ("return_url", f"{frontend}/account"),
-        ],
+        {
+            "customer": current_user.stripe_customer_id,
+            "return_url": f"{frontend}/account",
+        },
     )
     return {"url": session["url"]}
 
