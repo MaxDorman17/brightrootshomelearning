@@ -57,6 +57,50 @@ def _stripe_post(path: str, data: dict[str, str]) -> dict:
     return response.json()
 
 
+def _stripe_get(path: str) -> dict:
+    response = httpx.get(
+        f"https://api.stripe.com/v1/{path}",
+        headers={"Authorization": f"Bearer {settings.STRIPE_SECRET_KEY}"},
+        timeout=15.0,
+    )
+    if response.status_code >= 400:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Stripe could not load subscription details. Please try again.",
+        )
+    return response.json()
+
+
+def _apply_subscription_state(user: User, obj: dict) -> None:
+    user.stripe_customer_id = obj.get("customer") or user.stripe_customer_id
+    user.stripe_subscription_id = obj.get("id") or user.stripe_subscription_id
+    user.billing_plan = (obj.get("metadata") or {}).get("plan") or user.billing_plan
+
+    cancel_at_period_end = bool(obj.get("cancel_at_period_end"))
+    cancel_at = obj.get("cancel_at")
+    if not cancel_at and cancel_at_period_end:
+        cancel_at = obj.get("trial_end") or obj.get("current_period_end")
+
+    user.subscription_cancel_at_period_end = cancel_at_period_end or bool(cancel_at)
+    user.subscription_cancel_at = (
+        datetime.fromtimestamp(cancel_at) if cancel_at else None
+    )
+
+    stripe_status = obj.get("status")
+    if user.subscription_cancel_at_period_end and user.subscription_cancel_at:
+        user.subscription_status = "canceling"
+    elif stripe_status == "trialing":
+        user.subscription_status = "trialing"
+        if obj.get("trial_end"):
+            user.trial_ends_at = datetime.fromtimestamp(obj["trial_end"])
+    elif stripe_status == "active":
+        user.subscription_status = "active"
+    elif stripe_status in {"past_due", "unpaid", "incomplete", "incomplete_expired"}:
+        user.subscription_status = stripe_status
+    elif stripe_status == "canceled":
+        user.subscription_status = "canceled"
+
+
 @router.post("/checkout")
 def create_checkout(
     body: CheckoutRequest,
@@ -97,6 +141,29 @@ def create_checkout(
 
     session = _stripe_post("checkout/sessions", data)
     return {"url": session["url"]}
+
+
+@router.post("/sync")
+def sync_subscription(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+    if not current_user.stripe_subscription_id:
+        return {"synced": False}
+
+    subscription = _stripe_get(f"subscriptions/{current_user.stripe_subscription_id}")
+    _apply_subscription_state(current_user, subscription)
+    db.commit()
+    db.refresh(current_user)
+    return {
+        "synced": True,
+        "subscription_status": current_user.subscription_status,
+        "billing_plan": current_user.billing_plan,
+        "subscription_cancel_at_period_end": current_user.subscription_cancel_at_period_end,
+        "subscription_cancel_at": current_user.subscription_cancel_at,
+    }
 
 
 @router.post("/portal")
@@ -209,21 +276,13 @@ async def stripe_webhook(
     }:
         user = _user_from_object(db, obj)
         if user:
-            user.stripe_customer_id = obj.get("customer") or user.stripe_customer_id
-            user.stripe_subscription_id = obj.get("id") or user.stripe_subscription_id
-            user.billing_plan = (obj.get("metadata") or {}).get("plan") or user.billing_plan
-
-            stripe_status = obj.get("status")
-            if event_type == "customer.subscription.deleted" or stripe_status == "canceled":
+            if event_type == "customer.subscription.deleted":
                 user.subscription_status = "canceled"
-            elif stripe_status == "trialing":
-                user.subscription_status = "trialing"
-                if obj.get("trial_end"):
-                    user.trial_ends_at = datetime.fromtimestamp(obj["trial_end"])
-            elif stripe_status == "active":
-                user.subscription_status = "active"
-            elif stripe_status in {"past_due", "unpaid", "incomplete", "incomplete_expired"}:
-                user.subscription_status = stripe_status
+                user.subscription_cancel_at_period_end = False
+                user.subscription_cancel_at = None
+                user.stripe_subscription_id = None
+            else:
+                _apply_subscription_state(user, obj)
             db.commit()
 
     return {"received": True}
