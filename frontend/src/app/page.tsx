@@ -107,12 +107,12 @@ export default function HomePage() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#how-it-works"
+                <Link
+                  href="/signup"
                   className="rounded-xl bg-[#3F5D46] px-6 py-3.5 text-center text-sm font-extrabold text-white hover:bg-[#354F3B]"
                 >
-                  See how it works
-                </a>
+                  Start 7-day free trial
+                </Link>
                 <a
                   href="#pricing"
                   className="rounded-xl border border-[#D9D1C4] bg-white px-6 py-3.5 text-center text-sm font-extrabold text-[#3F5D46] hover:bg-[#F7F2E8]"
@@ -276,8 +276,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            <p className="mt-8 text-sm text-white/60">
-              Payment and trial signup will be switched on when public registration opens.
+            <Link
+              href="/signup"
+              className="mt-8 inline-block rounded-xl bg-[#A8C67A] px-6 py-3.5 text-sm font-extrabold text-[#243128] hover:bg-[#B6D487]"
+            >
+              Start 7-day free trial
+            </Link>
+            <p className="mt-4 text-sm text-white/60">
+              No card is needed to create your trial account.
             </p>
           </div>
         </section>
