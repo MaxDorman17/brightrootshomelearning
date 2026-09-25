@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { changePassword, getMe, requestEmailVerification } from "@/lib/api";
 import { clearAuth, setAuth } from "@/lib/auth";
@@ -149,6 +150,21 @@ export default function AccountPage() {
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {role === "parent" && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Membership & billing</h2>
+              <p className="mt-1 text-sm text-brand-earth/70">
+                View your trial, choose monthly or annual membership, or manage an existing subscription.
+              </p>
+              <Link
+                href="/billing"
+                className="mt-4 inline-block rounded-xl bg-brand-sage px-5 py-3 text-sm font-extrabold text-white"
+              >
+                Open billing
+              </Link>
             </div>
           )}
 
