@@ -15,11 +15,21 @@ api.interceptors.response.use(
         localStorage.removeItem("role");
         localStorage.removeItem("username");
         window.location.href = "/login";
-      } else if (
-        err.response?.status === 402 &&
-        window.location.pathname !== "/membership-required"
-      ) {
-        window.location.href = "/membership-required";
+      } else if (err.response?.status === 402) {
+        const allowedExpiredPaths = [
+          "/membership-required",
+          "/billing",
+          "/account",
+        ];
+        const onAllowedExpiredPath = allowedExpiredPaths.some(
+          (path) =>
+            window.location.pathname === path ||
+            window.location.pathname.startsWith(path + "/")
+        );
+
+        if (!onAllowedExpiredPath) {
+          window.location.href = "/membership-required";
+        }
       }
     }
     return Promise.reject(err);
