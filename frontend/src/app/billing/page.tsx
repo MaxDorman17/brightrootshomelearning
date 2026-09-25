@@ -62,6 +62,9 @@ export default function BillingPage() {
   }
 
   const active = ["active", "grandfathered"].includes(account?.subscription_status);
+  const trialSubscriptionAttached =
+    account?.subscription_status === "trialing" && !!account?.billing_plan;
+  const membershipAttached = active || trialSubscriptionAttached;
 
   return (
     <div className="min-h-screen bg-brand-cream">
@@ -82,15 +85,23 @@ export default function BillingPage() {
           </div>
         )}
 
-        {active ? (
+        {membershipAttached ? (
           <div className="brand-card p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm font-extrabold text-brand-charcoal">Membership active</p>
+                <p className="text-sm font-extrabold text-brand-charcoal">
+                  {trialSubscriptionAttached ? "Subscription ready after trial" : "Membership active"}
+                </p>
                 <p className="mt-1 text-sm text-brand-earth/65">
                   {account.subscription_status === "grandfathered"
                     ? "Your existing Bright Roots account has continuing access."
-                    : account.billing_plan === "yearly" ? "Annual membership" : "Monthly membership"}
+                    : trialSubscriptionAttached
+                    ? account.billing_plan === "yearly"
+                      ? "Annual membership will begin automatically when your free trial ends."
+                      : "Monthly membership will begin automatically when your free trial ends."
+                    : account.billing_plan === "yearly"
+                    ? "Annual membership"
+                    : "Monthly membership"}
                 </p>
               </div>
               {account.subscription_status !== "grandfathered" && (
