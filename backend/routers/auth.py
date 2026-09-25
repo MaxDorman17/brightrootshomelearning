@@ -22,6 +22,12 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 logger = logging.getLogger(__name__)
 
 
+class RegisterRequest(BaseModel):
+    email: str
+    username: str
+    password: str
+
+
 class ChangePasswordRequest(BaseModel):
     current_password: str
     new_password: str
@@ -243,17 +249,48 @@ def _send_password_reset_email(email: str, token: str) -> None:
     response.raise_for_status()
 
 
-@router.post("/register")
-def register():
-    """Public self-registration is permanently disabled. Accounts are created
-    directly by the site owner (see backend/add_users.py), not through this
-    API. The route is kept (rather than removed) in case anything internal
-    ever references the path — it always rejects, before touching the
-    database at all."""
-    raise HTTPException(
-        status_code=403,
-        detail="Public registration is disabled. Contact the site owner to get an account created.",
+@router.post("/register", status_code=201)
+def register(
+    body: RegisterRequest,
+    db: Session = Depends(get_db),
+):
+    email = body.email.strip().lower()
+    username = body.username.strip()
+
+    if len(username) < 2:
+        raise HTTPException(status_code=400, detail="Username must be at least 2 characters")
+
+    if len(body.password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    if db.query(User).filter(func.lower(User.email) == email).first():
+        raise HTTPException(status_code=400, detail="An account already exists for that email")
+
+    if db.query(User).filter(func.lower(User.username) == username.lower()).first():
+        raise HTTPException(status_code=400, detail="Username already taken")
+
+    user = User(
+        email=email,
+        username=username,
+        hashed_password=hash_password(body.password),
+        role="parent",
+        subscription_status="trialing",
+        trial_ends_at=datetime.utcnow() + timedelta(days=7),
     )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    token = _create_email_verification_token(user)
+    try:
+        _send_email_verification(user.email, token)
+    except Exception:
+        logger.exception("Failed to send signup verification email")
+
+    return {
+        "message": "Account created. Check your email to verify your account and start your 7-day trial.",
+        "username": user.username,
+    }
 
 
 @router.post("/login", response_model=Token)
