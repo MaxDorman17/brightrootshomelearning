@@ -1,28 +1,10 @@
-"""Run once to create demo accounts: parent/parent123 and child/child123"""
-from database import SessionLocal, engine, Base
-from models import User
-from auth import hash_password
+"""Legacy demo seeding has been disabled.
 
-Base.metadata.create_all(bind=engine)
+Bright Roots no longer ships with default usernames or passwords.
+For an intentional bootstrap, use backend/add_users.py and provide
+the required BOOTSTRAP_* environment variables.
+"""
 
-db = SessionLocal()
-
-if not db.query(User).filter(User.username == "parent").first():
-    db.add(User(
-        email="parent@example.com",
-        username="parent",
-        hashed_password=hash_password("parent123"),
-        role="parent",
-    ))
-
-if not db.query(User).filter(User.username == "child").first():
-    db.add(User(
-        email="child@example.com",
-        username="child",
-        hashed_password=hash_password("child123"),
-        role="child",
-    ))
-
-db.commit()
-db.close()
-print("Seed complete: parent/parent123  |  child/child123")
+raise SystemExit(
+    "Demo seeding is disabled. Use backend/add_users.py with BOOTSTRAP_* environment variables."
+)
