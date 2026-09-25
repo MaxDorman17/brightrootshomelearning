@@ -16,7 +16,14 @@ def get_progress(
     current_user: User = Depends(get_current_user),
 ):
     if current_user.role == "parent" and child_id:
-        user_id = child_id
+        child = db.query(User).filter(
+            User.id == child_id,
+            User.parent_id == current_user.id,
+            User.role == "child",
+        ).first()
+        if not child:
+            raise HTTPException(status_code=403, detail="Not your child")
+        user_id = child.id
     else:
         user_id = current_user.id
     rows = db.query(UserCodingProgress).filter(UserCodingProgress.user_id == user_id).all()
