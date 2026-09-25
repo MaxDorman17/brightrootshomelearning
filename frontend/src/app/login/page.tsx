@@ -18,7 +18,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await login(username, password);
-      setAuth(res.data.access_token, res.data.role, res.data.username);
+      setAuth(res.data.role, res.data.username);
       router.push(res.data.role === "parent" ? "/parent/dashboard" : "/child");
     } catch (err: any) {
       setError(err.response?.data?.detail || "Something went wrong");
