@@ -9,6 +9,7 @@ class Token(BaseModel):
     role: str
     username: str
     email_verified: bool = True
+    onboarding_completed: bool = True
 
 
 class UserCreate(BaseModel):
@@ -25,6 +26,7 @@ class UserOut(BaseModel):
     role: str
     parent_id: Optional[int]
     email_verified_at: Optional[datetime] = None
+    onboarding_completed_at: Optional[datetime] = None
     created_at: datetime
 
     class Config:
