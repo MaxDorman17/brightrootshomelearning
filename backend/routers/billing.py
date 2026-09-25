@@ -88,6 +88,11 @@ def create_checkout(
         "allow_promotion_codes": "true",
     }
 
+    if current_user.subscription_status == "trialing" and current_user.trial_ends_at:
+        trial_end = int(current_user.trial_ends_at.timestamp())
+        if trial_end > int(time.time()) + 60:
+            data["subscription_data[trial_end]"] = str(trial_end)
+
     session = _stripe_post("checkout/sessions", data)
     return {"url": session["url"]}
 
@@ -189,7 +194,10 @@ async def stripe_webhook(
             user.stripe_customer_id = obj.get("customer") or user.stripe_customer_id
             user.stripe_subscription_id = obj.get("subscription") or user.stripe_subscription_id
             user.billing_plan = (obj.get("metadata") or {}).get("plan") or user.billing_plan
-            user.subscription_status = "active"
+            if user.trial_ends_at and user.trial_ends_at.timestamp() > time.time():
+                user.subscription_status = "trialing"
+            else:
+                user.subscription_status = "active"
             db.commit()
 
     elif event_type in {
@@ -206,7 +214,11 @@ async def stripe_webhook(
             stripe_status = obj.get("status")
             if event_type == "customer.subscription.deleted" or stripe_status == "canceled":
                 user.subscription_status = "canceled"
-            elif stripe_status in {"active", "trialing"}:
+            elif stripe_status == "trialing":
+                user.subscription_status = "trialing"
+                if obj.get("trial_end"):
+                    user.trial_ends_at = datetime.fromtimestamp(obj["trial_end"])
+            elif stripe_status == "active":
                 user.subscription_status = "active"
             elif stripe_status in {"past_due", "unpaid", "incomplete", "incomplete_expired"}:
                 user.subscription_status = stripe_status
