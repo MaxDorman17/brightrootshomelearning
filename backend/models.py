@@ -15,6 +15,7 @@ class User(Base):
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     session_version = Column(Integer, nullable=False, default=1, server_default="1")
     email_verified_at = Column(DateTime(timezone=True), nullable=True)
+    onboarding_completed_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
