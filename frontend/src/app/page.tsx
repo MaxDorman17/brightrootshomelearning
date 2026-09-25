@@ -234,20 +234,29 @@ export default function HomePage() {
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#A8C67A]">Pricing</p>
             <h2 className="mt-3 text-3xl font-black sm:text-4xl">Simple family pricing</h2>
             <p className="mx-auto mt-4 max-w-2xl text-white/70">
-              One family account with parent tools and child accounts. Final launch
-              pricing is being set now.
+              One membership for the whole family, with parent tools and multiple child accounts included.
             </p>
 
-            <div className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/15 bg-white/10 p-8 text-left">
-              <div className="flex items-start justify-between gap-4">
+            <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-white/15 bg-white/10 p-8 text-left">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p className="text-sm font-extrabold uppercase tracking-wider text-[#A8C67A]">Family membership</p>
                   <h3 className="mt-2 text-2xl font-black">Bright Roots Family</h3>
+                  <p className="mt-2 text-sm text-white/60">7-day free trial · cancel anytime</p>
                 </div>
-                <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-bold">Price coming soon</span>
+
+                <div className="sm:text-right">
+                  <div className="text-4xl font-black">
+                    £5.99
+                    <span className="text-base font-bold text-white/60">/month</span>
+                  </div>
+                  <p className="mt-1 text-sm font-semibold text-[#A8C67A]">
+                    or £59/year
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-6 grid gap-3 text-sm text-white/85 sm:grid-cols-2">
+              <div className="mt-7 grid gap-3 text-sm text-white/85 sm:grid-cols-2">
                 <span>✓ Parent dashboard</span>
                 <span>✓ Multiple child accounts</span>
                 <span>✓ Weekly planning</span>
@@ -255,10 +264,14 @@ export default function HomePage() {
                 <span>✓ Reading & spellings</span>
                 <span>✓ Oak lesson tools</span>
               </div>
+
+              <div className="mt-7 rounded-2xl border border-white/10 bg-black/10 p-4 text-sm text-white/70">
+                Annual membership saves £12.88 compared with paying monthly for a full year.
+              </div>
             </div>
 
             <p className="mt-8 text-sm text-white/60">
-              We&apos;ll put the real monthly and annual prices here once you&apos;ve chosen them.
+              Payment and trial signup will be switched on when public registration opens.
             </p>
           </div>
         </section>
