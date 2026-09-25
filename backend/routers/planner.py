@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import or_, and_, exists as sa_exists, select, func
+from sqlalchemy import or_, and_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
@@ -703,71 +703,6 @@ def submit_note(
     entry.completed_note = body.completed_note
     db.commit()
     return _to_out(load_entry(db, entry_id))
-
-
-@router.post("/assign-existing-to-oscar")
-def assign_existing_to_oscar(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(require_parent),
-):
-    """One-time migration: assign this parent's existing shared lessons to Oscar.
-
-    Oscar's per-user completion data is copied onto PlannerEntry before the
-    assignment changes, so completed work links, notes and Oak result URLs stay
-    attached to the lesson. Lessons already assigned to a child are untouched.
-    """
-    oscar = (
-        db.query(User)
-        .filter(
-            User.parent_id == current_user.id,
-            func.lower(User.username) == "oscar",
-        )
-        .first()
-    )
-    if not oscar:
-        raise HTTPException(status_code=404, detail="Oscar was not found for this parent")
-
-    entries = (
-        db.query(PlannerEntry)
-        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
-        .filter(
-            PlannerEntry.assigned_to.is_(None),
-            Lesson.created_by == current_user.id,
-        )
-        .all()
-    )
-
-    entry_ids = [entry.id for entry in entries]
-    oscar_completions = {}
-    if entry_ids:
-        oscar_completions = {
-            comp.entry_id: comp
-            for comp in db.query(PlannerCompletion).filter(
-                PlannerCompletion.entry_id.in_(entry_ids),
-                PlannerCompletion.user_id == oscar.id,
-            ).all()
-        }
-
-    migrated_with_completion = 0
-    for entry in entries:
-        comp = oscar_completions.get(entry.id)
-        if comp is not None:
-            entry.is_complete = True
-            entry.completed_at = comp.completed_at or entry.completed_at
-            entry.completed_work_url = comp.completed_work_url or entry.completed_work_url
-            entry.completed_note = comp.completed_note or entry.completed_note
-            migrated_with_completion += 1
-
-        entry.assigned_to = oscar.id
-
-    db.commit()
-
-    return {
-        "assigned_to": oscar.username,
-        "assigned_to_id": oscar.id,
-        "lessons_updated": len(entries),
-        "completions_preserved": migrated_with_completion,
-    }
 
 
 @router.put("/{entry_id}", response_model=PlannerEntryOut)
