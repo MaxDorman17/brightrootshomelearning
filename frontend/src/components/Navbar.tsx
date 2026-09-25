@@ -12,6 +12,7 @@ import {
 import {
   getPendingFeedback,
   getUnreadFeedbackCount,
+  logout,
 } from "@/lib/api";
 
 interface PendingItem {
@@ -130,9 +131,13 @@ export default function Navbar() {
     };
   }, []);
 
-  const handleLogout = () => {
-    clearAuth();
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      clearAuth();
+      router.push("/login");
+    }
   };
 
   const openPendingEntry = (item: PendingItem) => {
