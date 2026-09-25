@@ -69,6 +69,8 @@ def create_checkout(
 
     if current_user.subscription_status in {"active", "grandfathered"}:
         raise HTTPException(status_code=400, detail="This account already has active access")
+    if current_user.stripe_subscription_id:
+        raise HTTPException(status_code=400, detail="A Stripe subscription is already attached to this account")
 
     price_id = _price_for_plan(body.plan)
     frontend = settings.FRONTEND_URL.rstrip("/")
