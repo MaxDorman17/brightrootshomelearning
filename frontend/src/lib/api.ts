@@ -10,10 +10,17 @@ export const api = axios.create({
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401 && typeof window !== "undefined" && !err.config?.url?.includes("/auth/login")) {
-      localStorage.removeItem("role");
-      localStorage.removeItem("username");
-      window.location.href = "/login";
+    if (typeof window !== "undefined") {
+      if (err.response?.status === 401 && !err.config?.url?.includes("/auth/login")) {
+        localStorage.removeItem("role");
+        localStorage.removeItem("username");
+        window.location.href = "/login";
+      } else if (
+        err.response?.status === 402 &&
+        window.location.pathname !== "/membership-required"
+      ) {
+        window.location.href = "/membership-required";
+      }
     }
     return Promise.reject(err);
   }
