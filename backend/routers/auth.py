@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 from schemas import Token, UserOut
-from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_current_user
+from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, user_has_membership_access
 from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -330,6 +330,7 @@ def login(
         username=user.username,
         email_verified=(user.email_verified_at is not None),
         onboarding_completed=(user.onboarding_completed_at is not None),
+        billing_required=not user_has_membership_access(user, db),
     )
 
 
@@ -346,7 +347,7 @@ def logout(response: Response, request: Request):
 
 
 @router.get("/me", response_model=UserOut)
-def me(current_user: User = Depends(get_current_user)):
+def me(current_user: User = Depends(get_authenticated_user)):
     return current_user
 
 
@@ -356,7 +357,7 @@ def change_password(
     response: Response,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
 ):
     if not verify_password(body.current_password, current_user.hashed_password):
         raise HTTPException(
@@ -475,7 +476,7 @@ def reset_password(
 @router.post("/request-email-verification")
 def request_email_verification(
     request: Request,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
@@ -545,7 +546,7 @@ def verify_email(
 @router.post("/complete-onboarding")
 def complete_onboarding(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
