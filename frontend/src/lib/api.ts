@@ -20,6 +20,9 @@ api.interceptors.response.use(
 );
 
 // Auth
+export const registerParent = (email: string, username: string, password: string) =>
+  api.post("/api/auth/register", { email, username, password });
+
 export const login = (username: string, password: string) => {
   const form = new URLSearchParams();
   form.append("username", username);
