@@ -5,6 +5,7 @@ from database import get_db
 from models import User
 from schemas import Token, UserOut
 from auth import SESSION_COOKIE_NAME, verify_password, create_access_token, get_current_user
+from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -43,19 +44,20 @@ def login(
         httponly=True,
         secure=secure_cookie,
         samesite="lax",
-        max_age=8 * 60 * 60,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/",
     )
     return Token(access_token=token, token_type="bearer", role=user.role, username=user.username)
 
 
 @router.post("/logout", status_code=204)
-def logout(response: Response):
+def logout(response: Response, request: Request):
+    secure_cookie = request.url.hostname not in {"localhost", "127.0.0.1"}
     response.delete_cookie(
         key=SESSION_COOKIE_NAME,
         path="/",
         httponly=True,
-        secure=True,
+        secure=secure_cookie,
         samesite="lax",
     )
 
