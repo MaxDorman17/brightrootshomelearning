@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getChildren, addChild, removeChild } from "@/lib/api";
+import { getChildren, addChild, removeChild, resetChildPassword } from "@/lib/api";
 import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO } from "date-fns";
@@ -21,6 +21,13 @@ export default function ChildrenPage() {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  const [resetChild, setResetChild] = useState<Child | null>(null);
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetConfirm, setResetConfirm] = useState("");
+  const [resetSaving, setResetSaving] = useState(false);
+  const [resetError, setResetError] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") {
@@ -78,6 +85,47 @@ export default function ChildrenPage() {
     setEmail("");
     setPassword("");
     setError("");
+  };
+
+  const closeResetModal = () => {
+    setResetChild(null);
+    setResetPassword("");
+    setResetConfirm("");
+    setResetError("");
+    setResetMessage("");
+  };
+
+  const handleResetPassword = async () => {
+    if (!resetChild) return;
+
+    setResetError("");
+    setResetMessage("");
+
+    if (resetPassword.length < 8) {
+      setResetError("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (resetPassword !== resetConfirm) {
+      setResetError("The passwords do not match.");
+      return;
+    }
+
+    setResetSaving(true);
+
+    try {
+      const res = await resetChildPassword(resetChild.id, resetPassword);
+      setResetMessage(res.data.message || "Password reset successfully.");
+      setResetPassword("");
+      setResetConfirm("");
+    } catch (err: unknown) {
+      const detail = (
+        err as { response?: { data?: { detail?: string } } }
+      )?.response?.data?.detail;
+      setResetError(detail || "Could not reset password.");
+    } finally {
+      setResetSaving(false);
+    }
   };
 
   return (
@@ -185,12 +233,25 @@ export default function ChildrenPage() {
                     </p>
                   </div>
 
-                  <button
-                    onClick={() => handleRemove(child.id, child.username)}
-                    className="shrink-0 px-3 py-2 rounded-xl text-sm font-semibold text-[#B45F50] hover:bg-[#FBEFEB] transition-colors"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    <button
+                      onClick={() => {
+                        setResetChild(child);
+                        setResetError("");
+                        setResetMessage("");
+                      }}
+                      className="px-3 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] hover:bg-[#E8EDE4] transition-colors"
+                    >
+                      Reset password
+                    </button>
+
+                    <button
+                      onClick={() => handleRemove(child.id, child.username)}
+                      className="px-3 py-2 rounded-xl text-sm font-semibold text-[#B45F50] hover:bg-[#FBEFEB] transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -308,6 +369,97 @@ export default function ChildrenPage() {
           </div>
         </div>
       )}
+
+      {resetChild && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 px-4 flex items-center justify-center"
+          onClick={event => {
+            if (event.target === event.currentTarget) closeResetModal();
+          }}
+        >
+          <div className="w-full max-w-md rounded-3xl bg-[#FFFDF8] border border-[#E7DFD1] shadow-2xl overflow-hidden">
+            <div className="px-6 py-5 border-b border-[#E7DFD1]">
+              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                Account Recovery
+              </p>
+
+              <h2 className="text-xl font-bold text-[#2E342F] mt-1">
+                Reset {resetChild.username}&apos;s password
+              </h2>
+
+              <p className="text-sm text-[#6E5A46] mt-1">
+                Existing sessions on their other devices will be signed out.
+              </p>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    New password
+                  </label>
+
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={resetPassword}
+                    onChange={event => setResetPassword(event.target.value)}
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    Confirm new password
+                  </label>
+
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={resetConfirm}
+                    onChange={event => setResetConfirm(event.target.value)}
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                  />
+                </div>
+
+                {resetError && (
+                  <div className="rounded-xl border border-[#E9B8AE] bg-[#FBEFEB] px-4 py-3">
+                    <p className="text-sm font-semibold text-[#A64F42]">
+                      {resetError}
+                    </p>
+                  </div>
+                )}
+
+                {resetMessage && (
+                  <div className="rounded-xl border border-[#D9E1D4] bg-[#E8EDE4] px-4 py-3">
+                    <p className="text-sm font-semibold text-[#3F5D46]">
+                      {resetMessage}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
+                <button
+                  onClick={closeResetModal}
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-[#F7F2E8] transition-colors"
+                >
+                  Close
+                </button>
+
+                <button
+                  onClick={handleResetPassword}
+                  disabled={resetSaving || !resetPassword || !resetConfirm}
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {resetSaving ? "Resetting..." : "Reset password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
