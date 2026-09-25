@@ -10,6 +10,7 @@ class Token(BaseModel):
     username: str
     email_verified: bool = True
     onboarding_completed: bool = True
+    billing_required: bool = False
 
 
 class UserCreate(BaseModel):
