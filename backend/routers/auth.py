@@ -286,7 +286,13 @@ def login(
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/",
     )
-    return Token(access_token=token, token_type="bearer", role=user.role, username=user.username)
+    return Token(
+        access_token=token,
+        token_type="bearer",
+        role=user.role,
+        username=user.username,
+        email_verified=(user.email_verified_at is not None),
+    )
 
 
 @router.post("/logout", status_code=204)
