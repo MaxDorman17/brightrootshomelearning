@@ -34,6 +34,7 @@ try:
             hashed_password=hash_password(parent_password),
             role="parent",
             email_verified_at=datetime.utcnow(),
+            onboarding_completed_at=datetime.utcnow(),
         )
         db.add(parent)
         db.flush()
