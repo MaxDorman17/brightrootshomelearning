@@ -21,6 +21,9 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN parent_id INTEGER REFERENCES users(id)"))
             if "session_version" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN session_version INTEGER NOT NULL DEFAULT 1"))
+            if "email_verified_at" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN email_verified_at DATETIME"))
+                conn.execute(text("UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE role = 'parent'"))
             conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
