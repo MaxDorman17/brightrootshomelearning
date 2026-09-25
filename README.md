@@ -11,7 +11,7 @@
 
 Open psql as a superuser and run:
 ```sql
-CREATE USER homeschool_user WITH PASSWORD 'homeschool_pass';
+CREATE USER homeschool_user WITH PASSWORD 'CHANGE_ME_TO_A_STRONG_PASSWORD';
 CREATE DATABASE homeschool_db OWNER homeschool_user;
 GRANT ALL PRIVILEGES ON DATABASE homeschool_db TO homeschool_user;
 ```
@@ -36,11 +36,12 @@ venv\Scripts\activate        # Windows
 # Install dependencies
 pip install -r requirements.txt
 
-# The .env file is already included with local defaults
-# Edit backend/.env if your DB credentials differ
+# Create backend/.env locally with your own DATABASE_URL and SECRET_KEY.
+# Real environment files are intentionally not committed.
 
-# Create tables and seed demo accounts
-python seed.py
+# Optional first-account bootstrap:
+# set the BOOTSTRAP_* environment variables, then run:
+python add_users.py
 
 # Start the API server
 uvicorn main:app --reload --port 8000
@@ -64,12 +65,11 @@ App runs at http://localhost:3000
 
 ---
 
-## Demo Accounts
+## Accounts
 
-| Role   | Username | Password   |
-|--------|----------|------------|
-| Parent | parent   | parent123  |
-| Child  | child    | child123   |
+Bright Roots does not include default or demo login credentials.
+Accounts should be created intentionally using the bootstrap environment variables
+documented in `backend/add_users.py`.
 
 ---
 
