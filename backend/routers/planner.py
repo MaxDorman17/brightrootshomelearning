@@ -101,6 +101,10 @@ def _entry_for_parent(db: Session, entry_id: int, parent: User) -> Optional[Plan
         .filter(
             PlannerEntry.id == entry_id,
             Lesson.created_by == parent.id,
+            or_(
+                PlannerEntry.assigned_to.is_(None),
+                PlannerEntry.assigned_to.in_(_child_ids_for_parent(db, parent)),
+            ),
         )
         .first()
     )
@@ -115,7 +119,13 @@ def _entry_for_user(db: Session, entry_id: int, user: User) -> Optional[PlannerE
     )
 
     if user.role == "parent":
-        return query.filter(Lesson.created_by == user.id).first()
+        return query.filter(
+            Lesson.created_by == user.id,
+            or_(
+                PlannerEntry.assigned_to.is_(None),
+                PlannerEntry.assigned_to.in_(_child_ids_for_parent(db, user)),
+            ),
+        ).first()
 
     if user.role == "child":
         if user.parent_id is None:
@@ -223,6 +233,10 @@ def move_single_entry(
         .filter(
             PlannerEntry.id == entry_id,
             Lesson.created_by == current_user.id,
+            or_(
+                PlannerEntry.assigned_to.is_(None),
+                PlannerEntry.assigned_to.in_(_child_ids_for_parent(db, current_user)),
+            ),
         )
         .first()
     )
@@ -319,6 +333,10 @@ def shift_day(
             PlannerEntry.scheduled_date >= body.from_date,
             PlannerEntry.is_extra.is_(False),
             PlannerEntry.lesson.has(Lesson.created_by == current_user.id),
+            or_(
+                PlannerEntry.assigned_to.is_(None),
+                PlannerEntry.assigned_to.in_(_child_ids_for_parent(db, current_user)),
+            ),
         )
         .order_by(
             PlannerEntry.scheduled_date.asc(),
@@ -343,6 +361,10 @@ def shift_day(
                 PlannerEntry.scheduled_date < body.from_date,
                 PlannerEntry.is_extra.is_(False),
                 PlannerEntry.lesson.has(Lesson.created_by == current_user.id),
+                or_(
+                    PlannerEntry.assigned_to.is_(None),
+                    PlannerEntry.assigned_to.in_(_child_ids_for_parent(db, current_user)),
+                ),
             )
             .all()
         )
@@ -558,10 +580,11 @@ def get_all(
     entries = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
         joinedload(PlannerEntry.lesson)
     ).filter(
+        Lesson.created_by == current_user.id,
         or_(
             PlannerEntry.assigned_to.in_(child_ids),
-            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
-        )
+            PlannerEntry.assigned_to.is_(None),
+        ),
     ).order_by(
         PlannerEntry.scheduled_date.desc()
     ).all()
@@ -598,9 +621,10 @@ def get_submission_count(
     count = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).filter(
         PlannerEntry.is_complete == True,
         or_(PlannerEntry.completed_work_url.is_not(None), has_shared_submission),
+        Lesson.created_by == current_user.id,
         or_(
             PlannerEntry.assigned_to.in_(child_ids),
-            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+            PlannerEntry.assigned_to.is_(None),
         ),
         ~has_feedback,
         ~has_review,
@@ -636,9 +660,10 @@ def get_pending_feedback(
     ).filter(
         PlannerEntry.is_complete == True,
         or_(PlannerEntry.completed_work_url.is_not(None), has_shared_submission),
+        Lesson.created_by == current_user.id,
         or_(
             PlannerEntry.assigned_to.in_(child_ids),
-            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+            PlannerEntry.assigned_to.is_(None),
         ),
         ~has_feedback,
         ~has_review,
