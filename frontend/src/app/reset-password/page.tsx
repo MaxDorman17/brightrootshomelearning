@@ -14,7 +14,7 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
     setToken(params.get("token") || "");
   }, []);
 
