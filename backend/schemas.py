@@ -8,6 +8,7 @@ class Token(BaseModel):
     token_type: str
     role: str
     username: str
+    email_verified: bool = True
 
 
 class UserCreate(BaseModel):
