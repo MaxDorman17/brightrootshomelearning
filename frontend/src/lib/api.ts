@@ -49,6 +49,8 @@ export const createBillingCheckout = (plan: "monthly" | "yearly") =>
   api.post("/api/billing/checkout", { plan });
 export const createBillingPortal = () =>
   api.post("/api/billing/portal");
+export const syncBillingSubscription = () =>
+  api.post("/api/billing/sync");
 // Public self-registration is disabled server-side (see backend/routers/auth.py) —
 // no register() helper here since nothing should call it.
 
