@@ -40,6 +40,8 @@ export const requestEmailVerification = () =>
   api.post("/api/auth/request-email-verification");
 export const verifyEmail = (token: string) =>
   api.post("/api/auth/verify-email", { token });
+export const completeOnboarding = () =>
+  api.post("/api/auth/complete-onboarding");
 // Public self-registration is disabled server-side (see backend/routers/auth.py) —
 // no register() helper here since nothing should call it.
 
