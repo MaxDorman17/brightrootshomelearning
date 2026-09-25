@@ -41,11 +41,14 @@ MAX_FAILURES_PER_ACCOUNT_IP = 5
 MAX_FAILURES_PER_IP = 25
 RESET_WINDOW_SECONDS = 15 * 60
 MAX_RESET_REQUESTS_PER_IP = 5
+VERIFY_WINDOW_SECONDS = 15 * 60
+MAX_VERIFY_REQUESTS_PER_IP = 5
 
 _failed_by_account_ip = defaultdict(deque)
 _failed_by_ip = defaultdict(deque)
 _rate_limit_lock = Lock()
 _reset_requests_by_ip = defaultdict(deque)
+_verify_requests_by_ip = defaultdict(deque)
 
 
 def _client_ip(request: Request) -> str:
@@ -125,6 +128,72 @@ def _check_reset_rate_limit(client_ip: str) -> None:
             )
 
         attempts.append(now)
+
+
+def _check_verify_rate_limit(client_ip: str) -> None:
+    now = monotonic()
+    with _rate_limit_lock:
+        attempts = _verify_requests_by_ip[client_ip]
+        cutoff = now - VERIFY_WINDOW_SECONDS
+        while attempts and attempts[0] <= cutoff:
+            attempts.popleft()
+
+        if len(attempts) >= MAX_VERIFY_REQUESTS_PER_IP:
+            retry_after = max(1, int(VERIFY_WINDOW_SECONDS - (now - attempts[0])))
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many verification email requests. Please try again later.",
+                headers={"Retry-After": str(retry_after)},
+            )
+
+        attempts.append(now)
+
+
+def _create_email_verification_token(user: User) -> str:
+    expires = datetime.utcnow() + timedelta(hours=24)
+    payload = {
+        "sub": str(user.id),
+        "purpose": "email_verify",
+        "email": user.email,
+        "exp": expires,
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def _send_email_verification(email: str, token: str) -> None:
+    if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
+        raise RuntimeError("Email verification is not configured")
+
+    verify_url = f"{settings.FRONTEND_URL.rstrip('/')}/verify-email#token={token}"
+    html = f"""
+    <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
+      <h2>Verify your Bright Roots email</h2>
+      <p>Please confirm that this email address belongs to your Bright Roots parent account.</p>
+      <p>
+        <a href="{verify_url}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">
+          Verify email
+        </a>
+      </p>
+      <p>This link expires in 24 hours.</p>
+      <p>If you did not expect this email, you can ignore it.</p>
+    </div>
+    """
+
+    response = httpx.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": settings.RESEND_FROM_EMAIL,
+            "to": [email],
+            "subject": "Verify your Bright Roots email",
+            "html": html,
+        },
+        timeout=10.0,
+    )
+    response.raise_for_status()
 
 
 def _create_password_reset_token(user: User) -> str:
@@ -357,3 +426,73 @@ def reset_password(
     return {
         "message": "Password reset successfully. You can now sign in with your new password."
     }
+
+
+@router.post("/request-email-verification")
+def request_email_verification(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+
+    if current_user.email_verified_at is not None:
+        return {"message": "Your email address is already verified."}
+
+    _check_verify_rate_limit(_client_ip(request))
+    token = _create_email_verification_token(current_user)
+
+    try:
+        _send_email_verification(current_user.email, token)
+    except Exception:
+        logger.exception("Failed to send email verification")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Verification email is temporarily unavailable. Please try again later.",
+        )
+
+    return {"message": "Verification email sent. Check your inbox."}
+
+
+class VerifyEmailRequest(BaseModel):
+    token: str
+
+
+@router.post("/verify-email")
+def verify_email(
+    body: VerifyEmailRequest,
+    db: Session = Depends(get_db),
+):
+    try:
+        payload = jwt.decode(
+            body.token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
+        if payload.get("purpose") != "email_verify":
+            raise JWTError()
+
+        user_id = int(payload.get("sub"))
+        token_email = str(payload.get("email"))
+    except (JWTError, TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This verification link is invalid or has expired.",
+        )
+
+    user = db.query(User).filter(
+        User.id == user_id,
+        User.role == "parent",
+    ).first()
+
+    if not user or user.email.lower() != token_email.lower():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This verification link is no longer valid.",
+        )
+
+    if user.email_verified_at is None:
+        user.email_verified_at = datetime.utcnow()
+        db.commit()
+
+    return {"message": "Email verified successfully."}
