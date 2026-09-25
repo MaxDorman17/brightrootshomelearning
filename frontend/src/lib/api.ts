@@ -174,7 +174,10 @@ export const getOakQuizResults = () => api.get("/api/oak/quiz-results");
 export const refreshOakQuizResults = () => api.post("/api/oak/quiz-results/refresh");
 export const exportOakResults = (params?: { child_id?: number; start_date?: string; end_date?: string }) =>
   api.get("/api/oak/export", { params, responseType: "blob" });
-export const getTodayOakQuizResults = () => api.get("/api/oak/today-quiz-results");
+export const getTodayOakQuizResults = (childId?: number) =>
+  api.get("/api/oak/today-quiz-results", {
+    params: childId ? { child_id: childId } : {},
+  });
 export const getWeekQuizScores = (startDate: string, endDate: string, childId?: number) =>
   api.get("/api/oak/week-scores", {
     params: { start_date: startDate, end_date: endDate, ...(childId ? { child_id: childId } : {}) },
