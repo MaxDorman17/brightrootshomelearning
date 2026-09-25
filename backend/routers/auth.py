@@ -1,6 +1,10 @@
 from collections import defaultdict, deque
 from threading import Lock
 from time import monotonic
+from datetime import datetime, timedelta
+
+import httpx
+from jose import JWTError, jwt
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -20,13 +24,25 @@ class ChangePasswordRequest(BaseModel):
     new_password: str
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+
 LOGIN_WINDOW_SECONDS = 10 * 60
 MAX_FAILURES_PER_ACCOUNT_IP = 5
 MAX_FAILURES_PER_IP = 25
+RESET_WINDOW_SECONDS = 15 * 60
+MAX_RESET_REQUESTS_PER_IP = 5
 
 _failed_by_account_ip = defaultdict(deque)
 _failed_by_ip = defaultdict(deque)
 _rate_limit_lock = Lock()
+_reset_requests_by_ip = defaultdict(deque)
 
 
 def _client_ip(request: Request) -> str:
@@ -87,6 +103,72 @@ def _clear_account_failures(client_ip: str, username: str) -> None:
     account_key = (client_ip, username.lower())
     with _rate_limit_lock:
         _failed_by_account_ip.pop(account_key, None)
+
+
+def _check_reset_rate_limit(client_ip: str) -> None:
+    now = monotonic()
+    with _rate_limit_lock:
+        attempts = _reset_requests_by_ip[client_ip]
+        cutoff = now - RESET_WINDOW_SECONDS
+        while attempts and attempts[0] <= cutoff:
+            attempts.popleft()
+
+        if len(attempts) >= MAX_RESET_REQUESTS_PER_IP:
+            retry_after = max(1, int(RESET_WINDOW_SECONDS - (now - attempts[0])))
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many password reset requests. Please try again later.",
+                headers={"Retry-After": str(retry_after)},
+            )
+
+        attempts.append(now)
+
+
+def _create_password_reset_token(user: User) -> str:
+    expires = datetime.utcnow() + timedelta(minutes=30)
+    payload = {
+        "sub": str(user.id),
+        "purpose": "password_reset",
+        "ver": user.session_version,
+        "exp": expires,
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def _send_password_reset_email(email: str, token: str) -> None:
+    if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
+        raise RuntimeError("Password reset email is not configured")
+
+    reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password?token={token}"
+    html = f"""
+    <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
+      <h2>Reset your Bright Roots password</h2>
+      <p>We received a request to reset your Bright Roots parent account password.</p>
+      <p>
+        <a href="{reset_url}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">
+          Reset password
+        </a>
+      </p>
+      <p>This link expires in 30 minutes.</p>
+      <p>If you did not request this, you can ignore this email.</p>
+    </div>
+    """
+
+    response = httpx.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": settings.RESEND_FROM_EMAIL,
+            "to": [email],
+            "subject": "Reset your Bright Roots password",
+            "html": html,
+        },
+        timeout=10.0,
+    )
+    response.raise_for_status()
 
 
 @router.post("/register")
@@ -198,3 +280,80 @@ def change_password(
     )
 
     return {"message": "Password changed. Other sessions have been signed out."}
+
+
+@router.post("/forgot-password")
+def forgot_password(
+    body: ForgotPasswordRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    client_ip = _client_ip(request)
+    _check_reset_rate_limit(client_ip)
+
+    user = db.query(User).filter(
+        User.email == body.email.strip().lower(),
+        User.role == "parent",
+    ).first()
+
+    if user:
+        token = _create_password_reset_token(user)
+        try:
+            _send_password_reset_email(user.email, token)
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Password reset email is temporarily unavailable. Please try again later.",
+            )
+
+    return {
+        "message": "If a parent account exists for that email, a password reset link has been sent."
+    }
+
+
+@router.post("/reset-password")
+def reset_password(
+    body: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    if len(body.new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="New password must be at least 8 characters",
+        )
+
+    try:
+        payload = jwt.decode(
+            body.token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
+        if payload.get("purpose") != "password_reset":
+            raise JWTError()
+
+        user_id = int(payload.get("sub"))
+        token_version = payload.get("ver", 1)
+    except (JWTError, TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This reset link is invalid or has expired.",
+        )
+
+    user = db.query(User).filter(
+        User.id == user_id,
+        User.role == "parent",
+    ).first()
+
+    if not user or user.session_version != token_version:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This reset link is invalid or has already been used.",
+        )
+
+    user.hashed_password = hash_password(body.new_password)
+    user.session_version = (user.session_version or 1) + 1
+    db.commit()
+
+    return {
+        "message": "Password reset successfully. You can now sign in with your new password."
+    }
