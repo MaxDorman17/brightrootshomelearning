@@ -49,6 +49,42 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE spelling_results ADD COLUMN is_practice_round BOOLEAN DEFAULT 0"))
                 conn.commit()
 
+    if "days_off" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("days_off")]
+        if "parent_id" not in existing_cols:
+            if engine.dialect.name != "sqlite":
+                raise RuntimeError("days_off parent migration currently requires SQLite")
+
+            with engine.begin() as conn:
+                parent_count = conn.execute(
+                    text("SELECT COUNT(*) FROM users WHERE role = 'parent'")
+                ).scalar()
+
+                if not parent_count:
+                    raise RuntimeError("Cannot migrate days_off without at least one parent account")
+
+                conn.execute(text("""
+                    CREATE TABLE days_off_new (
+                        id INTEGER PRIMARY KEY,
+                        parent_id INTEGER NOT NULL REFERENCES users(id),
+                        date DATE NOT NULL,
+                        reason VARCHAR(100),
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_day_off_parent_date UNIQUE (parent_id, date)
+                    )
+                """))
+
+                conn.execute(text("""
+                    INSERT INTO days_off_new (parent_id, date, reason, created_at)
+                    SELECT users.id, days_off.date, days_off.reason, days_off.created_at
+                    FROM days_off
+                    CROSS JOIN users
+                    WHERE users.role = 'parent'
+                """))
+
+                conn.execute(text("DROP TABLE days_off"))
+                conn.execute(text("ALTER TABLE days_off_new RENAME TO days_off"))
+
 run_migrations()
 Base.metadata.create_all(bind=engine)
 
