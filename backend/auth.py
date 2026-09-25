@@ -28,7 +28,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def get_current_user(
+def get_authenticated_user(
     token: Optional[str] = Depends(oauth2_scheme),
     session_token: Optional[str] = Cookie(default=None, alias=SESSION_COOKIE_NAME),
     db: Session = Depends(get_db),
@@ -58,6 +58,49 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+def user_has_membership_access(user: User, db: Session) -> bool:
+    if user.role == "child":
+        if not user.parent_id:
+            return False
+        user = db.query(User).filter(
+            User.id == user.parent_id,
+            User.role == "parent",
+        ).first()
+        if user is None:
+            return False
+
+    if user.role != "parent":
+        return False
+
+    if user.subscription_status in {"active", "grandfathered"}:
+        return True
+
+    now = datetime.utcnow()
+
+    if user.subscription_status == "trialing":
+        return bool(user.trial_ends_at and user.trial_ends_at > now)
+
+    if user.subscription_status == "canceling":
+        return bool(
+            user.subscription_cancel_at
+            and user.subscription_cancel_at > now
+        )
+
+    return False
+
+
+def get_current_user(
+    current_user: User = Depends(get_authenticated_user),
+    db: Session = Depends(get_db),
+) -> User:
+    if not user_has_membership_access(current_user, db):
+        raise HTTPException(
+            status_code=status.HTTP_402_PAYMENT_REQUIRED,
+            detail="Membership required",
+        )
+    return current_user
 
 
 def require_parent(current_user: User = Depends(get_current_user)) -> User:
