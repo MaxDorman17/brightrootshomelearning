@@ -17,3 +17,8 @@ export function clearAuth() {
   localStorage.removeItem("role");
   localStorage.removeItem("username");
 }
+
+export function isAuthenticated(): boolean {
+  if (typeof window === "undefined") return false;
+  return !!localStorage.getItem("role");
+}
