@@ -76,6 +76,12 @@ export default function LoginPage() {
               </div>
             )}
 
+            <div className="flex justify-end">
+              <a href="/forgot-password" className="text-sm font-bold text-[#3F5D46] hover:underline">
+                Forgot password?
+              </a>
+            </div>
+
             <button type="submit" disabled={loading}
               className="gradient-btn w-full py-3 text-base mt-2 disabled:opacity-60 disabled:cursor-not-allowed">
               {loading ? "Please wait…" : "Log In →"}
