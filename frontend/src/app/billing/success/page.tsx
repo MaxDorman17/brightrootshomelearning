@@ -17,6 +17,10 @@ export default function BillingSuccessPage() {
             setStatus("Your Bright Roots membership is active.");
             return;
           }
+          if (res.data.subscription_status === "trialing" && res.data.billing_plan) {
+            setStatus("Your payment method is saved. Your membership will begin automatically when your free trial ends.");
+            return;
+          }
           if (attempts < 8) {
             setTimeout(check, 1000);
           } else {
