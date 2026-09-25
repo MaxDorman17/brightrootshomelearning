@@ -85,6 +85,85 @@ def run_migrations():
                 conn.execute(text("DROP TABLE days_off"))
                 conn.execute(text("ALTER TABLE days_off_new RENAME TO days_off"))
 
+    if "units" in tables:
+        unit_cols = [c["name"] for c in insp.get_columns("units")]
+        if "parent_id" not in unit_cols:
+            if engine.dialect.name != "sqlite":
+                raise RuntimeError("units parent migration currently requires SQLite")
+
+            with engine.begin() as conn:
+                parent_count = conn.execute(
+                    text("SELECT COUNT(*) FROM users WHERE role = 'parent'")
+                ).scalar()
+                if not parent_count:
+                    raise RuntimeError("Cannot migrate units without at least one parent account")
+
+                conn.execute(text("""
+                    CREATE TABLE units_new (
+                        id INTEGER PRIMARY KEY,
+                        parent_id INTEGER NOT NULL REFERENCES users(id),
+                        subject VARCHAR(100) NOT NULL,
+                        title VARCHAR(255) NOT NULL,
+                        unit_url VARCHAR(512),
+                        notes TEXT,
+                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_unit_parent_subject UNIQUE (parent_id, subject)
+                    )
+                """))
+
+                conn.execute(text("""
+                    INSERT INTO units_new (parent_id, subject, title, unit_url, notes, updated_at)
+                    SELECT users.id, units.subject, units.title, units.unit_url, units.notes, units.updated_at
+                    FROM units
+                    CROSS JOIN users
+                    WHERE users.role = 'parent'
+                """))
+
+                conn.execute(text("DROP TABLE units"))
+                conn.execute(text("ALTER TABLE units_new RENAME TO units"))
+
+    if "unit_queue" in tables:
+        queue_cols = [c["name"] for c in insp.get_columns("unit_queue")]
+        if "parent_id" not in queue_cols:
+            if engine.dialect.name != "sqlite":
+                raise RuntimeError("unit_queue parent migration currently requires SQLite")
+
+            with engine.begin() as conn:
+                parent_count = conn.execute(
+                    text("SELECT COUNT(*) FROM users WHERE role = 'parent'")
+                ).scalar()
+                if not parent_count:
+                    raise RuntimeError("Cannot migrate unit queue without at least one parent account")
+
+                conn.execute(text("""
+                    CREATE TABLE unit_queue_new (
+                        id INTEGER PRIMARY KEY,
+                        parent_id INTEGER NOT NULL REFERENCES users(id),
+                        subject VARCHAR(100) NOT NULL,
+                        title VARCHAR(255) NOT NULL,
+                        unit_url VARCHAR(512),
+                        notes TEXT,
+                        position INTEGER NOT NULL DEFAULT 1,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_unit_queue_parent_subject_position UNIQUE (parent_id, subject, position)
+                    )
+                """))
+
+                conn.execute(text("""
+                    INSERT INTO unit_queue_new (
+                        parent_id, subject, title, unit_url, notes, position, created_at, updated_at
+                    )
+                    SELECT users.id, unit_queue.subject, unit_queue.title, unit_queue.unit_url,
+                           unit_queue.notes, unit_queue.position, unit_queue.created_at, unit_queue.updated_at
+                    FROM unit_queue
+                    CROSS JOIN users
+                    WHERE users.role = 'parent'
+                """))
+
+                conn.execute(text("DROP TABLE unit_queue"))
+                conn.execute(text("ALTER TABLE unit_queue_new RENAME TO unit_queue"))
+
 run_migrations()
 Base.metadata.create_all(bind=engine)
 
