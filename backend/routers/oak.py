@@ -323,12 +323,101 @@ async def fetch_and_store_share_result(url: str) -> None:
         db.close()
 
 
+def _family_child_ids(db: Session, parent_id: int) -> list[int]:
+    return [
+        row.id
+        for row in db.query(User.id).filter(
+            User.parent_id == parent_id,
+            User.role == "child",
+        ).all()
+    ]
+
+
+def _allowed_oak_result_urls(db: Session, user: User) -> set[str]:
+    """Return only Oak result-share URLs visible to this user's family.
+
+    Parents can see every child's submissions in their family. Children can
+    only see their own direct/shared submissions. The OakQuizResult table is
+    a global cache, but cached URLs are never exposed unless they are linked
+    from planner data the current user is allowed to access.
+    """
+    if user.role == "parent":
+        parent_id = user.id
+        child_ids = _family_child_ids(db, parent_id)
+        direct_entries = db.query(PlannerEntry.completed_work_url).join(
+            Lesson, PlannerEntry.lesson_id == Lesson.id
+        ).filter(
+            Lesson.created_by == parent_id,
+            PlannerEntry.assigned_to.in_(child_ids),
+            PlannerEntry.completed_work_url.is_not(None),
+        ).all()
+
+        shared_entry_ids = [
+            row.id
+            for row in db.query(PlannerEntry.id).join(
+                Lesson, PlannerEntry.lesson_id == Lesson.id
+            ).filter(
+                Lesson.created_by == parent_id,
+                PlannerEntry.assigned_to.is_(None),
+            ).all()
+        ]
+        shared_urls = []
+        if shared_entry_ids and child_ids:
+            shared_urls = db.query(PlannerCompletion.completed_work_url).filter(
+                PlannerCompletion.entry_id.in_(shared_entry_ids),
+                PlannerCompletion.user_id.in_(child_ids),
+                PlannerCompletion.completed_work_url.is_not(None),
+            ).all()
+    elif user.role == "child":
+        if user.parent_id is None:
+            return set()
+        parent_id = user.parent_id
+        direct_entries = db.query(PlannerEntry.completed_work_url).join(
+            Lesson, PlannerEntry.lesson_id == Lesson.id
+        ).filter(
+            Lesson.created_by == parent_id,
+            PlannerEntry.assigned_to == user.id,
+            PlannerEntry.completed_work_url.is_not(None),
+        ).all()
+
+        shared_entry_ids = [
+            row.id
+            for row in db.query(PlannerEntry.id).join(
+                Lesson, PlannerEntry.lesson_id == Lesson.id
+            ).filter(
+                Lesson.created_by == parent_id,
+                PlannerEntry.assigned_to.is_(None),
+            ).all()
+        ]
+        shared_urls = []
+        if shared_entry_ids:
+            shared_urls = db.query(PlannerCompletion.completed_work_url).filter(
+                PlannerCompletion.entry_id.in_(shared_entry_ids),
+                PlannerCompletion.user_id == user.id,
+                PlannerCompletion.completed_work_url.is_not(None),
+            ).all()
+    else:
+        return set()
+
+    urls: set[str] = set()
+    for (raw_url,) in [*direct_entries, *shared_urls]:
+        if not raw_url:
+            continue
+        match = OAK_SHARE_RE.search(raw_url)
+        if match:
+            urls.add(match.group(0))
+    return urls
+
+
 @router.get("/quiz-results")
 def get_quiz_results(
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
-    rows = db.query(OakQuizResult).all()
+    allowed_urls = _allowed_oak_result_urls(db, current_user)
+    if not allowed_urls:
+        return []
+    rows = db.query(OakQuizResult).filter(OakQuizResult.url.in_(allowed_urls)).all()
     return [
         {
             "url": r.url,
@@ -344,22 +433,11 @@ def get_quiz_results(
 @router.post("/quiz-results/refresh")
 async def refresh_quiz_results(
     db: Session = Depends(get_db),
-    _: User = Depends(require_parent),
+    current_user: User = Depends(require_parent),
 ):
-    """Re-fetch submitted Oak share links and update cached quiz scores."""
-    urls: set = set()
-    for (u,) in db.query(PlannerEntry.completed_work_url).filter(
-        PlannerEntry.completed_work_url.is_not(None)
-    ).all():
-        if u and OAK_SHARE_RE.search(u):
-            urls.add(OAK_SHARE_RE.search(u).group(0))
-    for (u,) in db.query(PlannerCompletion.completed_work_url).filter(
-        PlannerCompletion.completed_work_url.is_not(None)
-    ).all():
-        if u and OAK_SHARE_RE.search(u):
-            urls.add(OAK_SHARE_RE.search(u).group(0))
-
-    to_refresh = sorted(urls)
+    """Re-fetch only this family's submitted Oak share links."""
+    family_urls = _allowed_oak_result_urls(db, current_user)
+    to_refresh = sorted(family_urls)
 
     updated = 0
     if to_refresh:
@@ -378,7 +456,9 @@ async def refresh_quiz_results(
     return {
         "checked": len(to_refresh),
         "updated": updated,
-        "total_cached": db.query(OakQuizResult).count(),
+        "total_cached": db.query(OakQuizResult).filter(
+            OakQuizResult.url.in_(family_urls)
+        ).count() if family_urls else 0,
     }
 
 # ---------------------------------------------------------------------------
