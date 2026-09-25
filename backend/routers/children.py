@@ -1,12 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from pydantic import BaseModel
 from database import get_db
 from models import User
 from schemas import ChildCreate, ChildOut
 from auth import require_parent, hash_password
 
 router = APIRouter(prefix="/api/children", tags=["children"])
+
+
+class ChildPasswordReset(BaseModel):
+    new_password: str
 
 
 @router.get("/", response_model=List[ChildOut])
@@ -51,3 +56,29 @@ def remove_child(
         raise HTTPException(status_code=404, detail="Child not found")
     db.delete(child)
     db.commit()
+
+
+@router.post("/{child_id}/reset-password")
+def reset_child_password(
+    child_id: int,
+    body: ChildPasswordReset,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    if len(body.new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    child = db.query(User).filter(
+        User.id == child_id,
+        User.parent_id == current_user.id,
+        User.role == "child",
+    ).first()
+
+    if not child:
+        raise HTTPException(status_code=404, detail="Child not found")
+
+    child.hashed_password = hash_password(body.new_password)
+    child.session_version = (child.session_version or 1) + 1
+    db.commit()
+
+    return {"message": f"Password reset for {child.username}. Existing sessions were signed out."}
