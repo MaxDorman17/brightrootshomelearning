@@ -81,6 +81,56 @@ def _child_ids_for_parent(db: Session, parent: User) -> List[int]:
     return [c.id for c in db.query(User).filter(User.parent_id == parent.id).all()]
 
 
+def _validate_parent_child(db: Session, parent: User, child_id: Optional[int]) -> None:
+    if child_id is None:
+        return
+    exists = db.query(User.id).filter(
+        User.id == child_id,
+        User.parent_id == parent.id,
+        User.role == "child",
+    ).first()
+    if not exists:
+        raise HTTPException(status_code=403, detail="Not your child")
+
+
+def _entry_for_parent(db: Session, entry_id: int, parent: User) -> Optional[PlannerEntry]:
+    return (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(
+            PlannerEntry.id == entry_id,
+            Lesson.created_by == parent.id,
+        )
+        .first()
+    )
+
+
+def _entry_for_user(db: Session, entry_id: int, user: User) -> Optional[PlannerEntry]:
+    query = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(PlannerEntry.id == entry_id)
+    )
+
+    if user.role == "parent":
+        return query.filter(Lesson.created_by == user.id).first()
+
+    if user.role == "child":
+        if user.parent_id is None:
+            return None
+        return query.filter(
+            Lesson.created_by == user.parent_id,
+            or_(
+                PlannerEntry.assigned_to == user.id,
+                PlannerEntry.assigned_to.is_(None),
+            ),
+        ).first()
+
+    return None
+
+
 def _best_shared_completions(db: Session, entry_ids: List[int], child_ids: List[int]) -> dict:
     """For each shared entry, pick the one PlannerCompletion (among this parent's
     own children) that best represents 'the' submitted work: prefer a completion
@@ -378,9 +428,15 @@ def create_entry(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    lesson = db.query(Lesson).filter(Lesson.id == entry_in.lesson_id).first()
+    lesson = db.query(Lesson).filter(
+        Lesson.id == entry_in.lesson_id,
+        Lesson.created_by == current_user.id,
+    ).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+
+    _validate_parent_child(db, current_user, entry_in.assigned_to)
+
     entry = PlannerEntry(
         lesson_id=entry_in.lesson_id,
         assigned_to=entry_in.assigned_to,
@@ -411,8 +467,11 @@ def get_week(
     )
 
     if current_user.role == "child":
+        if current_user.parent_id is None:
+            return []
         query = query.filter(
-            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
+            PlannerEntry.lesson.has(Lesson.created_by == current_user.parent_id),
+            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None)),
         )
         entries = query.order_by(PlannerEntry.scheduled_date).all()
         return annotate_for_user(entries, current_user, db)
@@ -423,7 +482,8 @@ def get_week(
             raise HTTPException(status_code=403, detail="Not your child")
 
         query = query.filter(
-            or_(PlannerEntry.assigned_to == child_id, PlannerEntry.assigned_to.is_(None))
+            PlannerEntry.lesson.has(Lesson.created_by == current_user.id),
+            or_(PlannerEntry.assigned_to == child_id, PlannerEntry.assigned_to.is_(None)),
         )
         entries = query.order_by(PlannerEntry.scheduled_date).all()
 
@@ -443,6 +503,7 @@ def get_week(
             for e in entries
         ]
 
+    query = query.filter(PlannerEntry.lesson.has(Lesson.created_by == current_user.id))
     entries = query.order_by(PlannerEntry.scheduled_date).all()
     return [_to_out(e) for e in entries]
 
@@ -454,9 +515,14 @@ def get_mine(
 ):
     query = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson))
     if current_user.role == "child":
+        if current_user.parent_id is None:
+            return []
         query = query.filter(
-            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
+            PlannerEntry.lesson.has(Lesson.created_by == current_user.parent_id),
+            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None)),
         )
+    else:
+        query = query.filter(PlannerEntry.lesson.has(Lesson.created_by == current_user.id))
     entries = query.order_by(PlannerEntry.scheduled_date.desc()).all()
     return annotate_for_user(entries, current_user, db)
 
@@ -471,9 +537,14 @@ def get_today(
         PlannerEntry.scheduled_date == today,
     )
     if current_user.role == "child":
+        if current_user.parent_id is None:
+            return []
         query = query.filter(
-            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None))
+            PlannerEntry.lesson.has(Lesson.created_by == current_user.parent_id),
+            or_(PlannerEntry.assigned_to == current_user.id, PlannerEntry.assigned_to.is_(None)),
         )
+    else:
+        query = query.filter(PlannerEntry.lesson.has(Lesson.created_by == current_user.id))
     entries = query.order_by(PlannerEntry.id).all()
     return annotate_for_user(entries, current_user, db)
 
@@ -609,11 +680,9 @@ def mark_complete(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = load_entry(db, entry_id)
+    entry = _entry_for_user(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
-    if current_user.role == "child" and entry.assigned_to is not None and entry.assigned_to != current_user.id:
-        raise HTTPException(status_code=403, detail="Not your lesson")
 
     if current_user.role == "child" and entry.assigned_to is None:
         comp = db.query(PlannerCompletion).filter(
@@ -647,11 +716,9 @@ def submit_work(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = load_entry(db, entry_id)
+    entry = _entry_for_user(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
-    if current_user.role == "child" and entry.assigned_to is not None and entry.assigned_to != current_user.id:
-        raise HTTPException(status_code=403, detail="Not your lesson")
 
     # If this is an Oak "share my results" link, fetch quiz scores in the background
     share_match = OAK_SHARE_RE.search(body.completed_work_url or "")
@@ -683,7 +750,7 @@ def submit_note(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    entry = load_entry(db, entry_id)
+    entry = _entry_for_user(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
 
@@ -712,10 +779,15 @@ def update_entry(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    entry = db.query(PlannerEntry).filter(PlannerEntry.id == entry_id).first()
+    entry = _entry_for_parent(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
-    for field, value in entry_in.model_dump(exclude_unset=True).items():
+
+    changes = entry_in.model_dump(exclude_unset=True)
+    if "assigned_to" in changes:
+        _validate_parent_child(db, current_user, changes["assigned_to"])
+
+    for field, value in changes.items():
         setattr(entry, field, value)
     db.commit()
     return _to_out(load_entry(db, entry_id))
@@ -727,7 +799,7 @@ def delete_entry(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    entry = db.query(PlannerEntry).filter(PlannerEntry.id == entry_id).first()
+    entry = _entry_for_parent(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
     db.delete(entry)
