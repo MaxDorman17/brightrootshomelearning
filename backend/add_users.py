@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from database import SessionLocal
 from models import User
@@ -32,6 +33,7 @@ try:
             username=parent_username,
             hashed_password=hash_password(parent_password),
             role="parent",
+            email_verified_at=datetime.utcnow(),
         )
         db.add(parent)
         db.flush()
