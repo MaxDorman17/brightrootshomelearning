@@ -1,3 +1,7 @@
+from collections import defaultdict, deque
+from threading import Lock
+from time import monotonic
+
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -8,6 +12,74 @@ from auth import SESSION_COOKIE_NAME, verify_password, create_access_token, get_
 from config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+LOGIN_WINDOW_SECONDS = 10 * 60
+MAX_FAILURES_PER_ACCOUNT_IP = 5
+MAX_FAILURES_PER_IP = 25
+
+_failed_by_account_ip = defaultdict(deque)
+_failed_by_ip = defaultdict(deque)
+_rate_limit_lock = Lock()
+
+
+def _client_ip(request: Request) -> str:
+    cf_ip = request.headers.get("cf-connecting-ip")
+    if cf_ip:
+        return cf_ip.strip()
+
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",", 1)[0].strip()
+
+    return request.client.host if request.client else "unknown"
+
+
+def _trim_attempts(attempts: deque, now: float) -> None:
+    cutoff = now - LOGIN_WINDOW_SECONDS
+    while attempts and attempts[0] <= cutoff:
+        attempts.popleft()
+
+
+def _check_login_rate_limit(client_ip: str, username: str) -> None:
+    now = monotonic()
+    account_key = (client_ip, username.lower())
+
+    with _rate_limit_lock:
+        account_attempts = _failed_by_account_ip[account_key]
+        ip_attempts = _failed_by_ip[client_ip]
+
+        _trim_attempts(account_attempts, now)
+        _trim_attempts(ip_attempts, now)
+
+        if len(account_attempts) >= MAX_FAILURES_PER_ACCOUNT_IP or len(ip_attempts) >= MAX_FAILURES_PER_IP:
+            oldest = account_attempts[0] if len(account_attempts) >= MAX_FAILURES_PER_ACCOUNT_IP else ip_attempts[0]
+            retry_after = max(1, int(LOGIN_WINDOW_SECONDS - (now - oldest)))
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many failed login attempts. Please try again later.",
+                headers={"Retry-After": str(retry_after)},
+            )
+
+
+def _record_login_failure(client_ip: str, username: str) -> None:
+    now = monotonic()
+    account_key = (client_ip, username.lower())
+
+    with _rate_limit_lock:
+        account_attempts = _failed_by_account_ip[account_key]
+        ip_attempts = _failed_by_ip[client_ip]
+
+        _trim_attempts(account_attempts, now)
+        _trim_attempts(ip_attempts, now)
+
+        account_attempts.append(now)
+        ip_attempts.append(now)
+
+
+def _clear_account_failures(client_ip: str, username: str) -> None:
+    account_key = (client_ip, username.lower())
+    with _rate_limit_lock:
+        _failed_by_account_ip.pop(account_key, None)
 
 
 @router.post("/register")
@@ -30,12 +102,18 @@ def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
+    client_ip = _client_ip(request)
+    _check_login_rate_limit(client_ip, form_data.username)
+
     user = db.query(User).filter(User.username == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
+        _record_login_failure(client_ip, form_data.username)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
         )
+
+    _clear_account_failures(client_ip, form_data.username)
     token = create_access_token({"sub": str(user.id)})
     secure_cookie = request.url.hostname not in {"localhost", "127.0.0.1"}
     response.set_cookie(
