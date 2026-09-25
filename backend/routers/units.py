@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from database import get_db
 from models import Unit, UnitQueue, User
@@ -11,9 +11,28 @@ from auth import get_current_user, require_parent
 router = APIRouter(prefix="/api/units", tags=["units"])
 
 
+def _family_parent_id(current_user: User) -> Optional[int]:
+    if current_user.role == "parent":
+        return current_user.id
+    if current_user.role == "child":
+        return current_user.parent_id
+    return None
+
+
 @router.get("/", response_model=List[UnitOut])
-def list_units(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return db.query(Unit).order_by(Unit.subject).all()
+def list_units(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    parent_id = _family_parent_id(current_user)
+    if not parent_id:
+        return []
+    return (
+        db.query(Unit)
+        .filter(Unit.parent_id == parent_id)
+        .order_by(Unit.subject)
+        .all()
+    )
 
 
 @router.post("/", response_model=UnitOut)
@@ -22,7 +41,11 @@ def upsert_unit(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    existing = db.query(Unit).filter(Unit.subject == unit_in.subject).first()
+    existing = db.query(Unit).filter(
+        Unit.parent_id == current_user.id,
+        Unit.subject == unit_in.subject,
+    ).first()
+
     if existing:
         existing.title = unit_in.title
         existing.unit_url = unit_in.unit_url
@@ -31,7 +54,9 @@ def upsert_unit(
         db.commit()
         db.refresh(existing)
         return existing
+
     unit = Unit(
+        parent_id=current_user.id,
         subject=unit_in.subject,
         title=unit_in.title,
         unit_url=unit_in.unit_url,
@@ -48,8 +73,12 @@ def list_unit_queue(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    parent_id = _family_parent_id(current_user)
+    if not parent_id:
+        return []
     return (
         db.query(UnitQueue)
+        .filter(UnitQueue.parent_id == parent_id)
         .order_by(UnitQueue.subject, UnitQueue.position, UnitQueue.id)
         .all()
     )
@@ -63,11 +92,16 @@ def add_queued_unit(
 ):
     max_position = (
         db.query(func.max(UnitQueue.position))
-        .filter(UnitQueue.subject == unit_in.subject)
+        .filter(
+            UnitQueue.parent_id == current_user.id,
+            UnitQueue.subject == unit_in.subject,
+        )
         .scalar()
         or 0
     )
+
     queued = UnitQueue(
+        parent_id=current_user.id,
         subject=unit_in.subject,
         title=unit_in.title,
         unit_url=unit_in.unit_url,
@@ -87,7 +121,10 @@ def update_queued_unit(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    queued = db.query(UnitQueue).filter(UnitQueue.id == queue_id).first()
+    queued = db.query(UnitQueue).filter(
+        UnitQueue.id == queue_id,
+        UnitQueue.parent_id == current_user.id,
+    ).first()
     if not queued:
         raise HTTPException(status_code=404, detail="Queued unit not found")
 
@@ -110,7 +147,10 @@ def delete_queued_unit(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    queued = db.query(UnitQueue).filter(UnitQueue.id == queue_id).first()
+    queued = db.query(UnitQueue).filter(
+        UnitQueue.id == queue_id,
+        UnitQueue.parent_id == current_user.id,
+    ).first()
     if not queued:
         raise HTTPException(status_code=404, detail="Queued unit not found")
 
@@ -122,6 +162,7 @@ def delete_queued_unit(
     (
         db.query(UnitQueue)
         .filter(
+            UnitQueue.parent_id == current_user.id,
             UnitQueue.subject == subject,
             UnitQueue.position > removed_position,
         )
@@ -139,20 +180,30 @@ def promote_queued_unit(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    queued = db.query(UnitQueue).filter(UnitQueue.id == queue_id).first()
+    queued = db.query(UnitQueue).filter(
+        UnitQueue.id == queue_id,
+        UnitQueue.parent_id == current_user.id,
+    ).first()
     if not queued:
         raise HTTPException(status_code=404, detail="Queued unit not found")
 
     first = (
         db.query(UnitQueue)
-        .filter(UnitQueue.subject == queued.subject)
+        .filter(
+            UnitQueue.parent_id == current_user.id,
+            UnitQueue.subject == queued.subject,
+        )
         .order_by(UnitQueue.position, UnitQueue.id)
         .first()
     )
     if not first or first.id != queued.id:
         raise HTTPException(status_code=400, detail="Only the next queued unit can be made current")
 
-    current = db.query(Unit).filter(Unit.subject == queued.subject).first()
+    current = db.query(Unit).filter(
+        Unit.parent_id == current_user.id,
+        Unit.subject == queued.subject,
+    ).first()
+
     if current:
         current.title = queued.title
         current.unit_url = queued.unit_url
@@ -160,6 +211,7 @@ def promote_queued_unit(
         current.updated_at = datetime.utcnow()
     else:
         current = Unit(
+            parent_id=current_user.id,
             subject=queued.subject,
             title=queued.title,
             unit_url=queued.unit_url,
@@ -175,6 +227,7 @@ def promote_queued_unit(
     (
         db.query(UnitQueue)
         .filter(
+            UnitQueue.parent_id == current_user.id,
             UnitQueue.subject == subject,
             UnitQueue.position > removed_position,
         )
@@ -195,8 +248,12 @@ def delete_unit(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    unit = db.query(Unit).filter(Unit.subject == subject).first()
+    unit = db.query(Unit).filter(
+        Unit.parent_id == current_user.id,
+        Unit.subject == subject,
+    ).first()
     if not unit:
         raise HTTPException(status_code=404, detail="Unit not found")
+
     db.delete(unit)
     db.commit()
