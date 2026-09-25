@@ -16,10 +16,12 @@ def run_migrations():
                 conn.commit()
     if "users" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("users")]
-        if "parent_id" not in existing_cols:
-            with engine.connect() as conn:
+        with engine.connect() as conn:
+            if "parent_id" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN parent_id INTEGER REFERENCES users(id)"))
-                conn.commit()
+            if "session_version" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN session_version INTEGER NOT NULL DEFAULT 1"))
+            conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
         reading_columns = {
