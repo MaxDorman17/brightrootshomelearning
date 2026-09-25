@@ -30,6 +30,8 @@ class UserOut(BaseModel):
     subscription_status: Optional[str] = None
     trial_ends_at: Optional[datetime] = None
     billing_plan: Optional[str] = None
+    subscription_cancel_at_period_end: bool = False
+    subscription_cancel_at: Optional[datetime] = None
     created_at: datetime
 
     class Config:
