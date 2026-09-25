@@ -292,6 +292,7 @@ def login(
         role=user.role,
         username=user.username,
         email_verified=(user.email_verified_at is not None),
+        onboarding_completed=(user.onboarding_completed_at is not None),
     )
 
 
@@ -502,3 +503,21 @@ def verify_email(
         db.commit()
 
     return {"message": "Email verified successfully."}
+
+
+@router.post("/complete-onboarding")
+def complete_onboarding(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+
+    if current_user.email_verified_at is None:
+        raise HTTPException(status_code=403, detail="Please verify your email address first")
+
+    if current_user.onboarding_completed_at is None:
+        current_user.onboarding_completed_at = datetime.utcnow()
+        db.commit()
+
+    return {"message": "Onboarding complete."}
