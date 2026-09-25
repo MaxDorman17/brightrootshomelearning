@@ -110,7 +110,7 @@ export default function ParentDashboardPage() {
       ),
       getAllEntries(),
       getBooks(selectedChildId ?? undefined),
-      getTodayOakQuizResults(),
+      getTodayOakQuizResults(selectedChildId ?? undefined),
       getWeekQuizScores(
         weekStartStr,
         weekEndStr,
