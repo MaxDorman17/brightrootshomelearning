@@ -35,6 +35,7 @@ try:
             role="parent",
             email_verified_at=datetime.utcnow(),
             onboarding_completed_at=datetime.utcnow(),
+            subscription_status="grandfathered",
         )
         db.add(parent)
         db.flush()
