@@ -44,7 +44,13 @@ export default function HomePage() {
   useEffect(() => {
     getMe()
       .then((res) => {
-        setMemberHome(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+        if (res.data.role === "parent" && !res.data.email_verified_at) {
+          setMemberHome("/account");
+        } else if (res.data.role === "parent" && !res.data.onboarding_completed_at) {
+          setMemberHome("/onboarding");
+        } else {
+          setMemberHome(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+        }
       })
       .catch(() => {});
   }, []);
