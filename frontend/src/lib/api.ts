@@ -134,6 +134,8 @@ export const getChildren = () => api.get("/api/children/");
 export const addChild = (data: { username: string; email: string; password: string }) =>
   api.post("/api/children/", data);
 export const removeChild = (id: number) => api.delete(`/api/children/${id}`);
+export const resetChildPassword = (id: number, new_password: string) =>
+  api.post(`/api/children/${id}/reset-password`, { new_password });
 
 // Journal
 export const getJournalEntries = () => api.get("/api/journal/");
