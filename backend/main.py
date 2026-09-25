@@ -27,6 +27,17 @@ def run_migrations():
             if "onboarding_completed_at" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN onboarding_completed_at DATETIME"))
                 conn.execute(text("UPDATE users SET onboarding_completed_at = CURRENT_TIMESTAMP WHERE role = 'parent'"))
+            if "subscription_status" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN subscription_status VARCHAR(20)"))
+                conn.execute(text("UPDATE users SET subscription_status = 'grandfathered' WHERE role = 'parent'"))
+            if "trial_ends_at" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN trial_ends_at DATETIME"))
+            if "billing_plan" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN billing_plan VARCHAR(20)"))
+            if "stripe_customer_id" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN stripe_customer_id VARCHAR(255)"))
+            if "stripe_subscription_id" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN stripe_subscription_id VARCHAR(255)"))
             conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
