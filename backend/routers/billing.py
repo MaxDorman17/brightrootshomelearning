@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from auth import get_current_user
+from auth import get_authenticated_user
 from config import settings
 from database import get_db
 from models import User
@@ -104,7 +104,7 @@ def _apply_subscription_state(user: User, obj: dict) -> None:
 @router.post("/checkout")
 def create_checkout(
     body: CheckoutRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
@@ -145,7 +145,7 @@ def create_checkout(
 
 @router.post("/sync")
 def sync_subscription(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
     db: Session = Depends(get_db),
 ):
     if current_user.role != "parent":
@@ -168,7 +168,7 @@ def sync_subscription(
 
 @router.post("/portal")
 def create_portal(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_authenticated_user),
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
