@@ -303,14 +303,24 @@ export default function ParentPlanner() {
 
   const weekDates = DAYS.map((_, i) => addDays(weekStart, i));
 
-  const getEntry = (date: Date, subject: string): PlannerEntry | null =>
-    entries.find(
-      e => e.scheduled_date === format(date, "yyyy-MM-dd") && e.lesson.subject === subject
-    ) ?? null;
+  const getEntries = (date: Date, subject: string): PlannerEntry[] =>
+    entries.filter(
+      e =>
+        !e.is_extra &&
+        e.scheduled_date === format(date, "yyyy-MM-dd") &&
+        e.lesson.subject === subject
+    );
 
-  const openModal = (dayIndex: number, subject: string) => {
+  const getEntry = (date: Date, subject: string): PlannerEntry | null =>
+    getEntries(date, subject)[0] ?? null;
+
+  const openModal = (
+    dayIndex: number,
+    subject: string,
+    exactEntry?: PlannerEntry | null,
+  ) => {
     const dayDate = weekDates[dayIndex];
-    const existing = getEntry(dayDate, subject);
+    const existing = exactEntry === undefined ? getEntry(dayDate, subject) : exactEntry;
     setModal({ dayName: DAYS[dayIndex], dayDate, subject, existingEntry: existing });
     setSlotTitle(existing?.lesson.title ?? "");
     setSlotUrl(existing?.lesson.lesson_url ?? "");
@@ -909,12 +919,13 @@ export default function ParentPlanner() {
 
           if (todaySubjects.length === 0) return null;
 
-          const todayEnt = todaySubjects
-            .map(subject => getEntry(today, subject))
-            .filter((entry): entry is PlannerEntry => Boolean(entry));
+          const todayStr = format(today, "yyyy-MM-dd");
+          const todayEnt = entries.filter(
+            e => !e.is_extra && e.scheduled_date === todayStr
+          );
 
           const done = todayEnt.filter(e => e.is_complete).length;
-          const total = todaySubjects.length;
+          const total = todayEnt.length;
           const submitted = todayEnt.filter(e => e.completed_work_url).length;
 
           return (
@@ -1212,11 +1223,16 @@ export default function ParentPlanner() {
                     })}
 
                     {(() => {
-                      const normalSubjects = new Set(subjects);
+                      const dayStr = format(dayDate, "yyyy-MM-dd");
+                      const primaryEntryIds = new Set(
+                        subjects
+                          .map(subject => getEntry(dayDate, subject)?.id)
+                          .filter((id): id is number => id !== undefined)
+                      );
                       const movedEntries = entries.filter(e =>
-                        e.scheduled_date === format(dayDate, "yyyy-MM-dd") &&
+                        e.scheduled_date === dayStr &&
                         !e.is_extra &&
-                        !normalSubjects.has(e.lesson.subject)
+                        !primaryEntryIds.has(e.id)
                       );
 
                       if (movedEntries.length === 0) return null;
@@ -1253,10 +1269,7 @@ export default function ParentPlanner() {
                                 <div key={entry.id} className="rounded-xl border border-brand-softsage/25 bg-brand-white p-3">
                                   <button
                                     type="button"
-                                    onClick={() => {
-                                      const subjectIndex = subjects.indexOf(entry.lesson.subject);
-                                      if (subjectIndex >= 0) openModal(dayIndex, entry.lesson.subject);
-                                    }}
+                                    onClick={() => openModal(dayIndex, entry.lesson.subject, entry)}
                                     className="w-full text-left"
                                   >
                                     <div className="flex items-start justify-between gap-3">
