@@ -16,19 +16,28 @@ def _child_ids(db: Session, parent: User) -> list:
 
 
 def _family_entry_filter(current_user: User, child_ids: list):
-    """SQLAlchemy filter: true for PlannerEntry rows relevant to this user's
-    family — direct entries assigned to one of the parent's own children (or,
-    for a child, assigned directly to them), or shared (assigned_to IS NULL)
-    entries whose Lesson was created by the owning parent. Mirrors the
-    scoping already used in planner.py's get_all/submission-count/pending-feedback."""
+    """Restrict feedback/review access to planner entries owned by this family.
+
+    Assignment alone is not treated as proof of ownership: the underlying
+    lesson must also have been created by the family's parent.
+    """
     if current_user.role == "child":
-        return or_(
-            PlannerEntry.assigned_to == current_user.id,
-            and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.parent_id),
+        if current_user.parent_id is None:
+            return and_(PlannerEntry.id == -1, Lesson.id == -1)
+        return and_(
+            Lesson.created_by == current_user.parent_id,
+            or_(
+                PlannerEntry.assigned_to == current_user.id,
+                PlannerEntry.assigned_to.is_(None),
+            ),
         )
-    return or_(
-        PlannerEntry.assigned_to.in_(child_ids),
-        and_(PlannerEntry.assigned_to.is_(None), Lesson.created_by == current_user.id),
+
+    return and_(
+        Lesson.created_by == current_user.id,
+        or_(
+            PlannerEntry.assigned_to.in_(child_ids),
+            PlannerEntry.assigned_to.is_(None),
+        ),
     )
 
 
