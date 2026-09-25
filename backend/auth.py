@@ -52,6 +52,11 @@ def get_current_user(
     user = db.query(User).filter(User.id == int(user_id)).first()
     if user is None:
         raise credentials_exception
+
+    token_version = payload.get("ver", 1)
+    if token_version != user.session_version:
+        raise credentials_exception
+
     return user
 
 
