@@ -126,9 +126,14 @@ def update_book(
         delta = next_chapters - previous_chapters
         book.completed_chapters = next_chapters
         if delta != 0:
+            progress_child_id = (
+                current_user.id
+                if current_user.role == "child"
+                else book.child_id
+            )
             db.add(ReadingChapterProgress(
                 book_id=book.id,
-                child_id=book.child_id,
+                child_id=progress_child_id,
                 delta=delta,
             ))
     if body.reading_journal is not None:
@@ -174,10 +179,7 @@ def chapter_summary(
 
     if current_user.role == "child":
         query = query.filter(
-            or_(
-                ReadingChapterProgress.child_id == current_user.id,
-                ReadingChapterProgress.child_id.is_(None),
-            )
+            ReadingChapterProgress.child_id == current_user.id
         )
     elif child_id is not None:
         child = db.query(User).filter(
@@ -188,10 +190,7 @@ def chapter_summary(
         if not child:
             raise HTTPException(status_code=403, detail="Not your child")
         query = query.filter(
-            or_(
-                ReadingChapterProgress.child_id == child_id,
-                ReadingChapterProgress.child_id.is_(None),
-            )
+            ReadingChapterProgress.child_id == child_id
         )
 
     if start_date is not None:
