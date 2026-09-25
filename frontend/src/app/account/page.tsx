@@ -3,13 +3,18 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import { changePassword, getMe } from "@/lib/api";
+import { changePassword, getMe, requestEmailVerification } from "@/lib/api";
 import { clearAuth, setAuth } from "@/lib/auth";
 
 export default function AccountPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [verificationError, setVerificationError] = useState("");
+  const [verificationSending, setVerificationSending] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,6 +27,8 @@ export default function AccountPage() {
       .then((res) => {
         setUsername(res.data.username);
         setRole(res.data.role);
+        setEmail(res.data.email || "");
+        setEmailVerified(!!res.data.email_verified_at);
         setAuth(res.data.role, res.data.username);
       })
       .catch(() => {
@@ -29,6 +36,21 @@ export default function AccountPage() {
         router.replace("/login");
       });
   }, [router]);
+
+  const handleSendVerification = async () => {
+    setVerificationMessage("");
+    setVerificationError("");
+    setVerificationSending(true);
+
+    try {
+      const res = await requestEmailVerification();
+      setVerificationMessage(res.data.message || "Verification email sent.");
+    } catch (err: any) {
+      setVerificationError(err.response?.data?.detail || "Could not send verification email.");
+    } finally {
+      setVerificationSending(false);
+    }
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -77,6 +99,58 @@ export default function AccountPage() {
               {role ? ` · ${role}` : ""}.
             </p>
           </div>
+
+          {role === "parent" && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 className="text-lg font-extrabold text-brand-charcoal">
+                    Email verification
+                  </h2>
+                  <p className="mt-1 text-sm text-brand-earth/70">
+                    {email || "Your parent account email"}
+                  </p>
+                </div>
+
+                <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-extrabold ${
+                  emailVerified
+                    ? "bg-green-100 text-green-700"
+                    : "bg-amber-100 text-amber-700"
+                }`}>
+                  {emailVerified ? "Verified" : "Not verified"}
+                </span>
+              </div>
+
+              {!emailVerified && (
+                <div className="mt-4">
+                  <p className="text-sm text-brand-earth/70">
+                    Verify your email before using parent-only areas of Bright Roots.
+                  </p>
+
+                  {verificationMessage && (
+                    <div className="mt-3 rounded-xl border border-brand-softsage/30 bg-brand-softsage/10 px-4 py-3 text-sm font-semibold text-brand-sage">
+                      {verificationMessage}
+                    </div>
+                  )}
+
+                  {verificationError && (
+                    <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                      {verificationError}
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleSendVerification}
+                    disabled={verificationSending}
+                    className="mt-4 rounded-xl bg-brand-sage px-5 py-3 text-sm font-extrabold text-white transition-opacity disabled:opacity-60"
+                  >
+                    {verificationSending ? "Sending..." : "Send verification email"}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
             <h2 className="text-lg font-extrabold text-brand-charcoal">
