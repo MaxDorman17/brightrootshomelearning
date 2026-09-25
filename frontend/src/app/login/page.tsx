@@ -23,6 +23,8 @@ export default function LoginPage() {
         router.push("/account");
       } else if (res.data.role === "parent" && !res.data.onboarding_completed) {
         router.push("/onboarding");
+      } else if (res.data.billing_required) {
+        router.push("/membership-required");
       } else {
         router.push(res.data.role === "parent" ? "/parent/dashboard" : "/child");
       }
