@@ -2,19 +2,17 @@ import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export const api = axios.create({ baseURL: API_URL });
-
-api.interceptors.request.use((config) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
+export const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
 });
 
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401 && typeof window !== "undefined" && !err.config?.url?.includes("/auth/login")) {
-      localStorage.clear();
+      localStorage.removeItem("role");
+      localStorage.removeItem("username");
       window.location.href = "/login";
     }
     return Promise.reject(err);
@@ -30,6 +28,8 @@ export const login = (username: string, password: string) => {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
   });
 };
+export const logout = () => api.post("/api/auth/logout");
+export const getMe = () => api.get("/api/auth/me");
 // Public self-registration is disabled server-side (see backend/routers/auth.py) —
 // no register() helper here since nothing should call it.
 
