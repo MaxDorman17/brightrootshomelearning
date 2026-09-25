@@ -58,17 +58,20 @@ class Unit(Base):
     __tablename__ = "units"
 
     id = Column(Integer, primary_key=True, index=True)
-    subject = Column(String(100), nullable=False, unique=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    subject = Column(String(100), nullable=False)
     title = Column(String(255), nullable=False)
     unit_url = Column(String(512), nullable=True)
     notes = Column(Text, nullable=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    __table_args__ = (UniqueConstraint("parent_id", "subject", name="uq_unit_parent_subject"),)
 
 
 class UnitQueue(Base):
     __tablename__ = "unit_queue"
 
     id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     subject = Column(String(100), nullable=False, index=True)
     title = Column(String(255), nullable=False)
     unit_url = Column(String(512), nullable=True)
@@ -76,6 +79,9 @@ class UnitQueue(Base):
     position = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    __table_args__ = (
+        UniqueConstraint("parent_id", "subject", "position", name="uq_unit_queue_parent_subject_position"),
+    )
 
 
 class WorkReview(Base):
