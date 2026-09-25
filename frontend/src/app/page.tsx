@@ -14,7 +14,11 @@ export default function Home() {
       .then((res) => {
         if (cancelled) return;
         setAuth(res.data.role, res.data.username);
-        router.replace(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+        if (res.data.role === "parent" && !res.data.email_verified_at) {
+          router.replace("/account");
+        } else {
+          router.replace(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+        }
       })
       .catch(() => {
         if (cancelled) return;
