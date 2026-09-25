@@ -21,6 +21,8 @@ export default function LoginPage() {
       setAuth(res.data.role, res.data.username);
       if (res.data.role === "parent" && !res.data.email_verified) {
         router.push("/account");
+      } else if (res.data.role === "parent" && !res.data.onboarding_completed) {
+        router.push("/onboarding");
       } else {
         router.push(res.data.role === "parent" ? "/parent/dashboard" : "/child");
       }
