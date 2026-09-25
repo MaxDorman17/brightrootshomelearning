@@ -48,9 +48,13 @@ def list_lessons(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(Lesson).filter(Lesson.created_by == current_user.id).all() \
-        if current_user.role == "parent" \
-        else db.query(Lesson).all()
+    if current_user.role == "parent":
+        return db.query(Lesson).filter(Lesson.created_by == current_user.id).all()
+
+    if current_user.role == "child" and current_user.parent_id:
+        return db.query(Lesson).filter(Lesson.created_by == current_user.parent_id).all()
+
+    return []
 
 
 @router.put("/{lesson_id}", response_model=LessonOut)
