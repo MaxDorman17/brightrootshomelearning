@@ -19,7 +19,11 @@ export default function LoginPage() {
     try {
       const res = await login(username, password);
       setAuth(res.data.role, res.data.username);
-      router.push(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+      if (res.data.role === "parent" && !res.data.email_verified) {
+        router.push("/account");
+      } else {
+        router.push(res.data.role === "parent" ? "/parent/dashboard" : "/child");
+      }
     } catch (err: any) {
       setError(err.response?.data?.detail || "Something went wrong");
     } finally {
