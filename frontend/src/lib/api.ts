@@ -45,6 +45,10 @@ export const verifyEmail = (token: string) =>
   api.post("/api/auth/verify-email", { token });
 export const completeOnboarding = () =>
   api.post("/api/auth/complete-onboarding");
+export const createBillingCheckout = (plan: "monthly" | "yearly") =>
+  api.post("/api/billing/checkout", { plan });
+export const createBillingPortal = () =>
+  api.post("/api/billing/portal");
 // Public self-registration is disabled server-side (see backend/routers/auth.py) —
 // no register() helper here since nothing should call it.
 
