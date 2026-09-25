@@ -114,7 +114,7 @@ def login(
         )
 
     _clear_account_failures(client_ip, form_data.username)
-    token = create_access_token({"sub": str(user.id)})
+    token = create_access_token({"sub": str(user.id), "ver": user.session_version})
     secure_cookie = request.url.hostname not in {"localhost", "127.0.0.1"}
     response.set_cookie(
         key=SESSION_COOKIE_NAME,
