@@ -45,6 +45,7 @@ const PARENT_MORE = [
   { href: "/parent/timetable", label: "Timetable" },
   { href: "/achievements", label: "Achievements" },
   { href: "/parent/print", label: "Print Week" },
+  { href: "/account", label: "Account" },
 ];
 
 const CHILD_MAIN = [
@@ -60,6 +61,7 @@ const CHILD_MORE = [
   { href: "/polish", label: "Languages" },
   { href: "/child/extra-work", label: "Extra Work" },
   { href: "/achievements", label: "Achievements" },
+  { href: "/account", label: "Account" },
 ];
 
 export default function Navbar() {
