@@ -134,7 +134,7 @@ def create_checkout(
         "allow_promotion_codes": "true",
     }
 
-    if current_user.subscription_status == "trialing" and current_user.trial_ends_at:
+    if current_user.trial_ends_at:
         trial_end = int(current_user.trial_ends_at.timestamp())
         if trial_end > int(time.time()) + 60:
             data["subscription_data[trial_end]"] = str(trial_end)
