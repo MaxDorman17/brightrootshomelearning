@@ -327,7 +327,7 @@ export default function ParentDashboardPage() {
                 ? "..."
                 : oakPercent !== null
                 ? `${oakPercent}%`
-                : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â"
+                : "No data"
             }
             detail={
               oakPossible > 0
