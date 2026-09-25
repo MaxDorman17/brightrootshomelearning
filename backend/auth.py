@@ -63,6 +63,8 @@ def get_current_user(
 def require_parent(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
+    if current_user.email_verified_at is None:
+        raise HTTPException(status_code=403, detail="Please verify your email address")
     return current_user
 
 
