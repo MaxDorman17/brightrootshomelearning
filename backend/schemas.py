@@ -27,6 +27,9 @@ class UserOut(BaseModel):
     parent_id: Optional[int]
     email_verified_at: Optional[datetime] = None
     onboarding_completed_at: Optional[datetime] = None
+    subscription_status: Optional[str] = None
+    trial_ends_at: Optional[datetime] = None
+    billing_plan: Optional[str] = None
     created_at: datetime
 
     class Config:
