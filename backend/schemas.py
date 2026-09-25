@@ -23,6 +23,7 @@ class UserOut(BaseModel):
     username: str
     role: str
     parent_id: Optional[int]
+    email_verified_at: Optional[datetime] = None
     created_at: datetime
 
     class Config:
