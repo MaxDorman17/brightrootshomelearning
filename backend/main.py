@@ -9,7 +9,7 @@ from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -388,6 +388,7 @@ app.include_router(moments.router)
 app.include_router(reminders.router)
 app.include_router(newsletter.router)
 app.include_router(games.router)
+app.include_router(account.router)
 
 
 @app.on_event("startup")

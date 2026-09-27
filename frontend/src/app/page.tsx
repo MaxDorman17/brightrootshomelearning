@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import HomeDemo from "@/components/HomeDemo";
 import NewsletterSignup from "@/components/NewsletterSignup";
@@ -101,12 +102,22 @@ function Eyebrow({ children, className = "text-brand-softsage" }: { children: Re
 
 export default function HomePage() {
   const memberHome = useMemberHome();
+  const [deleted, setDeleted] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("deleted")) setDeleted(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-brand-white text-[#2E342F]">
       <PublicHeader memberHome={memberHome} />
 
       <main>
+        {deleted && (
+          <div className="border-b border-brand-mist bg-brand-tint px-4 py-3 text-center text-sm font-semibold text-brand-sage">
+            Your account and all your family&apos;s information have been deleted. Thank you for using Bright Roots.
+          </div>
+        )}
         <section className="relative overflow-hidden">
           <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-brand-tint blur-3xl" />
           <div className="absolute -right-24 top-36 h-80 w-80 rounded-full bg-[#F1D9C9] opacity-60 blur-3xl" />

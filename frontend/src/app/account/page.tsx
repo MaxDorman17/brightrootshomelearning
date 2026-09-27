@@ -8,6 +8,7 @@ import ThemePicker from "@/components/ThemePicker";
 import Avatar from "@/components/Avatar";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import ChildColours from "@/components/ChildColours";
+import YourDataCard from "@/components/YourDataCard";
 import {
   changePassword,
   checkSession,
@@ -377,6 +378,8 @@ export default function AccountPage() {
               </button>
             </form>
           </div>
+
+          {role === "parent" && <YourDataCard />}
         </div>
       </main>
     </div>

@@ -167,7 +167,9 @@ export default function SignupPage() {
               </button>
 
               <p className="text-center text-xs text-gray-500">
-                No card is taken at this step.
+                No card is taken at this step. By creating an account you agree to our{" "}
+                <Link href="/terms" className="underline hover:text-brand-sage">terms</Link> and{" "}
+                <Link href="/privacy" className="underline hover:text-brand-sage">privacy policy</Link>.
               </p>
             </form>
           )}

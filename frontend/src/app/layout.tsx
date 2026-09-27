@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import ThemeSync from "@/components/ThemeSync";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
+import { SITE_URL } from "@/lib/site";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -10,12 +11,37 @@ const nunito = Nunito({
   display: "swap",
 });
 
+const DESCRIPTION =
+  "A calm home learning planner for UK families. Plan the week, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Bright Roots Home Learning",
+    default: "Bright Roots Home Learning | Home education planner for families",
     template: "%s | Bright Roots",
   },
-  description: "Bright Roots Home Learning Hub",
+  description: DESCRIPTION,
+  keywords: [
+    "home education planner",
+    "homeschool planner UK",
+    "home learning",
+    "elective home education",
+    "homeschool record keeping",
+    "Oak National Academy",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: SITE_URL,
+    siteName: "Bright Roots Home Learning",
+    title: "Bright Roots Home Learning",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bright Roots Home Learning",
+    description: DESCRIPTION,
+  },
   applicationName: "Bright Roots",
   manifest: "/manifest.json",
   icons: {

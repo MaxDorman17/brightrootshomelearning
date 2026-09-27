@@ -406,3 +406,8 @@ export const getSpellingResults = (params?: { week_start?: string; child_id?: nu
   api.get("/api/spellings/results", { params });
 export const getWeakWords = (child_id: number, limit?: number) =>
   api.get("/api/spellings/weak-words", { params: { child_id, ...(limit ? { limit } : {}) } });
+
+// Account data
+export const exportAccount = () => api.get("/api/account/export", { responseType: "blob" });
+export const deleteAccount = (password: string, confirm: string) =>
+  api.post("/api/account/delete", { password, confirm });

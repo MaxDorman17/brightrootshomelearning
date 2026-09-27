@@ -158,4 +158,16 @@ body {
   .brand-muted {
     @apply text-brand-earth/70;
   }
+
+  .legal-body ul {
+    @apply list-disc space-y-1.5 pl-5;
+  }
+
+  .legal-body a {
+    @apply font-semibold text-brand-sage underline;
+  }
+
+  .legal-body strong {
+    @apply font-extrabold text-[#2E342F];
+  }
 }

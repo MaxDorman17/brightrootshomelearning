@@ -88,6 +88,9 @@ export function PublicFooter() {
           <Link href="/about" className="hover:text-brand-sage">About</Link>
           <Link href="/#demo" className="hover:text-brand-sage">Demo</Link>
           <Link href="/#pricing" className="hover:text-brand-sage">Pricing</Link>
+          <Link href="/contact" className="hover:text-brand-sage">Contact</Link>
+          <Link href="/privacy" className="hover:text-brand-sage">Privacy</Link>
+          <Link href="/terms" className="hover:text-brand-sage">Terms</Link>
           <Link href="/login" className="hover:text-brand-sage">Login</Link>
         </div>
       </div>
