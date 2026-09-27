@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -7,6 +9,24 @@ from schemas import LessonCreate, LessonUpdate, LessonOut
 from auth import require_parent, get_current_user
 
 router = APIRouter(prefix="/api/lessons", tags=["lessons"])
+
+MAX_STEPS = 30
+
+
+def _storable(values: dict) -> dict:
+    """Tidy the richer lesson fields and turn lists into JSON for storage."""
+    out = dict(values)
+    if "steps" in out and out["steps"] is not None:
+        steps = [s.strip()[:500] for s in out["steps"] if s and s.strip()][:MAX_STEPS]
+        out["steps"] = json.dumps(steps) if steps else None
+    if "resource_ids" in out and out["resource_ids"] is not None:
+        ids = list(dict.fromkeys(int(i) for i in out["resource_ids"]))[:30]
+        out["resource_ids"] = json.dumps(ids) if ids else None
+    if "duration_minutes" in out and out["duration_minutes"] is not None:
+        out["duration_minutes"] = max(1, min(600, int(out["duration_minutes"])))
+    if "objectives" in out and out["objectives"] is not None:
+        out["objectives"] = out["objectives"].strip() or None
+    return out
 
 
 @router.post("/", response_model=LessonOut, status_code=201)
@@ -21,11 +41,14 @@ def create_lesson(
         Lesson.subject == lesson_in.subject,
         Lesson.created_by == current_user.id,
     ).first()
+    extra = _storable(lesson_in.model_dump(include={"objectives", "steps", "duration_minutes", "resource_ids"}, exclude_none=True))
     if existing:
         if lesson_in.lesson_url is not None:
             existing.lesson_url = lesson_in.lesson_url
         if lesson_in.description is not None:
             existing.description = lesson_in.description
+        for field, value in extra.items():
+            setattr(existing, field, value)
         db.commit()
         db.refresh(existing)
         return existing
@@ -36,6 +59,7 @@ def create_lesson(
         description=lesson_in.description,
         lesson_url=lesson_in.lesson_url,
         created_by=current_user.id,
+        **extra,
     )
     db.add(lesson)
     db.commit()
@@ -68,7 +92,7 @@ def update_lesson(
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
 
-    for field, value in lesson_in.model_dump(exclude_unset=True).items():
+    for field, value in _storable(lesson_in.model_dump(exclude_unset=True)).items():
         setattr(lesson, field, value)
 
     db.commit()

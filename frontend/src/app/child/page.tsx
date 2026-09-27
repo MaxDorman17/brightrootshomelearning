@@ -12,6 +12,7 @@ import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types"
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
+import LessonGuide from "@/components/LessonGuide";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
@@ -806,6 +807,8 @@ export default function ChildDashboard() {
                 <p className="text-sm text-amber-900">{modal.entry.lesson.description}</p>
               </div>
             )}
+
+            <LessonGuide entryId={modal.entry.id} lesson={modal.entry.lesson} />
 
             {/* Open lesson link */}
             {modal.entry.lesson.lesson_url && (

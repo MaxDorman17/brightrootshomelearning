@@ -7,6 +7,7 @@ import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
+import LessonGuide from "@/components/LessonGuide";
 import { format } from "date-fns";
 
 export default function LessonDetailPage() {
@@ -90,6 +91,8 @@ export default function LessonDetailPage() {
               {completing ? "…" : entry.is_complete ? "✓ Completed" : "Mark Done"}
             </button>
           </div>
+
+          <LessonGuide entryId={entry.id} lesson={entry.lesson} />
 
           <a
             href={`/child/resources?folder=${encodeURIComponent(entry.lesson.subject)}`}

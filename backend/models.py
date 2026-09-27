@@ -44,6 +44,10 @@ class Lesson(Base):
     subject = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
     lesson_url = Column(String(512), nullable=True)
+    objectives = Column(Text, nullable=True)  # "What we'll learn"
+    steps = Column(Text, nullable=True)  # JSON list of activity steps
+    duration_minutes = Column(Integer, nullable=True)
+    resource_ids = Column(Text, nullable=True)  # JSON list of attached Resources ids
     created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -440,3 +444,24 @@ class Resource(Base):
     note = Column(Text, nullable=True)
     visible_to_children = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class LessonPlan(Base):
+    """A reusable, ordered series of lessons, e.g. "Fractions - 2 weeks"."""
+    __tablename__ = "lesson_plans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    title = Column(String(255), nullable=False)
+    subject = Column(String(100), nullable=True)
+    description = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class LessonPlanItem(Base):
+    __tablename__ = "lesson_plan_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    plan_id = Column(Integer, ForeignKey("lesson_plans.id", ondelete="CASCADE"), nullable=False, index=True)
+    lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
+    position = Column(Integer, nullable=False, default=0)

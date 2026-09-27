@@ -168,10 +168,29 @@ export const syncBillingSubscription = () =>
 
 // Lessons
 export const getLessons = () => api.get("/api/lessons/");
-export const createLesson = (data: { title: string; subject: string; description?: string; lesson_url?: string }) =>
-  api.post("/api/lessons/", data);
-export const updateLesson = (id: number, data: { title?: string; subject?: string; description?: string; lesson_url?: string }) =>
-  api.put(`/api/lessons/${id}`, data);
+export type LessonFields = {
+  title?: string;
+  subject?: string;
+  description?: string | null;
+  lesson_url?: string | null;
+  objectives?: string;
+  steps?: string[];
+  duration_minutes?: number | null;
+  resource_ids?: number[];
+};
+export const createLesson = (data: LessonFields & { title: string; subject: string }) => api.post("/api/lessons/", data);
+export const updateLesson = (id: number, data: LessonFields) => api.put(`/api/lessons/${id}`, data);
+export const getLessonLibrary = () => api.get("/api/lesson-plans/library");
+export const getLessonPlans = () => api.get("/api/lesson-plans/");
+export const createLessonPlan = (body: { title: string; subject?: string; description?: string; lesson_ids: number[] }) =>
+  api.post("/api/lesson-plans/", body);
+export const updateLessonPlan = (id: number, body: { title: string; subject?: string; description?: string; lesson_ids: number[] }) =>
+  api.put(`/api/lesson-plans/${id}`, body);
+export const deleteLessonPlan = (id: number) => api.delete(`/api/lesson-plans/${id}`);
+export const scheduleLessonPlan = (
+  id: number,
+  body: { start_date: string; assigned_to: number | null; mode: "timetable" | "days"; days: string[] }
+) => api.post(`/api/lesson-plans/${id}/schedule`, body);
 export const deleteLesson = (id: number) => api.delete(`/api/lessons/${id}`);
 
 // Planner

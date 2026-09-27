@@ -4,6 +4,10 @@ export interface Lesson {
   subject: string;
   description: string | null;
   lesson_url: string | null;
+  objectives?: string | null;
+  steps?: string[];
+  duration_minutes?: number | null;
+  resource_ids?: number[];
   created_by: number;
   created_at: string;
 }

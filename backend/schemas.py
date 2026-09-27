@@ -107,6 +107,10 @@ class LessonCreate(BaseModel):
     subject: str
     description: Optional[str] = None
     lesson_url: Optional[str] = None
+    objectives: Optional[str] = None
+    steps: Optional[list[str]] = None
+    duration_minutes: Optional[int] = None
+    resource_ids: Optional[list[int]] = None
 
 
 class LessonUpdate(BaseModel):
@@ -114,6 +118,20 @@ class LessonUpdate(BaseModel):
     subject: Optional[str] = None
     description: Optional[str] = None
     lesson_url: Optional[str] = None
+    objectives: Optional[str] = None
+    steps: Optional[list[str]] = None
+    duration_minutes: Optional[int] = None
+    resource_ids: Optional[list[int]] = None
+
+
+def _json_list(value):
+    if value is None or isinstance(value, list):
+        return value or []
+    try:
+        parsed = json.loads(value)
+        return parsed if isinstance(parsed, list) else []
+    except ValueError:
+        return []
 
 
 class LessonOut(BaseModel):
@@ -122,8 +140,17 @@ class LessonOut(BaseModel):
     subject: str
     description: Optional[str]
     lesson_url: Optional[str]
+    objectives: Optional[str] = None
+    steps: list[str] = []
+    duration_minutes: Optional[int] = None
+    resource_ids: list[int] = []
     created_by: int
     created_at: datetime
+
+    @field_validator("steps", "resource_ids", mode="before")
+    @classmethod
+    def parse_lists(cls, value):
+        return _json_list(value)
 
     class Config:
         from_attributes = True

@@ -8,7 +8,7 @@ from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -62,6 +62,19 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN child_theme VARCHAR(20)"))
             if "subject_colors" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN subject_colors TEXT"))
+            conn.commit()
+    if "lessons" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("lessons")]
+        lesson_columns = {
+            "objectives": "ALTER TABLE lessons ADD COLUMN objectives TEXT",
+            "steps": "ALTER TABLE lessons ADD COLUMN steps TEXT",
+            "duration_minutes": "ALTER TABLE lessons ADD COLUMN duration_minutes INTEGER",
+            "resource_ids": "ALTER TABLE lessons ADD COLUMN resource_ids TEXT",
+        }
+        with engine.connect() as conn:
+            for column_name, statement in lesson_columns.items():
+                if column_name not in existing_cols:
+                    conn.execute(text(statement))
             conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
@@ -364,6 +377,7 @@ app.include_router(challenges.router)
 app.include_router(study.router)
 app.include_router(profile.router)
 app.include_router(resources.router)
+app.include_router(lesson_plans.router)
 
 
 @app.get("/health")

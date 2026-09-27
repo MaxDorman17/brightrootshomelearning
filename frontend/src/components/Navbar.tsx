@@ -42,6 +42,7 @@ const PARENT_LEARNING = [
   { href: "/polish", label: "Languages" },
   { href: "/parent/extra-work", label: "Extra Work" },
   { href: "/parent/resources", label: "Resources" },
+  { href: "/parent/lessons", label: "My Lessons" },
 ];
 
 const PARENT_MORE = [
