@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import RewardsTabs from "@/components/RewardsTabs";
 import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
@@ -303,8 +304,9 @@ export default function RewardsPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+        <RewardsTabs role="parent" current="stars" />
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Motivation</p>
-        <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Rewards</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Rewards</h1>
         <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
           Children earn stars for the things you choose, then spend them on rewards you set. Stars only come off when you approve a request.
         </p>

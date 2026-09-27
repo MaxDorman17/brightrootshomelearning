@@ -366,6 +366,7 @@ def me(
     out = UserOut.model_validate(current_user)
     out.has_photo = bool(current_user.avatar_photo)
     out.is_admin = is_admin(current_user)
+    out.rewards_set_up = current_user.rewards_set_up_at is not None
     if current_user.role == "parent":
         out.family_theme = current_user.theme
     elif current_user.parent_id:

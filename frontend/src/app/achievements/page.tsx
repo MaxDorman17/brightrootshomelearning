@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren, getPolishSessions } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import RewardsTabs from "@/components/RewardsTabs";
 import { format, subDays } from "date-fns";
 
 const SEEN_KEY = "seen_badges";
@@ -238,11 +239,12 @@ export default function AchievementsPage() {
       )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        {(role === "parent" || role === "child") && <RewardsTabs role={role} current="badges" />}
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">More</p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Achievements</h1>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">Motivation</p>
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Badges</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Celebrate milestones, learning streaks, subject progress and special achievements.
               </p>

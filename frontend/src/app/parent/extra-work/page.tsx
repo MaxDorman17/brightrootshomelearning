@@ -90,7 +90,7 @@ export default function ExtraWorkParentPage() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Extra Work</h1>
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Extra Work</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Plan reading, projects, practice and one-off tasks outside the main timetable.
               </p>

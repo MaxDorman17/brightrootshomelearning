@@ -112,7 +112,7 @@ export default function TimetablePage() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Timetable</h1>
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Timetable</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Set the subject order for each school day. The planner uses this structure when laying out the week.
               </p>

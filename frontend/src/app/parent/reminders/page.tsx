@@ -189,7 +189,7 @@ export default function RemindersPage() {
       <Navbar />
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Routine</p>
-        <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Reminders</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Reminders</h1>
         <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
           Daily nudges for your children. They appear on their Today page from the time you choose and tick themselves off when the work is done.
         </p>

@@ -314,7 +314,7 @@ export default function ReadingLogPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D88C64]">Reading</p>
-              <h1 className="brand-heading text-3xl mt-1">Reading Log</h1>
+              <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Reading Log</h1>
               <p className="text-[#6E5A46] mt-2 max-w-2xl">
                 {isParent ? "Track reading progress, books, worksheets and Reading Journeys." : "Keep your books, progress and Reading Journeys all in one place."}
               </p>

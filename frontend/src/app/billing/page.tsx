@@ -82,7 +82,7 @@ export default function BillingPage() {
       <main className="mx-auto max-w-4xl px-4 py-10">
         <div className="mb-8">
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-terracotta">Membership</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-brand-charcoal">Bright Roots Family</h1>
+          <h1 className="mt-2 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Bright Roots Family</h1>
           <p className="mt-2 text-brand-earth/70">
             One membership for your family, with parent tools and multiple child accounts included.
           </p>

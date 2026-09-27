@@ -12,9 +12,11 @@ import {
 import {
   checkSession,
   getPendingFeedback,
+  getTimetable,
   getUnreadFeedbackCount,
   logout,
 } from "@/lib/api";
+import { subjectsInTimetable } from "@/lib/subjects";
 import Avatar from "@/components/Avatar";
 import { AvatarChoice } from "@/lib/avatar";
 
@@ -26,58 +28,95 @@ interface PendingItem {
   child: string | null;
 }
 
-const PARENT_MAIN = [
+type NavLink = { href: string; label: string };
+type NavGroup = { label: string; items: NavLink[] };
+type NavEntry = NavLink | NavGroup;
+
+const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
+
+// Coding and Languages hold one family's own content, so they only show when the
+// family has that subject on their timetable.
+const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
+  "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
+  "/polish": (subjects) => subjects.some((s) => /language|polish|french|spanish|german/i.test(s)),
+};
+
+const PARENT_NAV: NavEntry[] = [
   { href: "/parent/dashboard", label: "Home" },
-  { href: "/parent", label: "Planner" },
-  { href: "/parent/report", label: "Reports" },
-  { href: "/parent/results", label: "Test Results" },
-  { href: "/parent/children", label: "Children" },
+  {
+    label: "Plan",
+    items: [
+      { href: "/parent", label: "Planner" },
+      { href: "/parent/timetable", label: "Timetable" },
+      { href: "/parent/lessons", label: "My Lessons" },
+      { href: "/units", label: "Oak Units" },
+      { href: "/parent/extra-work", label: "Extra Work" },
+      { href: "/parent/resources", label: "Resources" },
+      { href: "/parent/print", label: "Print Week" },
+    ],
+  },
+  {
+    label: "Learn",
+    items: [
+      { href: "/reading-log", label: "Reading" },
+      { href: "/spellings", label: "Spellings" },
+      { href: "/coding", label: "Coding" },
+      { href: "/polish", label: "Languages" },
+    ],
+  },
+  {
+    label: "Progress",
+    items: [
+      { href: "/parent/results", label: "Test Results" },
+      { href: "/parent/progress", label: "Review & Feedback" },
+      { href: "/parent/report", label: "Reports" },
+      { href: "/parent/council-report", label: "Council Report" },
+      { href: "/parent/journal", label: "Journal" },
+      { href: "/moments", label: "Moments & Photos" },
+    ],
+  },
+  {
+    label: "Family",
+    items: [
+      { href: "/parent/children", label: "Children" },
+      { href: "/parent/rewards", label: "Rewards & Badges" },
+      { href: "/parent/reminders", label: "Reminders" },
+      { href: "/account", label: "Account" },
+    ],
+  },
 ];
 
-const PARENT_LEARNING = [
-  { href: "/units", label: "Oak Units" },
-  { href: "/reading-log", label: "Reading" },
-  { href: "/spellings", label: "Spellings" },
-  { href: "/coding", label: "Coding" },
-  { href: "/polish", label: "Languages" },
-  { href: "/parent/extra-work", label: "Extra Work" },
-  { href: "/parent/resources", label: "Resources" },
-  { href: "/parent/lessons", label: "My Lessons" },
-];
-
-const PARENT_MORE = [
-  { href: "/moments", label: "Moments & Photos" },
-  { href: "/parent/council-report", label: "Council Report" },
-  { href: "/parent/progress", label: "Review & Feedback" },
-  { href: "/parent/journal", label: "Journal" },
-  { href: "/parent/timetable", label: "Timetable" },
-  { href: "/parent/rewards", label: "Rewards" },
-  { href: "/parent/reminders", label: "Reminders" },
-  { href: "/achievements", label: "Achievements" },
-  { href: "/parent/print", label: "Print Week" },
-  { href: "/account", label: "Account" },
-];
-
-const CHILD_MAIN = [
+const CHILD_NAV: NavEntry[] = [
   { href: "/child", label: "Today" },
-  { href: "/units", label: "Learning" },
-  { href: "/child/progress", label: "Progress" },
+  {
+    label: "My Learning",
+    items: [
+      { href: "/units", label: "Learning" },
+      { href: "/reading-log", label: "Reading" },
+      { href: "/spellings", label: "Spellings" },
+      { href: "/child/extra-work", label: "Extra Work" },
+      { href: "/child/resources", label: "Resources" },
+      { href: "/coding", label: "Coding" },
+      { href: "/polish", label: "Languages" },
+    ],
+  },
+  {
+    label: "Play",
+    items: [
+      { href: "/child/games", label: "Games" },
+      { href: "/child/timer", label: "Study Timer" },
+    ],
+  },
   { href: "/child/stars", label: "My Stars" },
   { href: "/moments", label: "Moments" },
-  { href: "/child/games", label: "Games" },
-  { href: "/child/timer", label: "Timer" },
-  { href: "/child/resources", label: "Resources" },
+  { href: "/child/progress", label: "Progress" },
 ];
 
-const CHILD_MORE = [
-  { href: "/reading-log", label: "Reading" },
-  { href: "/spellings", label: "Spellings" },
-  { href: "/coding", label: "Coding" },
-  { href: "/polish", label: "Languages" },
-  { href: "/child/extra-work", label: "Extra Work" },
-  { href: "/achievements", label: "Achievements" },
-  { href: "/account", label: "Account" },
-];
+// Pages that belong to a menu entry without being listed in it, so the right tab lights up.
+const ALSO_ACTIVE: Record<string, string[]> = {
+  "/child/stars": ["/achievements"],
+  "/parent/rewards": ["/achievements"],
+};
 
 export default function Navbar() {
   const router = useRouter();
@@ -86,8 +125,8 @@ export default function Navbar() {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [learningOpen, setLearningOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [subjects, setSubjects] = useState<string[] | null>(null);
   const [notifOpen, setNotifOpen] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
@@ -95,8 +134,7 @@ export default function Navbar() {
   const [myAvatar, setMyAvatar] = useState<{ id: number; avatar: AvatarChoice | null; has_photo: boolean } | null>(null);
   const [pending, setPending] = useState<PendingItem[]>([]);
 
-  const learningRef = useRef<HTMLDivElement>(null);
-  const moreRef = useRef<HTMLDivElement>(null);
+  const menusRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -126,6 +164,12 @@ export default function Navbar() {
         .catch(() => {});
     }
 
+    if (r) {
+      getTimetable()
+        .then((res) => setSubjects(subjectsInTimetable(res.data.config || {})))
+        .catch(() => setSubjects([]));
+    }
+
     return () => window.removeEventListener("avatar-changed", loadAvatar);
   }, []);
 
@@ -134,17 +178,10 @@ export default function Navbar() {
       const target = event.target as Node;
 
       if (
-        learningRef.current &&
-        !learningRef.current.contains(target)
+        menusRef.current &&
+        !menusRef.current.contains(target)
       ) {
-        setLearningOpen(false);
-      }
-
-      if (
-        moreRef.current &&
-        !moreRef.current.contains(target)
-      ) {
-        setMoreOpen(false);
+        setOpenMenu(null);
       }
 
       if (
@@ -184,37 +221,26 @@ export default function Navbar() {
       : "/child";
 
   const isActive = (href: string) =>
-    pathname === href;
+    pathname === href || (ALSO_ACTIVE[href] ?? []).includes(pathname);
 
-  const parentLearningActive =
-    PARENT_LEARNING.some((item) =>
-      pathname === item.href
-    );
+  const visible = (link: NavLink) => {
+    const rule = OPTIONAL_PAGES[link.href];
+    // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
+    return !rule || (subjects !== null && rule(subjects));
+  };
 
-  // The site owner also gets the newsletter tools.
-  const parentMore = isAdmin ? [...PARENT_MORE, { href: "/admin/newsletter", label: "Newsletter (owner)" }] : PARENT_MORE;
+  const baseNav = role === "parent" ? PARENT_NAV : role === "child" ? CHILD_NAV : [];
+  const nav: NavEntry[] = baseNav
+    .map((entry) => {
+      if (!isGroup(entry)) return entry;
+      let items = entry.items.filter(visible);
+      // The site owner also gets the newsletter tools.
+      if (entry.label === "Family" && isAdmin) items = [...items, { href: "/admin/newsletter", label: "Newsletter (owner)" }];
+      return { ...entry, items };
+    })
+    .filter((entry) => !isGroup(entry) || entry.items.length > 0);
 
-  const parentMoreActive =
-    parentMore.some((item) =>
-      pathname === item.href
-    );
-
-  const childMoreActive =
-    CHILD_MORE.some((item) =>
-      pathname === item.href
-    );
-
-  const mobileLinks =
-    role === "parent"
-      ? [
-          ...PARENT_MAIN,
-          ...PARENT_LEARNING,
-          ...parentMore,
-        ]
-      : [
-          ...CHILD_MAIN,
-          ...CHILD_MORE,
-        ];
+  const groupActive = (group: NavGroup) => group.items.some((item) => isActive(item.href));
 
   return (
     <>
@@ -245,173 +271,59 @@ export default function Navbar() {
                 </div>
               </Link>
 
-              <div className="hidden items-center gap-1 md:flex">
+              <div ref={menusRef} className="hidden items-center gap-1 md:flex">
+                {nav.map((entry) =>
+                  isGroup(entry) ? (
+                    <div key={entry.label} className="relative">
+                      <button
+                        onClick={() => setOpenMenu((value) => (value === entry.label ? null : entry.label))}
+                        aria-expanded={openMenu === entry.label}
+                        className={`flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
+                          groupActive(entry) || openMenu === entry.label
+                            ? "bg-brand-sage text-white"
+                            : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
+                        }`}
+                      >
+                        {entry.label}
+                        <span aria-hidden="true" className="text-[10px]">▾</span>
+                      </button>
 
-                {role === "parent" &&
-                  PARENT_MAIN.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
-                        isActive(item.href)
-                          ? "bg-brand-sage text-white"
-                          : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-
-                {role === "parent" && (
-                  <div
-                    ref={learningRef}
-                    className="relative"
-                  >
-                    <button
-                      onClick={() =>
-                        setLearningOpen(
-                          (value) => !value
-                        )
-                      }
-                      className={`rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
-                        parentLearningActive ||
-                        learningOpen
-                          ? "bg-brand-sage text-white"
-                          : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
-                      }`}
-                    >
-                      Learning
-                    </button>
-
-                    {learningOpen && (
-                      <div className="absolute left-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
-                        {PARENT_LEARNING.map(
-                          (item) => (
+                      {openMenu === entry.label && (
+                        <div className="absolute left-0 top-full mt-2 w-56 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
+                          {entry.items.map((item) => (
                             <Link
                               key={item.href}
                               href={item.href}
-                              onClick={() =>
-                                setLearningOpen(false)
-                              }
-                              className="block px-4 py-3 text-sm font-semibold text-brand-charcoal hover:bg-brand-cream"
+                              onClick={() => setOpenMenu(null)}
+                              className={`block px-4 py-3 text-sm font-semibold hover:bg-brand-cream ${
+                                isActive(item.href) ? "bg-brand-tint text-brand-sage" : "text-brand-charcoal"
+                              }`}
                             >
                               {item.label}
                             </Link>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {role === "parent" && (
-                  <div
-                    ref={moreRef}
-                    className="relative"
-                  >
-                    <button
-                      onClick={() =>
-                        setMoreOpen(
-                          (value) => !value
-                        )
-                      }
-                      className={`rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
-                        parentMoreActive ||
-                        moreOpen
-                          ? "bg-brand-sage text-white"
-                          : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
-                      }`}
-                    >
-                      More
-                    </button>
-
-                    {moreOpen && (
-                      <div className="absolute left-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
-                        {parentMore.map(
-                          (item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={() =>
-                                setMoreOpen(false)
-                              }
-                              className="block px-4 py-3 text-sm font-semibold text-brand-charcoal hover:bg-brand-cream"
-                            >
-                              {item.label}
-                            </Link>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {role === "child" &&
-                  CHILD_MAIN.map((item) => (
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
                     <Link
-                      key={item.href}
-                      href={item.href}
+                      key={entry.href}
+                      href={entry.href}
                       className={`relative rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
-                        isActive(item.href)
+                        isActive(entry.href)
                           ? "bg-brand-sage text-white"
                           : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
                       }`}
                     >
-                      {item.label}
-
-                      {item.href === "/child" &&
-                        unreadCount > 0 && (
-                          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-terracotta px-1 text-[9px] font-extrabold text-white">
-                            {unreadCount > 9
-                              ? "9+"
-                              : unreadCount}
-                          </span>
-                        )}
+                      {entry.label}
+                      {entry.href === "/child" && unreadCount > 0 && (
+                        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-terracotta px-1 text-[9px] font-extrabold text-white">
+                          {unreadCount > 9 ? "9+" : unreadCount}
+                        </span>
+                      )}
                     </Link>
-                  ))}
-
-                {role === "child" && (
-                  <div
-                    ref={moreRef}
-                    className="relative"
-                  >
-                    <button
-                      onClick={() =>
-                        setMoreOpen(
-                          (value) => !value
-                        )
-                      }
-                      className={`rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
-                        childMoreActive ||
-                        moreOpen
-                          ? "bg-brand-sage text-white"
-                          : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
-                      }`}
-                    >
-                      More
-                    </button>
-
-                    {moreOpen && (
-                      <div className="absolute left-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
-                        {CHILD_MORE.map(
-                          (item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={() =>
-                                setMoreOpen(false)
-                              }
-                              className="block px-4 py-3 text-sm font-semibold text-brand-charcoal hover:bg-brand-cream"
-                            >
-                              {item.label}
-                            </Link>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  )
                 )}
-
               </div>
             </div>
 
@@ -560,23 +472,31 @@ export default function Navbar() {
 
           {mobileOpen && (
             <div className="border-t border-brand-softsage/15 py-3 md:hidden">
-              <div className="grid grid-cols-2 gap-2">
-                {mobileLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() =>
-                      setMobileOpen(false)
-                    }
-                    className={`rounded-xl px-3 py-2.5 text-sm font-bold ${
-                      isActive(item.href)
-                        ? "bg-brand-sage text-white"
-                        : "bg-brand-cream text-brand-charcoal"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+              <div className="space-y-3">
+                {nav.map((entry) => {
+                  const links = isGroup(entry) ? entry.items : [entry];
+                  return (
+                    <div key={isGroup(entry) ? entry.label : entry.href}>
+                      {isGroup(entry) && (
+                        <p className="mb-1.5 px-1 text-[11px] font-extrabold uppercase tracking-wider text-brand-earth/60">{entry.label}</p>
+                      )}
+                      <div className="grid grid-cols-2 gap-2">
+                        {links.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className={`rounded-xl px-3 py-2.5 text-sm font-bold ${
+                              isActive(item.href) ? "bg-brand-sage text-white" : "bg-brand-cream text-brand-charcoal"
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               <button

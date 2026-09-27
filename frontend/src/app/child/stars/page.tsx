@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import RewardsTabs from "@/components/RewardsTabs";
 import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { cancelRewardRequest, getFamilyOverview, getMyStars, requestReward } from "@/lib/api";
@@ -76,6 +77,7 @@ export default function MyStarsPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+        <RewardsTabs role="child" current="stars" />
         {!data && <p className="text-sm text-[#6E5A46]">{message || "Loading your stars..."}</p>}
 
         {data && (

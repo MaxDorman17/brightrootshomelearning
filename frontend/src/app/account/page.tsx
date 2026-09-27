@@ -152,7 +152,7 @@ export default function AccountPage() {
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-earth/60">
               Account
             </p>
-            <h1 className="mt-2 text-3xl font-extrabold text-brand-charcoal">
+            <h1 className="mt-2 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               Security settings
             </h1>
             <p className="mt-2 text-sm text-brand-earth/70">

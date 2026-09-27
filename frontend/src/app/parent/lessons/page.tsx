@@ -366,7 +366,7 @@ export default function MyLessonsPage() {
       <Navbar />
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Planning</p>
-        <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">My Lessons</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">My Lessons</h1>
         <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
           Build lessons once and reuse them. Group them into plans and schedule a whole series in one go.
         </p>

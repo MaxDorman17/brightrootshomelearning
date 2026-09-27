@@ -84,7 +84,7 @@ export default function PolishPage() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Languages</h1>
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Languages</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Track Polish practice, Duolingo XP and daily learning streaks.
               </p>

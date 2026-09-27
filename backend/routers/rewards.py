@@ -293,6 +293,16 @@ def _check_threshold(body: RuleIn) -> Optional[int]:
 # Parent endpoints
 # ---------------------------------------------------------------------------
 
+@router.get("/pending-count")
+def pending_count(db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """Reward requests waiting for the parent, without setting up example rewards."""
+    return {
+        "pending": db.query(RewardClaim)
+        .filter(RewardClaim.parent_id == current_user.id, RewardClaim.status == "pending")
+        .count()
+    }
+
+
 @router.get("/setup")
 def rewards_setup(
     db: Session = Depends(get_db),

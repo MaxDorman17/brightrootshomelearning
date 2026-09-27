@@ -74,7 +74,7 @@ export default function GamesPage() {
         ) : (
           <>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Play and learn</p>
-            <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Games</h1>
+            <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Games</h1>
             <p className="mt-2 text-sm text-[#6E5A46]">
               {ownWords ? "The spelling games use this week's spelling words." : "The spelling games use practice words until this week's spellings are added."}
             </p>

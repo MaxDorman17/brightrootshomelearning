@@ -143,7 +143,7 @@ export default function ChildrenPage() {
                 Family Accounts
               </p>
 
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
                 Children
               </h1>
 

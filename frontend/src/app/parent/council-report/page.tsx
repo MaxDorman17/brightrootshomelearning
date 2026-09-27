@@ -175,7 +175,7 @@ export default function CouncilReportPage() {
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 print:max-w-none print:p-0">
         <div className="print:hidden">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Records</p>
-          <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Council Report</h1>
+          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Council Report</h1>
           <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
             A home education report for your local authority, built from your Bright Roots records.
             Choose a child and period, then download it as a PDF.

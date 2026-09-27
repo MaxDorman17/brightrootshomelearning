@@ -561,7 +561,7 @@ export default function ParentPlanner() {
           <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
             <div>
               <p className="text-sm font-semibold text-brand-sage mb-1">Learning Planner</p>
-              <h1 className="text-3xl font-extrabold text-brand-charcoal tracking-tight">
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
                 Weekly Planner
               </h1>
               <p className="text-sm text-brand-earth/70 mt-1">

@@ -40,7 +40,7 @@ export default function TimerPage() {
       <Navbar />
       <div className="mx-auto max-w-xl px-4 py-8 sm:px-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Focus</p>
-        <h1 className="mt-1 text-3xl font-bold text-brand-charcoal">Study timer</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Study timer</h1>
 
         {phase === "idle" && (
           <div className="mt-5 space-y-3">

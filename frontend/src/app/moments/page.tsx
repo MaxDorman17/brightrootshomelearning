@@ -399,7 +399,7 @@ export default function MomentsPage() {
       <Navbar />
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Our family</p>
-        <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Learning moments</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Learning moments</h1>
         <p className="mt-2 text-sm text-[#6E5A46] sm:text-base">Photos and notes from your learning, just for your family.</p>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">

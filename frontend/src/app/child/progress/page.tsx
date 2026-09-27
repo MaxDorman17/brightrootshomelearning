@@ -120,7 +120,7 @@ export default function ChildProgressPage() {
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
             Progress
           </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">My Progress</h1>
+          <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">My Progress</h1>
           <p className="text-sm sm:text-base text-[#6E5A46] mt-2">
             Hi {username}, here&apos;s how your learning is going.
           </p>

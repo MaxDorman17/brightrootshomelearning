@@ -20,6 +20,7 @@ import {
 } from "@/lib/auth";
 import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
+import HomeOverview from "@/components/HomeOverview";
 import { useMounted } from "@/lib/useMounted";
 import {
   addDays,
@@ -249,7 +250,7 @@ export default function ParentDashboardPage() {
               Bright Roots
             </p>
 
-            <h1 className="text-3xl font-extrabold tracking-tight text-brand-charcoal md:text-4xl">
+            <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               Welcome back, {parentName}
             </h1>
 
@@ -294,6 +295,8 @@ export default function ParentDashboardPage() {
             </div>
           )}
         </section>
+
+        <HomeOverview />
 
         <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <DashboardStat
@@ -563,33 +566,33 @@ export default function ParentDashboardPage() {
             />
 
             <QuickCard
-              href="/parent/report"
-              title="Reports"
-              description="See progress, Oak results and learning history."
+              href="/parent/lessons"
+              title="My Lessons"
+              description="Build lessons once and reuse them, or schedule a whole plan."
             />
 
             <QuickCard
-              href="/units"
-              title="Oak Units"
-              description="Add and manage Oak Academy learning."
-            />
-
-            <QuickCard
-              href="/reading-log"
-              title="Reading"
-              description="Books, reading progress and worksheets."
-            />
-
-            <QuickCard
-              href="/spellings"
-              title="Spellings"
-              description="Weekly words, tests and weak-word practice."
+              href="/parent/results"
+              title="Test Results"
+              description="Spelling, Oak and your own tests, with time studied and games."
             />
 
             <QuickCard
               href="/parent/progress"
               title="Review Work"
               description="Review submitted work and leave feedback."
+            />
+
+            <QuickCard
+              href="/moments"
+              title="Moments & Photos"
+              description="Photos and notes from your learning."
+            />
+
+            <QuickCard
+              href="/parent/council-report"
+              title="Council Report"
+              description="Download a home education report as a PDF."
             />
           </div>
         </section>

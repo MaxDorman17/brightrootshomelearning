@@ -153,7 +153,7 @@ export default function CodingPage() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Coding</h1>
+              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Coding</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Work through Scratch, Code.org, Python and web development at your own pace.
               </p>

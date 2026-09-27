@@ -149,7 +149,7 @@ export default function ResultsPage() {
         <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Results</p>
-            <h1 className="mt-1 text-3xl font-bold text-brand-charcoal sm:text-4xl">Test Results</h1>
+            <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Test Results</h1>
             <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
               Spelling tests and Oak quiz scores appear here automatically. Add any other test yourself.
             </p>
