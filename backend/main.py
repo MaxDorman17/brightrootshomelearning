@@ -8,6 +8,7 @@ from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
+from storage import move_legacy_uploads
 from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans
 
 # Auto-migrate: add new columns to existing tables without wiping data
@@ -222,6 +223,7 @@ def run_migrations():
 
 run_migrations()
 Base.metadata.create_all(bind=engine)
+move_legacy_uploads()
 
 
 def backup_sqlite_database(label: str) -> None:

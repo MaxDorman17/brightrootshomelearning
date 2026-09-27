@@ -11,10 +11,11 @@ from sqlalchemy.orm import Session
 from auth import get_current_user, require_parent
 from database import get_db
 from models import User
+from storage import upload_dir
 
 router = APIRouter(prefix="/api/profile", tags=["profile"])
 
-PHOTO_DIR = "./uploads/avatars"
+PHOTO_DIR = upload_dir("avatars")
 MAX_PHOTO_SIZE = 5 * 1024 * 1024
 PHOTO_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif"}
 
@@ -196,5 +197,8 @@ def get_photo(
         raise HTTPException(status_code=404, detail="No photo")
     path = _photo_path(child.avatar_photo)
     if not os.path.exists(path):
+        # The file was lost (e.g. saved before uploads survived redeploys): fall back to the avatar.
+        child.avatar_photo = None
+        db.commit()
         raise HTTPException(status_code=404, detail="No photo")
     return FileResponse(path, headers={"Cache-Control": "private, max-age=300"})

@@ -8,13 +8,13 @@ import os
 import uuid
 from database import get_db
 from models import ReadingLog, ReadingWorksheet, ReadingChapterProgress, User
+from storage import upload_dir
 from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut
 from auth import get_current_user, require_parent
 
 router = APIRouter(prefix="/api/reading", tags=["reading"])
 
-UPLOAD_DIR = "./uploads/worksheets"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+UPLOAD_DIR = upload_dir("worksheets")
 
 ALLOWED_CONTENT_TYPES = {
     "application/pdf",

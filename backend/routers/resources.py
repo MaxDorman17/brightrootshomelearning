@@ -13,10 +13,11 @@ from auth import get_current_user, require_parent
 from database import get_db
 from models import Resource, ResourceFolder, TimetableConfig, User
 from routers.timetable import DEFAULT_TIMETABLE
+from storage import upload_dir
 
 router = APIRouter(prefix="/api/resources", tags=["resources"])
 
-UPLOAD_DIR = "./uploads/resources"
+UPLOAD_DIR = upload_dir("resources")
 MAX_FILE_SIZE = 20 * 1024 * 1024
 GENERAL_FOLDER = "General"
 ALLOWED_FILES = {
