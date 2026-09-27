@@ -69,6 +69,9 @@ export const getResultsOverview = (child_id?: number) =>
 export const addTestResult = (body: TestResultBody) => api.post("/api/test-results/", body);
 export const updateTestResult = (id: number, body: TestResultBody) => api.put(`/api/test-results/${id}`, body);
 export const deleteTestResult = (id: number) => api.delete(`/api/test-results/${id}`);
+export const getCouncilReport = (child_id: number, start_date: string, end_date: string) =>
+  api.get("/api/council-report/", { params: { child_id, start_date, end_date } });
+export const saveEheApproach = (approach: string) => api.put("/api/council-report/approach", { approach });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

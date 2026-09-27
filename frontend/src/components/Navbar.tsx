@@ -41,6 +41,7 @@ const PARENT_LEARNING = [
 ];
 
 const PARENT_MORE = [
+  { href: "/parent/council-report", label: "Council Report" },
   { href: "/parent/progress", label: "Review & Feedback" },
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/timetable", label: "Timetable" },
