@@ -88,6 +88,22 @@ export const declineRewardClaim = (id: number) => api.post(`/api/rewards/claims/
 export const getMyStars = () => api.get("/api/rewards/me");
 export const requestReward = (reward_id: number) => api.post("/api/rewards/claims", { reward_id });
 export const cancelRewardRequest = (id: number) => api.delete(`/api/rewards/claims/${id}`);
+export type ChallengeBody = {
+  title: string;
+  kind: string;
+  target: number;
+  threshold_pct: number | null;
+  mode: "each" | "team";
+  start_date: string;
+  end_date: string;
+  bonus_stars: number;
+};
+export const getFamilyOverview = () => api.get("/api/family/overview");
+export const addChallenge = (body: ChallengeBody) => api.post("/api/family/challenges", body);
+export const removeChallenge = (id: number) => api.delete(`/api/family/challenges/${id}`);
+export const tickChallenge = (id: number, child_id: number) => api.post(`/api/family/challenges/${id}/tick`, { child_id });
+export const untickChallenge = (id: number, child_id: number) =>
+  api.delete(`/api/family/challenges/${id}/tick`, { params: { child_id } });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

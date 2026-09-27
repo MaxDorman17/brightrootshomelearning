@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
   addRewardItem,
@@ -13,6 +14,7 @@ import {
   declineRewardClaim,
   deleteRewardItem,
   deleteRewardRule,
+  getFamilyOverview,
   getRewardsSetup,
   updateRewardItem,
   updateRewardRule,
@@ -237,6 +239,7 @@ function ChildCard({ child, onSaved }: { child: ChildStars; onSaved: () => void 
 export default function RewardsPage() {
   const router = useRouter();
   const [setup, setSetup] = useState<Setup | null>(null);
+  const [family, setFamily] = useState<FamilyOverview | null>(null);
   const [newKind, setNewKind] = useState("lesson");
   const [newRuleStars, setNewRuleStars] = useState("2");
   const [newRuleThreshold, setNewRuleThreshold] = useState("80");
@@ -246,8 +249,9 @@ export default function RewardsPage() {
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
-    const res = await getRewardsSetup();
+    const [res, familyRes] = await Promise.all([getRewardsSetup(), getFamilyOverview()]);
     setSetup(res.data);
+    setFamily(familyRes.data);
   }, []);
 
   useEffect(() => {
@@ -328,6 +332,8 @@ export default function RewardsPage() {
                 </div>
               </section>
             )}
+
+            {family && <FamilyBoard data={family} isParent onChanged={load} />}
 
             <section>
               <h2 className="mb-3 text-lg font-extrabold text-brand-charcoal">Stars</h2>

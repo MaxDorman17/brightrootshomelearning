@@ -362,3 +362,31 @@ class RewardClaim(Base):
     status = Column(String(20), nullable=False, default="pending")  # pending / approved / declined / cancelled
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     decided_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class Challenge(Base):
+    """A family challenge set by the parent, e.g. "Complete 15 lessons this week" for bonus stars."""
+    __tablename__ = "challenges"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    title = Column(String(120), nullable=False)
+    kind = Column(String(20), nullable=False)  # lessons / spelling / oak / books / stars / custom
+    target = Column(Integer, nullable=False)
+    threshold_pct = Column(Integer, nullable=True)  # minimum score for spelling and oak challenges
+    mode = Column(String(10), nullable=False, default="each")  # each child on their own, or the whole family as a team
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    bonus_stars = Column(Integer, nullable=False, default=0)
+    is_archived = Column(Boolean, nullable=False, default=False)  # hidden, but bonus stars already won are kept
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ChallengeTick(Base):
+    """One tick towards a custom challenge, marked by the parent."""
+    __tablename__ = "challenge_ticks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    challenge_id = Column(Integer, ForeignKey("challenges.id", ondelete="CASCADE"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

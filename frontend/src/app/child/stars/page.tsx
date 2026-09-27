@@ -4,13 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { cancelRewardRequest, getMyStars, requestReward } from "@/lib/api";
+import { cancelRewardRequest, getFamilyOverview, getMyStars, requestReward } from "@/lib/api";
 
 type Rule = { id: number; kind: string; stars: number; label: string };
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
 type Claim = { id: number; reward_id: number | null; title: string; emoji: string | null; cost: number; status: string; created_at: string | null };
 type MyStars = {
+  child: { id: number; username: string };
   balance: number;
   available: number;
   earned_total: number;
@@ -30,12 +32,14 @@ const STATUS_TEXT: Record<string, string> = {
 export default function MyStarsPage() {
   const router = useRouter();
   const [data, setData] = useState<MyStars | null>(null);
+  const [family, setFamily] = useState<FamilyOverview | null>(null);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState<number | null>(null);
 
   const load = useCallback(async () => {
-    const res = await getMyStars();
+    const [res, familyRes] = await Promise.all([getMyStars(), getFamilyOverview()]);
     setData(res.data);
+    setFamily(familyRes.data);
   }, []);
 
   useEffect(() => {
@@ -129,6 +133,8 @@ export default function MyStarsPage() {
                 </div>
               )}
             </section>
+
+            {family && <FamilyBoard data={family} myId={data.child.id} onChanged={load} />}
 
             <section className="brand-card p-5 sm:p-6">
               <h2 className="text-lg font-extrabold text-brand-charcoal">How to earn stars</h2>

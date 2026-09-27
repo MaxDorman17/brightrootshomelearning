@@ -7,19 +7,10 @@ from sqlalchemy.orm import Session
 
 from auth import require_child, require_parent
 from database import get_db
-from models import (
-    Lesson,
-    PlannerCompletion,
-    PlannerEntry,
-    ReadingLog,
-    RewardClaim,
-    RewardItem,
-    RewardRule,
-    SpellingResult,
-    StarAward,
-    User,
-)
-from routers.test_results import _oak_results_for_child, _own_child
+from models import RewardClaim, RewardItem, RewardRule, StarAward, User
+from routers import activity
+from routers.activity import naive as _naive
+from routers.test_results import _own_child
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 
@@ -121,19 +112,6 @@ class ClaimIn(BaseModel):
 # Star calculation
 # ---------------------------------------------------------------------------
 
-def _naive(value: Optional[datetime]) -> Optional[datetime]:
-    """Timestamps are stored as UTC; compare them without timezone info."""
-    if value is None:
-        return None
-    if isinstance(value, str):
-        value = datetime.fromisoformat(value)
-    return value.replace(tzinfo=None) if value.tzinfo else value
-
-
-def _pct(score, total) -> Optional[float]:
-    return (score / total * 100) if score is not None and total else None
-
-
 def _rule_label(rule: RewardRule) -> str:
     if rule.kind == "lesson":
         return "Complete a lesson"
@@ -157,92 +135,56 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
         when = _naive(when)
         return when >= _naive(rule.counts_from) and (rule.ended_at is None or when < _naive(rule.ended_at))
 
-    lesson_rules = [r for r in rules if r.kind == "lesson"]
-    if lesson_rules:
-        completions = []
-        for entry, lesson in (
-            db.query(PlannerEntry, Lesson)
-            .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
-            .filter(
-                Lesson.created_by == parent_id,
-                PlannerEntry.assigned_to == child.id,
-                PlannerEntry.is_complete.is_(True),
-                PlannerEntry.completed_at.is_not(None),
-            )
-            .all()
-        ):
-            completions.append((entry.completed_at, lesson.title))
-        for entry, lesson, completion in (
-            db.query(PlannerEntry, Lesson, PlannerCompletion)
-            .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
-            .join(PlannerCompletion, PlannerCompletion.entry_id == PlannerEntry.id)
-            .filter(
-                Lesson.created_by == parent_id,
-                PlannerEntry.assigned_to.is_(None),
-                PlannerCompletion.user_id == child.id,
-            )
-            .all()
-        ):
-            completions.append((completion.completed_at, lesson.title))
-        for rule in lesson_rules:
-            for when, title in completions:
+    kinds = {r.kind for r in rules}
+    lessons = activity.lesson_completions(db, child, parent_id) if "lesson" in kinds else []
+    quizzes = activity.oak_scores(db, child, parent_id) if "oak" in kinds else []
+    spellings = activity.spelling_scores(db, child, parent_id) if "spelling" in kinds else []
+    books = activity.books_finished(db, child, parent_id) if "book" in kinds else []
+
+    for rule in rules:
+        threshold = rule.threshold_pct or 0
+        if rule.kind == "lesson":
+            for when, title in lessons:
                 if in_window(rule, when):
-                    events.append({"when": _naive(when), "stars": rule.stars, "reason": f"Completed: {title}"})
-
-    oak_rules = [r for r in rules if r.kind == "oak"]
-    if oak_rules:
-        quizzes = _oak_results_for_child(db, child, parent_id)
-        for rule in oak_rules:
-            for q in quizzes:
-                when = _naive(q["completed_at"]) if q["completed_at"] else None
-                score = _pct(q["exit_score"], q["exit_total"])
-                if in_window(rule, when) and score is not None and score >= (rule.threshold_pct or 0):
-                    events.append({"when": when, "stars": rule.stars, "reason": f"Oak quiz {round(score)}%: {q['lesson_title']}"})
-
-    spelling_rules = [r for r in rules if r.kind == "spelling"]
-    if spelling_rules:
-        tests = (
-            db.query(SpellingResult)
-            .filter(
-                SpellingResult.child_id == child.id,
-                SpellingResult.parent_id == parent_id,
-                SpellingResult.is_practice_round.is_not(True),
-            )
-            .all()
-        )
-        for rule in spelling_rules:
-            for t in tests:
-                score = _pct(t.score, t.total)
-                if in_window(rule, t.taken_at) and score is not None and score >= (rule.threshold_pct or 0):
-                    events.append({"when": _naive(t.taken_at), "stars": rule.stars, "reason": f"Spelling test {t.score}/{t.total}"})
-
-    book_rules = [r for r in rules if r.kind == "book"]
-    if book_rules:
-        books = (
-            db.query(ReadingLog)
-            .filter(
-                ReadingLog.added_by == parent_id,
-                ReadingLog.child_id == child.id,
-                ReadingLog.status == "completed",
-                ReadingLog.finish_date.is_not(None),
-            )
-            .all()
-        )
-        for rule in book_rules:
-            for b in books:
-                when = datetime.combine(b.finish_date, datetime.min.time())
-                ended = _naive(rule.ended_at).date() if rule.ended_at else None
-                if b.finish_date >= _naive(rule.counts_from).date() and (ended is None or b.finish_date <= ended):
-                    events.append({"when": when, "stars": rule.stars, "reason": f"Finished a book: {b.title}"})
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Completed: {title}"})
+        elif rule.kind == "oak":
+            for when, score, title in quizzes:
+                if in_window(rule, when) and score >= threshold:
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Oak quiz {round(score)}%: {title}"})
+        elif rule.kind == "spelling":
+            for when, score, label in spellings:
+                if in_window(rule, when) and score >= threshold:
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Spelling test {label}"})
+        elif rule.kind == "book":
+            ended = _naive(rule.ended_at).date() if rule.ended_at else None
+            for finished, title in books:
+                if finished >= _naive(rule.counts_from).date() and (ended is None or finished <= ended):
+                    events.append({
+                        "when": datetime.combine(finished, datetime.min.time()),
+                        "stars": rule.stars,
+                        "reason": f"Finished a book: {title}",
+                    })
 
     return events
 
 
+def _award_events(db: Session, child: User, parent_id: int) -> list:
+    """Bonus stars given or taken away by hand."""
+    return [
+        {
+            "when": _naive(award.created_at),
+            "stars": award.stars,
+            "reason": award.reason or ("Bonus stars" if award.stars > 0 else "Stars taken away"),
+        }
+        for award in db.query(StarAward).filter(StarAward.parent_id == parent_id, StarAward.child_id == child.id).all()
+    ]
+
+
 def _child_summary(db: Session, child: User, parent_id: int, history_limit: int = 30) -> dict:
-    events = _earned_events(db, child, parent_id)
-    for award in db.query(StarAward).filter(StarAward.parent_id == parent_id, StarAward.child_id == child.id).all():
-        reason = award.reason or ("Bonus stars" if award.stars > 0 else "Stars taken away")
-        events.append({"when": _naive(award.created_at), "stars": award.stars, "reason": reason})
+    from routers.challenges import challenge_bonus_events  # imported here to avoid a circular import
+
+    events = _earned_events(db, child, parent_id) + _award_events(db, child, parent_id)
+    events += challenge_bonus_events(db, child, parent_id)
 
     claims = (
         db.query(RewardClaim)
