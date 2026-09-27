@@ -137,7 +137,7 @@ export interface ReadingLogBook {
 
 export interface User {
   id: number;
-  email: string;
+  email: string | null;
   username: string;
   role: "parent" | "child";
   parent_id: number | null;
@@ -147,7 +147,7 @@ export interface User {
 export interface Child {
   id: number;
   username: string;
-  email: string;
+  email: string | null;
   role: "child";
   created_at: string;
 }

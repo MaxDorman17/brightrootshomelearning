@@ -13,7 +13,7 @@ import {
   saveTimetable,
 } from "@/lib/api";
 
-type Child = { id: number; username: string; email: string };
+type Child = { id: number; username: string; email: string | null };
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 export default function OnboardingPage() {
@@ -94,7 +94,7 @@ export default function OnboardingPage() {
     try {
       const res = await addChild({
         username: childUsername.trim(),
-        email: childEmail.trim(),
+        email: childEmail.trim() || undefined,
         password: childPassword,
       });
       setChildren((prev) => [...prev, res.data]);
@@ -232,9 +232,9 @@ export default function OnboardingPage() {
                     <input required value={childUsername} onChange={(e) => setChildUsername(e.target.value)} placeholder="e.g. Sam" className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child email</label>
-                    <input type="email" required value={childEmail} onChange={(e) => setChildEmail(e.target.value)} placeholder="child@example.com" className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
-                    <p className="mt-1 text-xs text-[#6E5A46]/70">Used for the child account record. Children still sign in with their username.</p>
+                    <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child email <span className="font-normal text-[#6E5A46]/70">(optional)</span></label>
+                    <input type="email" value={childEmail} onChange={(e) => setChildEmail(e.target.value)} placeholder="child@example.com" className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
+                    <p className="mt-1 text-xs text-[#6E5A46]/70">Leave blank if your child doesn&apos;t have an email. Children sign in with their username.</p>
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child password</label>

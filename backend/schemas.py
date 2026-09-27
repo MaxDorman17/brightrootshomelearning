@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 from datetime import date, datetime
 
@@ -22,7 +22,7 @@ class UserCreate(BaseModel):
 
 class UserOut(BaseModel):
     id: int
-    email: str
+    email: Optional[str] = None
     username: str
     role: str
     parent_id: Optional[int]
@@ -41,14 +41,21 @@ class UserOut(BaseModel):
 
 class ChildCreate(BaseModel):
     username: str
-    email: EmailStr
+    email: Optional[EmailStr] = None
     password: str
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def blank_email_is_none(cls, value):
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
 
 class ChildOut(BaseModel):
     id: int
     username: str
-    email: str
+    email: Optional[str] = None
     role: str
     created_at: datetime
 

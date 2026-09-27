@@ -1,7 +1,13 @@
+import os
+import sqlite3
+from datetime import datetime
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text, inspect as sa_inspect
+from sqlalchemy.schema import CreateTable
 from database import engine, Base
+from models import User
 from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores
 
 # Auto-migrate: add new columns to existing tables without wiping data
@@ -189,6 +195,59 @@ def run_migrations():
 
 run_migrations()
 Base.metadata.create_all(bind=engine)
+
+
+def backup_sqlite_database(label: str) -> None:
+    """Copy the SQLite database file next to itself before a risky migration."""
+    db_path = engine.url.database
+    if not db_path or db_path == ":memory:" or not os.path.exists(db_path):
+        return
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    backup_path = f"{db_path}.backup-{label}-{stamp}"
+    source = sqlite3.connect(db_path)
+    try:
+        target = sqlite3.connect(backup_path)
+        try:
+            source.backup(target)
+        finally:
+            target.close()
+    finally:
+        source.close()
+
+
+def make_user_email_optional():
+    """One-time: allow users.email to be empty so child accounts don't need an email."""
+    insp = sa_inspect(engine)
+    if "users" not in insp.get_table_names():
+        return
+    email_col = next((c for c in insp.get_columns("users") if c["name"] == "email"), None)
+    if email_col is None or email_col["nullable"]:
+        return
+
+    if engine.dialect.name != "sqlite":
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE users ALTER COLUMN email DROP NOT NULL"))
+        return
+
+    # SQLite can't drop NOT NULL in place, so rebuild the table from the model.
+    backup_sqlite_database("users-email-optional")
+    users_table = User.__table__
+    old_cols = {c["name"] for c in insp.get_columns("users")}
+    copy_cols = ", ".join(c.name for c in users_table.columns if c.name in old_cols)
+    create_sql = str(CreateTable(users_table).compile(engine)).replace(
+        "CREATE TABLE users", "CREATE TABLE users_new", 1
+    )
+
+    with engine.begin() as conn:
+        conn.execute(text(create_sql))
+        conn.execute(text(f"INSERT INTO users_new ({copy_cols}) SELECT {copy_cols} FROM users"))
+        conn.execute(text("DROP TABLE users"))
+        conn.execute(text("ALTER TABLE users_new RENAME TO users"))
+        for index in users_table.indexes:
+            index.create(conn)
+
+
+make_user_email_optional()
 
 
 def migrate_coding_progress():

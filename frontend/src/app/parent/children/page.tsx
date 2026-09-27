@@ -41,7 +41,7 @@ export default function ChildrenPage() {
   }, [router]);
 
   const handleAdd = async () => {
-    if (!username.trim() || !email.trim() || !password.trim()) return;
+    if (!username.trim() || !password.trim()) return;
 
     setSaving(true);
     setError("");
@@ -49,7 +49,7 @@ export default function ChildrenPage() {
     try {
       const res = await addChild({
         username: username.trim(),
-        email: email.trim(),
+        email: email.trim() || undefined,
         password: password.trim(),
       });
 
@@ -224,9 +224,11 @@ export default function ChildrenPage() {
                       </span>
                     </div>
 
-                    <p className="text-sm text-[#6E5A46] mt-1 truncate">
-                      {child.email}
-                    </p>
+                    {child.email && (
+                      <p className="text-sm text-[#6E5A46] mt-1 truncate">
+                        {child.email}
+                      </p>
+                    )}
 
                     <p className="text-xs text-[#8FA382] mt-1">
                       Added {format(parseISO(child.created_at), "d MMMM yyyy")}
@@ -309,7 +311,7 @@ export default function ChildrenPage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
-                    Email
+                    Email <span className="font-normal text-[#8A7A69]">(optional)</span>
                   </label>
 
                   <input
@@ -357,7 +359,6 @@ export default function ChildrenPage() {
                   disabled={
                     saving ||
                     !username.trim() ||
-                    !email.trim() ||
                     !password.trim()
                   }
                   className="sm:flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
