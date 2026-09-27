@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { getMe } from "@/lib/api";
+import HomeDemo from "@/components/HomeDemo";
+import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSite";
 
 const features = [
   {
@@ -39,50 +38,11 @@ const examples = [
 ];
 
 export default function HomePage() {
-  const [memberHome, setMemberHome] = useState<string | null>(null);
-
-  useEffect(() => {
-    getMe()
-      .then((res) => {
-        if (res.data.role === "parent" && !res.data.email_verified_at) {
-          setMemberHome("/account");
-        } else if (res.data.role === "parent" && !res.data.onboarding_completed_at) {
-          setMemberHome("/onboarding");
-        } else {
-          setMemberHome(res.data.role === "parent" ? "/parent/dashboard" : "/child");
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const memberHome = useMemberHome();
 
   return (
     <div className="min-h-screen bg-brand-white text-[#2E342F]">
-      <header className="sticky top-0 z-40 border-b border-brand-line bg-brand-white/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Bright Roots" width={42} height={42} className="rounded-xl" />
-            <div className="leading-tight">
-              <p className="font-extrabold text-brand-sage">Bright Roots</p>
-              <p className="text-[10px] font-bold tracking-[0.16em] text-[#6E5A46]/60">
-                HOME LEARNING
-              </p>
-            </div>
-          </Link>
-
-          <nav className="hidden items-center gap-6 text-sm font-bold text-[#6E5A46] md:flex">
-            <a href="#features" className="hover:text-brand-sage">Features</a>
-            <a href="#how-it-works" className="hover:text-brand-sage">How it works</a>
-            <a href="#pricing" className="hover:text-brand-sage">Pricing</a>
-          </nav>
-
-          <Link
-            href={memberHome || "/login"}
-            className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark"
-          >
-            {memberHome ? "Open Bright Roots" : "Member login"}
-          </Link>
-        </div>
-      </header>
+      <PublicHeader memberHome={memberHome} />
 
       <main>
         <section className="relative overflow-hidden">
@@ -114,10 +74,10 @@ export default function HomePage() {
                   Start 7-day free trial
                 </Link>
                 <a
-                  href="#pricing"
+                  href="#demo"
                   className="rounded-xl border border-[#D9D1C4] bg-white px-6 py-3.5 text-center text-sm font-extrabold text-brand-sage hover:bg-brand-cream"
                 >
-                  View pricing
+                  Try the demo
                 </a>
               </div>
 
@@ -173,7 +133,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="bg-brand-cream py-20">
+        <section id="features" className="scroll-mt-16 bg-brand-cream py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="max-w-2xl">
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">
@@ -202,7 +162,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="how-it-works" className="py-20">
+        <section id="demo" className="scroll-mt-16 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="mb-8 max-w-2xl">
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Try it</p>
+              <h2 className="mt-3 text-3xl font-black sm:text-4xl">Have a click around</h2>
+              <p className="mt-4 text-[#6E5A46]">
+                This is an example family with two children. Mark lessons done in the child&apos;s view
+                and watch the planner and progress update, just like the real thing.
+              </p>
+            </div>
+            <HomeDemo />
+          </div>
+        </section>
+
+        <section id="how-it-works" className="bg-brand-cream py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
               <div>
@@ -235,7 +209,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="pricing" className="bg-[#2E342F] py-20 text-white">
+        <section id="pricing" className="scroll-mt-16 bg-[#2E342F] py-20 text-white">
           <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-lime">Pricing</p>
             <h2 className="mt-3 text-3xl font-black sm:text-4xl">Simple family pricing</h2>
@@ -288,19 +262,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Family feedback</p>
-            <h2 className="mt-3 text-3xl font-black">Real reviews, not invented ones.</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-[#6E5A46]">
-              This section is ready for genuine quotes from families using Bright Roots.
-              Once you have your first pilot reviews, we can add names, ratings and
-              testimonials here properly.
-            </p>
-          </div>
-        </section>
-
-        <section className="border-t border-brand-line bg-brand-cream py-16">
+        <section className="border-t border-brand-line py-16">
           <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
             <h2 className="text-3xl font-black">Ready to make home learning feel more organised?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-[#6E5A46]">
@@ -316,15 +278,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-brand-line bg-brand-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-[#6E5A46]/70 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {new Date().getFullYear()} Bright Roots Home Learning</p>
-          <div className="flex gap-5">
-            <Link href="/login" className="hover:text-brand-sage">Login</Link>
-            <a href="#pricing" className="hover:text-brand-sage">Pricing</a>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

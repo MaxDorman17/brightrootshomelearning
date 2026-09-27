@@ -11,7 +11,9 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (typeof window !== "undefined") {
-      if (err.response?.status === 401 && !err.config?.url?.includes("/auth/login")) {
+      if (err.config?.skipAuthRedirect) {
+        // Quiet session checks (e.g. on public pages) handle a signed-out visitor themselves.
+      } else if (err.response?.status === 401 && !err.config?.url?.includes("/auth/login")) {
         localStorage.removeItem("role");
         localStorage.removeItem("username");
         window.location.href = "/login";
@@ -50,6 +52,8 @@ export const login = (username: string, password: string) => {
 };
 export const logout = () => api.post("/api/auth/logout");
 export const getMe = () => api.get("/api/auth/me");
+// Like getMe, but a signed-out visitor stays on the page instead of being sent to /login.
+export const checkSession = () => api.get("/api/auth/me", { skipAuthRedirect: true } as any);
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

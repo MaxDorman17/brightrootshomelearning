@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { getMe } from "@/lib/api";
+import { checkSession } from "@/lib/api";
 import { isAuthenticated } from "@/lib/auth";
-import { applyTheme } from "@/lib/theme";
+import { applyTheme, clearTheme } from "@/lib/theme";
 
 /** Loads the family's saved theme once per page load and applies it. */
 export default function ThemeSync() {
   useEffect(() => {
     if (!isAuthenticated()) return;
-    getMe()
+    checkSession()
       .then((res) => applyTheme(res.data.family_theme))
-      .catch(() => {});
+      .catch((err) => {
+        // Signed out (e.g. the session expired): go back to the default colours.
+        if (err.response?.status === 401) clearTheme();
+      });
   }, []);
 
   return null;
