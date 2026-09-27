@@ -410,3 +410,33 @@ class StudySession(Base):
     minutes = Column(Integer, nullable=False)
     completed = Column(Boolean, nullable=False, default=False)  # ran to the end rather than stopped early
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ResourceFolder(Base):
+    """An extra folder a parent added to their Resources, beyond one per subject."""
+    __tablename__ = "resource_folders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    name = Column(String(100), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("parent_id", "name", name="uq_resource_folder_parent_name"),)
+
+
+class Resource(Base):
+    """A study material in a family's Resources: a link (e.g. Twinkl) or an uploaded file."""
+    __tablename__ = "resources"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    folder = Column(String(100), nullable=False)
+    title = Column(String(255), nullable=False)
+    kind = Column(String(10), nullable=False)  # link / file
+    url = Column(String(1000), nullable=True)
+    file_name = Column(String(255), nullable=True)  # stored name in uploads/resources
+    original_name = Column(String(255), nullable=True)
+    content_type = Column(String(100), nullable=True)
+    size = Column(Integer, nullable=True)
+    note = Column(Text, nullable=True)
+    visible_to_children = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

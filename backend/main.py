@@ -8,7 +8,7 @@ from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -363,6 +363,7 @@ app.include_router(rewards.router)
 app.include_router(challenges.router)
 app.include_router(study.router)
 app.include_router(profile.router)
+app.include_router(resources.router)
 
 
 @app.get("/health")

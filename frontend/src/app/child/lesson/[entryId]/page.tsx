@@ -91,6 +91,13 @@ export default function LessonDetailPage() {
             </button>
           </div>
 
+          <a
+            href={`/child/resources?folder=${encodeURIComponent(entry.lesson.subject)}`}
+            className="mb-4 mr-2 inline-flex items-center gap-2 rounded-xl border-2 border-brand-mist bg-white px-4 py-2 text-sm font-semibold text-brand-deep hover:bg-brand-wash"
+          >
+            📂 Lesson aids for {entry.lesson.subject}
+          </a>
+
           {!entry.is_complete && (
             <a
               href={`/child/timer?entry=${entry.id}&subject=${encodeURIComponent(entry.lesson.subject)}&label=${encodeURIComponent(entry.lesson.title)}`}

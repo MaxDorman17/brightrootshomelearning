@@ -125,6 +125,25 @@ export const uploadChildPhoto = (child_id: number, file: File) => {
 };
 export const deleteChildPhoto = (child_id: number) => api.delete("/api/profile/photo", { params: { child_id } });
 export const getChildPhoto = (child_id: number) => api.get(`/api/profile/photo/${child_id}`, { responseType: "blob" });
+export const getResources = () => api.get("/api/resources/");
+export const addResourceLink = (body: { folder: string; title: string; url: string; note?: string; visible_to_children: boolean }) =>
+  api.post("/api/resources/links", body);
+export const uploadResourceFile = (folder: string, file: File, title: string, note: string, visible: boolean) => {
+  const form = new FormData();
+  form.append("folder", folder);
+  form.append("title", title);
+  form.append("note", note);
+  form.append("visible_to_children", visible ? "true" : "false");
+  form.append("file", file);
+  return api.post("/api/resources/files", form);
+};
+export const updateResource = (id: number, body: { folder: string; title: string; note?: string | null; visible_to_children: boolean }) =>
+  api.put(`/api/resources/${id}`, body);
+export const deleteResource = (id: number) => api.delete(`/api/resources/${id}`);
+export const downloadResource = (id: number) => api.get(`/api/resources/${id}/file`, { responseType: "blob" });
+export const addResourceFolder = (name: string) => api.post("/api/resources/folders", { name });
+export const renameResourceFolder = (old_name: string, new_name: string) => api.put("/api/resources/folders", { old_name, new_name });
+export const deleteResourceFolder = (name: string) => api.delete(`/api/resources/folders/${encodeURIComponent(name)}`);
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
