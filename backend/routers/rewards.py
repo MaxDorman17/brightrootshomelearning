@@ -14,7 +14,8 @@ from routers.test_results import _own_child
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 
-RULE_KINDS = {"lesson", "oak", "spelling", "book"}
+RULE_KINDS = {"lesson", "oak", "spelling", "book", "game"}
+GAMES_PER_DAY_CAP = 3  # stars for at most this many games a day, so they can't be farmed
 KINDS_WITH_THRESHOLD = {"oak", "spelling"}
 
 DEFAULT_RULES = [
@@ -112,6 +113,12 @@ class ClaimIn(BaseModel):
 # Star calculation
 # ---------------------------------------------------------------------------
 
+def _rule_now() -> datetime:
+    """Rule start/end times, to the whole second like the database's own timestamps,
+    so work finished in the same second as a rule is added still counts."""
+    return datetime.utcnow().replace(microsecond=0)
+
+
 def _rule_label(rule: RewardRule) -> str:
     if rule.kind == "lesson":
         return "Complete a lesson"
@@ -119,6 +126,8 @@ def _rule_label(rule: RewardRule) -> str:
         return f"Score {rule.threshold_pct or 0}% or more on an Oak exit quiz"
     if rule.kind == "spelling":
         return f"Score {rule.threshold_pct or 0}% or more on a spelling test"
+    if rule.kind == "game":
+        return f"Play a learning game (up to {GAMES_PER_DAY_CAP} a day)"
     return "Finish a book"
 
 
@@ -140,6 +149,7 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
     quizzes = activity.oak_scores(db, child, parent_id) if "oak" in kinds else []
     spellings = activity.spelling_scores(db, child, parent_id) if "spelling" in kinds else []
     books = activity.books_finished(db, child, parent_id) if "book" in kinds else []
+    games = sorted(activity.games_played(db, child, parent_id)) if "game" in kinds else []
 
     for rule in rules:
         threshold = rule.threshold_pct or 0
@@ -155,6 +165,14 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
             for when, score, label in spellings:
                 if in_window(rule, when) and score >= threshold:
                     events.append({"when": when, "stars": rule.stars, "reason": f"Spelling test {label}"})
+        elif rule.kind == "game":
+            per_day: dict = {}
+            for when, game in games:
+                if not in_window(rule, when):
+                    continue
+                per_day[when.date()] = per_day.get(when.date(), 0) + 1
+                if per_day[when.date()] <= GAMES_PER_DAY_CAP:
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Played {game.replace('_', ' ')}"})
         elif rule.kind == "book":
             ended = _naive(rule.ended_at).date() if rule.ended_at else None
             for finished, title in books:
@@ -254,7 +272,7 @@ def _ensure_defaults(db: Session, parent: User) -> None:
     """Give a family example rules and rewards the first time they open Rewards."""
     if parent.rewards_set_up_at is not None:
         return
-    now = datetime.utcnow()
+    now = _rule_now()
     for rule in DEFAULT_RULES:
         db.add(RewardRule(parent_id=parent.id, counts_from=now, is_active=True, is_hidden=False, **rule))
     for reward in DEFAULT_REWARDS:
@@ -305,7 +323,7 @@ def rewards_setup(
 
 @router.post("/rules", status_code=201)
 def add_rule(body: RuleIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
-    now = datetime.utcnow()
+    now = _rule_now()
     rule = RewardRule(
         parent_id=current_user.id,
         kind=body.kind,
@@ -332,7 +350,7 @@ def update_rule(rule_id: int, body: RuleIn, db: Session = Depends(get_db), curre
     if body.kind != old.kind:
         raise HTTPException(status_code=400, detail="Add a new rule instead of changing its type")
     # Replace rather than edit, so stars already earned under the old settings don't change.
-    now = datetime.utcnow()
+    now = _rule_now()
     if old.ended_at is None:
         old.ended_at = now
     old.is_hidden = True
@@ -361,7 +379,7 @@ def delete_rule(rule_id: int, db: Session = Depends(get_db), current_user: User 
         raise HTTPException(status_code=404, detail="Rule not found")
     # Kept (hidden) so stars already earned from it stay in the child's balance.
     if rule.ended_at is None:
-        rule.ended_at = datetime.utcnow()
+        rule.ended_at = _rule_now()
     rule.is_hidden = True
     db.commit()
 

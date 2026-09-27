@@ -36,6 +36,7 @@ const KIND_LABELS: Record<string, string> = {
   oak: "Oak exit quiz score",
   spelling: "Spelling test score",
   book: "Finish a book",
+  game: "Play a learning game (up to 3 a day)",
 };
 const HAS_THRESHOLD = new Set(["oak", "spelling"]);
 

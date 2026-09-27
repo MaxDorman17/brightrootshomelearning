@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import Navbar from "@/components/Navbar";
 import ResultsView, { OwnTest, ResultsOverview } from "@/components/ResultsView";
 import StudySummaryCard from "@/components/StudySummaryCard";
+import GamesSummaryCard from "@/components/GamesSummaryCard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
   addTestResult,
@@ -191,6 +192,7 @@ export default function ResultsPage() {
           <div className="space-y-5">
             <ResultsView data={data} onEditTest={openEdit} onDeleteTest={handleDelete} />
             {childId != null && <StudySummaryCard childId={childId} />}
+            {childId != null && <GamesSummaryCard childId={childId} />}
           </div>
         )}
       </div>

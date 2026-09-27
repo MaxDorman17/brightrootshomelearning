@@ -571,3 +571,16 @@ class Newsletter(Base):
     created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     finished_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class GameScore(Base):
+    """One finished round of a learning game."""
+    __tablename__ = "game_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game = Column(String(30), nullable=False)
+    score = Column(Integer, nullable=False)
+    detail = Column(String(100), nullable=True)  # e.g. which tables or level
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

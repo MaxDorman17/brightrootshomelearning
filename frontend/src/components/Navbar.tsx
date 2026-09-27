@@ -64,6 +64,7 @@ const CHILD_MAIN = [
   { href: "/child/progress", label: "Progress" },
   { href: "/child/stars", label: "My Stars" },
   { href: "/moments", label: "Moments" },
+  { href: "/child/games", label: "Games" },
   { href: "/child/timer", label: "Timer" },
   { href: "/child/resources", label: "Resources" },
 ];

@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from models import Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, User
+from models import GameScore, Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, User
 from routers.test_results import _oak_results_for_child
 
 
@@ -92,4 +92,13 @@ def books_finished(db: Session, child: User, parent_id: int) -> list[tuple[date,
             ReadingLog.finish_date.is_not(None),
         )
         .all()
+    ]
+
+
+def games_played(db: Session, child: User, parent_id: int) -> list[tuple[datetime, str]]:
+    """(finished at, game) for every learning game round this child finished."""
+    return [
+        (naive(g.created_at), g.game)
+        for g in db.query(GameScore).filter(GameScore.child_id == child.id, GameScore.parent_id == parent_id).all()
+        if g.created_at
     ]

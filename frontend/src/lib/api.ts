@@ -193,6 +193,10 @@ export const getNewsletterAdmin = () => api.get("/api/newsletter/admin");
 export const previewNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/preview", { subject, body });
 export const testNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/test", { subject, body });
 export const sendNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/send", { subject, body });
+export const saveGameScore = (game: string, score: number, detail?: string) =>
+  api.post("/api/games/scores", { game, score, detail });
+export const getGamesSummary = (child_id?: number) =>
+  api.get("/api/games/summary", { params: child_id != null ? { child_id } : {} });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
