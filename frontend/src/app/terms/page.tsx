@@ -157,8 +157,9 @@ const sections = [
       <>
         <p>
           We may update these terms from time to time. If a change is important, we&apos;ll email members before it
-          takes effect. These terms are governed by the law of England and Wales. If you live elsewhere in the
-          UK, you can also bring a claim in your local courts.
+          takes effect. These terms are governed by Scots law, and disputes can be dealt with by the Scottish
+          courts. If you live in England, Wales or Northern Ireland, you can also bring a claim in your local
+          courts, and the consumer protection laws where you live still apply.
         </p>
         <p>Questions about these terms? Email {mail}.</p>
       </>
