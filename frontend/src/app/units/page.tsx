@@ -11,12 +11,15 @@ import {
   updateQueuedUnit,
   deleteQueuedUnit,
   promoteQueuedUnit,
+  getTimetable,
 } from "@/lib/api";
+import { subjectsInTimetable } from "@/lib/subjects";
 import { Unit, UnitQueueItem } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, parseISO } from "date-fns";
 
-const SUBJECTS = [
+// Used only if the family's timetable can't be loaded.
+const FALLBACK_SUBJECTS = [
   "Maths", "English", "Science", "History", "Computing",
   "Geography", "Cooking", "Art & Design", "Design and Technology", "Life Skills",
 ];
@@ -38,6 +41,7 @@ export default function UnitsPage() {
   const [role, setRole] = useState("");
   const [units, setUnits] = useState<Unit[]>([]);
   const [queue, setQueue] = useState<UnitQueueItem[]>([]);
+  const [timetableSubjects, setTimetableSubjects] = useState<string[]>(FALLBACK_SUBJECTS);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<Modal | null>(null);
   const [title, setTitle] = useState("");
@@ -48,9 +52,17 @@ export default function UnitsPage() {
   const isParent = role === "parent";
 
   const load = useCallback(async () => {
-    const [unitsRes, queueRes] = await Promise.all([getUnits(), getUnitQueue()]);
+    const [unitsRes, queueRes, timetableRes] = await Promise.all([
+      getUnits(),
+      getUnitQueue(),
+      getTimetable().catch(() => null),
+    ]);
     setUnits(unitsRes.data);
     setQueue(queueRes.data);
+    if (timetableRes) {
+      const familySubjects = subjectsInTimetable(timetableRes.data.config || {});
+      if (familySubjects.length > 0) setTimetableSubjects(familySubjects);
+    }
     setLoading(false);
   }, []);
 
@@ -148,6 +160,14 @@ export default function UnitsPage() {
   const getUnit = (subject: string) => units.find(u => u.subject === subject);
   const getQueuedUnits = (subject: string) =>
     queue.filter(item => item.subject === subject).sort((a, b) => a.position - b.position);
+
+  // The family's timetable subjects, plus any subject that already has units so nothing saved is hidden.
+  const SUBJECTS = [
+    ...timetableSubjects,
+    ...[...units.map(u => u.subject), ...queue.map(q => q.subject)].filter(
+      (subject, index, all) => !timetableSubjects.includes(subject) && all.indexOf(subject) === index
+    ),
+  ];
 
   const activeUnits = SUBJECTS.filter(subject => !!getUnit(subject)).length;
   const emptyUnits = SUBJECTS.length - activeUnits;
