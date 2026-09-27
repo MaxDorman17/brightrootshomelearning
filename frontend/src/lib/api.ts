@@ -144,6 +144,29 @@ export const downloadResource = (id: number) => api.get(`/api/resources/${id}/fi
 export const addResourceFolder = (name: string) => api.post("/api/resources/folders", { name });
 export const renameResourceFolder = (old_name: string, new_name: string) => api.put("/api/resources/folders", { old_name, new_name });
 export const deleteResourceFolder = (name: string) => api.delete(`/api/resources/folders/${encodeURIComponent(name)}`);
+export const getMoments = () => api.get("/api/moments/");
+export const addMoment = (fields: { note: string; moment_date: string; subject: string; child_ids: number[] }, files: File[]) => {
+  const form = new FormData();
+  form.append("note", fields.note);
+  form.append("moment_date", fields.moment_date);
+  form.append("subject", fields.subject);
+  form.append("child_ids", fields.child_ids.join(","));
+  files.forEach((f) => form.append("files", f));
+  return api.post("/api/moments/", form);
+};
+export const updateMoment = (id: number, body: { note: string; moment_date: string; subject: string; child_ids: number[] }) =>
+  api.put(`/api/moments/${id}`, body);
+export const deleteMoment = (id: number) => api.delete(`/api/moments/${id}`);
+export const addMomentPhotos = (id: number, files: File[]) => {
+  const form = new FormData();
+  files.forEach((f) => form.append("files", f));
+  return api.post(`/api/moments/${id}/photos`, form);
+};
+export const deleteMomentPhoto = (id: number, photoId: number) => api.delete(`/api/moments/${id}/photos/${photoId}`);
+export const reactToMoment = (id: number, emoji: string) => api.post(`/api/moments/${id}/react`, { emoji });
+export const commentOnMoment = (id: number, text: string) => api.post(`/api/moments/${id}/comments`, { text });
+export const deleteMomentComment = (commentId: number) => api.delete(`/api/moments/comments/${commentId}`);
+export const getMomentPhoto = (photoId: number) => api.get(`/api/moments/photos/${photoId}`, { responseType: "blob" });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

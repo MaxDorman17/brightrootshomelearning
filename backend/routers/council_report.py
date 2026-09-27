@@ -19,6 +19,7 @@ from models import (
     User,
 )
 from routers.oak import OAK_SHARE_RE
+from routers.moments import moments_for_child
 from routers.study import study_minutes
 from routers.test_results import _oak_results_for_child, _own_child
 
@@ -230,6 +231,7 @@ def council_report(
             for l in extra
         ],
         "journal": [{"date": j.entry_date.isoformat(), "content": j.content} for j in journal],
+        "moments": moments_for_child(db, parent_id, child.id, start_date, end_date),
     }
 
 

@@ -465,3 +465,48 @@ class LessonPlanItem(Base):
     plan_id = Column(Integer, ForeignKey("lesson_plans.id", ondelete="CASCADE"), nullable=False, index=True)
     lesson_id = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False)
     position = Column(Integer, nullable=False, default=0)
+
+
+class Moment(Base):
+    """A learning moment: a note and photos shared in the family feed."""
+    __tablename__ = "moments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    note = Column(Text, nullable=True)
+    moment_date = Column(Date, nullable=False)
+    subject = Column(String(100), nullable=True)
+    child_ids = Column(Text, nullable=True)  # JSON list of the children it's about
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class MomentPhoto(Base):
+    __tablename__ = "moment_photos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    moment_id = Column(Integer, ForeignKey("moments.id", ondelete="CASCADE"), nullable=False, index=True)
+    file_name = Column(String(255), nullable=False)
+    content_type = Column(String(50), nullable=False)
+    position = Column(Integer, nullable=False, default=0)
+
+
+class MomentReaction(Base):
+    __tablename__ = "moment_reactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    moment_id = Column(Integer, ForeignKey("moments.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    emoji = Column(String(8), nullable=False)
+    __table_args__ = (UniqueConstraint("moment_id", "user_id", "emoji", name="uq_moment_reaction"),)
+
+
+class MomentComment(Base):
+    __tablename__ = "moment_comments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    moment_id = Column(Integer, ForeignKey("moments.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    text = Column(String(500), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

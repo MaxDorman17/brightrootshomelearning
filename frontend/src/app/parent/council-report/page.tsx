@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import MomentImage from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
 
@@ -34,10 +35,11 @@ type Report = {
   work_samples: { date: string; subject: string; title: string; url: string | null; is_oak_result: boolean; note: string | null }[];
   extra: { date: string; subject: string; title: string }[];
   journal: { date: string; content: string }[];
+  moments: { date: string; subject: string | null; note: string | null; photo_ids: number[] }[];
 };
 
 type PeriodKey = "term" | "year" | "last-year" | "custom";
-type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "extra" | "journal";
+type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "extra" | "journal";
 
 const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "approach", label: "Our approach", defaultOn: true },
@@ -46,6 +48,7 @@ const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "results", label: "Results", defaultOn: true },
   { key: "reading", label: "Reading", defaultOn: true },
   { key: "work", label: "Examples of work", defaultOn: true },
+  { key: "moments", label: "Learning moments", defaultOn: true },
   { key: "extra", label: "Extra learning", defaultOn: true },
   { key: "journal", label: "Journal highlights", defaultOn: false },
 ];
@@ -480,6 +483,29 @@ export default function CouncilReportPage() {
                     ))}
                   </ul>
                 )}
+              </ReportSection>
+            )}
+
+            {on("moments") && report.moments.length > 0 && (
+              <ReportSection title="Learning moments">
+                <div className="space-y-4">
+                  {report.moments.map((m, i) => (
+                    <div key={i} className="break-inside-avoid">
+                      <p className="font-bold">
+                        {format(parseISO(m.date), "d MMM yyyy")}
+                        {m.subject ? ` · ${m.subject}` : ""}
+                      </p>
+                      {m.note && <p className="whitespace-pre-line">{m.note}</p>}
+                      {m.photo_ids.length > 0 && (
+                        <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5">
+                          {m.photo_ids.map((id) => (
+                            <MomentImage key={id} photoId={id} alt={m.note ?? "Learning moment photo"} className="aspect-square w-full rounded-lg" />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </ReportSection>
             )}
 
