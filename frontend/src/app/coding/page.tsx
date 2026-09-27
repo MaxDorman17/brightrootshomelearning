@@ -150,7 +150,7 @@ export default function CodingPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Coding</h1>
@@ -161,7 +161,7 @@ export default function CodingPage() {
 
             {isParent && children.length > 0 && (
               <div className="brand-card px-4 py-3 flex items-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Viewing</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Viewing</span>
                 <select
                   value={selectedChildId ?? ""}
                   onChange={e => setSelectedChildId(Number(e.target.value))}
@@ -177,7 +177,7 @@ export default function CodingPage() {
         <div className="brand-card p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Overall Progress</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Overall Progress</p>
               <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
                 {totalDone} of {TOTAL} lessons complete
               </h2>
@@ -187,21 +187,21 @@ export default function CodingPage() {
             </div>
 
             <div className="lg:text-right">
-              <p className="text-4xl font-bold text-[#3F5D46]">{overallPct}%</p>
-              <p className="text-xs font-semibold text-[#8FA382] mt-1">curriculum complete</p>
+              <p className="text-4xl font-bold text-brand-sage">{overallPct}%</p>
+              <p className="text-xs font-semibold text-brand-softsage mt-1">curriculum complete</p>
             </div>
           </div>
 
           <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
             <div
-              className="h-full rounded-full bg-[#8FA382] transition-all duration-500"
+              className="h-full rounded-full bg-brand-softsage transition-all duration-500"
               style={{ width: `${overallPct}%` }}
             />
           </div>
 
           {totalDone === TOTAL && (
-            <div className="rounded-xl bg-[#E8F0E8] border border-[#C9D8C6] p-4 mt-5">
-              <p className="text-sm font-bold text-[#3F5D46]">
+            <div className="rounded-xl bg-brand-tint border border-brand-mist p-4 mt-5">
+              <p className="text-sm font-bold text-brand-sage">
                 Full coding pathway completed.
               </p>
             </div>
@@ -217,19 +217,19 @@ export default function CodingPage() {
               <div key={track.id} className="brand-card p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                       {track.name.split(" — ")[0]}
                     </p>
                     <p className="text-sm font-bold text-[#2E342F] mt-1">
                       {track.name.includes(" — ") ? track.name.split(" — ")[1] : track.name}
                     </p>
                   </div>
-                  <span className="text-lg font-bold text-[#3F5D46]">{done}/{track.lessons.length}</span>
+                  <span className="text-lg font-bold text-brand-sage">{done}/{track.lessons.length}</span>
                 </div>
 
                 <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden mt-4">
                   <div
-                    className="h-full rounded-full bg-[#8FA382] transition-all"
+                    className="h-full rounded-full bg-brand-softsage transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -247,7 +247,7 @@ export default function CodingPage() {
               <div key={track.id} className="brand-card p-6">
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                       Coding Pathway
                     </p>
                     <h2 className="text-xl font-bold text-[#2E342F] mt-1">{track.name}</h2>
@@ -256,7 +256,7 @@ export default function CodingPage() {
                     </p>
                   </div>
 
-                  <span className="text-2xl font-bold text-[#3F5D46]">{pct}%</span>
+                  <span className="text-2xl font-bold text-brand-sage">{pct}%</span>
                 </div>
 
                 <div className="space-y-3">
@@ -269,15 +269,15 @@ export default function CodingPage() {
                         key={lesson.id}
                         className={`rounded-xl border p-4 transition-colors ${
                           isDone
-                            ? "bg-[#F7F2E8] border-[#D8D1C4]"
-                            : "bg-[#FFFDF8] border-[#E7DFD1]"
+                            ? "bg-brand-cream border-[#D8D1C4]"
+                            : "bg-brand-white border-brand-line"
                         }`}
                       >
                         <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                           <div className="flex items-start gap-3 flex-1 min-w-0">
                             <div className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold mt-0.5 ${
                               isDone
-                                ? "bg-[#3F5D46] text-white"
+                                ? "bg-brand-sage text-white"
                                 : "bg-[#F0EADF] text-[#6E5A46]"
                             }`}>
                               {isDone ? "✓" : idx + 1}
@@ -308,8 +308,8 @@ export default function CodingPage() {
                               rel="noopener noreferrer"
                               className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                                 isDone
-                                  ? "border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] hover:border-[#8FA382]"
-                                  : "bg-[#3F5D46] text-white hover:bg-[#354F3B]"
+                                  ? "border border-[#D8D1C4] bg-brand-white text-brand-sage hover:border-brand-softsage"
+                                  : "bg-brand-sage text-white hover:bg-brand-sagedark"
                               }`}
                             >
                               {isDone ? "Review" : "Start lesson"}
@@ -320,8 +320,8 @@ export default function CodingPage() {
                               disabled={isToggling}
                               className={`px-3 py-2.5 rounded-xl text-sm font-bold border transition-colors disabled:opacity-50 ${
                                 isDone
-                                  ? "border-[#C9D8C6] bg-[#E8F0E8] text-[#3F5D46] hover:bg-[#FAEEE8] hover:border-[#E5CFC3] hover:text-[#A85F46]"
-                                  : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382] hover:text-[#3F5D46]"
+                                  ? "border-brand-mist bg-brand-tint text-brand-sage hover:bg-[#FAEEE8] hover:border-[#E5CFC3] hover:text-[#A85F46]"
+                                  : "border-[#D8D1C4] bg-brand-white text-[#6E5A46] hover:border-brand-softsage hover:text-brand-sage"
                               }`}
                             >
                               {isToggling ? "Saving…" : isDone ? "Completed" : "Mark done"}

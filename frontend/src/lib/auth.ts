@@ -1,3 +1,5 @@
+import { clearTheme } from "@/lib/theme";
+
 export function getRole(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("role");
@@ -16,6 +18,7 @@ export function setAuth(role: string, username: string) {
 export function clearAuth() {
   localStorage.removeItem("role");
   localStorage.removeItem("username");
+  clearTheme();
 }
 
 export function isAuthenticated(): boolean {

@@ -48,6 +48,8 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN subscription_cancel_at_period_end BOOLEAN NOT NULL DEFAULT 0"))
             if "subscription_cancel_at" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN subscription_cancel_at DATETIME"))
+            if "theme" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN theme VARCHAR(20)"))
             conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]

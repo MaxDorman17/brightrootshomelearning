@@ -34,14 +34,14 @@ export default function MembershipRequiredPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F7F2E8] flex items-center justify-center">
+      <div className="min-h-screen bg-brand-cream flex items-center justify-center">
         <p className="font-bold text-[#6E5A46]">Checking membership...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F2E8] px-4 py-10">
+    <div className="min-h-screen bg-brand-cream px-4 py-10">
       <div className="mx-auto max-w-xl">
         <div className="mb-8 text-center">
           <Image
@@ -56,7 +56,7 @@ export default function MembershipRequiredPage() {
           </h1>
         </div>
 
-        <div className="rounded-3xl border border-[#E7DFD1] bg-white p-7 shadow-xl shadow-[#3F5D46]/5">
+        <div className="rounded-3xl border border-brand-line bg-white p-7 shadow-xl shadow-brand-sage/5">
           {role === "parent" ? (
             <>
               <p className="text-sm font-extrabold uppercase tracking-[0.16em] text-[#D87C4A]">
@@ -72,14 +72,14 @@ export default function MembershipRequiredPage() {
 
               <Link
                 href="/billing"
-                className="mt-7 block rounded-xl bg-[#3F5D46] px-5 py-3.5 text-center text-sm font-extrabold text-white"
+                className="mt-7 block rounded-xl bg-brand-sage px-5 py-3.5 text-center text-sm font-extrabold text-white"
               >
                 View membership options
               </Link>
 
               <Link
                 href="/account"
-                className="mt-3 block rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-center text-sm font-extrabold text-[#3F5D46]"
+                className="mt-3 block rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-center text-sm font-extrabold text-brand-sage"
               >
                 Account settings
               </Link>

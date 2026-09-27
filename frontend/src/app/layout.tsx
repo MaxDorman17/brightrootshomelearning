@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import ThemeSync from "@/components/ThemeSync";
+import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -34,12 +36,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={nunito.className}>
+    <html lang="en" className={nunito.className} suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#2F5D3A" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
-      <body className="min-h-screen text-gray-900 antialiased">{children}</body>
+      <body className="min-h-screen text-gray-900 antialiased">
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }

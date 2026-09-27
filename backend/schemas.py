@@ -33,6 +33,8 @@ class UserOut(BaseModel):
     billing_plan: Optional[str] = None
     subscription_cancel_at_period_end: bool = False
     subscription_cancel_at: Optional[datetime] = None
+    theme: Optional[str] = None
+    family_theme: Optional[str] = None  # the parent's theme, shared by the whole family
     created_at: datetime
 
     class Config:

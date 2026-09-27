@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-[#6EA76E]"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-brand-leaf"
               />
             </div>
 
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-[#3F5D46] py-3 text-sm font-extrabold text-white disabled:opacity-60"
+              className="w-full rounded-xl bg-brand-sage py-3 text-sm font-extrabold text-white disabled:opacity-60"
             >
               {loading ? "Sending..." : "Send reset link"}
             </button>
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
 
           <Link
             href="/login"
-            className="mt-5 block text-center text-sm font-bold text-[#3F5D46] hover:underline"
+            className="mt-5 block text-center text-sm font-bold text-brand-sage hover:underline"
           >
             Back to login
           </Link>

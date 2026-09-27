@@ -101,7 +101,7 @@ export default function ChildProgressPage() {
     .sort((a, b) => b.total - a.total);
 
   const statCards = [
-    { label: "Lessons done", value: allDone, icon: "📚", tone: "text-[#3F5D46]" },
+    { label: "Lessons done", value: allDone, icon: "📚", tone: "text-brand-sage" },
     { label: "Day streak", value: streak, icon: "🔥", tone: "text-[#D19A32]" },
     { label: "Work submitted", value: submitted, icon: "📎", tone: "text-[#6C8C85]" },
     { label: "Coding lessons", value: coding.size, icon: "💻", tone: "text-[#5C607D]" },
@@ -113,7 +113,7 @@ export default function ChildProgressPage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-7">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
             Progress
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">My Progress</h1>
@@ -143,7 +143,7 @@ export default function ChildProgressPage() {
             <div className="brand-card p-5 mb-5">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">This week</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">This week</p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">Your learning this week</h2>
                   <p className="text-sm text-[#6E5A46] mt-1">
                     {weekDone} of {weekTotal} planned lessons complete.
@@ -151,23 +151,23 @@ export default function ChildProgressPage() {
                 </div>
 
                 <div className="text-left lg:text-right">
-                  <p className="text-3xl font-bold text-[#3F5D46]">{weekPct}%</p>
+                  <p className="text-3xl font-bold text-brand-sage">{weekPct}%</p>
                   <p className="text-xs text-[#8A7A69]">week complete</p>
                 </div>
               </div>
 
               <div className="h-3 rounded-full bg-[#EEE8DD] overflow-hidden mb-5">
                 <div
-                  className="h-full rounded-full bg-[#8FA382] transition-all"
+                  className="h-full rounded-full bg-brand-softsage transition-all"
                   style={{ width: `${weekPct}%` }}
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
+                <div className="rounded-2xl border border-brand-line bg-brand-white p-4">
                   <div className="flex items-center justify-between gap-3 mb-2">
                     <p className="text-sm font-bold text-[#2E342F]">Today</p>
-                    <p className="text-sm font-bold text-[#3F5D46]">{todayDone}/{todayTotal}</p>
+                    <p className="text-sm font-bold text-brand-sage">{todayDone}/{todayTotal}</p>
                   </div>
                   <div className="h-2.5 rounded-full bg-[#EEE8DD] overflow-hidden">
                     <div
@@ -184,7 +184,7 @@ export default function ChildProgressPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
+                <div className="rounded-2xl border border-brand-line bg-brand-white p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-bold text-[#2E342F]">Weekly goals</p>
@@ -193,7 +193,7 @@ export default function ChildProgressPage() {
                       </p>
                     </div>
                     {goalsTotal > 0 && (
-                      <p className="text-2xl font-bold text-[#3F5D46]">{goalsDone}/{goalsTotal}</p>
+                      <p className="text-2xl font-bold text-brand-sage">{goalsDone}/{goalsTotal}</p>
                     )}
                   </div>
                 </div>
@@ -203,24 +203,24 @@ export default function ChildProgressPage() {
             {subjectStats.length > 0 && (
               <div className="brand-card p-5 mb-5">
                 <div className="mb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Subjects</p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">Subject progress</h2>
                   <p className="text-sm text-[#6E5A46] mt-1">A quick look at your busiest subjects.</p>
                 </div>
 
                 <div className="space-y-3">
                   {(showAllSubjects ? subjectStats : subjectStats.slice(0, 3)).map(item => (
-                    <div key={item.subject} className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] px-4 py-3">
+                    <div key={item.subject} className="rounded-2xl border border-brand-line bg-brand-white px-4 py-3">
                       <div className="flex items-center justify-between gap-3 mb-2">
                         <div>
                           <p className="text-sm font-bold text-[#2E342F]">{item.subject}</p>
                           <p className="text-xs text-[#8A7A69]">{item.done} of {item.total} complete</p>
                         </div>
-                        <p className="text-sm font-bold text-[#3F5D46]">{item.pct}%</p>
+                        <p className="text-sm font-bold text-brand-sage">{item.pct}%</p>
                       </div>
                       <div className="h-2 rounded-full bg-[#EEE8DD] overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-[#8FA382]"
+                          className="h-full rounded-full bg-brand-softsage"
                           style={{ width: `${item.pct}%` }}
                         />
                       </div>
@@ -230,7 +230,7 @@ export default function ChildProgressPage() {
                   {subjectStats.length > 3 && (
                     <button
                       onClick={() => setShowAllSubjects(v => !v)}
-                      className="w-full rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] px-4 py-2.5 text-sm font-bold text-[#3F5D46] hover:border-[#8FA382]"
+                      className="w-full rounded-xl border border-[#D8D1C4] bg-brand-white px-4 py-2.5 text-sm font-bold text-brand-sage hover:border-brand-softsage"
                     >
                       {showAllSubjects ? "Show fewer subjects" : `Show all subjects (${subjectStats.length})`}
                     </button>
@@ -241,7 +241,7 @@ export default function ChildProgressPage() {
 
             <div className="grid md:grid-cols-2 gap-4 mb-5">
               <div className="brand-card p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Goals</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Goals</p>
                 <h2 className="text-lg font-bold text-[#2E342F] mt-1">This week&apos;s goals</h2>
 
                 {goalsTotal === 0 ? (
@@ -254,7 +254,7 @@ export default function ChildProgressPage() {
                       <div key={goal.id} className="flex items-center gap-3 rounded-xl bg-[#FBF8F1] p-3">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                           goal.is_complete
-                            ? "bg-[#3F5D46] text-white"
+                            ? "bg-brand-sage text-white"
                             : "border border-[#CFC6B9] text-[#A79B8C]"
                         }`}>
                           {goal.is_complete ? "✓" : ""}
@@ -271,7 +271,7 @@ export default function ChildProgressPage() {
               </div>
 
               <div className="brand-card p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Reading</p>
                 <h2 className="text-lg font-bold text-[#2E342F] mt-1">Reading progress</h2>
 
                 <div className="grid grid-cols-2 gap-3 mt-4">
@@ -279,15 +279,15 @@ export default function ChildProgressPage() {
                     <p className="text-2xl font-bold text-[#5C607D]">{booksReading}</p>
                     <p className="text-xs font-semibold text-[#6E5A46] mt-1">Reading now</p>
                   </div>
-                  <div className="rounded-2xl bg-[#F1F6EF] p-4">
-                    <p className="text-2xl font-bold text-[#3F5D46]">{booksFinished}</p>
+                  <div className="rounded-2xl bg-brand-wash p-4">
+                    <p className="text-2xl font-bold text-brand-sage">{booksFinished}</p>
                     <p className="text-xs font-semibold text-[#6E5A46] mt-1">Books finished</p>
                   </div>
                 </div>
 
                 {currentBook && (
-                  <div className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 mt-3">
-                    <p className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382]">Currently reading</p>
+                  <div className="rounded-2xl border border-brand-line bg-brand-white p-4 mt-3">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage">Currently reading</p>
                     <p className="text-sm font-bold text-[#2E342F] mt-1">{currentBook.title}</p>
                     {currentBook.author && (
                       <p className="text-xs text-[#8A7A69] mt-0.5">{currentBook.author}</p>

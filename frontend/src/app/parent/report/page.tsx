@@ -358,14 +358,14 @@ export default function ReportPage() {
     <div className="brand-card p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Reading</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Reading</p>
           {readingChapters === 0 ? (
             <h2 className="text-lg font-bold text-[#2E342F] mt-1">
               No chapters logged {readingPeriodLabel}
             </h2>
           ) : (
             <div className="flex items-end gap-3 mt-1">
-              <p className="text-3xl font-bold text-[#3F5D46]">{readingChapters}</p>
+              <p className="text-3xl font-bold text-brand-sage">{readingChapters}</p>
               <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
                 chapter{readingChapters === 1 ? "" : "s"} {readingPeriodLabel}
               </h2>
@@ -379,7 +379,7 @@ export default function ReportPage() {
           )}
         </div>
 
-        <a href="/reading-log" className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0">
+        <a href="/reading-log" className="text-sm font-semibold text-brand-sage hover:underline shrink-0">
           Open reading
         </a>
       </div>
@@ -393,7 +393,7 @@ export default function ReportPage() {
         <div className="mb-7 print:hidden">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning Reports
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
@@ -406,7 +406,7 @@ export default function ReportPage() {
 
             {children.length > 0 && (
               <div className="brand-card px-4 py-3 flex items-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                   Viewing
                 </span>
                 <select
@@ -432,8 +432,8 @@ export default function ReportPage() {
                 onClick={() => setTab(t.id)}
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${
                   tab === t.id
-                    ? "bg-[#3F5D46] text-white"
-                    : "text-[#6E5A46] hover:bg-[#F7F2E8] hover:text-[#3F5D46]"
+                    ? "bg-brand-sage text-white"
+                    : "text-[#6E5A46] hover:bg-brand-cream hover:text-brand-sage"
                 }`}
               >
                 {t.label}
@@ -448,8 +448,8 @@ export default function ReportPage() {
               onClick={() => setResultsView("oak")}
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                 resultsView === "oak"
-                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
-                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                  ? "bg-brand-tint border-brand-softsage text-brand-sage"
+                  : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
               Oak Results
@@ -458,8 +458,8 @@ export default function ReportPage() {
               onClick={() => setResultsView("work")}
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                 resultsView === "work"
-                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
-                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                  ? "bg-brand-tint border-brand-softsage text-brand-sage"
+                  : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
               Submitted Work
@@ -473,8 +473,8 @@ export default function ReportPage() {
               onClick={() => setRecordsView("days")}
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                 recordsView === "days"
-                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
-                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                  ? "bg-brand-tint border-brand-softsage text-brand-sage"
+                  : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
               Learning Days
@@ -483,8 +483,8 @@ export default function ReportPage() {
               onClick={() => setRecordsView("export")}
               className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                 recordsView === "export"
-                  ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
-                  : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                  ? "bg-brand-tint border-brand-softsage text-brand-sage"
+                  : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
               Print & Export
@@ -500,8 +500,8 @@ export default function ReportPage() {
                 onClick={() => setPeriod(p)}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                   period === p
-                    ? "bg-[#3F5D46] border-[#3F5D46] text-white"
-                    : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                    ? "bg-brand-sage border-brand-sage text-white"
+                    : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {p === "week" ? "This Week" : p === "month" ? "This Month" : "All Time"}
@@ -684,7 +684,7 @@ export default function ReportPage() {
                 <div className="brand-card p-6">
                   <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Overview</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Overview</p>
                       <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
                         {selectedChild ? `${selectedChild.username}'s learning at a glance` : "Family learning at a glance"}
                       </h2>
@@ -695,28 +695,28 @@ export default function ReportPage() {
                     </div>
 
                     <div className="flex items-end gap-2">
-                      <p className="text-4xl font-bold text-[#3F5D46]">{completionPct}%</p>
-                      <p className="text-xs font-semibold text-[#8FA382] pb-1">complete</p>
+                      <p className="text-4xl font-bold text-brand-sage">{completionPct}%</p>
+                      <p className="text-xs font-semibold text-brand-softsage pb-1">complete</p>
                     </div>
                   </div>
 
                   <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
                     <div
-                      className="h-full rounded-full bg-[#8FA382]"
+                      className="h-full rounded-full bg-brand-softsage"
                       style={{ width: `${completionPct}%` }}
                     />
                   </div>
 
                   <div className="grid grid-cols-3 gap-3 mt-5">
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#2E342F]">{filtered.length}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Planned</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
-                      <p className="text-2xl font-bold text-[#3F5D46]">{totalComplete}</p>
+                    <div className="rounded-xl bg-brand-cream p-4">
+                      <p className="text-2xl font-bold text-brand-sage">{totalComplete}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Completed</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#D39A3A]">{totalSubmitted}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Submitted</p>
                     </div>
@@ -727,12 +727,12 @@ export default function ReportPage() {
                   <div className="brand-card p-6">
                     <div className="flex items-center justify-between gap-4 mb-5">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Subjects</p>
                         <h2 className="text-lg font-bold text-[#2E342F] mt-1">Current progress</h2>
                       </div>
                       <button
                         onClick={() => setTab("progress")}
-                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                        className="text-sm font-semibold text-brand-sage hover:underline"
                       >
                         See all
                       </button>
@@ -748,7 +748,7 @@ export default function ReportPage() {
                             </div>
                             <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden">
                               <div
-                                className="h-full rounded-full bg-[#8FA382]"
+                                className="h-full rounded-full bg-brand-softsage"
                                 style={{ width: `${s.pct}%` }}
                               />
                             </div>
@@ -761,7 +761,7 @@ export default function ReportPage() {
                   </div>
 
                   <div className="brand-card p-6">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Open a report</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Open a report</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">More detail when you need it</h2>
                     <p className="text-sm text-[#6E5A46] mt-2">
                       Keep the overview simple and jump straight to the evidence you want.
@@ -770,27 +770,27 @@ export default function ReportPage() {
                     <div className="grid sm:grid-cols-3 gap-3 mt-5">
                       <button
                         onClick={() => setTab("progress")}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
+                        className="text-left rounded-xl border border-brand-line bg-brand-white p-4 hover:border-brand-softsage transition-colors"
                       >
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Progress</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Progress</p>
                         <p className="text-sm font-bold text-[#2E342F] mt-1">Learning progress</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Subjects, coding and spellings</p>
                       </button>
 
                       <button
                         onClick={() => { setTab("results"); setResultsView("oak"); }}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
+                        className="text-left rounded-xl border border-brand-line bg-brand-white p-4 hover:border-brand-softsage transition-colors"
                       >
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Results</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Results</p>
                         <p className="text-sm font-bold text-[#2E342F] mt-1">Quiz & submitted work</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Oak scores and lesson evidence</p>
                       </button>
 
                       <button
                         onClick={() => { setTab("records"); setRecordsView("days"); }}
-                        className="text-left rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 hover:border-[#8FA382] transition-colors"
+                        className="text-left rounded-xl border border-brand-line bg-brand-white p-4 hover:border-brand-softsage transition-colors"
                       >
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Records</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Records</p>
                         <p className="text-sm font-bold text-[#2E342F] mt-1">Learning records</p>
                         <p className="text-xs text-[#6E5A46] mt-1">Learning days, print and export</p>
                       </button>
@@ -805,21 +805,21 @@ export default function ReportPage() {
               <div className="brand-card p-5 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex-1">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Coding · Overall</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Coding · Overall</p>
                     <div className="flex items-end gap-3 mt-1">
                       <h2 className="text-lg font-bold text-[#2E342F]">Coding Curriculum</h2>
-                      <p className="text-sm font-bold text-[#3F5D46]">{codingDone}/{TOTAL_CODING}</p>
+                      <p className="text-sm font-bold text-brand-sage">{codingDone}/{TOTAL_CODING}</p>
                     </div>
                     <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden mt-3">
                       <div
-                        className="h-full rounded-full bg-[#3F5D46]"
+                        className="h-full rounded-full bg-brand-sage"
                         style={{ width: `${Math.round((codingDone / TOTAL_CODING) * 100)}%` }}
                       />
                     </div>
                   </div>
                   <a
                     href="/coding"
-                    className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0"
+                    className="text-sm font-semibold text-brand-sage hover:underline shrink-0"
                   >
                     Open coding
                   </a>
@@ -833,7 +833,7 @@ export default function ReportPage() {
                 <div className="brand-card p-6">
                   <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-5">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Learning Days</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Learning Days</p>
                       <h2 className="text-2xl font-bold text-[#2E342F] mt-1">{learningWeekLabel}</h2>
                       <p className="text-sm text-[#6E5A46] mt-1">
                         {format(learningWeekStart, "d MMM")} to {format(learningWeekEnd, "d MMM yyyy")}
@@ -843,7 +843,7 @@ export default function ReportPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setLearningWeeksBack(learningWeeksBack + 1)}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                        className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-sage border border-brand-line bg-brand-white hover:border-brand-softsage"
                       >
                         Previous
                       </button>
@@ -852,8 +852,8 @@ export default function ReportPage() {
                         disabled={learningWeeksBack === 0}
                         className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                           learningWeeksBack === 0
-                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
-                            : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-brand-cream cursor-not-allowed"
+                            : "text-brand-sage border-brand-line bg-brand-white hover:border-brand-softsage"
                         }`}
                       >
                         Next
@@ -862,24 +862,24 @@ export default function ReportPage() {
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#2E342F]">{scheduledLearningDays.length}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Scheduled days</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
-                      <p className="text-2xl font-bold text-[#3F5D46]">{fullyCompletedDays}</p>
+                    <div className="rounded-xl bg-brand-cream p-4">
+                      <p className="text-2xl font-bold text-brand-sage">{fullyCompletedDays}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Complete</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#D19A32]">{partiallyCompletedDays}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Partial</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#B66443]">{noLearningCompletedDays}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">None completed</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
-                      <p className="text-2xl font-bold text-[#8FA382]">{upcomingLearningDays}</p>
+                    <div className="rounded-xl bg-brand-cream p-4">
+                      <p className="text-2xl font-bold text-brand-softsage">{upcomingLearningDays}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Upcoming</p>
                     </div>
                   </div>
@@ -894,11 +894,11 @@ export default function ReportPage() {
                       return (
                         <div
                           key={key}
-                          className="rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                          className="rounded-2xl border border-brand-line bg-brand-white p-4"
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                                 {format(day, "EEEE")}
                               </p>
                               <p className="text-xs text-[#6E5A46] mt-1">{format(day, "d MMM")}</p>
@@ -940,7 +940,7 @@ export default function ReportPage() {
 
                 <div className="brand-card p-6">
                   <div className="mb-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Trend</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Trend</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">Weekly Completion</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
                       Completion percentage across the last eight weeks.
@@ -950,7 +950,7 @@ export default function ReportPage() {
                   <div className="flex items-end justify-between gap-2 h-44">
                     {weeklyTrend.map((w, i) => (
                       <div key={i} className="flex-1 flex flex-col items-center gap-2 min-w-0">
-                        <span className="text-xs font-bold text-[#3F5D46]">
+                        <span className="text-xs font-bold text-brand-sage">
                           {w.pct > 0 ? `${w.pct}%` : ""}
                         </span>
 
@@ -960,16 +960,16 @@ export default function ReportPage() {
                               w.total === 0
                                 ? "bg-[#F0EADF]"
                                 : w.pct === 100
-                                ? "bg-[#3F5D46]"
+                                ? "bg-brand-sage"
                                 : w.pct >= 50
-                                ? "bg-[#8FA382]"
+                                ? "bg-brand-softsage"
                                 : "bg-[#D88C64]"
                             }`}
                             style={{ height: `${w.total === 0 ? 4 : Math.max(4, w.pct)}px` }}
                           />
                         </div>
 
-                        <span className="text-[10px] sm:text-xs text-[#8FA382] font-semibold leading-tight text-center">
+                        <span className="text-[10px] sm:text-xs text-brand-softsage font-semibold leading-tight text-center">
                           {w.label}
                         </span>
                       </div>
@@ -978,11 +978,11 @@ export default function ReportPage() {
 
                   <div className="flex flex-wrap items-center gap-4 mt-4 pt-4 border-t border-[#EEE6D9] text-xs text-[#6E5A46]">
                     <span className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-sm bg-[#3F5D46] inline-block" />
+                      <span className="w-3 h-3 rounded-sm bg-brand-sage inline-block" />
                       100%
                     </span>
                     <span className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-sm bg-[#8FA382] inline-block" />
+                      <span className="w-3 h-3 rounded-sm bg-brand-softsage inline-block" />
                       50%+
                     </span>
                     <span className="flex items-center gap-2">
@@ -999,7 +999,7 @@ export default function ReportPage() {
               <div className="brand-card p-6 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Subjects</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Subjects</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">Subject Progress</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
                       Core subjects first, with the rest available when you need the detail.
@@ -1010,7 +1010,7 @@ export default function ReportPage() {
                     <button
                       type="button"
                       onClick={() => setShowAllSubjects(v => !v)}
-                      className="text-sm font-semibold text-[#3F5D46] hover:underline shrink-0"
+                      className="text-sm font-semibold text-brand-sage hover:underline shrink-0"
                     >
                       {showAllSubjects ? "Show core subjects" : `Show all subjects (${subjectStats.length})`}
                     </button>
@@ -1022,7 +1022,7 @@ export default function ReportPage() {
                     <div
                       key={s.subject}
                       className={index < 3
-                        ? "rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4"
+                        ? "rounded-xl bg-brand-cream border border-brand-line p-4"
                         : "rounded-xl border border-[#EEE6D9] p-4"}
                     >
                       <div className="flex items-center justify-between gap-4 mb-2">
@@ -1033,14 +1033,14 @@ export default function ReportPage() {
                           </p>
                         </div>
 
-                        <span className="text-lg font-bold text-[#3F5D46] shrink-0">
+                        <span className="text-lg font-bold text-brand-sage shrink-0">
                           {s.pct}%
                         </span>
                       </div>
 
                       <div className="h-2.5 rounded-full bg-[#EDE6DA] overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-[#8FA382] transition-all"
+                          className="h-full rounded-full bg-brand-softsage transition-all"
                           style={{ width: `${s.pct}%` }}
                         />
                       </div>
@@ -1055,7 +1055,7 @@ export default function ReportPage() {
               <div className="brand-card p-6 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Extra Work</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Extra Work</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">Independent Learning</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
                       Extra activities completed outside the main timetable.
@@ -1065,13 +1065,13 @@ export default function ReportPage() {
                   <div className="flex gap-6">
                     <div>
                       <p className="text-2xl font-bold text-[#2E342F]">{extra.length}</p>
-                      <p className="text-xs text-[#8FA382] font-semibold">Assigned</p>
+                      <p className="text-xs text-brand-softsage font-semibold">Assigned</p>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-[#3F5D46]">
+                      <p className="text-2xl font-bold text-brand-sage">
                         {extra.filter(e => e.is_complete).length}
                       </p>
-                      <p className="text-xs text-[#8FA382] font-semibold">Completed</p>
+                      <p className="text-xs text-brand-softsage font-semibold">Completed</p>
                     </div>
                   </div>
                 </div>
@@ -1121,7 +1121,7 @@ export default function ReportPage() {
               if (spellingFiltered.length === 0) return (
                 <div className="grid lg:grid-cols-2 gap-6 mb-6">
                   <div className="brand-card p-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Spellings</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">
                       {period === "week"
                         ? "No spelling results this week"
@@ -1157,15 +1157,15 @@ export default function ReportPage() {
                   <div className="brand-card p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex-1">
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spellings</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Spellings</p>
                       <div className="flex items-end gap-3 mt-1">
                         <h2 className="text-lg font-bold text-[#2E342F]">Latest Result</h2>
-                        <p className="text-2xl font-bold text-[#3F5D46]">{latestPct}%</p>
+                        <p className="text-2xl font-bold text-brand-sage">{latestPct}%</p>
                         <p className="text-xs font-semibold text-[#6E5A46] pb-1">{latest.score}/{latest.total}</p>
                       </div>
                       <div className="h-2.5 rounded-full bg-[#F0EADF] overflow-hidden mt-3">
                         <div
-                          className="h-full rounded-full bg-[#8FA382]"
+                          className="h-full rounded-full bg-brand-softsage"
                           style={{ width: `${latestPct}%` }}
                         />
                       </div>
@@ -1180,11 +1180,11 @@ export default function ReportPage() {
                       <button
                         type="button"
                         onClick={() => setShowSpellingHistory(v => !v)}
-                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                        className="text-sm font-semibold text-brand-sage hover:underline"
                       >
                         {showSpellingHistory ? "Hide history" : "Show history"}
                       </button>
-                      <a href="/spellings" className="text-sm font-semibold text-[#3F5D46] hover:underline">
+                      <a href="/spellings" className="text-sm font-semibold text-brand-sage hover:underline">
                         Open spellings
                       </a>
                     </div>
@@ -1193,8 +1193,8 @@ export default function ReportPage() {
                   {showSpellingHistory && (
                     <div className="space-y-4 mt-5 pt-5 border-t border-[#EEE6D9]">
                       {weeks.map(week => (
-                        <div key={week} className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4">
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                        <div key={week} className="rounded-xl border border-brand-line bg-brand-white p-4">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-3">
                             Week of {format(new Date(week + "T12:00:00"), "d MMM yyyy")}
                           </p>
 
@@ -1205,16 +1205,16 @@ export default function ReportPage() {
                               return (
                                 <div key={r.id} className="border-t border-[#EEE6D9] first:border-0 first:pt-0 pt-3">
                                   <div className="flex items-center gap-3 flex-wrap">
-                                    <span className="text-sm font-bold text-[#3F5D46] w-12 shrink-0">{pct}%</span>
+                                    <span className="text-sm font-bold text-brand-sage w-12 shrink-0">{pct}%</span>
                                     <div className="flex-1 min-w-[100px] h-2.5 rounded-full bg-[#F0EADF] overflow-hidden">
-                                      <div className="h-full rounded-full bg-[#8FA382]" style={{ width: `${pct}%` }} />
+                                      <div className="h-full rounded-full bg-brand-softsage" style={{ width: `${pct}%` }} />
                                     </div>
                                     <span className="text-xs font-semibold text-[#6E5A46] shrink-0">{r.score}/{r.total}</span>
                                     {!selectedChildId && child && (
                                       <span className="text-xs font-semibold text-[#6E5A46] shrink-0">{child.username}</span>
                                     )}
                                     {r.is_practice_round && (
-                                      <span className="text-[10px] bg-[#F7F2E8] text-[#6E5A46] px-2 py-1 rounded-full font-bold shrink-0">
+                                      <span className="text-[10px] bg-brand-cream text-[#6E5A46] px-2 py-1 rounded-full font-bold shrink-0">
                                         Practice
                                       </span>
                                     )}
@@ -1251,7 +1251,7 @@ export default function ReportPage() {
                 <div className="brand-card p-6">
                   <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Submitted Work</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Submitted Work</p>
                       <h2 className="text-2xl font-bold text-[#2E342F] mt-1">{workWeekLabel}</h2>
                       <p className="text-sm text-[#6E5A46] mt-1">
                         {format(workWeekStart, "d MMM")} to {format(workWeekEnd, "d MMM yyyy")}
@@ -1261,7 +1261,7 @@ export default function ReportPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setWorkWeeksBack(workWeeksBack + 1)}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] border border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                        className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-sage border border-brand-line bg-brand-white hover:border-brand-softsage"
                       >
                         Previous
                       </button>
@@ -1270,8 +1270,8 @@ export default function ReportPage() {
                         disabled={workWeeksBack === 0}
                         className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                           workWeeksBack === 0
-                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-[#F7F2E8] cursor-not-allowed"
-                            : "text-[#3F5D46] border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                            ? "text-[#B8B0A4] border-[#EEE6D9] bg-brand-cream cursor-not-allowed"
+                            : "text-brand-sage border-brand-line bg-brand-white hover:border-brand-softsage"
                         }`}
                       >
                         Next
@@ -1280,12 +1280,12 @@ export default function ReportPage() {
                   </div>
 
                   <div className="grid grid-cols-3 gap-3 mt-5">
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#2E342F]">{weekSubmitted.length}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">Items submitted</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
-                      <p className="text-2xl font-bold text-[#3F5D46]">
+                    <div className="rounded-xl bg-brand-cream p-4">
+                      <p className="text-2xl font-bold text-brand-sage">
                         {weekSubmitted.filter(e => {
                           const shareUrl = e.completed_work_url?.match(OAK_SHARE_RE)?.[0];
                           const r = shareUrl ? quizResults[shareUrl] : undefined;
@@ -1294,7 +1294,7 @@ export default function ReportPage() {
                       </p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">With quiz scores</p>
                     </div>
-                    <div className="rounded-xl bg-[#F7F2E8] p-4">
+                    <div className="rounded-xl bg-brand-cream p-4">
                       <p className="text-2xl font-bold text-[#D19A32]">
                         {new Set(weekSubmitted.map(e => e.lesson.subject)).size}
                       </p>
@@ -1305,7 +1305,7 @@ export default function ReportPage() {
 
                 {weekSubmitted.length === 0 ? (
                   <div className="brand-card p-6">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Work</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Work</p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">Nothing submitted this week</h2>
                     <p className="text-sm text-[#6E5A46] mt-1">
                       Completed work links will appear here when they are submitted.
@@ -1314,7 +1314,7 @@ export default function ReportPage() {
                 ) : (
                   <div className="brand-card p-6">
                     <div className="mb-5">
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Evidence</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Evidence</p>
                       <h2 className="text-lg font-bold text-[#2E342F] mt-1">Submitted lesson evidence</h2>
                     </div>
 
@@ -1326,7 +1326,7 @@ export default function ReportPage() {
                           return (
                             <div key={date}>
                               <div className="flex items-center gap-3 mb-3">
-                                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                                   {format(parseISO(date), "EEEE d MMM")}
                                 </p>
                                 <span className="h-px flex-1 bg-[#EEE6D9]" />
@@ -1336,9 +1336,9 @@ export default function ReportPage() {
                                 {dayEntries.map(e => (
                                   <div
                                     key={e.id}
-                                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                                    className="rounded-xl border border-brand-line bg-brand-white p-4"
                                   >
-                                    <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                    <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                                       {e.lesson.subject}
                                     </span>
 
@@ -1373,7 +1373,7 @@ export default function ReportPage() {
                                       href={e.completed_work_url!}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="inline-block text-sm font-semibold text-[#3F5D46] hover:underline mt-3"
+                                      className="inline-block text-sm font-semibold text-brand-sage hover:underline mt-3"
                                     >
                                       Open evidence
                                     </a>
@@ -1395,7 +1395,7 @@ export default function ReportPage() {
                 <div className="brand-card p-6">
                   <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current Report</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Current Report</p>
                       <h2 className="text-2xl font-bold text-[#2E342F] mt-1">
                         {selectedChild ? `${selectedChild.username}'s learning record` : "Family learning record"}
                       </h2>
@@ -1405,15 +1405,15 @@ export default function ReportPage() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-3 min-w-full lg:min-w-[420px]">
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-[#2E342F]">{filtered.length}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Planned</p>
                       </div>
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
-                        <p className="text-2xl font-bold text-[#3F5D46]">{totalComplete}</p>
+                      <div className="rounded-xl bg-brand-cream p-4">
+                        <p className="text-2xl font-bold text-brand-sage">{totalComplete}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Completed</p>
                       </div>
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-[#D19A32]">{totalSubmitted}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Submitted</p>
                       </div>
@@ -1423,14 +1423,14 @@ export default function ReportPage() {
 
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div className="brand-card p-6">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Spreadsheet</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Spreadsheet</p>
                     <h2 className="text-xl font-bold text-[#2E342F] mt-1">Export Oak Results</h2>
                     <p className="text-sm text-[#6E5A46] mt-2">
                       Download the selected child's Oak quiz results for the chosen reporting period as an Excel file.
                     </p>
 
-                    <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Includes</p>
+                    <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Includes</p>
                       <p className="text-sm font-semibold text-[#2E342F] mt-1">
                         Starter and exit quiz scores
                       </p>
@@ -1442,21 +1442,21 @@ export default function ReportPage() {
                     <button
                       onClick={handleExportOak}
                       disabled={exporting}
-                      className="w-full mt-5 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50"
+                      className="w-full mt-5 px-5 py-3 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors disabled:opacity-50"
                     >
                       {exporting ? "Exporting..." : "Download Excel"}
                     </button>
                   </div>
 
                   <div className="brand-card p-6">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Printable Report</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Printable Report</p>
                     <h2 className="text-xl font-bold text-[#2E342F] mt-1">Print or Save as PDF</h2>
                     <p className="text-sm text-[#6E5A46] mt-2">
                       Create a clean paper or PDF copy of the selected learning report.
                     </p>
 
-                    <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-5">
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Report includes</p>
+                    <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Report includes</p>
                       <p className="text-sm font-semibold text-[#2E342F] mt-1">
                         Progress, Oak results and submitted work
                       </p>
@@ -1467,7 +1467,7 @@ export default function ReportPage() {
 
                     <button
                       onClick={() => window.print()}
-                      className="w-full mt-5 px-5 py-3 rounded-xl border border-[#3F5D46] text-[#3F5D46] bg-[#FFFDF8] text-sm font-bold hover:bg-[#F7F2E8] transition-colors"
+                      className="w-full mt-5 px-5 py-3 rounded-xl border border-brand-sage text-brand-sage bg-brand-white text-sm font-bold hover:bg-brand-cream transition-colors"
                     >
                       Print / Save PDF
                     </button>
@@ -1503,7 +1503,7 @@ export default function ReportPage() {
                   <div className="brand-card p-6">
                     <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Oak National Academy</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Oak National Academy</p>
                         <h2 className="text-2xl font-bold text-[#2E342F] mt-1">This Week's Quiz Results</h2>
                         <p className="text-sm text-[#6E5A46] mt-1">
                           {format(weekStart, "d MMM")} to {format(weekEnd, "d MMM yyyy")}
@@ -1512,8 +1512,8 @@ export default function ReportPage() {
 
                       <div className="lg:text-right">
                         <div className="flex lg:justify-end items-end gap-2">
-                          <p className="text-4xl font-bold text-[#3F5D46]">{totalPct}%</p>
-                          <p className="text-xs font-semibold text-[#8FA382] pb-1">overall</p>
+                          <p className="text-4xl font-bold text-brand-sage">{totalPct}%</p>
+                          <p className="text-xs font-semibold text-brand-softsage pb-1">overall</p>
                         </div>
                         <p className="text-sm font-semibold text-[#6E5A46] mt-1">
                           {totalScore} / {totalPossible} quiz points
@@ -1523,21 +1523,21 @@ export default function ReportPage() {
 
                     <div className="h-3 rounded-full bg-[#F0EADF] overflow-hidden mt-5">
                       <div
-                        className="h-full rounded-full bg-[#8FA382]"
+                        className="h-full rounded-full bg-brand-softsage"
                         style={{ width: `${totalPct}%` }}
                       />
                     </div>
 
                     <div className="grid grid-cols-3 gap-3 mt-5">
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-[#2E342F]">{completedLessons}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons completed</p>
                       </div>
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
-                        <p className="text-2xl font-bold text-[#3F5D46]">{scoredLessons}</p>
+                      <div className="rounded-xl bg-brand-cream p-4">
+                        <p className="text-2xl font-bold text-brand-sage">{scoredLessons}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons with scores</p>
                       </div>
-                      <div className="rounded-xl bg-[#F7F2E8] p-4">
+                      <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-[#D19A32]">{totalLessons}</p>
                         <p className="text-xs font-semibold text-[#6E5A46] mt-1">Oak lessons this week</p>
                       </div>
@@ -1547,14 +1547,14 @@ export default function ReportPage() {
                   <div className="brand-card p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Daily Results</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Daily Results</p>
                         <h2 className="text-lg font-bold text-[#2E342F] mt-1">Week at a glance</h2>
                       </div>
 
                       <button
                         type="button"
                         onClick={() => setShowOakDetails(v => !v)}
-                        className="text-sm font-semibold text-[#3F5D46] hover:underline"
+                        className="text-sm font-semibold text-brand-sage hover:underline"
                       >
                         {showOakDetails ? "Hide lesson details" : "Show lesson details"}
                       </button>
@@ -1572,25 +1572,25 @@ export default function ReportPage() {
                             key={day.date}
                             className={`rounded-2xl border p-4 ${
                               isToday
-                                ? "bg-[#E8F0E8] border-[#8FA382]"
-                                : "bg-[#FFFDF8] border-[#E7DFD1]"
+                                ? "bg-brand-tint border-brand-softsage"
+                                : "bg-brand-white border-brand-line"
                             }`}
                           >
                             <div className="flex items-start justify-between gap-3">
                               <div>
-                                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                                   {format(parseISO(day.date), "EEEE")}
                                 </p>
                                 <p className="text-xs text-[#6E5A46] mt-1">
                                   {format(parseISO(day.date), "d MMM")}
                                 </p>
                               </div>
-                              <span className="text-2xl font-bold text-[#3F5D46]">{dayPct}%</span>
+                              <span className="text-2xl font-bold text-brand-sage">{dayPct}%</span>
                             </div>
 
                             <div className="h-2 rounded-full bg-[#F0EADF] overflow-hidden mt-4">
                               <div
-                                className="h-full rounded-full bg-[#8FA382]"
+                                className="h-full rounded-full bg-brand-softsage"
                                 style={{ width: `${dayPct}%` }}
                               />
                             </div>
@@ -1614,7 +1614,7 @@ export default function ReportPage() {
                       <div className="mt-6 pt-6 border-t border-[#EEE6D9] space-y-5">
                         {days.map(day => (
                           <div key={`detail-${day.date}`}>
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-3">
                               {format(parseISO(day.date), "EEEE d MMM")}
                             </p>
 
@@ -1625,16 +1625,16 @@ export default function ReportPage() {
                                 {day.entries.map(entry => (
                                   <div
                                     key={`${entry.entry_id}-${entry.child_id}`}
-                                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                                    className="rounded-xl border border-brand-line bg-brand-white p-4"
                                   >
                                     <p className="text-sm font-bold text-[#2E342F]">{entry.lesson_title}</p>
                                     <div className="flex gap-2 flex-wrap mt-3">
-                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F7F2E8] text-[#6E5A46]">
+                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-brand-cream text-[#6E5A46]">
                                         Starter: {entry.starter_score != null
                                           ? `${entry.starter_score}/${entry.starter_total ?? 6}`
                                           : "No score"}
                                       </span>
-                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F7F2E8] text-[#6E5A46]">
+                                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-brand-cream text-[#6E5A46]">
                                         Exit: {entry.exit_score != null
                                           ? `${entry.exit_score}/${entry.exit_total ?? 6}`
                                           : "No score"}

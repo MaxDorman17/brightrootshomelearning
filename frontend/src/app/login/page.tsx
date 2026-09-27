@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { login } from "@/lib/api";
+import { getMe, login } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
+import { applyTheme } from "@/lib/theme";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function LoginPage() {
     try {
       const res = await login(username, password);
       setAuth(res.data.role, res.data.username);
+      getMe().then((me) => applyTheme(me.data.family_theme)).catch(() => {});
       if (res.data.role === "parent" && !res.data.email_verified) {
         router.push("/account");
       } else if (res.data.role === "parent" && !res.data.onboarding_completed) {
@@ -67,7 +69,7 @@ export default function LoginPage() {
               <label className="block text-sm font-bold text-gray-700 mb-1.5">Username</label>
               <input type="text" required value={username} onChange={e => setUsername(e.target.value)}
                 placeholder="username"
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
             </div>
 
             <div>
@@ -75,7 +77,7 @@ export default function LoginPage() {
               <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
             </div>
 
             {error && (
@@ -85,7 +87,7 @@ export default function LoginPage() {
             )}
 
             <div className="flex justify-end">
-              <a href="/forgot-password" className="text-sm font-bold text-[#3F5D46] hover:underline">
+              <a href="/forgot-password" className="text-sm font-bold text-brand-sage hover:underline">
                 Forgot password?
               </a>
             </div>

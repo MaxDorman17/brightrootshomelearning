@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import { format, parseISO, startOfDay } from "date-fns";
 
 const CATEGORY_COLOR: Record<string, string> = {
-  Reading: "bg-[#E8F0E8] border-[#C9D8C6] text-[#3F5D46]",
+  Reading: "bg-brand-tint border-brand-mist text-brand-sage",
   Project: "bg-[#F1ECE5] border-[#DDD3C4] text-[#6E5A46]",
   Research: "bg-[#EAF2EC] border-[#D0DED2] text-[#48654E]",
   Practice: "bg-[#F8F0DA] border-[#EAD9A6] text-[#8A6A22]",
@@ -67,7 +67,7 @@ export default function ChildExtraWorkPage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-7">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
             Learning
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Extra Work</h1>
@@ -82,7 +82,7 @@ export default function ChildExtraWorkPage() {
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">To do</p>
           </div>
           <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#3F5D46]">{done.length}</p>
+            <p className="text-2xl font-bold text-brand-sage">{done.length}</p>
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">Completed</p>
           </div>
           <div className="brand-card p-4">
@@ -95,7 +95,7 @@ export default function ChildExtraWorkPage() {
           <div className="brand-card p-12 text-center text-[#8A7A69]">Loading tasks…</div>
         ) : entries.length === 0 ? (
           <div className="brand-card p-10 text-center">
-            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Extra Work</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Extra Work</p>
             <h2 className="text-xl font-bold text-[#2E342F] mt-2">Nothing extra to do</h2>
             <p className="text-sm text-[#6E5A46] mt-2">Any new tasks will appear here.</p>
           </div>
@@ -103,7 +103,7 @@ export default function ChildExtraWorkPage() {
           <div className="space-y-6">
             <div className="brand-card p-6">
               <div className="mb-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">To Do</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">To Do</p>
                 <h2 className="text-xl font-bold text-[#2E342F] mt-1">Your active tasks</h2>
                 <p className="text-sm text-[#6E5A46] mt-1">
                   {pending.length === 0
@@ -127,7 +127,7 @@ export default function ChildExtraWorkPage() {
                         className={`rounded-2xl border p-5 ${
                           isOverdue
                             ? "bg-[#FFF8F4] border-[#E7CFC2]"
-                            : "bg-[#FFFDF8] border-[#E7DFD1]"
+                            : "bg-brand-white border-brand-line"
                         }`}
                       >
                         <div className="flex flex-col lg:flex-row lg:items-start gap-5">
@@ -153,8 +153,8 @@ export default function ChildExtraWorkPage() {
                             <h3 className="text-lg font-bold text-[#2E342F] mt-4">{e.lesson.title}</h3>
 
                             {e.lesson.description && (
-                              <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-3">
-                                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Instructions</p>
+                              <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-3">
+                                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Instructions</p>
                                 <p className="text-sm text-[#6E5A46] mt-1 leading-relaxed">
                                   {e.lesson.description}
                                 </p>
@@ -167,7 +167,7 @@ export default function ChildExtraWorkPage() {
                                   href={e.lesson.lesson_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+                                  className="px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors"
                                 >
                                   Open task
                                 </a>
@@ -176,15 +176,15 @@ export default function ChildExtraWorkPage() {
                               <button
                                 onClick={() => handleToggle(e.id)}
                                 disabled={toggling === e.id}
-                                className="px-4 py-2.5 rounded-xl border border-[#3F5D46] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold hover:bg-[#F7F2E8] disabled:opacity-50"
+                                className="px-4 py-2.5 rounded-xl border border-brand-sage bg-brand-white text-brand-sage text-sm font-bold hover:bg-brand-cream disabled:opacity-50"
                               >
                                 {toggling === e.id ? "Saving…" : "Mark complete"}
                               </button>
                             </div>
                           </div>
 
-                          <div className="lg:w-80 shrink-0 rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4">
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                          <div className="lg:w-80 shrink-0 rounded-xl bg-brand-cream border border-brand-line p-4">
+                            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                               Submit your work
                             </p>
                             <p className="text-xs text-[#6E5A46] mt-1">
@@ -195,7 +195,7 @@ export default function ChildExtraWorkPage() {
                               value={workUrls[e.id] || ""}
                               onChange={ev => setWorkUrls(p => ({ ...p, [e.id]: ev.target.value }))}
                               placeholder="https://…"
-                              className="w-full mt-3 text-sm border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-3 py-2.5 focus:outline-none focus:border-[#8FA382]"
+                              className="w-full mt-3 text-sm border border-[#D8D1C4] bg-brand-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-brand-softsage"
                             />
 
                             <button
@@ -207,7 +207,7 @@ export default function ChildExtraWorkPage() {
                             </button>
 
                             {e.completed_work_url && (
-                              <p className="text-xs font-semibold text-[#3F5D46] mt-2">
+                              <p className="text-xs font-semibold text-brand-sage mt-2">
                                 ✓ Evidence submitted
                               </p>
                             )}
@@ -223,11 +223,11 @@ export default function ChildExtraWorkPage() {
             <div className="brand-card p-6">
               <div className="flex items-end justify-between gap-4 mb-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">History</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">History</p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">Completed work</h2>
                   <p className="text-sm text-[#6E5A46] mt-1">Your finished extra tasks stay here.</p>
                 </div>
-                <span className="text-sm font-bold text-[#3F5D46]">{done.length}</span>
+                <span className="text-sm font-bold text-brand-sage">{done.length}</span>
               </div>
 
               {done.length === 0 ? (
@@ -237,10 +237,10 @@ export default function ChildExtraWorkPage() {
                   {done.map(e => (
                     <div
                       key={e.id}
-                      className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4"
+                      className="rounded-xl border border-brand-line bg-brand-white p-4"
                     >
                       <div className="flex items-start gap-3">
-                        <span className="w-7 h-7 rounded-full bg-[#E8F0E8] text-[#3F5D46] flex items-center justify-center font-bold shrink-0">
+                        <span className="w-7 h-7 rounded-full bg-brand-tint text-brand-sage flex items-center justify-center font-bold shrink-0">
                           ✓
                         </span>
 
@@ -254,7 +254,7 @@ export default function ChildExtraWorkPage() {
                                 href={e.completed_work_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs font-bold text-[#3F5D46] hover:underline"
+                                className="text-xs font-bold text-brand-sage hover:underline"
                               >
                                 View evidence
                               </a>

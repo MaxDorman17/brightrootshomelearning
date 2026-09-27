@@ -42,6 +42,13 @@ class ResetPasswordRequest(BaseModel):
     new_password: str
 
 
+class ThemeRequest(BaseModel):
+    theme: str
+
+
+FAMILY_THEMES = {"sage", "ocean", "sunshine", "berry"}
+
+
 LOGIN_WINDOW_SECONDS = 10 * 60
 MAX_FAILURES_PER_ACCOUNT_IP = 5
 MAX_FAILURES_PER_IP = 25
@@ -347,8 +354,33 @@ def logout(response: Response, request: Request):
 
 
 @router.get("/me", response_model=UserOut)
-def me(current_user: User = Depends(get_authenticated_user)):
-    return current_user
+def me(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_authenticated_user),
+):
+    out = UserOut.model_validate(current_user)
+    if current_user.role == "parent":
+        out.family_theme = current_user.theme
+    elif current_user.parent_id:
+        parent = db.query(User).filter(User.id == current_user.parent_id).first()
+        out.family_theme = parent.theme if parent else None
+    return out
+
+
+@router.put("/theme")
+def set_theme(
+    body: ThemeRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_authenticated_user),
+):
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+    theme = body.theme.strip().lower()
+    if theme not in FAMILY_THEMES:
+        raise HTTPException(status_code=400, detail="Unknown theme")
+    current_user.theme = theme
+    db.commit()
+    return {"theme": theme}
 
 
 @router.post("/change-password")

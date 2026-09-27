@@ -665,7 +665,7 @@ export default function ParentPlanner() {
         </div>
         {/* Bookmarklet panel */}
         {showBookmarklet && (
-          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+          <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
             <p className="text-sm font-extrabold text-gray-800 mb-1">
               One-click lesson importer
             </p>
@@ -679,7 +679,7 @@ export default function ParentPlanner() {
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
               <a
                 href={`javascript:(function(){var t=encodeURIComponent(document.title);var u=encodeURIComponent(location.href);location.href='https://brightrootshomelearning.co.uk/parent?lesson_title='+t+'&lesson_url='+u;})();`}
-                className="inline-flex items-center gap-2 bg-[#2F5D3A] text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm cursor-grab active:cursor-grabbing select-none"
+                className="inline-flex items-center gap-2 bg-brand-deep text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm cursor-grab active:cursor-grabbing select-none"
                 onClick={e => {
                   e.preventDefault();
                   alert("Drag this button to your bookmarks bar.");
@@ -700,7 +700,7 @@ export default function ParentPlanner() {
         )}
         {/* Oak Unit import panel */}
         {showOakImport && (
-          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+          <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
             <p className="text-sm font-extrabold text-gray-800 mb-1">
               Import Oak Academy Unit
             </p>
@@ -720,13 +720,13 @@ export default function ParentPlanner() {
                 }}
                 onKeyDown={e => e.key === "Enter" && handleOakFetch()}
                 placeholder="https://www.thenational.academy/pupils/programmes/..."
-                className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A8C67A]/50"
+                className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-lime/50"
               />
 
               <button
                 onClick={handleOakFetch}
                 disabled={oakFetching || !oakUrl.trim()}
-                className="px-4 py-2.5 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                className="px-4 py-2.5 bg-brand-deep text-white rounded-xl text-sm font-bold disabled:opacity-50"
               >
                 {oakFetching ? "Loading..." : "Fetch unit"}
               </button>
@@ -830,7 +830,7 @@ export default function ParentPlanner() {
                   <button
                     onClick={handleOakAdd}
                     disabled={oakAdding || !oakSubject || oakSchedule.length === 0}
-                    className="px-4 py-2.5 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                    className="px-4 py-2.5 bg-brand-deep text-white rounded-xl text-sm font-bold disabled:opacity-50"
                   >
                     {oakAdding
                       ? "Adding to planner..."
@@ -857,7 +857,7 @@ export default function ParentPlanner() {
 
         {/* Scottish holiday import panel */}
         {showHolidayPanel && (
-          <div className="mb-4 bg-white/90 rounded-2xl border border-[#A8C67A]/40 shadow-sm p-5">
+          <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
             <p className="text-sm font-extrabold text-gray-800 mb-0.5">Fife Council School Holidays</p>
             <p className="text-xs text-gray-500 mb-3">Tick the dates to add as days off. Uncheck Summer if you school year-round.</p>
             <div className="max-h-72 overflow-y-auto mb-4 space-y-0.5 pr-1">
@@ -866,7 +866,7 @@ export default function ParentPlanner() {
                 return (
                   <div key={i}>
                     {showHeader && (
-                      <p className={`text-[10px] font-extrabold text-[#2F5D3A] uppercase tracking-widest pb-1 ${i > 0 ? "pt-3 border-t border-gray-100 mt-2" : ""}`}>
+                      <p className={`text-[10px] font-extrabold text-brand-deep uppercase tracking-widest pb-1 ${i > 0 ? "pt-3 border-t border-gray-100 mt-2" : ""}`}>
                         {h.group}
                       </p>
                     )}
@@ -875,8 +875,8 @@ export default function ParentPlanner() {
                         onChange={e => setSelectedHolidayGroups(prev =>
                           e.target.checked ? [...prev, i] : prev.filter(x => x !== i)
                         )}
-                        className="w-4 h-4 accent-[#2F5D3A] rounded cursor-pointer shrink-0" />
-                      <span className="text-sm font-semibold text-gray-800 group-hover:text-[#2F5D3A] transition-colors">
+                        className="w-4 h-4 accent-brand-deep rounded cursor-pointer shrink-0" />
+                      <span className="text-sm font-semibold text-gray-800 group-hover:text-brand-deep transition-colors">
                         {h.label}
                       </span>
                       {h.inservice && (
@@ -893,7 +893,7 @@ export default function ParentPlanner() {
             <div className="flex gap-2 flex-wrap">
               <button onClick={handleImportHolidays}
                 disabled={importingHolidays || selectedHolidayGroups.length === 0}
-                className="px-4 py-2 bg-[#2F5D3A] text-white rounded-xl text-sm font-bold hover:bg-[#6EA76E] disabled:opacity-50 transition-colors">
+                className="px-4 py-2 bg-brand-deep text-white rounded-xl text-sm font-bold hover:bg-brand-leaf disabled:opacity-50 transition-colors">
                 {importingHolidays ? "Adding..." : `Add ${selectedHolidayGroups.length} selected`}
               </button>
               <button onClick={() => setSelectedHolidayGroups(Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i))}

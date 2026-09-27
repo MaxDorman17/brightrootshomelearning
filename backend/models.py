@@ -23,6 +23,7 @@ class User(Base):
     stripe_subscription_id = Column(String(255), nullable=True)
     subscription_cancel_at_period_end = Column(Boolean, nullable=False, default=False, server_default="0")
     subscription_cancel_at = Column(DateTime(timezone=True), nullable=True)
+    theme = Column(String(20), nullable=True)  # family colour theme, set on the parent account
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")

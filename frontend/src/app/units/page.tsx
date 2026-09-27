@@ -188,7 +188,7 @@ export default function UnitsPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
@@ -203,17 +203,17 @@ export default function UnitsPage() {
 
             <div className="brand-card px-5 py-4 flex items-center gap-6">
               <div>
-                <p className="text-2xl font-bold text-[#3F5D46]">{activeUnits}</p>
+                <p className="text-2xl font-bold text-brand-sage">{activeUnits}</p>
                 <p className="text-xs font-semibold text-[#6E5A46]">Current units</p>
               </div>
-              <div className="w-px h-10 bg-[#E7DFD1]" />
+              <div className="w-px h-10 bg-brand-line" />
               <div>
                 <p className="text-2xl font-bold text-[#D19A32]">{upcomingUnits}</p>
                 <p className="text-xs font-semibold text-[#6E5A46]">Upcoming</p>
               </div>
-              <div className="w-px h-10 bg-[#E7DFD1]" />
+              <div className="w-px h-10 bg-brand-line" />
               <div>
-                <p className="text-2xl font-bold text-[#8FA382]">{emptyUnits}</p>
+                <p className="text-2xl font-bold text-brand-softsage">{emptyUnits}</p>
                 <p className="text-xs font-semibold text-[#6E5A46]">Not set</p>
               </div>
             </div>
@@ -227,7 +227,7 @@ export default function UnitsPage() {
             <div className="brand-card p-6 mb-6">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Current Learning</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Current Learning</p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">Current Units</h2>
                   <p className="text-sm text-[#6E5A46] mt-1">
                     Keep the current unit at the top of each subject and queue future units underneath.
@@ -235,7 +235,7 @@ export default function UnitsPage() {
                 </div>
 
                 {isParent && (
-                  <p className="text-xs font-semibold text-[#8FA382]">
+                  <p className="text-xs font-semibold text-brand-softsage">
                     Add future units whenever you plan ahead
                   </p>
                 )}
@@ -253,19 +253,19 @@ export default function UnitsPage() {
                       className={`rounded-2xl border p-5 transition-colors ${
                         unit
                           ? isCore
-                            ? "bg-[#F7F2E8] border-[#D8D1C4]"
-                            : "bg-[#FFFDF8] border-[#E7DFD1]"
+                            ? "bg-brand-cream border-[#D8D1C4]"
+                            : "bg-brand-white border-brand-line"
                           : "bg-[#FBF8F1] border-dashed border-[#DDD3C4]"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-2">
-                          <span className={`w-2.5 h-2.5 rounded-full ${unit ? "bg-[#8FA382]" : "bg-[#D8D1C4]"}`} />
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">{subject}</p>
+                          <span className={`w-2.5 h-2.5 rounded-full ${unit ? "bg-brand-softsage" : "bg-[#D8D1C4]"}`} />
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">{subject}</p>
                         </div>
 
                         {isCore && (
-                          <span className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382] bg-[#E8F0E8] px-2 py-1 rounded-full">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage bg-brand-tint px-2 py-1 rounded-full">
                             Core
                           </span>
                         )}
@@ -288,7 +288,7 @@ export default function UnitsPage() {
                                   href={unit.unit_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-3 py-2 rounded-xl bg-[#3F5D46] text-white text-xs font-bold hover:bg-[#354F3B]"
+                                  className="px-3 py-2 rounded-xl bg-brand-sage text-white text-xs font-bold hover:bg-brand-sagedark"
                                 >
                                   Open unit
                                 </a>
@@ -296,7 +296,7 @@ export default function UnitsPage() {
                               {isParent && (
                                 <button
                                   onClick={() => openCurrentModal(subject)}
-                                  className="px-3 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-xs font-bold hover:border-[#8FA382]"
+                                  className="px-3 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-xs font-bold hover:border-brand-softsage"
                                 >
                                   Edit current
                                 </button>
@@ -309,7 +309,7 @@ export default function UnitsPage() {
                             {isParent && (
                               <button
                                 onClick={() => openCurrentModal(subject)}
-                                className="mt-3 px-3 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-xs font-bold hover:border-[#8FA382]"
+                                className="mt-3 px-3 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-xs font-bold hover:border-brand-softsage"
                               >
                                 Set current unit
                               </button>
@@ -319,7 +319,7 @@ export default function UnitsPage() {
                       </div>
 
                       {(queued.length > 0 || isParent) && (
-                        <div className="mt-5 pt-4 border-t border-[#E7DFD1]">
+                        <div className="mt-5 pt-4 border-t border-brand-line">
                           <div className="flex items-center justify-between gap-3 mb-3">
                             <div>
                               <p className="text-[10px] font-bold uppercase tracking-wide text-[#A69A8D]">Up next</p>
@@ -333,7 +333,7 @@ export default function UnitsPage() {
                             {isParent && (
                               <button
                                 onClick={() => openQueueModal(subject)}
-                                className="text-xs font-bold text-[#3F5D46] hover:underline"
+                                className="text-xs font-bold text-brand-sage hover:underline"
                               >
                                 + Add next unit
                               </button>
@@ -347,7 +347,7 @@ export default function UnitsPage() {
                               {queued.map((item, qIndex) => (
                                 <div
                                   key={item.id}
-                                  className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-3"
+                                  className="rounded-xl border border-brand-line bg-brand-white p-3"
                                 >
                                   <div className="flex items-start gap-3">
                                     <span className="w-7 h-7 rounded-full bg-[#F0EADF] text-[#6E5A46] text-xs font-bold flex items-center justify-center shrink-0">
@@ -366,7 +366,7 @@ export default function UnitsPage() {
                                             href={item.unit_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-xs font-bold text-[#3F5D46] hover:underline"
+                                            className="text-xs font-bold text-brand-sage hover:underline"
                                           >
                                             Open
                                           </a>
@@ -417,7 +417,7 @@ export default function UnitsPage() {
           <div className="brand-card w-full max-w-lg p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                   {modal.mode === "current" ? "Current Unit" : modal.existing ? "Upcoming Unit" : "Add Upcoming Unit"}
                 </p>
                 <h3 className="text-2xl font-bold text-[#2E342F] mt-1">{modal.subject}</h3>
@@ -438,7 +438,7 @@ export default function UnitsPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                   Unit / topic title
                 </label>
                 <input
@@ -447,12 +447,12 @@ export default function UnitsPage() {
                   onChange={e => setTitle(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSave()}
                   placeholder="e.g. Algebraic notation"
-                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                  className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                   Unit link
                 </label>
                 <input
@@ -460,12 +460,12 @@ export default function UnitsPage() {
                   value={url}
                   onChange={e => setUrl(e.target.value)}
                   placeholder="https://www.thenational.academy/…"
-                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                  className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                   Notes
                 </label>
                 <textarea
@@ -473,7 +473,7 @@ export default function UnitsPage() {
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   placeholder="Optional context for this unit…"
-                  className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                  className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                 />
               </div>
             </div>
@@ -482,7 +482,7 @@ export default function UnitsPage() {
               <button
                 onClick={handleSave}
                 disabled={saving || !title.trim()}
-                className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50 transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50 transition-colors"
               >
                 {saving
                   ? "Saving…"
@@ -497,7 +497,7 @@ export default function UnitsPage() {
                 <button
                   onClick={handleDelete}
                   disabled={saving}
-                  className="px-5 py-2.5 rounded-xl border border-[#E5CFC3] bg-[#FFFDF8] text-[#A85F46] text-sm font-bold hover:bg-[#FAEEE8]"
+                  className="px-5 py-2.5 rounded-xl border border-[#E5CFC3] bg-brand-white text-[#A85F46] text-sm font-bold hover:bg-[#FAEEE8]"
                 >
                   {modal.mode === "current" ? "Clear current" : "Remove from queue"}
                 </button>
@@ -505,7 +505,7 @@ export default function UnitsPage() {
 
               <button
                 onClick={closeModal}
-                className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+                className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
               >
                 Cancel
               </button>

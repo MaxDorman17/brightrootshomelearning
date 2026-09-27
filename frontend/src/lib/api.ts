@@ -50,6 +50,7 @@ export const login = (username: string, password: string) => {
 };
 export const logout = () => api.post("/api/auth/logout");
 export const getMe = () => api.get("/api/auth/me");
+export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
 export const forgotPassword = (email: string) =>

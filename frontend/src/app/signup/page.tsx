@@ -81,7 +81,7 @@ export default function SignupPage() {
               </p>
               <Link
                 href="/login"
-                className="mt-6 block rounded-xl bg-[#3F5D46] px-5 py-3 text-center text-sm font-extrabold text-white"
+                className="mt-6 block rounded-xl bg-brand-sage px-5 py-3 text-center text-sm font-extrabold text-white"
               >
                 Go to login
               </Link>
@@ -98,7 +98,7 @@ export default function SignupPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-[#6EA76E]"
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
                 />
               </div>
 
@@ -112,7 +112,7 @@ export default function SignupPage() {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-[#6EA76E]"
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
                 />
               </div>
 
@@ -127,7 +127,7 @@ export default function SignupPage() {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-[#6EA76E]"
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
                 />
               </div>
 
@@ -142,7 +142,7 @@ export default function SignupPage() {
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-[#6EA76E]"
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
                 />
               </div>
 
@@ -155,7 +155,7 @@ export default function SignupPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl bg-[#3F5D46] py-3 text-sm font-extrabold text-white disabled:opacity-60"
+                className="w-full rounded-xl bg-brand-sage py-3 text-sm font-extrabold text-white disabled:opacity-60"
               >
                 {loading ? "Creating account..." : "Start 7-day free trial"}
               </button>
@@ -168,7 +168,7 @@ export default function SignupPage() {
 
           <div className="mt-6 border-t border-gray-200 pt-5 text-center text-sm text-gray-600">
             Already a member?{" "}
-            <Link href="/login" className="font-extrabold text-[#3F5D46] hover:underline">
+            <Link href="/login" className="font-extrabold text-brand-sage hover:underline">
               Log in
             </Link>
           </div>

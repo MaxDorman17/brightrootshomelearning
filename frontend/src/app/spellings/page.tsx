@@ -289,7 +289,7 @@ export default function SpellingsPage() {
         <section className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning Tools
               </p>
 
@@ -306,7 +306,7 @@ export default function SpellingsPage() {
 
             <div className="brand-card px-4 py-3 flex items-center gap-3 self-start lg:self-auto">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382]">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage">
                   Current week
                 </p>
                 <p className="text-sm font-bold text-[#2E342F] mt-0.5">
@@ -321,13 +321,13 @@ export default function SpellingsPage() {
           <div className="flex items-center justify-between gap-3">
             <button
               onClick={() => setWeekStart(d => subWeeks(d, 1))}
-              className="px-4 py-2.5 rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] text-sm font-semibold text-[#6E5A46] hover:border-[#8FA382] hover:text-[#3F5D46] transition-colors"
+              className="px-4 py-2.5 rounded-xl border border-brand-line bg-brand-white text-sm font-semibold text-[#6E5A46] hover:border-brand-softsage hover:text-brand-sage transition-colors"
             >
               Previous
             </button>
 
             <div className="text-center">
-              <p className="text-[10px] uppercase tracking-wide font-bold text-[#8FA382]">
+              <p className="text-[10px] uppercase tracking-wide font-bold text-brand-softsage">
                 Week of
               </p>
               <p className="text-sm sm:text-base font-bold text-[#2E342F]">
@@ -337,7 +337,7 @@ export default function SpellingsPage() {
 
             <button
               onClick={() => setWeekStart(d => addWeeks(d, 1))}
-              className="px-4 py-2.5 rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] text-sm font-semibold text-[#6E5A46] hover:border-[#8FA382] hover:text-[#3F5D46] transition-colors"
+              className="px-4 py-2.5 rounded-xl border border-brand-line bg-brand-white text-sm font-semibold text-[#6E5A46] hover:border-brand-softsage hover:text-brand-sage transition-colors"
             >
               Next
             </button>
@@ -345,16 +345,16 @@ export default function SpellingsPage() {
         </section>
 
         {loading ? (
-          <div className="brand-card py-16 text-center text-sm text-[#8FA382]">
+          <div className="brand-card py-16 text-center text-sm text-brand-softsage">
             Loading...
           </div>
         ) : (
           <>
             {isParent && testView === "idle" && (
               <section className="brand-card overflow-hidden mb-6">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1] flex items-center justify-between gap-4">
+                <div className="px-5 sm:px-6 py-5 border-b border-brand-line flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                       Weekly List
                     </p>
                     <h2 className="text-xl font-bold text-[#2E342F] mt-1">
@@ -362,14 +362,14 @@ export default function SpellingsPage() {
                     </h2>
                   </div>
 
-                  <span className="rounded-full bg-[#F7F2E8] px-3 py-1.5 text-xs font-bold text-[#6E5A46]">
+                  <span className="rounded-full bg-brand-cream px-3 py-1.5 text-xs font-bold text-[#6E5A46]">
                     {words.length} / {MAX_WORDS}
                   </span>
                 </div>
 
                 <div className="p-5 sm:p-6">
                   {words.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-[#D9D1C4] bg-[#FFFDF8] py-10 px-5 text-center mb-5">
+                    <div className="rounded-2xl border border-dashed border-[#D9D1C4] bg-brand-white py-10 px-5 text-center mb-5">
                       <p className="font-bold text-[#2E342F]">No words added yet</p>
                       <p className="text-sm text-[#6E5A46] mt-1">
                         Add the first spelling word for this week below.
@@ -380,9 +380,9 @@ export default function SpellingsPage() {
                       {words.map((word, index) => (
                         <div
                           key={word.id}
-                          className="flex items-center gap-2 rounded-xl border border-[#D9E1D4] bg-[#F4F7F1] px-3 py-2"
+                          className="flex items-center gap-2 rounded-xl border border-brand-mist bg-brand-wash px-3 py-2"
                         >
-                          <span className="text-[10px] font-bold text-[#8FA382]">
+                          <span className="text-[10px] font-bold text-brand-softsage">
                             {index + 1}
                           </span>
                           <span className="text-sm font-semibold text-[#2E342F]">
@@ -407,13 +407,13 @@ export default function SpellingsPage() {
                         onChange={e => setNewWord(e.target.value)}
                         onKeyDown={e => e.key === "Enter" && handleAddWord()}
                         placeholder="Type a spelling word..."
-                        className="flex-1 rounded-xl border border-[#D9D1C4] bg-white px-4 py-3 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                        className="flex-1 rounded-xl border border-[#D9D1C4] bg-white px-4 py-3 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                       />
 
                       <button
                         onClick={handleAddWord}
                         disabled={adding || !newWord.trim()}
-                        className="px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50 transition-colors"
+                        className="px-5 py-3 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50 transition-colors"
                       >
                         {adding ? "Adding..." : "Add Word"}
                       </button>
@@ -421,7 +421,7 @@ export default function SpellingsPage() {
                   )}
 
                   <div className="mt-5 pt-5 border-t border-[#EEE6D9]">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-3">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-3">
                       Quick Add
                     </p>
 
@@ -429,7 +429,7 @@ export default function SpellingsPage() {
                       <button
                         onClick={handleCopyLastWeek}
                         disabled={copying || words.length >= MAX_WORDS}
-                        className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-[#FFFDF8] text-xs font-semibold text-[#6E5A46] hover:border-[#8FA382] disabled:opacity-40 transition-colors"
+                        className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-brand-white text-xs font-semibold text-[#6E5A46] hover:border-brand-softsage disabled:opacity-40 transition-colors"
                       >
                         {copying ? "Copying..." : "Copy last week's words"}
                       </button>
@@ -443,7 +443,7 @@ export default function SpellingsPage() {
                                 e.target.value ? Number(e.target.value) : null
                               )
                             }
-                            className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-white text-xs font-semibold text-[#6E5A46] outline-none focus:border-[#8FA382]"
+                            className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-white text-xs font-semibold text-[#6E5A46] outline-none focus:border-brand-softsage"
                           >
                             {children.map(child => (
                               <option key={child.id} value={child.id}>
@@ -459,7 +459,7 @@ export default function SpellingsPage() {
                               !weakWordsChildId ||
                               words.length >= MAX_WORDS
                             }
-                            className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-[#FFFDF8] text-xs font-semibold text-[#6E5A46] hover:border-[#8FA382] disabled:opacity-40 transition-colors"
+                            className="px-3.5 py-2 rounded-xl border border-[#D9D1C4] bg-brand-white text-xs font-semibold text-[#6E5A46] hover:border-brand-softsage disabled:opacity-40 transition-colors"
                           >
                             {loadingWeak ? "Loading..." : "Add tricky words"}
                           </button>
@@ -473,8 +473,8 @@ export default function SpellingsPage() {
 
             {!isParent && testView === "idle" && words.length > 0 && (
               <section className="brand-card overflow-hidden mb-6">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1]">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                <div className="px-5 sm:px-6 py-5 border-b border-brand-line">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                     Study List
                   </p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
@@ -486,9 +486,9 @@ export default function SpellingsPage() {
                   {words.map((word, index) => (
                     <div
                       key={word.id}
-                      className="flex items-center gap-3 rounded-2xl border border-[#E7DFD1] bg-[#FFFDF8] px-4 py-3"
+                      className="flex items-center gap-3 rounded-2xl border border-brand-line bg-brand-white px-4 py-3"
                     >
-                      <div className="w-8 h-8 rounded-xl bg-[#E8EDE4] flex items-center justify-center text-xs font-bold text-[#3F5D46]">
+                      <div className="w-8 h-8 rounded-xl bg-brand-tint flex items-center justify-center text-xs font-bold text-brand-sage">
                         {index + 1}
                       </div>
                       <span className="font-bold text-[#2E342F]">
@@ -502,7 +502,7 @@ export default function SpellingsPage() {
 
             {testView === "idle" && words.length === 0 && !isParent && (
               <section className="brand-card px-6 py-14 text-center mb-6">
-                <div className="w-14 h-14 mx-auto rounded-2xl bg-[#F7F2E8] flex items-center justify-center text-[#3F5D46] font-bold">
+                <div className="w-14 h-14 mx-auto rounded-2xl bg-brand-cream flex items-center justify-center text-brand-sage font-bold">
                   Aa
                 </div>
                 <h2 className="text-lg font-bold text-[#2E342F] mt-4">
@@ -518,9 +518,9 @@ export default function SpellingsPage() {
               <section className="grid sm:grid-cols-2 gap-4 mb-6">
                 <button
                   onClick={startLearning}
-                  className="brand-card p-6 text-left hover:border-[#8FA382] transition-colors"
+                  className="brand-card p-6 text-left hover:border-brand-softsage transition-colors"
                 >
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                     Step One
                   </p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
@@ -529,14 +529,14 @@ export default function SpellingsPage() {
                   <p className="text-sm text-[#6E5A46] mt-2">
                     Read, hear and practise each spelling before taking the test.
                   </p>
-                  <p className="text-sm font-bold text-[#3F5D46] mt-4">
+                  <p className="text-sm font-bold text-brand-sage mt-4">
                     Start learning
                   </p>
                 </button>
 
                 <button
                   onClick={() => startTest(words)}
-                  className="rounded-2xl border border-[#3F5D46] bg-[#3F5D46] p-6 text-left text-white hover:bg-[#354F3B] transition-colors"
+                  className="rounded-2xl border border-brand-sage bg-brand-sage p-6 text-left text-white hover:bg-brand-sagedark transition-colors"
                 >
                   <p className="text-xs font-bold uppercase tracking-wide text-white/65">
                     Step Two
@@ -556,9 +556,9 @@ export default function SpellingsPage() {
 
             {testView === "learning" && words.length > 0 && (
               <section className="brand-card overflow-hidden mb-6">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="px-5 sm:px-6 py-5 border-b border-brand-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                       Learn Mode
                     </p>
                     <h2 className="text-lg font-bold text-[#2E342F] mt-1">
@@ -572,10 +572,10 @@ export default function SpellingsPage() {
                         key={index}
                         className={`w-2.5 h-2.5 rounded-full ${
                           index === learnIndex
-                            ? "bg-[#3F5D46]"
+                            ? "bg-brand-sage"
                             : index < learnIndex
-                            ? "bg-[#8FA382]"
-                            : "bg-[#E7DFD1]"
+                            ? "bg-brand-softsage"
+                            : "bg-brand-line"
                         }`}
                       />
                     ))}
@@ -584,14 +584,14 @@ export default function SpellingsPage() {
 
                 <div className="p-6 sm:p-8">
                   <div className="text-center">
-                    <p className="text-4xl sm:text-5xl font-bold text-[#3F5D46] tracking-wide">
+                    <p className="text-4xl sm:text-5xl font-bold text-brand-sage tracking-wide">
                       {words[learnIndex]?.word}
                     </p>
 
                     {speechSupported && (
                       <button
                         onClick={() => speak(words[learnIndex]?.word ?? "")}
-                        className="mt-4 px-5 py-2.5 rounded-xl border border-[#D9E1D4] bg-[#F4F7F1] text-sm font-bold text-[#3F5D46] hover:bg-[#E8EDE4] transition-colors"
+                        className="mt-4 px-5 py-2.5 rounded-xl border border-brand-mist bg-brand-wash text-sm font-bold text-brand-sage hover:bg-brand-tint transition-colors"
                       >
                         Hear word
                       </button>
@@ -610,7 +610,7 @@ export default function SpellingsPage() {
                       placeholder="Type the word..."
                       className={`w-full text-center text-2xl font-bold rounded-xl border-2 px-4 py-3.5 outline-none transition-colors ${
                         learnPracticeInput.length === 0
-                          ? "border-[#D9D1C4] focus:border-[#8FA382]"
+                          ? "border-[#D9D1C4] focus:border-brand-softsage"
                           : words[learnIndex]?.word
                               .toLowerCase()
                               .startsWith(learnPracticeInput.toLowerCase())
@@ -632,14 +632,14 @@ export default function SpellingsPage() {
                     {learnIndex + 1 < words.length ? (
                       <button
                         onClick={learnNext}
-                        className="flex-1 py-3 rounded-xl bg-[#3F5D46] text-white font-bold hover:bg-[#354F3B] transition-colors"
+                        className="flex-1 py-3 rounded-xl bg-brand-sage text-white font-bold hover:bg-brand-sagedark transition-colors"
                       >
                         Next Word
                       </button>
                     ) : (
                       <button
                         onClick={() => startTest(words)}
-                        className="flex-1 py-3 rounded-xl bg-[#3F5D46] text-white font-bold hover:bg-[#354F3B] transition-colors"
+                        className="flex-1 py-3 rounded-xl bg-brand-sage text-white font-bold hover:bg-brand-sagedark transition-colors"
                       >
                         Start Test
                       </button>
@@ -648,7 +648,7 @@ export default function SpellingsPage() {
 
                   <button
                     onClick={() => setTestView("idle")}
-                    className="w-full mt-4 text-xs font-semibold text-[#8FA382] hover:text-[#6E5A46]"
+                    className="w-full mt-4 text-xs font-semibold text-brand-softsage hover:text-[#6E5A46]"
                   >
                     Back to word list
                   </button>
@@ -658,10 +658,10 @@ export default function SpellingsPage() {
 
             {testView === "testing" && (
               <section className="brand-card overflow-hidden mb-6">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1]">
+                <div className="px-5 sm:px-6 py-5 border-b border-brand-line">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                         {practiceMode ? "Practice Round" : "Spelling Test"}
                       </p>
                       <h2 className="text-lg font-bold text-[#2E342F] mt-1">
@@ -679,8 +679,8 @@ export default function SpellingsPage() {
                                 ? "bg-emerald-500"
                                 : "bg-[#D88C64]"
                               : index === testIndex
-                              ? "bg-[#3F5D46]"
-                              : "bg-[#E7DFD1]"
+                              ? "bg-brand-sage"
+                              : "bg-brand-line"
                           }`}
                         />
                       ))}
@@ -692,7 +692,7 @@ export default function SpellingsPage() {
                   <div className="text-center mb-7">
                     {speechSupported ? (
                       <>
-                        <div className="w-16 h-16 mx-auto rounded-2xl bg-[#F4F7F1] border border-[#D9E1D4] flex items-center justify-center text-[#3F5D46] text-xl font-bold">
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-wash border border-brand-mist flex items-center justify-center text-brand-sage text-xl font-bold">
                           Aa
                         </div>
 
@@ -703,7 +703,7 @@ export default function SpellingsPage() {
                         <button
                           onClick={() => speak(currentWord)}
                           disabled={checked}
-                          className="mt-3 px-5 py-2.5 rounded-xl border border-[#D9E1D4] bg-[#F4F7F1] text-sm font-bold text-[#3F5D46] disabled:opacity-40"
+                          className="mt-3 px-5 py-2.5 rounded-xl border border-brand-mist bg-brand-wash text-sm font-bold text-brand-sage disabled:opacity-40"
                         >
                           Repeat word
                         </button>
@@ -713,7 +713,7 @@ export default function SpellingsPage() {
                         <p className="text-xs font-semibold text-[#A36A43] rounded-xl border border-[#E8C9A9] bg-[#FFF7ED] px-4 py-3">
                           Speech is not available on this device, so the word is shown below.
                         </p>
-                        <p className="text-4xl font-bold text-[#3F5D46] mt-5">
+                        <p className="text-4xl font-bold text-brand-sage mt-5">
                           {currentWord}
                         </p>
                       </>
@@ -733,13 +733,13 @@ export default function SpellingsPage() {
                           handleCheck()
                         }
                         placeholder="Type the word here..."
-                        className="w-full text-center text-2xl font-bold rounded-xl border-2 border-[#D9D1C4] px-4 py-3.5 outline-none focus:border-[#8FA382]"
+                        className="w-full text-center text-2xl font-bold rounded-xl border-2 border-[#D9D1C4] px-4 py-3.5 outline-none focus:border-brand-softsage"
                       />
 
                       <button
                         onClick={handleCheck}
                         disabled={!testInput.trim()}
-                        className="w-full py-3.5 rounded-xl bg-[#3F5D46] text-white font-bold hover:bg-[#354F3B] disabled:opacity-40 transition-colors"
+                        className="w-full py-3.5 rounded-xl bg-brand-sage text-white font-bold hover:bg-brand-sagedark disabled:opacity-40 transition-colors"
                       >
                         Check Answer
                       </button>
@@ -765,7 +765,7 @@ export default function SpellingsPage() {
                           </p>
                           <p className="text-sm text-[#6E5A46] mt-1">
                             Correct spelling:{" "}
-                            <span className="font-bold text-[#3F5D46]">
+                            <span className="font-bold text-brand-sage">
                               {currentWord}
                             </span>
                           </p>
@@ -774,7 +774,7 @@ export default function SpellingsPage() {
 
                       <button
                         onClick={handleNext}
-                        className="w-full py-3.5 rounded-xl bg-[#3F5D46] text-white font-bold hover:bg-[#354F3B]"
+                        className="w-full py-3.5 rounded-xl bg-brand-sage text-white font-bold hover:bg-brand-sagedark"
                       >
                         {testIndex + 1 >= testWords.length
                           ? "See Results"
@@ -788,18 +788,18 @@ export default function SpellingsPage() {
 
             {testView === "done" && (
               <section className="brand-card overflow-hidden mb-6">
-                <div className="p-6 sm:p-8 text-center border-b border-[#E7DFD1]">
+                <div className="p-6 sm:p-8 text-center border-b border-brand-line">
                   {practiceMode && (
                     <span className="inline-block rounded-full bg-[#F3EDF7] text-[#765887] px-3 py-1 text-xs font-bold mb-3">
                       Practice round
                     </span>
                   )}
 
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                     Your Score
                   </p>
 
-                  <p className="text-5xl font-bold text-[#3F5D46] mt-2">
+                  <p className="text-5xl font-bold text-brand-sage mt-2">
                     {score}/{testWords.length}
                   </p>
 
@@ -841,14 +841,14 @@ export default function SpellingsPage() {
 
                   {isParent && children.length > 0 && (
                     <div className="mb-5">
-                      <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                      <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                         Save score for
                       </label>
 
                       <select
                         value={saveChildId ?? ""}
                         onChange={e => setSaveChildId(Number(e.target.value))}
-                        className="w-full rounded-xl border border-[#D9D1C4] bg-white px-4 py-3 text-sm font-semibold text-[#2E342F] outline-none focus:border-[#8FA382]"
+                        className="w-full rounded-xl border border-[#D9D1C4] bg-white px-4 py-3 text-sm font-semibold text-[#2E342F] outline-none focus:border-brand-softsage"
                       >
                         {children.map(child => (
                           <option key={child.id} value={child.id}>
@@ -863,7 +863,7 @@ export default function SpellingsPage() {
                     <p className="text-sm text-[#6E5A46] text-center mb-5">
                       <Link
                         href="/parent/children"
-                        className="font-bold text-[#3F5D46] hover:underline"
+                        className="font-bold text-brand-sage hover:underline"
                       >
                         Add a child account
                       </Link>{" "}
@@ -876,7 +876,7 @@ export default function SpellingsPage() {
                       <button
                         onClick={handleSave}
                         disabled={saving || (isParent && !saveChildId)}
-                        className="flex-1 py-3 rounded-xl bg-[#3F5D46] text-white font-bold hover:bg-[#354F3B] disabled:opacity-50"
+                        className="flex-1 py-3 rounded-xl bg-brand-sage text-white font-bold hover:bg-brand-sagedark disabled:opacity-50"
                       >
                         {saving ? "Saving..." : "Save Score"}
                       </button>
@@ -906,8 +906,8 @@ export default function SpellingsPage() {
 
             {isParent && testView === "idle" && results.length > 0 && (
               <section className="brand-card overflow-hidden">
-                <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1]">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                <div className="px-5 sm:px-6 py-5 border-b border-brand-line">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                     Results
                   </p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
@@ -969,7 +969,7 @@ export default function SpellingsPage() {
                               pct === 100
                                 ? "bg-emerald-100 text-emerald-700"
                                 : pct >= 70
-                                ? "bg-[#E8EDE4] text-[#3F5D46]"
+                                ? "bg-brand-tint text-brand-sage"
                                 : "bg-[#FCE9DF] text-[#A65D3D]"
                             }`}
                           >
@@ -995,7 +995,7 @@ export default function SpellingsPage() {
                                       ? "bg-emerald-100 text-emerald-700"
                                       : delta < 0
                                       ? "bg-[#FBEFEB] text-[#A64F42]"
-                                      : "bg-[#F7F2E8] text-[#6E5A46]"
+                                      : "bg-brand-cream text-[#6E5A46]"
                                   }`}
                                 >
                                   {delta > 0
@@ -1008,7 +1008,7 @@ export default function SpellingsPage() {
                               )}
                             </div>
 
-                            <p className="text-xs text-[#8FA382] mt-1">
+                            <p className="text-xs text-brand-softsage mt-1">
                               {result.score}/{result.total} correct ·{" "}
                               {format(takenAt, "d MMM, HH:mm")}
                             </p>

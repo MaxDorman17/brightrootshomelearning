@@ -44,7 +44,7 @@ const BADGES: Badge[] = [
   { category: "Lessons", id: "five",         icon: "⚡", title: "Getting Going",         desc: "Completed 5 lessons",                       color: "from-yellow-400 to-amber-500",    check: d => d.totalComplete >= 5 },
   { category: "Lessons", id: "ten",          icon: "💪", title: "Double Digits",         desc: "Completed 10 lessons",                      color: "from-orange-400 to-orange-500",   check: d => d.totalComplete >= 10 },
   { category: "Lessons", id: "twentyfive",   icon: "📚", title: "Bookworm",              desc: "Completed 25 lessons",                      color: "from-green-400 to-emerald-500",   check: d => d.totalComplete >= 25 },
-  { category: "Lessons", id: "fifty",        icon: "🌟", title: "Star Pupil",            desc: "Completed 50 lessons",                      color: "from-[#2F5D3A] to-[#6EA76E]",    check: d => d.totalComplete >= 50 },
+  { category: "Lessons", id: "fifty",        icon: "🌟", title: "Star Pupil",            desc: "Completed 50 lessons",                      color: "from-brand-deep to-brand-leaf",    check: d => d.totalComplete >= 50 },
   { category: "Lessons", id: "hundred",      icon: "👑", title: "Century!",              desc: "Completed 100 lessons",                     color: "from-amber-400 to-yellow-500",    check: d => d.totalComplete >= 100 },
   { category: "Lessons", id: "seventy_five", icon: "🌈", title: "Three Quarters",        desc: "Completed 75 lessons",                      color: "from-violet-400 to-purple-500",   check: d => d.totalComplete >= 75 },
   { category: "Lessons", id: "one_fifty",    icon: "💎", title: "Diamond Student",       desc: "Completed 150 lessons",                     color: "from-cyan-400 to-blue-500",       check: d => d.totalComplete >= 150 },
@@ -79,8 +79,8 @@ const BADGES: Badge[] = [
   { category: "Coding", id: "scratch_star", icon: "🐱", title: "Scratch Star",          desc: "Completed all Scratch lessons",             color: "from-orange-400 to-amber-500",    check: d => SCRATCH_IDS.every(id => d.coding.has(id)) },
   { category: "Coding", id: "codeorg",      icon: "🕹️", title: "Code.org Champion",    desc: "Completed all Hour of Code lessons",        color: "from-blue-400 to-blue-600",       check: d => CODEORG_IDS.every(id => d.coding.has(id)) },
   { category: "Coding", id: "pythonista",   icon: "🐍", title: "Pythonista",            desc: "Completed all Python lessons",              color: "from-green-500 to-emerald-600",   check: d => PYTHON_IDS.every(id => d.coding.has(id)) },
-  { category: "Coding", id: "web_dev",      icon: "🌐", title: "Web Developer",         desc: "Completed all Web Dev lessons",             color: "from-[#6EA76E] to-[#2F5D3A]",    check: d => WEB_IDS.every(id => d.coding.has(id)) },
-  { category: "Coding", id: "full_coding",  icon: "🚀", title: "Future Coder",          desc: "Completed the entire coding curriculum",    color: "from-[#2F5D3A] to-[#7A5C3E]",    check: d => d.coding.size >= 23 },
+  { category: "Coding", id: "web_dev",      icon: "🌐", title: "Web Developer",         desc: "Completed all Web Dev lessons",             color: "from-brand-leaf to-brand-deep",    check: d => WEB_IDS.every(id => d.coding.has(id)) },
+  { category: "Coding", id: "full_coding",  icon: "🚀", title: "Future Coder",          desc: "Completed the entire coding curriculum",    color: "from-brand-deep to-[#7A5C3E]",    check: d => d.coding.size >= 23 },
 
   // --- Polish / Duolingo ---
   { category: "Languages", id: "dzien_dobry",  icon: "🇵🇱", title: "Dzień Dobry!",          desc: "Logged your first Polish practice session",  color: "from-red-500 to-rose-600",         check: d => d.polishSessions >= 1 },
@@ -241,7 +241,7 @@ export default function AchievementsPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">More</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">More</p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Achievements</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Celebrate milestones, learning streaks, subject progress and special achievements.
@@ -250,7 +250,7 @@ export default function AchievementsPage() {
 
             {role === "parent" && children.length > 0 && (
               <div className="brand-card px-4 py-3 flex items-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Viewing</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Viewing</span>
                 <select
                   value={selectedChildId ?? ""}
                   onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
@@ -270,7 +270,7 @@ export default function AchievementsPage() {
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               <div className="brand-card p-4">
-                <p className="text-2xl font-bold text-[#3F5D46]">{earned.length}</p>
+                <p className="text-2xl font-bold text-brand-sage">{earned.length}</p>
                 <p className="text-xs font-semibold text-[#6E5A46] mt-1">Badges earned</p>
               </div>
               <div className="brand-card p-4">
@@ -282,7 +282,7 @@ export default function AchievementsPage() {
                 <p className="text-xs font-semibold text-[#6E5A46] mt-1">Day streak</p>
               </div>
               <div className="brand-card p-4">
-                <p className="text-2xl font-bold text-[#8FA382]">{submitted}</p>
+                <p className="text-2xl font-bold text-brand-softsage">{submitted}</p>
                 <p className="text-xs font-semibold text-[#6E5A46] mt-1">Work submitted</p>
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function AchievementsPage() {
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {streak > 0 && (
                   <div className="brand-card p-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Learning streak</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Learning streak</p>
                     <div className="flex items-end justify-between gap-4 mt-2">
                       <div>
                         <p className="text-2xl font-bold text-[#2E342F]">{streak} days</p>
@@ -306,7 +306,7 @@ export default function AchievementsPage() {
 
                 {polishSessions.length > 0 && (
                   <div className="brand-card p-5">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Languages</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Languages</p>
                     <div className="flex items-end justify-between gap-4 mt-2">
                       <div>
                         <p className="text-2xl font-bold text-[#2E342F]">{polishSessions.length} sessions</p>
@@ -334,8 +334,8 @@ export default function AchievementsPage() {
                       onClick={() => setBadgeView(value)}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                         badgeView === value
-                          ? "bg-[#3F5D46] border-[#3F5D46] text-white"
-                          : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                          ? "bg-brand-sage border-brand-sage text-white"
+                          : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
                       }`}
                     >
                       {label}
@@ -350,8 +350,8 @@ export default function AchievementsPage() {
                       onClick={() => setBadgeCategory(cat)}
                       className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
                         badgeCategory === cat
-                          ? "bg-[#E8F0E8] border-[#8FA382] text-[#3F5D46]"
-                          : "bg-[#FFFDF8] border-[#E7DFD1] text-[#8A7A69] hover:border-[#8FA382]"
+                          ? "bg-brand-tint border-brand-softsage text-brand-sage"
+                          : "bg-brand-white border-brand-line text-[#8A7A69] hover:border-brand-softsage"
                       }`}
                     >
                       {cat}
@@ -364,14 +364,14 @@ export default function AchievementsPage() {
             <div className="brand-card p-6">
               <div className="flex items-end justify-between gap-4 mb-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                     {badgeView === "earned" ? "Trophy cabinet" : badgeView === "locked" ? "Still to unlock" : "Badge collection"}
                   </p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
                     {badgeView === "earned" ? "Earned achievements" : badgeView === "locked" ? "Keep going" : "All achievements"}
                   </h2>
                 </div>
-                <span className="text-sm font-bold text-[#3F5D46]">{visibleBadges.length}</span>
+                <span className="text-sm font-bold text-brand-sage">{visibleBadges.length}</span>
               </div>
 
               {visibleBadges.length === 0 ? (
@@ -387,12 +387,12 @@ export default function AchievementsPage() {
                         key={b.id}
                         className={`rounded-2xl border p-4 text-center transition-all ${
                           isEarned
-                            ? "bg-[#FFFDF8] border-[#D8D1C4]"
+                            ? "bg-brand-white border-[#D8D1C4]"
                             : "bg-[#FBF8F1] border-dashed border-[#DDD3C4]"
                         } ${newlyUnlocked.includes(b.id) ? "ring-2 ring-[#E3B554]" : ""}`}
                       >
                         <div className={`mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl text-3xl ${
-                          isEarned ? "bg-[#F7F2E8]" : "bg-[#EFE9DF] grayscale opacity-50"
+                          isEarned ? "bg-brand-cream" : "bg-[#EFE9DF] grayscale opacity-50"
                         }`}>
                           {b.icon}
                         </div>
@@ -402,7 +402,7 @@ export default function AchievementsPage() {
                         <p className="mt-1 text-xs leading-snug text-[#8A7A69]">{b.desc}</p>
                         <div className="mt-3">
                           <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
-                            isEarned ? "bg-[#E8F0E8] text-[#3F5D46]" : "bg-[#F0ECE6] text-[#8A7A69]"
+                            isEarned ? "bg-brand-tint text-brand-sage" : "bg-[#F0ECE6] text-[#8A7A69]"
                           }`}>
                             {isEarned ? "Earned" : "Locked"}
                           </span>

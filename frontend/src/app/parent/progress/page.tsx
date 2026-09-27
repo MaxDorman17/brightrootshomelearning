@@ -21,9 +21,9 @@ const PAGE_SIZE = 12;
 
 const subjectColor = (subj: string) => {
   const colors: Record<string, string> = {
-    Maths: "bg-[#EAF0E7] text-[#3F5D46]",
+    Maths: "bg-brand-tint text-brand-sage",
     English: "bg-[#F3ECE8] text-[#765D52]",
-    Science: "bg-[#E8F0E8] text-[#3F5D46]",
+    Science: "bg-brand-tint text-brand-sage",
     History: "bg-[#F8F0DA] text-[#8A6A22]",
     Geography: "bg-[#EAF2EC] text-[#48654E]",
     Computing: "bg-[#ECECF5] text-[#5C607D]",
@@ -202,7 +202,7 @@ export default function ProgressPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">
@@ -215,7 +215,7 @@ export default function ProgressPage() {
 
             {children.length > 0 && (
               <div className="brand-card px-4 py-3 flex items-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Viewing</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Viewing</span>
                 <select
                   value={selectedChildId ?? ""}
                   onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
@@ -239,7 +239,7 @@ export default function ProgressPage() {
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">Work submitted</p>
           </div>
           <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#3F5D46]">{feedbackSent}</p>
+            <p className="text-2xl font-bold text-brand-sage">{feedbackSent}</p>
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">Feedback sent</p>
           </div>
           <div className="brand-card p-4">
@@ -262,8 +262,8 @@ export default function ProgressPage() {
                 onClick={() => setFilter(value)}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                   filter === value
-                    ? "bg-[#3F5D46] border-[#3F5D46] text-white"
-                    : "bg-[#FFFDF8] border-[#E7DFD1] text-[#6E5A46] hover:border-[#8FA382]"
+                    ? "bg-brand-sage border-brand-sage text-white"
+                    : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {label}
@@ -276,7 +276,7 @@ export default function ProgressPage() {
           <div className="brand-card p-12 text-center text-[#8A7A69]">Loading review inbox…</div>
         ) : filtered.length === 0 ? (
           <div className="brand-card p-10 text-center">
-            <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Review Inbox</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Review Inbox</p>
             <h2 className="text-xl font-bold text-[#2E342F] mt-2">
               {filter === "review" ? "Nothing waiting for review" : "No lessons found"}
             </h2>
@@ -302,7 +302,7 @@ export default function ProgressPage() {
                   key={entry.id}
                   id={`entry-${entry.id}`}
                   className={`brand-card p-6 transition-all ${
-                    highlightId === entry.id ? "ring-2 ring-[#8FA382]" : ""
+                    highlightId === entry.id ? "ring-2 ring-brand-softsage" : ""
                   }`}
                 >
                   <div className="flex flex-col lg:flex-row lg:items-start gap-5">
@@ -327,12 +327,12 @@ export default function ProgressPage() {
                         )}
 
                         {entry.is_complete && !needsReview && (
-                          <span className="text-xs px-2.5 py-1 rounded-full bg-[#E8F0E8] text-[#3F5D46] font-bold">
+                          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-tint text-brand-sage font-bold">
                             Completed
                           </span>
                         )}
                         {isReviewed && entryFeedback.length === 0 && (
-                          <span className="text-xs px-2.5 py-1 rounded-full bg-[#E8F0E8] text-[#3F5D46] font-bold">
+                          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-tint text-brand-sage font-bold">
                             Reviewed
                           </span>
                         )}
@@ -346,7 +346,7 @@ export default function ProgressPage() {
                             href={entry.lesson.lesson_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm font-bold text-[#3F5D46] hover:underline"
+                            className="text-sm font-bold text-brand-sage hover:underline"
                           >
                             Open lesson
                           </a>
@@ -365,8 +365,8 @@ export default function ProgressPage() {
                       </div>
 
                       {entry.completed_note && (
-                        <div className="rounded-xl bg-[#F7F2E8] border border-[#E7DFD1] p-4 mt-4">
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                        <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-4">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                             Child note
                           </p>
                           <p className="text-sm text-[#6E5A46] mt-1 leading-relaxed">
@@ -383,7 +383,7 @@ export default function ProgressPage() {
 
                       {entryFeedback.length > 0 && (
                         <div className="mt-5">
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                             Feedback history
                           </p>
 
@@ -391,7 +391,7 @@ export default function ProgressPage() {
                             {entryFeedback.map(fb => (
                               <div
                                 key={fb.id}
-                                className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-3 flex items-start gap-3"
+                                className="rounded-xl border border-brand-line bg-brand-white p-3 flex items-start gap-3"
                               >
                                 {fb.emoji && (
                                   <span className="text-xl shrink-0">{fb.emoji}</span>
@@ -420,8 +420,8 @@ export default function ProgressPage() {
 
                     <div className="lg:w-80 shrink-0">
                       {isOpen ? (
-                        <div className="rounded-2xl bg-[#F7F2E8] border border-[#E7DFD1] p-4">
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                        <div className="rounded-2xl bg-brand-cream border border-brand-line p-4">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                             Write feedback
                           </p>
 
@@ -432,7 +432,7 @@ export default function ProgressPage() {
                                 onClick={() => setFeedbackEmoji(e)}
                                 className={`text-xl rounded-lg p-1.5 transition-all ${
                                   feedbackEmoji === e
-                                    ? "bg-[#E8F0E8] ring-1 ring-[#8FA382]"
+                                    ? "bg-brand-tint ring-1 ring-brand-softsage"
                                     : "hover:bg-[#EEE6D9]"
                                 }`}
                               >
@@ -447,21 +447,21 @@ export default function ProgressPage() {
                             onChange={e => setFeedbackMsg(e.target.value)}
                             placeholder="What went well? What should they try next?"
                             autoFocus
-                            className="w-full mt-3 text-sm border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-3 py-3 focus:outline-none focus:border-[#8FA382] resize-none"
+                            className="w-full mt-3 text-sm border border-[#D8D1C4] bg-brand-white rounded-xl px-3 py-3 focus:outline-none focus:border-brand-softsage resize-none"
                           />
 
                           <div className="flex gap-2 mt-3">
                             <button
                               onClick={() => handleSendFeedback(entry.id)}
                               disabled={sendingFeedback || !feedbackMsg.trim()}
-                              className="flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50"
+                              className="flex-1 px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50"
                             >
                               {sendingFeedback ? "Sending…" : "Send feedback"}
                             </button>
 
                             <button
                               onClick={() => setFeedbackOpen(null)}
-                              className="px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+                              className="px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
                             >
                               Cancel
                             </button>
@@ -471,9 +471,9 @@ export default function ProgressPage() {
                         <div className={`rounded-2xl border p-4 ${
                           needsReview
                             ? "bg-[#FFF8F4] border-[#E7CFC2]"
-                            : "bg-[#F7F2E8] border-[#E7DFD1]"
+                            : "bg-brand-cream border-brand-line"
                         }`}>
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                             Review
                           </p>
                           <h3 className="text-base font-bold text-[#2E342F] mt-1">
@@ -503,7 +503,7 @@ export default function ProgressPage() {
                                 setFeedbackMsg("");
                                 setFeedbackEmoji("⭐");
                               }}
-                              className="w-full px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B]"
+                              className="w-full px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark"
                             >
                               {entryFeedback.length > 0 ? "Add feedback" : "Leave feedback"}
                             </button>
@@ -513,7 +513,7 @@ export default function ProgressPage() {
                                 <button
                                   onClick={() => handleMarkUnreviewed(entry.id)}
                                   disabled={reviewingEntryId === entry.id}
-                                  className="w-full px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382] disabled:opacity-50"
+                                  className="w-full px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage disabled:opacity-50"
                                 >
                                   {reviewingEntryId === entry.id ? "Saving…" : "Mark as needing review"}
                                 </button>
@@ -521,7 +521,7 @@ export default function ProgressPage() {
                                 <button
                                   onClick={() => handleMarkReviewed(entry.id)}
                                   disabled={reviewingEntryId === entry.id}
-                                  className="w-full px-4 py-2.5 rounded-xl border border-[#8FA382] bg-[#E8F0E8] text-[#3F5D46] text-sm font-bold hover:bg-[#DDE9DC] disabled:opacity-50"
+                                  className="w-full px-4 py-2.5 rounded-xl border border-brand-softsage bg-brand-tint text-brand-sage text-sm font-bold hover:bg-brand-mist disabled:opacity-50"
                                 >
                                   {reviewingEntryId === entry.id ? "Saving…" : "Mark reviewed · no feedback"}
                                 </button>
@@ -548,7 +548,7 @@ export default function ProgressPage() {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={safePage === 0}
-                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold disabled:opacity-40"
+                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-sm font-bold disabled:opacity-40"
               >
                 Previous
               </button>
@@ -560,7 +560,7 @@ export default function ProgressPage() {
               <button
                 onClick={() => setPage(p => Math.min(pageCount - 1, p + 1))}
                 disabled={safePage >= pageCount - 1}
-                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold disabled:opacity-40"
+                className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-sm font-bold disabled:opacity-40"
               >
                 Next
               </button>

@@ -2,9 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Family themes. Values are "R G B" so Tailwind opacity modifiers (e.g. /20) keep working.
+   Sage is the original Bright Roots look and the default. */
+:root,
+[data-theme="sage"] {
+  --brand-sage: 63 93 70;
+  --brand-sagedark: 53 79 59;
+  --brand-deep: 47 93 58;
+  --brand-softsage: 143 163 130;
+  --brand-leaf: 110 167 110;
+  --brand-lime: 168 198 122;
+  --brand-tint: 232 240 232;
+  --brand-mist: 217 225 212;
+  --brand-wash: 244 247 241;
+  --brand-cream: 247 242 232;
+  --brand-white: 255 253 248;
+  --brand-line: 231 223 209;
+}
+
+[data-theme="ocean"] {
+  --brand-sage: 47 95 122;
+  --brand-sagedark: 39 79 102;
+  --brand-deep: 31 81 112;
+  --brand-softsage: 118 156 178;
+  --brand-leaf: 79 155 196;
+  --brand-lime: 140 199 219;
+  --brand-tint: 227 238 244;
+  --brand-mist: 207 224 234;
+  --brand-wash: 241 246 249;
+  --brand-cream: 240 244 246;
+  --brand-white: 253 254 254;
+  --brand-line: 220 227 230;
+}
+
+[data-theme="sunshine"] {
+  --brand-sage: 154 91 18;
+  --brand-sagedark: 127 74 14;
+  --brand-deep: 138 84 16;
+  --brand-softsage: 194 138 42;
+  --brand-leaf: 229 168 35;
+  --brand-lime: 244 205 98;
+  --brand-tint: 251 240 217;
+  --brand-mist: 243 224 181;
+  --brand-wash: 253 248 236;
+  --brand-cream: 251 245 230;
+  --brand-white: 255 253 246;
+  --brand-line: 237 223 192;
+}
+
+[data-theme="berry"] {
+  --brand-sage: 122 62 98;
+  --brand-sagedark: 99 48 79;
+  --brand-deep: 107 47 85;
+  --brand-softsage: 180 130 160;
+  --brand-leaf: 178 84 138;
+  --brand-lime: 221 163 196;
+  --brand-tint: 245 230 239;
+  --brand-mist: 235 211 224;
+  --brand-wash: 250 243 247;
+  --brand-cream: 248 241 243;
+  --brand-white: 255 252 253;
+  --brand-line: 234 220 226;
+}
+
 body {
   font-family: 'Nunito', 'Segoe UI', sans-serif;
-  background: #F7F2E8;
+  background: rgb(var(--brand-cream));
   color: #2E342F;
   min-height: 100vh;
 }

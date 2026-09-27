@@ -25,9 +25,9 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const SUBJECT_COLORS: Record<string, string> = {
-  Maths: "bg-[#EAF0E7] border-[#D7E0D3] text-[#3F5D46]",
+  Maths: "bg-brand-tint border-brand-mist text-brand-sage",
   English: "bg-[#F3ECE8] border-[#E5D9D1] text-[#765D52]",
-  Science: "bg-[#E8F0E8] border-[#D1DED0] text-[#3F5D46]",
+  Science: "bg-brand-tint border-brand-mist text-brand-sage",
   History: "bg-[#F8F0DA] border-[#EADBAE] text-[#8A6A22]",
   Geography: "bg-[#EAF2EC] border-[#D4E1D6] text-[#48654E]",
   Computing: "bg-[#ECECF5] border-[#DADCEC] text-[#5C607D]",
@@ -311,7 +311,7 @@ export default function ChildDashboard() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-white rounded-3xl px-8 py-6 shadow-2xl text-center">
               <p className="text-5xl mb-2">⭐</p>
-              <p className="text-xl font-extrabold text-[#2F5D3A]">Lesson done!</p>
+              <p className="text-xl font-extrabold text-brand-deep">Lesson done!</p>
               <p className="text-sm text-gray-500 font-semibold mt-1">Keep it up! 🎉</p>
             </div>
           </div>
@@ -321,7 +321,7 @@ export default function ChildDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {/* Hero header */}
-        <div className="bg-gradient-to-br from-[#2F5D3A] via-[#3d7a4e] to-[#6EA76E] rounded-3xl p-5 mb-4 text-white shadow-xl shadow-green-900/30">
+        <div className="bg-gradient-to-br from-brand-deep via-brand-leaf to-brand-leaf rounded-3xl p-5 mb-4 text-white shadow-xl shadow-green-900/30">
           <div className="flex items-center gap-5 flex-wrap">
             <div className="flex-1 min-w-0">
               <p className="text-white/60 text-xs font-bold uppercase tracking-wider">{mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}</p>
@@ -396,7 +396,7 @@ export default function ChildDashboard() {
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all ${
                     goal.is_complete
                       ? "bg-emerald-50 border-2 border-emerald-200"
-                      : "bg-gray-50 border-2 border-gray-200 hover:border-[#A8C67A]"
+                      : "bg-gray-50 border-2 border-gray-200 hover:border-brand-lime"
                   }`}
                 >
                   <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold transition-all ${
@@ -424,20 +424,20 @@ export default function ChildDashboard() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setWeekStart(d => addDays(d, -7))}
-                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage font-bold hover:border-brand-softsage"
                 aria-label="Previous week"
               >
                 ←
               </button>
 
               <div className="px-2 sm:px-3">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8FA382]">Week calendar</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-brand-softsage">Week calendar</p>
                 <p className="text-sm font-bold text-[#2E342F] mt-0.5">{weekLabel}</p>
               </div>
 
               <button
                 onClick={() => setWeekStart(d => addDays(d, 7))}
-                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#3F5D46] font-bold hover:border-[#8FA382]"
+                className="w-10 h-10 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage font-bold hover:border-brand-softsage"
                 aria-label="Next week"
               >
                 →
@@ -445,7 +445,7 @@ export default function ChildDashboard() {
 
               <button
                 onClick={() => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }))}
-                className="px-3 py-2 text-xs font-bold rounded-xl bg-[#E8F0E8] text-[#3F5D46]"
+                className="px-3 py-2 text-xs font-bold rounded-xl bg-brand-tint text-brand-sage"
               >
                 This week
               </button>
@@ -454,11 +454,11 @@ export default function ChildDashboard() {
             <div className="lg:w-72">
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="font-semibold text-[#6E5A46]">Week progress</span>
-                <span className="font-bold text-[#3F5D46]">{weekDoneCount}/{weekTotalCount} complete</span>
+                <span className="font-bold text-brand-sage">{weekDoneCount}/{weekTotalCount} complete</span>
               </div>
               <div className="h-2.5 rounded-full bg-[#EEE8DD] overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#8FA382] transition-all"
+                  className="h-full rounded-full bg-brand-softsage transition-all"
                   style={{ width: `${weekPercent}%` }}
                 />
               </div>
@@ -491,19 +491,19 @@ export default function ChildDashboard() {
                   onClick={() => setSelectedDayIndex(dayIndex)}
                   className={`text-left rounded-2xl border overflow-hidden transition-all ${
                     active
-                      ? "border-[#3F5D46] ring-2 ring-[#DCE8DC]"
+                      ? "border-brand-sage ring-2 ring-brand-mist"
                       : dayOff
                       ? "border-[#F0D4A8]"
-                      : "border-[#E7DFD1] hover:border-[#8FA382]"
+                      : "border-brand-line hover:border-brand-softsage"
                   }`}
                 >
                   <div className={`px-3 py-3 ${
                     active
-                      ? "bg-[#3F5D46] text-white"
+                      ? "bg-brand-sage text-white"
                       : dayOff
                       ? "bg-[#FFF3E3] text-[#8A624B]"
                       : today
-                      ? "bg-[#E8F0E8] text-[#3F5D46]"
+                      ? "bg-brand-tint text-brand-sage"
                       : "bg-[#F7F3EA] text-[#2E342F]"
                   }`}>
                     <div className="flex items-start justify-between gap-2">
@@ -513,7 +513,7 @@ export default function ChildDashboard() {
                       </div>
                       {today && (
                         <span className={`text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full ${
-                          active ? "bg-white/15 text-white" : "bg-white text-[#3F5D46]"
+                          active ? "bg-white/15 text-white" : "bg-white text-brand-sage"
                         }`}>
                           Today
                         </span>
@@ -525,7 +525,7 @@ export default function ChildDashboard() {
                   </div>
 
                   <div className={`p-2.5 min-h-[190px] space-y-2 ${
-                    dayOff ? "bg-[#FFF9F1]" : "bg-[#FFFDF8]"
+                    dayOff ? "bg-[#FFF9F1]" : "bg-brand-white"
                   }`}>
                     {dayOff ? (
                       <div className="h-full min-h-[160px] flex flex-col items-center justify-center text-center">
@@ -542,13 +542,13 @@ export default function ChildDashboard() {
                           key={entry.id}
                           className={`rounded-xl border px-2.5 py-2 ${
                             entry.is_complete
-                              ? "bg-[#F1F6EF] border-[#D1DED0]"
-                              : "bg-white border-[#E7DFD1]"
+                              ? "bg-brand-wash border-brand-mist"
+                              : "bg-white border-brand-line"
                           }`}
                         >
                           <div className="flex items-start gap-2">
                             <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                              entry.is_complete ? "bg-[#5F8A68]" : subjectDot[entry.lesson.subject] || "bg-gray-400"
+                              entry.is_complete ? "bg-brand-leaf" : subjectDot[entry.lesson.subject] || "bg-gray-400"
                             }`} />
                             <div className="min-w-0">
                               <p className="text-[10px] font-bold uppercase tracking-wide text-[#8A7A69]">
@@ -572,7 +572,7 @@ export default function ChildDashboard() {
             <div className="brand-card p-5">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Daily plan</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Daily plan</p>
                   <h2 className="text-xl font-bold text-[#2E342F] mt-1">
                     {selectedDayName}, {format(selectedDate, "d MMMM")}
                   </h2>
@@ -587,7 +587,7 @@ export default function ChildDashboard() {
 
                 {!selectedDayOff && selectedDayEntries.length > 0 && (
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-[#3F5D46]">{selectedDoneCount}/{selectedDayEntries.length}</p>
+                    <p className="text-2xl font-bold text-brand-sage">{selectedDoneCount}/{selectedDayEntries.length}</p>
                     <p className="text-xs text-[#8A7A69]">complete</p>
                   </div>
                 )}
@@ -617,13 +617,13 @@ export default function ChildDashboard() {
                         onClick={() => openModal(entry)}
                         className={`w-full text-left rounded-2xl border p-4 transition-all hover:shadow-md ${
                           entry.is_complete
-                            ? "bg-[#F2F7F0] border-[#D1DED0]"
+                            ? "bg-brand-wash border-brand-mist"
                             : colorClass
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <span className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${
-                            entry.is_complete ? "bg-[#5F8A68]" : dotClass
+                            entry.is_complete ? "bg-brand-leaf" : dotClass
                           }`} />
 
                           <div className="flex-1 min-w-0">
@@ -642,7 +642,7 @@ export default function ChildDashboard() {
 
                             <div className="flex flex-wrap items-center gap-2 mt-3">
                               {entry.is_complete ? (
-                                <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-[#E1EEE0] text-[#3F5D46]">
+                                <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-brand-mist text-brand-sage">
                                   ✓ Complete
                                 </span>
                               ) : (
@@ -655,7 +655,7 @@ export default function ChildDashboard() {
                             </div>
                           </div>
 
-                          <span className="text-[#8FA382] font-bold">→</span>
+                          <span className="text-brand-softsage font-bold">→</span>
                         </div>
                       </button>
                     );
@@ -677,12 +677,12 @@ export default function ChildDashboard() {
           <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-extrabold text-gray-900">📚 Reading</h2>
-              <Link href="/reading-log" className="text-sm text-[#6EA76E] hover:text-[#2F5D3A] font-bold">
+              <Link href="/reading-log" className="text-sm text-brand-leaf hover:text-brand-deep font-bold">
                 Go to Reading Log →
               </Link>
             </div>
             <Link href="/reading-log"
-              className="block bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5 hover:shadow-md hover:border-[#A8C67A]/60 transition-all">
+              className="block bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5 hover:shadow-md hover:border-brand-lime/60 transition-all">
               <div className="flex items-center gap-3">
                 <span className="text-3xl shrink-0">
                   {readingBook.status === "completed" ? "✅" : readingBook.status === "reading" ? "📖" : "📋"}
@@ -713,7 +713,7 @@ export default function ChildDashboard() {
             <div className="mt-8">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-extrabold text-gray-900">📋 Extra Work</h2>
-                <Link href="/child/extra-work" className="text-sm text-[#6EA76E] hover:text-[#2F5D3A] font-bold">
+                <Link href="/child/extra-work" className="text-sm text-brand-leaf hover:text-brand-deep font-bold">
                   See all →
                 </Link>
               </div>
@@ -726,7 +726,7 @@ export default function ChildDashboard() {
                       const overdue = parseISO(e.scheduled_date) < startOfDay(new Date());
                       return (
                         <button key={e.id} onClick={() => openModal(e)}
-                          className="w-full text-left flex items-center gap-3 rounded-xl px-3 py-2.5 bg-gray-50 hover:bg-[#A8C67A]/10 transition-colors">
+                          className="w-full text-left flex items-center gap-3 rounded-xl px-3 py-2.5 bg-gray-50 hover:bg-brand-lime/10 transition-colors">
                           <span className="w-5 h-5 rounded-full border-2 border-gray-300 shrink-0" />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5 flex-wrap">
@@ -800,7 +800,7 @@ export default function ChildDashboard() {
                 href={modal.entry.lesson.lesson_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-[#2F5D3A] hover:bg-[#6EA76E] text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
+                className="flex items-center gap-3 bg-brand-deep hover:bg-brand-leaf text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
               >
                 <span className="text-lg">▶</span>
                 Open Lesson
@@ -816,7 +816,7 @@ export default function ChildDashboard() {
                   href={ws.intro_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 bg-white border-2 border-[#A8C67A]/40 hover:bg-[#A8C67A]/10 text-[#2F5D3A] rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
+                  className="flex items-center gap-3 bg-white border-2 border-brand-lime/40 hover:bg-brand-lime/10 text-brand-deep rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
                 >
                   <span className="text-lg">📄</span>
                   Open Worksheet
@@ -846,7 +846,7 @@ export default function ChildDashboard() {
                   value={workUrl}
                   onChange={e => setWorkUrl(e.target.value)}
                   placeholder="https://…"
-                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] bg-white"
+                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-leaf bg-white"
                 />
                 <button
                   onClick={handleSubmitWork}
@@ -870,18 +870,18 @@ export default function ChildDashboard() {
                   value={note}
                   onChange={e => setNote(e.target.value)}
                   placeholder="What did you learn? What was tricky?"
-                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#6EA76E] resize-none bg-white"
+                  className="flex-1 text-sm border-2 border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-leaf resize-none bg-white"
                 />
                 <button
                   onClick={handleSaveNote}
                   disabled={savingNote || !note.trim()}
-                  className="text-sm px-3 py-2 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white rounded-xl font-bold shadow-sm disabled:opacity-40 self-start"
+                  className="text-sm px-3 py-2 bg-gradient-to-r from-brand-deep to-brand-leaf text-white rounded-xl font-bold shadow-sm disabled:opacity-40 self-start"
                 >
                   {savingNote ? "…" : "Save"}
                 </button>
               </div>
               {modal.entry.completed_note && (
-                <p className="text-xs text-[#6EA76E] font-bold mt-1.5">✓ Note saved!</p>
+                <p className="text-xs text-brand-leaf font-bold mt-1.5">✓ Note saved!</p>
               )}
             </div>
           </div>

@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-[#6EA76E]"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-brand-leaf"
               />
             </div>
 
@@ -95,7 +95,7 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-[#6EA76E]"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-brand-leaf"
               />
             </div>
 
@@ -114,7 +114,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || !token || !!message}
-              className="w-full rounded-xl bg-[#3F5D46] py-3 text-sm font-extrabold text-white disabled:opacity-60"
+              className="w-full rounded-xl bg-brand-sage py-3 text-sm font-extrabold text-white disabled:opacity-60"
             >
               {loading ? "Resetting..." : "Reset password"}
             </button>
@@ -122,7 +122,7 @@ export default function ResetPasswordPage() {
 
           <Link
             href="/login"
-            className="mt-5 block text-center text-sm font-bold text-[#3F5D46] hover:underline"
+            className="mt-5 block text-center text-sm font-bold text-brand-sage hover:underline"
           >
             Back to login
           </Link>

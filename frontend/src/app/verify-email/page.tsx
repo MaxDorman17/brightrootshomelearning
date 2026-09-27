@@ -64,7 +64,7 @@ export default function VerifyEmailPage() {
                 ? "bg-green-100 text-green-700"
                 : status === "error"
                 ? "bg-red-100 text-red-600"
-                : "bg-[#E8EDE4] text-[#3F5D46]"
+                : "bg-brand-tint text-brand-sage"
             }`}
           >
             {status === "success" ? "✓" : status === "error" ? "!" : "…"}
@@ -75,7 +75,7 @@ export default function VerifyEmailPage() {
           {status === "success" && (
             <Link
               href="/"
-              className="mt-6 inline-block rounded-xl bg-[#3F5D46] px-5 py-3 text-sm font-extrabold text-white"
+              className="mt-6 inline-block rounded-xl bg-brand-sage px-5 py-3 text-sm font-extrabold text-white"
             >
               Continue to Bright Roots
             </Link>
@@ -84,7 +84,7 @@ export default function VerifyEmailPage() {
           {status === "error" && (
             <Link
               href="/account"
-              className="mt-6 inline-block text-sm font-bold text-[#3F5D46] hover:underline"
+              className="mt-6 inline-block text-sm font-bold text-brand-sage hover:underline"
             >
               Return to account settings
             </Link>

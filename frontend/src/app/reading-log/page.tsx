@@ -16,21 +16,21 @@ const STATUS_CONFIG = {
     icon: "○",
     badge: "bg-[#EFE9DF] text-[#6E5A46]",
     bar: "bg-[#C8BBAA]",
-    card: "border-[#DDD3C4] bg-[#FFFDF8]",
+    card: "border-[#DDD3C4] bg-brand-white",
   },
   reading: {
     label: "Reading",
     icon: "◐",
-    badge: "bg-[#E5ECE2] text-[#3F5D46]",
-    bar: "bg-[#8FA382]",
-    card: "border-[#C9D4C5] bg-[#FFFDF8]",
+    badge: "bg-brand-tint text-brand-sage",
+    bar: "bg-brand-softsage",
+    card: "border-brand-mist bg-brand-white",
   },
   completed: {
     label: "Completed",
     icon: "✓",
-    badge: "bg-[#E7EFE7] text-[#3F5D46]",
-    bar: "bg-[#3F5D46]",
-    card: "border-[#BFD0BE] bg-[#FFFDF8]",
+    badge: "bg-brand-tint text-brand-sage",
+    bar: "bg-brand-sage",
+    card: "border-brand-mist bg-brand-white",
   },
 } as const;
 
@@ -320,7 +320,7 @@ export default function ReadingLogPage() {
             {isParent && (
               <button
                 onClick={openAdd}
-                className="inline-flex items-center justify-center rounded-xl bg-[#3F5D46] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#334C39]"
+                className="inline-flex items-center justify-center rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-sagedark"
               >
                 + Add Book
               </button>
@@ -335,8 +335,8 @@ export default function ReadingLogPage() {
               onClick={() => setSelectedChildId(null)}
               className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
                 !selectedChildId
-                  ? "border-[#3F5D46] bg-[#3F5D46] text-white"
-                  : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"
+                  ? "border-brand-sage bg-brand-sage text-white"
+                  : "border-[#D8D1C4] bg-brand-white text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
               All children
@@ -347,8 +347,8 @@ export default function ReadingLogPage() {
                 onClick={() => setSelectedChildId(c.id)}
                 className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
                   selectedChildId === c.id
-                    ? "border-[#3F5D46] bg-[#3F5D46] text-white"
-                    : "border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] hover:border-[#8FA382]"
+                    ? "border-brand-sage bg-brand-sage text-white"
+                    : "border-[#D8D1C4] bg-brand-white text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {c.username}
@@ -360,8 +360,8 @@ export default function ReadingLogPage() {
         {/* Stats strip */}
         <div className="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-4">
           {[
-            { label: "Total", value: stats.total, accent: "bg-[#3F5D46]" },
-            { label: "Reading", value: stats.reading, accent: "bg-[#8FA382]" },
+            { label: "Total", value: stats.total, accent: "bg-brand-sage" },
+            { label: "Reading", value: stats.reading, accent: "bg-brand-softsage" },
             { label: "Completed", value: stats.completed, accent: "bg-[#D88C64]" },
             { label: "Wishlist", value: stats.wishlist, accent: "bg-[#E3B554]" },
           ].map(s => (
@@ -382,7 +382,7 @@ export default function ReadingLogPage() {
                 <h2 className="text-lg font-extrabold text-[#2E342F] mt-1">Books finished in the last 6 months</h2>
               </div>
               {totalPages > 0 && (
-                <span className="self-start rounded-full bg-[#E5ECE2] px-3 py-1 text-xs font-bold text-[#3F5D46]">
+                <span className="self-start rounded-full bg-brand-tint px-3 py-1 text-xs font-bold text-brand-sage">
                   {totalPages.toLocaleString()} pages read
                 </span>
               )}
@@ -393,7 +393,7 @@ export default function ReadingLogPage() {
                   <span className="text-xs font-bold text-[#6E5A46]">{m.count > 0 ? m.count : ""}</span>
                   <div className="w-full flex flex-col justify-end" style={{ height: "72px" }}>
                     <div
-                      className={`w-full rounded-t-xl transition-all duration-500 ${m.count > 0 ? "bg-[#8FA382]" : "bg-[#EFE9DF]"}`}
+                      className={`w-full rounded-t-xl transition-all duration-500 ${m.count > 0 ? "bg-brand-softsage" : "bg-[#EFE9DF]"}`}
                       style={{ height: `${m.count === 0 ? 4 : Math.max(8, Math.round((m.count / maxBooks) * 72))}px` }}
                     />
                   </div>
@@ -404,7 +404,7 @@ export default function ReadingLogPage() {
           </div>
         )}
         {/* Filters + sort */}
-        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#DDD3C4] bg-[#FFFDF8] p-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[#DDD3C4] bg-brand-white p-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-2">
             {(["all", "reading", "completed", "wishlist"] as Status[]).map(f => (
               <button
@@ -412,8 +412,8 @@ export default function ReadingLogPage() {
                 onClick={() => setFilter(f)}
                 className={`rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
                   filter === f
-                    ? "border-[#3F5D46] bg-[#3F5D46] text-white"
-                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-[#8FA382]"
+                    ? "border-brand-sage bg-brand-sage text-white"
+                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {f === "all" ? "All" : `${STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].icon} ${STATUS_CONFIG[f as keyof typeof STATUS_CONFIG].label}`}
@@ -429,7 +429,7 @@ export default function ReadingLogPage() {
                 className={`rounded-xl border px-3 py-2 text-xs font-bold transition-colors ${
                   sort === k
                     ? "border-[#D88C64] bg-[#F5E4DA] text-[#9A5E3E]"
-                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-[#8FA382]"
+                    : "border-[#D8D1C4] bg-white text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {l}
@@ -466,7 +466,7 @@ export default function ReadingLogPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => openEdit(book)}
-                          className="rounded-lg border border-[#D8D1C4] bg-white px-2.5 py-1.5 text-xs font-bold text-[#3F5D46] transition-colors hover:border-[#8FA382] hover:bg-[#F7F2E8]"
+                          className="rounded-lg border border-[#D8D1C4] bg-white px-2.5 py-1.5 text-xs font-bold text-brand-sage transition-colors hover:border-brand-softsage hover:bg-brand-cream"
                         >
                           Edit
                         </button>
@@ -489,12 +489,12 @@ export default function ReadingLogPage() {
                   {/* Meta: pages + chapters + dates */}
                   <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[#7A6B5C]">
                     {book.pages && (
-                      <span className="rounded-full bg-[#F7F2E8] px-2.5 py-1">
+                      <span className="rounded-full bg-brand-cream px-2.5 py-1">
                         {book.pages} pages
                       </span>
                     )}
                     {book.total_chapters && (
-                      <span className="rounded-full bg-[#E5ECE2] px-2.5 py-1 text-[#3F5D46]">
+                      <span className="rounded-full bg-brand-tint px-2.5 py-1 text-brand-sage">
                         {book.total_chapters} chapters
                       </span>
                     )}
@@ -520,24 +520,24 @@ export default function ReadingLogPage() {
                     )}                  </div>
 
                   {book.total_chapters && book.total_chapters > 0 && (
-                    <div className="mt-4 rounded-xl border border-[#C9D4C5] bg-[#F7F2E8] p-3">
+                    <div className="mt-4 rounded-xl border border-brand-mist bg-brand-cream p-3">
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#3F5D46]">Reading Journey</p>
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-sage">Reading Journey</p>
                           <p className="text-xs text-gray-500 mt-0.5">
                             {book.completed_chapters ?? 0} of {book.total_chapters} chapters complete
                           </p>
                         </div>
                         <button
                           onClick={() => journeyBookId === book.id ? setJourneyBookId(null) : openJourney(book)}
-                          className="text-xs px-3 py-1.5 rounded-lg bg-[#3F5D46] text-white font-bold hover:bg-[#2F4B37] transition-colors"
+                          className="text-xs px-3 py-1.5 rounded-lg bg-brand-sage text-white font-bold hover:bg-brand-sagedark transition-colors"
                         >
                           {journeyBookId === book.id ? "Close Journey" : "Open Journey"}
                         </button>
                       </div>
                       <div className="mt-2 h-2 rounded-full bg-[#E6E0D5] overflow-hidden">
                         <div
-                          className="h-full bg-[#8FA382] transition-all"
+                          className="h-full bg-brand-softsage transition-all"
                           style={{ width: `${Math.min(100, ((book.completed_chapters ?? 0) / book.total_chapters) * 100)}%` }}
                         />
                       </div>
@@ -545,7 +545,7 @@ export default function ReadingLogPage() {
                   )}
 
                   {journeyBookId === book.id && book.total_chapters && book.total_chapters > 0 && (
-                    <div className="mt-3 rounded-2xl border border-[#8FA382]/30 bg-[#FFFDF8] p-4 space-y-5">
+                    <div className="mt-3 rounded-2xl border border-brand-softsage/30 bg-brand-white p-4 space-y-5">
                       <div>
                         <div className="flex items-center justify-between gap-3 mb-3">
                           <div>
@@ -554,7 +554,7 @@ export default function ReadingLogPage() {
                               Tick each chapter as you finish it.
                             </p>
                           </div>
-                          <span className="text-xs font-bold text-[#3F5D46] bg-[#8FA382]/15 px-2.5 py-1 rounded-full">
+                          <span className="text-xs font-bold text-brand-sage bg-brand-softsage/15 px-2.5 py-1 rounded-full">
                             {book.completed_chapters ?? 0}/{book.total_chapters}
                           </span>
                         </div>
@@ -570,8 +570,8 @@ export default function ReadingLogPage() {
                                 onClick={() => handleChapterProgress(book, chapter)}
                                 className={`min-w-10 h-10 px-2 rounded-xl text-sm font-bold border transition-colors ${
                                   complete
-                                    ? "bg-[#3F5D46] border-[#3F5D46] text-white"
-                                    : "bg-white border-[#8FA382]/40 text-[#3F5D46] hover:bg-[#8FA382]/10"
+                                    ? "bg-brand-sage border-brand-sage text-white"
+                                    : "bg-white border-brand-softsage/40 text-brand-sage hover:bg-brand-softsage/10"
                                 } disabled:cursor-default`}
                                 title={`Chapter ${chapter}`}
                               >
@@ -590,7 +590,7 @@ export default function ReadingLogPage() {
                           </p>
                         </div>
                         <div className="bg-white border border-[#D8D1C4] rounded-xl shadow-sm overflow-hidden">
-                          <div className="h-8 border-b border-[#E8E2D8] bg-[#F7F2E8] flex items-center px-3">
+                          <div className="h-8 border-b border-[#E8E2D8] bg-brand-cream flex items-center px-3">
                             <span className="text-[11px] font-semibold text-[#6E5A46]">Reading Journal</span>
                           </div>
                           <textarea
@@ -599,7 +599,7 @@ export default function ReadingLogPage() {
                             readOnly={isParent}
                             rows={12}
                             placeholder="Start writing here..."
-                            className="w-full px-5 py-4 text-sm leading-7 text-[#2E342F] bg-white focus:outline-none resize-y read-only:bg-[#FFFDF8]"
+                            className="w-full px-5 py-4 text-sm leading-7 text-[#2E342F] bg-white focus:outline-none resize-y read-only:bg-brand-white"
                           />
                         </div>
                       </div>
@@ -613,7 +613,7 @@ export default function ReadingLogPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                          <label className="block text-sm font-bold text-brand-sage mb-1.5">
                             1. What happened in this part of the book?
                           </label>
                           <textarea
@@ -622,12 +622,12 @@ export default function ReadingLogPage() {
                             readOnly={isParent}
                             rows={3}
                             placeholder="Write your answer..."
-                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-brand-softsage resize-y read-only:bg-brand-white"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                          <label className="block text-sm font-bold text-brand-sage mb-1.5">
                             2. What did you think about it and why?
                           </label>
                           <textarea
@@ -636,12 +636,12 @@ export default function ReadingLogPage() {
                             readOnly={isParent}
                             rows={3}
                             placeholder="Write your answer..."
-                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-brand-softsage resize-y read-only:bg-brand-white"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-bold text-[#3F5D46] mb-1.5">
+                          <label className="block text-sm font-bold text-brand-sage mb-1.5">
                             3. What do you think will happen next?
                           </label>
                           <textarea
@@ -650,7 +650,7 @@ export default function ReadingLogPage() {
                             readOnly={isParent}
                             rows={3}
                             placeholder="Write your answer..."
-                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-[#8FA382] resize-y read-only:bg-[#FFFDF8]"
+                            className="w-full border border-[#D8D1C4] rounded-xl px-3.5 py-3 text-sm bg-white focus:outline-none focus:border-brand-softsage resize-y read-only:bg-brand-white"
                           />
                         </div>
                       </div>
@@ -661,7 +661,7 @@ export default function ReadingLogPage() {
                             type="button"
                             onClick={() => handleSaveJourney(book)}
                             disabled={savingJourney}
-                            className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#2F4B37] disabled:opacity-50 transition-colors"
+                            className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50 transition-colors"
                           >
                             {savingJourney ? "Saving..." : "Save Reading Journey"}
                           </button>
@@ -685,13 +685,13 @@ export default function ReadingLogPage() {
                         value={noteText}
                         onChange={e => setNoteText(e.target.value)}
                         placeholder="What did you think?"
-                        className="w-full text-sm border-2 border-[#A8C67A]/40 rounded-xl px-3 py-1.5 focus:outline-none focus:border-[#6EA76E] font-medium bg-white resize-none"
+                        className="w-full text-sm border-2 border-brand-lime/40 rounded-xl px-3 py-1.5 focus:outline-none focus:border-brand-leaf font-medium bg-white resize-none"
                         autoFocus
                       />
                       <div className="flex gap-2 mt-1.5">
                         <button onClick={() => handleSaveNote(book.id)}
                           disabled={savingNote === book.id || !noteText.trim()}
-                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-[#2F5D3A] to-[#6EA76E] text-white rounded-lg font-bold disabled:opacity-40">
+                          className="text-xs px-3 py-1.5 bg-gradient-to-r from-brand-deep to-brand-leaf text-white rounded-lg font-bold disabled:opacity-40">
                           {savingNote === book.id ? "…" : "Save"}
                         </button>
                         <button onClick={() => setEditingNote(null)}
@@ -716,7 +716,7 @@ export default function ReadingLogPage() {
                                   {ws.url.startsWith("/api/reading/files/") ? (
                                     <button
                                       onClick={() => handleDownloadWorksheet(ws)}
-                                      className="flex-1 text-left text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
+                                      className="flex-1 text-left text-sm font-semibold text-brand-leaf hover:text-brand-deep hover:underline truncate"
                                     >
                                       📥 {ws.title}
                                     </button>
@@ -725,7 +725,7 @@ export default function ReadingLogPage() {
                                       href={ws.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex-1 text-sm font-semibold text-[#6EA76E] hover:text-[#2F5D3A] hover:underline truncate"
+                                      className="flex-1 text-sm font-semibold text-brand-leaf hover:text-brand-deep hover:underline truncate"
                                     >
                                       📄 {ws.title}
                                     </a>
@@ -752,12 +752,12 @@ export default function ReadingLogPage() {
                               <div className="flex gap-0.5 bg-gray-100 rounded-lg p-0.5">
                                 <button
                                   onClick={() => { setWsMode("url"); setWsFile(null); }}
-                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "url" ? "bg-white shadow-sm text-[#2F5D3A]" : "text-gray-500 hover:text-gray-700"}`}>
+                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "url" ? "bg-white shadow-sm text-brand-deep" : "text-gray-500 hover:text-gray-700"}`}>
                                   Paste link
                                 </button>
                                 <button
                                   onClick={() => { setWsMode("upload"); setWsUrl(""); }}
-                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "upload" ? "bg-white shadow-sm text-[#2F5D3A]" : "text-gray-500 hover:text-gray-700"}`}>
+                                  className={`flex-1 text-xs py-1 rounded-md font-semibold transition-all ${wsMode === "upload" ? "bg-white shadow-sm text-brand-deep" : "text-gray-500 hover:text-gray-700"}`}>
                                   Upload file
                                 </button>
                               </div>
@@ -766,7 +766,7 @@ export default function ReadingLogPage() {
                                 value={wsTitle}
                                 onChange={e => setWsTitle(e.target.value)}
                                 placeholder="Worksheet name"
-                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
+                                className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-leaf"
                               />
                               {wsMode === "url" ? (
                                 <input
@@ -774,7 +774,7 @@ export default function ReadingLogPage() {
                                   onChange={e => setWsUrl(e.target.value)}
                                   placeholder="https://… (Google Doc, PDF link, etc.)"
                                   type="url"
-                                  className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#6EA76E]"
+                                  className="w-full text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-leaf"
                                 />
                               ) : (
                                 <div>
@@ -782,7 +782,7 @@ export default function ReadingLogPage() {
                                     type="file"
                                     accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp"
                                     onChange={e => setWsFile(e.target.files?.[0] ?? null)}
-                                    className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#A8C67A]/20 file:text-[#2F5D3A] hover:file:bg-[#A8C67A]/30 cursor-pointer"
+                                    className="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-lime/20 file:text-brand-deep hover:file:bg-brand-lime/30 cursor-pointer"
                                   />
                                   <p className="text-[10px] text-gray-400 mt-0.5">PDF, Word, or image · max 10 MB</p>
                                 </div>
@@ -806,7 +806,7 @@ export default function ReadingLogPage() {
                           ) : (
                             <button
                               onClick={() => { setAddingWsFor(book.id); setWsTitle(""); setWsUrl(""); setWsMode("url"); setWsFile(null); }}
-                              className="text-xs font-bold text-[#6EA76E] hover:text-[#2F5D3A] transition-colors"
+                              className="text-xs font-bold text-brand-leaf hover:text-brand-deep transition-colors"
                             >
                               + Add worksheet
                             </button>
@@ -820,7 +820,7 @@ export default function ReadingLogPage() {
                       {book.status === "wishlist" && (
                         <button
                           onClick={() => handleStatusChange(book, "reading")}
-                          className="rounded-xl bg-[#3F5D46] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#334C39]"
+                          className="rounded-xl bg-brand-sage px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-sagedark"
                         >
                           Start Reading
                         </button>
@@ -828,7 +828,7 @@ export default function ReadingLogPage() {
                       {book.status === "reading" && (
                         <button
                           onClick={() => handleStatusChange(book, "completed")}
-                          className="rounded-xl bg-[#3F5D46] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#334C39]"
+                          className="rounded-xl bg-brand-sage px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-sagedark"
                         >
                           Mark Done
                         </button>
@@ -836,7 +836,7 @@ export default function ReadingLogPage() {
                       {book.status === "completed" && (
                         <button
                           onClick={() => handleStatusChange(book, "reading")}
-                          className="rounded-xl border border-[#C9D4C5] bg-[#E5ECE2] px-3.5 py-2 text-xs font-bold text-[#3F5D46] transition-colors hover:bg-[#DCE6D9]"
+                          className="rounded-xl border border-brand-mist bg-brand-tint px-3.5 py-2 text-xs font-bold text-brand-sage transition-colors hover:bg-brand-mist"
                         >
                           Read Again
                         </button>
@@ -846,7 +846,7 @@ export default function ReadingLogPage() {
                           setEditingNote(book.id);
                           setNoteText(book.notes ?? "");
                         }}
-                        className="rounded-xl border border-[#D8D1C4] bg-white px-3.5 py-2 text-xs font-bold text-[#6E5A46] transition-colors hover:border-[#8FA382] hover:bg-[#F7F2E8]"
+                        className="rounded-xl border border-[#D8D1C4] bg-white px-3.5 py-2 text-xs font-bold text-[#6E5A46] transition-colors hover:border-brand-softsage hover:bg-brand-cream"
                       >
                         {book.notes ? "Edit Note" : "Add Note"}
                       </button>
@@ -873,7 +873,7 @@ export default function ReadingLogPage() {
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">For</label>
                   <select value={fChildId ?? ""} onChange={e => setFChildId(e.target.value ? parseInt(e.target.value) : null)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors">
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors">
                     <option value="">All children</option>
                     {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
                   </select>
@@ -883,32 +883,32 @@ export default function ReadingLogPage() {
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Title *</label>
                 <input autoFocus value={fTitle} onChange={e => setFTitle(e.target.value)}
                   placeholder="e.g. Charlie and the Chocolate Factory"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Author</label>
                 <input value={fAuthor} onChange={e => setFAuthor(e.target.value)}
                   placeholder="e.g. Roald Dahl"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-1.5">Pages</label>
                     <input type="number" min={1} value={fPages} onChange={e => setFPages(e.target.value)}
                       placeholder="e.g. 224"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-1.5">Total Chapters</label>
                     <input type="number" min={1} value={fTotalChapters} onChange={e => setFTotalChapters(e.target.value)}
                       placeholder="e.g. 18"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Status</label>
                   <select value={fStatus} onChange={e => setFStatus(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors">
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors">
                     <option value="wishlist">📋 Wishlist</option>
                     <option value="reading">📖 Reading</option>
                     <option value="completed">✅ Completed</option>
@@ -918,19 +918,19 @@ export default function ReadingLogPage() {
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Start date</label>
                   <input type="date" value={fStartDate} onChange={e => setFStartDate(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">Finish date</label>
                   <input type="date" value={fFinishDate} onChange={e => setFFinishDate(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors" />
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1.5">Notes</label>
                 <textarea rows={2} value={fNotes} onChange={e => setFNotes(e.target.value)}
                   placeholder="Any notes about this book…"
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#6EA76E] font-medium transition-colors resize-none" />
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-leaf font-medium transition-colors resize-none" />
               </div>
             </div>
 

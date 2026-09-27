@@ -16,9 +16,9 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 };
 
 const SUBJECT_COLORS: Record<string, string> = {
-  Maths: "bg-[#EAF0E7] border-[#D7E0D3] text-[#3F5D46]",
+  Maths: "bg-brand-tint border-brand-mist text-brand-sage",
   English: "bg-[#F3ECE8] border-[#E5D9D1] text-[#765D52]",
-  Science: "bg-[#E8F0E8] border-[#D1DED0] text-[#3F5D46]",
+  Science: "bg-brand-tint border-brand-mist text-brand-sage",
   History: "bg-[#F8F0DA] border-[#EADBAE] text-[#8A6A22]",
   Geography: "bg-[#EAF2EC] border-[#D4E1D6] text-[#48654E]",
   Computing: "bg-[#ECECF5] border-[#DADCEC] text-[#5C607D]",
@@ -109,7 +109,7 @@ export default function TimetablePage() {
         <div className="mb-7">
           <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Timetable</h1>
@@ -121,7 +121,7 @@ export default function TimetablePage() {
             <div className="flex flex-wrap items-center gap-2">
               <span className={`px-3 py-2 rounded-xl text-xs font-bold ${
                 saved
-                  ? "bg-[#E8F0E8] text-[#3F5D46]"
+                  ? "bg-brand-tint text-brand-sage"
                   : "bg-[#F8F0DA] text-[#8A6A22]"
               }`}>
                 {saved ? "Saved" : "Unsaved changes"}
@@ -129,7 +129,7 @@ export default function TimetablePage() {
 
               <button
                 onClick={handleReset}
-                className="px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+                className="px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
               >
                 Reset to defaults
               </button>
@@ -137,7 +137,7 @@ export default function TimetablePage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-60"
+                className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-60"
               >
                 {saving ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
               </button>
@@ -152,7 +152,7 @@ export default function TimetablePage() {
           </div>
 
           <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#3F5D46]">{busiestDay.count}</p>
+            <p className="text-2xl font-bold text-brand-sage">{busiestDay.count}</p>
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">Busiest day · {busiestDay.day}</p>
           </div>
 
@@ -162,7 +162,7 @@ export default function TimetablePage() {
           </div>
 
           <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#8FA382]">{DAYS.length}</p>
+            <p className="text-2xl font-bold text-brand-softsage">{DAYS.length}</p>
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">School days</p>
           </div>
         </div>
@@ -178,13 +178,13 @@ export default function TimetablePage() {
                 <div key={day} className="brand-card p-4">
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                         School day
                       </p>
                       <h2 className="text-lg font-bold text-[#2E342F] mt-1">{day}</h2>
                     </div>
 
-                    <span className="text-xs font-bold text-[#3F5D46] bg-[#E8F0E8] px-2.5 py-1 rounded-full">
+                    <span className="text-xs font-bold text-brand-sage bg-brand-tint px-2.5 py-1 rounded-full">
                       {subjects.length} {subjects.length === 1 ? "subject" : "subjects"}
                     </span>
                   </div>
@@ -241,7 +241,7 @@ export default function TimetablePage() {
                   </div>
 
                   <div className="mt-4 pt-4 border-t border-[#EEE6D9]">
-                    <p className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage mb-2">
                       Add subject
                     </p>
 
@@ -252,12 +252,12 @@ export default function TimetablePage() {
                         value={newSubjects[day] ?? ""}
                         onChange={e => setNewSubjects(prev => ({ ...prev, [day]: e.target.value }))}
                         onKeyDown={e => e.key === "Enter" && addSubject(day)}
-                        className="flex-1 min-w-0 border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-3 py-2.5 text-xs text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                        className="flex-1 min-w-0 border border-[#D8D1C4] bg-brand-white rounded-xl px-3 py-2.5 text-xs text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                       />
 
                       <button
                         onClick={() => addSubject(day)}
-                        className="w-10 h-10 rounded-xl bg-[#3F5D46] text-white text-lg font-bold hover:bg-[#354F3B]"
+                        className="w-10 h-10 rounded-xl bg-brand-sage text-white text-lg font-bold hover:bg-brand-sagedark"
                         aria-label={`Add subject to ${day}`}
                       >
                         +

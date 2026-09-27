@@ -81,7 +81,7 @@ export default function PolishPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Languages</h1>
@@ -94,7 +94,7 @@ export default function PolishPage() {
               href="https://www.duolingo.com/course/pl/en/Learn-Polish"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+              className="px-5 py-3 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors"
             >
               Open Duolingo
             </a>
@@ -103,7 +103,7 @@ export default function PolishPage() {
 
         <div className="grid grid-cols-3 gap-3 mb-6">
           <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#3F5D46]">{streak}</p>
+            <p className="text-2xl font-bold text-brand-sage">{streak}</p>
             <p className="text-xs font-semibold text-[#6E5A46] mt-1">Day streak</p>
           </div>
 
@@ -121,7 +121,7 @@ export default function PolishPage() {
         <div className="brand-card p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Today</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Today</p>
 
               {todaySession ? (
                 <>
@@ -143,7 +143,7 @@ export default function PolishPage() {
 
             <button
               onClick={() => setShowForm(v => !v)}
-              className="px-4 py-2.5 rounded-xl border border-[#3F5D46] bg-[#FFFDF8] text-[#3F5D46] text-sm font-bold hover:bg-[#F7F2E8]"
+              className="px-4 py-2.5 rounded-xl border border-brand-sage bg-brand-white text-brand-sage text-sm font-bold hover:bg-brand-cream"
             >
               {showForm ? "Close" : todaySession ? "Edit today" : "+ Log practice"}
             </button>
@@ -153,7 +153,7 @@ export default function PolishPage() {
             <div className="mt-6 pt-6 border-t border-[#EEE6D9]">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                     XP earned
                   </label>
                   <input
@@ -162,12 +162,12 @@ export default function PolishPage() {
                     value={xpInput}
                     onChange={e => setXpInput(e.target.value)}
                     placeholder="e.g. 50"
-                    className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                    className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                     What was practised?
                   </label>
                   <input
@@ -175,7 +175,7 @@ export default function PolishPage() {
                     onChange={e => setNotesInput(e.target.value)}
                     onKeyDown={e => e.key === "Enter" && handleLog()}
                     placeholder="e.g. Greetings, numbers, colours"
-                    className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                    className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                   />
                 </div>
               </div>
@@ -184,14 +184,14 @@ export default function PolishPage() {
                 <button
                   onClick={handleLog}
                   disabled={logging}
-                  className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50"
                 >
                   {logging ? "Saving…" : todaySession ? "Update practice" : "Save practice"}
                 </button>
 
                 <button
                   onClick={() => setShowForm(false)}
-                  className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-[#FFFDF8] text-[#6E5A46] text-sm font-bold hover:border-[#8FA382]"
+                  className="px-5 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
                 >
                   Cancel
                 </button>
@@ -203,14 +203,14 @@ export default function PolishPage() {
         <div className="brand-card p-6">
           <div className="flex items-end justify-between gap-4 mb-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">History</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">History</p>
               <h2 className="text-xl font-bold text-[#2E342F] mt-1">Practice history</h2>
               <p className="text-sm text-[#6E5A46] mt-1">
                 Recent Polish practice sessions and XP earned.
               </p>
             </div>
 
-            <span className="text-sm font-bold text-[#3F5D46]">{sessions.length}</span>
+            <span className="text-sm font-bold text-brand-sage">{sessions.length}</span>
           </div>
 
           {loading ? (
@@ -233,9 +233,9 @@ export default function PolishPage() {
                 return (
                   <div
                     key={s.id}
-                    className="rounded-xl border border-[#E7DFD1] bg-[#FFFDF8] p-4 flex items-center gap-4"
+                    className="rounded-xl border border-brand-line bg-brand-white p-4 flex items-center gap-4"
                   >
-                    <div className="w-10 h-10 rounded-full bg-[#E8F0E8] text-[#3F5D46] flex items-center justify-center font-bold shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-brand-tint text-brand-sage flex items-center justify-center font-bold shrink-0">
                       PL
                     </div>
 
@@ -247,7 +247,7 @@ export default function PolishPage() {
                     </div>
 
                     {s.xp != null && (
-                      <span className="text-xs font-bold text-[#3F5D46] bg-[#E8F0E8] px-3 py-1 rounded-full shrink-0">
+                      <span className="text-xs font-bold text-brand-sage bg-brand-tint px-3 py-1 rounded-full shrink-0">
                         +{s.xp} XP
                       </span>
                     )}

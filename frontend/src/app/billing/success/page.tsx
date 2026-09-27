@@ -35,12 +35,12 @@ export default function BillingSuccessPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7F2E8] flex items-center justify-center p-4">
-      <div className="w-full max-w-lg rounded-3xl border border-[#E7DFD1] bg-white p-8 text-center shadow-xl">
+    <div className="min-h-screen bg-brand-cream flex items-center justify-center p-4">
+      <div className="w-full max-w-lg rounded-3xl border border-brand-line bg-white p-8 text-center shadow-xl">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl font-black text-green-700">✓</div>
         <h1 className="mt-5 text-3xl font-black text-[#2E342F]">Payment successful</h1>
         <p className="mt-3 text-[#6E5A46]">{status}</p>
-        <Link href="/parent/dashboard" className="mt-7 inline-block rounded-xl bg-[#3F5D46] px-6 py-3 text-sm font-extrabold text-white">
+        <Link href="/parent/dashboard" className="mt-7 inline-block rounded-xl bg-brand-sage px-6 py-3 text-sm font-extrabold text-white">
           Open Bright Roots
         </Link>
       </div>

@@ -69,7 +69,7 @@ export default function JournalPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
               <h1 className="text-3xl sm:text-4xl font-bold text-[#2E342F]">Journal</h1>
@@ -80,10 +80,10 @@ export default function JournalPage() {
 
             <div className="brand-card px-5 py-4 flex items-center gap-6">
               <div>
-                <p className="text-2xl font-bold text-[#3F5D46]">{entries.length}</p>
+                <p className="text-2xl font-bold text-brand-sage">{entries.length}</p>
                 <p className="text-xs font-semibold text-[#6E5A46]">Entries</p>
               </div>
-              <div className="w-px h-10 bg-[#E7DFD1]" />
+              <div className="w-px h-10 bg-brand-line" />
               <div>
                 <p className="text-2xl font-bold text-[#D19A32]">{content.length}</p>
                 <p className="text-xs font-semibold text-[#6E5A46]">Characters</p>
@@ -96,7 +96,7 @@ export default function JournalPage() {
           <div className="brand-card p-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">Journal Entry</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Journal Entry</p>
                 <h2 className="text-xl font-bold text-[#2E342F] mt-1">
                   {isToday ? "Today" : format(parseISO(selectedDate), "EEEE d MMMM yyyy")}
                 </h2>
@@ -107,7 +107,7 @@ export default function JournalPage() {
 
               <div className="flex items-center gap-2">
                 {isToday && (
-                  <span className="text-xs font-bold text-[#3F5D46] bg-[#E8F0E8] px-3 py-1.5 rounded-full">
+                  <span className="text-xs font-bold text-brand-sage bg-brand-tint px-3 py-1.5 rounded-full">
                     Today
                   </span>
                 )}
@@ -120,19 +120,19 @@ export default function JournalPage() {
             </div>
 
             <div className="mb-5">
-              <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+              <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                 Date
               </label>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={e => setSelectedDate(e.target.value)}
-                className="w-full sm:w-auto border border-[#D8D1C4] bg-[#FFFDF8] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E342F] focus:outline-none focus:border-[#8FA382]"
+                className="w-full sm:w-auto border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm font-semibold text-[#2E342F] focus:outline-none focus:border-brand-softsage"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wide text-[#8FA382] mb-2">
+              <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
                 Notes
               </label>
               <textarea
@@ -143,7 +143,7 @@ export default function JournalPage() {
                 }}
                 placeholder="How did the day go? What worked well? What was tricky? Any useful observations to remember later?"
                 rows={14}
-                className="w-full border border-[#D8D1C4] bg-[#FFFDF8] rounded-2xl px-4 py-4 text-sm text-[#2E342F] focus:outline-none focus:border-[#8FA382] resize-y leading-relaxed"
+                className="w-full border border-[#D8D1C4] bg-brand-white rounded-2xl px-4 py-4 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage resize-y leading-relaxed"
               />
             </div>
 
@@ -151,7 +151,7 @@ export default function JournalPage() {
               <button
                 onClick={handleSave}
                 disabled={saving || !content.trim()}
-                className="px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] disabled:opacity-50"
+                className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50"
               >
                 {saving ? "Saving…" : saved ? "Saved ✓" : hasEntry ? "Update entry" : "Save entry"}
               </button>
@@ -159,7 +159,7 @@ export default function JournalPage() {
               {hasEntry && (
                 <button
                   onClick={handleDelete}
-                  className="px-5 py-2.5 rounded-xl border border-[#E5CFC3] bg-[#FFFDF8] text-[#A85F46] text-sm font-bold hover:bg-[#FAEEE8]"
+                  className="px-5 py-2.5 rounded-xl border border-[#E5CFC3] bg-brand-white text-[#A85F46] text-sm font-bold hover:bg-[#FAEEE8]"
                 >
                   Delete entry
                 </button>
@@ -178,10 +178,10 @@ export default function JournalPage() {
           <div className="brand-card p-5 h-fit">
             <div className="flex items-end justify-between gap-3 mb-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">History</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">History</p>
                 <h2 className="text-lg font-bold text-[#2E342F] mt-1">Past entries</h2>
               </div>
-              <span className="text-sm font-bold text-[#3F5D46]">{entries.length}</span>
+              <span className="text-sm font-bold text-brand-sage">{entries.length}</span>
             </div>
 
             {loading ? (
@@ -201,13 +201,13 @@ export default function JournalPage() {
                       onClick={() => setSelectedDate(e.entry_date)}
                       className={`w-full text-left rounded-xl border p-4 transition-colors ${
                         active
-                          ? "border-[#8FA382] bg-[#F7F2E8]"
-                          : "border-[#E7DFD1] bg-[#FFFDF8] hover:border-[#8FA382]"
+                          ? "border-brand-softsage bg-brand-cream"
+                          : "border-brand-line bg-brand-white hover:border-brand-softsage"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                             {format(parseISO(e.entry_date), "EEE d MMM")}
                           </p>
                           <p className="text-sm text-[#2E342F] mt-2 line-clamp-3 leading-relaxed">
@@ -216,7 +216,7 @@ export default function JournalPage() {
                         </div>
 
                         {e.entry_date === format(new Date(), "yyyy-MM-dd") && (
-                          <span className="text-[10px] font-bold uppercase tracking-wide text-[#3F5D46] bg-[#E8F0E8] px-2 py-1 rounded-full shrink-0">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-brand-sage bg-brand-tint px-2 py-1 rounded-full shrink-0">
                             Today
                           </span>
                         )}

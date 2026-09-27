@@ -4,8 +4,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { changePassword, getMe, requestEmailVerification } from "@/lib/api";
+import ThemePicker from "@/components/ThemePicker";
+import { changePassword, getMe, requestEmailVerification, saveFamilyTheme } from "@/lib/api";
 import { clearAuth, setAuth } from "@/lib/auth";
+import { DEFAULT_THEME, FamilyTheme, applyTheme, isFamilyTheme } from "@/lib/theme";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -22,6 +24,9 @@ export default function AccountPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [theme, setTheme] = useState<FamilyTheme>(DEFAULT_THEME);
+  const [themeSaving, setThemeSaving] = useState(false);
+  const [themeMessage, setThemeMessage] = useState("");
 
   useEffect(() => {
     getMe()
@@ -31,12 +36,31 @@ export default function AccountPage() {
         setEmail(res.data.email || "");
         setEmailVerified(!!res.data.email_verified_at);
         setAuth(res.data.role, res.data.username);
+        if (isFamilyTheme(res.data.family_theme)) setTheme(res.data.family_theme);
       })
       .catch(() => {
         clearAuth();
         router.replace("/login");
       });
   }, [router]);
+
+  const handleThemeChange = async (next: FamilyTheme) => {
+    const previous = theme;
+    setTheme(next);
+    applyTheme(next);
+    setThemeMessage("");
+    setThemeSaving(true);
+    try {
+      await saveFamilyTheme(next);
+      setThemeMessage("Saved. Your children will see these colours too.");
+    } catch (err: any) {
+      setTheme(previous);
+      applyTheme(previous);
+      setThemeMessage(err.response?.data?.detail || "Could not save theme.");
+    } finally {
+      setThemeSaving(false);
+    }
+  };
 
   const handleSendVerification = async () => {
     setVerificationMessage("");
@@ -150,6 +174,17 @@ export default function AccountPage() {
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {role === "parent" && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Family colours</h2>
+              <p className="mt-1 mb-4 text-sm text-brand-earth/70">
+                Choose the colour theme for Bright Roots. It applies to you and your children.
+              </p>
+              <ThemePicker value={theme} onChange={handleThemeChange} disabled={themeSaving} />
+              {themeMessage && <p className="mt-3 text-sm font-semibold text-brand-earth">{themeMessage}</p>}
             </div>
           )}
 

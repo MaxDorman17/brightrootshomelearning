@@ -10,8 +10,11 @@ import {
   getMe,
   getTimetable,
   requestEmailVerification,
+  saveFamilyTheme,
   saveTimetable,
 } from "@/lib/api";
+import ThemePicker from "@/components/ThemePicker";
+import { DEFAULT_THEME, FamilyTheme, applyTheme, isFamilyTheme } from "@/lib/theme";
 import {
   DEFAULT_SELECTED_SUBJECTS,
   SUBJECT_OPTIONS,
@@ -39,6 +42,7 @@ export default function OnboardingPage() {
   const [childSaving, setChildSaving] = useState(false);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(DEFAULT_SELECTED_SUBJECTS);
   const [customSubject, setCustomSubject] = useState("");
+  const [theme, setTheme] = useState<FamilyTheme>(DEFAULT_THEME);
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
   const [timetableSaving, setTimetableSaving] = useState(false);
   const [finishError, setFinishError] = useState("");
@@ -77,6 +81,7 @@ export default function OnboardingPage() {
         setEmail(meRes.data.email || "");
         setEmailVerified(!!meRes.data.email_verified_at);
         setChildren(childRes.data || []);
+        if (isFamilyTheme(meRes.data.family_theme)) setTheme(meRes.data.family_theme);
         // Only reuse a timetable this parent has actually saved, not the server default.
         if (timetableRes.data.updated_at) {
           const saved = subjectsInTimetable(timetableRes.data.config || {});
@@ -150,11 +155,17 @@ export default function OnboardingPage() {
     setTimetable((prev) => ({ ...prev, [day]: (prev[day] || []).filter((item) => item !== subject) }));
   };
 
+  const chooseTheme = (next: FamilyTheme) => {
+    setTheme(next);
+    applyTheme(next);
+  };
+
   const finishSetup = async () => {
     setFinishError("");
     setTimetableSaving(true);
     try {
       await saveTimetable(timetable);
+      await saveFamilyTheme(theme);
       await completeOnboarding();
       router.replace("/parent");
     } catch (err: any) {
@@ -165,47 +176,47 @@ export default function OnboardingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F7F2E8] flex items-center justify-center">
+      <div className="min-h-screen bg-brand-cream flex items-center justify-center">
         <p className="font-bold text-[#6E5A46]">Preparing your Bright Roots setup...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F2E8] px-4 py-8 sm:py-12">
+    <div className="min-h-screen bg-brand-cream px-4 py-8 sm:py-12">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 flex items-center justify-center">
           <div className="flex items-center gap-3">
             <Image src="/logo.png" alt="Bright Roots" width={52} height={52} className="rounded-2xl" />
             <div>
-              <p className="text-xl font-extrabold text-[#3F5D46]">Bright Roots</p>
+              <p className="text-xl font-extrabold text-brand-sage">Bright Roots</p>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6E5A46]/60">First-time setup</p>
             </div>
           </div>
         </div>
 
         <div className="mb-5 flex items-center justify-between">
-          <p className="text-sm font-extrabold text-[#3F5D46]">Step {progress}</p>
+          <p className="text-sm font-extrabold text-brand-sage">Step {progress}</p>
           <div className="flex gap-2">
             {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((item) => (
               <div
                 key={item}
-                className={"h-2.5 w-12 rounded-full sm:w-16 " + (item <= step ? "bg-[#3F5D46]" : "bg-[#D9D1C4]")}
+                className={"h-2.5 w-12 rounded-full sm:w-16 " + (item <= step ? "bg-brand-sage" : "bg-[#D9D1C4]")}
               />
             ))}
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-[#E7DFD1] bg-[#FFFDF8] p-6 shadow-xl shadow-[#3F5D46]/5 sm:p-8">
+        <div className="rounded-[2rem] border border-brand-line bg-brand-white p-6 shadow-xl shadow-brand-sage/5 sm:p-8">
           {step === 1 && (
             <section>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#8FA382]">Welcome</p>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Welcome</p>
               <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Let&apos;s get your family set up.</h1>
               <p className="mt-3 text-[#6E5A46]">
                 We&apos;ll check your account, add your first child, choose your subjects and build a simple weekly timetable. You can change everything later.
               </p>
 
-              <div className="mt-7 rounded-2xl border border-[#E7DFD1] bg-white p-5">
+              <div className="mt-7 rounded-2xl border border-brand-line bg-white p-5">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm font-extrabold text-[#2E342F]">Parent email</p>
@@ -222,15 +233,15 @@ export default function OnboardingPage() {
                       Verify this email before continuing. The link will arrive from Bright Roots.
                     </p>
                     {verificationMessage && (
-                      <div className="mt-3 rounded-xl bg-[#F7F2E8] px-4 py-3 text-sm font-semibold text-[#6E5A46]">
+                      <div className="mt-3 rounded-xl bg-brand-cream px-4 py-3 text-sm font-semibold text-[#6E5A46]">
                         {verificationMessage}
                       </div>
                     )}
                     <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                      <button type="button" onClick={sendVerification} disabled={verificationSending} className="rounded-xl bg-[#3F5D46] px-5 py-3 text-sm font-extrabold text-white disabled:opacity-60">
+                      <button type="button" onClick={sendVerification} disabled={verificationSending} className="rounded-xl bg-brand-sage px-5 py-3 text-sm font-extrabold text-white disabled:opacity-60">
                         {verificationSending ? "Sending..." : "Send verification email"}
                       </button>
-                      <button type="button" onClick={refreshAccount} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3 text-sm font-extrabold text-[#3F5D46]">
+                      <button type="button" onClick={refreshAccount} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3 text-sm font-extrabold text-brand-sage">
                         I&apos;ve verified it, check again
                       </button>
                     </div>
@@ -238,7 +249,7 @@ export default function OnboardingPage() {
                 )}
               </div>
 
-              <button type="button" disabled={!emailVerified} onClick={() => setStep(2)} className="mt-7 w-full rounded-xl bg-[#3F5D46] px-5 py-3.5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-40">
+              <button type="button" disabled={!emailVerified} onClick={() => setStep(2)} className="mt-7 w-full rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-40">
                 Continue
               </button>
             </section>
@@ -246,7 +257,7 @@ export default function OnboardingPage() {
 
           {step === 2 && (
             <section>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#8FA382]">Your family</p>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Your family</p>
               <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Add your first child.</h1>
               <p className="mt-3 text-[#6E5A46]">
                 They&apos;ll use their own username and password to open their learning dashboard.
@@ -262,7 +273,7 @@ export default function OnboardingPage() {
                       {children.map((child) => child.username).join(", ")}
                     </p>
                   </div>
-                  <button type="button" onClick={() => setStep(3)} className="mt-6 w-full rounded-xl bg-[#3F5D46] px-5 py-3.5 text-sm font-extrabold text-white">
+                  <button type="button" onClick={() => setStep(3)} className="mt-6 w-full rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white">
                     Continue to subjects
                   </button>
                 </div>
@@ -270,19 +281,19 @@ export default function OnboardingPage() {
                 <form onSubmit={createChild} className="mt-7 space-y-4">
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child username</label>
-                    <input required value={childUsername} onChange={(e) => setChildUsername(e.target.value)} placeholder="e.g. Sam" className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
+                    <input required value={childUsername} onChange={(e) => setChildUsername(e.target.value)} placeholder="e.g. Sam" className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child email <span className="font-normal text-[#6E5A46]/70">(optional)</span></label>
-                    <input type="email" value={childEmail} onChange={(e) => setChildEmail(e.target.value)} placeholder="child@example.com" className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
+                    <input type="email" value={childEmail} onChange={(e) => setChildEmail(e.target.value)} placeholder="child@example.com" className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
                     <p className="mt-1 text-xs text-[#6E5A46]/70">Leave blank if your child doesn&apos;t have an email. Children sign in with their username.</p>
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child password</label>
-                    <input type="password" required minLength={8} value={childPassword} onChange={(e) => setChildPassword(e.target.value)} className="w-full rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 outline-none focus:border-[#8FA382]" />
+                    <input type="password" required minLength={8} value={childPassword} onChange={(e) => setChildPassword(e.target.value)} className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
                   </div>
                   {childError && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{childError}</div>}
-                  <button type="submit" disabled={childSaving} className="w-full rounded-xl bg-[#3F5D46] px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-60">
+                  <button type="submit" disabled={childSaving} className="w-full rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-60">
                     {childSaving ? "Adding child..." : "Add child and continue"}
                   </button>
                 </form>
@@ -292,7 +303,7 @@ export default function OnboardingPage() {
 
           {step === 3 && (
             <section>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#8FA382]">Your subjects</p>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Your subjects</p>
               <h1 className="mt-2 text-3xl font-black text-[#2E342F]">What will you teach?</h1>
               <p className="mt-3 text-[#6E5A46]">
                 Tick the subjects you want in your planner. We&apos;ll build your week from them.
@@ -306,14 +317,14 @@ export default function OnboardingPage() {
                       key={subject}
                       className={
                         "flex cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3 text-sm font-bold transition-colors " +
-                        (checked ? "border-[#8FA382] bg-[#EAF0E7] text-[#2E342F]" : "border-[#E7DFD1] bg-white text-[#6E5A46]")
+                        (checked ? "border-brand-softsage bg-brand-tint text-[#2E342F]" : "border-brand-line bg-white text-[#6E5A46]")
                       }
                     >
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={() => toggleSubject(subject)}
-                        className="h-4 w-4 accent-[#3F5D46]"
+                        className="h-4 w-4 accent-brand-sage"
                       />
                       {subject}
                     </label>
@@ -333,16 +344,16 @@ export default function OnboardingPage() {
                   }}
                   maxLength={60}
                   placeholder="Add your own subject, e.g. Forest School"
-                  className="min-w-0 flex-1 rounded-xl border-2 border-[#E7DFD1] bg-white px-4 py-3 text-sm outline-none focus:border-[#8FA382]"
+                  className="min-w-0 flex-1 rounded-xl border-2 border-brand-line bg-white px-4 py-3 text-sm outline-none focus:border-brand-softsage"
                 />
-                <button type="button" onClick={addCustomSubject} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3 text-sm font-extrabold text-[#3F5D46]">
+                <button type="button" onClick={addCustomSubject} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3 text-sm font-extrabold text-brand-sage">
                   Add
                 </button>
               </div>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <button type="button" onClick={() => setStep(2)} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-sm font-extrabold text-[#3F5D46]">Back</button>
-                <button type="button" onClick={continueToWeek} disabled={selectedSubjects.length === 0} className="flex-1 rounded-xl bg-[#3F5D46] px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-50">
+                <button type="button" onClick={() => setStep(2)} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-sm font-extrabold text-brand-sage">Back</button>
+                <button type="button" onClick={continueToWeek} disabled={selectedSubjects.length === 0} className="flex-1 rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-50">
                   {selectedSubjects.length === 0 ? "Choose at least one subject" : "Build my week"}
                 </button>
               </div>
@@ -351,15 +362,20 @@ export default function OnboardingPage() {
 
           {step === 4 && (
             <section>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#8FA382]">Your week</p>
-              <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Here&apos;s your starting timetable.</h1>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Your week</p>
+              <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Your week and your colours.</h1>
               <p className="mt-3 text-[#6E5A46]">
                 Built from your subjects. Tap a subject to remove it from that day, or change anything later from Timetable.
               </p>
 
+              <div className="mt-7">
+                <p className="mb-3 text-sm font-extrabold text-brand-charcoal">Pick your family&apos;s colours</p>
+                <ThemePicker value={theme} onChange={chooseTheme} />
+              </div>
+
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 {days.map((day) => (
-                  <div key={day} className="rounded-2xl border border-[#E7DFD1] bg-white p-4">
+                  <div key={day} className="rounded-2xl border border-brand-line bg-white p-4">
                     <p className="font-extrabold text-[#2E342F]">{day}</p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {(timetable[day] || []).map((subject) => (
@@ -368,7 +384,7 @@ export default function OnboardingPage() {
                           type="button"
                           onClick={() => removeFromDay(day, subject)}
                           aria-label={"Remove " + subject + " from " + day}
-                          className="rounded-full bg-[#E8EDE4] px-3 py-1 text-xs font-bold text-[#3F5D46] hover:bg-[#F3E1DA] hover:text-[#A64F42]"
+                          className="rounded-full bg-brand-tint px-3 py-1 text-xs font-bold text-brand-sage hover:bg-[#F3E1DA] hover:text-[#A64F42]"
                         >
                           {subject} <span aria-hidden="true">×</span>
                         </button>
@@ -384,8 +400,8 @@ export default function OnboardingPage() {
               {finishError && <div className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{finishError}</div>}
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <button type="button" onClick={() => setStep(3)} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-sm font-extrabold text-[#3F5D46]">Back</button>
-                <button type="button" onClick={finishSetup} disabled={timetableSaving || children.length === 0} className="flex-1 rounded-xl bg-[#3F5D46] px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-50">
+                <button type="button" onClick={() => setStep(3)} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-sm font-extrabold text-brand-sage">Back</button>
+                <button type="button" onClick={finishSetup} disabled={timetableSaving || children.length === 0} className="flex-1 rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-50">
                   {timetableSaving ? "Finishing setup..." : "Save timetable and open planner"}
                 </button>
               </div>

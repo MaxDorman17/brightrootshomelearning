@@ -136,7 +136,7 @@ export default function ChildrenPage() {
         <section className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8FA382] mb-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Family Accounts
               </p>
 
@@ -151,7 +151,7 @@ export default function ChildrenPage() {
 
             <button
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors"
             >
               <span className="text-lg leading-none">+</span>
               Add Child
@@ -160,9 +160,9 @@ export default function ChildrenPage() {
         </section>
 
         <section className="brand-card overflow-hidden">
-          <div className="px-5 sm:px-6 py-5 border-b border-[#E7DFD1] flex items-center justify-between gap-4">
+          <div className="px-5 sm:px-6 py-5 border-b border-brand-line flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                 Linked Accounts
               </p>
               <h2 className="text-xl font-bold text-[#2E342F] mt-1">
@@ -171,19 +171,19 @@ export default function ChildrenPage() {
             </div>
 
             {!loading && (
-              <div className="rounded-full bg-[#F7F2E8] px-3 py-1.5 text-xs font-bold text-[#6E5A46]">
+              <div className="rounded-full bg-brand-cream px-3 py-1.5 text-xs font-bold text-[#6E5A46]">
                 {children.length} {children.length === 1 ? "child" : "children"}
               </div>
             )}
           </div>
 
           {loading ? (
-            <div className="py-16 text-center text-sm text-[#8FA382]">
+            <div className="py-16 text-center text-sm text-brand-softsage">
               Loading...
             </div>
           ) : children.length === 0 ? (
             <div className="px-6 py-14 text-center">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#F7F2E8] flex items-center justify-center text-[#3F5D46] text-xl font-bold">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-brand-cream flex items-center justify-center text-brand-sage text-xl font-bold">
                 BR
               </div>
 
@@ -197,7 +197,7 @@ export default function ChildrenPage() {
 
               <button
                 onClick={() => setShowModal(true)}
-                className="mt-5 px-5 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors"
+                className="mt-5 px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors"
               >
                 Add your first child
               </button>
@@ -207,9 +207,9 @@ export default function ChildrenPage() {
               {children.map(child => (
                 <div
                   key={child.id}
-                  className="px-5 sm:px-6 py-5 flex items-center gap-4 hover:bg-[#FFFDF8] transition-colors"
+                  className="px-5 sm:px-6 py-5 flex items-center gap-4 hover:bg-brand-white transition-colors"
                 >
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#E8EDE4] border border-[#D9E1D4] flex items-center justify-center text-[#3F5D46] text-lg font-bold">
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-brand-tint border border-brand-mist flex items-center justify-center text-brand-sage text-lg font-bold">
                     {child.username.charAt(0).toUpperCase()}
                   </div>
 
@@ -219,7 +219,7 @@ export default function ChildrenPage() {
                         {child.username}
                       </p>
 
-                      <span className="text-[10px] font-bold uppercase tracking-wide text-[#8FA382] bg-[#F7F2E8] rounded-full px-2 py-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage bg-brand-cream rounded-full px-2 py-1">
                         Child account
                       </span>
                     </div>
@@ -230,7 +230,7 @@ export default function ChildrenPage() {
                       </p>
                     )}
 
-                    <p className="text-xs text-[#8FA382] mt-1">
+                    <p className="text-xs text-brand-softsage mt-1">
                       Added {format(parseISO(child.created_at), "d MMMM yyyy")}
                     </p>
                   </div>
@@ -242,7 +242,7 @@ export default function ChildrenPage() {
                         setResetError("");
                         setResetMessage("");
                       }}
-                      className="px-3 py-2 rounded-xl text-sm font-semibold text-[#3F5D46] hover:bg-[#E8EDE4] transition-colors"
+                      className="px-3 py-2 rounded-xl text-sm font-semibold text-brand-sage hover:bg-brand-tint transition-colors"
                     >
                       Reset password
                     </button>
@@ -260,8 +260,8 @@ export default function ChildrenPage() {
           )}
         </section>
 
-        <section className="mt-6 rounded-2xl border border-[#E7DFD1] bg-[#F7F2E8] p-5 sm:p-6">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+        <section className="mt-6 rounded-2xl border border-brand-line bg-brand-cream p-5 sm:p-6">
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
             How it works
           </p>
 
@@ -278,9 +278,9 @@ export default function ChildrenPage() {
             if (event.target === event.currentTarget) closeModal();
           }}
         >
-          <div className="w-full max-w-md rounded-3xl bg-[#FFFDF8] border border-[#E7DFD1] shadow-2xl overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E7DFD1]">
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+          <div className="w-full max-w-md rounded-3xl bg-brand-white border border-brand-line shadow-2xl overflow-hidden">
+            <div className="px-6 py-5 border-b border-brand-line">
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                 New Account
               </p>
 
@@ -305,7 +305,7 @@ export default function ChildrenPage() {
                     value={username}
                     onChange={event => setUsername(event.target.value)}
                     placeholder="e.g. oscar"
-                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
                 </div>
 
@@ -319,7 +319,7 @@ export default function ChildrenPage() {
                     value={email}
                     onChange={event => setEmail(event.target.value)}
                     placeholder="oscar@example.com"
-                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
                 </div>
 
@@ -333,7 +333,7 @@ export default function ChildrenPage() {
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                     placeholder="Choose a password they can remember"
-                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
                 </div>
 
@@ -349,7 +349,7 @@ export default function ChildrenPage() {
               <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
                 <button
                   onClick={closeModal}
-                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-[#F7F2E8] transition-colors"
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-brand-cream transition-colors"
                 >
                   Cancel
                 </button>
@@ -361,7 +361,7 @@ export default function ChildrenPage() {
                     !username.trim() ||
                     !password.trim()
                   }
-                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {saving ? "Creating..." : "Create Account"}
                 </button>
@@ -378,9 +378,9 @@ export default function ChildrenPage() {
             if (event.target === event.currentTarget) closeResetModal();
           }}
         >
-          <div className="w-full max-w-md rounded-3xl bg-[#FFFDF8] border border-[#E7DFD1] shadow-2xl overflow-hidden">
-            <div className="px-6 py-5 border-b border-[#E7DFD1]">
-              <p className="text-xs font-bold uppercase tracking-wide text-[#8FA382]">
+          <div className="w-full max-w-md rounded-3xl bg-brand-white border border-brand-line shadow-2xl overflow-hidden">
+            <div className="px-6 py-5 border-b border-brand-line">
+              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
                 Account Recovery
               </p>
 
@@ -405,7 +405,7 @@ export default function ChildrenPage() {
                     autoComplete="new-password"
                     value={resetPassword}
                     onChange={event => setResetPassword(event.target.value)}
-                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
                 </div>
 
@@ -419,7 +419,7 @@ export default function ChildrenPage() {
                     autoComplete="new-password"
                     value={resetConfirm}
                     onChange={event => setResetConfirm(event.target.value)}
-                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-[#8FA382] focus:ring-2 focus:ring-[#8FA382]/20"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
                 </div>
 
@@ -432,8 +432,8 @@ export default function ChildrenPage() {
                 )}
 
                 {resetMessage && (
-                  <div className="rounded-xl border border-[#D9E1D4] bg-[#E8EDE4] px-4 py-3">
-                    <p className="text-sm font-semibold text-[#3F5D46]">
+                  <div className="rounded-xl border border-brand-mist bg-brand-tint px-4 py-3">
+                    <p className="text-sm font-semibold text-brand-sage">
                       {resetMessage}
                     </p>
                   </div>
@@ -443,7 +443,7 @@ export default function ChildrenPage() {
               <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
                 <button
                   onClick={closeResetModal}
-                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-[#F7F2E8] transition-colors"
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl border border-[#D9D1C4] bg-white text-[#6E5A46] text-sm font-semibold hover:bg-brand-cream transition-colors"
                 >
                   Close
                 </button>
@@ -451,7 +451,7 @@ export default function ChildrenPage() {
                 <button
                   onClick={handleResetPassword}
                   disabled={resetSaving || !resetPassword || !resetConfirm}
-                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-[#3F5D46] text-white text-sm font-bold hover:bg-[#354F3B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="sm:flex-1 px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {resetSaving ? "Resetting..." : "Reset password"}
                 </button>
