@@ -25,6 +25,7 @@ class User(Base):
     subscription_cancel_at = Column(DateTime(timezone=True), nullable=True)
     theme = Column(String(20), nullable=True)  # family colour theme, set on the parent account
     ehe_approach = Column(Text, nullable=True)  # parent's "our approach to home education" for council reports
+    rewards_set_up_at = Column(DateTime(timezone=True), nullable=True)  # when example star rules/rewards were added
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
@@ -302,3 +303,62 @@ class TestResult(Base):
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class RewardRule(Base):
+    """A way for children to earn stars, set by the parent (e.g. 3 stars for an Oak exit quiz of 80%+)."""
+    __tablename__ = "reward_rules"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    kind = Column(String(20), nullable=False)  # lesson / oak / spelling / book
+    threshold_pct = Column(Integer, nullable=True)  # minimum score for oak and spelling rules
+    stars = Column(Integer, nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+    # Stars count for work done between counts_from and ended_at. Editing, turning off or deleting a
+    # rule ends it (and hides it if replaced), so stars already earned under the old settings stay put.
+    counts_from = Column(DateTime(timezone=True), nullable=False)
+    ended_at = Column(DateTime(timezone=True), nullable=True)
+    is_hidden = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class RewardItem(Base):
+    """Something a child can spend stars on, created by the parent."""
+    __tablename__ = "reward_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    title = Column(String(120), nullable=False)
+    emoji = Column(String(16), nullable=True)
+    cost = Column(Integer, nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class StarAward(Base):
+    """Bonus stars given (or taken away, if negative) by a parent by hand."""
+    __tablename__ = "star_awards"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    stars = Column(Integer, nullable=False)
+    reason = Column(String(200), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class RewardClaim(Base):
+    """A child asking to spend stars on a reward; stars only come off once the parent approves."""
+    __tablename__ = "reward_claims"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    reward_id = Column(Integer, ForeignKey("reward_items.id"), nullable=True)
+    title = Column(String(120), nullable=False)  # copied so history survives edits and deletes
+    emoji = Column(String(16), nullable=True)
+    cost = Column(Integer, nullable=False)
+    status = Column(String(20), nullable=False, default="pending")  # pending / approved / declined / cancelled
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    decided_at = Column(DateTime(timezone=True), nullable=True)

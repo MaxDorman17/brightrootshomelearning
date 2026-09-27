@@ -45,6 +45,7 @@ const PARENT_MORE = [
   { href: "/parent/progress", label: "Review & Feedback" },
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/timetable", label: "Timetable" },
+  { href: "/parent/rewards", label: "Rewards" },
   { href: "/achievements", label: "Achievements" },
   { href: "/parent/print", label: "Print Week" },
   { href: "/account", label: "Account" },
@@ -54,6 +55,7 @@ const CHILD_MAIN = [
   { href: "/child", label: "Today" },
   { href: "/units", label: "Learning" },
   { href: "/child/progress", label: "Progress" },
+  { href: "/child/stars", label: "My Stars" },
 ];
 
 const CHILD_MORE = [

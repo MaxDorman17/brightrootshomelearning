@@ -72,6 +72,22 @@ export const deleteTestResult = (id: number) => api.delete(`/api/test-results/${
 export const getCouncilReport = (child_id: number, start_date: string, end_date: string) =>
   api.get("/api/council-report/", { params: { child_id, start_date, end_date } });
 export const saveEheApproach = (approach: string) => api.put("/api/council-report/approach", { approach });
+export type RewardRuleBody = { kind: string; threshold_pct?: number | null; stars: number; is_active: boolean };
+export type RewardItemBody = { title: string; emoji?: string | null; cost: number; is_active: boolean };
+export const getRewardsSetup = () => api.get("/api/rewards/setup");
+export const addRewardRule = (body: RewardRuleBody) => api.post("/api/rewards/rules", body);
+export const updateRewardRule = (id: number, body: RewardRuleBody) => api.put(`/api/rewards/rules/${id}`, body);
+export const deleteRewardRule = (id: number) => api.delete(`/api/rewards/rules/${id}`);
+export const addRewardItem = (body: RewardItemBody) => api.post("/api/rewards/items", body);
+export const updateRewardItem = (id: number, body: RewardItemBody) => api.put(`/api/rewards/items/${id}`, body);
+export const deleteRewardItem = (id: number) => api.delete(`/api/rewards/items/${id}`);
+export const awardStars = (child_id: number, stars: number, reason: string) =>
+  api.post("/api/rewards/award", { child_id, stars, reason });
+export const approveRewardClaim = (id: number) => api.post(`/api/rewards/claims/${id}/approve`);
+export const declineRewardClaim = (id: number) => api.post(`/api/rewards/claims/${id}/decline`);
+export const getMyStars = () => api.get("/api/rewards/me");
+export const requestReward = (reward_id: number) => api.post("/api/rewards/claims", { reward_id });
+export const cancelRewardRequest = (id: number) => api.delete(`/api/rewards/claims/${id}`);
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
