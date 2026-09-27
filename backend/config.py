@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     RESEND_API_KEY: str = ""
     RESEND_FROM_EMAIL: str = ""
     FRONTEND_URL: str = "http://localhost:3000"
+    ADMIN_EMAILS: str = ""  # comma-separated; these parent accounts can send the newsletter
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_MONTHLY_PRICE_ID: str = "price_1UJb5zD6aHVbx1WGHlgqqk7o"

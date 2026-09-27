@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import HomeDemo from "@/components/HomeDemo";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSite";
 
 const features = [
@@ -261,6 +262,8 @@ export default function HomePage() {
             </p>
           </div>
         </section>
+
+        <NewsletterSignup />
 
         <section className="border-t border-brand-line py-16">
           <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">

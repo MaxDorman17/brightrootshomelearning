@@ -17,6 +17,7 @@ from models import User
 from schemas import Token, UserOut
 from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, user_has_membership_access
 from config import settings
+from newsletter_access import is_admin, subscribe_member
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 logger = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ class RegisterRequest(BaseModel):
     email: str
     username: str
     password: str
+    newsletter: bool = False
 
 
 class ChangePasswordRequest(BaseModel):
@@ -288,6 +290,9 @@ def register(
     db.commit()
     db.refresh(user)
 
+    if body.newsletter:
+        subscribe_member(db, user)
+
     token = _create_email_verification_token(user)
     try:
         _send_email_verification(user.email, token)
@@ -360,6 +365,7 @@ def me(
 ):
     out = UserOut.model_validate(current_user)
     out.has_photo = bool(current_user.avatar_photo)
+    out.is_admin = is_admin(current_user)
     if current_user.role == "parent":
         out.family_theme = current_user.theme
     elif current_user.parent_id:

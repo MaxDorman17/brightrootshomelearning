@@ -12,8 +12,10 @@ import {
   changePassword,
   checkSession,
   getMe,
+  getMyNewsletter,
   getTimetable,
   requestEmailVerification,
+  setMyNewsletter,
   saveAvatar,
   saveChildColours,
   saveFamilyTheme,
@@ -49,6 +51,7 @@ export default function AccountPage() {
     subject_colors: Record<string, string> | null;
   } | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [newsletter, setNewsletter] = useState<boolean | null>(null);
 
   useEffect(() => {
     getMe()
@@ -60,6 +63,11 @@ export default function AccountPage() {
         setAuth(res.data.role, res.data.username);
         if (isFamilyTheme(res.data.family_theme)) setTheme(res.data.family_theme);
         setMe(res.data);
+        if (res.data.role === "parent") {
+          getMyNewsletter()
+            .then((n) => setNewsletter(n.data.subscribed))
+            .catch(() => {});
+        }
         if (res.data.role === "child") {
           getTimetable()
             .then((t) => setSubjects(subjectsInTimetable(t.data.config || {})))
@@ -254,6 +262,29 @@ export default function AccountPage() {
               </p>
               <ThemePicker value={theme} onChange={handleThemeChange} disabled={themeSaving} />
               {themeMessage && <p className="mt-3 text-sm font-semibold text-brand-earth">{themeMessage}</p>}
+            </div>
+          )}
+
+          {role === "parent" && newsletter !== null && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Newsletter</h2>
+              <label className="mt-2 flex items-start gap-2 text-sm text-brand-earth/80">
+                <input
+                  type="checkbox"
+                  checked={newsletter}
+                  onChange={async (e) => {
+                    const next = e.target.checked;
+                    setNewsletter(next);
+                    try {
+                      await setMyNewsletter(next);
+                    } catch {
+                      setNewsletter(!next);
+                    }
+                  }}
+                  className="mt-0.5 accent-brand-sage"
+                />
+                Send me the Bright Roots newsletter with home learning tips and news.
+              </label>
             </div>
           )}
 

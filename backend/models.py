@@ -541,3 +541,33 @@ class ReminderEvent(Base):
     kind = Column(String(10), nullable=False)  # done / emailed
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     __table_args__ = (UniqueConstraint("reminder_id", "child_id", "day", "kind", name="uq_reminder_event"),)
+
+
+class NewsletterSubscriber(Base):
+    """Someone who asked for the Bright Roots newsletter: a website visitor or a parent member."""
+    __tablename__ = "newsletter_subscribers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), nullable=False, unique=True, index=True)
+    status = Column(String(20), nullable=False, default="pending")  # pending / subscribed / unsubscribed
+    token = Column(String(64), nullable=False, unique=True, index=True)  # for confirm and unsubscribe links
+    source = Column(String(20), nullable=False, default="visitor")  # visitor / member
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    confirmed_at = Column(DateTime(timezone=True), nullable=True)
+    unsubscribed_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class Newsletter(Base):
+    """A newsletter the site owner sent."""
+    __tablename__ = "newsletters"
+
+    id = Column(Integer, primary_key=True, index=True)
+    subject = Column(String(200), nullable=False)
+    body = Column(Text, nullable=False)  # simple markdown
+    status = Column(String(20), nullable=False, default="sending")  # sending / sent
+    recipients = Column(Integer, nullable=False, default=0)
+    sent_count = Column(Integer, nullable=False, default=0)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    finished_at = Column(DateTime(timezone=True), nullable=True)

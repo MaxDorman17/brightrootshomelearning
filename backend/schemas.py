@@ -50,6 +50,7 @@ class UserOut(BaseModel):
     has_photo: bool = False
     child_theme: Optional[str] = None
     subject_colors: Optional[dict] = None
+    is_admin: bool = False
 
     @field_validator("avatar", "subject_colors", mode="before")
     @classmethod

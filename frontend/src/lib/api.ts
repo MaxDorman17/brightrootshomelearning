@@ -39,8 +39,8 @@ api.interceptors.response.use(
 );
 
 // Auth
-export const registerParent = (email: string, username: string, password: string) =>
-  api.post("/api/auth/register", { email, username, password });
+export const registerParent = (email: string, username: string, password: string, newsletter = false) =>
+  api.post("/api/auth/register", { email, username, password, newsletter });
 
 export const login = (username: string, password: string) => {
   const form = new URLSearchParams();
@@ -183,6 +183,16 @@ export const deleteReminder = (id: number) => api.delete(`/api/reminders/${id}`)
 export const setSummaryEmail = (time: string | null) => api.put("/api/reminders/summary", { time });
 export const getMyReminders = () => api.get("/api/reminders/today");
 export const markReminderDone = (id: number) => api.post(`/api/reminders/${id}/done`);
+// Public newsletter calls: a signed-out visitor must stay on the page, not be sent to /login.
+export const subscribeNewsletter = (email: string) => api.post("/api/newsletter/subscribe", { email }, { skipAuthRedirect: true } as any);
+export const confirmNewsletter = (token: string) => api.post("/api/newsletter/confirm", { token }, { skipAuthRedirect: true } as any);
+export const unsubscribeNewsletter = (token: string) => api.post("/api/newsletter/unsubscribe", { token }, { skipAuthRedirect: true } as any);
+export const getMyNewsletter = () => api.get("/api/newsletter/me");
+export const setMyNewsletter = (subscribed: boolean) => api.put("/api/newsletter/me", { subscribed });
+export const getNewsletterAdmin = () => api.get("/api/newsletter/admin");
+export const previewNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/preview", { subject, body });
+export const testNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/test", { subject, body });
+export const sendNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/send", { subject, body });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

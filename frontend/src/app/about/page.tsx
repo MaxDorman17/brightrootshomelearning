@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicShell } from "@/components/PublicSite";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export const metadata: Metadata = {
   title: "About",
@@ -104,6 +105,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <NewsletterSignup />
     </PublicShell>
   );
 }

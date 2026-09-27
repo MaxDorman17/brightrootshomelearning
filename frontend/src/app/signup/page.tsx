@@ -13,6 +13,7 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -31,7 +32,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await registerParent(email.trim(), username.trim(), password);
+      const res = await registerParent(email.trim(), username.trim(), password, newsletter);
       setMessage(
         res.data.message ||
           "Account created. Check your email to verify your account."
@@ -145,6 +146,11 @@ export default function SignupPage() {
                   className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
                 />
               </div>
+
+              <label className="flex items-start gap-2 text-sm text-[#6E5A46]">
+                <input type="checkbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} className="mt-0.5 accent-brand-sage" />
+                Send me the Bright Roots newsletter with home learning tips and news. You can unsubscribe any time.
+              </label>
 
               {error && (
                 <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">

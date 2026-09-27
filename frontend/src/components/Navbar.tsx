@@ -90,6 +90,7 @@ export default function Navbar() {
   const [notifOpen, setNotifOpen] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [myAvatar, setMyAvatar] = useState<{ id: number; avatar: AvatarChoice | null; has_photo: boolean } | null>(null);
   const [pending, setPending] = useState<PendingItem[]>([]);
 
@@ -116,6 +117,9 @@ export default function Navbar() {
     }
 
     if (r === "parent") {
+      checkSession()
+        .then((res) => setIsAdmin(!!res.data.is_admin))
+        .catch(() => {});
       getPendingFeedback()
         .then((res) => setPending(res.data))
         .catch(() => {});
@@ -186,8 +190,11 @@ export default function Navbar() {
       pathname === item.href
     );
 
+  // The site owner also gets the newsletter tools.
+  const parentMore = isAdmin ? [...PARENT_MORE, { href: "/admin/newsletter", label: "Newsletter (owner)" }] : PARENT_MORE;
+
   const parentMoreActive =
-    PARENT_MORE.some((item) =>
+    parentMore.some((item) =>
       pathname === item.href
     );
 
@@ -201,7 +208,7 @@ export default function Navbar() {
       ? [
           ...PARENT_MAIN,
           ...PARENT_LEARNING,
-          ...PARENT_MORE,
+          ...parentMore,
         ]
       : [
           ...CHILD_MAIN,
@@ -319,7 +326,7 @@ export default function Navbar() {
 
                     {moreOpen && (
                       <div className="absolute left-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
-                        {PARENT_MORE.map(
+                        {parentMore.map(
                           (item) => (
                             <Link
                               key={item.href}
