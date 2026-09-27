@@ -9,6 +9,7 @@ import Avatar from "@/components/Avatar";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import ChildColours from "@/components/ChildColours";
 import YourDataCard from "@/components/YourDataCard";
+import AppCard from "@/components/AppCard";
 import {
   changePassword,
   checkSession,
@@ -378,6 +379,12 @@ export default function AccountPage() {
               </button>
             </form>
           </div>
+
+          {(role === "parent" || role === "child") && (
+            <div className="mt-5">
+              <AppCard role={role} />
+            </div>
+          )}
 
           {role === "parent" && <YourDataCard />}
         </div>

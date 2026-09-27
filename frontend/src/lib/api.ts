@@ -411,3 +411,10 @@ export const getWeakWords = (child_id: number, limit?: number) =>
 export const exportAccount = () => api.get("/api/account/export", { responseType: "blob" });
 export const deleteAccount = (password: string, confirm: string) =>
   api.post("/api/account/delete", { password, confirm });
+
+// Phone notifications
+export const getPushKey = () => api.get("/api/push/key");
+export const getPushStatus = (endpoint: string) => api.post("/api/push/status", { endpoint });
+export const pushSubscribe = (subscription: PushSubscriptionJSON) => api.post("/api/push/subscribe", subscription);
+export const pushUnsubscribe = (endpoint: string) => api.post("/api/push/unsubscribe", { endpoint });
+export const sendTestPush = () => api.post("/api/push/test");

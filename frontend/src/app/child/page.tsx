@@ -14,6 +14,7 @@ import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import RemindersCard from "@/components/RemindersCard";
+import AppCard from "@/components/AppCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
@@ -381,6 +382,10 @@ export default function ChildDashboard() {
         )}
 
         <RemindersCard />
+
+        <div className="mb-6">
+          <AppCard role="child" dismissible />
+        </div>
 
         {/* Unread feedback banner */}
         {unreadFeedback.length > 0 && (

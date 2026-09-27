@@ -18,10 +18,12 @@ from sqlalchemy.orm import Session
 from auth import require_child, require_parent
 from config import settings
 from database import SessionLocal, get_db
+from push import send_to_user
 from models import (
     Lesson,
     PlannerCompletion,
     PlannerEntry,
+    PushSubscription,
     Reminder,
     ReminderEvent,
     SpellingResult,
@@ -341,9 +343,9 @@ def _wrap(title: str, inner: str) -> str:
     """
 
 
-def _claim(db: Session, reminder: Reminder, child: User, day: date) -> bool:
-    """Record that today's email is being sent. False if it was already sent (even by another worker)."""
-    db.add(ReminderEvent(reminder_id=reminder.id, child_id=child.id, day=day, kind="emailed"))
+def _claim(db: Session, reminder: Reminder, child: User, day: date, kind: str = "emailed") -> bool:
+    """Record that today's email (or notification) is being sent. False if it already was (even by another worker)."""
+    db.add(ReminderEvent(reminder_id=reminder.id, child_id=child.id, day=day, kind=kind))
     try:
         db.commit()
         return True
@@ -372,6 +374,56 @@ def _send_child_reminders(db: Session, now: datetime) -> None:
                 _send_email(child.email, f"Reminder: {status['label']}", _wrap(status["label"], inner))
             except Exception:
                 logger.exception("Could not send reminder %s to child %s", reminder.id, child.id)
+
+
+def _push_reminders(db: Session, now: datetime, subscribed: set[int]) -> None:
+    """Phone notifications for every active reminder, sent to children who turned notifications on."""
+    today = now.date()
+    for reminder in db.query(Reminder).filter(Reminder.is_active.is_(True)).all():
+        children = db.query(User).filter(User.parent_id == reminder.parent_id, User.role == "child")
+        if reminder.child_id is not None:
+            children = children.filter(User.id == reminder.child_id)
+        for child in children.all():
+            if child.id not in subscribed or not _applies(reminder, child, now):
+                continue
+            if _event_exists(db, reminder, child, today, "pushed"):
+                continue
+            status = _status(db, reminder, child, today)
+            if status["done"] or not _claim(db, reminder, child, today, "pushed"):
+                continue
+            body = "Just a friendly reminder."
+            if status["items"]:
+                body = "Still to do: " + ", ".join(status["items"][:3])
+            try:
+                send_to_user(db, child.id, status["label"], body, "/child", f"reminder-{reminder.id}")
+            except Exception:
+                logger.exception("Could not push reminder %s to child %s", reminder.id, child.id)
+
+
+def _lessons_done(db: Session, child: User, start: datetime, end: datetime) -> list[str]:
+    direct = (
+        db.query(Lesson.title)
+        .join(PlannerEntry, PlannerEntry.lesson_id == Lesson.id)
+        .filter(PlannerEntry.assigned_to == child.id, PlannerEntry.completed_at >= start, PlannerEntry.completed_at < end)
+        .all()
+    )
+    shared = (
+        db.query(Lesson.title)
+        .join(PlannerEntry, PlannerEntry.lesson_id == Lesson.id)
+        .join(PlannerCompletion, PlannerCompletion.entry_id == PlannerEntry.id)
+        .filter(PlannerCompletion.user_id == child.id, PlannerCompletion.completed_at >= start, PlannerCompletion.completed_at < end)
+        .all()
+    )
+    return [t for (t,) in direct + shared]
+
+
+def _summary_push_text(db: Session, parent: User, day: date) -> str:
+    start, end = _uk_day_bounds_utc(day)
+    parts = []
+    for child in db.query(User).filter(User.parent_id == parent.id, User.role == "child").order_by(User.username).all():
+        n = len(_lessons_done(db, child, start, end))
+        parts.append(f"{child.username} {n} lesson{'' if n == 1 else 's'}")
+    return ("Done today: " + ", ".join(parts) + ". Tap to see more.") if parts else "Tap to see today's learning."
 
 
 def _summary_html(db: Session, parent: User, day: date) -> str:
@@ -419,11 +471,13 @@ def _summary_html(db: Session, parent: User, day: date) -> str:
     return _wrap(f"Today at Bright Roots: {day.strftime('%A %d %B')}", body)
 
 
-def _send_summaries(db: Session, now: datetime) -> None:
+def _send_summaries(db: Session, now: datetime, email_on: bool, subscribed: set[int]) -> None:
     today = now.date()
     parents = db.query(User).filter(User.role == "parent", User.summary_email_time.is_not(None)).all()
     for parent in parents:
-        if not parent.email or now.strftime("%H:%M") < parent.summary_email_time:
+        wants_email = email_on and bool(parent.email)
+        wants_push = parent.id in subscribed
+        if not (wants_email or wants_push) or now.strftime("%H:%M") < parent.summary_email_time:
             continue
         if parent.summary_last_sent == today:
             continue
@@ -436,20 +490,30 @@ def _send_summaries(db: Session, now: datetime) -> None:
         db.commit()
         if not claimed:
             continue
-        try:
-            _send_email(parent.email, f"Your Bright Roots day: {today.strftime('%A %d %B')}", _summary_html(db, parent, today))
-        except Exception:
-            logger.exception("Could not send daily summary to parent %s", parent.id)
+        if wants_email:
+            try:
+                _send_email(parent.email, f"Your Bright Roots day: {today.strftime('%A %d %B')}", _summary_html(db, parent, today))
+            except Exception:
+                logger.exception("Could not send daily summary to parent %s", parent.id)
+        if wants_push:
+            try:
+                send_to_user(db, parent.id, "Your Bright Roots day", _summary_push_text(db, parent, today), "/parent/dashboard", "summary")
+            except Exception:
+                logger.exception("Could not push daily summary to parent %s", parent.id)
 
 
 def run_due_emails() -> None:
-    if not (settings.RESEND_API_KEY and settings.RESEND_FROM_EMAIL):
-        return
+    """Send whatever reminder emails and phone notifications are due."""
+    email_on = bool(settings.RESEND_API_KEY and settings.RESEND_FROM_EMAIL)
     now = uk_now()
     db = SessionLocal()
     try:
-        _send_child_reminders(db, now)
-        _send_summaries(db, now)
+        subscribed = {uid for (uid,) in db.query(PushSubscription.user_id).distinct()}
+        if email_on:
+            _send_child_reminders(db, now)
+        if subscribed:
+            _push_reminders(db, now, subscribed)
+        _send_summaries(db, now, email_on, subscribed)
     finally:
         db.close()
 

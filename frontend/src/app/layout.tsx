@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import ThemeSync from "@/components/ThemeSync";
+import ServiceWorker from "@/components/ServiceWorker";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import { SITE_URL } from "@/lib/site";
 
@@ -46,12 +47,11 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/logo-new.png", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    shortcut: ["/logo-new.png"],
-    apple: [
-      { url: "/logo-new.png", type: "image/png" },
-    ],
+    shortcut: ["/icons/icon-192.png"],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   appleWebApp: {
     capable: true,
@@ -64,12 +64,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={nunito.className} suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#2F5D3A" />
+        <meta name="theme-color" content="#3F5D46" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="min-h-screen text-gray-900 antialiased">
         <ThemeSync />
+        <ServiceWorker />
         {children}
       </body>
     </html>

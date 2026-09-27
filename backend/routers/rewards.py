@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from auth import require_child, require_parent
 from database import get_db
 from models import RewardClaim, RewardItem, RewardRule, StarAward, User
+from push import notify_in_background
 from routers import activity
 from routers.activity import naive as _naive
 from routers.test_results import _own_child
@@ -519,6 +520,13 @@ def request_reward(body: ClaimIn, db: Session = Depends(get_db), current_user: U
     db.add(claim)
     db.commit()
     db.refresh(claim)
+    notify_in_background(
+        parent_id,
+        "New reward request",
+        f"{current_user.username} would like {item.emoji or ''} {item.title} ({item.cost} stars).".replace("  ", " "),
+        "/parent/rewards",
+        "reward-request",
+    )
     return _claim_out(claim)
 
 

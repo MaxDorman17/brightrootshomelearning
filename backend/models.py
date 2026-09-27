@@ -538,7 +538,7 @@ class ReminderEvent(Base):
     reminder_id = Column(Integer, ForeignKey("reminders.id", ondelete="CASCADE"), nullable=False, index=True)
     child_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     day = Column(Date, nullable=False)
-    kind = Column(String(10), nullable=False)  # done / emailed
+    kind = Column(String(10), nullable=False)  # done / emailed / pushed
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     __table_args__ = (UniqueConstraint("reminder_id", "child_id", "day", "kind", name="uq_reminder_event"),)
 
@@ -584,3 +584,24 @@ class GameScore(Base):
     score = Column(Integer, nullable=False)
     detail = Column(String(100), nullable=True)  # e.g. which tables or level
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PushSubscription(Base):
+    """A phone, tablet or computer that has allowed Bright Roots notifications."""
+    __tablename__ = "push_subscriptions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    endpoint = Column(Text, nullable=False)
+    endpoint_hash = Column(String(64), nullable=False, unique=True, index=True)
+    p256dh = Column(String(255), nullable=False)
+    auth = Column(String(255), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class AppSetting(Base):
+    """Small values the app generates for itself, e.g. the notification signing keys."""
+    __tablename__ = "app_settings"
+
+    name = Column(String(50), primary_key=True)
+    value = Column(Text, nullable=False)

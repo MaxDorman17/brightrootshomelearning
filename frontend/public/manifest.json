@@ -1,25 +1,22 @@
 {
+  "id": "/app",
   "name": "Bright Roots Home Learning",
   "short_name": "Bright Roots",
-  "description": "Bright Roots Home Learning Hub",
-  "start_url": "/",
+  "description": "Plan the week, give each child their own space to learn, and keep a record of their progress.",
+  "start_url": "/app",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#F6F1E5",
-  "theme_color": "#2F5D3A",
-  "orientation": "portrait-primary",
+  "background_color": "#FFFDF8",
+  "theme_color": "#3F5D46",
+  "orientation": "portrait",
+  "categories": ["education", "productivity"],
   "icons": [
-    {
-      "src": "/logo-new.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/logo-new.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Planner", "url": "/parent", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Today", "url": "/child", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

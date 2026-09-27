@@ -21,6 +21,7 @@ import {
 import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import HomeOverview from "@/components/HomeOverview";
+import AppCard from "@/components/AppCard";
 import { useMounted } from "@/lib/useMounted";
 import {
   addDays,
@@ -297,6 +298,10 @@ export default function ParentDashboardPage() {
         </section>
 
         <HomeOverview />
+
+        <div className="mb-8">
+          <AppCard role="parent" dismissible />
+        </div>
 
         <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <DashboardStat
