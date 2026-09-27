@@ -8,7 +8,7 @@ from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -54,6 +54,14 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN ehe_approach TEXT"))
             if "rewards_set_up_at" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN rewards_set_up_at DATETIME"))
+            if "avatar" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN avatar TEXT"))
+            if "avatar_photo" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN avatar_photo VARCHAR(255)"))
+            if "child_theme" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN child_theme VARCHAR(20)"))
+            if "subject_colors" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN subject_colors TEXT"))
             conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
@@ -354,6 +362,7 @@ app.include_router(council_report.router)
 app.include_router(rewards.router)
 app.include_router(challenges.router)
 app.include_router(study.router)
+app.include_router(profile.router)
 
 
 @app.get("/health")

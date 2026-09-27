@@ -6,6 +6,8 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getChildren, addChild, removeChild, resetChildPassword } from "@/lib/api";
 import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import Avatar from "@/components/Avatar";
+import ChildProfileModal from "@/components/ChildProfileModal";
 import { format, parseISO } from "date-fns";
 
 export default function ChildrenPage() {
@@ -23,6 +25,7 @@ export default function ChildrenPage() {
   const [error, setError] = useState("");
 
   const [resetChild, setResetChild] = useState<Child | null>(null);
+  const [profileChild, setProfileChild] = useState<Child | null>(null);
   const [resetPassword, setResetPassword] = useState("");
   const [resetConfirm, setResetConfirm] = useState("");
   const [resetSaving, setResetSaving] = useState(false);
@@ -209,9 +212,7 @@ export default function ChildrenPage() {
                   key={child.id}
                   className="px-5 sm:px-6 py-5 flex items-center gap-4 hover:bg-brand-white transition-colors"
                 >
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-brand-tint border border-brand-mist flex items-center justify-center text-brand-sage text-lg font-bold">
-                    {child.username.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar username={child.username} avatar={child.avatar} hasPhoto={child.has_photo} childId={child.id} />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -236,6 +237,13 @@ export default function ChildrenPage() {
                   </div>
 
                   <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    <button
+                      onClick={() => setProfileChild(child)}
+                      className="px-3 py-2 rounded-xl text-sm font-semibold text-brand-sage hover:bg-brand-tint transition-colors"
+                    >
+                      Avatar &amp; photo
+                    </button>
+
                     <button
                       onClick={() => {
                         setResetChild(child);
@@ -369,6 +377,17 @@ export default function ChildrenPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {profileChild && (
+        <ChildProfileModal
+          child={profileChild}
+          onClose={() => setProfileChild(null)}
+          onChanged={(updated) => {
+            setProfileChild(updated);
+            setChildren(prev => prev.map(c => (c.id === updated.id ? updated : c)));
+          }}
+        />
       )}
 
       {resetChild && (

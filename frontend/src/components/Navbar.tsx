@@ -10,10 +10,13 @@ import {
   getUsername,
 } from "@/lib/auth";
 import {
+  checkSession,
   getPendingFeedback,
   getUnreadFeedbackCount,
   logout,
 } from "@/lib/api";
+import Avatar from "@/components/Avatar";
+import { AvatarChoice } from "@/lib/avatar";
 
 interface PendingItem {
   entry_id: number;
@@ -81,6 +84,7 @@ export default function Navbar() {
   const [notifOpen, setNotifOpen] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
+  const [myAvatar, setMyAvatar] = useState<{ id: number; avatar: AvatarChoice | null; has_photo: boolean } | null>(null);
   const [pending, setPending] = useState<PendingItem[]>([]);
 
   const learningRef = useRef<HTMLDivElement>(null);
@@ -92,7 +96,14 @@ export default function Navbar() {
     const r = getRole() || "";
     setRole(r);
 
+    const loadAvatar = () =>
+      checkSession()
+        .then((res) => setMyAvatar({ id: res.data.id, avatar: res.data.avatar, has_photo: res.data.has_photo }))
+        .catch(() => {});
+
     if (r === "child") {
+      loadAvatar();
+      window.addEventListener("avatar-changed", loadAvatar);
       getUnreadFeedbackCount()
         .then((res) => setUnreadCount(res.data.count))
         .catch(() => {});
@@ -103,6 +114,8 @@ export default function Navbar() {
         .then((res) => setPending(res.data))
         .catch(() => {});
     }
+
+    return () => window.removeEventListener("avatar-changed", loadAvatar);
   }, []);
 
   useEffect(() => {
@@ -477,9 +490,13 @@ export default function Navbar() {
 
               {username && (
                 <div className="hidden items-center gap-2 rounded-full bg-brand-cream px-2 py-1 sm:flex">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-xs font-extrabold text-brand-charcoal">
-                    {username[0]?.toUpperCase()}
-                  </div>
+                  <Avatar
+                    username={username}
+                    avatar={myAvatar?.avatar}
+                    hasPhoto={myAvatar?.has_photo}
+                    childId={myAvatar?.id}
+                    size="sm"
+                  />
 
                   <span className="pr-2 text-sm font-bold text-brand-charcoal">
                     {username}

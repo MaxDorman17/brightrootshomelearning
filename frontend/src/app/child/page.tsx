@@ -12,6 +12,8 @@ import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types"
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
+import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
+import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
 
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
@@ -94,6 +96,15 @@ function CompletionRing({ done, total }: { done: number; total: number }) {
 
 export default function ChildDashboard() {
   const parentName = useParentName();
+  const [myColours, setMyColours] = useState<Record<string, string>>({});
+  useEffect(() => {
+    checkSession()
+      .then((res) => setMyColours(res.data.subject_colors || {}))
+      .catch(() => {});
+  }, []);
+  // The child's own subject colour wins over the default one.
+  const dotFor = (subject: string) => SUBJECT_COLOUR_OPTIONS[myColours[subject]]?.dot ?? subjectDot[subject];
+  const cardFor = (subject: string) => SUBJECT_COLOUR_OPTIONS[myColours[subject]]?.card ?? SUBJECT_COLORS[subject];
   const router = useRouter();
   const mounted = useMounted();
   const [username, setUsername] = useState("");
@@ -550,7 +561,7 @@ export default function ChildDashboard() {
                         >
                           <div className="flex items-start gap-2">
                             <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                              entry.is_complete ? "bg-brand-leaf" : subjectDot[entry.lesson.subject] || "bg-gray-400"
+                              entry.is_complete ? "bg-brand-leaf" : dotFor(entry.lesson.subject) || "bg-gray-400"
                             }`} />
                             <div className="min-w-0">
                               <p className="text-[10px] font-bold uppercase tracking-wide text-[#8A7A69]">
@@ -608,8 +619,8 @@ export default function ChildDashboard() {
               ) : (
                 <div className="grid md:grid-cols-2 gap-3">
                   {selectedDayEntries.map(entry => {
-                    const colorClass = SUBJECT_COLORS[entry.lesson.subject] || "bg-[#F0ECE6] border-[#DDD3C4] text-[#6E6256]";
-                    const dotClass = subjectDot[entry.lesson.subject] || "bg-gray-400";
+                    const colorClass = cardFor(entry.lesson.subject) || "bg-[#F0ECE6] border-[#DDD3C4] text-[#6E6256]";
+                    const dotClass = dotFor(entry.lesson.subject) || "bg-gray-400";
                     const normalSubjects = timetable[selectedDayName] ?? [];
                     const movedHere = !normalSubjects.includes(entry.lesson.subject);
 
@@ -780,7 +791,7 @@ export default function ChildDashboard() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex items-start gap-3 mb-5">
-              <span className={`w-3 h-3 rounded-full mt-1.5 shrink-0 ${subjectDot[modal.entry.lesson.subject] || "bg-gray-400"}`} />
+              <span className={`w-3 h-3 rounded-full mt-1.5 shrink-0 ${dotFor(modal.entry.lesson.subject) || "bg-gray-400"}`} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500">{modal.entry.lesson.subject}</p>
                 <h3 className="text-lg font-bold text-gray-900 leading-snug">{modal.entry.lesson.title}</h3>

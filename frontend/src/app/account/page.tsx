@@ -5,7 +5,21 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import ThemePicker from "@/components/ThemePicker";
-import { changePassword, getMe, requestEmailVerification, saveFamilyTheme } from "@/lib/api";
+import Avatar from "@/components/Avatar";
+import AvatarBuilder from "@/components/AvatarBuilder";
+import ChildColours from "@/components/ChildColours";
+import {
+  changePassword,
+  checkSession,
+  getMe,
+  getTimetable,
+  requestEmailVerification,
+  saveAvatar,
+  saveChildColours,
+  saveFamilyTheme,
+} from "@/lib/api";
+import { AvatarChoice } from "@/lib/avatar";
+import { subjectsInTimetable } from "@/lib/subjects";
 import { clearAuth, setAuth } from "@/lib/auth";
 import { DEFAULT_THEME, FamilyTheme, applyTheme, isFamilyTheme } from "@/lib/theme";
 
@@ -27,6 +41,14 @@ export default function AccountPage() {
   const [theme, setTheme] = useState<FamilyTheme>(DEFAULT_THEME);
   const [themeSaving, setThemeSaving] = useState(false);
   const [themeMessage, setThemeMessage] = useState("");
+  const [me, setMe] = useState<{
+    id: number;
+    avatar: AvatarChoice | null;
+    has_photo: boolean;
+    child_theme: string | null;
+    subject_colors: Record<string, string> | null;
+  } | null>(null);
+  const [subjects, setSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     getMe()
@@ -37,6 +59,12 @@ export default function AccountPage() {
         setEmailVerified(!!res.data.email_verified_at);
         setAuth(res.data.role, res.data.username);
         if (isFamilyTheme(res.data.family_theme)) setTheme(res.data.family_theme);
+        setMe(res.data);
+        if (res.data.role === "child") {
+          getTimetable()
+            .then((t) => setSubjects(subjectsInTimetable(t.data.config || {})))
+            .catch(() => {});
+        }
       })
       .catch(() => {
         clearAuth();
@@ -174,6 +202,47 @@ export default function AccountPage() {
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {role === "child" && me && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">My avatar</h2>
+              {me.has_photo ? (
+                <div className="mt-3 flex items-center gap-4">
+                  <Avatar username={username} avatar={me.avatar} hasPhoto childId={me.id} size="lg" />
+                  <p className="text-sm text-brand-earth/70">Your grown-up has added a photo for you.</p>
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <AvatarBuilder
+                    username={username}
+                    initial={me.avatar}
+                    onSave={async (choice) => {
+                      await saveAvatar(choice);
+                      setMe({ ...me, avatar: choice });
+                      window.dispatchEvent(new Event("avatar-changed"));
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {role === "child" && me && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="mb-3 text-lg font-extrabold text-brand-charcoal">My colours</h2>
+              <ChildColours
+                subjects={subjects}
+                initialTheme={me.child_theme}
+                initialColours={me.subject_colors || {}}
+                onSave={async (childTheme, colours) => {
+                  await saveChildColours(childTheme, colours);
+                  // Re-read the theme so "Family colours" switches straight back to the family's.
+                  const fresh = await checkSession();
+                  applyTheme(fresh.data.family_theme);
+                }}
+              />
             </div>
           )}
 

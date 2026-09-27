@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { addDays, differenceInCalendarDays, endOfMonth, format, parseISO, startOfWeek } from "date-fns";
 import { addChallenge, removeChallenge, tickChallenge, untickChallenge } from "@/lib/api";
+import Avatar from "@/components/Avatar";
+import { AvatarChoice } from "@/lib/avatar";
 
 type ChildProgress = { child_id: number; username: string; progress: number; completed_at: string | null };
 
@@ -26,7 +28,15 @@ export type FamilyOverview = {
     week_start: string;
     week_end: string;
     family_total: number;
-    children: { child_id: number; username: string; stars_week: number; lessons_week: number; streak: number }[];
+    children: {
+      child_id: number;
+      username: string;
+      avatar?: AvatarChoice | null;
+      has_photo?: boolean;
+      stars_week: number;
+      lessons_week: number;
+      streak: number;
+    }[];
   };
   challenges: FamilyChallenge[];
   today: string;
@@ -218,6 +228,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
                 className={"flex items-center gap-3 py-3 " + (row.child_id === myId ? "rounded-xl bg-brand-wash px-2" : "")}
               >
                 <span className="w-8 text-center text-xl">{row.stars_week > 0 ? MEDALS[i] ?? `${i + 1}` : "·"}</span>
+                <Avatar username={row.username} avatar={row.avatar} hasPhoto={row.has_photo} childId={row.child_id} size="sm" />
                 <p className="min-w-0 flex-1 truncate font-extrabold text-brand-charcoal">
                   {row.username}
                   {row.child_id === myId && <span className="ml-1 text-xs font-bold text-brand-softsage">(you)</span>}

@@ -10,16 +10,28 @@ export const FAMILY_THEMES: { id: FamilyTheme; label: string; swatches: [string,
   { id: "berry", label: "Berry", swatches: ["#7A3E62", "#B2548A", "#F5E6EF"] },
 ];
 
+// Children can also pick one of these for their own screens.
+export const CHILD_THEMES: { id: string; label: string; swatches: [string, string, string] }[] = [
+  ...FAMILY_THEMES,
+  { id: "sky", label: "Sky", swatches: ["#1D6FA3", "#38BDF8", "#E0F2FE"] },
+  { id: "grape", label: "Grape", swatches: ["#5B3A9E", "#8B5CF6", "#EDE9FE"] },
+  { id: "rainbow", label: "Rainbow", swatches: ["#C2410C", "#EC4899", "#FEF3C7"] },
+];
+
 const STORAGE_KEY = "family_theme";
 
 export function isFamilyTheme(value: unknown): value is FamilyTheme {
   return FAMILY_THEMES.some((theme) => theme.id === value);
 }
 
+function isKnownTheme(value: unknown): value is string {
+  return CHILD_THEMES.some((theme) => theme.id === value);
+}
+
 /** Apply a theme to the page and remember it so the next visit paints in the right colours. */
 export function applyTheme(value: string | null | undefined) {
   if (typeof document === "undefined") return;
-  const theme = isFamilyTheme(value) ? value : DEFAULT_THEME;
+  const theme = isKnownTheme(value) ? value : DEFAULT_THEME;
   document.documentElement.dataset.theme = theme;
   try {
     localStorage.setItem(STORAGE_KEY, theme);

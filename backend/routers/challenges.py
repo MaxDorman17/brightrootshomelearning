@@ -11,6 +11,7 @@ from models import Challenge, ChallengeTick, User
 from routers import activity
 from routers.activity import naive
 from routers.test_results import _own_child
+from schemas import _parse_avatar
 
 router = APIRouter(prefix="/api/family", tags=["family"])
 
@@ -265,6 +266,8 @@ def _leaderboard(db: Session, parent_id: int, children: list[User], cache: _Acti
         rows.append({
             "child_id": child.id,
             "username": child.username,
+            "avatar": _parse_avatar(child.avatar),
+            "has_photo": bool(child.avatar_photo),
             "stars_week": stars_week,
             "lessons_week": sum(1 for when, _ in lessons if week_start <= when.date() <= week_end),
             "streak": _streak({when.date() for when, _ in lessons}, today),

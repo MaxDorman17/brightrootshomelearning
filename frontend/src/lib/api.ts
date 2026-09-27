@@ -114,6 +114,17 @@ export const saveStudySession = (body: {
 }) => api.post("/api/study/sessions", body);
 export const getStudySummary = (child_id?: number) =>
   api.get("/api/study/summary", { params: child_id != null ? { child_id } : {} });
+export const saveAvatar = (avatar: { emoji: string; bg: string; frame: string }, child_id?: number) =>
+  api.put("/api/profile/avatar", avatar, { params: child_id != null ? { child_id } : {} });
+export const saveChildColours = (theme: string | null, subject_colors: Record<string, string>, child_id?: number) =>
+  api.put("/api/profile/colours", { theme, subject_colors }, { params: child_id != null ? { child_id } : {} });
+export const uploadChildPhoto = (child_id: number, file: File) => {
+  const form = new FormData();
+  form.append("file", file);
+  return api.post("/api/profile/photo", form, { params: { child_id } });
+};
+export const deleteChildPhoto = (child_id: number) => api.delete("/api/profile/photo", { params: { child_id } });
+export const getChildPhoto = (child_id: number) => api.get(`/api/profile/photo/${child_id}`, { responseType: "blob" });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

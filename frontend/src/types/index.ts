@@ -150,6 +150,8 @@ export interface Child {
   email: string | null;
   role: "child";
   created_at: string;
+  avatar?: { emoji: string; bg: string; frame: string } | null;
+  has_photo?: boolean;
 }
 
 export interface JournalEntry {

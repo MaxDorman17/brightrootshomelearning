@@ -1,4 +1,14 @@
-from pydantic import BaseModel, EmailStr, field_validator
+import json
+
+from pydantic import BaseModel, EmailStr, field_validator, model_validator
+
+
+def _parse_avatar(raw):
+    try:
+        value = json.loads(raw) if raw else None
+        return value if isinstance(value, dict) else None
+    except ValueError:
+        return None
 from typing import Optional
 from datetime import date, datetime
 
@@ -36,6 +46,15 @@ class UserOut(BaseModel):
     theme: Optional[str] = None
     family_theme: Optional[str] = None  # the parent's theme, shared by the whole family
     parent_name: Optional[str] = None  # for child accounts: what their parent is called
+    avatar: Optional[dict] = None
+    has_photo: bool = False
+    child_theme: Optional[str] = None
+    subject_colors: Optional[dict] = None
+
+    @field_validator("avatar", "subject_colors", mode="before")
+    @classmethod
+    def parse_json(cls, value):
+        return _parse_avatar(value) if isinstance(value, str) or value is None else value
     created_at: datetime
 
     class Config:
@@ -61,6 +80,23 @@ class ChildOut(BaseModel):
     email: Optional[str] = None
     role: str
     created_at: datetime
+    avatar: Optional[dict] = None
+    has_photo: bool = False
+
+    @model_validator(mode="before")
+    @classmethod
+    def from_user(cls, data):
+        if hasattr(data, "avatar_photo"):
+            return {
+                "id": data.id,
+                "username": data.username,
+                "email": data.email,
+                "role": data.role,
+                "created_at": data.created_at,
+                "avatar": _parse_avatar(data.avatar),
+                "has_photo": bool(data.avatar_photo),
+            }
+        return data
 
     class Config:
         from_attributes = True

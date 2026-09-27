@@ -359,11 +359,13 @@ def me(
     current_user: User = Depends(get_authenticated_user),
 ):
     out = UserOut.model_validate(current_user)
+    out.has_photo = bool(current_user.avatar_photo)
     if current_user.role == "parent":
         out.family_theme = current_user.theme
     elif current_user.parent_id:
         parent = db.query(User).filter(User.id == current_user.parent_id).first()
-        out.family_theme = parent.theme if parent else None
+        # A child's own choice of colours wins over the family theme.
+        out.family_theme = current_user.child_theme or (parent.theme if parent else None)
         out.parent_name = parent.username if parent else None
     return out
 

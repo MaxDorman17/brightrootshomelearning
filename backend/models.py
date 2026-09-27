@@ -26,6 +26,10 @@ class User(Base):
     theme = Column(String(20), nullable=True)  # family colour theme, set on the parent account
     ehe_approach = Column(Text, nullable=True)  # parent's "our approach to home education" for council reports
     rewards_set_up_at = Column(DateTime(timezone=True), nullable=True)  # when example star rules/rewards were added
+    avatar = Column(Text, nullable=True)  # JSON {"emoji", "bg", "frame"} from the avatar builder
+    avatar_photo = Column(String(255), nullable=True)  # file name of a parent-uploaded photo
+    child_theme = Column(String(20), nullable=True)  # a child's own colour theme, overriding the family one
+    subject_colors = Column(Text, nullable=True)  # JSON {subject: colour name} chosen by the child
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
