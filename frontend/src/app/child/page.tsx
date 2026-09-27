@@ -13,6 +13,7 @@ import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
+import RemindersCard from "@/components/RemindersCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
@@ -378,6 +379,8 @@ export default function ChildDashboard() {
             </button>
           </div>
         )}
+
+        <RemindersCard />
 
         {/* Unread feedback banner */}
         {unreadFeedback.length > 0 && (

@@ -52,6 +52,7 @@ const PARENT_MORE = [
   { href: "/parent/journal", label: "Journal" },
   { href: "/parent/timetable", label: "Timetable" },
   { href: "/parent/rewards", label: "Rewards" },
+  { href: "/parent/reminders", label: "Reminders" },
   { href: "/achievements", label: "Achievements" },
   { href: "/parent/print", label: "Print Week" },
   { href: "/account", label: "Account" },

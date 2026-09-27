@@ -30,6 +30,8 @@ class User(Base):
     avatar_photo = Column(String(255), nullable=True)  # file name of a parent-uploaded photo
     child_theme = Column(String(20), nullable=True)  # a child's own colour theme, overriding the family one
     subject_colors = Column(Text, nullable=True)  # JSON {subject: colour name} chosen by the child
+    summary_email_time = Column(String(5), nullable=True)  # "HH:MM" for the parent's daily summary email, None = off
+    summary_last_sent = Column(Date, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
@@ -510,3 +512,32 @@ class MomentComment(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     text = Column(String(500), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Reminder(Base):
+    """A daily reminder a parent sets, e.g. "Practise spellings" at 9:00 on weekdays."""
+    __tablename__ = "reminders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    kind = Column(String(20), nullable=False)  # spellings / extra_work / custom
+    text = Column(String(200), nullable=True)  # wording for custom reminders
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # None means every child
+    time = Column(String(5), nullable=False)  # "HH:MM", UK time
+    days = Column(Text, nullable=False)  # JSON list of weekday names
+    email_child = Column(Boolean, nullable=False, default=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ReminderEvent(Base):
+    """Per child, per day: a custom reminder marked done, or a reminder email sent."""
+    __tablename__ = "reminder_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    reminder_id = Column(Integer, ForeignKey("reminders.id", ondelete="CASCADE"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    day = Column(Date, nullable=False)
+    kind = Column(String(10), nullable=False)  # done / emailed
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("reminder_id", "child_id", "day", "kind", name="uq_reminder_event"),)

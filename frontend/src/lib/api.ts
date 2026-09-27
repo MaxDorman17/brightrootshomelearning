@@ -167,6 +167,22 @@ export const reactToMoment = (id: number, emoji: string) => api.post(`/api/momen
 export const commentOnMoment = (id: number, text: string) => api.post(`/api/moments/${id}/comments`, { text });
 export const deleteMomentComment = (commentId: number) => api.delete(`/api/moments/comments/${commentId}`);
 export const getMomentPhoto = (photoId: number) => api.get(`/api/moments/photos/${photoId}`, { responseType: "blob" });
+export type ReminderBody = {
+  kind: "spellings" | "extra_work" | "custom";
+  text?: string | null;
+  child_id: number | null;
+  time: string;
+  days: string[];
+  email_child: boolean;
+  is_active: boolean;
+};
+export const getReminders = () => api.get("/api/reminders/");
+export const addReminder = (body: ReminderBody) => api.post("/api/reminders/", body);
+export const updateReminder = (id: number, body: ReminderBody) => api.put(`/api/reminders/${id}`, body);
+export const deleteReminder = (id: number) => api.delete(`/api/reminders/${id}`);
+export const setSummaryEmail = (time: string | null) => api.put("/api/reminders/summary", { time });
+export const getMyReminders = () => api.get("/api/reminders/today");
+export const markReminderDone = (id: number) => api.post(`/api/reminders/${id}/done`);
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

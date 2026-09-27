@@ -9,7 +9,7 @@ from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -63,6 +63,10 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN child_theme VARCHAR(20)"))
             if "subject_colors" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN subject_colors TEXT"))
+            if "summary_email_time" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN summary_email_time VARCHAR(5)"))
+            if "summary_last_sent" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN summary_last_sent DATE"))
             conn.commit()
     if "lessons" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("lessons")]
@@ -381,6 +385,12 @@ app.include_router(profile.router)
 app.include_router(resources.router)
 app.include_router(lesson_plans.router)
 app.include_router(moments.router)
+app.include_router(reminders.router)
+
+
+@app.on_event("startup")
+def start_reminder_emails():
+    reminders.start_email_scheduler()
 
 
 @app.get("/health")
