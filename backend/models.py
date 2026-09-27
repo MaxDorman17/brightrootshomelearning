@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, Date, DateTime, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Text, Boolean, Date, DateTime, Float, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
@@ -284,3 +284,20 @@ class SpellingResult(Base):
     wrong_words = Column(Text, nullable=True)  # JSON array
     is_practice_round = Column(Boolean, default=False)
     taken_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class TestResult(Base):
+    """A test result the parent records themselves (e.g. a maths paper), alongside spelling and Oak results."""
+    __tablename__ = "test_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    subject = Column(String(100), nullable=False)
+    title = Column(String(255), nullable=False)
+    taken_on = Column(Date, nullable=False)
+    score = Column(Float, nullable=False)
+    total = Column(Float, nullable=False)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=True)

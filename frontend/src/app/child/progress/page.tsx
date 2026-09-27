@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
-import { getAllMyEntries, getCodingProgress, getGoals, getDaysOff, getBooks } from "@/lib/api";
+import { getAllMyEntries, getCodingProgress, getGoals, getDaysOff, getBooks, getResultsOverview } from "@/lib/api";
+import ResultsView, { ResultsOverview } from "@/components/ResultsView";
 import { PlannerEntry, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, startOfWeek } from "date-fns";
@@ -35,6 +36,7 @@ export default function ChildProgressPage() {
   const [daysOff, setDaysOff] = useState<Set<string>>(new Set());
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
+  const [results, setResults] = useState<ResultsOverview | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "child") { router.replace("/login"); return; }
@@ -54,6 +56,7 @@ export default function ChildProgressPage() {
       setDaysOff(new Set((dRes.data as { date: string }[]).map(d => d.date)));
       setBooks(bRes.data);
     }).finally(() => setLoading(false));
+    getResultsOverview().then(res => setResults(res.data)).catch(() => {});
   }, [router]);
 
   const today = format(new Date(), "yyyy-MM-dd");
@@ -311,6 +314,14 @@ export default function ChildProgressPage() {
                     </p>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {results && (
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Results</p>
+                <h2 className="text-lg font-bold text-[#2E342F] mt-1 mb-3">My test results</h2>
+                <ResultsView data={results} forChild />
               </div>
             )}
           </>

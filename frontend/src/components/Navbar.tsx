@@ -27,6 +27,7 @@ const PARENT_MAIN = [
   { href: "/parent/dashboard", label: "Home" },
   { href: "/parent", label: "Planner" },
   { href: "/parent/report", label: "Reports" },
+  { href: "/parent/results", label: "Test Results" },
   { href: "/parent/children", label: "Children" },
 ];
 

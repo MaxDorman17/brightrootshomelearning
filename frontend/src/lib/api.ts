@@ -54,6 +54,21 @@ export const logout = () => api.post("/api/auth/logout");
 export const getMe = () => api.get("/api/auth/me");
 // Like getMe, but a signed-out visitor stays on the page instead of being sent to /login.
 export const checkSession = () => api.get("/api/auth/me", { skipAuthRedirect: true } as any);
+export type TestResultBody = {
+  child_id: number;
+  subject: string;
+  title: string;
+  taken_on: string;
+  score: number;
+  total: number;
+  notes: string | null;
+};
+// Parents pass child_id; children get their own results.
+export const getResultsOverview = (child_id?: number) =>
+  api.get("/api/test-results/overview", { params: child_id != null ? { child_id } : {} });
+export const addTestResult = (body: TestResultBody) => api.post("/api/test-results/", body);
+export const updateTestResult = (id: number, body: TestResultBody) => api.put(`/api/test-results/${id}`, body);
+export const deleteTestResult = (id: number) => api.delete(`/api/test-results/${id}`);
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
