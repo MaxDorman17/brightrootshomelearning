@@ -11,6 +11,7 @@ import {
 import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
+import { useParentName } from "@/lib/useParentName";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
 
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
@@ -47,9 +48,9 @@ const subjectDot: Record<string, string> = {
   Languages: "bg-rose-400",
 };
 
-const QUOTES = [
+const quotes = (parentName: string) => [
   "Every lesson is a step forward. Keep going! 🚀",
-  "You're doing brilliantly — Max is proud of you! ⭐",
+  `You're doing brilliantly, and ${parentName} is proud of you! ⭐`,
   "Smart people never stop learning. That's you! 🧠",
   "One lesson at a time — you've got this! 💪",
   "The more you learn, the more amazing you become! 🌟",
@@ -92,6 +93,7 @@ function CompletionRing({ done, total }: { done: number; total: number }) {
 }
 
 export default function ChildDashboard() {
+  const parentName = useParentName();
   const router = useRouter();
   const mounted = useMounted();
   const [username, setUsername] = useState("");
@@ -152,7 +154,7 @@ export default function ChildDashboard() {
     const weekMon = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
     getGoals({ week_start: weekMon }).then(res => setGoals(res.data)).catch(() => {});
 
-    const timer = setInterval(() => setQuoteIdx(i => (i + 1) % QUOTES.length), 8000);
+    const timer = setInterval(() => setQuoteIdx(i => (i + 1) % quotes("").length), 8000);
     return () => clearInterval(timer);
   }, [loadWeek, router]);
 
@@ -344,7 +346,7 @@ export default function ChildDashboard() {
             </div>
             {todayTotalCount > 0 && <CompletionRing done={todayDoneCount} total={todayTotalCount} />}
             <div className="hidden xl:block max-w-[180px] text-right shrink-0">
-              <p className="text-xs text-white/50 italic leading-relaxed">{QUOTES[quoteIdx]}</p>
+              <p className="text-xs text-white/50 italic leading-relaxed">{quotes(parentName)[quoteIdx]}</p>
             </div>
           </div>
         </div>
@@ -372,7 +374,7 @@ export default function ChildDashboard() {
               <div key={fb.id} className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-3 shadow-sm">
                 <span className="text-2xl shrink-0">{fb.emoji || "💬"}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-extrabold text-amber-700 mb-0.5">New feedback from Max! 🎉</p>
+                  <p className="text-xs font-extrabold text-amber-700 mb-0.5">New feedback from {parentName}! 🎉</p>
                   <p className="text-sm font-semibold text-amber-900">{fb.message}</p>
                 </div>
                 <button onClick={() => handleReadFeedback(fb.id)}
@@ -786,10 +788,10 @@ export default function ChildDashboard() {
               <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 text-xl font-bold shrink-0">✕</button>
             </div>
 
-            {/* Notes from Max */}
+            {/* Notes from the parent */}
             {modal.entry.lesson.description && (
               <div className="mb-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-                <p className="text-xs font-bold text-amber-700 mb-1">📝 Notes from Max</p>
+                <p className="text-xs font-bold text-amber-700 mb-1">📝 Notes from {parentName}</p>
                 <p className="text-sm text-amber-900">{modal.entry.lesson.description}</p>
               </div>
             )}
@@ -868,7 +870,7 @@ export default function ChildDashboard() {
                 </button>
               </div>
               {modal.entry.completed_work_url && (
-                <p className="text-xs text-emerald-600 font-bold mt-1.5">✓ Link submitted — Max can see it!</p>
+                <p className="text-xs text-emerald-600 font-bold mt-1.5">✓ Link submitted. {parentName} can see it!</p>
               )}
             </div>
 

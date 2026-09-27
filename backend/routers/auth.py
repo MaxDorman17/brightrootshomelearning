@@ -364,6 +364,7 @@ def me(
     elif current_user.parent_id:
         parent = db.query(User).filter(User.id == current_user.parent_id).first()
         out.family_theme = parent.theme if parent else None
+        out.parent_name = parent.username if parent else None
     return out
 
 

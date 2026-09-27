@@ -6,9 +6,11 @@ import { getTodayEntries, toggleComplete } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
+import { useParentName } from "@/lib/useParentName";
 import { format } from "date-fns";
 
 export default function LessonDetailPage() {
+  const parentName = useParentName();
   const router = useRouter();
   const params = useParams();
   const mounted = useMounted();
@@ -100,7 +102,7 @@ export default function LessonDetailPage() {
 
           {entry.lesson.description && (
             <div className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
-              <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-1">From Max</p>
+              <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-1">From {parentName}</p>
               <p className="text-sm text-amber-900">{entry.lesson.description}</p>
             </div>
           )}
@@ -126,7 +128,7 @@ export default function LessonDetailPage() {
         ) : (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
             <p className="text-4xl mb-3">📚</p>
-            <p className="text-gray-500">This is a custom lesson from Max.</p>
+            <p className="text-gray-500">This is a custom lesson from {parentName}.</p>
             {entry.lesson.description && (
               <p className="text-sm text-gray-400 mt-2">Check the notes above for instructions.</p>
             )}

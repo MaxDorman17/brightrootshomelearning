@@ -35,6 +35,7 @@ class UserOut(BaseModel):
     subscription_cancel_at: Optional[datetime] = None
     theme: Optional[str] = None
     family_theme: Optional[str] = None  # the parent's theme, shared by the whole family
+    parent_name: Optional[str] = None  # for child accounts: what their parent is called
     created_at: datetime
 
     class Config:

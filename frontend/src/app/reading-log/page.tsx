@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, downloadReadingFile, getChildren } from "@/lib/api";
 import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import { useParentName } from "@/lib/useParentName";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
 type Status = "all" | "reading" | "completed" | "wishlist";
@@ -57,6 +58,7 @@ function Stars({ rating, onRate }: { rating: number | null; onRate?: (n: number)
 }
 
 export default function ReadingLogPage() {
+  const parentName = useParentName();
   const router = useRouter();
   const [role, setRole] = useState("");
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
@@ -444,7 +446,7 @@ export default function ReadingLogPage() {
           <div className="brand-card p-12 text-center">
             <p className="text-5xl mb-3">📚</p>
             <p className="text-gray-500 font-semibold">
-              {filter === "all" ? (isParent ? "No books yet — click \"Add Book\" to get started!" : "No books in the log yet — ask Max to add some!") : `No ${filter} books.`}
+              {filter === "all" ? (isParent ? "No books yet — click \"Add Book\" to get started!" : `No books in the log yet. Ask ${parentName} to add some!`) : `No ${filter} books.`}
             </p>
           </div>
         ) : (
