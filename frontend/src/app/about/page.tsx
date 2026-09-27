@@ -5,7 +5,7 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Why Bright Roots exists, who it's for and how it helps families organise home learning.",
+  description: "The family story behind Bright Roots, why it exists, who it's for and how it helps families organise home learning.",
 };
 
 const principles = [
@@ -49,6 +49,34 @@ export default function AboutPage() {
             quiz results and keeping a record of it all. Bright Roots brings those parts together so
             you can spend less time organising and more time learning together.
           </p>
+        </div>
+      </section>
+
+      <section className="border-t border-brand-line py-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 className="text-3xl font-black">Our story</h2>
+          <div className="mt-5 space-y-4 leading-7 text-[#6E5A46]">
+            <p>
+              Bright Roots started at our own kitchen table. When we began home learning with our
+              children, we had notebooks, printouts, spreadsheets, bookmarks and sticky notes everywhere.
+              Every evening went on working out what was next, what had been finished and where we&apos;d
+              written it down.
+            </p>
+            <p>
+              Somewhere along the way we noticed we were spending more time organising the learning than
+              actually being with our children: reading together, exploring, answering the endless
+              questions and learning alongside them. That wasn&apos;t why we chose home education.
+            </p>
+            <p>
+              So we built the tool we wished we&apos;d had. One calm place where the week is planned, the
+              children can see what they&apos;re doing, and every bit of progress is recorded without extra
+              effort. We use it with our own family, and we keep improving it based on what real home
+              learning families need.
+            </p>
+            <p className="font-semibold text-brand-charcoal">
+              Our hope is simple: less time on admin, more time together.
+            </p>
+          </div>
         </div>
       </section>
 
