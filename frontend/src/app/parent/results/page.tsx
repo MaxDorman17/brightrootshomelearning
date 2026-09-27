@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Navbar from "@/components/Navbar";
 import ResultsView, { OwnTest, ResultsOverview } from "@/components/ResultsView";
+import StudySummaryCard from "@/components/StudySummaryCard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
   addTestResult,
@@ -187,7 +188,10 @@ export default function ResultsPage() {
         {loading && <p className="text-sm text-[#6E5A46]">Loading results...</p>}
 
         {!loading && data && (
-          <ResultsView data={data} onEditTest={openEdit} onDeleteTest={handleDelete} />
+          <div className="space-y-5">
+            <ResultsView data={data} onEditTest={openEdit} onDeleteTest={handleDelete} />
+            {childId != null && <StudySummaryCard childId={childId} />}
+          </div>
         )}
       </div>
 

@@ -19,6 +19,7 @@ from models import (
     User,
 )
 from routers.oak import OAK_SHARE_RE
+from routers.study import study_minutes
 from routers.test_results import _oak_results_for_child, _own_child
 
 router = APIRouter(prefix="/api/council-report", tags=["council-report"])
@@ -188,6 +189,8 @@ def council_report(
         .all()
     )
 
+    minutes_studied, study_sessions = study_minutes(db, child.id, parent_id, start_date, end_date)
+
     return {
         "child": {"id": child.id, "username": child.username},
         "parent": {"username": current_user.username, "email": current_user.email},
@@ -198,6 +201,8 @@ def council_report(
             "lessons_completed": len(planned),
             "extra_activities": len(extra),
             "subjects_covered": len(subjects),
+            "minutes_studied": minutes_studied,
+            "study_sessions": study_sessions,
         },
         "subjects": sorted(subjects.values(), key=lambda s: -s["lessons"]),
         "results": {

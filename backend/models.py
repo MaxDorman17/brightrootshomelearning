@@ -390,3 +390,19 @@ class ChallengeTick(Base):
     challenge_id = Column(Integer, ForeignKey("challenges.id", ondelete="CASCADE"), nullable=False, index=True)
     child_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class StudySession(Base):
+    """Time a child spent studying with the study timer."""
+    __tablename__ = "study_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    entry_id = Column(Integer, ForeignKey("planner_entries.id", ondelete="SET NULL"), nullable=True)
+    subject = Column(String(100), nullable=True)
+    label = Column(String(255), nullable=True)
+    planned_minutes = Column(Integer, nullable=False)
+    minutes = Column(Integer, nullable=False)
+    completed = Column(Boolean, nullable=False, default=False)  # ran to the end rather than stopped early
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

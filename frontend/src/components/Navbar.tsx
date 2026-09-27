@@ -56,6 +56,7 @@ const CHILD_MAIN = [
   { href: "/units", label: "Learning" },
   { href: "/child/progress", label: "Progress" },
   { href: "/child/stars", label: "My Stars" },
+  { href: "/child/timer", label: "Timer" },
 ];
 
 const CHILD_MORE = [

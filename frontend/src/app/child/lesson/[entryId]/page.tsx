@@ -89,6 +89,15 @@ export default function LessonDetailPage() {
             </button>
           </div>
 
+          {!entry.is_complete && (
+            <a
+              href={`/child/timer?entry=${entry.id}&subject=${encodeURIComponent(entry.lesson.subject)}&label=${encodeURIComponent(entry.lesson.title)}`}
+              className="mb-4 inline-flex items-center gap-2 rounded-xl border-2 border-brand-mist bg-white px-4 py-2 text-sm font-semibold text-brand-deep hover:bg-brand-wash"
+            >
+              ⏱ Start study timer
+            </a>
+          )}
+
           {entry.lesson.description && (
             <div className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
               <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-1">From Max</p>

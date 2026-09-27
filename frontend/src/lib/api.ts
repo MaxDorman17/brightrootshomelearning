@@ -104,6 +104,16 @@ export const removeChallenge = (id: number) => api.delete(`/api/family/challenge
 export const tickChallenge = (id: number, child_id: number) => api.post(`/api/family/challenges/${id}/tick`, { child_id });
 export const untickChallenge = (id: number, child_id: number) =>
   api.delete(`/api/family/challenges/${id}/tick`, { params: { child_id } });
+export const saveStudySession = (body: {
+  planned_minutes: number;
+  minutes: number;
+  completed: boolean;
+  subject: string | null;
+  label: string | null;
+  entry_id: number | null;
+}) => api.post("/api/study/sessions", body);
+export const getStudySummary = (child_id?: number) =>
+  api.get("/api/study/summary", { params: child_id != null ? { child_id } : {} });
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });

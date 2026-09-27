@@ -14,7 +14,14 @@ type Report = {
   parent: { username: string; email: string | null };
   period: { start: string; end: string };
   approach: string;
-  summary: { learning_days: number; lessons_completed: number; extra_activities: number; subjects_covered: number };
+  summary: {
+    learning_days: number;
+    lessons_completed: number;
+    extra_activities: number;
+    subjects_covered: number;
+    minutes_studied: number;
+    study_sessions: number;
+  };
   subjects: { subject: string; lessons: number; examples: string[] }[];
   results: {
     spelling_tests: number;
@@ -57,6 +64,11 @@ function periodDates(key: PeriodKey, today = new Date()): { start: string; end: 
 }
 
 const fmt = (d: string) => format(parseISO(d), "d MMMM yyyy");
+const formatDuration = (minutes: number) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return [h ? `${h} hour${h === 1 ? "" : "s"}` : "", m ? `${m} minute${m === 1 ? "" : "s"}` : ""].filter(Boolean).join(" ");
+};
 const num = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
 
 function ReportSection({ title, children }: { title: string; children: React.ReactNode }) {
@@ -333,6 +345,12 @@ export default function CouncilReportPage() {
                     </div>
                   ))}
                 </div>
+                {report.summary.minutes_studied > 0 && (
+                  <p className="mt-3">
+                    Time spent learning with the study timer: <strong>{formatDuration(report.summary.minutes_studied)}</strong> across{" "}
+                    {report.summary.study_sessions} session{report.summary.study_sessions === 1 ? "" : "s"}.
+                  </p>
+                )}
               </ReportSection>
             )}
 

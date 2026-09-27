@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import { getAllMyEntries, getCodingProgress, getGoals, getDaysOff, getBooks, getResultsOverview } from "@/lib/api";
 import ResultsView, { ResultsOverview } from "@/components/ResultsView";
+import StudySummaryCard from "@/components/StudySummaryCard";
 import { PlannerEntry, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import { format, startOfWeek } from "date-fns";
@@ -324,6 +325,8 @@ export default function ChildProgressPage() {
                 <ResultsView data={results} forChild />
               </div>
             )}
+
+            <StudySummaryCard forChild />
           </>
         )}
       </div>
