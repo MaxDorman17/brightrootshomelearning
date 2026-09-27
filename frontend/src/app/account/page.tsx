@@ -151,10 +151,10 @@ export default function AccountPage() {
         <div className="rounded-3xl border border-brand-softsage/20 bg-white p-6 shadow-sm sm:p-8">
           <div className="mb-7">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-earth/60">
-              Account
+              {role === "child" ? "Make it yours" : "Account"}
             </p>
             <h1 className="mt-2 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-              Security settings
+              {role === "child" ? "My look" : "Account settings"}
             </h1>
             <p className="mt-2 text-sm text-brand-earth/70">
               Signed in as <span className="font-bold">{username || "..."}</span>

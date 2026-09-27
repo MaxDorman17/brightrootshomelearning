@@ -19,9 +19,20 @@ export default function ChildColours({ subjects, initialTheme, initialColours, o
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
 
-  const chooseTheme = (id: string | null) => {
+  // A theme is saved as soon as it's picked, so children see it stick straight away.
+  const chooseTheme = async (id: string | null) => {
+    const previous = theme;
     setTheme(id);
     if (id) applyTheme(id);
+    setMessage("");
+    try {
+      await onSave(id, colours);
+      setMessage("Theme saved!");
+    } catch {
+      setTheme(previous);
+      applyTheme(previous);
+      setMessage("Could not save. Please try again.");
+    }
   };
 
   const save = async () => {
@@ -39,11 +50,12 @@ export default function ChildColours({ subjects, initialTheme, initialColours, o
 
   return (
     <div>
-      <p className="mb-2 text-sm font-bold text-brand-charcoal">My theme</p>
+      <p className="text-sm font-bold text-brand-charcoal">My theme</p>
+      <p className="mb-2 text-xs text-[#6E5A46]">Tap a theme to change your colours.</p>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <button
           type="button"
-          onClick={() => setTheme(null)}
+          onClick={() => chooseTheme(null)}
           aria-pressed={theme === null}
           className={"rounded-2xl border-2 bg-white p-3 text-left text-sm font-extrabold " + (theme === null ? "border-brand-sage" : "border-brand-line")}
         >
@@ -109,9 +121,11 @@ export default function ChildColours({ subjects, initialTheme, initialColours, o
       )}
 
       <div className="mt-5 flex items-center gap-3">
-        <button type="button" onClick={save} disabled={saving} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
-          {saving ? "Saving..." : "Save my colours"}
-        </button>
+        {subjects.length > 0 && (
+          <button type="button" onClick={save} disabled={saving} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+            {saving ? "Saving..." : "Save subject colours"}
+          </button>
+        )}
         {message && <span className="text-sm font-semibold text-brand-sage">{message}</span>}
       </div>
     </div>

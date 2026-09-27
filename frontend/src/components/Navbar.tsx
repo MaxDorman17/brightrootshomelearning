@@ -105,6 +105,7 @@ const CHILD_NAV: NavEntry[] = [
     items: [
       { href: "/child/games", label: "Games" },
       { href: "/child/timer", label: "Study Timer" },
+      { href: "/account", label: "My Look" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },
@@ -415,7 +416,11 @@ export default function Navbar() {
               )}
 
               {username && (
-                <div className="hidden items-center gap-2 rounded-full bg-brand-cream px-2 py-1 sm:flex">
+                <Link
+                  href="/account"
+                  title={role === "child" ? "Change my avatar and colours" : "Account settings"}
+                  className="hidden items-center gap-2 rounded-full bg-brand-cream px-2 py-1 hover:bg-brand-tint sm:flex"
+                >
                   <Avatar
                     username={username}
                     avatar={myAvatar?.avatar}
@@ -427,7 +432,7 @@ export default function Navbar() {
                   <span className="pr-2 text-sm font-bold text-brand-charcoal">
                     {username}
                   </span>
-                </div>
+                </Link>
               )}
 
               <button
