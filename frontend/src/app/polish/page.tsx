@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated } from "@/lib/auth";
 import { getPolishSessions, logPolishSession, deletePolishSession } from "@/lib/api";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO, differenceInCalendarDays, subDays } from "date-fns";
 
 interface PolishSession {
@@ -81,6 +82,7 @@ export default function PolishPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="languages" tint={4}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
@@ -88,6 +90,7 @@ export default function PolishPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Track Polish practice, Duolingo XP and daily learning streaks.
               </p>
+              </PageHero>
             </div>
 
             <a

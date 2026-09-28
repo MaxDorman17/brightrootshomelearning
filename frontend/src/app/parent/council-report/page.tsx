@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import MomentImage from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
@@ -174,12 +175,14 @@ export default function CouncilReportPage() {
 
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 print:max-w-none print:p-0">
         <div className="print:hidden">
+          <PageHero art="council" tint={0}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Records</p>
           <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Council Report</h1>
           <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
             A home education report for your local authority, built from your Bright Roots records.
             Choose a child and period, then download it as a PDF.
           </p>
+          </PageHero>
 
           {children.length === 0 && !loading && (
             <div className="brand-card mt-6 p-6 text-center text-sm text-[#6E5A46]">

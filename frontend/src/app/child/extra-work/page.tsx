@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getAllMyEntries, toggleComplete, submitWorkUrl } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO, startOfDay } from "date-fns";
 
 const CATEGORY_COLOR: Record<string, string> = {
@@ -67,6 +68,7 @@ export default function ChildExtraWorkPage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-7">
+          <PageHero art="extra-work" tint={1}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
             Learning
           </p>
@@ -74,6 +76,7 @@ export default function ChildExtraWorkPage() {
           <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
             Extra tasks, projects and practice set for you.
           </p>
+          </PageHero>
         </div>
 
         <div className="grid grid-cols-3 gap-3 mb-6">

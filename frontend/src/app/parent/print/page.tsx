@@ -7,6 +7,7 @@ import { PlannerEntry, Child } from "@/types";
 import { useMounted } from "@/lib/useMounted";
 import { format, addDays, startOfWeek } from "date-fns";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -83,6 +84,7 @@ export default function PrintPage() {
           <div className="mb-6">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
               <div>
+                <PageHero art="print" tint={0}>
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                   More
                 </p>
@@ -90,6 +92,7 @@ export default function PrintPage() {
                 <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                   Review the week, choose a child and print a clean paper or PDF copy.
                 </p>
+                </PageHero>
               </div>
 
               <button

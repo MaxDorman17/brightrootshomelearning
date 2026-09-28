@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, startOfWeek } from "date-fns";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getGamesSummary, getSpellingWords } from "@/lib/api";
 import { FALLBACK_WORDS } from "@/components/games/common";
@@ -73,11 +74,13 @@ export default function GamesPage() {
           </div>
         ) : (
           <>
+            <PageHero art="games" tint={4}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Play and learn</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Games</h1>
             <p className="mt-2 text-sm text-[#6E5A46]">
               {ownWords ? "The spelling games use this week's spelling words." : "The spelling games use practice words until this week's spellings are added."}
             </p>
+            </PageHero>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {GAMES.map((g) => {
                 const s = summary?.[g.id];

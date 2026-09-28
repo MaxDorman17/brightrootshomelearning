@@ -190,3 +190,11 @@ body {
     @apply font-extrabold text-[#2E342F];
   }
 }
+
+/* Page banners: the serif title and warm colours from the home page */
+.page-hero h1 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 600;
+  color: #24452c;
+  letter-spacing: -0.01em;
+}

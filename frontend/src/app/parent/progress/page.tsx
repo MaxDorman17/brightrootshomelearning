@@ -14,6 +14,7 @@ import {
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
 
 const EMOJIS = ["👏", "⭐", "🔥", "💪", "🎉", "👍", "🌟", "🏆"];
@@ -202,6 +203,7 @@ export default function ProgressPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="review" tint={3}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
@@ -211,6 +213,7 @@ export default function ProgressPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Review submitted work, read lesson notes and send feedback in one place.
               </p>
+              </PageHero>
             </div>
 
             {children.length > 0 && (

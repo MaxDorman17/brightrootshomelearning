@@ -16,6 +16,7 @@ import {
 import { subjectsInTimetable } from "@/lib/subjects";
 import { Unit, UnitQueueItem } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
 
 // Used only if the family's timetable can't be loaded.
@@ -188,6 +189,7 @@ export default function UnitsPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="oak" tint={0}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
@@ -199,6 +201,7 @@ export default function UnitsPage() {
                   ? "Keep each subject's current Oak unit and link in one tidy place."
                   : "The current units you are studying across each subject."}
               </p>
+              </PageHero>
             </div>
 
             <div className="brand-card px-5 py-4 flex items-center gap-6">

@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { addShopping, clearShopping, deleteShopping, getShopping, updateShopping } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 
@@ -88,11 +89,13 @@ export default function ShoppingListPage() {
             ← Cookbook
           </Link>
         </div>
+        <PageHero art="shopping" tint={1}>
         <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage print:hidden">Make together</p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">🛒 Shopping list</h1>
         <p className="mt-2 text-sm text-brand-earth/70 print:hidden">
           Add ingredients and materials from any recipe or craft, or type your own. Tick things off as you shop.
         </p>
+        </PageHero>
 
         <form onSubmit={add} className="mt-5 flex gap-2 print:hidden">
           <input value={qty} onChange={(e) => setQty(e.target.value)} placeholder="Amount" className="w-24 shrink-0 rounded-xl border-2 border-brand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-softsage" />

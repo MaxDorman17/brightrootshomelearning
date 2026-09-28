@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } fro
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import MomentImage, { loadMomentPhoto } from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
@@ -398,9 +399,11 @@ export default function MomentsPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        <PageHero art="moments" tint={3}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Our family</p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Learning moments</h1>
         <p className="mt-2 text-sm text-[#6E5A46] sm:text-base">Photos and notes from your learning, just for your family.</p>
+        </PageHero>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex gap-1 rounded-2xl bg-brand-white p-1">

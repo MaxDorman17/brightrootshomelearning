@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, downloadReadingFile, getChildren } from "@/lib/api";
 import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { useParentName } from "@/lib/useParentName";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
@@ -327,11 +328,13 @@ export default function ReadingLogPage() {
         <div className="brand-card p-6 mb-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
+              <PageHero art="reading" tint={1}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D88C64]">Reading</p>
               <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Reading Log</h1>
               <p className="text-[#6E5A46] mt-2 max-w-2xl">
                 {isParent ? "Track reading progress, books, worksheets and Reading Journeys." : "Keep your books, progress and Reading Journeys all in one place."}
               </p>
+              </PageHero>
             </div>
             {isParent && (
               <button

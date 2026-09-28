@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import ThemePicker from "@/components/ThemePicker";
 import Avatar from "@/components/Avatar";
 import AvatarBuilder from "@/components/AvatarBuilder";
@@ -151,6 +152,7 @@ export default function AccountPage() {
       <main className="mx-auto max-w-3xl px-4 py-8">
         <div className="rounded-3xl border border-brand-softsage/20 bg-white p-6 shadow-sm sm:p-8">
           <div className="mb-7">
+            <PageHero art="account" tint={3}>
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-earth/60">
               {role === "child" ? "Make it yours" : "Account"}
             </p>
@@ -161,6 +163,7 @@ export default function AccountPage() {
               Signed in as <span className="font-bold">{username || "..."}</span>
               {role ? ` · ${role}` : ""}.
             </p>
+            </PageHero>
           </div>
 
           {role === "parent" && (

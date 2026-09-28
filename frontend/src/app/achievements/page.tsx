@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren, getPolishSessions } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
 import { format, subDays } from "date-fns";
 
@@ -243,11 +244,13 @@ export default function AchievementsPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="badges" tint={1}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">Motivation</p>
               <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Badges</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Celebrate milestones, learning streaks, subject progress and special achievements.
               </p>
+              </PageHero>
             </div>
 
             {role === "parent" && children.length > 0 && (

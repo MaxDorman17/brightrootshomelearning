@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getJournalEntries, upsertJournalEntry, deleteJournalEntry } from "@/lib/api";
 import { JournalEntry } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
 
 export default function JournalPage() {
@@ -69,6 +70,7 @@ export default function JournalPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="journal" tint={4}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
@@ -76,6 +78,7 @@ export default function JournalPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Private notes about learning, progress, what worked well and anything worth remembering.
               </p>
+              </PageHero>
             </div>
 
             <div className="brand-card px-5 py-4 flex items-center gap-6">

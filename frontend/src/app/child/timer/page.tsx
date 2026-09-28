@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import StudyTimer from "@/components/StudyTimer";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getTimetable } from "@/lib/api";
@@ -39,8 +40,10 @@ export default function TimerPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-xl px-4 py-8 sm:px-6">
+        <PageHero art="timer" tint={2}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Focus</p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Study timer</h1>
+        </PageHero>
 
         {phase === "idle" && (
           <div className="mt-5 space-y-3">

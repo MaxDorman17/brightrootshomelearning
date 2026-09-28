@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { getTimetable, saveTimetable } from "@/lib/api";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -109,6 +110,7 @@ export default function TimetablePage() {
         <div className="mb-7">
           <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
             <div>
+              <PageHero art="timetable" tint={0}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 More
               </p>
@@ -116,6 +118,7 @@ export default function TimetablePage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Set the subject order for each school day. The planner uses this structure when laying out the week.
               </p>
+              </PageHero>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">

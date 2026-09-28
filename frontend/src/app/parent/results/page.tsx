@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import ResultsView, { OwnTest, ResultsOverview } from "@/components/ResultsView";
 import StudySummaryCard from "@/components/StudySummaryCard";
 import GamesSummaryCard from "@/components/GamesSummaryCard";
@@ -148,11 +149,13 @@ export default function ResultsPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
+            <PageHero art="results" tint={2}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Results</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Test Results</h1>
             <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
               Spelling tests and Oak quiz scores appear here automatically. Add any other test yourself.
             </p>
+            </PageHero>
           </div>
           {children.length > 0 && (
             <button onClick={openAdd} className="rounded-xl bg-brand-sage px-5 py-3 text-sm font-bold text-white hover:bg-brand-sagedark">

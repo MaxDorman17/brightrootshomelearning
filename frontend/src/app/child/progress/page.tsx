@@ -7,6 +7,7 @@ import ResultsView, { ResultsOverview } from "@/components/ResultsView";
 import StudySummaryCard from "@/components/StudySummaryCard";
 import { PlannerEntry, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, startOfWeek } from "date-fns";
 
 function computeStreak(entries: PlannerEntry[], daysOff: Set<string>): number {
@@ -117,6 +118,7 @@ export default function ChildProgressPage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-7">
+          <PageHero art="progress" tint={0}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
             Progress
           </p>
@@ -124,6 +126,7 @@ export default function ChildProgressPage() {
           <p className="text-sm sm:text-base text-[#6E5A46] mt-2">
             Hi {username}, here&apos;s how your learning is going.
           </p>
+          </PageHero>
         </div>
 
         {loading ? (

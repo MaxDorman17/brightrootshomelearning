@@ -6,6 +6,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getChildren, addChild, removeChild, resetChildPassword } from "@/lib/api";
 import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import Avatar from "@/components/Avatar";
 import ChildProfileModal from "@/components/ChildProfileModal";
 import { format, parseISO } from "date-fns";
@@ -139,6 +140,7 @@ export default function ChildrenPage() {
         <section className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
             <div>
+              <PageHero art="children" tint={1}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Family Accounts
               </p>
@@ -150,6 +152,7 @@ export default function ChildrenPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Manage the child accounts connected to your Bright Roots family.
               </p>
+              </PageHero>
             </div>
 
             <button

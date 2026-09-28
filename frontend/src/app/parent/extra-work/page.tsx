@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { createLesson, createPlannerEntry, getAllEntries, deletePlannerEntry, getChildren } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, parseISO, startOfDay } from "date-fns";
 
 const CATEGORIES = ["Reading", "Project", "Research", "Practice", "Creative Writing", "Other"];
@@ -87,6 +88,7 @@ export default function ExtraWorkParentPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="extra-work" tint={1}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
@@ -94,6 +96,7 @@ export default function ExtraWorkParentPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Plan reading, projects, practice and one-off tasks outside the main timetable.
               </p>
+              </PageHero>
             </div>
 
             <button

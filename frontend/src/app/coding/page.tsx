@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getCodingProgress, markCodingComplete, markCodingIncomplete, getChildren } from "@/lib/api";
 import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 
 interface Lesson {
   id: string;
@@ -150,6 +151,7 @@ export default function CodingPage() {
         <div className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="coding" tint={2}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning
               </p>
@@ -157,6 +159,7 @@ export default function CodingPage() {
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 Work through Scratch, Code.org, Python and web development at your own pace.
               </p>
+              </PageHero>
             </div>
 
             {isParent && children.length > 0 && (

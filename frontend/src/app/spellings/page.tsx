@@ -13,6 +13,7 @@ import {
   getChildren,
 } from "@/lib/api";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { format, startOfWeek, addWeeks, subWeeks } from "date-fns";
 
 interface SpellingWord { id: number; word: string; position: number; week_start: string; }
@@ -289,6 +290,7 @@ export default function SpellingsPage() {
         <section className="mb-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
+              <PageHero art="spellings" tint={3}>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
                 Learning Tools
               </p>
@@ -302,6 +304,7 @@ export default function SpellingsPage() {
                   ? "Set weekly words, practise tricky spellings and track progress over time."
                   : "Learn this week's words, hear them aloud and test yourself when you're ready."}
               </p>
+              </PageHero>
             </div>
 
             <div className="brand-card px-4 py-3 flex items-center gap-3 self-start lg:self-auto">
