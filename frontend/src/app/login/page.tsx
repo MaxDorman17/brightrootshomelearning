@@ -69,9 +69,9 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#F6EEDF] px-4 py-10">
-      {/* Background: a warm, sunlit room. Swap /hero/login-bg.jpg for a new picture any time. */}
+      {/* Background: a warm, sunlit room. Swap /hero/login-bg-2.jpg for a new picture any time. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/hero/login-bg.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-[15%_50%] md:object-center" />
+      <img src="/hero/login-bg-2.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-[15%_50%] md:object-center" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(253,250,243,0.55)_0%,rgba(253,250,243,0.15)_55%,rgba(253,250,243,0)_80%)]" />
 
       <div className="relative w-full max-w-[26rem]">
