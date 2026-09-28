@@ -339,10 +339,11 @@ export default function ChildDashboard() {
         {/* Hero header */}
         <div className="relative mb-4 overflow-hidden rounded-3xl border border-brand-line bg-[#FDFAF3] shadow-xl shadow-green-900/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/hero/child-hero.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center sm:object-right" />
-          {/* Fades the picture into cream on the left so the words stay easy to read. */}
-          <div className="absolute inset-0 bg-[#FDFAF3]/85 sm:bg-transparent sm:bg-gradient-to-r sm:from-[#FDFAF3] sm:via-[#FDFAF3]/90 sm:to-transparent" />
-          <div className="relative flex min-h-[180px] items-center gap-5 p-5 sm:min-h-[220px] sm:p-7">
+          {/* A wide banner: cream on the left, the illustration on the right. Sized by height so it's never stretched or zoomed. */}
+          <img src="/hero/child-hero.jpg" alt="" className="absolute right-0 top-0 h-full w-auto max-w-none" />
+          {/* On phones the picture sits behind the words, so soften it. */}
+          <div className="absolute inset-0 bg-[#FDFAF3]/80 sm:hidden" />
+          <div className="relative flex min-h-[180px] items-center gap-5 p-5 sm:min-h-[240px] sm:p-7 lg:min-h-[270px]">
             <div className="min-w-0 flex-1 sm:max-w-[55%]">
               <p className="text-xs font-bold uppercase tracking-wider text-[#6E5A46]/70">{mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}</p>
               <h1 className="mt-0.5 text-2xl font-extrabold text-[#2F5D3A] sm:text-3xl">{mounted ? getGreeting() : "Hello"}, {username}! 👋</h1>
