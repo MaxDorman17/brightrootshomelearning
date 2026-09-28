@@ -11,11 +11,11 @@ export const FAMILY_THEMES: { id: FamilyTheme; label: string; swatches: [string,
 ];
 
 // Children can also pick one of these for their own screens.
-export const CHILD_THEMES: { id: string; label: string; swatches: [string, string, string] }[] = [
+export const CHILD_THEMES: { id: string; label: string; swatches: string[] }[] = [
   ...FAMILY_THEMES,
   { id: "sky", label: "Sky", swatches: ["#1D6FA3", "#38BDF8", "#E0F2FE"] },
   { id: "grape", label: "Grape", swatches: ["#5B3A9E", "#8B5CF6", "#EDE9FE"] },
-  { id: "rainbow", label: "Rainbow", swatches: ["#C2410C", "#EC4899", "#FEF3C7"] },
+  { id: "rainbow", label: "Rainbow", swatches: ["#DC2626", "#EA580C", "#EAB308", "#16A34A", "#2563EB", "#7C3AED"] },
 ];
 
 const STORAGE_KEY = "family_theme";

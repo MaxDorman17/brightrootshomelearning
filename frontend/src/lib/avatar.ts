@@ -22,7 +22,7 @@ export const AVATAR_FRAMES: Record<string, { label: string; className: string }>
   none: { label: "None", className: "" },
   ring: { label: "Ring", className: "ring-4 ring-brand-sage ring-offset-2" },
   star: { label: "Gold", className: "ring-4 ring-amber-400 ring-offset-2" },
-  rainbow: { label: "Rainbow", className: "ring-4 ring-fuchsia-400 ring-offset-2 shadow-[0_0_0_7px_rgba(56,189,248,0.6)]" },
+  rainbow: { label: "Rainbow", className: "avatar-rainbow" },
 };
 
 export const DEFAULT_AVATAR: AvatarChoice = { emoji: "🦊", bg: "sky", frame: "none" };

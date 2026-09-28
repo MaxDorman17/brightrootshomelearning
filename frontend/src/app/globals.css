@@ -96,6 +96,25 @@
   --brand-line: 228 222 244;
 }
 
+/* Rainbow: a real rainbow on buttons, highlights and progress bars. */
+[data-theme="rainbow"] .bg-brand-sage,
+[data-theme="rainbow"] .bg-brand-sagedark {
+  background-image: linear-gradient(90deg, #dc2626, #ea580c, #ca8a04, #16a34a, #2563eb, #7c3aed);
+}
+
+/* A rainbow ring round an avatar (a spread of coloured shadows, so it works on photos too).
+   Sized in em so it scales with the avatar. */
+.avatar-rainbow {
+  box-shadow:
+    0 0 0 0.06em #fff,
+    0 0 0 0.11em #dc2626,
+    0 0 0 0.16em #f97316,
+    0 0 0 0.21em #facc15,
+    0 0 0 0.26em #22c55e,
+    0 0 0 0.31em #3b82f6,
+    0 0 0 0.36em #8b5cf6;
+}
+
 [data-theme="rainbow"] {
   --brand-sage: 194 65 12;
   --brand-sagedark: 160 52 10;

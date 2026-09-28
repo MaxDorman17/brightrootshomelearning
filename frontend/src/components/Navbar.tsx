@@ -287,7 +287,7 @@ export default function Navbar() {
                 </div>
               </Link>
 
-              <div ref={menusRef} className="hidden items-center gap-1 md:flex">
+              <div ref={menusRef} className="hidden items-center gap-1 lg:flex">
                 {nav.map((entry) =>
                   isGroup(entry) ? (
                     <div key={entry.label} className="relative">
@@ -463,7 +463,7 @@ export default function Navbar() {
                     (value) => !value
                   )
                 }
-                className="rounded-xl p-2 text-brand-sage hover:bg-brand-softsage/15 md:hidden"
+                className="rounded-xl p-2 text-brand-sage hover:bg-brand-softsage/15 lg:hidden"
               >
                 <svg
                   className="h-5 w-5"
@@ -491,7 +491,7 @@ export default function Navbar() {
           </div>
 
           {mobileOpen && (
-            <div className="border-t border-brand-softsage/15 py-3 md:hidden">
+            <div className="border-t border-brand-softsage/15 py-3 lg:hidden">
               <div className="space-y-3">
                 {nav.map((entry) => {
                   const links = isGroup(entry) ? entry.items : [entry];
