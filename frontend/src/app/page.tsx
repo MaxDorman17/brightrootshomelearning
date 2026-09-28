@@ -14,10 +14,10 @@ const C = {
   deep: "#24452C",
   earth: "#6E5A46",
   ink: "#2E342F",
-  cream: "#FBF6EC",
+  cream: "#FBF8F1",
   paper: "#FFFDF8",
-  sage: "#E9EEE1",
-  sand: "#F4EBDB",
+  sage: "#E3E7D9",
+  sand: "#F3EAD7",
   line: "#E4DCCD",
 };
 
@@ -27,7 +27,7 @@ const featureGroups = [
     name: "Plan",
     art: "/home/plan.png",
     emoji: "🗓️",
-    tint: "#E7EEE0",
+    tint: "#E7EADE",
     blurb: "Get the whole week sorted in one sitting.",
     items: ["Weekly planner", "Your timetable", "Lesson plans", "Oak National Academy lessons", "Print the week"],
   },
@@ -35,7 +35,7 @@ const featureGroups = [
     name: "Learn",
     art: "/home/learn.png",
     emoji: "📚",
-    tint: "#F3EBDD",
+    tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
     items: ["Child dashboards", "Reading log", "Spellings", "Learning games", "Cookbook & Craft Corner"],
   },
@@ -43,7 +43,7 @@ const featureGroups = [
     name: "Progress",
     art: "/home/progress.png",
     emoji: "🌱",
-    tint: "#E7EEE0",
+    tint: "#E7EADE",
     blurb: "See how they're really getting on.",
     items: ["Results & quiz scores", "Review & feedback", "Printable reports", "Council report", "Moments & photos"],
   },
@@ -51,7 +51,7 @@ const featureGroups = [
     name: "Family",
     art: "/home/family.png",
     emoji: "🏡",
-    tint: "#F3EBDD",
+    tint: "#F5EFE1",
     blurb: "Keep everyone motivated and on track.",
     items: ["Stars & rewards", "Badges", "Reminders & phone notifications", "Avatars & colour themes"],
   },
@@ -207,7 +207,7 @@ export default function HomePage() {
         {/* Hero: words on the left, the picture filling the right-hand side */}
         <section className="relative lg:min-h-[480px]">
           <div className="relative z-10 mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:py-16">
-            <Sprig className="absolute left-0 top-44 hidden h-44 w-auto xl:block" />
+            <Art src="/home/leaf-hero.png" className="absolute -left-2 top-36 hidden h-48 w-auto xl:block" fallback={<Sprig className="absolute left-0 top-44 hidden h-44 w-auto xl:block" />} />
             <div className="max-w-xl lg:max-w-[46%] xl:pl-16">
               <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Home learning that feels like home</p>
               <h1 className={`${serif.className} mt-4 text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-[2.9rem]`} style={{ color: C.deep }}>
@@ -287,7 +287,7 @@ export default function HomePage() {
             <div className="relative flex items-center justify-center gap-3 text-center">
               <Sprig className="h-12 w-auto" />
               <H2>Everything your home learning needs</H2>
-              <BookStack words={["PLAY", "EXPLORE", "LEARN", "BELONG"]} className="absolute right-0 top-1/2 hidden -translate-y-1/2 xl:flex" />
+              <Art src="/home/books.png" className="absolute right-0 top-1/2 hidden h-24 w-auto -translate-y-1/2 xl:block" fallback={<BookStack words={["PLAY", "EXPLORE", "LEARN", "BELONG"]} className="absolute right-0 top-1/2 hidden -translate-y-1/2 xl:flex" />} />
             </div>
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {featureGroups.map((g) => (
@@ -335,7 +335,7 @@ export default function HomePage() {
                     </ul>
                   </div>
                   <div className="hidden h-32 w-40 shrink-0 items-center justify-center sm:flex">
-                    <Art src={p.art} className="h-32 w-auto object-contain" fallback={<span className="text-7xl" aria-hidden>{p.emoji}</span>} />
+                    <Art src={p.art} className="h-36 w-auto object-contain" fallback={<span className="text-7xl" aria-hidden>{p.emoji}</span>} />
                   </div>
                 </div>
               ))}
@@ -415,7 +415,7 @@ export default function HomePage() {
         </section>
 
         {/* Membership */}
-        <section id="pricing" className="relative scroll-mt-16 overflow-hidden py-12 text-white" style={{ background: C.deep }}>
+        <section id="pricing" className="relative scroll-mt-16 overflow-hidden py-12 text-white" style={{ background: "#2D3D32" }}>
           <Sprig className="absolute -left-2 bottom-2 hidden h-36 w-auto opacity-40 lg:block" />
           <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.3fr_0.3fr]">
             <div>
@@ -455,7 +455,7 @@ export default function HomePage() {
 
         {/* FAQ */}
         <section id="faq" className="relative scroll-mt-16 overflow-hidden py-14">
-          <Sprig className="absolute -bottom-2 left-4 hidden h-48 w-auto lg:block" />
+          <Art src="/home/leaf-faq.png" className="absolute -bottom-2 left-2 hidden h-56 w-auto lg:block" fallback={<Sprig className="absolute -bottom-2 left-4 hidden h-48 w-auto lg:block" />} />
           <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="lg:pl-16">
               <H2>Questions, answered</H2>
