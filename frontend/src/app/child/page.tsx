@@ -82,16 +82,16 @@ function CompletionRing({ done, total }: { done: number; total: number }) {
   const circ = 2 * Math.PI * r;
   const offset = total === 0 ? circ : circ * (1 - done / total);
   return (
-    <div className="relative w-20 h-20 shrink-0">
-      <svg className="w-20 h-20 -rotate-90 absolute inset-0" viewBox="0 0 80 80">
-        <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="8" />
-        <circle cx="40" cy="40" r={r} fill="none" stroke="white" strokeWidth="8"
+    <div className="relative w-16 h-16 shrink-0 rounded-full bg-white/80 shadow-sm">
+      <svg className="w-16 h-16 -rotate-90 absolute inset-0" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(47,93,58,0.15)" strokeWidth="8" />
+        <circle cx="40" cy="40" r={r} fill="none" stroke="#2F5D3A" strokeWidth="8"
           strokeDasharray={circ} strokeDashoffset={offset}
           strokeLinecap="round" className="transition-all duration-700" />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-extrabold text-white leading-none">{done}</span>
-        <span className="text-[9px] text-white/65 font-bold leading-none mt-0.5">of {total}</span>
+        <span className="text-lg font-extrabold text-[#2F5D3A] leading-none">{done}</span>
+        <span className="text-[9px] text-[#6E5A46] font-bold leading-none mt-0.5">of {total}</span>
       </div>
     </div>
   );
@@ -337,30 +337,34 @@ export default function ChildDashboard() {
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {/* Hero header */}
-        <div className="bg-gradient-to-br from-brand-deep via-brand-leaf to-brand-leaf rounded-3xl p-5 mb-4 text-white shadow-xl shadow-green-900/30">
-          <div className="flex items-center gap-5 flex-wrap">
-            <div className="flex-1 min-w-0">
-              <p className="text-white/60 text-xs font-bold uppercase tracking-wider">{mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}</p>
-              <h1 className="text-2xl font-extrabold mt-0.5">{mounted ? getGreeting() : "Hello"}, {username}! 👋</h1>
+        <div className="relative mb-4 overflow-hidden rounded-3xl border border-brand-line bg-[#FDFAF3] shadow-xl shadow-green-900/10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hero/child-hero.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center sm:object-right" />
+          {/* Fades the picture into cream on the left so the words stay easy to read. */}
+          <div className="absolute inset-0 bg-[#FDFAF3]/85 sm:bg-transparent sm:bg-gradient-to-r sm:from-[#FDFAF3] sm:via-[#FDFAF3]/90 sm:to-transparent" />
+          <div className="relative flex min-h-[180px] items-center gap-5 p-5 sm:min-h-[220px] sm:p-7">
+            <div className="min-w-0 flex-1 sm:max-w-[55%]">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#6E5A46]/70">{mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}</p>
+              <h1 className="mt-0.5 text-2xl font-extrabold text-[#2F5D3A] sm:text-3xl">{mounted ? getGreeting() : "Hello"}, {username}! 👋</h1>
               {todayTotalCount > 0 ? (
-                <p className="text-white/80 text-sm font-semibold mt-1">
+                <p className="mt-1 text-sm font-semibold text-[#4A3B2C]">
                   {todayDoneCount === todayTotalCount
                     ? "🎉 All done today — brilliant work!"
                     : `${todayTotalCount - todayDoneCount} lesson${todayTotalCount - todayDoneCount !== 1 ? "s" : ""} left today`}
                 </p>
               ) : (
-                <p className="text-white/60 text-sm mt-1">No lessons scheduled today</p>
+                <p className="mt-1 text-sm text-[#6E5A46]">No lessons scheduled today</p>
               )}
-              {streak > 0 && (
-                <div className="flex items-center gap-1.5 mt-2.5 bg-white/15 rounded-xl px-3 py-1.5 w-fit">
-                  <span>{streak >= 10 ? "🔥" : streak >= 5 ? "⚡" : "✨"}</span>
-                  <span className="text-sm font-extrabold">{streak}-day streak!</span>
-                </div>
-              )}
-            </div>
-            {todayTotalCount > 0 && <CompletionRing done={todayDoneCount} total={todayTotalCount} />}
-            <div className="hidden xl:block max-w-[180px] text-right shrink-0">
-              <p className="text-xs text-white/50 italic leading-relaxed">{quotes(parentName)[quoteIdx]}</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                {streak > 0 && (
+                  <div className="flex w-fit items-center gap-1.5 rounded-xl bg-white/80 px-3 py-1.5 text-[#2F5D3A] shadow-sm">
+                    <span>{streak >= 10 ? "🔥" : streak >= 5 ? "⚡" : "✨"}</span>
+                    <span className="text-sm font-extrabold">{streak}-day streak!</span>
+                  </div>
+                )}
+                {todayTotalCount > 0 && <CompletionRing done={todayDoneCount} total={todayTotalCount} />}
+              </div>
+              <p className="mt-3 hidden max-w-sm text-xs italic leading-relaxed text-[#6E5A46] lg:block">{quotes(parentName)[quoteIdx]}</p>
             </div>
           </div>
         </div>
