@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
+import { AGE_BANDS, AgeBand, inAgeBand, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
 
 /** The Cookbook or Craft Corner: browse, search and filter recipes or crafts. */
 export default function MakeLibrary({ kind }: { kind: MakeKind }) {
@@ -20,12 +20,15 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
   const [wishedOnly, setWishedOnly] = useState(false);
   const [mineOnly, setMineOnly] = useState(false);
   const [shopCount, setShopCount] = useState(0);
+  const [age, setAge] = useState<AgeBand | "">("");
 
   useEffect(() => {
     if (!isAuthenticated()) {
       router.replace("/login");
       return;
     }
+    const fromUrl = new URLSearchParams(window.location.search).get("age");
+    if (fromUrl === "little" || fromUrl === "junior" || fromUrl === "teen") setAge(fromUrl);
     const r = getRole() || "";
     setRole(r);
     getMakeItems(kind)
@@ -39,14 +42,25 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
   }, [kind, router]);
 
   const categories = useMemo(
-    () => Array.from(new Set((items || []).map((i) => i.category).filter(Boolean) as string[])).sort(),
-    [items]
+    () =>
+      Array.from(new Set((items || []).filter((i) => inAgeBand(i, age)).map((i) => i.category).filter(Boolean) as string[])).sort(),
+    [items, age]
   );
+
+  const chooseAge = (band: AgeBand | "") => {
+    setAge(band);
+    setCategory("");
+    const url = new URL(window.location.href);
+    if (band) url.searchParams.set("age", band);
+    else url.searchParams.delete("age");
+    window.history.replaceState(null, "", url.toString());
+  };
   const wishCount = (items || []).filter((i) => i.wished_by.length).length;
 
   const shown = (items || []).filter((i) => {
     const q = search.trim().toLowerCase();
     if (q && !`${i.title} ${i.summary || ""} ${i.category || ""}`.toLowerCase().includes(q)) return false;
+    if (!inAgeBand(i, age)) return false;
     if (category && i.category !== category) return false;
     if (quick && !(i.minutes && i.minutes <= 30)) return false;
     if (wishedOnly && !i.wished_by.length) return false;
@@ -89,11 +103,11 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
           </div>
         </div>
 
-        <div className="mt-5 flex gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           {(["recipe", "craft"] as MakeKind[]).map((k) => (
             <Link
               key={k}
-              href={KIND_INFO[k].path}
+              href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
               aria-current={k === kind ? "page" : undefined}
               className={
                 "rounded-xl px-4 py-2 text-sm font-extrabold " +
@@ -102,6 +116,21 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
             >
               {k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"}
             </Link>
+          ))}
+          <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+            🚀 Teen Corner
+          </Link>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-extrabold uppercase tracking-wider text-brand-earth/60">Age</span>
+          <button onClick={() => chooseAge("")} className={chip(!age)}>
+            All ages
+          </button>
+          {AGE_BANDS.map((b) => (
+            <button key={b.id} onClick={() => chooseAge(age === b.id ? "" : b.id)} className={chip(age === b.id)}>
+              {b.label}
+            </button>
           ))}
         </div>
 

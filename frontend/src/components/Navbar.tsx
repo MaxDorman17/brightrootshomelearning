@@ -80,6 +80,7 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/teens", label: "Teen Corner" },
       { href: "/make/shopping", label: "Shopping List" },
     ],
   },
@@ -115,6 +116,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/child/timer", label: "Study Timer" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/teens", label: "Teen Corner" },
       { href: "/account", label: "My Look" },
     ],
   },

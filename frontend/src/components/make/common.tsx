@@ -28,6 +28,23 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
 };
 
+export type AgeBand = "little" | "junior" | "teen";
+
+export const AGE_BANDS: { id: AgeBand; label: string }[] = [
+  { id: "little", label: "Little ones (3–6)" },
+  { id: "junior", label: "Juniors (7–10)" },
+  { id: "teen", label: "Teens (11–16)" },
+];
+
+/** Whether a recipe or craft suits an age band, going by its "from age". */
+export function inAgeBand(item: { age_from: number | null }, band: AgeBand | ""): boolean {
+  if (!band) return true;
+  const age = item.age_from ?? 3;
+  if (band === "little") return age <= 6;
+  if (band === "junior") return age >= 4 && age <= 10;
+  return age >= 10;
+}
+
 export const DIFFICULTY_LABEL: Record<string, string> = { easy: "Easy", medium: "A bit trickier", tricky: "Tricky" };
 
 // Photos are behind login, so they're fetched once and kept for the page's lifetime.

@@ -337,7 +337,9 @@ CRAFTS = [
 
 def seed_starters(db: Session) -> None:
     """Create or update every starter recipe and craft."""
-    for data in RECIPES + CRAFTS:
+    from make_starters_teen import TEEN_CRAFTS, TEEN_RECIPES
+
+    for data in RECIPES + CRAFTS + TEEN_RECIPES + TEEN_CRAFTS:
         item = db.query(MakeItem).filter(MakeItem.slug == data["slug"]).first()
         if item is None:
             item = MakeItem(slug=data["slug"], parent_id=None)
