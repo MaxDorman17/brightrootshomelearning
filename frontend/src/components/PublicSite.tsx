@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { checkSession } from "@/lib/api";
+import { serif } from "@/lib/fonts";
 
 /** Where a signed-in visitor should go, or null if they aren't signed in. */
 export function useMemberHome() {
@@ -36,21 +36,17 @@ const NAV_LINKS = [
 
 export function PublicHeader({ memberHome }: { memberHome: string | null }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-brand-line bg-brand-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[#E4DCCD] bg-[#FBF6EC]/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Bright Roots" width={42} height={42} className="rounded-xl" />
-          <div className="leading-tight">
-            <p className="font-extrabold text-brand-sage">Bright Roots</p>
-            <p className="text-[10px] font-bold tracking-[0.16em] text-[#6E5A46]/60">
-              HOME LEARNING
-            </p>
-          </div>
+        <Link href="/" className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/house-mark.png" alt="" className="h-9 w-auto" />
+          <span className={`${serif.className} text-xl font-semibold text-[#24452C]`}>Bright Roots</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-bold text-[#6E5A46] md:flex">
+        <nav className="hidden items-center gap-7 text-sm font-semibold text-[#6E5A46] md:flex">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-brand-sage">
+            <Link key={link.href} href={link.href} className="hover:text-[#2F5D3A]">
               {link.label}
             </Link>
           ))}
@@ -58,9 +54,9 @@ export function PublicHeader({ memberHome }: { memberHome: string | null }) {
 
         <Link
           href={memberHome || "/login"}
-          className="shrink-0 rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark"
+          className="shrink-0 rounded-full bg-[#2F5D3A] px-5 py-2.5 text-sm font-bold text-white hover:opacity-95"
         >
-          {memberHome ? "Open Bright Roots" : "Member login"}
+          {memberHome ? "Open Bright Roots" : "Log in"}
         </Link>
       </div>
     </header>
@@ -71,7 +67,7 @@ export function PublicHeader({ memberHome }: { memberHome: string | null }) {
 export function PublicShell({ children }: { children: React.ReactNode }) {
   const memberHome = useMemberHome();
   return (
-    <div className="min-h-screen bg-brand-white text-[#2E342F]">
+    <div className="min-h-screen bg-[#FBF6EC] text-[#2E342F]">
       <PublicHeader memberHome={memberHome} />
       <main>{children}</main>
       <PublicFooter />
@@ -81,17 +77,24 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 export function PublicFooter() {
   return (
-    <footer className="border-t border-brand-line bg-brand-white">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-[#6E5A46]/70 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p>© {new Date().getFullYear()} Bright Roots Home Learning</p>
+    <footer className="border-t border-[#E4DCCD] bg-[#FBF6EC]">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#6E5A46] sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <Link href="/" className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/house-mark.png" alt="" className="h-8 w-auto" />
+          <span>
+            <span className={`${serif.className} block text-lg font-semibold text-[#24452C]`}>Bright Roots</span>
+            <span className="block text-xs text-[#6E5A46]/70">© {new Date().getFullYear()} Bright Roots Home Learning</span>
+          </span>
+        </Link>
         <div className="flex flex-wrap gap-5">
-          <Link href="/about" className="hover:text-brand-sage">About</Link>
-          <Link href="/#demo" className="hover:text-brand-sage">Demo</Link>
-          <Link href="/#pricing" className="hover:text-brand-sage">Pricing</Link>
-          <Link href="/contact" className="hover:text-brand-sage">Contact</Link>
-          <Link href="/privacy" className="hover:text-brand-sage">Privacy</Link>
-          <Link href="/terms" className="hover:text-brand-sage">Terms</Link>
-          <Link href="/login" className="hover:text-brand-sage">Login</Link>
+          <Link href="/about" className="hover:text-[#2F5D3A]">About</Link>
+          <Link href="/#demo" className="hover:text-[#2F5D3A]">Demo</Link>
+          <Link href="/#pricing" className="hover:text-[#2F5D3A]">Pricing</Link>
+          <Link href="/contact" className="hover:text-[#2F5D3A]">Contact</Link>
+          <Link href="/privacy" className="hover:text-[#2F5D3A]">Privacy</Link>
+          <Link href="/terms" className="hover:text-[#2F5D3A]">Terms</Link>
+          <Link href="/login" className="hover:text-[#2F5D3A]">Login</Link>
         </div>
       </div>
     </footer>

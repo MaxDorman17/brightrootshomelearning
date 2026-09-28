@@ -2,9 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { subscribeNewsletter } from "@/lib/api";
+import { serif } from "@/lib/fonts";
 
 /** Public "get tips by email" box. A confirmation email is sent before anyone is added. */
-export default function NewsletterSignup() {
+export default function NewsletterSignup({ variant = "box" }: { variant?: "box" | "strip" }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -25,6 +26,41 @@ export default function NewsletterSignup() {
       setBusy(false);
     }
   };
+
+  if (variant === "strip") {
+    return (
+      <section className="border-t border-[#E4DCCD] bg-[#E9EEE1] py-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 sm:px-6 md:flex-row md:justify-between">
+          <div className="flex items-center gap-4 text-center md:text-left">
+            <span className="hidden text-3xl sm:block" aria-hidden>✉️</span>
+            <div>
+              <p className={`${serif.className} text-xl font-semibold text-[#24452C]`}>Home learning ideas, straight to your inbox</p>
+              <p className="text-sm text-[#6E5A46]">Tips, free resources and Bright Roots news. Unsubscribe any time.</p>
+            </div>
+          </div>
+          {message ? (
+            <p className="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#2F5D3A]">{message}</p>
+          ) : (
+            <form onSubmit={submit} className="flex w-full max-w-sm items-center gap-2 rounded-full border border-[#E4DCCD] bg-white p-1.5 pl-4">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                aria-label="Email address"
+                className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+              />
+              <button type="submit" disabled={busy} aria-label="Sign up" className="flex h-9 shrink-0 items-center justify-center rounded-full bg-[#2F5D3A] px-4 text-sm font-bold text-white disabled:opacity-60">
+                {busy ? "..." : "Sign up →"}
+              </button>
+            </form>
+          )}
+        </div>
+        {error && <p className="mt-2 text-center text-sm font-semibold text-[#A64F42]">{error}</p>}
+      </section>
+    );
+  }
 
   return (
     <section className="bg-brand-tint py-14">

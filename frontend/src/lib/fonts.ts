@@ -1,0 +1,7 @@
+import { Caveat, Fraunces } from "next/font/google";
+
+/** Serif for headings on the public pages. */
+export const serif = Fraunces({ subsets: ["latin"], weight: ["600", "700"], display: "swap" });
+
+/** Handwriting for the little notes scattered round the public pages. */
+export const hand = Caveat({ subsets: ["latin"], weight: ["500", "700"], display: "swap" });
