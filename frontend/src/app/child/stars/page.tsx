@@ -83,6 +83,8 @@ export default function MyStarsPage() {
         {data && (
           <div className="space-y-6">
             <section className="brand-card overflow-hidden p-6 text-center sm:p-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/home/icons/rewards.png?v=2" alt="" className="mx-auto mb-2 h-24 w-auto" />
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">My Stars</p>
               <p className="mt-2 text-6xl font-black text-brand-sage">{data.balance} ⭐</p>
               {data.available !== data.balance && (

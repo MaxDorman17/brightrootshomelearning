@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { AGE_BANDS, AgeBand, inAgeBand, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
@@ -76,8 +77,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
+        <PageHero art={kind === "recipe" ? "shopping" : "lessons"} tint={kind === "recipe" ? 1 : 4}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               {kind === "recipe" ? "🍳 " : "🎨 "}
@@ -88,6 +88,25 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
                 : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
             </p>
+        </PageHero>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            {(["recipe", "craft"] as MakeKind[]).map((k) => (
+              <Link
+                key={k}
+                href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
+                aria-current={k === kind ? "page" : undefined}
+                className={
+                  "rounded-xl px-4 py-2 text-sm font-extrabold " +
+                  (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
+                }
+              >
+                {k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"}
+              </Link>
+            ))}
+            <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+              🚀 Teen Corner
+            </Link>
           </div>
           <div className="flex flex-wrap gap-2">
             {role === "parent" && (
@@ -101,25 +120,6 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
               </>
             )}
           </div>
-        </div>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          {(["recipe", "craft"] as MakeKind[]).map((k) => (
-            <Link
-              key={k}
-              href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
-              aria-current={k === kind ? "page" : undefined}
-              className={
-                "rounded-xl px-4 py-2 text-sm font-extrabold " +
-                (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
-              }
-            >
-              {k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"}
-            </Link>
-          ))}
-          <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
-            🚀 Teen Corner
-          </Link>
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">

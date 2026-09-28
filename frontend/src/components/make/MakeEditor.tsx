@@ -217,14 +217,14 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                 <input
                   value={m.qty}
                   onChange={(e) => setMaterials(materials.map((x, j) => (j === i ? { ...x, qty: e.target.value } : x)))}
-                  className={`${input} w-28 shrink-0`}
+                  className={`${input.replace("w-full ", "")} w-20 shrink-0 sm:w-28`}
                   placeholder="200 g"
                   aria-label="Amount"
                 />
                 <input
                   value={m.name}
                   onChange={(e) => setMaterials(materials.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
-                  className={input}
+                  className={`${input} min-w-0`}
                   placeholder={kind === "recipe" ? "plain flour" : "paper plate"}
                   aria-label="Item"
                 />

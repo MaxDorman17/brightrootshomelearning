@@ -27,7 +27,9 @@ const MAX_WORDS = 50;
 
 export default function SpellingsPage() {
   const router = useRouter();
-  const role = typeof window !== "undefined" ? getRole() : "";
+  // Read the role after the first render so the server and browser draw the same page.
+  const [role, setRole] = useState<string | null>(null);
+  useEffect(() => setRole(getRole() || ""), []);
   const isParent = role === "parent";
 
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
@@ -104,8 +106,9 @@ export default function SpellingsPage() {
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
+    if (role === null) return;
     loadData();
-  }, [loadData, router]);
+  }, [loadData, router, role]);
 
   // Reset test/learn state when week changes
   useEffect(() => {

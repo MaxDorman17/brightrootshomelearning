@@ -28,3 +28,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Max's full-size original illustrations (the site uses the trimmed copies in public/home/icons)
+frontend/public/images/
