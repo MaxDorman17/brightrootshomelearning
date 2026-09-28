@@ -116,6 +116,8 @@ def update_book(
 
     if body.status is not None:
         book.status = body.status
+        if body.status == "reading":
+            book.finish_date = None  # "Read again" or back to reading: it isn't finished any more
     if body.rating is not None:
         book.rating = body.rating
     if body.notes is not None:
@@ -136,6 +138,17 @@ def update_book(
                 child_id=progress_child_id,
                 delta=delta,
             ))
+        # Keep the book's status in step with its chapters: ticking the last chapter finishes it,
+        # and unticking one on a finished book puts it back to "reading".
+        if book.total_chapters and delta != 0:
+            if next_chapters >= book.total_chapters and book.status == "reading":
+                book.status = "completed"
+                book.finish_date = date.today()
+                if not book.start_date:
+                    book.start_date = date.today()
+            elif next_chapters < book.total_chapters and book.status == "completed":
+                book.status = "reading"
+                book.finish_date = None
     if body.reading_journal is not None:
         book.reading_journal = body.reading_journal
     if body.question_1_answer is not None:

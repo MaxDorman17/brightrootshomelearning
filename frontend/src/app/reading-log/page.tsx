@@ -217,6 +217,20 @@ export default function ReadingLogPage() {
     setBooks(prev => prev.map(b => b.id === book.id ? res.data : b));
   };
 
+  // Finishing a book with chapters still unticked is usually a slip, so check first.
+  const handleMarkDone = async (book: ReadingLogBook) => {
+    const total = book.total_chapters ?? 0;
+    const done = book.completed_chapters ?? 0;
+    if (total > 0 && done < total) {
+      const ok = confirm(
+        `You've ticked ${done} of ${total} chapters. Have you really finished the whole book?\n\nPress OK to mark every chapter read and finish it, or Cancel to keep reading.`
+      );
+      if (!ok) return;
+      await updateBook(book.id, { completed_chapters: total });
+    }
+    await handleStatusChange(book, "completed");
+  };
+
   const handleRate = async (book: ReadingLogBook, rating: number) => {
     const res = await updateBook(book.id, { rating });
     setBooks(prev => prev.map(b => b.id === book.id ? res.data : b));
@@ -829,7 +843,7 @@ export default function ReadingLogPage() {
                       )}
                       {book.status === "reading" && (
                         <button
-                          onClick={() => handleStatusChange(book, "completed")}
+                          onClick={() => handleMarkDone(book)}
                           className="rounded-xl bg-brand-sage px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-sagedark"
                         >
                           Mark Done
