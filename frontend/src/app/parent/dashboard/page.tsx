@@ -23,6 +23,8 @@ import Navbar from "@/components/Navbar";
 import HomeOverview from "@/components/HomeOverview";
 import AppCard from "@/components/AppCard";
 import { useMounted } from "@/lib/useMounted";
+import { Sprig } from "@/components/Decor";
+import { hand, serif } from "@/lib/fonts";
 import {
   addDays,
   format,
@@ -241,60 +243,45 @@ export default function ParentDashboardPage() {
     : "everyone";
 
   return (
-    <div className="min-h-screen bg-brand-cream">
+    <div className="min-h-screen bg-[#FBF8F1]">
       <Navbar />
 
       <main className="mx-auto max-w-7xl px-4 py-8 md:px-6">
-        <section className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-brand-terracotta">
-              Bright Roots
+        {/* Welcome banner: the sunny desk illustration on the right, greeting on the cream to its left */}
+        <section className="relative mb-8 overflow-hidden rounded-3xl border border-[#E4DCCD] bg-[#FBF8F1] shadow-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/home/hero.jpg" alt="" className="absolute right-0 top-0 hidden h-full w-auto max-w-none sm:block" />
+          {/* On phones the picture sits across the top instead */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/home/hero.jpg" alt="" className="h-36 w-full object-cover sm:hidden" />
+          <div className="absolute inset-y-0 right-0 hidden w-[62%] bg-gradient-to-r from-[#FBF8F1] via-[#FBF8F1]/40 to-transparent sm:block" />
+          <Sprig className="absolute -left-3 bottom-2 hidden h-28 w-auto opacity-80 md:block" />
+          <div className="relative flex min-h-[220px] flex-col justify-center gap-4 p-6 sm:max-w-[60%] sm:p-8 md:pl-14">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6E5A46]">
+              {mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}
             </p>
-
-            <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
+            <h1 className={`${serif.className} text-3xl font-semibold leading-tight text-[#24452C] sm:text-4xl`}>
               Welcome back, {parentName}
             </h1>
-
-            <p className="mt-2 text-brand-earth/70">
-              {mounted
-                ? format(
-                    new Date(),
-                    "EEEE, d MMMM yyyy"
-                  )
-                : " "}
-            </p>
+            <p className={`${hand.className} -mt-1 text-2xl text-[#4F6B4A]`}>Plan less, learn more, grow together ♡</p>
+            {children.length > 0 && (
+              <div className="flex w-fit items-center gap-3 rounded-full border border-[#E4DCCD] bg-white/90 px-4 py-2 shadow-sm">
+                <span className="text-sm font-bold text-[#6E5A46]">Viewing</span>
+                <select
+                  value={selectedChildId ?? ""}
+                  onChange={(event) => setSelectedChildId(event.target.value ? Number(event.target.value) : null)}
+                  className="bg-transparent text-sm font-extrabold text-[#2F5D3A] outline-none"
+                >
+                  <option value="">All children</option>
+                  {children.map((child) => (
+                    <option key={child.id} value={child.id}>
+                      {child.username}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
-
-          {children.length > 0 && (
-            <div className="brand-card flex items-center gap-3 px-4 py-3">
-              <span className="text-sm font-bold text-brand-earth/70">
-                Viewing
-              </span>
-
-              <select
-                value={selectedChildId ?? ""}
-                onChange={(event) =>
-                  setSelectedChildId(
-                    event.target.value
-                      ? Number(event.target.value)
-                      : null
-                  )
-                }
-                className="bg-transparent text-sm font-extrabold text-brand-sage outline-none"
-              >
-                <option value="">All children</option>
-
-                {children.map((child) => (
-                  <option
-                    key={child.id}
-                    value={child.id}
-                  >
-                    {child.username}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
         </section>
 
         <HomeOverview />
@@ -305,6 +292,8 @@ export default function ParentDashboardPage() {
 
         <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <DashboardStat
+            art="/home/plan.png"
+            tint="#E7EADE"
             label="Today"
             value={
               loading
@@ -319,6 +308,8 @@ export default function ParentDashboardPage() {
           />
 
           <DashboardStat
+            art="/home/progress.png"
+            tint="#F5EFE1"
             label="This Week"
             value={
               loading
@@ -329,6 +320,8 @@ export default function ParentDashboardPage() {
           />
 
           <DashboardStat
+            art="/home/learn.png"
+            tint="#E3EAF0"
             label="Oak Results"
             value={
               loading
@@ -345,6 +338,8 @@ export default function ParentDashboardPage() {
           />
 
           <DashboardStat
+            art="/home/family.png"
+            tint="#F6E6DF"
             label="Work Submitted"
             value={
               loading
@@ -363,7 +358,7 @@ export default function ParentDashboardPage() {
                   Today
                 </p>
 
-                <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">
+                <h2 className={`${serif.className} mt-1 text-2xl font-semibold text-[#24452C]`}>
                   Today&apos;s learning
                 </h2>
 
@@ -479,8 +474,9 @@ export default function ParentDashboardPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="brand-card p-6">
-              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-gold">
+            <div className="relative overflow-hidden rounded-3xl border border-[#E4DCCD]/60 bg-[#E3E7D9] p-6 shadow-sm">
+              <Sprig className="absolute -right-2 -top-3 h-20 w-auto opacity-70" flip />
+              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#6E5A46]">
                 Week progress
               </p>
 
@@ -515,8 +511,10 @@ export default function ParentDashboardPage() {
               </div>
             </div>
 
-            <div className="brand-card p-6">
-              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-brand-terracotta">
+            <div className="relative overflow-hidden rounded-3xl border border-[#E4DCCD]/60 bg-[#FBF8F1] p-6 shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/home/books.png" alt="" className="pointer-events-none absolute -right-3 -top-2 h-16 w-auto opacity-90" />
+              <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#6E5A46]">
                 Snapshot
               </p>
 
@@ -558,43 +556,55 @@ export default function ParentDashboardPage() {
               Quick access
             </p>
 
-            <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">
+            <h2 className={`${serif.className} mt-1 text-2xl font-semibold text-[#24452C]`}>
               Where do you want to go?
             </h2>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <QuickCard
+              art="/home/plan.png"
+              tint="#E7EADE"
               href="/parent"
               title="Planner"
               description="Plan and manage the learning week."
             />
 
             <QuickCard
+              art="/home/learn.png"
+              tint="#F5EFE1"
               href="/parent/lessons"
               title="My Lessons"
               description="Build lessons once and reuse them, or schedule a whole plan."
             />
 
             <QuickCard
+              art="/home/progress.png"
+              tint="#E3EAF0"
               href="/parent/results"
               title="Test Results"
               description="Spelling, Oak and your own tests, with time studied and games."
             />
 
             <QuickCard
+              art="/home/parents.png"
+              tint="#F3EAD7"
               href="/parent/progress"
               title="Review Work"
               description="Review submitted work and leave feedback."
             />
 
             <QuickCard
+              art="/home/story.jpg"
+              tint="#F6E6DF"
               href="/moments"
               title="Moments & Photos"
               description="Photos and notes from your learning."
             />
 
             <QuickCard
+              art="/home/books.png"
+              tint="#E3E7D9"
               href="/parent/council-report"
               title="Council Report"
               description="Download a home education report as a PDF."
@@ -610,22 +620,28 @@ function DashboardStat({
   label,
   value,
   detail,
+  art,
+  tint,
 }: {
   label: string;
   value: string | number;
   detail: string;
+  art: string;
+  tint: string;
 }) {
   return (
-    <div className="brand-card p-5">
-      <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-brand-earth/55">
+    <div className="relative overflow-hidden rounded-3xl border border-[#E4DCCD]/60 p-5 shadow-sm" style={{ background: tint }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={art} alt="" className="pointer-events-none absolute -bottom-1 -right-2 h-20 w-auto opacity-90" />
+      <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#6E5A46]">
         {label}
       </p>
 
-      <p className="mt-3 text-3xl font-extrabold text-brand-sage">
+      <p className={`${serif.className} mt-2 text-4xl font-bold text-[#24452C]`}>
         {value}
       </p>
 
-      <p className="mt-1 text-sm font-semibold text-brand-earth/65">
+      <p className="mt-1 max-w-[70%] text-sm font-semibold text-[#6E5A46]">
         {detail}
       </p>
     </div>
@@ -656,39 +672,40 @@ function QuickCard({
   href,
   title,
   description,
+  art,
+  tint,
 }: {
   href: string;
   title: string;
   description: string;
+  art: string;
+  tint: string;
 }) {
+  const photo = art.endsWith(".jpg");
   return (
     <Link
       href={href}
-      className="group brand-card p-5 transition-all hover:-translate-y-0.5 hover:border-brand-softsage/45 hover:shadow-md"
+      className="group flex items-center gap-4 rounded-3xl border border-[#E4DCCD]/60 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+      style={{ background: tint }}
     >
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-softsage/15 text-brand-sage transition-colors group-hover:bg-brand-sage group-hover:text-white">
-        <svg
-          className="h-5 w-5"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+      <div className="flex h-20 w-20 shrink-0 items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={art} alt="" className={photo ? "h-16 w-16 rounded-2xl object-cover shadow-sm" : "max-h-20 w-auto"} />
       </div>
 
-      <h3 className="font-extrabold text-brand-charcoal">
-        {title}
-      </h3>
+      <div className="min-w-0 flex-1">
+        <h3 className={`${serif.className} text-xl font-semibold text-[#24452C]`}>
+          {title}
+        </h3>
 
-      <p className="mt-1 text-sm leading-relaxed text-brand-earth/65">
-        {description}
-      </p>
+        <p className="mt-1 text-sm leading-relaxed text-[#6E5A46]">
+          {description}
+        </p>
+      </div>
+
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2F5D3A] text-sm font-bold text-white transition-transform group-hover:translate-x-0.5">
+        →
+      </span>
     </Link>
   );
 }
