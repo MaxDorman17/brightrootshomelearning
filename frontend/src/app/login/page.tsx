@@ -2,14 +2,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Fraunces } from "next/font/google";
 import { getMe, login } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 import { applyTheme } from "@/lib/theme";
+
+const serif = Fraunces({ subsets: ["latin"], weight: ["600", "700"], display: "swap" });
 
 // Fixed colours here (not the theme variables), so the login page always looks the same
 // whatever theme the last person on this device picked.
 const GREEN = "#2F5D3A";
 const EARTH = "#6E5A46";
+
+function UserIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c1.2-3.6 3.8-5.5 7-5.5s5.8 1.9 7 5.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <rect x="5" y="10.5" width="14" height="10" rx="2.5" />
+      <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -44,55 +65,58 @@ export default function LoginPage() {
   };
 
   const input =
-    "w-full rounded-xl border-2 border-[#E4DCCD] bg-white px-4 py-3 font-medium text-[#2E342F] outline-none transition-colors placeholder:text-[#B5A994] focus:border-[#6EA76E]";
+    "w-full rounded-2xl border border-[#E4DCCD] bg-white/90 py-3.5 pl-12 pr-4 font-medium text-[#2E342F] outline-none transition-colors placeholder:text-[#B5A994] focus:border-[#6EA76E] focus:bg-white";
 
   return (
-    <div className="min-h-screen bg-[#FDFAF3] lg:grid lg:grid-cols-[1.15fr_1fr]">
-      {/* Illustration */}
-      <div className="relative h-56 overflow-hidden sm:h-72 lg:h-auto lg:min-h-screen">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/hero/login.jpg" alt="Children learning together in a cosy treehouse" className="absolute inset-0 h-full w-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1F3A26]/80 via-[#1F3A26]/10 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 hidden p-10 text-white lg:block">
-          <p className="text-3xl font-extrabold leading-tight drop-shadow">Less time organising.<br />More time learning together.</p>
-          <p className="mt-3 max-w-md text-white/85">Plan the week, give each child their own space to learn, and keep a record of everything they achieve.</p>
-        </div>
-      </div>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#F6EEDF] px-4 py-10">
+      {/* Background: a warm, sunlit room. Swap /hero/login-bg.jpg for a new picture any time. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/hero/login-bg.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-[15%_50%] md:object-center" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(253,250,243,0.55)_0%,rgba(253,250,243,0.15)_55%,rgba(253,250,243,0)_80%)]" />
 
-      {/* Form */}
-      <div className="flex items-start justify-center px-5 py-8 sm:py-12 lg:items-center lg:px-12">
-        <div className="w-full max-w-md">
-          <Link href="/" className="inline-flex items-center gap-3">
+      <div className="relative w-full max-w-[26rem]">
+        <Link href="/" className="flex flex-col items-center text-center">
+          <span className="flex h-24 w-24 items-center justify-center rounded-[1.75rem] bg-[#FDFAF3] shadow-lg shadow-[#6E5A46]/15 ring-1 ring-[#E4DCCD]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icons/icon-192.png" alt="" className="h-12 w-12 rounded-2xl border border-[#E4DCCD]" />
-            <span>
-              <span className="block text-xl font-extrabold" style={{ color: GREEN }}>Bright Roots</span>
-              <span className="block text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: EARTH }}>Home Learning</span>
-            </span>
-          </Link>
+            <img src="/brand/house-mark.png" alt="" className="h-[4.5rem] w-auto" />
+          </span>
+          <span className={`${serif.className} mt-4 text-5xl font-bold leading-none tracking-tight`} style={{ color: GREEN }}>
+            Bright Roots
+          </span>
+          <span className="mt-2 text-sm font-bold uppercase tracking-[0.3em]" style={{ color: GREEN }}>
+            Home Learning
+          </span>
+        </Link>
 
-          <h1 className="mt-8 text-3xl font-extrabold sm:text-4xl" style={{ color: GREEN }}>Welcome back 👋</h1>
-          <p className="mt-2" style={{ color: EARTH }}>Log in to your family&apos;s learning. Children use the username their grown-up made for them.</p>
+        <div className="mt-8 rounded-[2rem] border border-white/70 bg-[#FDFAF3]/90 p-7 shadow-2xl shadow-[#6E5A46]/20 backdrop-blur-md sm:p-9">
+          <h1 className={`${serif.className} text-center text-4xl font-bold`} style={{ color: "#1F3A26" }}>
+            Welcome back
+          </h1>
+          <p className="mt-1 text-center" style={{ color: EARTH }}>Log in to your family space</p>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+          <form onSubmit={handleSubmit} className="mt-7 space-y-5">
             <div>
               <label htmlFor="username" className="mb-1.5 block text-sm font-bold text-[#2E342F]">Username</label>
-              <input id="username" type="text" required autoComplete="username" autoCapitalize="none" value={username}
-                onChange={(e) => setUsername(e.target.value)} placeholder="Your username" className={input} />
+              <div className="relative">
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8C7B66]"><UserIcon /></span>
+                <input id="username" type="text" required autoComplete="username" autoCapitalize="none" value={username}
+                  onChange={(e) => setUsername(e.target.value)} placeholder="Your username" className={input} />
+              </div>
             </div>
 
             <div>
-              <div className="mb-1.5 flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-bold text-[#2E342F]">Password</label>
-                <Link href="/forgot-password" className="text-sm font-bold hover:underline" style={{ color: GREEN }}>Forgot password?</Link>
-              </div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-bold text-[#2E342F]">Password</label>
               <div className="relative">
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8C7B66]"><LockIcon /></span>
                 <input id="password" type={showPassword ? "text" : "password"} required autoComplete="current-password" value={password}
-                  onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`${input} pr-16`} />
+                  onChange={(e) => setPassword(e.target.value)} placeholder="Your password" className={`${input} pr-16`} />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-bold hover:bg-[#F3EDE2]" style={{ color: EARTH }}>
                   {showPassword ? "Hide" : "Show"}
                 </button>
+              </div>
+              <div className="mt-2 text-right">
+                <Link href="/forgot-password" className="text-sm font-bold hover:underline" style={{ color: GREEN }}>Forgot password?</Link>
               </div>
             </div>
 
@@ -101,24 +125,23 @@ export default function LoginPage() {
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full rounded-xl py-3.5 text-base font-extrabold text-white shadow-lg shadow-green-900/15 transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl py-3.5 text-lg font-bold text-white shadow-lg shadow-green-900/20 transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
               style={{ background: GREEN }}>
               {loading ? "Logging in…" : "Log in →"}
             </button>
           </form>
 
-          <div className="mt-8 rounded-2xl border border-[#E4DCCD] bg-white p-5 text-sm" style={{ color: EARTH }}>
-            <p className="font-bold text-[#2E342F]">New to Bright Roots?</p>
-            <p className="mt-1">Try everything free for 7 days. No card needed.</p>
-            <Link href="/signup" className="mt-3 inline-block font-extrabold hover:underline" style={{ color: GREEN }}>Start your free trial →</Link>
+          <div className="mt-7 border-t border-[#E4DCCD] pt-5 text-center" style={{ color: EARTH }}>
+            New to Bright Roots?{" "}
+            <Link href="/signup" className="font-bold underline underline-offset-2" style={{ color: GREEN }}>Create an account</Link>
           </div>
-
-          <p className="mt-6 text-center text-xs" style={{ color: EARTH }}>
-            <Link href="/" className="hover:underline">← Back to the home page</Link>
-            <span className="mx-2">·</span>
-            <Link href="/privacy" className="hover:underline">Privacy</Link>
-          </p>
         </div>
+
+        <p className="mt-6 text-center">
+          <span className="inline-block rounded-full bg-[#FDFAF3]/85 px-3 py-1 text-xs font-semibold backdrop-blur-sm" style={{ color: EARTH }}>
+            Children log in with the username their grown-up made for them.
+          </span>
+        </p>
       </div>
     </div>
   );
