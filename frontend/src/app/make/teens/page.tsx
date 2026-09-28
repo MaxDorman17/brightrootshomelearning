@@ -67,16 +67,25 @@ export default function TeenCornerPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-500 p-6 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Ages 11–16</p>
-          <h1 className="mt-1 text-3xl font-extrabold sm:text-4xl">🚀 Teen Corner</h1>
-          <p className="mt-3 max-w-xl text-white/85">
-            Real meals, proper bakes and projects with real skills, written for you to do on your own.
-            {role === "child" ? " Tap \"I'd love to make this\" on anything you want to try." : ""}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2 text-sm font-bold">
-            <span className="rounded-full bg-white/15 px-3 py-1.5">🍳 {recipes.length || "–"} recipes</span>
-            <span className="rounded-full bg-white/15 px-3 py-1.5">🛠️ {projects.length || "–"} projects</span>
+        <div className="relative overflow-hidden rounded-3xl border border-brand-line bg-[#FDF9F0] shadow-xl shadow-green-900/10">
+          {/* Wide banner: cream on the left, the illustration on the right. Sized by height so it never stretches. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hero/teen-hero.jpg" alt="" className="absolute right-0 top-0 h-full w-auto max-w-none" />
+          {/* On narrower screens the picture sits behind the words, so soften it. */}
+          <div className="absolute inset-0 bg-[#FDF9F0]/85 lg:hidden" />
+          <div className="relative flex min-h-[220px] flex-col justify-center p-6 sm:p-10 lg:min-h-[300px]">
+            <div className="lg:max-w-[40%]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6E5A46]/70">Ages 11–16</p>
+              <h1 className="mt-1 text-3xl font-extrabold text-[#2F5D3A] sm:text-4xl">🚀 Teen Corner</h1>
+              <p className="mt-3 text-[#4A3B2C]">
+                Real meals, proper bakes and projects with real skills, written for you to do on your own.
+                {role === "child" ? " Tap \"I'd love to make this\" on anything you want to try." : ""}
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2 text-sm font-bold text-[#2F5D3A]">
+                <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🍳 {recipes.length || "–"} recipes</span>
+                <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🛠️ {projects.length || "–"} projects</span>
+              </div>
+            </div>
           </div>
         </div>
 
