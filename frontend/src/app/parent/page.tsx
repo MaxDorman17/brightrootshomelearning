@@ -12,6 +12,8 @@ import {
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
+import { Sprig } from "@/components/Decor";
+import { hand, serif } from "@/lib/fonts";
 import { format, addDays, startOfWeek } from "date-fns";
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
@@ -87,6 +89,12 @@ const SUBJECT_COLORS: Record<string, string> = {
   Languages: "bg-rose-50 border-rose-200 text-rose-800",
   "RSHE (PSHE)": "bg-violet-50 border-violet-200 text-violet-800",
 };
+
+/** Soft background and border for a planned lesson card, in its subject's colour. */
+function subjectTint(subject: string): string {
+  const parts = (SUBJECT_COLORS[subject] || "bg-stone-50 border-stone-200").split(" ");
+  return `${parts[0]} ${parts[1]}`;
+}
 
 const subjectDot: Record<string, string> = {
   Maths: "bg-blue-400", English: "bg-purple-400", Science: "bg-green-400",
@@ -552,25 +560,30 @@ export default function ParentPlanner() {
     : [];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#FBF8F1]">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Planner header */}
         <div className="mb-6">
-          <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
-            <div>
-              <p className="text-sm font-semibold text-brand-sage mb-1">Learning Planner</p>
-              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-                Weekly Planner
-              </h1>
-              <p className="text-sm text-brand-earth/70 mt-1">
-                Plan lessons, manage days off and keep the week organised.
-              </p>
+          <div className="relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-[#E4DCCD] bg-[#E3E7D9] p-6 sm:p-7 xl:flex-row xl:items-center xl:justify-between">
+            <Sprig className="absolute -left-3 bottom-0 hidden h-24 w-auto opacity-70 md:block" />
+            <div className="relative flex items-center gap-5 md:pl-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/home/plan.png" alt="" className="hidden h-24 w-auto sm:block" />
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6E5A46]">Learning planner</p>
+                <h1 className={`${serif.className} mt-1 text-3xl font-semibold text-[#24452C] sm:text-4xl`}>
+                  Weekly Planner
+                </h1>
+                <p className={`${hand.className} mt-1 text-xl text-[#4F6B4A]`}>
+                  Plan the week, then enjoy it together ♡
+                </p>
+              </div>
             </div>
 
             {children.length > 0 && (
-              <div className="brand-card px-4 py-3 flex items-center gap-3">
+              <div className="relative flex items-center gap-3 rounded-2xl border border-[#E4DCCD] bg-white/90 px-4 py-3 shadow-sm">
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-wider text-brand-earth/60">
                     Viewing
@@ -929,20 +942,24 @@ export default function ParentPlanner() {
           const submitted = todayEnt.filter(e => e.completed_work_url).length;
 
           return (
-            <div className="brand-card mb-5 p-4">
+            <div className="mb-5 rounded-3xl border border-[#E4DCCD] bg-[#F5EFE1] p-4 sm:p-5">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-brand-sage">
-                    Today
-                  </p>
-                  <h2 className="text-lg font-extrabold text-brand-charcoal mt-1">
-                    {format(today, "EEEE d MMMM")}
-                  </h2>
+                <div className="flex items-center gap-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/home/progress.png" alt="" className="hidden h-14 w-auto sm:block" />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#6E5A46]">
+                      Today
+                    </p>
+                    <h2 className={`${serif.className} mt-0.5 text-2xl font-semibold text-[#24452C]`}>
+                      {format(today, "EEEE d MMMM")}
+                    </h2>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
-                  <div className="bg-brand-cream rounded-xl px-4 py-3 min-w-[105px]">
-                    <p className="text-xl font-extrabold text-brand-sage">
+                  <div className="rounded-2xl bg-[#E7EADE] px-4 py-3 min-w-[105px]">
+                    <p className={`${serif.className} text-2xl font-bold text-[#24452C]`}>
                       {done}/{total}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wide text-brand-earth/60">
@@ -950,8 +967,8 @@ export default function ParentPlanner() {
                     </p>
                   </div>
 
-                  <div className="bg-brand-cream rounded-xl px-4 py-3 min-w-[105px]">
-                    <p className="text-xl font-extrabold text-brand-terracotta">
+                  <div className="rounded-2xl bg-[#F6E6DF] px-4 py-3 min-w-[105px]">
+                    <p className={`${serif.className} text-2xl font-bold text-[#A64F42]`}>
                       {total - done}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wide text-brand-earth/60">
@@ -959,8 +976,8 @@ export default function ParentPlanner() {
                     </p>
                   </div>
 
-                  <div className="bg-brand-cream rounded-xl px-4 py-3 min-w-[105px]">
-                    <p className="text-xl font-extrabold text-brand-gold">
+                  <div className="rounded-2xl bg-[#E3EAF0] px-4 py-3 min-w-[105px]">
+                    <p className={`${serif.className} text-2xl font-bold text-[#2F5F7A]`}>
                       {submitted}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wide text-brand-earth/60">
@@ -989,7 +1006,7 @@ export default function ParentPlanner() {
                         ? "bg-brand-terracotta/10 border-brand-terracotta/30"
                         : today
                           ? "bg-brand-sage text-white border-brand-sage"
-                          : "bg-brand-white border-brand-softsage/20"
+                          : "bg-[#FFFDF8] border-[#E4DCCD]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -1119,10 +1136,8 @@ export default function ParentPlanner() {
                             onClick={() => openModal(dayIndex, subject)}
                             className={`w-full text-left rounded-2xl border transition-all overflow-hidden ${
                             hasLesson
-                              ? entry.is_complete
-                                ? "bg-brand-white border-brand-sage/30 hover:border-brand-sage/60 hover:shadow-sm"
-                                : "bg-brand-white border-brand-softsage/20 hover:border-brand-sage/40 hover:shadow-sm"
-                              : "bg-brand-white/60 border-dashed border-brand-softsage/30 hover:bg-brand-white hover:border-brand-sage/50"
+                              ? `${subjectTint(subject)} hover:shadow-md ${entry.is_complete ? "ring-2 ring-brand-sage/40" : ""}`
+                              : "bg-white/60 border-dashed border-[#D9CCB4] hover:bg-white hover:border-brand-sage/50"
                           }`}
                         >
                           <div className="p-4">
@@ -1266,7 +1281,7 @@ export default function ParentPlanner() {
                               const dotClass = subjectDot[entry.lesson.subject] || "bg-gray-400";
 
                               return (
-                                <div key={entry.id} className="rounded-xl border border-brand-softsage/25 bg-brand-white p-3">
+                                <div key={entry.id} className={`rounded-xl border p-3 ${subjectTint(entry.lesson.subject)}`}>
                                   <button
                                     type="button"
                                     onClick={() => openModal(dayIndex, entry.lesson.subject, entry)}
@@ -1382,10 +1397,11 @@ export default function ParentPlanner() {
         <div className="mt-8 mb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-brand-sage">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#6E5A46]">
                 Weekly focus
               </p>
-              <h2 className="text-xl font-extrabold text-brand-charcoal mt-1">
+              <h2 className={`${serif.className} mt-1 flex items-center gap-2 text-2xl font-semibold text-[#24452C]`}>
+                <Sprig className="h-9 w-auto" />
                 Weekly Goals
               </h2>
             </div>
@@ -1395,7 +1411,7 @@ export default function ParentPlanner() {
             </span>
           </div>
 
-          <div className="brand-card p-5">
+          <div className="rounded-3xl border border-[#E4DCCD] bg-[#F3EAD7]/60 p-5">
             <div className="flex flex-col gap-4 mb-5">
               <div className="flex flex-col sm:flex-row gap-2">
                 <input
