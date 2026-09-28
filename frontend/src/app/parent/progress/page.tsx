@@ -18,7 +18,7 @@ import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
 
 const EMOJIS = ["👏", "⭐", "🔥", "💪", "🎉", "👍", "🌟", "🏆"];
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 20;
 
 const subjectColor = (subj: string) => {
   const colors: Record<string, string> = {
@@ -48,6 +48,7 @@ export default function ProgressPage() {
   const [reviewedEntryIds, setReviewedEntryIds] = useState<Set<number>>(new Set());
   const [reviewingEntryId, setReviewingEntryId] = useState<number | null>(null);
   const [page, setPage] = useState(0);
+  const [subject, setSubject] = useState("");
 
   // Feedback form state
   const [feedbackOpen, setFeedbackOpen] = useState<number | null>(null);
@@ -112,7 +113,7 @@ export default function ProgressPage() {
 
   useEffect(() => {
     setPage(0);
-  }, [filter, selectedChildId]);
+  }, [filter, selectedChildId, subject]);
 
   const getFeedbackForEntry = (entryId: number) =>
     allFeedback.filter(f => f.entry_id === entryId);
@@ -157,121 +158,145 @@ export default function ProgressPage() {
     }
   };
 
-  const childEntries = selectedChildId
-    ? entries.filter(e => e.assigned_to === null || e.assigned_to === selectedChildId)
-    : entries;
 
-  const awaitingReview = childEntries.filter(
-    e =>
-      !!e.completed_work_url &&
-      getFeedbackForEntry(e.id).length === 0 &&
-      !reviewedEntryIds.has(e.id)
-  );
+  const handleMarkDayReviewed = async (ids: number[]) => {
+    for (const id of ids) {
+      await markEntryReviewed(id);
+      setReviewedEntryIds(prev => new Set(prev).add(id));
+    }
+  };
+
+  const needsReviewFor = (e: PlannerEntry) =>
+    !!e.completed_work_url && getFeedbackForEntry(e.id).length === 0 && !reviewedEntryIds.has(e.id);
+
+  const childEntries = entries
+    .filter(e => !selectedChildId || e.assigned_to === null || e.assigned_to === selectedChildId)
+    .filter(e => !subject || e.lesson.subject === subject);
+
+  const subjects = Array.from(new Set(entries.map(e => e.lesson.subject))).sort();
+
+  const matches = (e: PlannerEntry, f: typeof filter) => {
+    if (f === "review") return needsReviewFor(e);
+    if (f === "submitted") return !!e.completed_work_url;
+    if (f === "complete") return e.is_complete;
+    if (f === "incomplete") return !e.is_complete;
+    return true;
+  };
 
   const filtered = childEntries
-    .filter((e) => {
-      if (filter === "review") {
-        return !!e.completed_work_url && getFeedbackForEntry(e.id).length === 0 && !reviewedEntryIds.has(e.id);
-      }
-      if (filter === "submitted") return !!e.completed_work_url;
-      if (filter === "complete") return e.is_complete;
-      if (filter === "incomplete") return !e.is_complete;
-      return true;
-    })
-    .sort((a, b) => {
-      const aNeedsReview = !!a.completed_work_url && getFeedbackForEntry(a.id).length === 0 && !reviewedEntryIds.has(a.id);
-      const bNeedsReview = !!b.completed_work_url && getFeedbackForEntry(b.id).length === 0 && !reviewedEntryIds.has(b.id);
-      if (aNeedsReview !== bNeedsReview) return aNeedsReview ? -1 : 1;
-      return b.scheduled_date.localeCompare(a.scheduled_date);
-    });
+    .filter(e => matches(e, filter))
+    .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date));
 
-  const totalComplete = childEntries.filter((e) => e.is_complete).length;
-  const totalSubmitted = childEntries.filter((e) => e.completed_work_url).length;
-  const feedbackSent = childEntries.filter((e) => getFeedbackForEntry(e.id).length > 0).length;
-  const selectedChild = children.find(c => c.id === selectedChildId);
+  const counts = {
+    review: childEntries.filter(e => matches(e, "review")).length,
+    submitted: childEntries.filter(e => matches(e, "submitted")).length,
+    complete: childEntries.filter(e => matches(e, "complete")).length,
+    incomplete: childEntries.filter(e => matches(e, "incomplete")).length,
+    all: childEntries.length,
+  };
+  const feedbackSent = childEntries.filter(e => getFeedbackForEntry(e.id).length > 0).length;
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, pageCount - 1);
   const pageStart = safePage * PAGE_SIZE;
   const visibleEntries = filtered.slice(pageStart, pageStart + PAGE_SIZE);
 
+  // Group the visible lessons by the day they were planned for.
+  const days: { date: string; items: PlannerEntry[] }[] = [];
+  for (const e of visibleEntries) {
+    const last = days[days.length - 1];
+    if (last && last.date === e.scheduled_date) last.items.push(e);
+    else days.push({ date: e.scheduled_date, items: [e] });
+  }
+
+  const childName = (entry: PlannerEntry) =>
+    entry.assigned_to ? children.find(c => c.id === entry.assigned_to)?.username ?? "Child" : "All children";
+
+  const stats = [
+    { key: "review" as const, label: "Waiting for review", value: counts.review, color: "text-[#B66443]", bg: "bg-[#F6E6DF]" },
+    { key: "submitted" as const, label: "Work handed in", value: counts.submitted, color: "text-[#A87A1E]", bg: "bg-[#F3EAD7]" },
+    { key: null, label: "Feedback sent", value: feedbackSent, color: "text-brand-sage", bg: "bg-[#E3E7D9]" },
+    { key: "complete" as const, label: "Lessons completed", value: counts.complete, color: "text-[#2E342F]", bg: "bg-[#E3EAF0]" },
+  ];
+
+  const selectCls =
+    "rounded-xl border border-brand-line bg-brand-white px-3 py-2 text-sm font-semibold text-[#2E342F] focus:outline-none focus:border-brand-softsage cursor-pointer";
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="mb-7">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
-            <div>
-              <PageHero art="review" tint={3}>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
-                More
-              </p>
-              <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-                Review & Feedback
-              </h1>
-              <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
-                Review submitted work, read lesson notes and send feedback in one place.
-              </p>
-              </PageHero>
-            </div>
+        <PageHero art="review" tint={3}>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">Progress</p>
+          <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Review & Feedback</h1>
+          <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
+            Look over work your children have handed in, then leave a note or tick it off as checked.
+          </p>
+        </PageHero>
 
-            {children.length > 0 && (
-              <div className="brand-card px-4 py-3 flex items-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Viewing</span>
-                <select
-                  value={selectedChildId ?? ""}
-                  onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
-                  className="text-sm font-semibold text-[#2E342F] bg-transparent focus:outline-none cursor-pointer"
-                >
-                  <option value="">All children</option>
-                  {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
-                </select>
-              </div>
-            )}
-          </div>
+        {/* Headline numbers. Tapping one shows those lessons. */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          {stats.map(s => {
+            const active = s.key !== null && filter === s.key;
+            return (
+              <button
+                key={s.label}
+                onClick={() => s.key && setFilter(s.key)}
+                disabled={!s.key}
+                className={`rounded-2xl ${s.bg} p-4 text-left transition disabled:cursor-default ${s.key ? "hover:brightness-[0.98]" : ""} ${
+                  active ? "ring-2 ring-brand-sage" : ""
+                }`}
+              >
+                <p className={`text-2xl font-extrabold ${s.color}`}>{s.value}</p>
+                <p className="text-xs font-semibold text-[#6E5A46] mt-1">{s.label}</p>
+              </button>
+            );
+          })}
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#B66443]">{awaitingReview.length}</p>
-            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Awaiting review</p>
-          </div>
-          <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#D19A32]">{totalSubmitted}</p>
-            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Work submitted</p>
-          </div>
-          <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-brand-sage">{feedbackSent}</p>
-            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Feedback sent</p>
-          </div>
-          <div className="brand-card p-4">
-            <p className="text-2xl font-bold text-[#2E342F]">{totalComplete}</p>
-            <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons completed</p>
-          </div>
-        </div>
-
-        <div className="brand-card p-4 mb-6">
+        {/* Filters */}
+        <div className="brand-card p-3 sm:p-4 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
           <div className="flex flex-wrap gap-2">
             {([
               ["review", "Needs review"],
-              ["submitted", "Submitted work"],
+              ["submitted", "Handed in"],
               ["complete", "Completed"],
-              ["incomplete", "Incomplete"],
+              ["incomplete", "Not done yet"],
               ["all", "All lessons"],
             ] as const).map(([value, label]) => (
               <button
                 key={value}
                 onClick={() => setFilter(value)}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                className={`px-3.5 py-2 rounded-xl text-sm font-semibold border transition-colors ${
                   filter === value
                     ? "bg-brand-sage border-brand-sage text-white"
                     : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
                 }`}
               >
                 {label}
+                <span className={`ml-1.5 text-xs ${filter === value ? "text-white/80" : "text-[#A8998A]"}`}>{counts[value]}</span>
               </button>
             ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {children.length > 1 && (
+              <select
+                value={selectedChildId ?? ""}
+                onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
+                className={selectCls}
+                aria-label="Child"
+              >
+                <option value="">All children</option>
+                {children.map(c => <option key={c.id} value={c.id}>{c.username}</option>)}
+              </select>
+            )}
+            {subjects.length > 1 && (
+              <select value={subject} onChange={e => setSubject(e.target.value)} className={selectCls} aria-label="Subject">
+                <option value="">All subjects</option>
+                {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            )}
           </div>
         </div>
 
@@ -279,289 +304,224 @@ export default function ProgressPage() {
           <div className="brand-card p-12 text-center text-[#8A7A69]">Loading review inbox…</div>
         ) : filtered.length === 0 ? (
           <div className="brand-card p-10 text-center">
-            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Review Inbox</p>
+            <p className="text-3xl">{filter === "review" ? "🎉" : "🔍"}</p>
             <h2 className="text-xl font-bold text-[#2E342F] mt-2">
-              {filter === "review" ? "Nothing waiting for review" : "No lessons found"}
+              {filter === "review" ? "All caught up" : "No lessons found"}
             </h2>
             <p className="text-sm text-[#6E5A46] mt-2">
               {filter === "review"
-                ? "Submitted work that needs feedback will appear here."
-                : "Try a different filter to view more lessons."}
+                ? "When your children hand in work, it will appear here for you to look over."
+                : "Try a different filter to see more lessons."}
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {visibleEntries.map((entry) => {
-              const entryFeedback = getFeedbackForEntry(entry.id);
-              const isOpen = feedbackOpen === entry.id;
-              const isReviewed = reviewedEntryIds.has(entry.id);
-              const needsReview = !!entry.completed_work_url && entryFeedback.length === 0 && !isReviewed;
-              const childName = entry.assigned_to
-                ? children.find(c => c.id === entry.assigned_to)?.username ?? "Child"
-                : "All children";
-
+          <div className="space-y-6">
+            {days.map(day => {
+              const toReview = day.items.filter(needsReviewFor).map(e => e.id);
               return (
-                <div
-                  key={entry.id}
-                  id={`entry-${entry.id}`}
-                  className={`brand-card p-6 transition-all ${
-                    highlightId === entry.id ? "ring-2 ring-brand-softsage" : ""
-                  }`}
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-start gap-5">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${subjectColor(entry.lesson.subject)}`}>
-                          {entry.lesson.subject}
-                        </span>
+                <section key={day.date}>
+                  <div className="flex items-center justify-between gap-3 mb-2 px-1">
+                    <h2 className="text-sm font-extrabold text-[#2E342F]">
+                      {format(parseISO(day.date), "EEEE d MMMM")}
+                      <span className="ml-2 font-semibold text-[#8A7A69]">
+                        {day.items.length} lesson{day.items.length === 1 ? "" : "s"}
+                      </span>
+                    </h2>
+                    {toReview.length > 1 && (
+                      <button
+                        onClick={() => handleMarkDayReviewed(toReview)}
+                        className="text-xs font-bold text-brand-sage hover:underline"
+                      >
+                        ✓ Mark all {toReview.length} reviewed
+                      </button>
+                    )}
+                  </div>
 
-                        <span className="text-xs px-2.5 py-1 rounded-full bg-[#F0ECE6] text-[#6E6256] font-semibold">
-                          {childName}
-                        </span>
+                  <div className="brand-card divide-y divide-brand-line overflow-hidden">
+                    {day.items.map(entry => {
+                      const entryFeedback = getFeedbackForEntry(entry.id);
+                      const isOpen = feedbackOpen === entry.id;
+                      const isReviewed = reviewedEntryIds.has(entry.id);
+                      const needsReview = needsReviewFor(entry);
 
-                        <span className="text-xs text-[#8A7A69]">
-                          {format(parseISO(entry.scheduled_date), "EEE d MMM yyyy")}
-                        </span>
-
-                        {needsReview && (
-                          <span className="text-xs px-2.5 py-1 rounded-full bg-[#FAE4DA] text-[#A85F46] font-bold">
-                            Needs review
-                          </span>
-                        )}
-
-                        {entry.is_complete && !needsReview && (
-                          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-tint text-brand-sage font-bold">
-                            Completed
-                          </span>
-                        )}
-                        {isReviewed && entryFeedback.length === 0 && (
-                          <span className="text-xs px-2.5 py-1 rounded-full bg-brand-tint text-brand-sage font-bold">
-                            Reviewed
-                          </span>
-                        )}
-                      </div>
-
-                      <h2 className="text-lg font-bold text-[#2E342F]">{entry.lesson.title}</h2>
-
-                      <div className="flex flex-wrap gap-3 mt-3">
-                        {entry.lesson.lesson_url && (
-                          <a
-                            href={entry.lesson.lesson_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-bold text-brand-sage hover:underline"
-                          >
-                            Open lesson
-                          </a>
-                        )}
-
-                        {entry.completed_work_url && (
-                          <a
-                            href={entry.completed_work_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-bold text-[#D19A32] hover:underline"
-                          >
-                            Open submitted work
-                          </a>
-                        )}
-                      </div>
-
-                      {entry.completed_note && (
-                        <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-4">
-                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
-                            Child note
-                          </p>
-                          <p className="text-sm text-[#6E5A46] mt-1 leading-relaxed">
-                            {entry.completed_note}
-                          </p>
-                        </div>
-                      )}
-
-                      {!entry.completed_work_url && (
-                        <div className="rounded-xl border border-dashed border-[#DDD3C4] bg-[#FBF8F1] p-4 mt-4">
-                          <p className="text-sm text-[#8A7A69]">No submitted work attached yet.</p>
-                        </div>
-                      )}
-
-                      {entryFeedback.length > 0 && (
-                        <div className="mt-5">
-                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
-                            Feedback history
-                          </p>
-
-                          <div className="space-y-2">
-                            {entryFeedback.map(fb => (
-                              <div
-                                key={fb.id}
-                                className="rounded-xl border border-brand-line bg-brand-white p-3 flex items-start gap-3"
-                              >
-                                {fb.emoji && (
-                                  <span className="text-xl shrink-0">{fb.emoji}</span>
+                      return (
+                        <div
+                          key={entry.id}
+                          id={`entry-${entry.id}`}
+                          className={`p-4 sm:px-5 ${needsReview ? "bg-[#FFFBF8]" : ""} ${
+                            highlightId === entry.id ? "ring-2 ring-inset ring-brand-softsage" : ""
+                          }`}
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center gap-3">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${subjectColor(entry.lesson.subject)}`}>
+                                  {entry.lesson.subject}
+                                </span>
+                                {children.length > 1 && (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#F0ECE6] text-[#6E6256] font-semibold">
+                                    {childName(entry)}
+                                  </span>
                                 )}
+                                {needsReview ? (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#FAE4DA] text-[#A85F46] font-bold">Needs review</span>
+                                ) : entryFeedback.length > 0 ? (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-tint text-brand-sage font-bold">Feedback sent</span>
+                                ) : isReviewed ? (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-tint text-brand-sage font-bold">Reviewed</span>
+                                ) : entry.is_complete ? (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-tint text-brand-sage font-bold">Completed</span>
+                                ) : (
+                                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#F0ECE6] text-[#8A7A69] font-semibold">Not done yet</span>
+                                )}
+                              </div>
+                              <h3 className="mt-1.5 font-bold text-[#2E342F] leading-snug">{entry.lesson.title}</h3>
+                              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                                {entry.completed_work_url && (
+                                  <a href={entry.completed_work_url} target="_blank" rel="noopener noreferrer" className="font-bold text-[#B07F1F] hover:underline">
+                                    📎 Their work
+                                  </a>
+                                )}
+                                {entry.lesson.lesson_url && (
+                                  <a href={entry.lesson.lesson_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-sage hover:underline">
+                                    Lesson
+                                  </a>
+                                )}
+                              </div>
+                            </div>
 
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-semibold text-[#2E342F]">{fb.message}</p>
-                                  <p className="text-xs text-[#8A7A69] mt-1">
-                                    {format(parseISO(fb.created_at), "d MMM yyyy")}
-                                  </p>
-                                </div>
-
+                            <div className="flex shrink-0 flex-wrap gap-2">
+                              {!isOpen && (
                                 <button
-                                  onClick={() => handleDeleteFeedback(fb.id)}
-                                  className="text-[#C4BBB0] hover:text-[#A85F46] text-lg leading-none shrink-0"
-                                  aria-label="Delete feedback"
+                                  onClick={() => {
+                                    setFeedbackOpen(entry.id);
+                                    setFeedbackMsg("");
+                                    setFeedbackEmoji("⭐");
+                                  }}
+                                  className="px-3.5 py-2 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark"
                                 >
-                                  ×
+                                  {entryFeedback.length > 0 ? "Add feedback" : "Leave feedback"}
+                                </button>
+                              )}
+                              {entry.completed_work_url && entryFeedback.length === 0 && (
+                                isReviewed ? (
+                                  <button
+                                    onClick={() => handleMarkUnreviewed(entry.id)}
+                                    disabled={reviewingEntryId === entry.id}
+                                    className="px-3.5 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage disabled:opacity-50"
+                                  >
+                                    {reviewingEntryId === entry.id ? "Saving…" : "Undo reviewed"}
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => handleMarkReviewed(entry.id)}
+                                    disabled={reviewingEntryId === entry.id}
+                                    className="px-3.5 py-2 rounded-xl border border-brand-softsage bg-brand-tint text-brand-sage text-sm font-bold hover:bg-brand-mist disabled:opacity-50"
+                                    title="Mark as looked at, with no feedback needed"
+                                  >
+                                    {reviewingEntryId === entry.id ? "Saving…" : "✓ Reviewed"}
+                                  </button>
+                                )
+                              )}
+                            </div>
+                          </div>
+
+                          {entry.completed_note && (
+                            <p className="mt-3 rounded-xl bg-brand-cream border border-brand-line px-3 py-2 text-sm text-[#6E5A46]">
+                              <span className="font-bold text-brand-softsage">Their note: </span>
+                              {entry.completed_note}
+                            </p>
+                          )}
+
+                          {entryFeedback.length > 0 && (
+                            <div className="mt-3 space-y-1.5">
+                              {entryFeedback.map(fb => (
+                                <div key={fb.id} className="flex items-start gap-2 rounded-xl bg-[#F4F6EF] px-3 py-2">
+                                  {fb.emoji && <span className="shrink-0">{fb.emoji}</span>}
+                                  <p className="min-w-0 flex-1 text-sm text-[#2E342F]">
+                                    {fb.message}
+                                    <span className="ml-2 text-xs text-[#8A7A69]">{format(parseISO(fb.created_at), "d MMM")}</span>
+                                  </p>
+                                  <button
+                                    onClick={() => handleDeleteFeedback(fb.id)}
+                                    className="text-[#C4BBB0] hover:text-[#A85F46] leading-none shrink-0"
+                                    aria-label="Delete feedback"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {isOpen && (
+                            <div className="mt-3 rounded-2xl bg-brand-cream border border-brand-line p-3 sm:p-4">
+                              <div className="flex flex-wrap gap-1">
+                                {EMOJIS.map(e => (
+                                  <button
+                                    key={e}
+                                    onClick={() => setFeedbackEmoji(e)}
+                                    className={`text-lg rounded-lg p-1.5 transition-all ${
+                                      feedbackEmoji === e ? "bg-brand-tint ring-1 ring-brand-softsage" : "hover:bg-[#EEE6D9]"
+                                    }`}
+                                  >
+                                    {e}
+                                  </button>
+                                ))}
+                              </div>
+                              <textarea
+                                rows={3}
+                                value={feedbackMsg}
+                                onChange={e => setFeedbackMsg(e.target.value)}
+                                placeholder="What went well? What should they try next?"
+                                autoFocus
+                                className="w-full mt-2 text-sm border border-[#D8D1C4] bg-brand-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-brand-softsage resize-none"
+                              />
+                              <div className="flex gap-2 mt-2">
+                                <button
+                                  onClick={() => handleSendFeedback(entry.id)}
+                                  disabled={sendingFeedback || !feedbackMsg.trim()}
+                                  className="px-4 py-2 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50"
+                                >
+                                  {sendingFeedback ? "Sending…" : "Send feedback"}
+                                </button>
+                                <button
+                                  onClick={() => setFeedbackOpen(null)}
+                                  className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
+                                >
+                                  Cancel
                                 </button>
                               </div>
-                            ))}
-                          </div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-
-                    <div className="lg:w-80 shrink-0">
-                      {isOpen ? (
-                        <div className="rounded-2xl bg-brand-cream border border-brand-line p-4">
-                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
-                            Write feedback
-                          </p>
-
-                          <div className="flex flex-wrap gap-1.5 mt-3">
-                            {EMOJIS.map(e => (
-                              <button
-                                key={e}
-                                onClick={() => setFeedbackEmoji(e)}
-                                className={`text-xl rounded-lg p-1.5 transition-all ${
-                                  feedbackEmoji === e
-                                    ? "bg-brand-tint ring-1 ring-brand-softsage"
-                                    : "hover:bg-[#EEE6D9]"
-                                }`}
-                              >
-                                {e}
-                              </button>
-                            ))}
-                          </div>
-
-                          <textarea
-                            rows={5}
-                            value={feedbackMsg}
-                            onChange={e => setFeedbackMsg(e.target.value)}
-                            placeholder="What went well? What should they try next?"
-                            autoFocus
-                            className="w-full mt-3 text-sm border border-[#D8D1C4] bg-brand-white rounded-xl px-3 py-3 focus:outline-none focus:border-brand-softsage resize-none"
-                          />
-
-                          <div className="flex gap-2 mt-3">
-                            <button
-                              onClick={() => handleSendFeedback(entry.id)}
-                              disabled={sendingFeedback || !feedbackMsg.trim()}
-                              className="flex-1 px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-50"
-                            >
-                              {sendingFeedback ? "Sending…" : "Send feedback"}
-                            </button>
-
-                            <button
-                              onClick={() => setFeedbackOpen(null)}
-                              className="px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className={`rounded-2xl border p-4 ${
-                          needsReview
-                            ? "bg-[#FFF8F4] border-[#E7CFC2]"
-                            : "bg-brand-cream border-brand-line"
-                        }`}>
-                          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
-                            Review
-                          </p>
-                          <h3 className="text-base font-bold text-[#2E342F] mt-1">
-                            {needsReview
-                              ? "Ready to review"
-                              : isReviewed && entryFeedback.length === 0
-                              ? "Reviewed"
-                              : entryFeedback.length > 0
-                              ? "Feedback sent"
-                              : "Ready when you are"}
-                          </h3>
-
-                          <p className="text-xs text-[#6E5A46] mt-2">
-                            {needsReview
-                              ? "Feedback is optional. Leave a comment or simply mark this as reviewed."
-                              : isReviewed && entryFeedback.length === 0
-                              ? "Checked with no feedback needed."
-                              : entryFeedback.length > 0
-                              ? `${entryFeedback.length} feedback message${entryFeedback.length === 1 ? "" : "s"} sent.`
-                              : "You can leave feedback on this lesson at any time."}
-                          </p>
-
-                          <div className="space-y-2 mt-4">
-                            <button
-                              onClick={() => {
-                                setFeedbackOpen(entry.id);
-                                setFeedbackMsg("");
-                                setFeedbackEmoji("⭐");
-                              }}
-                              className="w-full px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark"
-                            >
-                              {entryFeedback.length > 0 ? "Add feedback" : "Leave feedback"}
-                            </button>
-
-                            {entry.completed_work_url && entryFeedback.length === 0 && (
-                              isReviewed ? (
-                                <button
-                                  onClick={() => handleMarkUnreviewed(entry.id)}
-                                  disabled={reviewingEntryId === entry.id}
-                                  className="w-full px-4 py-2.5 rounded-xl border border-[#D8D1C4] bg-brand-white text-[#6E5A46] text-sm font-bold hover:border-brand-softsage disabled:opacity-50"
-                                >
-                                  {reviewingEntryId === entry.id ? "Saving…" : "Mark as needing review"}
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => handleMarkReviewed(entry.id)}
-                                  disabled={reviewingEntryId === entry.id}
-                                  className="w-full px-4 py-2.5 rounded-xl border border-brand-softsage bg-brand-tint text-brand-sage text-sm font-bold hover:bg-brand-mist disabled:opacity-50"
-                                >
-                                  {reviewingEntryId === entry.id ? "Saving…" : "Mark reviewed · no feedback"}
-                                </button>
-                              )
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                      );
+                    })}
                   </div>
-                </div>
+                </section>
               );
             })}
           </div>
         )}
 
         {!loading && filtered.length > PAGE_SIZE && (
-          <div className="brand-card p-4 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-1">
             <p className="text-sm text-[#6E5A46]">
               Showing {pageStart + 1}–{Math.min(pageStart + PAGE_SIZE, filtered.length)} of {filtered.length}
             </p>
-
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setPage(p => Math.max(0, p - 1))}
+                onClick={() => { setPage(p => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 disabled={safePage === 0}
                 className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-sm font-bold disabled:opacity-40"
               >
                 Previous
               </button>
-
               <span className="text-xs font-bold text-[#8A7A69] px-2">
                 Page {safePage + 1} of {pageCount}
               </span>
-
               <button
-                onClick={() => setPage(p => Math.min(pageCount - 1, p + 1))}
+                onClick={() => { setPage(p => Math.min(pageCount - 1, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 disabled={safePage >= pageCount - 1}
                 className="px-4 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-sm font-bold disabled:opacity-40"
               >
