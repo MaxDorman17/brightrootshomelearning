@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ResourceLibrary from "@/components/ResourceLibrary";
+import StarterResources from "@/components/StarterResources";
 import { isAuthenticated, getRole } from "@/lib/auth";
 
 export default function ResourcesPage() {
   const router = useRouter();
+  const [version, setVersion] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") router.replace("/login");
@@ -22,7 +24,8 @@ export default function ResourcesPage() {
         <p className="mb-6 mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
           Links, worksheets and lesson aids, sorted into a folder for each subject. Choose what your children can see.
         </p>
-        <ResourceLibrary isParent />
+        <ResourceLibrary key={version} isParent />
+        <StarterResources isParent onAdded={() => setVersion((v) => v + 1)} />
       </div>
     </div>
   );

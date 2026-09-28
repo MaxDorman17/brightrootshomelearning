@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ResourceLibrary from "@/components/ResourceLibrary";
+import StarterResources from "@/components/StarterResources";
 import { isAuthenticated, getRole } from "@/lib/auth";
 
 export default function ResourcesPage() {
@@ -23,6 +24,7 @@ export default function ResourcesPage() {
           Worksheets, links and lesson aids for your subjects.
         </p>
         <ResourceLibrary isParent={false} />
+        <StarterResources isParent={false} />
       </div>
     </div>
   );
