@@ -15,6 +15,7 @@ export type MakeSummary = {
   age_from: number | null;
   serves: string | null;
   has_photo: boolean;
+  slug?: string | null;
   is_own: boolean;
   wished_by: string[];
   material_count?: number;
@@ -34,6 +35,7 @@ const cache = new Map<number, Promise<string | null>>();
 
 export function MakePhoto({ item, className = "", big = false }: { item: MakeSummary; className?: string; big?: boolean }) {
   const [src, setSrc] = useState<string | null>(null);
+  const [stockFailed, setStockFailed] = useState(false);
 
   useEffect(() => {
     if (!item.has_photo) {
@@ -57,9 +59,13 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
     };
   }, [item.id, item.has_photo]);
 
-  if (src) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={item.title} className={`object-cover ${className}`} />;
+  // A family's own uploaded photo wins; starter recipes and crafts have a stock photo.
+  const shown = src || (!item.has_photo && item.slug && !stockFailed ? `/make-photos/${item.slug}.jpg` : null);
+  if (shown) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={shown} alt={item.title} loading="lazy" onError={() => setStockFailed(true)} className={`object-cover ${className}`} />
+    );
   }
   return (
     <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>

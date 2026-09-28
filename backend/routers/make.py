@@ -171,6 +171,7 @@ def _out(item: MakeItem, wished_by: list[str], full: bool = True) -> dict:
         "age_from": item.age_from,
         "serves": item.serves,
         "has_photo": bool(item.photo),
+        "slug": item.slug,  # starter items have a stock photo at /make-photos/<slug>.jpg
         "is_own": item.parent_id is not None,
         "wished_by": wished_by,
     }
