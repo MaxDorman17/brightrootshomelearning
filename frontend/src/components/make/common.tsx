@@ -1,0 +1,98 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { getMakePhoto, MakeKind, MakeMaterial, MakeStep } from "@/lib/api";
+
+export type MakeSummary = {
+  id: number;
+  kind: MakeKind;
+  title: string;
+  emoji: string | null;
+  summary: string | null;
+  category: string | null;
+  minutes: number | null;
+  difficulty: string | null;
+  age_from: number | null;
+  serves: string | null;
+  has_photo: boolean;
+  is_own: boolean;
+  wished_by: string[];
+  material_count?: number;
+};
+
+export type MakeDetail = MakeSummary & { materials: MakeMaterial[]; steps: MakeStep[]; tips: string | null };
+
+export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: string; materials: string; subject: string; tint: string }> = {
+  recipe: { name: "Cookbook", one: "recipe", path: "/make/cookbook", materials: "Ingredients", subject: "Cooking", tint: "bg-amber-50" },
+  craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
+};
+
+export const DIFFICULTY_LABEL: Record<string, string> = { easy: "Easy", medium: "A bit trickier", tricky: "Tricky" };
+
+// Photos are behind login, so they're fetched once and kept for the page's lifetime.
+const cache = new Map<number, Promise<string | null>>();
+
+export function MakePhoto({ item, className = "", big = false }: { item: MakeSummary; className?: string; big?: boolean }) {
+  const [src, setSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!item.has_photo) {
+      setSrc(null);
+      return;
+    }
+    let cancelled = false;
+    if (!cache.has(item.id)) {
+      cache.set(
+        item.id,
+        getMakePhoto(item.id)
+          .then((res) => URL.createObjectURL(res.data as Blob))
+          .catch(() => null)
+      );
+    }
+    cache.get(item.id)!.then((url) => {
+      if (!cancelled) setSrc(url);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [item.id, item.has_photo]);
+
+  if (src) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt={item.title} className={`object-cover ${className}`} />;
+  }
+  return (
+    <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>
+      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || (item.kind === "recipe" ? "🍽️" : "✂️")}</span>
+    </div>
+  );
+}
+
+/** Drop the cached photo after it changes. */
+export function forgetMakePhoto(id: number) {
+  cache.delete(id);
+}
+
+export function MetaChips({ item }: { item: MakeSummary }) {
+  const chips = [
+    item.minutes ? `⏱️ ${item.minutes} min` : null,
+    item.difficulty ? `💪 ${DIFFICULTY_LABEL[item.difficulty] || item.difficulty}` : null,
+    item.age_from ? `🧒 Ages ${item.age_from}+` : null,
+    item.serves ? `🍽️ ${item.serves}` : null,
+  ].filter(Boolean) as string[];
+  if (!chips.length) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {chips.map((c) => (
+        <span key={c} className="rounded-full bg-brand-cream px-2.5 py-1 text-xs font-bold text-brand-earth">
+          {c}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export function errorText(err: unknown, fallback: string) {
+  const detail = (err as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail;
+  return typeof detail === "string" ? detail : fallback;
+}

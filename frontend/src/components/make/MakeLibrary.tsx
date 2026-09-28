@@ -1,0 +1,178 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
+import { getRole, isAuthenticated } from "@/lib/auth";
+import { KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
+
+/** The Cookbook or Craft Corner: browse, search and filter recipes or crafts. */
+export default function MakeLibrary({ kind }: { kind: MakeKind }) {
+  const router = useRouter();
+  const info = KIND_INFO[kind];
+  const [role, setRole] = useState("");
+  const [items, setItems] = useState<MakeSummary[] | null>(null);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [quick, setQuick] = useState(false);
+  const [wishedOnly, setWishedOnly] = useState(false);
+  const [mineOnly, setMineOnly] = useState(false);
+  const [shopCount, setShopCount] = useState(0);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
+    const r = getRole() || "";
+    setRole(r);
+    getMakeItems(kind)
+      .then((res) => setItems(res.data))
+      .catch(() => setItems([]));
+    if (r === "parent") {
+      getShoppingCount()
+        .then((res) => setShopCount(res.data.count))
+        .catch(() => {});
+    }
+  }, [kind, router]);
+
+  const categories = useMemo(
+    () => Array.from(new Set((items || []).map((i) => i.category).filter(Boolean) as string[])).sort(),
+    [items]
+  );
+  const wishCount = (items || []).filter((i) => i.wished_by.length).length;
+
+  const shown = (items || []).filter((i) => {
+    const q = search.trim().toLowerCase();
+    if (q && !`${i.title} ${i.summary || ""} ${i.category || ""}`.toLowerCase().includes(q)) return false;
+    if (category && i.category !== category) return false;
+    if (quick && !(i.minutes && i.minutes <= 30)) return false;
+    if (wishedOnly && !i.wished_by.length) return false;
+    if (mineOnly && !i.is_own) return false;
+    return true;
+  });
+
+  const chip = (active: boolean) =>
+    "rounded-full border px-3 py-1.5 text-sm font-bold transition-colors " +
+    (active ? "border-brand-sage bg-brand-sage text-white" : "border-brand-line bg-white text-brand-earth hover:border-brand-softsage");
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
+            <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
+              {kind === "recipe" ? "🍳 " : "🎨 "}
+              {info.name}
+            </h1>
+            <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
+              {kind === "recipe"
+                ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
+                : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {role === "parent" && (
+              <>
+                <Link href="/make/shopping" className="rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm font-extrabold text-brand-sage hover:border-brand-softsage">
+                  🛒 Shopping list{shopCount ? ` (${shopCount})` : ""}
+                </Link>
+                <Link href={`/make/new?kind=${kind}`} className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark">
+                  + Add your own {info.one}
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-5 flex gap-2">
+          {(["recipe", "craft"] as MakeKind[]).map((k) => (
+            <Link
+              key={k}
+              href={KIND_INFO[k].path}
+              aria-current={k === kind ? "page" : undefined}
+              className={
+                "rounded-xl px-4 py-2 text-sm font-extrabold " +
+                (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
+              }
+            >
+              {k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"}
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-5 space-y-3">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={kind === "recipe" ? "Search recipes, e.g. muffins" : "Search crafts, e.g. paper"}
+            className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-softsage sm:max-w-md"
+          />
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => setCategory("")} className={chip(!category)}>
+              All
+            </button>
+            {categories.map((c) => (
+              <button key={c} onClick={() => setCategory(category === c ? "" : c)} className={chip(category === c)}>
+                {c}
+              </button>
+            ))}
+            <button onClick={() => setQuick(!quick)} className={chip(quick)}>
+              ⏱️ 30 min or less
+            </button>
+            {wishCount > 0 && (
+              <button onClick={() => setWishedOnly(!wishedOnly)} className={chip(wishedOnly)}>
+                ❤️ {role === "child" ? "My wish list" : "Wished for"} ({wishCount})
+              </button>
+            )}
+            {(items || []).some((i) => i.is_own) && (
+              <button onClick={() => setMineOnly(!mineOnly)} className={chip(mineOnly)}>
+                🏠 Our own
+              </button>
+            )}
+          </div>
+        </div>
+
+        {items === null ? (
+          <p className="mt-10 text-sm text-brand-earth/70">Loading...</p>
+        ) : shown.length === 0 ? (
+          <div className="mt-8 rounded-2xl border-2 border-dashed border-brand-line p-8 text-center text-sm text-brand-earth/70">
+            Nothing matches those filters.
+          </div>
+        ) : (
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {shown.map((item) => (
+              <Link key={item.id} href={`/make/${item.id}`} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
+                <div className="relative">
+                  <MakePhoto item={item} className="h-40 w-full" />
+                  {item.wished_by.length > 0 && (
+                    <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs font-extrabold text-rose-600">
+                      ❤️ {role === "child" ? "On my wish list" : item.wished_by.join(", ")}
+                    </span>
+                  )}
+                  {item.is_own && (
+                    <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs font-extrabold text-brand-sage">
+                      🏠 Our own
+                    </span>
+                  )}
+                </div>
+                <div className="p-4">
+                  {item.category && <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">{item.category}</p>}
+                  <h2 className="mt-0.5 text-lg font-extrabold text-brand-charcoal group-hover:text-brand-sage">{item.title}</h2>
+                  {item.summary && <p className="mt-1 line-clamp-2 text-sm text-brand-earth/70">{item.summary}</p>}
+                  <div className="mt-3">
+                    <MetaChips item={item} />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -79,6 +79,9 @@ def _family_files(rows: dict[str, list[dict]]) -> list[tuple[str, str]]:
     for r in rows.get("moment_photos", []):
         if r.get("file_name"):
             files.append(("moments", r["file_name"]))
+    for r in rows.get("make_items", []):
+        if r.get("photo"):
+            files.append(("make", r["photo"]))
     for r in rows.get("resources", []):
         if r.get("file_name"):
             files.append(("resources", r["file_name"]))

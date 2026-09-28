@@ -418,3 +418,47 @@ export const getPushStatus = (endpoint: string) => api.post("/api/push/status", 
 export const pushSubscribe = (subscription: PushSubscriptionJSON) => api.post("/api/push/subscribe", subscription);
 export const pushUnsubscribe = (endpoint: string) => api.post("/api/push/unsubscribe", { endpoint });
 export const sendTestPush = () => api.post("/api/push/test");
+
+// Cookbook and Craft Corner
+export type MakeKind = "recipe" | "craft";
+export type MakeMaterial = { name: string; qty: string };
+export type MakeStep = { text: string; grown_up: boolean };
+export type MakeItemBody = {
+  kind: MakeKind;
+  title: string;
+  emoji?: string | null;
+  summary?: string | null;
+  category?: string | null;
+  minutes?: number | null;
+  difficulty?: string | null;
+  age_from?: number | null;
+  serves?: string | null;
+  materials: MakeMaterial[];
+  steps: MakeStep[];
+  tips?: string | null;
+};
+export const getMakeItems = (kind?: MakeKind) => api.get("/api/make/items", { params: kind ? { kind } : {} });
+export const getMakeItem = (id: number) => api.get(`/api/make/items/${id}`);
+export const addMakeItem = (body: MakeItemBody) => api.post("/api/make/items", body);
+export const updateMakeItem = (id: number, body: MakeItemBody) => api.put(`/api/make/items/${id}`, body);
+export const copyMakeItem = (id: number) => api.post(`/api/make/items/${id}/copy`);
+export const deleteMakeItem = (id: number) => api.delete(`/api/make/items/${id}`);
+export const uploadMakePhoto = (id: number, file: File) => {
+  const form = new FormData();
+  form.append("file", file);
+  return api.post(`/api/make/items/${id}/photo`, form);
+};
+export const deleteMakePhoto = (id: number) => api.delete(`/api/make/items/${id}/photo`);
+export const getMakePhoto = (id: number) => api.get(`/api/make/items/${id}/photo`, { responseType: "blob" });
+export const toggleMakeWish = (id: number) => api.post(`/api/make/items/${id}/wish`);
+export const clearMakeWishes = (id: number) => api.delete(`/api/make/wishes/${id}`);
+export const planMakeItem = (id: number, body: { scheduled_date: string; subject: string; child_ids: number[] }) =>
+  api.post(`/api/make/items/${id}/plan`, body);
+export const addItemToShopping = (id: number, names?: string[]) => api.post(`/api/make/items/${id}/shopping`, { names: names ?? null });
+export const getShopping = () => api.get("/api/make/shopping");
+export const getShoppingCount = () => api.get("/api/make/shopping/count");
+export const addShopping = (name: string, qty = "") => api.post("/api/make/shopping", { name, qty });
+export const updateShopping = (id: number, body: { done?: boolean; name?: string; qty?: string }) =>
+  api.patch(`/api/make/shopping/${id}`, body);
+export const deleteShopping = (id: number) => api.delete(`/api/make/shopping/${id}`);
+export const clearShopping = (doneOnly = true) => api.post("/api/make/shopping/clear", null, { params: { done_only: doneOnly } });

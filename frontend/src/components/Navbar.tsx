@@ -76,6 +76,14 @@ const PARENT_NAV: NavEntry[] = [
     ],
   },
   {
+    label: "Make",
+    items: [
+      { href: "/make/cookbook", label: "Cookbook" },
+      { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/shopping", label: "Shopping List" },
+    ],
+  },
+  {
     label: "Family",
     items: [
       { href: "/parent/children", label: "Children" },
@@ -105,6 +113,8 @@ const CHILD_NAV: NavEntry[] = [
     items: [
       { href: "/child/games", label: "Games" },
       { href: "/child/timer", label: "Study Timer" },
+      { href: "/make/cookbook", label: "Cookbook" },
+      { href: "/make/crafts", label: "Craft Corner" },
       { href: "/account", label: "My Look" },
     ],
   },
@@ -222,7 +232,10 @@ export default function Navbar() {
       : "/child";
 
   const isActive = (href: string) =>
-    pathname === href || (ALSO_ACTIVE[href] ?? []).includes(pathname);
+    pathname === href ||
+    (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
+    // A single recipe or craft, or the add/edit form, lights up the Make menu.
+    (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
   const visible = (link: NavLink) => {
     const rule = OPTIONAL_PAGES[link.href];

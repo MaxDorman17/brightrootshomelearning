@@ -9,7 +9,7 @@ from sqlalchemy.schema import CreateTable
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -230,6 +230,22 @@ Base.metadata.create_all(bind=engine)
 move_legacy_uploads()
 
 
+def _seed_make_starters():
+    from database import SessionLocal
+    from make_starters import seed_starters
+
+    db = SessionLocal()
+    try:
+        seed_starters(db)
+    except Exception:
+        db.rollback()  # another worker seeded at the same moment; it'll be right next start
+    finally:
+        db.close()
+
+
+_seed_make_starters()
+
+
 def backup_sqlite_database(label: str) -> None:
     """Copy the SQLite database file next to itself before a risky migration."""
     db_path = engine.url.database
@@ -390,6 +406,7 @@ app.include_router(newsletter.router)
 app.include_router(games.router)
 app.include_router(account.router)
 app.include_router(push.router)
+app.include_router(make.router)
 
 
 @app.on_event("startup")

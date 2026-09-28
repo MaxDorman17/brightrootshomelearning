@@ -605,3 +605,51 @@ class AppSetting(Base):
 
     name = Column(String(50), primary_key=True)
     value = Column(Text, nullable=False)
+
+
+class MakeItem(Base):
+    """A recipe or craft. Starter ones (parent_id None) ship with Bright Roots; families add their own."""
+    __tablename__ = "make_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    kind = Column(String(10), nullable=False, index=True)  # recipe / craft
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    slug = Column(String(80), nullable=True, unique=True)  # starter items only, so updates can be re-seeded
+    title = Column(String(150), nullable=False)
+    emoji = Column(String(16), nullable=True)
+    summary = Column(String(300), nullable=True)
+    category = Column(String(40), nullable=True)  # e.g. Baking, Snacks / Paper, Nature
+    minutes = Column(Integer, nullable=True)
+    difficulty = Column(String(10), nullable=True)  # easy / medium / tricky
+    age_from = Column(Integer, nullable=True)
+    serves = Column(String(40), nullable=True)
+    materials = Column(Text, nullable=False, default="[]")  # JSON [{"name", "qty"}]
+    steps = Column(Text, nullable=False, default="[]")  # JSON [{"text", "grown_up"}]
+    tips = Column(Text, nullable=True)
+    photo = Column(String(255), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class MakeWish(Base):
+    """A child saying "I'd love to make this!"."""
+    __tablename__ = "make_wishes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, ForeignKey("make_items.id", ondelete="CASCADE"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("item_id", "child_id", name="uq_make_wish"),)
+
+
+class ShoppingItem(Base):
+    """One line on the family's shopping list."""
+    __tablename__ = "shopping_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    name = Column(String(150), nullable=False)
+    qty = Column(String(80), nullable=True)
+    sources = Column(String(300), nullable=True)  # which recipes or crafts it's for
+    done = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
