@@ -42,7 +42,8 @@ const FALLBACK: Record<string, string> = {
 const TINTS = ["#E3E7D9", "#F3EAD7", "#E3EAF0", "#F6E6DF", "#EDE6F3"];
 
 function useArt(name: string) {
-  const own = `/home/icons/${name}.png`;
+  // ?v= changes when pictures are replaced, so Cloudflare serves the new ones.
+  const own = `/home/icons/${name}.png?v=2`;
   const [src, setSrc] = useState(FALLBACK[name] || "/home/plan.png");
   useEffect(() => {
     const img = new Image();
