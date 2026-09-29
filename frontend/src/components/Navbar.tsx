@@ -101,7 +101,6 @@ const CHILD_NAV: NavEntry[] = [
   {
     label: "My Learning",
     items: [
-      { href: "/units", label: "Learning" },
       { href: "/reading-log", label: "Reading" },
       { href: "/spellings", label: "Spellings" },
       { href: "/child/extra-work", label: "Extra Work" },

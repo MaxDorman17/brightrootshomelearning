@@ -69,6 +69,8 @@ export default function UnitsPage() {
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
+    // Oak units are for grown-ups planning lessons; children go to their Today page.
+    if (getRole() === "child") { router.replace("/child"); return; }
     setRole(getRole() || "");
     load();
   }, [load, router]);
