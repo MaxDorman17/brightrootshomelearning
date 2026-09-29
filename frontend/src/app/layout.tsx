@@ -15,6 +15,10 @@ const nunito = Nunito({
 const DESCRIPTION =
   "A calm home learning planner for UK families. Plan the week, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
 
+// Draw every page fresh for each visit. Built-once pages kept the build day's date, so
+// the planner highlighted the day the site was last deployed instead of today.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {

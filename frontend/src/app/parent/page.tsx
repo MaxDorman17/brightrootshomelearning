@@ -188,6 +188,13 @@ export default function ParentPlanner() {
   const [goalAssignedTo, setGoalAssignedTo] = useState<number | null>(null);
   const [addingGoal, setAddingGoal] = useState(false);
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
+  // Today's date as the family's own device sees it, worked out in the browser.
+  const [todayKey, setTodayKey] = useState("");
+  useEffect(() => {
+    setTodayKey(format(new Date(), "yyyy-MM-dd"));
+    const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
+    setWeekStart(prev => (format(prev, "yyyy-MM-dd") === format(monday, "yyyy-MM-dd") ? prev : monday));
+  }, []);
   const [modal, setModal] = useState<SlotModal | null>(null);
 
   const [slotTitle, setSlotTitle] = useState("");
@@ -995,7 +1002,7 @@ export default function ParentPlanner() {
             {DAYS.map((dayName, dayIndex) => {
               const dayDate = weekDates[dayIndex];
               const subjects = timetable[dayName] ?? [];
-              const today = format(dayDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+              const today = format(dayDate, "yyyy-MM-dd") === todayKey;
               const dayOff = isDayOff(dayDate);
 
               return (
