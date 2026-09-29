@@ -130,9 +130,6 @@ const sections = [
             <strong>Resend</strong>, to send account emails, reminders and the newsletter.
           </li>
           <li>
-            <strong>Our hosting provider</strong>, which stores the website and its data on secure servers.
-          </li>
-          <li>
             <strong>Cloudflare</strong>, which protects the website from attacks and helps it load quickly.
           </li>
         </ul>
@@ -204,7 +201,8 @@ const sections = [
     title: "Keeping it safe",
     body: (
       <p>
-        Bright Roots is only available over a secure (HTTPS) connection. Passwords are hashed, each family
+        Bright Roots runs on our own server in Scotland, so your family&apos;s information is stored in the UK.
+        It is only available over a secure (HTTPS) connection. Passwords are hashed, each family
         can only see its own information, and uploaded files are only available to the family that added
         them.
       </p>
