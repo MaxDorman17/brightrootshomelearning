@@ -75,6 +75,17 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+const LEGAL_LINKS: [string, string][] = [
+  ["/privacy", "Privacy policy"],
+  ["/privacy/children", "Privacy for children"],
+  ["/cookies", "Cookies"],
+  ["/terms", "Terms"],
+  ["/refunds", "Cancelling and refunds"],
+  ["/acceptable-use", "Acceptable use"],
+  ["/safeguarding", "Safeguarding"],
+  ["/complaints", "Complaints"],
+];
+
 export function PublicFooter() {
   return (
     <footer className="border-t border-[#E4DCCD] bg-[#FBF6EC]">
@@ -92,11 +103,20 @@ export function PublicFooter() {
           <Link href="/#demo" className="hover:text-[#2F5D3A]">Demo</Link>
           <Link href="/#pricing" className="hover:text-[#2F5D3A]">Pricing</Link>
           <Link href="/contact" className="hover:text-[#2F5D3A]">Contact</Link>
-          <Link href="/privacy" className="hover:text-[#2F5D3A]">Privacy</Link>
-          <Link href="/terms" className="hover:text-[#2F5D3A]">Terms</Link>
+          <Link href="/safeguarding" className="hover:text-[#2F5D3A]">Safeguarding</Link>
           <Link href="/login" className="hover:text-[#2F5D3A]">Login</Link>
         </div>
       </div>
+      <nav
+        aria-label="Policies"
+        className="mx-auto flex max-w-7xl flex-wrap gap-x-5 gap-y-2 border-t border-[#E4DCCD] px-4 py-4 text-xs text-[#6E5A46]/80 sm:px-6"
+      >
+        {LEGAL_LINKS.map(([href, label]) => (
+          <Link key={href} href={href} className="hover:text-[#2F5D3A] hover:underline">
+            {label}
+          </Link>
+        ))}
+      </nav>
     </footer>
   );
 }

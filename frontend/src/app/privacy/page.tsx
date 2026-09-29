@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
+import TraderDetails from "@/components/TraderDetails";
 import { SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,11 +15,13 @@ const sections = [
   {
     title: "Who we are",
     body: (
-      <p>
-        Bright Roots Home Learning (&quot;Bright Roots&quot;, &quot;we&quot;, &quot;us&quot;) runs the website and
-        home learning planner at brightrootshomelearning.co.uk. We are the data controller for the personal
-        information described in this policy. You can contact us about anything in it at {mail}.
-      </p>
+      <>
+        <TraderDetails />
+        <p>
+          We run the website and home learning planner at brightrootshomelearning.co.uk, and we are the data
+          controller for the personal information described in this policy.
+        </p>
+      </>
     ),
   },
   {
@@ -103,8 +106,13 @@ const sections = [
           parent shares with them.
         </p>
         <p>
-          We treat children&apos;s information with extra care. It is only used to run Bright Roots for your family
-          and is never used for advertising or profiling.
+          We treat children&apos;s information with extra care and follow the ICO&apos;s Children&apos;s Code. It is
+          only used to run Bright Roots for your family and is never used for advertising or profiling. Emails
+          and phone notifications to children are off unless a parent switches them on.
+        </p>
+        <p>
+          We&apos;ve written a <Link href="/privacy/children">simple version of this policy for children</Link>. It
+          would be lovely if you could read it with them.
         </p>
       </>
     ),
@@ -124,6 +132,9 @@ const sections = [
           <li>
             <strong>Our hosting provider</strong>, which stores the website and its data on secure servers.
           </li>
+          <li>
+            <strong>Cloudflare</strong>, which protects the website from attacks and helps it load quickly.
+          </li>
         </ul>
         <p>
           When you add an Oak National Academy results link, Bright Roots fetches the quiz scores from Oak.
@@ -131,7 +142,12 @@ const sections = [
         </p>
         <p>
           We will only share information in any other way if the law requires it, for example if we receive a
-          valid request from the police or a court.
+          valid request from the police or a court, or to protect a child, as explained in our{" "}
+          <Link href="/safeguarding">safeguarding policy</Link>.
+        </p>
+        <p>
+          Some of these services are based in the USA. Where information leaves the UK, it is protected by the
+          UK&apos;s data adequacy rules (the UK-US &quot;data bridge&quot;) or by the UK&apos;s standard contract terms.
         </p>
       </>
     ),
@@ -140,9 +156,10 @@ const sections = [
     title: "Cookies",
     body: (
       <p>
-        Bright Roots uses one essential cookie to keep you logged in, plus your browser&apos;s local storage to
-        remember small settings such as your colour theme. We don&apos;t use advertising or tracking cookies,
-        so there is nothing to opt out of.
+        Bright Roots uses one essential cookie to keep you logged in, a security cookie from Cloudflare, and
+        your browser&apos;s local storage to remember small settings such as your colour theme. We don&apos;t use
+        analytics, advertising or tracking cookies, so there is nothing to opt out of. Our{" "}
+        <Link href="/cookies">cookie policy</Link> lists them all.
       </p>
     ),
   },
@@ -152,8 +169,9 @@ const sections = [
       <p>
         We keep your family&apos;s information for as long as your account is open, so your records are there when
         you need them. If you delete your account, everything is removed straight away, including uploaded
-        photos and files. Copies in our backups are overwritten within a short time. We keep basic payment
-        records for as long as the law requires.
+        photos and files. Copies in our backups are overwritten within 30 days. If an account hasn&apos;t been
+        used for two years and has no active membership, we&apos;ll email you, and delete it if you don&apos;t reply
+        within 30 days. Stripe keeps payment records for as long as tax law requires (six years).
       </p>
     ),
   },
@@ -169,6 +187,7 @@ const sections = [
           <li>take a copy of your information with you;</li>
           <li>object to or restrict how we use it, and withdraw consent at any time.</li>
         </ul>
+        <p>Children have these rights too. We don&apos;t make any automated decisions about you or your children.</p>
         <p>
           You can download everything, or delete your whole account, yourself from the{" "}
           <Link href="/account">Account page</Link>. For anything else, email {mail}.

@@ -118,6 +118,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/make/crafts", label: "Craft Corner" },
       { href: "/make/teens", label: "Teen Corner" },
       { href: "/account", label: "My Look" },
+      { href: "/privacy/children", label: "My Privacy" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
+import TraderDetails from "@/components/TraderDetails";
 import { SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,12 +15,16 @@ const sections = [
   {
     title: "About these terms",
     body: (
-      <p>
-        These terms are an agreement between you and Bright Roots Home Learning (&quot;Bright Roots&quot;,
-        &quot;we&quot;, &quot;us&quot;) for using the website and planner at brightrootshomelearning.co.uk. By creating
-        an account you agree to them. Our <Link href="/privacy">privacy policy</Link> explains how we look after
-        your family&apos;s information.
-      </p>
+      <>
+        <TraderDetails />
+        <p>
+          These terms are an agreement between you and us for using the website and planner at
+          brightrootshomelearning.co.uk. By creating an account you agree to them. They include our{" "}
+          <Link href="/acceptable-use">acceptable use policy</Link> and our{" "}
+          <Link href="/refunds">subscriptions, cancelling and refunds policy</Link>. Our{" "}
+          <Link href="/privacy">privacy policy</Link> explains how we look after your family&apos;s information.
+        </p>
+      </>
     ),
   },
   {
@@ -71,8 +76,10 @@ const sections = [
           the end of the period you have already paid for, and you won&apos;t be charged again.
         </p>
         <p>
-          As you can try Bright Roots free for 7 days first, we don&apos;t normally refund part-used months or
-          years. If something has gone wrong, email {mail} and we&apos;ll do our best to help. This doesn&apos;t
+          You have the legal right to cancel within 14 days of your first payment (and of each yearly renewal)
+          and get that payment back in full. Outside those 14 days we don&apos;t normally refund part-used months
+          or years, but if something has gone wrong, email {mail} and we&apos;ll put it right. The full details
+          are in our <Link href="/refunds">subscriptions, cancelling and refunds policy</Link>. This doesn&apos;t
           affect your legal rights.
         </p>
       </>
@@ -92,7 +99,10 @@ const sections = [
     title: "Using Bright Roots fairly",
     body: (
       <>
-        <p>Please don&apos;t:</p>
+        <p>
+          Our <Link href="/acceptable-use">acceptable use policy</Link> sets out the rules in full. In short,
+          please don&apos;t:
+        </p>
         <ul>
           <li>upload anything unlawful, or anything you don&apos;t have the right to share;</li>
           <li>try to access another family&apos;s account or information;</li>
@@ -161,7 +171,10 @@ const sections = [
           courts. If you live in England, Wales or Northern Ireland, you can also bring a claim in your local
           courts, and the consumer protection laws where you live still apply.
         </p>
-        <p>Questions about these terms? Email {mail}.</p>
+        <p>
+          Questions about these terms? Email {mail}. If you&apos;re unhappy with anything, our{" "}
+          <Link href="/complaints">complaints policy</Link> explains what we&apos;ll do.
+        </p>
       </>
     ),
   },

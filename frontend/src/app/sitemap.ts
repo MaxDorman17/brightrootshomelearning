@@ -9,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/contact", 0.5],
     ["/privacy", 0.3],
     ["/terms", 0.3],
+    ["/privacy/children", 0.3],
+    ["/cookies", 0.3],
+    ["/refunds", 0.3],
+    ["/acceptable-use", 0.3],
+    ["/safeguarding", 0.3],
+    ["/complaints", 0.3],
   ];
   return pages.map(([path, priority]) => ({
     url: `${SITE_URL}${path}`,
