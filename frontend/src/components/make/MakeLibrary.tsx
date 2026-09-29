@@ -78,7 +78,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <PageHero art={kind === "recipe" ? "shopping" : "lessons"} tint={kind === "recipe" ? 1 : 4}>
+        <PageHero art={kind === "recipe" ? "shopping" : kind === "pe" ? "wellies" : "lessons"} tint={kind === "recipe" ? 1 : kind === "pe" ? 0 : 4}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
@@ -87,12 +87,14 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
             <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
               {kind === "recipe"
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
-                : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
+                : kind === "pe"
+                  ? "Get moving! P.E. ideas for one child on their own and for a group, indoors and out. Add your own too."
+                  : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
             </p>
         </PageHero>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
-            {(["recipe", "craft"] as MakeKind[]).map((k) => (
+            {(["recipe", "craft", "pe"] as MakeKind[]).map((k) => (
               <Link
                 key={k}
                 href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
@@ -102,7 +104,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                   (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
                 }
               >
-                <EmojiText text={k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"} />
+                <EmojiText text={k === "recipe" ? "🍳 Cookbook" : k === "pe" ? "🥾 Wellies P.E." : "🎨 Craft Corner"} />
               </Link>
             ))}
             <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
@@ -139,7 +141,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={kind === "recipe" ? "Search recipes, e.g. muffins" : "Search crafts, e.g. paper"}
+            placeholder={kind === "recipe" ? "Search recipes, e.g. muffins" : kind === "pe" ? "Search activities, e.g. relay" : "Search crafts, e.g. paper"}
             className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-softsage sm:max-w-md"
           />
           <div className="flex flex-wrap gap-2">

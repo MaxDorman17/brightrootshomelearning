@@ -423,7 +423,7 @@ export const pushUnsubscribe = (endpoint: string) => api.post("/api/push/unsubsc
 export const sendTestPush = () => api.post("/api/push/test");
 
 // Cookbook and Craft Corner
-export type MakeKind = "recipe" | "craft";
+export type MakeKind = "recipe" | "craft" | "pe";
 export type MakeMaterial = { name: string; qty: string };
 export type MakeStep = { text: string; grown_up: boolean };
 export type MakeItemBody = {

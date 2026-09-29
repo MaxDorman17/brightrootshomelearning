@@ -90,7 +90,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
       minutes: minutes ? Number(minutes) : null,
       difficulty,
       age_from: ageFrom ? Number(ageFrom) : null,
-      serves: kind === "recipe" ? serves || null : null,
+      serves: kind === "craft" ? null : serves || null,
       materials: materials.filter((m) => m.name.trim()),
       steps: steps.filter((s) => s.text.trim()),
       tips: tips || null,
@@ -136,7 +136,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
         <div className="brand-card mt-6 space-y-4 p-5">
           {!id && (
             <div className="flex gap-2">
-              {(["recipe", "craft"] as MakeKind[]).map((k) => (
+              {(["recipe", "craft", "pe"] as MakeKind[]).map((k) => (
                 <button
                   type="button"
                   key={k}
@@ -146,7 +146,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                     (kind === k ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
                   }
                 >
-                  <EmojiText text={k === "recipe" ? "🍳 Recipe" : "🎨 Craft"} />
+                  <EmojiText text={k === "recipe" ? "🍳 Recipe" : k === "pe" ? "🥾 P.E. activity" : "🎨 Craft"} />
                 </button>
               ))}
             </div>
@@ -154,11 +154,11 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
           <div className="grid gap-4 sm:grid-cols-[1fr_6rem]">
             <div>
               <label className={label}>Name</label>
-              <input required maxLength={150} value={title} onChange={(e) => setTitle(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Nana's pancakes" : "e.g. Egg box caterpillar"} />
+              <input required maxLength={150} value={title} onChange={(e) => setTitle(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Nana's pancakes" : kind === "pe" ? "e.g. Beanbag relay" : "e.g. Egg box caterpillar"} />
             </div>
             <div>
               <label className={label}>Emoji</label>
-              <input maxLength={4} value={emoji} onChange={(e) => setEmoji(e.target.value)} className={`${input} text-center text-xl`} placeholder={kind === "recipe" ? "🥞" : "🐛"} />
+              <input maxLength={4} value={emoji} onChange={(e) => setEmoji(e.target.value)} className={`${input} text-center text-xl`} placeholder={kind === "recipe" ? "🥞" : kind === "pe" ? "🏃" : "🐛"} />
             </div>
           </div>
           <div>
@@ -168,7 +168,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className={label}>Category</label>
-              <input maxLength={40} value={category} onChange={(e) => setCategory(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Baking" : "e.g. Paper"} />
+              <input maxLength={40} value={category} onChange={(e) => setCategory(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Baking" : kind === "pe" ? "On your own / Group games" : "e.g. Paper"} />
             </div>
             <div>
               <label className={label}>How long (minutes)</label>
@@ -186,10 +186,10 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
               <label className={label}>Suitable from age</label>
               <input type="number" min={1} max={18} value={ageFrom} onChange={(e) => setAgeFrom(e.target.value)} className={input} />
             </div>
-            {kind === "recipe" && (
+            {kind !== "craft" && (
               <div>
-                <label className={label}>Makes / serves</label>
-                <input maxLength={40} value={serves} onChange={(e) => setServes(e.target.value)} className={input} placeholder="e.g. 12 pancakes" />
+                <label className={label}>{kind === "pe" ? "How many children" : "Makes / serves"}</label>
+                <input maxLength={40} value={serves} onChange={(e) => setServes(e.target.value)} className={input} placeholder={kind === "pe" ? "e.g. 1 child, or 4 or more" : "e.g. 12 pancakes"} />
               </div>
             )}
           </div>
@@ -226,7 +226,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                   value={m.name}
                   onChange={(e) => setMaterials(materials.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
                   className={`${input} min-w-0`}
-                  placeholder={kind === "recipe" ? "plain flour" : "paper plate"}
+                  placeholder={kind === "recipe" ? "plain flour" : kind === "pe" ? "football" : "paper plate"}
                   aria-label="Item"
                 />
                 <button type="button" onClick={() => setMaterials(materials.filter((_, j) => j !== i))} className="shrink-0 rounded-lg px-2 text-brand-earth/60 hover:bg-brand-cream" aria-label="Remove">

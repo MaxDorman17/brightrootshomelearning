@@ -612,7 +612,7 @@ class MakeItem(Base):
     __tablename__ = "make_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    kind = Column(String(10), nullable=False, index=True)  # recipe / craft
+    kind = Column(String(10), nullable=False, index=True)  # recipe / craft / pe
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     slug = Column(String(80), nullable=True, unique=True)  # starter items only, so updates can be re-seeded
     title = Column(String(150), nullable=False)

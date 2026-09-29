@@ -27,6 +27,7 @@ export type MakeDetail = MakeSummary & { materials: MakeMaterial[]; steps: MakeS
 export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: string; materials: string; subject: string; tint: string }> = {
   recipe: { name: "Cookbook", one: "recipe", path: "/make/cookbook", materials: "Ingredients", subject: "Cooking", tint: "bg-amber-50" },
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
+  pe: { name: "Wellies P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
 };
 
 export type AgeBand = "little" | "junior" | "teen";
@@ -87,7 +88,7 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
   }
   return (
     <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>
-      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || (item.kind === "recipe" ? "🍽️" : "✂️")}</span>
+      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃" } as const)[item.kind]}</span>
     </div>
   );
 }
@@ -98,11 +99,12 @@ export function forgetMakePhoto(id: number) {
 }
 
 export function MetaChips({ item }: { item: MakeSummary }) {
+  const servesIcon = item.kind === "pe" ? "🧒" : "🍽️";
   const chips = [
     item.minutes ? `⏱️ ${item.minutes} min` : null,
     item.difficulty ? `💪 ${DIFFICULTY_LABEL[item.difficulty] || item.difficulty}` : null,
     item.age_from ? `🧒 Ages ${item.age_from}+` : null,
-    item.serves ? `🍽️ ${item.serves}` : null,
+    item.serves ? `${servesIcon} ${item.serves}` : null,
   ].filter(Boolean) as string[];
   if (!chips.length) return null;
   return (

@@ -8,7 +8,8 @@ export default function NewMakePage() {
   const [kind, setKind] = useState<MakeKind | null>(null);
 
   useEffect(() => {
-    setKind(new URLSearchParams(window.location.search).get("kind") === "craft" ? "craft" : "recipe");
+    const k = new URLSearchParams(window.location.search).get("kind");
+    setKind(k === "craft" || k === "pe" ? k : "recipe");
   }, []);
 
   return kind ? <MakeEditor kind={kind} /> : null;
