@@ -83,7 +83,8 @@ export default function ShoppingListPage() {
       <div className="print:hidden">
         <Navbar />
       </div>
-      <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
+      <PrintableList lines={todo} />
+      <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 print:hidden">
         <div className="print:hidden">
           <Link href="/make/cookbook" className="text-sm font-bold text-brand-sage hover:underline">
             ← Cookbook
@@ -125,8 +126,8 @@ export default function ShoppingListPage() {
               <button onClick={share} disabled={!todo.length} className="rounded-xl border-2 border-brand-line bg-white px-4 py-2 text-sm font-extrabold text-brand-sage disabled:opacity-50">
                 {copied ? "Copied!" : "📤 Share or copy"}
               </button>
-              <button onClick={() => window.print()} className="rounded-xl border-2 border-brand-line bg-white px-4 py-2 text-sm font-extrabold text-brand-sage">
-                🖨️ Print
+              <button onClick={() => window.print()} className="rounded-xl bg-brand-sage px-4 py-2 text-sm font-extrabold text-white hover:bg-brand-sagedark">
+                🖨️ Print list
               </button>
             </div>
             <ul className="mt-4 space-y-2">{todo.map(row)}</ul>
@@ -150,6 +151,38 @@ export default function ShoppingListPage() {
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+/** A plain black-and-white list, only shown when printing: tick boxes, amounts and what each item is for. */
+function PrintableList({ lines }: { lines: Line[] }) {
+  return (
+    <div className="hidden bg-white p-8 text-black print:block">
+      <div className="flex items-end justify-between border-b-2 border-black pb-2">
+        <h1 className="text-3xl font-extrabold">Shopping list</h1>
+        <p className="text-sm" suppressHydrationWarning>
+          Bright Roots · {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}
+        </p>
+      </div>
+      {lines.length === 0 ? (
+        <p className="mt-6">Nothing on the list.</p>
+      ) : (
+        <ul className="mt-4 columns-2 gap-10">
+          {lines.map((l) => (
+            <li key={l.id} className="flex break-inside-avoid items-start gap-3 border-b border-gray-300 py-2">
+              <span className="mt-0.5 inline-block h-4 w-4 shrink-0 border-2 border-black" />
+              <span className="min-w-0">
+                <span className="font-semibold">
+                  {l.qty && <b>{l.qty} </b>}
+                  {l.name}
+                </span>
+                {l.sources && <span className="block text-xs text-gray-600">For {l.sources}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -211,3 +211,11 @@ body {
   color: #24452c;
   letter-spacing: -0.01em;
 }
+
+/* Printing: plain white paper, whatever colour theme the family uses */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+}
