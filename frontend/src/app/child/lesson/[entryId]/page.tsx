@@ -5,6 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getTodayEntries, toggleComplete } from "@/lib/api";
 import { PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
+import StudyTimer from "@/components/StudyTimer";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
@@ -102,14 +103,6 @@ export default function LessonDetailPage() {
             📂 Lesson aids for {entry.lesson.subject}
           </a>
 
-          {!entry.is_complete && (
-            <a
-              href={`/child/timer?entry=${entry.id}&subject=${encodeURIComponent(entry.lesson.subject)}&label=${encodeURIComponent(entry.lesson.title)}`}
-              className="mb-4 inline-flex items-center gap-2 rounded-xl border-2 border-brand-mist bg-white px-4 py-2 text-sm font-semibold text-brand-deep hover:bg-brand-wash"
-            >
-              ⏱ Start study timer
-            </a>
-          )}
 
           {entry.lesson.description && (
             <div className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
@@ -145,6 +138,11 @@ export default function LessonDetailPage() {
             )}
           </div>
         )}
+
+        {/* Study timer for this lesson */}
+        <section id="timer" className="mt-6 scroll-mt-20">
+          <StudyTimer subject={entry.lesson.subject} label={entry.lesson.title} entryId={entry.id} />
+        </section>
       </div>
     </div>
   );

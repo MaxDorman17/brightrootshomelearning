@@ -87,6 +87,14 @@ export default function StudyTimer({ subject, label, entryId, onPhaseChange }: P
   const finishing = useRef(false);
   const baseTitle = useRef<string | null>(null);
 
+  // While the full timer is on the page it records sessions itself, so the menu-bar badge stands back.
+  useEffect(() => {
+    window.__studyTimerOnPage = true;
+    return () => {
+      window.__studyTimerOnPage = false;
+    };
+  }, []);
+
   // Pick up a timer that was running before a refresh or page change.
   useEffect(() => {
     const saved = load();

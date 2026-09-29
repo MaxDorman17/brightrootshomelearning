@@ -870,7 +870,7 @@ export default function ChildDashboard() {
 
             {!modal.entry.is_complete && (
               <a
-                href={`/child/timer?entry=${modal.entry.id}&subject=${encodeURIComponent(modal.entry.lesson.subject)}&label=${encodeURIComponent(modal.entry.lesson.title)}`}
+                href={`/child/lesson/${modal.entry.id}#timer`}
                 className="flex items-center gap-3 bg-white border-2 border-brand-mist hover:bg-brand-wash text-brand-deep rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
               >
                 <span className="text-lg">⏱</span>

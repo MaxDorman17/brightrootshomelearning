@@ -18,6 +18,7 @@ import {
 } from "@/lib/api";
 import { subjectsInTimetable } from "@/lib/subjects";
 import Avatar from "@/components/Avatar";
+import TimerBadge from "@/components/TimerBadge";
 import { AvatarChoice } from "@/lib/avatar";
 
 interface PendingItem {
@@ -113,7 +114,6 @@ const CHILD_NAV: NavEntry[] = [
     label: "Play",
     items: [
       { href: "/child/games", label: "Games" },
-      { href: "/child/timer", label: "Study Timer" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
       { href: "/make/teens", label: "Teen Corner" },
@@ -434,6 +434,8 @@ export default function Navbar() {
                   )}
                 </div>
               )}
+
+              {role === "child" && <TimerBadge />}
 
               {username && (
                 <Link
