@@ -12,6 +12,7 @@ import {
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
+import HolidayImporter, { type HolidayRange } from "@/components/HolidayImporter";
 import { Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
 import { format, addDays, startOfWeek } from "date-fns";
@@ -30,9 +31,7 @@ const getOakQuizResult = (url: string | null | undefined, results: Record<string
   return shareUrl ? results[shareUrl] : undefined;
 };
 
-interface FifeHoliday { label: string; start: string; end: string; inservice?: boolean; group: string; }
-
-const FIFE_HOLIDAYS: FifeHoliday[] = [
+const FIFE_HOLIDAYS: HolidayRange[] = [
   // 2025-26
   { group: "2025-26", inservice: true,  label: "In-service days",         start: "2025-08-18", end: "2025-08-19" },
   { group: "2025-26",                   label: "Autumn break",            start: "2025-10-13", end: "2025-10-24" },
@@ -60,18 +59,6 @@ const FIFE_HOLIDAYS: FifeHoliday[] = [
   { group: "2026-27",                   label: "Summer 2027",             start: "2027-07-05", end: "2027-08-13" },
 ];
 
-function eachWeekday(start: string, end: string): string[] {
-  const dates: string[] = [];
-  const s = new Date(start + "T00:00:00");
-  const e = new Date(end + "T00:00:00");
-  const cur = new Date(s);
-  while (cur <= e) {
-    const d = cur.getDay();
-    if (d >= 1 && d <= 5) dates.push(format(cur, "yyyy-MM-dd"));
-    cur.setDate(cur.getDate() + 1);
-  }
-  return dates;
-}
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -204,10 +191,6 @@ export default function ParentPlanner() {
   const [slotSaving, setSlotSaving] = useState(false);
 
   const [showHolidayPanel, setShowHolidayPanel] = useState(false);
-  const [importingHolidays, setImportingHolidays] = useState(false);
-  const [selectedHolidayGroups, setSelectedHolidayGroups] = useState<number[]>(
-    Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i)
-  );
 
   const [shiftConfirm, setShiftConfirm] = useState<ShiftConfirm | null>(null);
   const [shifting, setShifting] = useState(false);
@@ -436,19 +419,6 @@ export default function ParentPlanner() {
     setGoals(prev => prev.filter(g => g.id !== id));
   };
 
-  const handleImportHolidays = async () => {
-    setImportingHolidays(true);
-    try {
-      const existing = new Set(daysOff.map(d => d.date));
-      const selected = FIFE_HOLIDAYS.filter((_, i) => selectedHolidayGroups.includes(i));
-      const fresh = selected.flatMap(h => eachWeekday(h.start, h.end)).filter(d => !existing.has(d));
-      for (const date of fresh) {
-        const res = await addDayOff({ date, reason: "School holiday" });
-        setDaysOff(prev => [...prev, res.data]);
-      }
-      setShowHolidayPanel(false);
-    } finally { setImportingHolidays(false); }
-  };
 
   const handleQuickAdd = async () => {
     if (!quickAdd || !qaTitle.trim() || !qaSubject) return;
@@ -875,61 +845,13 @@ export default function ParentPlanner() {
         )}
 
 
-        {/* Scottish holiday import panel */}
         {showHolidayPanel && (
-          <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
-            <p className="text-sm font-extrabold text-gray-800 mb-0.5">Fife Council School Holidays</p>
-            <p className="text-xs text-gray-500 mb-3">Tick the dates to add as days off. Uncheck Summer if you school year-round.</p>
-            <div className="max-h-72 overflow-y-auto mb-4 space-y-0.5 pr-1">
-              {FIFE_HOLIDAYS.map((h, i) => {
-                const showHeader = i === 0 || FIFE_HOLIDAYS[i - 1].group !== h.group;
-                return (
-                  <div key={i}>
-                    {showHeader && (
-                      <p className={`text-[10px] font-extrabold text-brand-deep uppercase tracking-widest pb-1 ${i > 0 ? "pt-3 border-t border-gray-100 mt-2" : ""}`}>
-                        {h.group}
-                      </p>
-                    )}
-                    <label className="flex items-center gap-2.5 cursor-pointer group py-0.5">
-                      <input type="checkbox" checked={selectedHolidayGroups.includes(i)}
-                        onChange={e => setSelectedHolidayGroups(prev =>
-                          e.target.checked ? [...prev, i] : prev.filter(x => x !== i)
-                        )}
-                        className="w-4 h-4 accent-brand-deep rounded cursor-pointer shrink-0" />
-                      <span className="text-sm font-semibold text-gray-800 group-hover:text-brand-deep transition-colors">
-                        {h.label}
-                      </span>
-                      {h.inservice && (
-                        <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full shrink-0">in-service</span>
-                      )}
-                      <span className="text-xs text-gray-400 ml-auto shrink-0">
-                        {h.start === h.end ? h.start : `${h.start} - ${h.end}`}
-                      </span>
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              <button onClick={handleImportHolidays}
-                disabled={importingHolidays || selectedHolidayGroups.length === 0}
-                className="px-4 py-2 bg-brand-deep text-white rounded-xl text-sm font-bold hover:bg-brand-leaf disabled:opacity-50 transition-colors">
-                {importingHolidays ? "Adding..." : `Add ${selectedHolidayGroups.length} selected`}
-              </button>
-              <button onClick={() => setSelectedHolidayGroups(Array.from({ length: FIFE_HOLIDAYS.length }, (_, i) => i))}
-                className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors">
-                Select all
-              </button>
-              <button onClick={() => setSelectedHolidayGroups([])}
-                className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors">
-                Clear
-              </button>
-              <button onClick={() => setShowHolidayPanel(false)}
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors ml-auto">
-                Cancel
-              </button>
-            </div>
-          </div>
+          <HolidayImporter
+            existingDates={new Set(daysOff.map(d => d.date))}
+            fife={FIFE_HOLIDAYS}
+            onAdded={row => setDaysOff(prev => [...prev, row])}
+            onClose={() => setShowHolidayPanel(false)}
+          />
         )}
         {/* Today at a glance */}
         {(() => {
