@@ -24,6 +24,9 @@ AVATAR_EMOJIS = {
     "🐝", "🦋", "🐬", "🦈", "🚀", "⚽", "🎨", "🎸", "🌈", "⭐", "🌻", "🍓", "🤖", "👾", "🧙", "🦸",
     "🧜", "🐲", "🏀", "🎮",
 }
+# Max's illustrated characters, stored as "pic:<name>". Must match AVATAR_PICTURES in frontend/src/lib/avatar.ts.
+# The emojis above stay valid so children who already chose one keep it.
+AVATAR_PICTURES = {f"pic:{n}" for n in ("bear", "penguin", "robot", "daisy", "butterfly", "heart", "unicorn", "bee", "pufferfish", "controller", "shark", "starfish", "seahorse", "monkey", "zebra", "panda")}
 AVATAR_BACKGROUNDS = {"sky", "mint", "lemon", "peach", "rose", "lilac", "sand", "slate"}
 AVATAR_FRAMES = {"none", "ring", "star", "rainbow"}
 CHILD_THEMES = {"sage", "ocean", "sunshine", "berry", "sky", "grape", "rainbow"}
@@ -38,7 +41,7 @@ class AvatarIn(BaseModel):
     @field_validator("emoji")
     @classmethod
     def valid_emoji(cls, value: str) -> str:
-        if value not in AVATAR_EMOJIS:
+        if value not in AVATAR_EMOJIS and value not in AVATAR_PICTURES:
             raise ValueError("Pick one of the characters")
         return value
 

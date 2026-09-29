@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Avatar from "@/components/Avatar";
-import { AVATAR_BACKGROUNDS, AVATAR_EMOJIS, AVATAR_FRAMES, AvatarChoice, DEFAULT_AVATAR } from "@/lib/avatar";
+import { AVATAR_BACKGROUNDS, AVATAR_FRAMES, AVATAR_PICTURES, AvatarChoice, DEFAULT_AVATAR, avatarPicture } from "@/lib/avatar";
 
 type Props = {
   username: string;
@@ -36,19 +36,21 @@ export default function AvatarBuilder({ username, initial, onSave, onCancel }: P
       </div>
 
       <p className="mb-2 mt-4 text-sm font-bold text-brand-charcoal">Character</p>
-      <div className="grid grid-cols-9 gap-1.5 sm:grid-cols-12">
-        {AVATAR_EMOJIS.map((emoji) => (
+      <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
+        {AVATAR_PICTURES.map((emoji) => (
           <button
             key={emoji}
             type="button"
             onClick={() => setChoice((prev) => ({ ...prev, emoji }))}
             aria-pressed={choice.emoji === emoji}
             className={
-              "flex aspect-square items-center justify-center rounded-xl text-xl transition-transform hover:scale-110 " +
+              "flex aspect-square items-center justify-center rounded-xl p-1 transition-transform hover:scale-110 " +
               (choice.emoji === emoji ? "bg-brand-tint ring-2 ring-brand-sage" : "bg-white")
             }
+            aria-label={emoji.slice(4)}
           >
-            {emoji}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={avatarPicture(emoji)!} alt="" className="h-full w-full object-contain" draggable={false} />
           </button>
         ))}
       </div>

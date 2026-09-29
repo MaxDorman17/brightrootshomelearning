@@ -7,6 +7,16 @@ export const AVATAR_EMOJIS = [
   "🧜", "🐲", "🏀", "🎮",
 ];
 
+// Max's illustrated characters, saved as "pic:<name>" and drawn from /avatars/<name>.webp.
+// Must match AVATAR_PICTURES in backend/routers/profile.py. The emojis above are no longer offered,
+// but still show for children who picked one before.
+export const AVATAR_PICTURES = ["bear", "penguin", "robot", "daisy", "butterfly", "heart", "unicorn", "bee", "pufferfish", "controller", "shark", "starfish", "seahorse", "monkey", "zebra", "panda"].map((n) => `pic:${n}`);
+
+/** The picture for an avatar character, or null if it's one of the older emoji characters. */
+export function avatarPicture(character: string): string | null {
+  return character.startsWith("pic:") ? `/avatars/${character.slice(4)}.webp` : null;
+}
+
 export const AVATAR_BACKGROUNDS: Record<string, { label: string; className: string }> = {
   sky: { label: "Sky", className: "bg-sky-200" },
   mint: { label: "Mint", className: "bg-emerald-200" },
@@ -25,7 +35,7 @@ export const AVATAR_FRAMES: Record<string, { label: string; className: string }>
   rainbow: { label: "Rainbow", className: "avatar-rainbow" },
 };
 
-export const DEFAULT_AVATAR: AvatarChoice = { emoji: "🦊", bg: "sky", frame: "none" };
+export const DEFAULT_AVATAR: AvatarChoice = { emoji: "pic:bear", bg: "sky", frame: "none" };
 
 // Subject colours a child can choose. Must match SUBJECT_COLOURS in backend/routers/profile.py.
 export const SUBJECT_COLOUR_OPTIONS: Record<string, { label: string; dot: string; card: string }> = {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getChildPhoto } from "@/lib/api";
-import { AVATAR_BACKGROUNDS, AVATAR_FRAMES, AvatarChoice } from "@/lib/avatar";
+import { AVATAR_BACKGROUNDS, AVATAR_FRAMES, AvatarChoice, avatarPicture } from "@/lib/avatar";
 
 // Photos are behind login, so they're fetched once per page load and shown from memory.
 const photoCache = new Map<number, Promise<string | null>>();
@@ -69,7 +69,12 @@ export default function Avatar({ username, avatar, hasPhoto, childId, size = "md
     const bg = AVATAR_BACKGROUNDS[avatar.bg]?.className ?? "bg-sky-200";
     return (
       <span className={`${s.box} ${bg} ${frame} ${s.text} flex shrink-0 items-center justify-center rounded-full`} role="img" aria-label={username}>
-        {avatar.emoji}
+        {avatarPicture(avatar.emoji) ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={avatarPicture(avatar.emoji)!} alt="" className="h-[82%] w-[82%] object-contain" draggable={false} />
+        ) : (
+          avatar.emoji
+        )}
       </span>
     );
   }
