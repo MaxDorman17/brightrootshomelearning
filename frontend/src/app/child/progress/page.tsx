@@ -40,6 +40,7 @@ export default function ChildProgressPage() {
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [showAllSubjects, setShowAllSubjects] = useState(false);
   const [results, setResults] = useState<ResultsOverview | null>(null);
+  const [tab, setTab] = useState<"week" | "results" | "time">("week");
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "child") { router.replace("/login"); return; }
@@ -148,6 +149,26 @@ export default function ChildProgressPage() {
               ))}
             </div>
 
+            <div className="mb-5 flex w-fit flex-wrap gap-1 rounded-2xl bg-brand-white p-1 shadow-sm">
+              {([
+                ["week", "This week"],
+                ["results", "My test results"],
+                ["time", "Study time"],
+              ] as const).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => setTab(value)}
+                  className={`rounded-xl px-4 py-2 text-sm font-bold transition-colors ${
+                    tab === value ? "bg-brand-sage text-white" : "text-[#6E5A46] hover:bg-brand-cream"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {tab === "week" && (
+            <>
             <div className="brand-card p-5 mb-5">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-5">
                 <div>
@@ -194,60 +215,60 @@ export default function ChildProgressPage() {
 
                 <div className="rounded-2xl border border-brand-line bg-brand-white p-4">
                   <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-bold text-[#2E342F]">Weekly goals</p>
-                      <p className="text-xs text-[#8A7A69] mt-1">
-                        {goalsTotal === 0 ? "No goals set yet." : `${goalsDone} of ${goalsTotal} complete`}
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-[#2E342F]"><Emoji e="📖" /> Reading</p>
+                      <p className="text-xs text-[#8A7A69] mt-1 truncate">
+                        {currentBook ? `Reading ${currentBook.title}` : "No book on the go right now."}
                       </p>
                     </div>
-                    {goalsTotal > 0 && (
-                      <p className="text-2xl font-bold text-brand-sage">{goalsDone}/{goalsTotal}</p>
-                    )}
+                    <div className="text-right shrink-0">
+                      <p className="text-2xl font-bold text-brand-sage">{booksFinished}</p>
+                      <p className="text-[10px] font-semibold text-[#8A7A69]">books finished</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {subjectStats.length > 0 && (
-              <div className="brand-card p-5 mb-5">
-                <div className="mb-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Subjects</p>
-                  <h2 className="text-xl font-bold text-[#2E342F] mt-1">Subject progress</h2>
-                  <p className="text-sm text-[#6E5A46] mt-1">A quick look at your busiest subjects.</p>
-                </div>
+            <div className="grid gap-4 md:grid-cols-2 mb-5">
+              {subjectStats.length > 0 && (
+                <div className="brand-card p-5">
+                  <div className="mb-4">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Subjects</p>
+                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">Subject progress</h2>
+                    <p className="text-sm text-[#6E5A46] mt-1">A quick look at your busiest subjects.</p>
+                  </div>
 
-                <div className="space-y-3">
-                  {(showAllSubjects ? subjectStats : subjectStats.slice(0, 3)).map(item => (
-                    <div key={item.subject} className="rounded-2xl border border-brand-line bg-brand-white px-4 py-3">
-                      <div className="flex items-center justify-between gap-3 mb-2">
-                        <div>
-                          <p className="text-sm font-bold text-[#2E342F]">{item.subject}</p>
-                          <p className="text-xs text-[#8A7A69]">{item.done} of {item.total} complete</p>
+                  <div className="space-y-3">
+                    {(showAllSubjects ? subjectStats : subjectStats.slice(0, 3)).map(item => (
+                      <div key={item.subject} className="rounded-2xl border border-brand-line bg-brand-white px-4 py-3">
+                        <div className="flex items-center justify-between gap-3 mb-2">
+                          <div>
+                            <p className="text-sm font-bold text-[#2E342F]">{item.subject}</p>
+                            <p className="text-xs text-[#8A7A69]">{item.done} of {item.total} complete</p>
+                          </div>
+                          <p className="text-sm font-bold text-brand-sage">{item.pct}%</p>
                         </div>
-                        <p className="text-sm font-bold text-brand-sage">{item.pct}%</p>
+                        <div className="h-2 rounded-full bg-[#EEE8DD] overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-brand-softsage"
+                            style={{ width: `${item.pct}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-2 rounded-full bg-[#EEE8DD] overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-brand-softsage"
-                          style={{ width: `${item.pct}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                    ))}
 
-                  {subjectStats.length > 3 && (
-                    <button
-                      onClick={() => setShowAllSubjects(v => !v)}
-                      className="w-full rounded-xl border border-[#D8D1C4] bg-brand-white px-4 py-2.5 text-sm font-bold text-brand-sage hover:border-brand-softsage"
-                    >
-                      {showAllSubjects ? "Show fewer subjects" : `Show all subjects (${subjectStats.length})`}
-                    </button>
-                  )}
+                    {subjectStats.length > 3 && (
+                      <button
+                        onClick={() => setShowAllSubjects(v => !v)}
+                        className="w-full rounded-xl border border-[#D8D1C4] bg-brand-white px-4 py-2.5 text-sm font-bold text-brand-sage hover:border-brand-softsage"
+                      >
+                        {showAllSubjects ? "Show fewer subjects" : `Show all subjects (${subjectStats.length})`}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-
-            <div className="grid md:grid-cols-2 gap-4 mb-5">
+              )}
               <div className="brand-card p-5">
                 <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Goals</p>
                 <h2 className="text-lg font-bold text-[#2E342F] mt-1">This week&apos;s goals</h2>
@@ -277,60 +298,18 @@ export default function ChildProgressPage() {
                   </div>
                 )}
               </div>
-
-              <div className="brand-card p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Reading</p>
-                <h2 className="text-lg font-bold text-[#2E342F] mt-1">Reading progress</h2>
-
-                <div className="grid grid-cols-2 gap-3 mt-4">
-                  <div className="rounded-2xl bg-[#F4F1EA] p-4">
-                    <p className="text-2xl font-bold text-[#5C607D]">{booksReading}</p>
-                    <p className="text-xs font-semibold text-[#6E5A46] mt-1">Reading now</p>
-                  </div>
-                  <div className="rounded-2xl bg-brand-wash p-4">
-                    <p className="text-2xl font-bold text-brand-sage">{booksFinished}</p>
-                    <p className="text-xs font-semibold text-[#6E5A46] mt-1">Books finished</p>
-                  </div>
-                </div>
-
-                {currentBook && (
-                  <div className="rounded-2xl border border-brand-line bg-brand-white p-4 mt-3">
-                    <p className="text-[10px] font-bold uppercase tracking-wide text-brand-softsage">Currently reading</p>
-                    <p className="text-sm font-bold text-[#2E342F] mt-1">{currentBook.title}</p>
-                    {currentBook.author && (
-                      <p className="text-xs text-[#8A7A69] mt-0.5">{currentBook.author}</p>
-                    )}
-                  </div>
-                )}
-              </div>
             </div>
-
-            {streak > 0 && (
-              <div className="brand-card p-5 border-[#E7D4A4] bg-[#FFF9EC]">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#F7E5B7] flex items-center justify-center text-2xl shrink-0">
-                    <Emoji e={streak >= 10 ? "🔥" : streak >= 5 ? "🏆" : "⚡"} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#B98224]">Learning streak</p>
-                    <p className="text-lg font-bold text-[#2E342F] mt-0.5">{streak}-day streak</p>
-                    <p className="text-sm text-[#6E5A46] mt-1">
-                      {streak >= 10 ? "More than two school weeks of consistent learning." : streak >= 5 ? "A full school week completed." : "Keep the run going."}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            </>
             )}
 
-            {results && (
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Results</p>
-                <h2 className="text-lg font-bold text-[#2E342F] mt-1 mb-3">My test results</h2>
+            {tab === "results" &&
+              (results ? (
                 <ResultsView data={results} forChild />
-              </div>
-            )}
+              ) : (
+                <div className="brand-card p-8 text-center text-sm text-[#6E5A46]">Loading your results…</div>
+              ))}
 
-            <StudySummaryCard forChild />
+            {tab === "time" && <StudySummaryCard forChild />}
           </>
         )}
       </div>
