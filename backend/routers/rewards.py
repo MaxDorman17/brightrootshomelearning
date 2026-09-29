@@ -244,7 +244,7 @@ def _child_summary(db: Session, child: User, parent_id: int, history_limit: int 
         .all()
     )
     for claim in claims:
-        if claim.status == "approved":
+        if claim.status in ("approved", "given"):
             events.append({
                 "when": _naive(claim.decided_at or claim.created_at),
                 "stars": -claim.cost,
@@ -522,6 +522,21 @@ def approve_claim(claim_id: int, db: Session = Depends(get_db), current_user: Us
 @router.post("/claims/{claim_id}/decline")
 def decline_claim(claim_id: int, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     return _decide(db, current_user, claim_id, "declined")
+
+
+@router.post("/claims/{claim_id}/given")
+def mark_claim_given(claim_id: int, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """The parent has given an approved reward (e.g. the VR time is done), so it drops off the home pages.
+    The stars stay spent; "given" counts the same as "approved" everywhere else."""
+    claim = db.query(RewardClaim).filter(RewardClaim.id == claim_id, RewardClaim.parent_id == current_user.id).first()
+    if not claim:
+        raise HTTPException(status_code=404, detail="Request not found")
+    if claim.status not in ("approved", "given"):
+        raise HTTPException(status_code=400, detail="Only approved rewards can be marked as done")
+    claim.status = "given"
+    db.commit()
+    db.refresh(claim)
+    return _claim_out(claim)
 
 
 # ---------------------------------------------------------------------------

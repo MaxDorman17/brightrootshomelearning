@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import StarJar from "@/components/StarJar";
-import { approveRewardClaim, declineRewardClaim, getMyStars, getStarJars } from "@/lib/api";
+import { approveRewardClaim, declineRewardClaim, getMyStars, getStarJars, markRewardGiven } from "@/lib/api";
 
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
 type Claim = {
@@ -35,16 +35,15 @@ export function ChildStarJarCard() {
 
   if (!data || (data.rules.length === 0 && data.rewards.length === 0 && data.available === 0)) return null;
 
-  // Waiting requests, plus anything decided in the last week so they see the answer.
+  // Waiting and approved requests (until a grown-up ticks them done), plus "not this time" answers from the last week.
   const requests = data.claims
     .filter(
       (c) =>
         c.status === "pending" ||
-        ((c.status === "approved" || c.status === "declined") &&
-          c.decided_at &&
-          Date.now() - utc(c.decided_at).getTime() < RECENT_MS)
+        c.status === "approved" ||
+        (c.status === "declined" && c.decided_at && Date.now() - utc(c.decided_at).getTime() < RECENT_MS)
     )
-    .slice(0, 4);
+    .slice(0, 5);
 
   return (
     <div className="mb-4 rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-[#FFF8E6] to-[#FDF1D8] px-4 py-3 shadow-sm">
@@ -106,10 +105,14 @@ export function FamilyStarJars() {
 
   useEffect(load, [load]);
 
-  const decide = async (claim: Claim, approve: boolean) => {
+  const decide = async (claim: Claim, action: "approve" | "decline" | "given") => {
     setBusy(claim.id);
     try {
-      await (approve ? approveRewardClaim(claim.id) : declineRewardClaim(claim.id));
+      await (action === "approve"
+        ? approveRewardClaim(claim.id)
+        : action === "decline"
+          ? declineRewardClaim(claim.id)
+          : markRewardGiven(claim.id));
       load();
     } finally {
       setBusy(null);
@@ -129,6 +132,7 @@ export function FamilyStarJars() {
       <div className="mt-3 divide-y divide-[#EBDDB8]">
         {data.children.map((c) => {
           const pending = c.claims.filter((cl) => cl.status === "pending");
+          const approved = c.claims.filter((cl) => cl.status === "approved");
           return (
             <div key={c.child.id} className="flex flex-col gap-4 py-3 md:flex-row md:items-center">
               <div className="md:w-1/2">
@@ -150,14 +154,14 @@ export function FamilyStarJars() {
                           </p>
                         </div>
                         <button
-                          onClick={() => decide(cl, true)}
+                          onClick={() => decide(cl, "approve")}
                           disabled={busy === cl.id}
                           className="rounded-lg bg-[#2F5D3A] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#24452C] disabled:opacity-50"
                         >
                           Approve
                         </button>
                         <button
-                          onClick={() => decide(cl, false)}
+                          onClick={() => decide(cl, "decline")}
                           disabled={busy === cl.id}
                           className="rounded-lg border border-[#D9D1C4] bg-white px-3 py-1.5 text-xs font-bold text-[#6E5A46] disabled:opacity-50"
                         >
@@ -166,6 +170,31 @@ export function FamilyStarJars() {
                       </li>
                     ))}
                   </ul>
+                )}
+
+                {approved.length > 0 && (
+                  <>
+                    <p className="mb-1.5 mt-3 text-xs font-extrabold uppercase tracking-wider text-[#2F5D3A]">Approved, still to enjoy</p>
+                    <ul className="space-y-2">
+                      {approved.map((cl) => (
+                        <li key={cl.id}>
+                          <label className="flex cursor-pointer items-center gap-2 rounded-xl bg-emerald-50/80 px-3 py-2">
+                            <input
+                              type="checkbox"
+                              checked={busy === cl.id}
+                              disabled={busy === cl.id}
+                              onChange={() => decide(cl, "given")}
+                              className="h-5 w-5 shrink-0 cursor-pointer accent-[#2F5D3A]"
+                              aria-label={`Mark ${cl.title} as done`}
+                            />
+                            <span className="text-xl">{cl.emoji || "🎁"}</span>
+                            <span className="min-w-0 flex-1 truncate text-sm font-bold text-[#2E342F]">{cl.title}</span>
+                            <span className="shrink-0 text-xs font-semibold text-[#2F5D3A]">Tick when done</span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
               </div>
             </div>

@@ -26,6 +26,7 @@ type MyStars = {
 const STATUS_TEXT: Record<string, string> = {
   pending: "Waiting for a grown-up",
   approved: "Yes! Enjoy it",
+  given: "Done ✓",
   declined: "Not this time",
   cancelled: "Cancelled",
 };
