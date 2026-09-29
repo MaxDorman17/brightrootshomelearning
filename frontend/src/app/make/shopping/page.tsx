@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { addShopping, clearShopping, deleteShopping, getShopping, updateShopping } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
+import { EmojiText } from "@/components/Emoji";
 
 type Line = { id: number; name: string; qty: string | null; sources: string | null; done: boolean };
 
@@ -124,10 +125,10 @@ export default function ShoppingListPage() {
           <>
             <div className="mt-6 flex flex-wrap gap-2 print:hidden">
               <button onClick={share} disabled={!todo.length} className="rounded-xl border-2 border-brand-line bg-white px-4 py-2 text-sm font-extrabold text-brand-sage disabled:opacity-50">
-                {copied ? "Copied!" : "📤 Share or copy"}
+                {copied ? "Copied!" : <EmojiText text="📤 Share or copy" />}
               </button>
               <button onClick={() => window.print()} className="rounded-xl bg-brand-sage px-4 py-2 text-sm font-extrabold text-white hover:bg-brand-sagedark">
-                🖨️ Print list
+                <EmojiText text="🖨️ Print list" />
               </button>
             </div>
             <ul className="mt-4 space-y-2">{todo.map(row)}</ul>

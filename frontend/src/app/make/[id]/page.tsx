@@ -21,7 +21,7 @@ import {
 } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { subjectsInTimetable } from "@/lib/subjects";
-import Emoji from "@/components/Emoji";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 type Child = { id: number; username: string };
 
@@ -206,7 +206,7 @@ export default function MakeItemPage() {
                   </button>
                 )}
                 <button onClick={() => window.print()} className="text-brand-sage hover:underline">
-                  🖨️ Print
+                  <EmojiText text="🖨️ Print" />
                 </button>
               </div>
             )}
