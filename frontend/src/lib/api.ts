@@ -86,6 +86,7 @@ export const awardStars = (child_id: number, stars: number, reason: string) =>
 export const approveRewardClaim = (id: number) => api.post(`/api/rewards/claims/${id}/approve`);
 export const declineRewardClaim = (id: number) => api.post(`/api/rewards/claims/${id}/decline`);
 export const getMyStars = () => api.get("/api/rewards/me");
+export const getStarJars = () => api.get("/api/rewards/jars");
 export const requestReward = (reward_id: number) => api.post("/api/rewards/claims", { reward_id });
 export const cancelRewardRequest = (id: number) => api.delete(`/api/rewards/claims/${id}`);
 export type ChallengeBody = {

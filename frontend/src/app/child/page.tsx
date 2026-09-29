@@ -14,6 +14,7 @@ import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import RemindersCard from "@/components/RemindersCard";
+import { ChildStarJarCard } from "@/components/StarJarCards";
 import AppCard from "@/components/AppCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
@@ -385,6 +386,8 @@ export default function ChildDashboard() {
             </button>
           </div>
         )}
+
+        <ChildStarJarCard />
 
         <RemindersCard />
 

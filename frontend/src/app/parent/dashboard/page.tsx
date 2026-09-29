@@ -22,6 +22,7 @@ import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import HomeOverview from "@/components/HomeOverview";
 import AppCard from "@/components/AppCard";
+import { FamilyStarJars } from "@/components/StarJarCards";
 import { useMounted } from "@/lib/useMounted";
 import { Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
@@ -349,6 +350,8 @@ export default function ParentDashboardPage() {
             detail="This week"
           />
         </section>
+
+        <FamilyStarJars />
 
         <section className="mb-8 grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
           <div className="brand-card p-6">

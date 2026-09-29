@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, field_validator
@@ -14,6 +15,8 @@ from routers.activity import naive as _naive
 from routers.test_results import _own_child
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
+
+UK = ZoneInfo("Europe/London")
 
 RULE_KINDS = {"lesson", "oak", "oak_starter", "spelling", "book", "game"}
 GAMES_PER_DAY_CAP = 3  # stars for at most this many games a day, so they can't be farmed
@@ -228,6 +231,12 @@ def _child_summary(db: Session, child: User, parent_id: int, history_limit: int 
 
     balance = sum(e["stars"] for e in events)
     pending = sum(c.cost for c in claims if c.status == "pending")
+    today = datetime.now(UK).date()
+    earned_today = sum(
+        e["stars"]
+        for e in events
+        if e["stars"] > 0 and e["when"] and e["when"].replace(tzinfo=timezone.utc).astimezone(UK).date() == today
+    )
     events.sort(key=lambda e: e["when"] or datetime.min, reverse=True)
 
     return {
@@ -235,6 +244,7 @@ def _child_summary(db: Session, child: User, parent_id: int, history_limit: int 
         "balance": balance,
         "available": balance - pending,
         "earned_total": sum(e["stars"] for e in events if e["stars"] > 0),
+        "earned_today": earned_today,
         "history": [
             {"when": e["when"].isoformat() if e["when"] else None, "stars": e["stars"], "reason": e["reason"]}
             for e in events[:history_limit]
@@ -308,6 +318,24 @@ def pending_count(db: Session = Depends(get_db), current_user: User = Depends(re
         "pending": db.query(RewardClaim)
         .filter(RewardClaim.parent_id == current_user.id, RewardClaim.status == "pending")
         .count()
+    }
+
+
+@router.get("/jars")
+def star_jars(db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """Each child's stars and the family's rewards, for the star jars on the parent home page.
+    Unlike /setup, this doesn't create the example rules for families who haven't opened Rewards."""
+    children = db.query(User).filter(User.parent_id == current_user.id, User.role == "child").all()
+    items = (
+        db.query(RewardItem)
+        .filter(RewardItem.parent_id == current_user.id, RewardItem.is_active.is_(True))
+        .order_by(RewardItem.cost, RewardItem.id)
+        .all()
+    )
+    return {
+        "set_up": current_user.rewards_set_up_at is not None,
+        "children": [_child_summary(db, c, current_user.id, history_limit=0) for c in children],
+        "rewards": [_reward_out(r) for r in items],
     }
 
 
