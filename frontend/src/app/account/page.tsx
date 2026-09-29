@@ -403,6 +403,20 @@ export default function AccountPage() {
             </form>
           </div>
 
+          {role === "child" && (
+            <Link
+              href="/child/privacy"
+              className="mt-5 flex items-center gap-4 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5 hover:bg-brand-tint"
+            >
+              <span className="text-3xl" aria-hidden>🔒</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-lg font-extrabold text-brand-charcoal">My privacy</span>
+                <span className="block text-sm text-brand-earth/70">What Bright Roots knows about you, and how we keep it safe.</span>
+              </span>
+              <span className="text-brand-sage">→</span>
+            </Link>
+          )}
+
           {(role === "parent" || role === "child") && (
             <div className="mt-5">
               <AppCard role={role} />
