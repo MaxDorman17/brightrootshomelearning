@@ -21,6 +21,7 @@ import {
   updateMoment,
 } from "@/lib/api";
 import { subjectsInTimetable } from "@/lib/subjects";
+import Emoji from "@/components/Emoji";
 
 type Moment = {
   id: number;
@@ -424,7 +425,7 @@ export default function MomentsPage() {
           <div className="mt-5 space-y-5">
             {moments.length === 0 ? (
               <div className="brand-card p-8 text-center">
-                <p className="text-4xl">📸</p>
+                <Emoji e="📸" className="mx-auto h-16 w-16" />
                 <p className="mt-2 font-bold text-brand-charcoal">No moments yet</p>
                 <p className="mt-1 text-sm text-[#6E5A46]">Share a photo or a note about something you learned today.</p>
               </div>

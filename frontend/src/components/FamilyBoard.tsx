@@ -6,7 +6,7 @@ import { addDays, differenceInCalendarDays, endOfMonth, format, parseISO, startO
 import { addChallenge, removeChallenge, tickChallenge, untickChallenge } from "@/lib/api";
 import Avatar from "@/components/Avatar";
 import { AvatarChoice } from "@/lib/avatar";
-import { EmojiText } from "@/components/Emoji";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 type ChildProgress = { child_id: number; username: string; progress: number; completed_at: string | null };
 
@@ -236,7 +236,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
                   {row.child_id === myId && <span className="ml-1 text-xs font-bold text-brand-softsage">(you)</span>}
                 </p>
                 <span className="hidden text-xs text-[#6E5A46] sm:inline">{row.lessons_week} lessons</span>
-                {row.streak > 1 && <span className="text-xs font-bold text-[#B98224]">🔥 {row.streak}</span>}
+                {row.streak > 1 && <span className="text-xs font-bold text-[#B98224]"><Emoji e="🔥" /> {row.streak}</span>}
                 <span className="w-16 text-right font-black text-brand-sage">{row.stars_week} <StarIcon /></span>
               </div>
             ))}

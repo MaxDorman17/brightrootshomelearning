@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import StarIcon from "@/components/StarIcon";
+import Emoji from "@/components/Emoji";
 
 /** Joins stars/rewards and badges into one place: tabs across the top of both pages. */
 export default function RewardsTabs({ role, current }: { role: "parent" | "child"; current: "stars" | "badges" }) {
@@ -15,7 +16,7 @@ export default function RewardsTabs({ role, current }: { role: "parent" | "child
         </>
       ),
     },
-    { id: "badges", href: "/achievements", label: <>🏅 Badges</> },
+    { id: "badges", href: "/achievements", label: <><Emoji e="🏅" /> Badges</> },
   ];
   return (
     <div className="mb-6 flex w-fit gap-1 rounded-2xl bg-brand-white p-1 shadow-sm">

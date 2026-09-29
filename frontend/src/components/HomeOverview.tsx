@@ -13,6 +13,7 @@ import {
   getReminders,
   getTimetable,
 } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 const HIDE_KEY = "getting_started_hidden";
 
@@ -125,7 +126,7 @@ export default function HomeOverview() {
           {latestMoment?.photo_ids[0] ? (
             <MomentImage photoId={latestMoment.photo_ids[0]} alt="Latest moment" className="h-16 w-16 shrink-0 rounded-xl" />
           ) : (
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-brand-tint text-2xl">📸</span>
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-brand-tint text-2xl"><Emoji e="📸" className="h-10 w-10" /></span>
           )}
           <span className="min-w-0">
             <span className="block text-xs font-extrabold uppercase tracking-[0.14em] text-brand-earth/55">Latest moment</span>

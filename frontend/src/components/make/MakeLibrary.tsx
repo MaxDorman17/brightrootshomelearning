@@ -8,6 +8,7 @@ import PageHero from "@/components/PageHero";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { AGE_BANDS, AgeBand, inAgeBand, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 /** The Cookbook or Craft Corner: browse, search and filter recipes or crafts. */
 export default function MakeLibrary({ kind }: { kind: MakeKind }) {
@@ -80,7 +81,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
         <PageHero art={kind === "recipe" ? "shopping" : "lessons"} tint={kind === "recipe" ? 1 : 4}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-              {kind === "recipe" ? "🍳 " : "🎨 "}
+              {kind === "recipe" ? "🍳 " : <><Emoji e="🎨" /> </>}
               {info.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
@@ -101,11 +102,11 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                   (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
                 }
               >
-                {k === "recipe" ? "🍳 Cookbook" : "🎨 Craft Corner"}
+                {k === "recipe" ? "🍳 Cookbook" : <EmojiText text="🎨 Craft Corner" />}
               </Link>
             ))}
             <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
-              🚀 Teen Corner
+              <Emoji e="🚀" /> Teen Corner
             </Link>
           </div>
           <div className="flex flex-wrap gap-2">

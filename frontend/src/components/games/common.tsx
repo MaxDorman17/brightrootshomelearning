@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { saveGameScore } from "@/lib/api";
-import Emoji from "@/components/Emoji";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 export type GameProps = { onExit: () => void; words: string[] };
 
@@ -68,7 +68,7 @@ export function GameHeader({ title, onExit, right }: { title: string; onExit: ()
   return (
     <div className="mb-4 flex items-center justify-between gap-3">
       <button onClick={onExit} className="text-sm font-bold text-brand-sage hover:underline">← All games</button>
-      <h2 className="text-lg font-extrabold text-brand-charcoal">{title}</h2>
+      <h2 className="text-lg font-extrabold text-brand-charcoal"><EmojiText text={title} /></h2>
       <div className="min-w-[4rem] text-right">{right}</div>
     </div>
   );

@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import { getMakeItems } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { inAgeBand, MakePhoto, MakeSummary, MetaChips } from "@/components/make/common";
+import Emoji from "@/components/Emoji";
 
 function Card({ item }: { item: MakeSummary }) {
   return (
@@ -76,7 +77,7 @@ export default function TeenCornerPage() {
           <div className="relative flex min-h-[220px] flex-col justify-center p-6 sm:p-10 lg:min-h-[300px]">
             <div className="lg:max-w-[40%]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6E5A46]/70">Ages 11–16</p>
-              <h1 className="mt-1 text-3xl font-extrabold text-[#2F5D3A] sm:text-4xl">🚀 Teen Corner</h1>
+              <h1 className="mt-1 text-3xl font-extrabold text-[#2F5D3A] sm:text-4xl"><Emoji e="🚀" /> Teen Corner</h1>
               <p className="mt-3 text-[#4A3B2C]">
                 Real meals, proper bakes and projects with real skills, written for you to do on your own.
                 {role === "child" ? " Tap \"I'd love to make this\" on anything you want to try." : ""}

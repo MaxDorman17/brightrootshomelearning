@@ -17,6 +17,7 @@ import {
 } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { errorText, forgetMakePhoto, KIND_INFO } from "./common";
+import { EmojiText } from "@/components/Emoji";
 
 const input = "w-full rounded-xl border-2 border-brand-line bg-white px-3.5 py-2.5 text-sm outline-none focus:border-brand-softsage";
 const label = "mb-1.5 block text-sm font-bold text-brand-charcoal";
@@ -145,7 +146,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                     (kind === k ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
                   }
                 >
-                  {k === "recipe" ? "🍳 Recipe" : "🎨 Craft"}
+                  {k === "recipe" ? "🍳 Recipe" : <EmojiText text="🎨 Craft" />}
                 </button>
               ))}
             </div>

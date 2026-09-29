@@ -362,7 +362,7 @@ export default function ChildDashboard() {
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 {streak > 0 && (
                   <div className="flex w-fit items-center gap-1.5 rounded-xl bg-white/80 px-3 py-1.5 text-[#2F5D3A] shadow-sm">
-                    <span>{streak >= 10 ? "🔥" : streak >= 5 ? "⚡" : "✨"}</span>
+                    <Emoji e={streak >= 10 ? "🔥" : streak >= 5 ? "⚡" : "✨"} />
                     <span className="text-sm font-extrabold">{streak}-day streak!</span>
                   </div>
                 )}
@@ -821,7 +821,7 @@ export default function ChildDashboard() {
             {/* Notes from the parent */}
             {modal.entry.lesson.description && (
               <div className="mb-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-                <p className="text-xs font-bold text-amber-700 mb-1">📝 Notes from {parentName}</p>
+                <p className="text-xs font-bold text-amber-700 mb-1"><Emoji e="📝" /> Notes from {parentName}</p>
                 <p className="text-sm text-amber-900">{modal.entry.lesson.description}</p>
               </div>
             )}
@@ -917,7 +917,7 @@ export default function ChildDashboard() {
 
             {/* Note */}
             <div>
-              <p className="text-xs font-bold text-gray-600 mb-2">📝 Add a note</p>
+              <p className="text-xs font-bold text-gray-600 mb-2"><Emoji e="📝" /> Add a note</p>
               <div className="flex gap-2">
                 <textarea
                   rows={2}

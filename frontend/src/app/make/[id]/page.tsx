@@ -21,6 +21,7 @@ import {
 } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { subjectsInTimetable } from "@/lib/subjects";
+import Emoji from "@/components/Emoji";
 
 type Child = { id: number; username: string };
 
@@ -177,7 +178,7 @@ export default function MakeItemPage() {
                 </button>
               )}
               <button onClick={() => setModal("made")} className={secondary}>
-                📸 We made this!
+                <Emoji e="📸" /> We made this!
               </button>
             </div>
             {notice && <p className="mt-3 text-sm font-bold text-brand-sage">{notice}</p>}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getGamesSummary } from "@/lib/api";
+import { EmojiText } from "@/components/Emoji";
 
 const NAMES: Record<string, string> = {
   spelling_bee: "🐝 Spelling Bee",
@@ -36,7 +37,7 @@ export default function GamesSummaryCard({ childId }: { childId: number }) {
         <div className="mt-3 divide-y divide-brand-line">
           {Object.entries(games).map(([id, g]) => (
             <div key={id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
-              <span className="font-bold text-brand-charcoal">{NAMES[id] ?? id}</span>
+              <span className="font-bold text-brand-charcoal"><EmojiText text={NAMES[id] ?? id} /></span>
               <span className="text-[#6E5A46]">
                 {g.best != null ? <>Best <b className="text-brand-sage">{g.best}</b>{g.best_detail ? ` (${g.best_detail})` : ""} · </> : null}
                 {g.played_this_week} this week · {g.played} in total

@@ -12,7 +12,7 @@ import SpellingBee from "@/components/games/SpellingBee";
 import WordScramble from "@/components/games/WordScramble";
 import { MathsSprint, TimesTables } from "@/components/games/QuickFire";
 import MemoryMatch from "@/components/games/MemoryMatch";
-import { EmojiText } from "@/components/Emoji";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 type GameId = "spelling_bee" | "word_scramble" | "times_tables" | "maths_sprint" | "memory_match";
 type Summary = Record<GameId, { best: number | null; played_this_week: number }>;
@@ -87,7 +87,7 @@ export default function GamesPage() {
                 const s = summary?.[g.id];
                 return (
                   <button key={g.id} onClick={() => setPlaying(g.id)} className="brand-card flex items-center gap-4 p-4 text-left transition-shadow hover:shadow-md">
-                    <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${g.colour}`}>{g.emoji}</span>
+                    <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${g.colour}`}><Emoji e={g.emoji} className="h-10 w-10" /></span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-extrabold text-brand-charcoal">{g.title}</span>
                       <span className="block text-sm text-[#6E5A46]">{g.blurb}</span>

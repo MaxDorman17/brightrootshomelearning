@@ -305,7 +305,7 @@ export default function AchievementsPage() {
                           {streak >= 10 ? "A serious run of consistent learning." : streak >= 5 ? "A full school week completed." : "Keep the streak growing."}
                         </p>
                       </div>
-                      <span className="text-3xl">🔥</span>
+                      <Emoji e="🔥" className="h-9 w-9" />
                     </div>
                   </div>
                 )}

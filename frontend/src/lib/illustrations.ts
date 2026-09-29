@@ -21,6 +21,13 @@ const ILLUSTRATIONS: Record<string, string> = {
   "📚": "books",
   "🎯": "target",
   "⭐": "star",
+  "🚀": "rocket",
+  "🎨": "paint",
+  "🧠": "brain",
+  "📸": "camera",
+  "📝": "notepad",
+  "🔥": "fire",
+  "🏅": "medal",
 };
 
 /** Emoji variation selectors (the invisible "show as emoji" marks) don't change which picture we use. */

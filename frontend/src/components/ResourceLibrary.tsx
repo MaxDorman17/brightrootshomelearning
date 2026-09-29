@@ -12,6 +12,7 @@ import {
   updateResource,
   uploadResourceFile,
 } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 type Folder = { name: string; count: number; is_subject: boolean; is_custom: boolean };
 type Item = {
@@ -140,7 +141,7 @@ function ItemRow({
   return (
     <div className="py-3">
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-2xl">{icon(item)}</span>
+        <span className="text-2xl"><Emoji e={icon(item)} /></span>
         <button onClick={open} disabled={busy} className="min-w-0 flex-1 text-left">
           <p className="truncate font-bold text-brand-charcoal hover:text-brand-sage hover:underline">{item.title}</p>
           <p className="truncate text-xs text-[#6E5A46]">

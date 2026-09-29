@@ -309,7 +309,7 @@ export default function ChildProgressPage() {
               <div className="brand-card p-5 border-[#E7D4A4] bg-[#FFF9EC]">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-[#F7E5B7] flex items-center justify-center text-2xl shrink-0">
-                    {streak >= 10 ? "🔥" : streak >= 5 ? "🏆" : "⚡"}
+                    <Emoji e={streak >= 10 ? "🔥" : streak >= 5 ? "🏆" : "⚡"} />
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-[#B98224]">Learning streak</p>
