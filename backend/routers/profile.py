@@ -27,6 +27,8 @@ AVATAR_EMOJIS = {
 # Max's illustrated characters, stored as "pic:<name>". Must match AVATAR_PICTURES in frontend/src/lib/avatar.ts.
 # The emojis above stay valid so children who already chose one keep it.
 AVATAR_PICTURES = {f"pic:{n}" for n in ("bear", "penguin", "robot", "daisy", "butterfly", "heart", "unicorn", "bee", "pufferfish", "controller", "shark", "starfish", "seahorse", "monkey", "zebra", "panda", "red-panda", "fox", "boat", "football", "rocket", "dinosaur", "duck", "dog", "cat", "bird", "astronaut", "dragon", "pirate")}
+# Grown-up characters for parents. Must match PARENT_AVATAR_PICTURES in frontend/src/lib/avatar.ts.
+AVATAR_PICTURES |= {f"pic:{n}" for n in ("owl", "stag", "hedgehog", "badger", "heron", "fox-parent", "hare", "robin", "tortoise", "mug", "plant", "books", "camper", "teapot", "lighthouse")}
 AVATAR_BACKGROUNDS = {"sky", "mint", "lemon", "peach", "rose", "lilac", "sand", "slate"}
 AVATAR_FRAMES = {"none", "ring", "star", "rainbow"}
 CHILD_THEMES = {"sage", "ocean", "sunshine", "berry", "sky", "grape", "rainbow"}
@@ -85,13 +87,13 @@ class ColoursIn(BaseModel):
 
 
 def _target(db: Session, current_user: User, child_id: Optional[int]) -> User:
-    """Children change their own profile; parents can change any of their children's."""
+    """Children change their own profile; parents can change their own (no child_id) or any of their children's."""
     if current_user.role == "child":
         if child_id not in (None, current_user.id):
             raise HTTPException(status_code=403, detail="You can only change your own profile")
         return current_user
     if child_id is None:
-        raise HTTPException(status_code=400, detail="child_id is required")
+        return current_user
     child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id, User.role == "child").first()
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")

@@ -9,10 +9,13 @@ type Props = {
   initial?: AvatarChoice | null;
   onSave: (choice: AvatarChoice) => Promise<void>;
   onCancel?: () => void;
+  /** The characters to choose from (children's by default). */
+  pictures?: string[];
+  fallback?: AvatarChoice;
 };
 
-export default function AvatarBuilder({ username, initial, onSave, onCancel }: Props) {
-  const [choice, setChoice] = useState<AvatarChoice>(initial ?? DEFAULT_AVATAR);
+export default function AvatarBuilder({ username, initial, onSave, onCancel, pictures = AVATAR_PICTURES, fallback = DEFAULT_AVATAR }: Props) {
+  const [choice, setChoice] = useState<AvatarChoice>(initial ?? fallback);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -37,7 +40,7 @@ export default function AvatarBuilder({ username, initial, onSave, onCancel }: P
 
       <p className="mb-2 mt-4 text-sm font-bold text-brand-charcoal">Character</p>
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-        {AVATAR_PICTURES.map((emoji) => (
+        {pictures.map((emoji) => (
           <button
             key={emoji}
             type="button"

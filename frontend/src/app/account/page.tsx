@@ -8,6 +8,7 @@ import PageHero from "@/components/PageHero";
 import ThemePicker from "@/components/ThemePicker";
 import Avatar from "@/components/Avatar";
 import AvatarBuilder from "@/components/AvatarBuilder";
+import { AvatarChoice, DEFAULT_PARENT_AVATAR, PARENT_AVATAR_PICTURES } from "@/lib/avatar";
 import ChildColours from "@/components/ChildColours";
 import YourDataCard from "@/components/YourDataCard";
 import AppCard from "@/components/AppCard";
@@ -23,7 +24,6 @@ import {
   saveChildColours,
   saveFamilyTheme,
 } from "@/lib/api";
-import { AvatarChoice } from "@/lib/avatar";
 import { subjectsInTimetable } from "@/lib/subjects";
 import { clearAuth, setAuth } from "@/lib/auth";
 import { DEFAULT_THEME, FamilyTheme, applyTheme, isFamilyTheme } from "@/lib/theme";
@@ -215,6 +215,26 @@ export default function AccountPage() {
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {role === "parent" && me && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">My avatar</h2>
+              <p className="mt-1 text-sm text-brand-earth/70">Shown next to your name at the top of every page.</p>
+              <div className="mt-3">
+                <AvatarBuilder
+                  username={username}
+                  initial={me.avatar}
+                  pictures={PARENT_AVATAR_PICTURES}
+                  fallback={DEFAULT_PARENT_AVATAR}
+                  onSave={async (choice) => {
+                    await saveAvatar(choice);
+                    setMe({ ...me, avatar: choice });
+                    window.dispatchEvent(new Event("avatar-changed"));
+                  }}
+                />
+              </div>
             </div>
           )}
 

@@ -171,8 +171,12 @@ export default function Navbar() {
 
     if (r === "parent") {
       checkSession()
-        .then((res) => setIsAdmin(!!res.data.is_admin))
+        .then((res) => {
+          setIsAdmin(!!res.data.is_admin);
+          setMyAvatar({ id: res.data.id, avatar: res.data.avatar, has_photo: false });
+        })
         .catch(() => {});
+      window.addEventListener("avatar-changed", loadAvatar);
       getPendingFeedback()
         .then((res) => setPending(res.data))
         .catch(() => {});
