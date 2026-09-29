@@ -9,7 +9,7 @@ export default function NewMakePage() {
 
   useEffect(() => {
     const k = new URLSearchParams(window.location.search).get("kind");
-    setKind(k === "craft" || k === "pe" ? k : "recipe");
+    setKind(k === "craft" || k === "pe" || k === "outdoor" ? k : "recipe");
   }, []);
 
   return kind ? <MakeEditor kind={kind} /> : null;

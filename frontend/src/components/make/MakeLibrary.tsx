@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { AGE_BANDS, AgeBand, inAgeBand, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
+import { AGE_BANDS, AgeBand, inAgeBand, KIND_FAMILY, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
 import Emoji, { EmojiText } from "@/components/Emoji";
 
 /** The Cookbook or Craft Corner: browse, search and filter recipes or crafts. */
@@ -78,7 +78,10 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <PageHero art={kind === "recipe" ? "shopping" : kind === "pe" ? "pe" : "lessons"} tint={kind === "recipe" ? 1 : kind === "pe" ? 0 : 4}>
+        <PageHero
+          art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies" }[kind]}
+          tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0 }[kind]}
+        >
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
@@ -89,12 +92,14 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
                 : kind === "pe"
                   ? "Get moving! P.E. ideas for one child on their own and for a group, indoors and out. Add your own too."
+                  : kind === "outdoor"
+                    ? "Pull on your wellies! Bug trails and dens for little explorers, maps, stargazing and bushcraft for older ones. Add your own too."
                   : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
             </p>
         </PageHero>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
-            {(["recipe", "craft", "pe"] as MakeKind[]).map((k) => (
+            {KIND_FAMILY[kind].map((k) => (
               <Link
                 key={k}
                 href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
@@ -104,12 +109,14 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                   (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
                 }
               >
-                <EmojiText text={k === "recipe" ? "🍳 Cookbook" : k === "pe" ? "🏃 P.E." : "🎨 Craft Corner"} />
+                <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors" }[k]} />
               </Link>
             ))}
-            <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
-              <Emoji e="🚀" /> Teen Corner
-            </Link>
+            {(kind === "recipe" || kind === "craft") && (
+              <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+                <Emoji e="🚀" /> Teen Corner
+              </Link>
+            )}
           </div>
           <div className="flex flex-wrap gap-2">
             {role === "parent" && (
@@ -141,7 +148,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={kind === "recipe" ? "Search recipes, e.g. muffins" : kind === "pe" ? "Search activities, e.g. relay" : "Search crafts, e.g. paper"}
+            placeholder={{ recipe: "Search recipes, e.g. muffins", craft: "Search crafts, e.g. paper", pe: "Search activities, e.g. relay", outdoor: "Search activities, e.g. bugs" }[kind]}
             className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-softsage sm:max-w-md"
           />
           <div className="flex flex-wrap gap-2">

@@ -28,6 +28,15 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
   recipe: { name: "Cookbook", one: "recipe", path: "/make/cookbook", materials: "Ingredients", subject: "Cooking", tint: "bg-amber-50" },
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
   pe: { name: "P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
+  outdoor: { name: "Outdoors", one: "activity", path: "/make/outdoors", materials: "You'll need", subject: "Outdoor Learning", tint: "bg-lime-50" },
+};
+
+/** Cookbook and Craft Corner sit together; P.E. and Outdoors are the "Active" pair. */
+export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
+  recipe: ["recipe", "craft"],
+  craft: ["recipe", "craft"],
+  pe: ["pe", "outdoor"],
+  outdoor: ["pe", "outdoor"],
 };
 
 export type AgeBand = "little" | "junior" | "teen";
@@ -89,13 +98,13 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
         loading="lazy"
         onError={() => setStockFailed(true)}
         // The P.E. illustrations are whole scenes, so show all of each one rather than cropping heads off.
-        className={`${!src && item.kind === "pe" ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
+        className={`${!src && (item.kind === "pe" || item.kind === "outdoor") ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
       />
     );
   }
   return (
     <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>
-      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃" } as const)[item.kind]}</span>
+      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃", outdoor: "🌳" } as const)[item.kind]}</span>
     </div>
   );
 }
@@ -106,7 +115,7 @@ export function forgetMakePhoto(id: number) {
 }
 
 export function MetaChips({ item }: { item: MakeSummary }) {
-  const servesIcon = item.kind === "pe" ? "🧒" : "🍽️";
+  const servesIcon = item.kind === "pe" || item.kind === "outdoor" ? "🧒" : "🍽️";
   const chips = [
     item.minutes ? `⏱️ ${item.minutes} min` : null,
     item.difficulty ? `💪 ${DIFFICULTY_LABEL[item.difficulty] || item.difficulty}` : null,

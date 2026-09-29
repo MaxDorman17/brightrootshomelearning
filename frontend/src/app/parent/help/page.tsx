@@ -192,10 +192,10 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
       {
         id: "make",
         emoji: "🍳",
-        title: "Cookbook, Craft Corner and P.E.",
-        intro: "Ready-made recipes, crafts and active games, plus your own.",
+        title: "Cookbook, Craft Corner, P.E. and Outdoors",
+        intro: "Ready-made recipes, crafts, active games and outdoor adventures, plus your own.",
         steps: [
-          <>Browse <L href="/make/cookbook">Cookbook</L>, <L href="/make/crafts">Craft Corner</L> and <L href="/make/pe">P.E.</L> by age or type.</>,
+          <>Browse <L href="/make/cookbook">Cookbook</L>, <L href="/make/crafts">Craft Corner</L> (under Make), and <L href="/make/pe">P.E.</L> and <L href="/make/outdoors">Outdoors</L> (under Active), by age or type.</>,
           <>Press <b>Add to shopping list</b> on anything you&apos;ll make, then print or share the <L href="/make/shopping">Shopping List</L>.</>,
           "Add your own with '+ Add your own', or copy a ready-made one and change it.",
           "Any of them can be added to the planner as a lesson.",
