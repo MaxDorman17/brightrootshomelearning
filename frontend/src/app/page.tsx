@@ -7,6 +7,7 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSite";
 import { HandNote, Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
+import Emoji from "@/components/Emoji";
 
 // Fixed colours for the public pages, so they never pick up a family's theme.
 const C = {
@@ -335,7 +336,7 @@ export default function HomePage() {
                     </ul>
                   </div>
                   <div className="hidden h-32 w-40 shrink-0 items-center justify-center sm:flex">
-                    <Art src={p.art} className="h-36 w-auto object-contain" fallback={<span className="text-7xl" aria-hidden>{p.emoji}</span>} />
+                    <Art src={p.art} className="h-36 w-auto object-contain" fallback={<span className="text-7xl" aria-hidden><Emoji e={p.emoji} /></span>} />
                   </div>
                 </div>
               ))}

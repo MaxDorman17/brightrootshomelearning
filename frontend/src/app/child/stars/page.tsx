@@ -9,6 +9,7 @@ import RewardsTabs from "@/components/RewardsTabs";
 import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import { cancelRewardRequest, getFamilyOverview, getMyStars, requestReward } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 type Rule = { id: number; kind: string; stars: number; label: string };
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
@@ -101,7 +102,7 @@ export default function MyStarsPage() {
                     />
                   </div>
                   <p className="mt-2 text-sm font-semibold text-[#6E5A46]">
-                    {nextReward.cost - Math.max(0, data.available)} more <StarIcon /> for {nextReward.emoji} {nextReward.title}
+                    {nextReward.cost - Math.max(0, data.available)} more <StarIcon /> for <Emoji e={nextReward.emoji} /> {nextReward.title}
                   </p>
                 </div>
               )}
@@ -148,7 +149,7 @@ export default function MyStarsPage() {
                 <div className="mt-2 divide-y divide-brand-line">
                   {data.claims.map((claim) => (
                     <div key={claim.id} className="flex flex-wrap items-center gap-3 py-3 text-sm">
-                      <span className="text-2xl">{claim.emoji || "🎁"}</span>
+                      <Emoji e={claim.emoji || "🎁"} className="h-8 w-8 shrink-0" />
                       <div className="min-w-0 flex-1">
                         <p className="font-bold text-brand-charcoal">{claim.title}</p>
                         <p className="text-xs text-[#6E5A46]">{STATUS_TEXT[claim.status] ?? claim.status}</p>
@@ -221,7 +222,7 @@ function RewardCard({
 
   return (
     <div className="brand-card flex flex-wrap items-center gap-4 p-4">
-      <span className="text-4xl">{reward.emoji || "🎁"}</span>
+      <Emoji e={reward.emoji || "🎁"} className="h-12 w-12 shrink-0" />
       <div className="min-w-0 flex-1">
         <p className="font-extrabold text-brand-charcoal">{reward.title}</p>
         <p className="text-sm font-bold text-brand-sage">{reward.cost} <StarIcon /> each</p>

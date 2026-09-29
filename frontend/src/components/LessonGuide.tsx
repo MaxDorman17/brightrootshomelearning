@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { downloadResource, getResources } from "@/lib/api";
 import { Lesson } from "@/types";
+import Emoji from "@/components/Emoji";
 
 type ResourceItem = { id: number; title: string; kind: "link" | "file"; url: string | null; original_name: string | null };
 
@@ -61,7 +62,7 @@ export default function LessonGuide({ entryId, lesson }: { entryId: number; less
     <div className="mb-4 space-y-3">
       {lesson.objectives && (
         <div className="rounded-xl border border-brand-mist bg-brand-wash px-4 py-3">
-          <p className="text-xs font-bold uppercase tracking-wide text-brand-sage">🎯 What we&apos;ll learn</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-sage"><Emoji e="🎯" /> What we&apos;ll learn</p>
           <p className="mt-1 text-sm text-brand-charcoal">{lesson.objectives}</p>
           {lesson.duration_minutes ? <p className="mt-1 text-xs text-[#6E5A46]">About {lesson.duration_minutes} minutes</p> : null}
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Emoji from "@/components/Emoji";
 
 const GROUPS: [string, string[]][] = [
   ["Screen time & play", ["🎮", "🥽", "📺", "📱", "💻", "🎬", "🧩", "🎲", "🪀", "🧸", "🪁", "🛝"]],
@@ -38,7 +39,7 @@ export default function EmojiPicker({ value, onChange }: { value: string; onChan
         aria-label="Choose an emoji"
         aria-expanded={open}
       >
-        {value || "🎁"}
+        <Emoji e={value || "🎁"} className="h-8 w-8" />
       </button>
       {open && (
         <div className="absolute bottom-12 left-0 z-30 w-[19rem] max-w-[calc(100vw-2rem)] rounded-2xl border border-brand-line bg-white p-3 shadow-xl">
@@ -57,7 +58,7 @@ export default function EmojiPicker({ value, onChange }: { value: string; onChan
                       }}
                       className={`rounded-lg p-1 text-2xl hover:bg-brand-cream ${value === e ? "bg-brand-tint ring-1 ring-brand-softsage" : ""}`}
                     >
-                      {e}
+                      <Emoji e={e} className="mx-auto h-7 w-7" />
                     </button>
                   ))}
                 </div>

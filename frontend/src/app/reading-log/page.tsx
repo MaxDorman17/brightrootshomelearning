@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { useParentName } from "@/lib/useParentName";
 import { format, parseISO, subMonths, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 type Status = "all" | "reading" | "completed" | "wishlist";
 type SortKey = "recent" | "title" | "rating";
@@ -461,7 +462,7 @@ export default function ReadingLogPage() {
           <div className="text-center py-16 text-gray-400 text-lg">Loading…</div>
         ) : displayed.length === 0 ? (
           <div className="brand-card p-12 text-center">
-            <p className="text-5xl mb-3">📚</p>
+            <Emoji e="📚" className="mx-auto mb-3 h-20 w-20" />
             <p className="text-gray-500 font-semibold">
               {filter === "all" ? (isParent ? "No books yet — click \"Add Book\" to get started!" : `No books in the log yet. Ask ${parentName} to add some!`) : `No ${filter} books.`}
             </p>

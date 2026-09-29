@@ -12,6 +12,7 @@ import SpellingBee from "@/components/games/SpellingBee";
 import WordScramble from "@/components/games/WordScramble";
 import { MathsSprint, TimesTables } from "@/components/games/QuickFire";
 import MemoryMatch from "@/components/games/MemoryMatch";
+import { EmojiText } from "@/components/Emoji";
 
 type GameId = "spelling_bee" | "word_scramble" | "times_tables" | "maths_sprint" | "memory_match";
 type Summary = Record<GameId, { best: number | null; played_this_week: number }>;
@@ -91,7 +92,7 @@ export default function GamesPage() {
                       <span className="block font-extrabold text-brand-charcoal">{g.title}</span>
                       <span className="block text-sm text-[#6E5A46]">{g.blurb}</span>
                       <span className="mt-1 block text-xs font-bold text-brand-sage">
-                        {s?.best != null ? `🏆 Best: ${s.best}` : "Not played yet"}
+                        {s?.best != null ? <EmojiText text={`🏆 Best: ${s.best}`} /> : "Not played yet"}
                         {s?.played_this_week ? ` · ${s.played_this_week} this week` : ""}
                       </span>
                     </span>

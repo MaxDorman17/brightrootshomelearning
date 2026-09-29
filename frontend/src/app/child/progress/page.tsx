@@ -9,6 +9,7 @@ import { PlannerEntry, WeeklyGoal, ReadingLogBook } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { format, startOfWeek } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 function computeStreak(entries: PlannerEntry[], daysOff: Set<string>): number {
   const today = format(new Date(), "yyyy-MM-dd");
@@ -141,7 +142,7 @@ export default function ChildProgressPage() {
                       <p className={`text-2xl font-bold ${card.tone}`}>{card.value}</p>
                       <p className="text-xs font-semibold text-[#6E5A46] mt-1">{card.label}</p>
                     </div>
-                    <span className="text-xl">{card.icon}</span>
+                    <span className="text-xl"><Emoji e={card.icon} /></span>
                   </div>
                 </div>
               ))}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { saveStudySession } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 type Phase = "idle" | "running" | "paused" | "done" | "break";
 
@@ -235,7 +236,7 @@ export default function StudyTimer({ subject, label, entryId, onPhaseChange }: P
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {state.phase === "done" ? (
             <>
-              <span className="text-5xl">🎉</span>
+              <Emoji e="🎉" className="h-16 w-16" />
               <span className="mt-1 text-lg font-black text-brand-sage">Well done!</span>
             </>
           ) : (

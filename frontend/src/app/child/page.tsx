@@ -20,6 +20,7 @@ import AppCard from "@/components/AppCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
@@ -330,7 +331,7 @@ export default function ChildDashboard() {
             <div className="bg-white rounded-3xl px-8 py-6 shadow-2xl text-center">
               <StarIcon className="mx-auto mb-2 h-16 w-16" />
               <p className="text-xl font-extrabold text-brand-deep">Lesson done!</p>
-              <p className="text-sm text-gray-500 font-semibold mt-1">Keep it up! 🎉</p>
+              <p className="text-sm text-gray-500 font-semibold mt-1">Keep it up! <Emoji e="🎉" /></p>
             </div>
           </div>
         </div>
@@ -403,7 +404,7 @@ export default function ChildDashboard() {
               <div key={fb.id} className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-3 shadow-sm">
                 <span className="text-2xl shrink-0">{fb.emoji || "💬"}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-extrabold text-amber-700 mb-0.5">New feedback from {parentName}! 🎉</p>
+                  <p className="text-xs font-extrabold text-amber-700 mb-0.5">New feedback from {parentName}! <Emoji e="🎉" /></p>
                   <p className="text-sm font-semibold text-amber-900">{fb.message}</p>
                 </div>
                 <button onClick={() => handleReadFeedback(fb.id)}
@@ -418,7 +419,7 @@ export default function ChildDashboard() {
         {/* Weekly goals strip */}
         {goals.length > 0 && (
           <div className="mb-4 bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-4">
-            <p className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">🎯 This Week&apos;s Goals</p>
+            <p className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3"><Emoji e="🎯" /> This Week&apos;s Goals</p>
             <div className="grid sm:grid-cols-2 gap-2">
               {goals.map(goal => (
                 <button
@@ -707,7 +708,7 @@ export default function ChildDashboard() {
         {readingBook && (
           <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-extrabold text-gray-900">📚 Reading</h2>
+              <h2 className="text-lg font-extrabold text-gray-900"><Emoji e="📚" /> Reading</h2>
               <Link href="/reading-log" className="text-sm text-brand-leaf hover:text-brand-deep font-bold">
                 Go to Reading Log →
               </Link>
@@ -750,7 +751,7 @@ export default function ChildDashboard() {
               </div>
               <div className="bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl shadow-sm p-5">
                 {extraPending.length === 0 ? (
-                  <p className="text-sm text-gray-400 text-center py-4">No extra work to do right now 🎉</p>
+                  <p className="text-sm text-gray-400 text-center py-4">No extra work to do right now <Emoji e="🎉" /></p>
                 ) : (
                   <div className="space-y-2">
                     {extraPending.map(e => {

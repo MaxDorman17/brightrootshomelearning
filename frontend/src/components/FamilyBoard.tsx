@@ -6,6 +6,7 @@ import { addDays, differenceInCalendarDays, endOfMonth, format, parseISO, startO
 import { addChallenge, removeChallenge, tickChallenge, untickChallenge } from "@/lib/api";
 import Avatar from "@/components/Avatar";
 import { AvatarChoice } from "@/lib/avatar";
+import { EmojiText } from "@/components/Emoji";
 
 type ChildProgress = { child_id: number; username: string; progress: number; completed_at: string | null };
 
@@ -293,7 +294,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
                 {c.mode === "team" && c.team_progress != null && (
                   <div className="mt-3">
                     <div className="mb-1 flex justify-between text-xs font-bold text-[#6E5A46]">
-                      <span>{c.team_completed_at ? "🎉 Team challenge complete!" : "Team progress"}</span>
+                      <span>{c.team_completed_at ? <EmojiText text="🎉 Team challenge complete!" /> : "Team progress"}</span>
                       <span>{Math.min(c.team_progress, c.target)}/{c.target}</span>
                     </div>
                     <ProgressBar value={c.team_progress} target={c.target} done={!!c.team_completed_at} />
@@ -315,7 +316,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
                       </div>
                       {c.mode === "each" && (
                         <span className="w-16 shrink-0 text-right text-xs font-bold text-brand-charcoal">
-                          {r.completed_at ? "🎉 Done" : `${r.progress}/${c.target}`}
+                          {r.completed_at ? <EmojiText text="🎉 Done" /> : `${r.progress}/${c.target}`}
                         </span>
                       )}
                       {isParent && c.kind === "custom" && running && (

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { KIND_INFO, MakeDetail } from "./common";
+import Emoji from "@/components/Emoji";
 
 /** "Make it together": one big step at a time, easy to follow on a tablet at the table. */
 export default function CookAlong({ item, onClose, onFinish }: { item: MakeDetail; onClose: () => void; onFinish: () => void }) {
@@ -83,7 +84,7 @@ export default function CookAlong({ item, onClose, onFinish }: { item: MakeDetai
             </>
           ) : (
             <>
-              <p className="text-7xl">🎉</p>
+              <Emoji e="🎉" className="mx-auto h-24 w-24" />
               <h2 className="mt-4 text-3xl font-black text-brand-charcoal sm:text-4xl">You did it!</h2>
               <p className="mt-3 text-lg text-brand-earth/80">Take a photo so you can remember it.</p>
               <button onClick={onFinish} className="mt-6 rounded-xl bg-brand-sage px-6 py-3 text-lg font-extrabold text-white">

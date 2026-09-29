@@ -23,6 +23,7 @@ import {
   updateRewardItem,
   updateRewardRule,
 } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 type Rule = { id: number; kind: string; threshold_pct: number | null; stars: number; is_active: boolean; label: string };
 type Reward = { id: number; title: string; emoji: string | null; cost: number; is_active: boolean };
@@ -160,7 +161,7 @@ function RewardRow({ reward, onSaved }: { reward: Reward; onSaved: () => void })
 
   return (
     <div className={"flex flex-wrap items-center gap-3 py-3 " + (reward.is_active ? "" : "opacity-60")}>
-      <span className="text-2xl">{reward.emoji || "🎁"}</span>
+      <Emoji e={reward.emoji || "🎁"} className="h-8 w-8 shrink-0" />
       <p className="min-w-[10rem] flex-1 font-bold text-brand-charcoal">{reward.title}</p>
       <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-extrabold text-brand-sage">{reward.cost} <StarIcon /></span>
       <button onClick={() => setEditing(true)} className="text-xs font-bold text-brand-sage hover:underline">Edit</button>
@@ -330,7 +331,7 @@ export default function RewardsPage() {
                 <div className="mt-3 divide-y divide-brand-line">
                   {setup.pending.map((claim) => (
                     <div key={claim.id} className="flex flex-wrap items-center gap-3 py-3">
-                      <span className="text-2xl">{claim.emoji || "🎁"}</span>
+                      <Emoji e={claim.emoji || "🎁"} className="h-8 w-8 shrink-0" />
                       <p className="min-w-[10rem] flex-1 text-sm text-brand-charcoal">
                         <strong>{childName(claim.child_id)}</strong> would like <strong>{claim.title}</strong> for {claim.cost} <StarIcon />
                       </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Emoji from "@/components/Emoji";
 
 type Child = "Sam" | "Ava";
 type Lesson = { id: string; child: Child; day: string; subject: string; title: string };
@@ -180,7 +181,7 @@ export default function HomeDemo() {
 
           {todayLessons.length > 0 && todayDone === todayLessons.length && (
             <div className="mt-4 rounded-2xl bg-brand-tint p-4 text-center">
-              <p className="text-2xl">🎉</p>
+              <Emoji e="🎉" className="mx-auto h-10 w-10" />
               <p className="font-extrabold text-brand-sage">All done for today! Badge unlocked.</p>
             </div>
           )}

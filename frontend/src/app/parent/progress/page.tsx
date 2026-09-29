@@ -16,6 +16,7 @@ import { PlannerEntry, WorkFeedback, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 const EMOJIS = ["👏", "⭐", "🔥", "💪", "🎉", "👍", "🌟", "🏆"];
 const PAGE_SIZE = 20;
@@ -304,7 +305,7 @@ export default function ProgressPage() {
           <div className="brand-card p-12 text-center text-[#8A7A69]">Loading review inbox…</div>
         ) : filtered.length === 0 ? (
           <div className="brand-card p-10 text-center">
-            <p className="text-3xl">{filter === "review" ? "🎉" : "🔍"}</p>
+            <p className="text-3xl"><Emoji e={filter === "review" ? "🎉" : "🔍"} className="mx-auto h-14 w-14" /></p>
             <h2 className="text-xl font-bold text-[#2E342F] mt-2">
               {filter === "review" ? "All caught up" : "No lessons found"}
             </h2>

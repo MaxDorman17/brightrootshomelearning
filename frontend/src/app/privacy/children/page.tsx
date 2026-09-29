@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicShell } from "@/components/PublicSite";
 import { SUPPORT_EMAIL } from "@/lib/site";
+import Emoji from "@/components/Emoji";
 
 export const metadata: Metadata = {
   title: "Your privacy: a guide for children",
@@ -66,7 +67,7 @@ export default function ChildPrivacyPage() {
           {cards.map((c) => (
             <section key={c.title} className="rounded-3xl border border-brand-line bg-[#FFFDF8] p-6">
               <p className="text-4xl" aria-hidden>
-                {c.emoji}
+                <Emoji e={c.emoji} />
               </p>
               <h2 className="mt-3 text-xl font-black">{c.title}</h2>
               <p className="mt-2 text-base leading-7 text-[#6E5A46]">{c.text}</p>

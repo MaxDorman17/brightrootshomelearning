@@ -6,6 +6,7 @@ import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import StarJar from "@/components/StarJar";
 import StarIcon from "@/components/StarIcon";
 import { approveRewardClaim, declineRewardClaim, getMyStars, getStarJars, markRewardGiven } from "@/lib/api";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
 type Claim = {
@@ -77,10 +78,10 @@ export function ChildStarJarCard() {
                         : "bg-white/80 text-[#4A3B2C]"
                   }`}
                 >
-                  <span className="text-xl">{c.emoji || "🎁"}</span>
+                  <Emoji e={c.emoji || "🎁"} className="h-7 w-7 shrink-0" />
                   <span className="min-w-0 flex-1 truncate font-semibold">{c.title}</span>
                   <span className="shrink-0 text-xs font-bold">
-                    {c.status === "approved" ? "Yes! 🎉" : c.status === "declined" ? "Not this time" : "Waiting ⏳"}
+                    {c.status === "approved" ? <EmojiText text="Yes! 🎉" /> : c.status === "declined" ? "Not this time" : "Waiting ⏳"}
                   </span>
                 </li>
               ))}
@@ -147,7 +148,7 @@ export function FamilyStarJars() {
                   <ul className="space-y-2">
                     {pending.map((cl) => (
                       <li key={cl.id} className="flex flex-wrap items-center gap-2 rounded-xl bg-white/85 px-3 py-2">
-                        <span className="text-xl">{cl.emoji || "🎁"}</span>
+                        <Emoji e={cl.emoji || "🎁"} className="h-7 w-7 shrink-0" />
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-bold text-[#2E342F]">{cl.title}</p>
                           <p className="text-xs text-[#8A7A69]">
@@ -188,7 +189,7 @@ export function FamilyStarJars() {
                               className="h-5 w-5 shrink-0 cursor-pointer accent-[#2F5D3A]"
                               aria-label={`Mark ${cl.title} as done`}
                             />
-                            <span className="text-xl">{cl.emoji || "🎁"}</span>
+                            <Emoji e={cl.emoji || "🎁"} className="h-7 w-7 shrink-0" />
                             <span className="min-w-0 flex-1 truncate text-sm font-bold text-[#2E342F]">{cl.title}</span>
                             <span className="shrink-0 text-xs font-semibold text-[#2F5D3A]">Tick when done</span>
                           </label>

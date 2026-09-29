@@ -9,6 +9,7 @@ import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import { format } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 export default function LessonDetailPage() {
   const parentName = useParentName();
@@ -137,7 +138,7 @@ export default function LessonDetailPage() {
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
-            <p className="text-4xl mb-3">📚</p>
+            <Emoji e="📚" className="mx-auto mb-3 h-16 w-16" />
             <p className="text-gray-500">This is a custom lesson from {parentName}.</p>
             {entry.lesson.description && (
               <p className="text-sm text-gray-400 mt-2">Check the notes above for instructions.</p>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { saveGameScore } from "@/lib/api";
+import Emoji from "@/components/Emoji";
 
 export type GameProps = { onExit: () => void; words: string[] };
 
@@ -102,7 +103,7 @@ export function GameResult({
 
   return (
     <div className="py-6 text-center">
-      <p className="text-5xl">{best?.new_best ? "🎉" : "⭐"}</p>
+      <Emoji e={best?.new_best ? "🎉" : "⭐"} className="mx-auto h-16 w-16" />
       <p className="mt-2 text-sm font-bold uppercase tracking-wider text-brand-softsage">Your score</p>
       <p className="text-5xl font-black text-brand-sage">{score}</p>
       {best?.new_best && best.previous_best != null && <p className="mt-2 font-extrabold text-brand-charcoal">New personal best! (was {best.previous_best})</p>}

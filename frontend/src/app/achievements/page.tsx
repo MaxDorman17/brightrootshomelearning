@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
 import { format, subDays } from "date-fns";
+import Emoji from "@/components/Emoji";
 
 const SEEN_KEY = "seen_badges";
 
@@ -232,7 +233,7 @@ export default function AchievementsPage() {
             <div className="flex justify-center gap-3 mt-3 flex-wrap">
               {newlyUnlocked.map(id => {
                 const b = BADGES.find(x => x.id === id);
-                return b ? <span key={id} className="text-3xl" title={b.title}>{b.icon}</span> : null;
+                return b ? <span key={id} className="text-3xl" title={b.title}><Emoji e={b.icon} /></span> : null;
               })}
             </div>
           </div>
@@ -399,7 +400,7 @@ export default function AchievementsPage() {
                         <div className={`mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl text-3xl ${
                           isEarned ? "bg-brand-cream" : "bg-[#EFE9DF] grayscale opacity-50"
                         }`}>
-                          {b.icon}
+                          <Emoji e={b.icon} />
                         </div>
                         <p className={`text-sm font-bold leading-tight ${isEarned ? "text-[#2E342F]" : "text-[#6E5A46]"}`}>
                           {b.title}

@@ -1,6 +1,7 @@
 "use client";
 
 import StarIcon from "@/components/StarIcon";
+import Emoji from "@/components/Emoji";
 
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
 
@@ -72,12 +73,12 @@ export default function StarJar({
         <p className="mt-1 text-xs leading-5 text-[#6E5A46]">
           {ready.length > 0 && (
             <>
-              Ready for {ready[ready.length - 1].emoji ?? "🎁"} {ready[ready.length - 1].title}!
+              Ready for <Emoji e={ready[ready.length - 1].emoji ?? "🎁"} /> {ready[ready.length - 1].title}!
               <br />
             </>
           )}
           {next
-            ? `${next.cost - available} more for ${next.emoji ?? "🎁"} ${next.title}`
+            ? <>{next.cost - available} more for <Emoji e={next.emoji ?? "🎁"} /> {next.title}</>
             : rewards.length === 0
               ? "Add rewards to spend stars on"
               : "Enough for every reward!"}
