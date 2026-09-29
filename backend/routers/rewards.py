@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timezone
 from typing import Optional
 from zoneinfo import ZoneInfo
@@ -111,6 +112,27 @@ class AwardIn(BaseModel):
 
 class ClaimIn(BaseModel):
     reward_id: int
+    quantity: int = 1
+
+    @field_validator("quantity")
+    @classmethod
+    def valid_quantity(cls, value: int) -> int:
+        if not 1 <= value <= 50:
+            raise ValueError("You can ask for between 1 and 50 at a time")
+        return value
+
+
+def _claim_title(title: str, quantity: int) -> str:
+    """ "10 mins on the VR" x 6 becomes "10 mins on the VR x 6 (60 mins)", adding up any minutes or hours in the name."""
+    if quantity == 1:
+        return title
+    label = f"{title} \u00d7 {quantity}"
+    match = re.search(r"(\d+)\s*(min|minute|hour|hr)s?\b", title, re.IGNORECASE)
+    if match:
+        total = int(match.group(1)) * quantity
+        unit = "hour" if match.group(2).lower() in ("hour", "hr") else "min"
+        label += f" ({total} {unit}{'' if total == 1 else 's'})"
+    return label[:120]
 
 
 # ---------------------------------------------------------------------------
@@ -540,16 +562,18 @@ def request_reward(body: ClaimIn, db: Session = Depends(get_db), current_user: U
     ).first()
     if not item:
         raise HTTPException(status_code=404, detail="Reward not found")
+    cost = item.cost * body.quantity
+    title = _claim_title(item.title, body.quantity)
     summary = _child_summary(db, current_user, parent_id, history_limit=0)
-    if summary["available"] < item.cost:
+    if summary["available"] < cost:
         raise HTTPException(status_code=400, detail="Not enough stars yet")
     claim = RewardClaim(
         parent_id=parent_id,
         child_id=current_user.id,
         reward_id=item.id,
-        title=item.title,
+        title=title,
         emoji=item.emoji,
-        cost=item.cost,
+        cost=cost,
         status="pending",
     )
     db.add(claim)
@@ -558,7 +582,7 @@ def request_reward(body: ClaimIn, db: Session = Depends(get_db), current_user: U
     notify_in_background(
         parent_id,
         "New reward request",
-        f"{current_user.username} would like {item.emoji or ''} {item.title} ({item.cost} stars).".replace("  ", " "),
+        f"{current_user.username} would like {item.emoji or ''} {title} ({cost} stars).".replace("  ", " "),
         "/parent/rewards",
         "reward-request",
     )

@@ -51,12 +51,12 @@ export default function MyStarsPage() {
     load().catch(() => setMessage("Could not load your stars."));
   }, [load, router]);
 
-  const ask = async (reward: Reward) => {
+  const ask = async (reward: Reward, quantity = 1) => {
     setMessage("");
     setBusy(reward.id);
     try {
-      await requestReward(reward.id);
-      setMessage(`Asked for "${reward.title}". A grown-up will say yes or no.`);
+      const res = await requestReward(reward.id, quantity);
+      setMessage(`Asked for "${res.data.title}". A grown-up will say yes or no.`);
       await load();
     } catch (err: any) {
       const detail = err.response?.data?.detail;
@@ -115,25 +115,9 @@ export default function MyStarsPage() {
                 <div className="brand-card p-5 text-sm text-[#6E5A46]">No rewards yet. Ask a grown-up to add some!</div>
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {data.rewards.map((reward) => {
-                    const canAfford = data.available >= reward.cost;
-                    return (
-                      <div key={reward.id} className="brand-card flex items-center gap-4 p-4">
-                        <span className="text-4xl">{reward.emoji || "🎁"}</span>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-extrabold text-brand-charcoal">{reward.title}</p>
-                          <p className="text-sm font-bold text-brand-sage">{reward.cost} ⭐</p>
-                        </div>
-                        <button
-                          onClick={() => ask(reward)}
-                          disabled={!canAfford || busy === reward.id}
-                          className="shrink-0 rounded-xl bg-brand-sage px-4 py-2 text-sm font-bold text-white disabled:bg-brand-mist disabled:text-[#6E5A46]"
-                        >
-                          {canAfford ? "Ask for this" : "Keep going"}
-                        </button>
-                      </div>
-                    );
-                  })}
+                  {data.rewards.map((reward) => (
+                    <RewardCard key={reward.id} reward={reward} available={data.available} busy={busy === reward.id} onAsk={ask} />
+                  ))}
                 </div>
               )}
             </section>
@@ -203,6 +187,77 @@ export default function MyStarsPage() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/** "10 mins on the VR" asked for 6 times adds up to 60 mins. */
+function totalTime(title: string, quantity: number): string | null {
+  const m = title.match(/(\d+)\s*(min|minute|hour|hr)s?\b/i);
+  if (!m) return null;
+  const total = Number(m[1]) * quantity;
+  const unit = /^(hour|hr)$/i.test(m[2]) ? "hour" : "min";
+  return `${total} ${unit}${total === 1 ? "" : "s"}`;
+}
+
+function RewardCard({
+  reward,
+  available,
+  busy,
+  onAsk,
+}: {
+  reward: Reward;
+  available: number;
+  busy: boolean;
+  onAsk: (reward: Reward, quantity: number) => void;
+}) {
+  const most = Math.min(50, Math.floor(available / reward.cost));
+  const [quantity, setQuantity] = useState(1);
+  const qty = Math.max(1, Math.min(quantity, Math.max(1, most)));
+  const canAfford = most >= 1;
+  const time = totalTime(reward.title, qty);
+
+  return (
+    <div className="brand-card flex flex-wrap items-center gap-4 p-4">
+      <span className="text-4xl">{reward.emoji || "🎁"}</span>
+      <div className="min-w-0 flex-1">
+        <p className="font-extrabold text-brand-charcoal">{reward.title}</p>
+        <p className="text-sm font-bold text-brand-sage">{reward.cost} ⭐ each</p>
+      </div>
+      {canAfford && most > 1 && (
+        <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-brand-cream px-3 py-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setQuantity(qty - 1)}
+              disabled={qty <= 1}
+              className="h-8 w-8 rounded-lg bg-white text-lg font-black text-brand-sage disabled:opacity-40"
+              aria-label="One fewer"
+            >
+              −
+            </button>
+            <span className="w-8 text-center text-lg font-black text-brand-charcoal">{qty}</span>
+            <button
+              onClick={() => setQuantity(qty + 1)}
+              disabled={qty >= most}
+              className="h-8 w-8 rounded-lg bg-white text-lg font-black text-brand-sage disabled:opacity-40"
+              aria-label="One more"
+            >
+              +
+            </button>
+          </div>
+          <p className="text-sm font-bold text-[#6E5A46]">
+            {time ? `${time} · ` : ""}
+            {qty * reward.cost} ⭐
+          </p>
+        </div>
+      )}
+      <button
+        onClick={() => onAsk(reward, qty)}
+        disabled={!canAfford || busy}
+        className="shrink-0 rounded-xl bg-brand-sage px-4 py-2 text-sm font-bold text-white disabled:bg-brand-mist disabled:text-[#6E5A46] max-sm:w-full"
+      >
+        {!canAfford ? "Keep going" : qty > 1 ? `Ask for ${time ?? `${qty}`}` : "Ask for this"}
+      </button>
     </div>
   );
 }
