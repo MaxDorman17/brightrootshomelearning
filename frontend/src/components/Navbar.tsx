@@ -11,23 +11,28 @@ import {
 } from "@/lib/auth";
 import {
   checkSession,
-  getPendingFeedback,
+  getTodayNotifications,
   getTimetable,
   getUnreadFeedbackCount,
   logout,
 } from "@/lib/api";
 import { subjectsInTimetable } from "@/lib/subjects";
 import Avatar from "@/components/Avatar";
+import Emoji from "@/components/Emoji";
 import TimerBadge from "@/components/TimerBadge";
 import { AvatarChoice } from "@/lib/avatar";
 
-interface PendingItem {
-  entry_id: number;
-  title: string;
-  subject: string;
-  date: string;
+interface BellItem {
+  key: string;
+  kind: "review" | "lesson" | "reading" | "spelling";
   child: string | null;
+  title: string;
+  detail: string;
+  link: string;
 }
+
+const BELL_ICON: Record<BellItem["kind"], string> = { review: "📎", lesson: "✅", reading: "📖", spelling: "🔤" };
+const BELL_SEEN_KEY = "bell_seen";
 
 type NavLink = { href: string; label: string };
 type NavGroup = { label: string; items: NavLink[] };
@@ -144,7 +149,9 @@ export default function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [myAvatar, setMyAvatar] = useState<{ id: number; avatar: AvatarChoice | null; has_photo: boolean } | null>(null);
-  const [pending, setPending] = useState<PendingItem[]>([]);
+  const [bell, setBell] = useState<BellItem[]>([]);
+  const [bellSeen, setBellSeen] = useState<string[]>([]);
+  const [bellDate, setBellDate] = useState("");
 
   const menusRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -175,8 +182,16 @@ export default function Navbar() {
         })
         .catch(() => {});
       window.addEventListener("avatar-changed", loadAvatar);
-      getPendingFeedback()
-        .then((res) => setPending(res.data))
+      getTodayNotifications()
+        .then((res) => {
+          setBell(res.data.items);
+          setBellDate(res.data.date);
+          // What's already been looked at today, so the badge only counts new things.
+          try {
+            const saved = JSON.parse(localStorage.getItem(BELL_SEEN_KEY) || "{}");
+            setBellSeen(saved.date === res.data.date ? saved.keys || [] : []);
+          } catch {}
+        })
         .catch(() => {});
     }
 
@@ -224,11 +239,25 @@ export default function Navbar() {
     }
   };
 
-  const openPendingEntry = (item: PendingItem) => {
+  const openBellItem = (item: BellItem) => {
     setNotifOpen(false);
-    router.push(
-      `/parent/progress?filter=submitted&entry=${item.entry_id}`
-    );
+    router.push(item.link);
+  };
+
+  const unseen = bell.filter((i) => !bellSeen.includes(i.key)).length;
+
+  const toggleBell = () => {
+    setNotifOpen((open) => {
+      if (!open && bell.length) {
+        // Opening the bell counts as seeing everything in it.
+        const keys = bell.map((i) => i.key);
+        setBellSeen(keys);
+        try {
+          localStorage.setItem(BELL_SEEN_KEY, JSON.stringify({ date: bellDate, keys }));
+        } catch {}
+      }
+      return !open;
+    });
   };
 
   const home =
@@ -354,13 +383,9 @@ export default function Navbar() {
                   className="relative"
                 >
                   <button
-                    onClick={() =>
-                      setNotifOpen(
-                        (value) => !value
-                      )
-                    }
+                    onClick={toggleBell}
                     className="relative rounded-xl p-2 text-brand-sage transition-colors hover:bg-brand-softsage/15"
-                    title="Work waiting for feedback"
+                    title="Today's learning"
                   >
                     <svg
                       className="h-5 w-5"
@@ -376,11 +401,9 @@ export default function Navbar() {
                       />
                     </svg>
 
-                    {pending.length > 0 && (
+                    {unseen > 0 && (
                       <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-terracotta px-1 text-[9px] font-extrabold text-white">
-                        {pending.length > 9
-                          ? "9+"
-                          : pending.length}
+                        {unseen > 9 ? "9+" : unseen}
                       </span>
                     )}
                   </button>
@@ -389,43 +412,34 @@ export default function Navbar() {
                     <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
                       <div className="border-b border-brand-softsage/15 px-4 py-3">
                         <p className="text-xs font-extrabold uppercase tracking-wider text-brand-earth/70">
-                          Waiting for feedback
+                          Today
                         </p>
                       </div>
 
-                      {pending.length === 0 ? (
+                      {bell.length === 0 ? (
                         <p className="px-4 py-6 text-center text-sm text-brand-earth/60">
-                          Nothing waiting for review.
+                          Nothing yet today. Finished lessons, reading and spelling tests will show here.
                         </p>
                       ) : (
                         <div className="max-h-80 overflow-y-auto">
-                          {pending
-                            .slice(0, 10)
-                            .map((item) => (
-                              <button
-                                key={
-                                  item.entry_id
-                                }
-                                onClick={() =>
-                                  openPendingEntry(
-                                    item
-                                  )
-                                }
-                                className="w-full border-b border-brand-softsage/10 px-4 py-3 text-left transition-colors hover:bg-brand-cream"
-                              >
-                                <p className="truncate text-sm font-bold text-brand-charcoal">
+                          {bell.map((item) => (
+                            <button
+                              key={item.key}
+                              onClick={() => openBellItem(item)}
+                              className="flex w-full items-start gap-3 border-b border-brand-softsage/10 px-4 py-3 text-left transition-colors hover:bg-brand-cream"
+                            >
+                              <Emoji e={BELL_ICON[item.kind]} className="mt-0.5 h-6 w-6 shrink-0 text-lg" />
+                              <span className="min-w-0">
+                                <span className="block truncate text-sm font-bold text-brand-charcoal">
+                                  {item.child ? `${item.child}: ` : ""}
                                   {item.title}
-                                </p>
-
-                                <p className="mt-0.5 text-xs text-brand-earth/60">
-                                  {item.subject}
-                                  {item.child
-                                    ? ` · ${item.child}`
-                                    : ""}
-                                  {` · ${item.date}`}
-                                </p>
-                              </button>
-                            ))}
+                                </span>
+                                <span className={`mt-0.5 block text-xs ${item.kind === "review" ? "font-bold text-brand-terracotta" : "text-brand-earth/60"}`}>
+                                  {item.detail}
+                                </span>
+                              </span>
+                            </button>
+                          ))}
                         </div>
                       )}
                     </div>

@@ -258,6 +258,7 @@ export const getTodayEntries = () => api.get("/api/planner/today");
 export const getAllEntries = () => api.get("/api/planner/all");
 export const getSubmissionCount = () => api.get("/api/planner/submission-count");
 export const getPendingFeedback = () => api.get("/api/planner/pending-feedback");
+export const getTodayNotifications = () => api.get("/api/notifications/today");
 export const getAllMyEntries = () => api.get("/api/planner/mine");
 export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number; is_extra?: boolean }) =>
   api.post("/api/planner/", data);
