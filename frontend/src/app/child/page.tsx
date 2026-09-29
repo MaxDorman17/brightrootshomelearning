@@ -15,6 +15,7 @@ import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import RemindersCard from "@/components/RemindersCard";
 import { ChildStarJarCard } from "@/components/StarJarCards";
+import StarIcon from "@/components/StarIcon";
 import AppCard from "@/components/AppCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
@@ -327,7 +328,7 @@ export default function ChildDashboard() {
           ))}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-white rounded-3xl px-8 py-6 shadow-2xl text-center">
-              <p className="text-5xl mb-2">⭐</p>
+              <StarIcon className="mx-auto mb-2 h-16 w-16" />
               <p className="text-xl font-extrabold text-brand-deep">Lesson done!</p>
               <p className="text-sm text-gray-500 font-semibold mt-1">Keep it up! 🎉</p>
             </div>

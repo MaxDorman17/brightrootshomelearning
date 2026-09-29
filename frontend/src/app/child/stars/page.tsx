@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import StarIcon from "@/components/StarIcon";
 import RewardsTabs from "@/components/RewardsTabs";
 import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
@@ -85,11 +86,11 @@ export default function MyStarsPage() {
           <div className="space-y-6">
             <section className="brand-card overflow-hidden p-6 text-center sm:p-8">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/home/icons/rewards.png?v=2" alt="" className="mx-auto mb-2 h-24 w-auto" />
+              <img src="/illustrations/star-jar.webp" alt="" className="mx-auto mb-2 h-28 w-auto" />
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">My Stars</p>
-              <p className="mt-2 text-6xl font-black text-brand-sage">{data.balance} ⭐</p>
+              <p className="mt-2 text-6xl font-black text-brand-sage">{data.balance} <StarIcon /></p>
               {data.available !== data.balance && (
-                <p className="mt-2 text-sm text-[#6E5A46]">{data.balance - data.available} ⭐ saved for a request that&apos;s waiting</p>
+                <p className="mt-2 text-sm text-[#6E5A46]">{data.balance - data.available} <StarIcon /> saved for a request that&apos;s waiting</p>
               )}
               {nextReward && (
                 <div className="mx-auto mt-5 max-w-sm">
@@ -100,7 +101,7 @@ export default function MyStarsPage() {
                     />
                   </div>
                   <p className="mt-2 text-sm font-semibold text-[#6E5A46]">
-                    {nextReward.cost - Math.max(0, data.available)} more ⭐ for {nextReward.emoji} {nextReward.title}
+                    {nextReward.cost - Math.max(0, data.available)} more <StarIcon /> for {nextReward.emoji} {nextReward.title}
                   </p>
                 </div>
               )}
@@ -134,7 +135,7 @@ export default function MyStarsPage() {
                   {data.rules.map((rule) => (
                     <li key={rule.id} className="flex items-center justify-between gap-3 rounded-xl bg-brand-cream px-4 py-3 text-sm">
                       <span className="font-semibold text-brand-charcoal">{rule.label}</span>
-                      <span className="shrink-0 font-extrabold text-brand-sage">+{rule.stars} ⭐</span>
+                      <span className="shrink-0 font-extrabold text-brand-sage">+{rule.stars} <StarIcon /></span>
                     </li>
                   ))}
                 </ul>
@@ -152,7 +153,7 @@ export default function MyStarsPage() {
                         <p className="font-bold text-brand-charcoal">{claim.title}</p>
                         <p className="text-xs text-[#6E5A46]">{STATUS_TEXT[claim.status] ?? claim.status}</p>
                       </div>
-                      <span className="font-bold text-brand-sage">{claim.cost} ⭐</span>
+                      <span className="font-bold text-brand-sage">{claim.cost} <StarIcon /></span>
                       {claim.status === "pending" && (
                         <button onClick={() => cancel(claim)} className="text-xs font-bold text-[#6E5A46] hover:underline">
                           Cancel
@@ -223,7 +224,7 @@ function RewardCard({
       <span className="text-4xl">{reward.emoji || "🎁"}</span>
       <div className="min-w-0 flex-1">
         <p className="font-extrabold text-brand-charcoal">{reward.title}</p>
-        <p className="text-sm font-bold text-brand-sage">{reward.cost} ⭐ each</p>
+        <p className="text-sm font-bold text-brand-sage">{reward.cost} <StarIcon /> each</p>
       </div>
       {canAfford && most > 1 && (
         <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-brand-cream px-3 py-2">
@@ -248,7 +249,7 @@ function RewardCard({
           </div>
           <p className="text-sm font-bold text-[#6E5A46]">
             {time ? `${time} · ` : ""}
-            {qty * reward.cost} ⭐
+            {qty * reward.cost} <StarIcon />
           </p>
         </div>
       )}

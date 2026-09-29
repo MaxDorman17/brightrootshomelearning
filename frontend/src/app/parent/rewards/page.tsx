@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
+import StarIcon from "@/components/StarIcon";
 import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
 import EmojiPicker from "@/components/EmojiPicker";
@@ -95,7 +96,7 @@ function RuleRow({ rule, onSaved }: { rule: Rule; onSaved: () => void }) {
         <label className="flex items-center gap-1.5 text-sm text-[#6E5A46]">
           earns
           <input type="number" min={1} max={100} value={stars} onChange={(e) => setStars(e.target.value)} className={inputClass + " w-16"} />
-          ⭐
+          <StarIcon />
         </label>
         {changed && (
           <button onClick={() => save()} className="rounded-xl bg-brand-sage px-3 py-2 text-xs font-bold text-white">
@@ -148,7 +149,7 @@ function RewardRow({ reward, onSaved }: { reward: Reward; onSaved: () => void })
           <EmojiPicker value={emoji} onChange={setEmoji} />
           <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} className={inputClass + " min-w-[12rem] flex-1"} aria-label="Reward" />
           <input type="number" min={1} value={cost} onChange={(e) => setCost(e.target.value)} className={inputClass + " w-20"} aria-label="Star cost" />
-          <span className="text-sm">⭐</span>
+          <span className="text-sm"><StarIcon /></span>
           <button onClick={() => save()} className="rounded-xl bg-brand-sage px-3 py-2 text-xs font-bold text-white">Save</button>
           <button onClick={() => setEditing(false)} className="text-xs font-bold text-[#6E5A46]">Cancel</button>
         </div>
@@ -161,7 +162,7 @@ function RewardRow({ reward, onSaved }: { reward: Reward; onSaved: () => void })
     <div className={"flex flex-wrap items-center gap-3 py-3 " + (reward.is_active ? "" : "opacity-60")}>
       <span className="text-2xl">{reward.emoji || "🎁"}</span>
       <p className="min-w-[10rem] flex-1 font-bold text-brand-charcoal">{reward.title}</p>
-      <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-extrabold text-brand-sage">{reward.cost} ⭐</span>
+      <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-extrabold text-brand-sage">{reward.cost} <StarIcon /></span>
       <button onClick={() => setEditing(true)} className="text-xs font-bold text-brand-sage hover:underline">Edit</button>
       <button onClick={() => save(!reward.is_active)} className="text-xs font-bold text-[#6E5A46] hover:underline">
         {reward.is_active ? "Hide" : "Show"}
@@ -196,7 +197,7 @@ function ChildCard({ child, onSaved }: { child: ChildStars; onSaved: () => void 
       <div className="flex items-center justify-between gap-3">
         <p className="text-lg font-extrabold text-brand-charcoal">{child.child.username}</p>
         <div className="text-right">
-          <p className="text-2xl font-black text-brand-sage">{child.balance} ⭐</p>
+          <p className="text-2xl font-black text-brand-sage">{child.balance} <StarIcon /></p>
           {child.available !== child.balance && (
             <p className="text-xs text-[#6E5A46]">{child.available} free, {child.balance - child.available} waiting</p>
           )}
@@ -331,7 +332,7 @@ export default function RewardsPage() {
                     <div key={claim.id} className="flex flex-wrap items-center gap-3 py-3">
                       <span className="text-2xl">{claim.emoji || "🎁"}</span>
                       <p className="min-w-[10rem] flex-1 text-sm text-brand-charcoal">
-                        <strong>{childName(claim.child_id)}</strong> would like <strong>{claim.title}</strong> for {claim.cost} ⭐
+                        <strong>{childName(claim.child_id)}</strong> would like <strong>{claim.title}</strong> for {claim.cost} <StarIcon />
                       </p>
                       <button onClick={() => decide(claim, true)} className="rounded-xl bg-brand-sage px-4 py-2 text-xs font-bold text-white">Approve</button>
                       <button onClick={() => decide(claim, false)} className="rounded-xl border border-brand-line bg-white px-4 py-2 text-xs font-bold text-[#6E5A46]">Decline</button>
@@ -382,7 +383,7 @@ export default function RewardsPage() {
                 <label className="flex items-center gap-1.5 text-sm text-[#6E5A46]">
                   earns
                   <input type="number" min={1} max={100} value={newRuleStars} onChange={(e) => setNewRuleStars(e.target.value)} className={inputClass + " w-16"} />
-                  ⭐
+                  <StarIcon />
                 </label>
                 <button onClick={addRule} className="rounded-xl bg-brand-sage px-4 py-2 text-xs font-bold text-white">Add</button>
               </div>
@@ -399,7 +400,7 @@ export default function RewardsPage() {
                 <EmojiPicker value={newEmoji} onChange={setNewEmoji} />
                 <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} maxLength={120} placeholder="e.g. Trip to the park" className={inputClass + " min-w-[12rem] flex-1"} aria-label="New reward" />
                 <input type="number" min={1} value={newCost} onChange={(e) => setNewCost(e.target.value)} className={inputClass + " w-20"} aria-label="Star cost" />
-                <span className="text-sm">⭐</span>
+                <span className="text-sm"><StarIcon /></span>
                 <button onClick={addReward} className="rounded-xl bg-brand-sage px-4 py-2 text-xs font-bold text-white">Add reward</button>
               </div>
             </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import StarIcon from "@/components/StarIcon";
 import { FormEvent, useState } from "react";
 import { addDays, differenceInCalendarDays, endOfMonth, format, parseISO, startOfWeek } from "date-fns";
 import { addChallenge, removeChallenge, tickChallenge, untickChallenge } from "@/lib/api";
@@ -167,7 +168,7 @@ function NewChallengeForm({ today, onDone }: { today: string; onDone: () => void
         <label className="flex items-center gap-1.5">
           bonus
           <input type="number" min={0} max={1000} value={bonus} onChange={(e) => setBonus(e.target.value)} className={input + " w-20"} />
-          ⭐
+          <StarIcon />
         </label>
       </div>
       <div className="flex flex-wrap items-center gap-2 text-sm text-[#6E5A46]">
@@ -215,7 +216,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
 
         <div className="mt-4 rounded-2xl bg-brand-tint p-4 text-center">
           <p className="text-xs font-bold uppercase tracking-wider text-brand-sage">Family total this week</p>
-          <p className="mt-1 text-3xl font-black text-brand-sage">{board.family_total} ⭐</p>
+          <p className="mt-1 text-3xl font-black text-brand-sage">{board.family_total} <StarIcon /></p>
         </div>
 
         {board.children.length === 0 ? (
@@ -235,7 +236,7 @@ export default function FamilyBoard({ data, isParent, myId, onChanged }: Props) 
                 </p>
                 <span className="hidden text-xs text-[#6E5A46] sm:inline">{row.lessons_week} lessons</span>
                 {row.streak > 1 && <span className="text-xs font-bold text-[#B98224]">🔥 {row.streak}</span>}
-                <span className="w-16 text-right font-black text-brand-sage">{row.stars_week} ⭐</span>
+                <span className="w-16 text-right font-black text-brand-sage">{row.stars_week} <StarIcon /></span>
               </div>
             ))}
           </div>

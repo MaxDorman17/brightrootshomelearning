@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import StarJar from "@/components/StarJar";
+import StarIcon from "@/components/StarIcon";
 import { approveRewardClaim, declineRewardClaim, getMyStars, getStarJars, markRewardGiven } from "@/lib/api";
 
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
@@ -48,7 +49,7 @@ export function ChildStarJarCard() {
   return (
     <div className="mb-4 rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-[#FFF8E6] to-[#FDF1D8] px-4 py-3 shadow-sm">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-extrabold uppercase tracking-wider text-amber-700">⭐ My star jar</p>
+        <p className="text-xs font-extrabold uppercase tracking-wider text-amber-700"><StarIcon /> My star jar</p>
         <Link href="/child/stars" className="text-xs font-bold text-amber-800 hover:underline">
           Spend stars →
         </Link>
@@ -124,7 +125,7 @@ export function FamilyStarJars() {
   return (
     <section className="mb-8 rounded-3xl border border-[#EBDDB8] bg-gradient-to-br from-[#FFF8E6] to-[#FBF3E1] p-5">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-extrabold text-[#24452C]">⭐ Star jars</h2>
+        <h2 className="text-lg font-extrabold text-[#24452C]"><StarIcon /> Star jars</h2>
         <Link href="/parent/rewards" className="text-sm font-bold text-[#2F5D3A] hover:underline">
           Rewards →
         </Link>
@@ -150,7 +151,7 @@ export function FamilyStarJars() {
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-bold text-[#2E342F]">{cl.title}</p>
                           <p className="text-xs text-[#8A7A69]">
-                            {cl.cost} ⭐ · {ago(cl.created_at)}
+                            {cl.cost} <StarIcon /> · {ago(cl.created_at)}
                           </p>
                         </div>
                         <button

@@ -1,12 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import StarIcon from "@/components/StarIcon";
 
 /** Joins stars/rewards and badges into one place: tabs across the top of both pages. */
 export default function RewardsTabs({ role, current }: { role: "parent" | "child"; current: "stars" | "badges" }) {
   const tabs = [
-    { id: "stars", href: role === "parent" ? "/parent/rewards" : "/child/stars", label: role === "parent" ? "⭐ Rewards" : "⭐ My Stars" },
-    { id: "badges", href: "/achievements", label: "🏅 Badges" },
+    {
+      id: "stars",
+      href: role === "parent" ? "/parent/rewards" : "/child/stars",
+      label: (
+        <>
+          <StarIcon /> {role === "parent" ? "Rewards" : "My Stars"}
+        </>
+      ),
+    },
+    { id: "badges", href: "/achievements", label: <>🏅 Badges</> },
   ];
   return (
     <div className="mb-6 flex w-fit gap-1 rounded-2xl bg-brand-white p-1 shadow-sm">
