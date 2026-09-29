@@ -78,7 +78,7 @@ export default function CookAlong({ item, onClose, onFinish }: { item: MakeDetai
                 Step {page} of {item.steps.length}
               </p>
               {step.grown_up && (
-                <span className="mt-3 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-extrabold text-amber-800">🧑 Grown-up job</span>
+                <span className="mt-3 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-extrabold text-amber-800"><Emoji e="🧑" /> Grown-up job</span>
               )}
               <p className="mt-5 text-2xl font-extrabold leading-snug text-brand-charcoal sm:text-4xl">{step.text}</p>
             </>

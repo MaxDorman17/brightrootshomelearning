@@ -380,7 +380,7 @@ export default function ProgressPage() {
                               <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                                 {entry.completed_work_url && (
                                   <a href={entry.completed_work_url} target="_blank" rel="noopener noreferrer" className="font-bold text-[#B07F1F] hover:underline">
-                                    📎 Their work
+                                    <Emoji e="📎" /> Their work
                                   </a>
                                 )}
                                 {entry.lesson.lesson_url && (

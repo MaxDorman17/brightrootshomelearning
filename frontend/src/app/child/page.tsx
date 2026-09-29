@@ -683,7 +683,7 @@ export default function ChildDashboard() {
                                 </span>
                               )}
                               {entry.lesson.lesson_url && <span className="text-xs" title="Lesson link">🔗</span>}
-                              {entry.completed_work_url && <span className="text-xs" title="Work submitted">📎</span>}
+                              {entry.completed_work_url && <span className="text-xs" title="Work submitted"><Emoji e="📎" /></span>}
                             </div>
                           </div>
 
@@ -700,7 +700,7 @@ export default function ChildDashboard() {
         <div className="mt-5 flex flex-wrap gap-3 text-xs text-gray-500">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" /> Completed</span>
           <span className="flex items-center gap-1">🔗 Has lesson link</span>
-          <span className="flex items-center gap-1">📎 Work submitted</span>
+          <span className="flex items-center gap-1"><Emoji e="📎" /> Work submitted</span>
           <span className="ml-auto text-gray-400">Choose a day, then tap a lesson to open it</span>
         </div>
 
@@ -770,7 +770,7 @@ export default function ChildDashboard() {
                             </div>
                             <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
                           </div>
-                          {e.completed_work_url && <span className="text-xs opacity-60 shrink-0">📎</span>}
+                          {e.completed_work_url && <span className="text-xs opacity-60 shrink-0"><Emoji e="📎" /></span>}
                         </button>
                       );
                     })}
@@ -894,7 +894,7 @@ export default function ChildDashboard() {
 
             {/* Submit work URL */}
             <div className="mb-4">
-              <p className="text-xs font-bold text-gray-600 mb-2">📎 Paste your results link</p>
+              <p className="text-xs font-bold text-gray-600 mb-2"><Emoji e="📎" /> Paste your results link</p>
               <div className="flex gap-2">
                 <input
                   value={workUrl}

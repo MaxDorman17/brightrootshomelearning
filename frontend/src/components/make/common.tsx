@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getMakePhoto, MakeKind, MakeMaterial, MakeStep } from "@/lib/api";
+import { EmojiText } from "@/components/Emoji";
 
 export type MakeSummary = {
   id: number;
@@ -108,7 +109,7 @@ export function MetaChips({ item }: { item: MakeSummary }) {
     <div className="flex flex-wrap gap-1.5">
       {chips.map((c) => (
         <span key={c} className="rounded-full bg-brand-cream px-2.5 py-1 text-xs font-bold text-brand-earth">
-          {c}
+          <EmojiText text={c} />
         </span>
       ))}
     </div>

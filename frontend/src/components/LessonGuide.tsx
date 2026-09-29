@@ -89,7 +89,7 @@ export default function LessonGuide({ entryId, lesson }: { entryId: number; less
 
       {resources.length > 0 && (
         <div className="rounded-xl border border-brand-line bg-white px-4 py-3">
-          <p className="text-xs font-bold uppercase tracking-wide text-brand-sage">📎 For this lesson</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-sage"><Emoji e="📎" /> For this lesson</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {resources.map((r) => (
               <button key={r.id} onClick={() => open(r)} className="rounded-lg border border-brand-mist bg-brand-wash px-3 py-1.5 text-sm font-semibold text-brand-deep hover:bg-brand-tint">

@@ -83,7 +83,7 @@ export default function TeenCornerPage() {
                 {role === "child" ? " Tap \"I'd love to make this\" on anything you want to try." : ""}
               </p>
               <div className="mt-5 flex flex-wrap gap-2 text-sm font-bold text-[#2F5D3A]">
-                <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🍳 {recipes.length || "–"} recipes</span>
+                <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm"><Emoji e="🍳" /> {recipes.length || "–"} recipes</span>
                 <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🛠️ {projects.length || "–"} projects</span>
               </div>
             </div>

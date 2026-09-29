@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { GameHeader, GameProps, GameResult, shuffle } from "./common";
+import Emoji from "@/components/Emoji";
 
 function scramble(word: string) {
   if (word.length < 2) return word;
@@ -107,7 +108,7 @@ export default function WordScramble({ words, onExit }: GameProps) {
         </form>
         {wrong && <p className="mt-3 font-bold text-[#A64F42]">Not yet, try again!</p>}
         <div className="mt-4 flex justify-center gap-4 text-sm">
-          <button onClick={hint} className="font-bold text-brand-sage hover:underline">💡 Hint</button>
+          <button onClick={hint} className="font-bold text-brand-sage hover:underline"><Emoji e="💡" /> Hint</button>
           <button onClick={() => next(false)} className="font-bold text-[#6E5A46] hover:underline">Skip</button>
         </div>
       </div>

@@ -17,7 +17,7 @@ import {
 } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { errorText, forgetMakePhoto, KIND_INFO } from "./common";
-import { EmojiText } from "@/components/Emoji";
+import Emoji, { EmojiText } from "@/components/Emoji";
 
 const input = "w-full rounded-xl border-2 border-brand-line bg-white px-3.5 py-2.5 text-sm outline-none focus:border-brand-softsage";
 const label = "mb-1.5 block text-sm font-bold text-brand-charcoal";
@@ -146,7 +146,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                     (kind === k ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
                   }
                 >
-                  {k === "recipe" ? "🍳 Recipe" : <EmojiText text="🎨 Craft" />}
+                  <EmojiText text={k === "recipe" ? "🍳 Recipe" : "🎨 Craft"} />
                 </button>
               ))}
             </div>
@@ -261,7 +261,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                       onChange={(e) => setSteps(steps.map((x, j) => (j === i ? { ...x, grown_up: e.target.checked } : x)))}
                       className="accent-brand-sage"
                     />
-                    🧑 Grown-up job
+                    <Emoji e="🧑" /> Grown-up job
                   </label>
                 </div>
                 <button type="button" onClick={() => setSteps(steps.filter((_, j) => j !== i))} className="h-fit shrink-0 rounded-lg px-2 py-2 text-brand-earth/60 hover:bg-brand-cream" aria-label="Remove step">

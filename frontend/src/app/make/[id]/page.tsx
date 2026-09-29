@@ -256,7 +256,7 @@ export default function MakeItemPage() {
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-sage text-sm font-black text-white">{i + 1}</span>
                   <div>
                     {s.grown_up && (
-                      <span className="mb-1 inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-extrabold text-amber-800">🧑 Grown-up job</span>
+                      <span className="mb-1 inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-extrabold text-amber-800"><Emoji e="🧑" /> Grown-up job</span>
                     )}
                     <p className="text-brand-charcoal">{s.text}</p>
                   </div>
@@ -265,7 +265,7 @@ export default function MakeItemPage() {
             </ol>
             {item.tips && (
               <div className="mt-4 rounded-2xl bg-brand-tint p-4 text-sm text-brand-charcoal">
-                <b>💡 Tip:</b> {item.tips}
+                <b><Emoji e="💡" /> Tip:</b> {item.tips}
               </div>
             )}
           </section>
