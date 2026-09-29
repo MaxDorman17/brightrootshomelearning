@@ -10,7 +10,7 @@ export const AVATAR_EMOJIS = [
 // Max's illustrated characters, saved as "pic:<name>" and drawn from /avatars/<name>.webp.
 // Must match AVATAR_PICTURES in backend/routers/profile.py. The emojis above are no longer offered,
 // but still show for children who picked one before.
-export const AVATAR_PICTURES = ["bear", "penguin", "robot", "daisy", "butterfly", "heart", "unicorn", "bee", "pufferfish", "controller", "shark", "starfish", "seahorse", "monkey", "zebra", "panda"].map((n) => `pic:${n}`);
+export const AVATAR_PICTURES = ["bear", "penguin", "robot", "daisy", "butterfly", "heart", "unicorn", "bee", "pufferfish", "controller", "shark", "starfish", "seahorse", "monkey", "zebra", "panda", "red-panda", "fox"].map((n) => `pic:${n}`);
 
 /** The picture for an avatar character, or null if it's one of the older emoji characters. */
 export function avatarPicture(character: string): string | null {
