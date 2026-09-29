@@ -92,7 +92,7 @@ export default function ShoppingListPage() {
         </div>
         <PageHero art="shopping" tint={1}>
         <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage print:hidden">Make together</p>
-        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">🛒 Shopping list</h1>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Shopping list</h1>
         <p className="mt-2 text-sm text-brand-earth/70 print:hidden">
           Add ingredients and materials from any recipe or craft, or type your own. Tick things off as you shop.
         </p>

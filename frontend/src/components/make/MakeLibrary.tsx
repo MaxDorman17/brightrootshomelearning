@@ -81,7 +81,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
         <PageHero art={kind === "recipe" ? "shopping" : "lessons"} tint={kind === "recipe" ? 1 : 4}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-              <Emoji e={kind === "recipe" ? "🍳" : "🎨"} />{" "}
+              
               {info.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
