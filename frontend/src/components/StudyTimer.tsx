@@ -25,7 +25,7 @@ type Props = {
 };
 
 const STORAGE_KEY = "study_timer";
-const PRESETS = [10, 15, 20, 25, 30];
+const PRESETS = [10, 15, 20, 25, 30, 45, 60];
 const BREAK_MINUTES = 5;
 
 function load(): TimerState | null {
