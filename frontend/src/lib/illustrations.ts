@@ -28,6 +28,8 @@ const ILLUSTRATIONS: Record<string, string> = {
   "📝": "notepad",
   "🔥": "fire",
   "🏅": "medal",
+  "🎮": "games",
+  "🕹": "games",
 };
 
 /** Emoji variation selectors (the invisible "show as emoji" marks) don't change which picture we use. */

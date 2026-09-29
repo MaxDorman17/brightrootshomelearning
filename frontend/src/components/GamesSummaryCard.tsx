@@ -30,7 +30,7 @@ export default function GamesSummaryCard({ childId }: { childId: number }) {
 
   return (
     <section className="brand-card p-5 sm:p-6">
-      <h2 className="text-lg font-extrabold text-brand-charcoal">🎮 Learning games</h2>
+      <h2 className="text-lg font-extrabold text-brand-charcoal"><EmojiText text="🎮 Learning games" /></h2>
       {!played ? (
         <p className="mt-2 text-sm text-[#6E5A46]">No games played yet. They&apos;re in the Games link on your child&apos;s menu.</p>
       ) : (
