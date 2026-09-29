@@ -15,9 +15,9 @@ from routers.test_results import _own_child
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 
-RULE_KINDS = {"lesson", "oak", "spelling", "book", "game"}
+RULE_KINDS = {"lesson", "oak", "oak_starter", "spelling", "book", "game"}
 GAMES_PER_DAY_CAP = 3  # stars for at most this many games a day, so they can't be farmed
-KINDS_WITH_THRESHOLD = {"oak", "spelling"}
+KINDS_WITH_THRESHOLD = {"oak", "oak_starter", "spelling"}
 
 DEFAULT_RULES = [
     {"kind": "lesson", "threshold_pct": None, "stars": 1},
@@ -125,6 +125,8 @@ def _rule_label(rule: RewardRule) -> str:
         return "Complete a lesson"
     if rule.kind == "oak":
         return f"Score {rule.threshold_pct or 0}% or more on an Oak exit quiz"
+    if rule.kind == "oak_starter":
+        return f"Score {rule.threshold_pct or 0}% or more on an Oak starter quiz"
     if rule.kind == "spelling":
         return f"Score {rule.threshold_pct or 0}% or more on a spelling test"
     if rule.kind == "game":
@@ -148,6 +150,7 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
     kinds = {r.kind for r in rules}
     lessons = activity.lesson_completions(db, child, parent_id) if "lesson" in kinds else []
     quizzes = activity.oak_scores(db, child, parent_id) if "oak" in kinds else []
+    starters = activity.oak_starter_scores(db, child, parent_id) if "oak_starter" in kinds else []
     spellings = activity.spelling_scores(db, child, parent_id) if "spelling" in kinds else []
     books = activity.books_finished(db, child, parent_id) if "book" in kinds else []
     games = sorted(activity.games_played(db, child, parent_id)) if "game" in kinds else []
@@ -161,7 +164,11 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
         elif rule.kind == "oak":
             for when, score, title in quizzes:
                 if in_window(rule, when) and score >= threshold:
-                    events.append({"when": when, "stars": rule.stars, "reason": f"Oak quiz {round(score)}%: {title}"})
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Oak exit quiz {round(score)}%: {title}"})
+        elif rule.kind == "oak_starter":
+            for when, score, title in starters:
+                if in_window(rule, when) and score >= threshold:
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Oak starter quiz {round(score)}%: {title}"})
         elif rule.kind == "spelling":
             for when, score, label in spellings:
                 if in_window(rule, when) and score >= threshold:

@@ -62,6 +62,16 @@ def oak_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime,
     return out
 
 
+def oak_starter_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime, float, str]]:
+    """(completed at, starter quiz %, lesson title) for every Oak quiz with a cached starter score."""
+    out = []
+    for q in _oak_results_for_child(db, child, parent_id):
+        score = pct(q["starter_score"], q["starter_total"])
+        if q["completed_at"] and score is not None:
+            out.append((naive(q["completed_at"]), score, q["lesson_title"]))
+    return out
+
+
 def spelling_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime, float, str]]:
     """(taken at, %, "score/total") for every real (non-practice) spelling test."""
     out = []

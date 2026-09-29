@@ -321,7 +321,7 @@ class RewardRule(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    kind = Column(String(20), nullable=False)  # lesson / oak / spelling / book
+    kind = Column(String(20), nullable=False)  # lesson / oak (exit quiz) / oak_starter / spelling / book / game
     threshold_pct = Column(Integer, nullable=True)  # minimum score for oak and spelling rules
     stars = Column(Integer, nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
