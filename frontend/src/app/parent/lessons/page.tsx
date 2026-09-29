@@ -2,7 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, startOfWeek } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import LessonEditor from "@/components/LessonEditor";
@@ -317,6 +317,8 @@ export default function MyLessonsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
+  const [when, setWhen] = useState<"upcoming" | "past" | "unplanned" | "all">("upcoming");
+  const [groupBy, setGroupBy] = useState<"date" | "subject">("date");
   const [editing, setEditing] = useState<{ lesson: Lesson | null; subject?: string; onSaved?: (l: Lesson) => void } | null>(null);
   const [planning, setPlanning] = useState<Lesson | null>(null);
   const [planEditor, setPlanEditor] = useState<{ plan: Plan | null } | null>(null);
@@ -344,11 +346,59 @@ export default function MyLessonsPage() {
     [subjects, library]
   );
 
-  const shown = library.filter(
+  const todayKey = today();
+  const matches = library.filter(
     (l) =>
       (!subjectFilter || l.subject === subjectFilter) &&
       (!search.trim() || `${l.title} ${l.objectives ?? ""}`.toLowerCase().includes(search.trim().toLowerCase()))
   );
+  const counts = {
+    upcoming: matches.filter((l) => l.last_planned && l.last_planned >= todayKey).length,
+    past: matches.filter((l) => l.last_planned && l.last_planned < todayKey).length,
+    unplanned: matches.filter((l) => !l.last_planned).length,
+    all: matches.length,
+  };
+  const shown = matches
+    .filter((l) =>
+      when === "upcoming"
+        ? !!l.last_planned && l.last_planned >= todayKey
+        : when === "past"
+          ? !!l.last_planned && l.last_planned < todayKey
+          : when === "unplanned"
+            ? !l.last_planned
+            : true
+    )
+    .sort((a, b) => {
+      // Upcoming soonest first; everything else most recent first, with never-planned lessons last.
+      const ad = a.last_planned ?? "", bd = b.last_planned ?? "";
+      if (ad === bd) return a.title.localeCompare(b.title);
+      if (!ad) return 1;
+      if (!bd) return -1;
+      return when === "upcoming" ? ad.localeCompare(bd) : bd.localeCompare(ad);
+    });
+
+  // Month → week → lessons (each lesson shows its day), or one group per subject.
+  type Group = { key: string; title: string; weeks: { key: string; title: string; lessons: LibraryLesson[] }[] };
+  const groups: Group[] = [];
+  if (groupBy === "subject") {
+    const bySubject: Record<string, LibraryLesson[]> = {};
+    shown.forEach((l) => (bySubject[l.subject] = bySubject[l.subject] || []).push(l));
+    Object.keys(bySubject)
+      .sort()
+      .forEach((subj) => groups.push({ key: subj, title: subj, weeks: [{ key: subj, title: "", lessons: bySubject[subj] }] }));
+  } else {
+    for (const l of shown) {
+      const monthKey = l.last_planned ? l.last_planned.slice(0, 7) : "none";
+      const monthTitle = l.last_planned ? format(parseISO(l.last_planned), "MMMM yyyy") : "Not planned yet";
+      let g = groups[groups.length - 1];
+      if (!g || g.key !== monthKey) groups.push((g = { key: monthKey, title: monthTitle, weeks: [] }));
+      const wk = l.last_planned ? format(startOfWeek(parseISO(l.last_planned), { weekStartsOn: 1 }), "yyyy-MM-dd") : "none";
+      let w = g.weeks[g.weeks.length - 1];
+      if (!w || w.key !== wk)
+        g.weeks.push((w = { key: wk, title: wk === "none" ? "" : `Week of ${format(parseISO(wk), "d MMMM")}`, lessons: [] }));
+      w.lessons.push(l);
+    }
+  }
 
   const removeLesson = async (l: LibraryLesson) => {
     if (!confirm(`Delete "${l.title}" from your library?`)) return;
@@ -398,6 +448,39 @@ export default function MyLessonsPage() {
 
         {!loading && tab === "lessons" && (
           <div className="mt-5">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap gap-1.5">
+                {([
+                  ["upcoming", "Coming up"],
+                  ["past", "Done before"],
+                  ["unplanned", "Not planned yet"],
+                  ["all", "All"],
+                ] as const).map(([value, label]) => (
+                  <button
+                    key={value}
+                    onClick={() => setWhen(value)}
+                    className={`rounded-xl border px-3 py-1.5 text-sm font-semibold ${
+                      when === value ? "border-brand-sage bg-brand-sage text-white" : "border-brand-line bg-brand-white text-[#6E5A46] hover:border-brand-softsage"
+                    }`}
+                  >
+                    {label}
+                    <span className={`ml-1.5 text-xs ${when === value ? "text-white/80" : "text-[#A8998A]"}`}>{counts[value]}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-1 rounded-xl bg-brand-white p-1 text-xs font-bold">
+                <span className="px-2 text-[#8A7A69]">Group by</span>
+                {(["date", "subject"] as const).map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => setGroupBy(g)}
+                    className={`rounded-lg px-3 py-1.5 ${groupBy === g ? "bg-brand-tint text-brand-sage" : "text-[#6E5A46]"}`}
+                  >
+                    {g === "date" ? "Date" : "Subject"}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="mb-4 flex flex-wrap gap-2">
               <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search lessons" className={input + " min-w-0 flex-1"} />
               <select value={subjectFilter} onChange={(e) => setSubjectFilter(e.target.value)} className={input}>
@@ -409,34 +492,56 @@ export default function MyLessonsPage() {
             </div>
             {shown.length === 0 ? (
               <div className="brand-card p-6 text-center text-sm text-[#6E5A46]">
-                {library.length === 0 ? "No lessons yet. Press “+ New lesson” to build your first one." : "No lessons match."}
+                {library.length === 0 ? "No lessons yet. Press “+ New lesson” to build your first one." : when === "upcoming" ? "Nothing planned from today onwards. Try “Done before” or “All”." : "No lessons match."}
               </div>
             ) : (
-              <div className="grid gap-3 md:grid-cols-2">
-                {shown.map((l) => (
-                  <div key={l.id} className="brand-card flex flex-col p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">{l.subject}</p>
-                    <p className="mt-0.5 font-extrabold text-brand-charcoal">{l.title}</p>
-                    {l.objectives && <p className="mt-1 line-clamp-2 text-sm text-[#6E5A46]">{l.objectives}</p>}
-                    <p className="mt-2 text-xs text-[#8A7A69]">
-                      {[
-                        l.steps?.length ? `${l.steps.length} step${l.steps.length === 1 ? "" : "s"}` : null,
-                        l.duration_minutes ? `${l.duration_minutes} min` : null,
-                        l.resource_ids?.length ? `${l.resource_ids.length} resource${l.resource_ids.length === 1 ? "" : "s"}` : null,
-                        l.times_planned ? `planned ${l.times_planned}×` : "not planned yet",
-                        l.last_planned ? `last ${format(parseISO(l.last_planned), "d MMM")}` : null,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
+              <div className="space-y-8">
+                {groups.map((g) => (
+                  <section key={g.key}>
+                    <h2 className="mb-3 flex items-baseline gap-2 border-b border-brand-line pb-1 text-lg font-extrabold text-brand-charcoal">
+                      {g.title}
+                      <span className="text-xs font-semibold text-[#8A7A69]">
+                        {g.weeks.reduce((n, w) => n + w.lessons.length, 0)} lessons
+                      </span>
+                    </h2>
+                    <div className="space-y-4">
+                      {g.weeks.map((w) => (
+                        <div key={w.key}>
+                          {w.title && <p className="mb-2 text-xs font-extrabold uppercase tracking-wider text-brand-softsage">{w.title}</p>}
+                          <div className="grid gap-3 md:grid-cols-2">
+                            {w.lessons.map((l) => (
+                            <div key={l.id} className="brand-card flex flex-col p-4">
+                              <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">
+                      {groupBy === "date" && l.last_planned ? `${format(parseISO(l.last_planned), "EEE d MMM")} · ` : ""}
+                      {l.subject}
                     </p>
-                    <div className="mt-3 flex flex-wrap gap-3 border-t border-brand-line pt-3">
-                      <button onClick={() => setPlanning(l)} className="text-xs font-bold text-brand-sage hover:underline">Add to planner</button>
-                      <button onClick={() => setEditing({ lesson: l })} className="text-xs font-bold text-brand-sage hover:underline">Edit</button>
-                      {l.times_planned === 0 && (
-                        <button onClick={() => removeLesson(l)} className="text-xs font-bold text-[#A64F42] hover:underline">Delete</button>
-                      )}
+                              <p className="mt-0.5 font-extrabold text-brand-charcoal">{l.title}</p>
+                              {l.objectives && <p className="mt-1 line-clamp-2 text-sm text-[#6E5A46]">{l.objectives}</p>}
+                              <p className="mt-2 text-xs text-[#8A7A69]">
+                                {[
+                                  l.steps?.length ? `${l.steps.length} step${l.steps.length === 1 ? "" : "s"}` : null,
+                                  l.duration_minutes ? `${l.duration_minutes} min` : null,
+                                  l.resource_ids?.length ? `${l.resource_ids.length} resource${l.resource_ids.length === 1 ? "" : "s"}` : null,
+                                  l.times_planned ? `planned ${l.times_planned}×` : "not planned yet",
+                                  l.last_planned ? `last ${format(parseISO(l.last_planned), "d MMM")}` : null,
+                                ]
+                                  .filter(Boolean)
+                                  .join(" · ")}
+                              </p>
+                              <div className="mt-3 flex flex-wrap gap-3 border-t border-brand-line pt-3">
+                                <button onClick={() => setPlanning(l)} className="text-xs font-bold text-brand-sage hover:underline">Add to planner</button>
+                                <button onClick={() => setEditing({ lesson: l })} className="text-xs font-bold text-brand-sage hover:underline">Edit</button>
+                                {l.times_planned === 0 && (
+                                  <button onClick={() => removeLesson(l)} className="text-xs font-bold text-[#A64F42] hover:underline">Delete</button>
+                                )}
+                              </div>
+                            </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
+                  </section>
                 ))}
               </div>
             )}
