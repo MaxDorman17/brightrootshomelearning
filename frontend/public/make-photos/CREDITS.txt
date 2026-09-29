@@ -48,3 +48,5 @@ teen-stop-motion.jpg  https://images.unsplash.com/photo-1639628735078-ed2f038a19
 teen-tie-dye.jpg  https://images.unsplash.com/photo-1585751092218-cea84c1ecf01
 teen-friendship-bracelets.jpg  https://images.unsplash.com/photo-1607013408726-ca84bdace8a4
 teen-clay-trinket-dish.jpg  https://images.unsplash.com/photo-1613989999943-115051d0aed8
+
+P.E. activity pictures (pe-*.jpg): illustrations made for Bright Roots by Max Dorman.

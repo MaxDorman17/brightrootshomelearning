@@ -83,7 +83,14 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
   if (shown) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={shown} alt={item.title} loading="lazy" onError={() => setStockFailed(true)} className={`object-cover ${className}`} />
+      <img
+        src={shown}
+        alt={item.title}
+        loading="lazy"
+        onError={() => setStockFailed(true)}
+        // The P.E. illustrations are whole scenes, so show all of each one rather than cropping heads off.
+        className={`${!src && item.kind === "pe" ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
+      />
     );
   }
   return (
