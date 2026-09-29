@@ -79,7 +79,9 @@ def _apply_subscription_state(user: User, obj: dict) -> None:
     cancel_at_period_end = bool(obj.get("cancel_at_period_end"))
     cancel_at = obj.get("cancel_at")
     if not cancel_at and cancel_at_period_end:
-        cancel_at = obj.get("trial_end") or obj.get("current_period_end")
+        # Newer Stripe API versions moved current_period_end onto the subscription items.
+        items = ((obj.get("items") or {}).get("data") or [{}])
+        cancel_at = obj.get("trial_end") or obj.get("current_period_end") or items[0].get("current_period_end")
 
     user.subscription_cancel_at_period_end = cancel_at_period_end or bool(cancel_at)
     user.subscription_cancel_at = (
