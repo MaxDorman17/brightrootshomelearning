@@ -6,6 +6,7 @@ import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
+import EmojiPicker from "@/components/EmojiPicker";
 import FamilyBoard, { FamilyOverview } from "@/components/FamilyBoard";
 import { isAuthenticated, getRole } from "@/lib/auth";
 import {
@@ -144,7 +145,7 @@ function RewardRow({ reward, onSaved }: { reward: Reward; onSaved: () => void })
     return (
       <div className="py-3">
         <div className="flex flex-wrap items-center gap-2">
-          <input value={emoji} onChange={(e) => setEmoji(e.target.value)} maxLength={16} className={inputClass + " w-14 text-center"} aria-label="Emoji" />
+          <EmojiPicker value={emoji} onChange={setEmoji} />
           <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} className={inputClass + " min-w-[12rem] flex-1"} aria-label="Reward" />
           <input type="number" min={1} value={cost} onChange={(e) => setCost(e.target.value)} className={inputClass + " w-20"} aria-label="Star cost" />
           <span className="text-sm">⭐</span>
@@ -395,7 +396,7 @@ export default function RewardsPage() {
                 ))}
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-2 rounded-2xl bg-brand-cream p-3">
-                <input value={newEmoji} onChange={(e) => setNewEmoji(e.target.value)} maxLength={16} placeholder="🎁" className={inputClass + " w-14 text-center"} aria-label="Emoji" />
+                <EmojiPicker value={newEmoji} onChange={setNewEmoji} />
                 <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} maxLength={120} placeholder="e.g. Trip to the park" className={inputClass + " min-w-[12rem] flex-1"} aria-label="New reward" />
                 <input type="number" min={1} value={newCost} onChange={(e) => setNewCost(e.target.value)} className={inputClass + " w-20"} aria-label="Star cost" />
                 <span className="text-sm">⭐</span>
