@@ -146,7 +146,7 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
                     (kind === k ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
                   }
                 >
-                  <EmojiText text={k === "recipe" ? "🍳 Recipe" : k === "pe" ? "🥾 P.E. activity" : "🎨 Craft"} />
+                  <EmojiText text={k === "recipe" ? "🍳 Recipe" : k === "pe" ? "🏃 P.E. activity" : "🎨 Craft"} />
                 </button>
               ))}
             </div>

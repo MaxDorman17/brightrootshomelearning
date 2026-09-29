@@ -27,7 +27,7 @@ export type MakeDetail = MakeSummary & { materials: MakeMaterial[]; steps: MakeS
 export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: string; materials: string; subject: string; tint: string }> = {
   recipe: { name: "Cookbook", one: "recipe", path: "/make/cookbook", materials: "Ingredients", subject: "Cooking", tint: "bg-amber-50" },
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
-  pe: { name: "Wellies P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
+  pe: { name: "P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
 };
 
 export type AgeBand = "little" | "junior" | "teen";

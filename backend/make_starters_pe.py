@@ -1,4 +1,4 @@
-"""Wellies: the P.E. and active-play ideas every family starts with. Written for Bright Roots.
+"""P.E.: the active-play ideas every family starts with. Written for Bright Roots.
 
 Ten for one child on their own and ten for a group (siblings, friends or a home-ed meet-up).
 Kept in sync on start-up by slug, like the recipes and crafts.
