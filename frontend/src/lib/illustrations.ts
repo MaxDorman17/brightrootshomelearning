@@ -30,6 +30,21 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🏅": "medal",
   "🎮": "games",
   "🕹": "games",
+  "🌟": "star",
+  // Page banner pictures that also suit these emojis
+  "🛒": "/home/icons/shopping.png",
+  "🏠": "/home/icons/account.png",
+  "📖": "/home/icons/reading.png",
+  "🌈": "/home/icons/lessons.png",
+  "📋": "/home/icons/extra-work.png",
+  "📂": "/home/icons/resources.png",
+  "🗓": "/home/plan.png",
+  "🔤": "/home/icons/spellings.png",
+  "🌍": "/home/icons/languages.png",
+  "💻": "/home/icons/coding.png",
+  "🔔": "/home/icons/reminders.png",
+  "⏱": "/home/icons/timer.png",
+  "✉": "/home/icons/newsletter.png",
 };
 
 /** Emoji variation selectors (the invisible "show as emoji" marks) don't change which picture we use. */
@@ -38,7 +53,8 @@ const clean = (emoji: string) => emoji.replace(/️/g, "").trim();
 export function illustrationFor(emoji: string | null | undefined): string | null {
   if (!emoji) return null;
   const name = ILLUSTRATIONS[clean(emoji)];
-  return name ? `/illustrations/${name}.png` : null;
+  if (!name) return null;
+  return name.startsWith("/") ? name : `/illustrations/${name}.png`;
 }
 
 /** Splits text into plain parts and emojis that have an illustration. */
