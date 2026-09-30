@@ -39,7 +39,8 @@ export default function LearningAidPage() {
     );
   }
 
-  const src = `/learning-aids/${slug}.svg`;
+  // ?v= changes when the charts are replaced, so Cloudflare serves the new ones.
+  const src = `/learning-aids/${slug}.svg?v=2`;
   return (
     <div className="min-h-screen">
       {/* Print the chart on its own, filling the page the right way round. */}
