@@ -40,11 +40,10 @@ type NavEntry = NavLink | NavGroup;
 
 const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
 
-// Coding and Languages hold one family's own content, so they only show when the
-// family has that subject on their timetable.
+// Coding holds one family's own content, so it only shows when the family has that
+// subject on their timetable.
 const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
   "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
-  "/polish": (subjects) => subjects.some((s) => /language|polish|french|spanish|german/i.test(s)),
 };
 
 const PARENT_NAV: NavEntry[] = [
@@ -67,7 +66,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/reading-log", label: "Reading" },
       { href: "/spellings", label: "Spellings" },
       { href: "/coding", label: "Coding" },
-      { href: "/polish", label: "Languages" },
+      { href: "/languages", label: "Languages" },
     ],
   },
   {
@@ -120,7 +119,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/child/extra-work", label: "Extra Work" },
       { href: "/child/resources", label: "Resources" },
       { href: "/coding", label: "Coding" },
-      { href: "/polish", label: "Languages" },
+      { href: "/languages", label: "Languages" },
     ],
   },
   {

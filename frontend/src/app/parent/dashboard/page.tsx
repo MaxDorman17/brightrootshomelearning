@@ -23,6 +23,7 @@ import Navbar from "@/components/Navbar";
 import HomeOverview from "@/components/HomeOverview";
 import AppCard from "@/components/AppCard";
 import { FamilyStarJars } from "@/components/StarJarCards";
+import { ParentNotesCard } from "@/components/FamilyNotes";
 import { useMounted } from "@/lib/useMounted";
 import { Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
@@ -352,6 +353,8 @@ export default function ParentDashboardPage() {
         </section>
 
         <FamilyStarJars />
+
+        <ParentNotesCard />
 
         <section className="mb-8 grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
           <div className="brand-card p-6">

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks, getActiveSummary, ActiveSummary } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks, getActiveSummary, ActiveSummary, getLanguageSummary, LanguageSummary } from "@/lib/api";
 import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -83,6 +83,7 @@ export default function ReportPage() {
   const [currentReadingTitle, setCurrentReadingTitle] = useState<string | null>(null);
   const [showOakDetails, setShowOakDetails] = useState(false);
   const [active, setActive] = useState<ActiveSummary | null>(null);
+  const [languages, setLanguages] = useState<LanguageSummary | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -189,6 +190,9 @@ export default function ReportPage() {
     getActiveSummary(params)
       .then(res => setActive(res.data))
       .catch(() => setActive(null));
+    getLanguageSummary(params)
+      .then(res => setLanguages(res.data))
+      .catch(() => setLanguages(null));
   }, [period, selectedChildId, loading]);
 
   useEffect(() => {
@@ -389,6 +393,49 @@ export default function ReportPage() {
           Open reading
         </a>
       </div>
+    </div>
+  );
+
+  const langTotals = languages?.totals;
+  const languagesCard = (
+    <div className="brand-card p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Languages</p>
+          {!langTotals || langTotals.days === 0 ? (
+            <h2 className="text-lg font-bold text-[#2E342F] mt-1">No language practice logged {readingPeriodLabel}</h2>
+          ) : (
+            <div className="flex items-end gap-3 mt-1">
+              <p className="text-3xl font-bold text-brand-sage">{langTotals.days}</p>
+              <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
+                day{langTotals.days === 1 ? "" : "s"} of practice {readingPeriodLabel}
+              </h2>
+            </div>
+          )}
+        </div>
+        <a href="/languages" className="text-sm font-semibold text-brand-sage hover:underline shrink-0">
+          Open languages
+        </a>
+      </div>
+      {languages && languages.languages.length > 0 && (
+        <ul className="mt-4 space-y-1.5">
+          {languages.languages.map(l => (
+            <li key={l.language} className="flex items-center justify-between gap-3 text-sm">
+              <span className="font-semibold text-[#2E342F]">
+                {l.language}
+                {!selectedChildId && l.children.length > 0 && (
+                  <span className="font-normal text-[#6E5A46]"> · {l.children.join(", ")}</span>
+                )}
+              </span>
+              <span className="text-xs font-bold text-[#6E5A46] shrink-0">
+                {l.days} day{l.days === 1 ? "" : "s"}
+                {l.minutes ? ` · ${l.minutes} min` : ""}
+                {l.xp ? ` · ${l.xp} XP` : ""}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 
@@ -748,6 +795,43 @@ export default function ReportPage() {
                 )}
               </section>
 
+              <section className="mb-6">
+                <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
+                  Languages
+                </h2>
+                {languages && languages.log.length > 0 ? (
+                  <>
+                    <p className="text-sm mb-2">
+                      {languages.languages.map(l => `${l.language}: ${l.days} day${l.days === 1 ? "" : "s"}${l.minutes ? `, ${l.minutes} minutes` : ""}${l.xp ? `, ${l.xp} XP` : ""}`).join("; ")}.
+                    </p>
+                    <table className="w-full border-collapse text-xs">
+                      <thead>
+                        <tr>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Date</th>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Language</th>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Practice</th>
+                          {!selectedChildId && <th className="border border-gray-400 px-2 py-1 text-left">Child</th>}
+                          <th className="border border-gray-400 px-2 py-1 text-right">Minutes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {languages.log.map((l, i) => (
+                          <tr key={i}>
+                            <td className="border border-gray-400 px-2 py-1">{format(parseISO(l.date), "d MMM yyyy")}</td>
+                            <td className="border border-gray-400 px-2 py-1">{l.language}</td>
+                            <td className="border border-gray-400 px-2 py-1">{[l.how, l.note, l.xp ? `${l.xp} XP` : ""].filter(Boolean).join(" · ")}</td>
+                            {!selectedChildId && <td className="border border-gray-400 px-2 py-1">{l.child}</td>}
+                            <td className="border border-gray-400 px-2 py-1 text-right">{l.minutes ?? ""}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <p className="text-sm">No language practice logged for this period.</p>
+                )}
+              </section>
+
               <section>
                 <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
                   Submitted Work
@@ -912,10 +996,11 @@ export default function ReportPage() {
                   </div>
                 </div>
                 {activeCard}
+                {languagesCard}
               </div>
             )}
 
-            {tab === "progress" && <div className="mb-6">{activeCard}</div>}
+            {tab === "progress" && <div className="mb-6 grid gap-6 lg:grid-cols-2">{activeCard}{languagesCard}</div>}
 
             {/* Coding progress */}
             {tab === "progress" && (

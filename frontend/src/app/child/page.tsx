@@ -15,6 +15,7 @@ import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import RemindersCard from "@/components/RemindersCard";
 import { ChildStarJarCard } from "@/components/StarJarCards";
+import { ChildNotesCard } from "@/components/FamilyNotes";
 import StarIcon from "@/components/StarIcon";
 import AppCard from "@/components/AppCard";
 import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
@@ -372,6 +373,8 @@ export default function ChildDashboard() {
             </div>
           </div>
         </div>
+
+        <ChildNotesCard />
 
         {/* Up next card */}
         {nextLesson && (

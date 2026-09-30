@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import MomentImage from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { ActiveSummary, getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
+import { ActiveSummary, LanguageSummary, getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
 
 type Child = { id: number; username: string };
 
@@ -38,10 +38,11 @@ type Report = {
   journal: { date: string; content: string }[];
   moments: { date: string; subject: string | null; note: string | null; photo_ids: number[] }[];
   active?: ActiveSummary;
+  languages?: LanguageSummary;
 };
 
 type PeriodKey = "term" | "year" | "last-year" | "custom";
-type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "active" | "extra" | "journal";
+type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "active" | "languages" | "extra" | "journal";
 
 const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "approach", label: "Our approach", defaultOn: true },
@@ -51,6 +52,7 @@ const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "reading", label: "Reading", defaultOn: true },
   { key: "work", label: "Examples of work", defaultOn: true },
   { key: "active", label: "P.E., outdoors and clubs", defaultOn: true },
+  { key: "languages", label: "Languages", defaultOn: true },
   { key: "moments", label: "Learning moments", defaultOn: true },
   { key: "extra", label: "Extra learning", defaultOn: true },
   { key: "journal", label: "Journal highlights", defaultOn: false },
@@ -154,6 +156,55 @@ function ActiveSection({ active }: { active: ActiveSummary }) {
             <>
               <p className="mt-4 font-bold">Outdoor learning</p>
               <p>{outdoor.map((a) => `${a.title} (${timesText(a.times)})`).join("; ")}.</p>
+            </>
+          )}
+        </>
+      )}
+    </ReportSection>
+  );
+}
+
+function LanguagesSection({ languages }: { languages: LanguageSummary }) {
+  const { totals } = languages;
+  return (
+    <ReportSection title="Modern languages">
+      {totals.days === 0 ? (
+        <p>No language practice was recorded in this period.</p>
+      ) : (
+        <>
+          <p>
+            Practised {totals.languages === 1 ? "one language" : `${totals.languages} languages`} on {totals.days} day{totals.days === 1 ? "" : "s"}
+            {totals.minutes > 0 ? <>, adding up to at least <strong>{formatDuration(totals.minutes)}</strong></> : null}
+            {totals.best_streak > 1 ? `, with a longest run of ${totals.best_streak} days in a row` : ""}.
+          </p>
+          <table className="mt-3 w-full text-left">
+            <thead>
+              <tr className="text-xs text-[#6E5A46] print:text-gray-600">
+                <th className="py-1.5 pr-3 font-bold">Language</th>
+                <th className="py-1.5 pr-3 font-bold">How</th>
+                <th className="py-1.5 font-bold">Practice</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-brand-line print:divide-gray-300">
+              {languages.languages.map((l) => (
+                <tr key={l.language} className="align-top">
+                  <td className="py-2 pr-3 font-bold">{l.language}</td>
+                  <td className="py-2 pr-3">{l.ways.join(", ")}</td>
+                  <td className="py-2 whitespace-nowrap">
+                    {l.days} day{l.days === 1 ? "" : "s"}
+                    {l.minutes ? ` (${formatDuration(l.minutes)})` : ""}
+                    {l.xp ? ` · ${l.xp} XP` : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {languages.log.some((e) => e.note) && (
+            <>
+              <p className="mt-4 font-bold">Topics covered</p>
+              <p>
+                {Array.from(new Set(languages.log.filter((e) => e.note).map((e) => `${e.note} (${e.language})`))).slice(0, 12).join("; ")}.
+              </p>
             </>
           )}
         </>
@@ -566,6 +617,8 @@ export default function CouncilReportPage() {
             )}
 
             {on("active") && report.active && <ActiveSection active={report.active} />}
+
+            {on("languages") && report.languages && <LanguagesSection languages={report.languages} />}
 
             {on("moments") && report.moments.length > 0 && (
               <ReportSection title="Learning moments">

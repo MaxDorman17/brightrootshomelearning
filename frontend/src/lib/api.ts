@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { AvatarChoice } from "@/lib/avatar";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -524,3 +525,63 @@ export const logActivity = (body: {
 export const deleteActivity = (id: number) => api.delete(`/api/activities/${id}`);
 export const getActiveSummary = (params: { child_id?: number; start_date?: string; end_date?: string }) =>
   api.get<ActiveSummary>("/api/activities/summary", { params });
+
+// Languages: a practice diary for any language
+export type LanguageLogEntry = {
+  id: number;
+  language: string;
+  done_on: string;
+  minutes: number | null;
+  xp: number | null;
+  how: string | null;
+  note: string | null;
+  child_id: number;
+  child: string;
+  can_remove: boolean;
+};
+export type LanguageSummary = {
+  totals: { sessions: number; days: number; minutes: number; xp: number; languages: number; current_streak: number; best_streak: number };
+  languages: {
+    language: string;
+    sessions: number;
+    days: number;
+    minutes: number;
+    xp: number;
+    current_streak: number;
+    best_streak: number;
+    last: string;
+    children: string[];
+    ways: string[];
+  }[];
+  log: { date: string; language: string; child: string; minutes: number | null; xp: number | null; how: string | null; note: string | null }[];
+};
+export const getLanguageLog = (params: { child_id?: number; language?: string; start_date?: string; end_date?: string } = {}) =>
+  api.get<LanguageLogEntry[]>("/api/languages/", { params });
+export const logLanguage = (body: {
+  language: string;
+  done_on: string;
+  minutes?: number | null;
+  xp?: number | null;
+  how?: string;
+  note?: string;
+  child_ids: number[];
+}) => api.post<LanguageLogEntry[]>("/api/languages/", body);
+export const deleteLanguageLog = (id: number) => api.delete(`/api/languages/${id}`);
+export const getLanguageSummary = (params: { child_id?: number; start_date?: string; end_date?: string } = {}) =>
+  api.get<LanguageSummary>("/api/languages/summary", { params });
+
+// Notes from home: messages from a grown-up shown on the child's Today page
+export type FamilyNote = {
+  id: number;
+  body: string;
+  created_at: string | null;
+  read_at: string | null;
+  reaction: string | null;
+  author: { id: number; username: string; avatar: AvatarChoice | null };
+  child_id: number;
+  child: string;
+};
+export const getNotes = () => api.get<FamilyNote[]>("/api/notes/");
+export const sendNote = (body: string, child_ids: number[]) => api.post<FamilyNote[]>("/api/notes/", { body, child_ids });
+export const readNote = (id: number, reaction?: string) => api.post<FamilyNote>(`/api/notes/${id}/read`, { reaction: reaction ?? null });
+export const deleteNote = (id: number) => api.delete(`/api/notes/${id}`);

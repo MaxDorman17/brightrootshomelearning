@@ -701,3 +701,35 @@ class LearningAidSeed(Base):
     slug = Column(String(60), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     __table_args__ = (UniqueConstraint("parent_id", "slug", name="uq_learning_aid_seed"),)
+
+
+class LanguageLog(Base):
+    """One day of practice in one language for one child, e.g. 15 minutes of French on Duolingo."""
+    __tablename__ = "language_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    language = Column(String(60), nullable=False)   # e.g. "French"
+    done_on = Column(Date, nullable=False, index=True)
+    minutes = Column(Integer, nullable=True)
+    xp = Column(Integer, nullable=True)             # points from an app such as Duolingo
+    how = Column(String(100), nullable=True)        # e.g. "Duolingo", "Lesson with Gran"
+    note = Column(Text, nullable=True)              # what they practised
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    polish_session_id = Column(Integer, nullable=True, index=True)  # set on rows copied from the old Polish log
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class FamilyNote(Base):
+    """A short message from a grown-up, shown on a child's Today page like a note on the fridge."""
+    __tablename__ = "family_notes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    body = Column(Text, nullable=False)
+    read_at = Column(DateTime(timezone=True), nullable=True)
+    reaction = Column(String(16), nullable=True)  # the child's reply, e.g. a heart
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

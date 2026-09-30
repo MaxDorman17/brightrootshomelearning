@@ -10,7 +10,7 @@ from config import settings
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -362,6 +362,51 @@ def backfill_extra_work_flag():
 
 backfill_extra_work_flag()
 
+
+def copy_polish_sessions_to_languages():
+    """Idempotent: copy practice from the old Polish-only log into the Languages diary.
+
+    Each copied row remembers its polish_session id, so nothing is copied twice. A session logged by a child
+    belongs to that child. One logged by a parent goes to their child when they have exactly one; with more
+    than one child there's no way to tell whose it was, so it's left in the old table.
+    """
+    insp = sa_inspect(engine)
+    tables = insp.get_table_names()
+    if "polish_sessions" not in tables or "language_logs" not in tables:
+        return
+    with engine.connect() as conn:
+        rows = conn.execute(text("""
+            SELECT p.id, p.user_id, p.date, p.xp, p.notes, u.role, u.parent_id
+            FROM polish_sessions p JOIN users u ON u.id = p.user_id
+            WHERE p.id NOT IN (SELECT polish_session_id FROM language_logs WHERE polish_session_id IS NOT NULL)
+        """)).fetchall()
+        to_copy = []
+        for pid, user_id, day, xp, notes, role, parent_id in rows:
+            if role == "child":
+                family, child = parent_id, user_id
+            else:
+                kids = conn.execute(text("SELECT id FROM users WHERE parent_id = :p AND role = 'child'"), {"p": user_id}).fetchall()
+                if len(kids) != 1:
+                    continue
+                family, child = user_id, kids[0][0]
+            if family:
+                to_copy.append({"family": family, "child": child, "day": day, "xp": xp, "note": notes, "user": user_id, "pid": pid})
+        if not to_copy:
+            return
+        backup_sqlite_database("languages")
+        for row in to_copy:
+            conn.execute(
+                text("""
+                    INSERT INTO language_logs (parent_id, child_id, language, done_on, xp, how, note, created_by, polish_session_id)
+                    VALUES (:family, :child, 'Polish', :day, :xp, 'Duolingo', :note, :user, :pid)
+                """),
+                row,
+            )
+        conn.commit()
+
+
+copy_polish_sessions_to_languages()
+
 # The interactive API docs are handy when running locally, but on the live site they'd list every server address publicly.
 _local = settings.FRONTEND_URL.startswith("http://localhost")
 app = FastAPI(
@@ -418,6 +463,8 @@ app.include_router(push.router)
 app.include_router(make.router)
 app.include_router(notifications.router)
 app.include_router(activities.router)
+app.include_router(languages.router)
+app.include_router(notes.router)
 
 
 @app.on_event("startup")

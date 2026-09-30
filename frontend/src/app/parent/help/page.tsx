@@ -141,7 +141,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         steps: [
           <><L href="/parent/report">Progress, then Reports</L> gives a summary of lessons, results and reading for the period you pick.</>,
           <><L href="/parent/council-report">Council Report</L> puts together a tidy report for a local authority, ready to print or save as a PDF.</>,
-          <>Both reports include P.E., Outdoors and clubs from the <L href="/clubs">activity diary</L>.</>,
+          <>Both reports include P.E., Outdoors and clubs from the <L href="/clubs">activity diary</L>, and practice from <L href="/languages">Languages</L>.</>,
           <>Keep notes and photos along the way in <L href="/parent/journal">Journal</L> and <L href="/moments">Moments &amp; Photos</L>. They make the reports richer.</>,
         ],
       },
@@ -201,6 +201,19 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           "Add your own with '+ Add your own', or copy a ready-made one and change it.",
           "Any of them can be added to the planner as a lesson.",
           <>After a P.E. or Outdoors activity, press <b>We did this</b> to add it to the activity diary.</>,
+        ],
+      },
+      {
+        id: "languages",
+        emoji: "💬",
+        title: "Languages",
+        intro: "Keep a record of language practice in any language, from French to British Sign Language.",
+        steps: [
+          <>Open <L href="/languages">Learn, then Languages</L> and press <b>+ Log practice</b>. Pick the language, who practised, and how long.</>,
+          "Add Duolingo or other app XP if you like, and a few words about what they practised.",
+          <>Children can press <b>I practised!</b> themselves. Practising every day builds a streak.</>,
+          <>Streaks, days and XP earn language badges on the <L href="/achievements">Badges</L> page.</>,
+          "All practice shows in the learning report and the council report.",
         ],
       },
       {

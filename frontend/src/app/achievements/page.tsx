@@ -2,12 +2,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren, getPolishSessions } from "@/lib/api";
+import { getAllEntries, getAllMyEntries, getCodingProgress, getDaysOff, getChildren, getLanguageSummary, LanguageSummary } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
-import { format, subDays } from "date-fns";
+import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
 
 const SEEN_KEY = "seen_badges";
@@ -36,9 +36,11 @@ interface BadgeData {
   submitted: number;
   coding: Set<string>;
   subjectCounts: Record<string, number>;
-  polishSessions: number;
-  polishStreak: number;
-  polishXp: number;
+  languageDays: number;
+  languageBestStreak: number;
+  languageXp: number;
+  languageMinutes: number;
+  languageCount: number;
 }
 
 const BADGES: Badge[] = [
@@ -85,26 +87,28 @@ const BADGES: Badge[] = [
   { category: "Coding", id: "web_dev",      icon: "🌐", title: "Web Developer",         desc: "Completed all Web Dev lessons",             color: "from-brand-leaf to-brand-deep",    check: d => WEB_IDS.every(id => d.coding.has(id)) },
   { category: "Coding", id: "full_coding",  icon: "🚀", title: "Future Coder",          desc: "Completed the entire coding curriculum",    color: "from-brand-deep to-[#7A5C3E]",    check: d => d.coding.size >= 23 },
 
-  // --- Polish / Duolingo ---
-  { category: "Languages", id: "dzien_dobry",  icon: "🇵🇱", title: "Dzień Dobry!",          desc: "Logged your first Polish practice session",  color: "from-red-500 to-rose-600",         check: d => d.polishSessions >= 1 },
-  { category: "Languages", id: "polish_week",  icon: "🗣️", title: "Polska Week",            desc: "7-day Polish practice streak",              color: "from-red-600 to-red-700",          check: d => d.polishStreak >= 7 },
-  { category: "Languages", id: "polish_fort",  icon: "🌍", title: "Language Learner",       desc: "14-day Polish practice streak",             color: "from-rose-500 to-red-700",         check: d => d.polishStreak >= 14 },
-  { category: "Languages", id: "polish_month", icon: "🏅", title: "Miesiąc!",               desc: "30-day Polish practice streak",             color: "from-red-700 to-rose-900",         check: d => d.polishStreak >= 30 },
-  { category: "Languages", id: "polish_ten",   icon: "📖", title: "Getting Fluent",         desc: "Practiced Polish 10 times",                 color: "from-orange-400 to-red-500",       check: d => d.polishSessions >= 10 },
-  { category: "Languages", id: "polish_fifty", icon: "🎓", title: "Polyglot in Training",   desc: "Practiced Polish 50 times",                 color: "from-amber-500 to-red-600",        check: d => d.polishSessions >= 50 },
-  { category: "Languages", id: "xp_500",       icon: "⚡", title: "XP Hunter",              desc: "Earned 500 XP on Duolingo",                 color: "from-yellow-400 to-orange-500",    check: d => d.polishXp >= 500 },
-  { category: "Languages", id: "xp_1000",      icon: "💎", title: "XP Legend",              desc: "Earned 1,000 XP on Duolingo",              color: "from-amber-400 to-yellow-600",     check: d => d.polishXp >= 1000 },
+  // --- Languages (any language, from the Languages page) ---
+  { category: "Languages", id: "lang_first",     icon: "🗣️", title: "First Words",          desc: "Logged your first language practice",        color: "from-sky-400 to-blue-500",         check: d => d.languageDays >= 1 },
+  { category: "Languages", id: "lang_week",      icon: "🔥", title: "Week of Words",        desc: "7-day language practice streak",             color: "from-orange-400 to-red-500",       check: d => d.languageBestStreak >= 7 },
+  { category: "Languages", id: "lang_fortnight", icon: "🌍", title: "Language Learner",     desc: "14-day language practice streak",            color: "from-emerald-400 to-teal-600",     check: d => d.languageBestStreak >= 14 },
+  { category: "Languages", id: "lang_month",     icon: "🏅", title: "A Month of Practice",  desc: "30-day language practice streak",            color: "from-rose-500 to-red-700",         check: d => d.languageBestStreak >= 30 },
+  { category: "Languages", id: "lang_ten",       icon: "📖", title: "Getting Fluent",       desc: "Practised a language on 10 different days",  color: "from-orange-400 to-amber-500",     check: d => d.languageDays >= 10 },
+  { category: "Languages", id: "lang_fifty",     icon: "🎓", title: "Dedicated Linguist",   desc: "Practised a language on 50 different days",  color: "from-amber-500 to-red-600",        check: d => d.languageDays >= 50 },
+  { category: "Languages", id: "lang_hours",     icon: "⏱️", title: "Ten Hours In",         desc: "10 hours of language practice",              color: "from-violet-400 to-purple-600",    check: d => d.languageMinutes >= 600 },
+  { category: "Languages", id: "lang_two",       icon: "💬", title: "Bilingual Explorer",   desc: "Practised two different languages",          color: "from-cyan-400 to-sky-600",         check: d => d.languageCount >= 2 },
+  { category: "Languages", id: "lang_three",     icon: "🌐", title: "Polyglot",             desc: "Practised three different languages",        color: "from-indigo-400 to-violet-600",    check: d => d.languageCount >= 3 },
+  { category: "Languages", id: "xp_500",         icon: "⚡", title: "XP Hunter",            desc: "Earned 500 XP in a language app",            color: "from-yellow-400 to-orange-500",    check: d => d.languageXp >= 500 },
+  { category: "Languages", id: "xp_1000",        icon: "💎", title: "XP Legend",            desc: "Earned 1,000 XP in a language app",          color: "from-amber-400 to-yellow-600",     check: d => d.languageXp >= 1000 },
 ];
 
-function computePolishStreak(dates: Set<string>): number {
-  let streak = 0;
-  let check = new Date();
-  check.setHours(0, 0, 0, 0);
-  while (dates.has(format(check, "yyyy-MM-dd"))) {
-    streak++;
-    check = subDays(check, 1);
-  }
-  return streak;
+function languageData(t: LanguageSummary["totals"] | null) {
+  return {
+    languageDays: t?.days ?? 0,
+    languageBestStreak: t?.best_streak ?? 0,
+    languageXp: t?.xp ?? 0,
+    languageMinutes: t?.minutes ?? 0,
+    languageCount: t?.languages ?? 0,
+  };
 }
 
 function computeStreak(entries: PlannerEntry[], daysOff: Set<string> = new Set()): number {
@@ -136,7 +140,7 @@ export default function AchievementsPage() {
   const celebrateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
-  const [polishSessions, setPolishSessions] = useState<{ date: string; xp: number | null }[]>([]);
+  const [languages, setLanguages] = useState<LanguageSummary["totals"] | null>(null);
   const [badgeView, setBadgeView] = useState<"earned" | "locked" | "all">("earned");
   const [badgeCategory, setBadgeCategory] = useState<string>("All");
 
@@ -146,17 +150,24 @@ export default function AchievementsPage() {
     setRole(r);
 
     const entriesFetch = r === "parent" ? getAllEntries() : getAllMyEntries();
-    Promise.all([entriesFetch, getCodingProgress(), getDaysOff(), getPolishSessions()]).then(([eRes, cRes, dRes, pRes]) => {
+    Promise.all([entriesFetch, getCodingProgress(), getDaysOff()]).then(([eRes, cRes, dRes]) => {
       setAllEntries(eRes.data);
       setCoding(new Set(cRes.data as string[]));
       setDaysOff(new Set((dRes.data as { date: string }[]).map(d => d.date)));
-      setPolishSessions(pRes.data);
       setLoading(false);
     });
     if (r === "parent") {
       getChildren().then(res => setChildren(res.data)).catch(() => {});
     }
   }, [router]);
+
+  // Language badges come from the Languages diary, for the child being viewed.
+  useEffect(() => {
+    if (!role) return;
+    getLanguageSummary(role === "parent" && selectedChildId ? { child_id: selectedChildId } : {})
+      .then(res => setLanguages(res.data.totals))
+      .catch(() => setLanguages(null));
+  }, [role, selectedChildId]);
 
   useEffect(() => {
     if (role !== "parent" || !selectedChildId) return;
@@ -177,10 +188,7 @@ export default function AchievementsPage() {
       const s = e.lesson.subject;
       subjectCounts[s] = (subjectCounts[s] || 0) + 1;
     });
-    const polishDates = new Set(polishSessions.map(s => s.date));
-    const polishStreak = computePolishStreak(polishDates);
-    const polishXp = polishSessions.reduce((sum, s) => sum + (s.xp ?? 0), 0);
-    const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, polishSessions: polishSessions.length, polishStreak, polishXp };
+    const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, ...languageData(languages) };
     const earned = BADGES.filter(b => b.check(data)).map(b => b.id);
 
     const seen: string[] = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
@@ -193,7 +201,7 @@ export default function AchievementsPage() {
       localStorage.setItem(SEEN_KEY, JSON.stringify(earned));
     }
     return () => { if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current); };
-  }, [loading, allEntries, coding, selectedChildId, polishSessions]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, allEntries, coding, selectedChildId, languages]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const entries = role === "parent" && selectedChildId
     ? allEntries.filter(e => e.assigned_to === selectedChildId || e.assigned_to === null)
@@ -207,10 +215,7 @@ export default function AchievementsPage() {
     const s = e.lesson.subject;
     subjectCounts[s] = (subjectCounts[s] || 0) + 1;
   });
-  const polishDates = new Set(polishSessions.map(s => s.date));
-  const polishStreak = computePolishStreak(polishDates);
-  const polishXp = polishSessions.reduce((sum, s) => sum + (s.xp ?? 0), 0);
-  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, polishSessions: polishSessions.length, polishStreak, polishXp };
+  const data: BadgeData = { totalComplete, streak, submitted, coding, subjectCounts, ...languageData(languages) };
   const earned = BADGES.filter(b => b.check(data));
   const locked = BADGES.filter(b => !b.check(data));
   const categoryOptions = ["All", "Lessons", "Streaks", "Work", "Subjects", "Coding", "Languages"];
@@ -293,7 +298,7 @@ export default function AchievementsPage() {
               </div>
             </div>
 
-            {(streak > 0 || polishSessions.length > 0) && (
+            {(streak > 0 || (languages?.days ?? 0) > 0) && (
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {streak > 0 && (
                   <div className="brand-card p-5">
@@ -310,19 +315,21 @@ export default function AchievementsPage() {
                   </div>
                 )}
 
-                {polishSessions.length > 0 && (
-                  <div className="brand-card p-5">
+                {languages && languages.days > 0 && (
+                  <a href="/languages" className="brand-card p-5 block hover:border-brand-softsage">
                     <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Languages</p>
                     <div className="flex items-end justify-between gap-4 mt-2">
                       <div>
-                        <p className="text-2xl font-bold text-[#2E342F]">{polishSessions.length} sessions</p>
+                        <p className="text-2xl font-bold text-[#2E342F]">{languages.days} day{languages.days === 1 ? "" : "s"} of practice</p>
                         <p className="text-sm text-[#6E5A46] mt-1">
-                          {polishStreak > 0 ? `${polishStreak}-day Polish streak · ` : ""}{polishXp} XP earned
+                          {languages.current_streak > 0 ? `${languages.current_streak}-day streak · ` : ""}
+                          {languages.languages} language{languages.languages === 1 ? "" : "s"}
+                          {languages.xp > 0 ? ` · ${languages.xp} XP` : ""}
                         </p>
                       </div>
-                      <span className="text-3xl">🇵🇱</span>
+                      <Emoji e="🗣️" className="h-9 w-9" />
                     </div>
-                  </div>
+                  </a>
                 )}
               </div>
             )}
