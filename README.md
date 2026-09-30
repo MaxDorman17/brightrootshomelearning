@@ -1,120 +1,77 @@
-# Homeschool App — Local Setup
+# Bright Roots Home Learning
 
-## Prerequisites
+A home learning planner for UK families: parents plan the week, and each child gets their own space to learn,
+earn stars and keep a record of what they've done.
+
+- **Frontend:** Next.js (in `frontend/`)
+- **Backend:** FastAPI with SQLite (in `backend/`)
+- **Live site:** https://brightrootshomelearning.co.uk, with the API at https://api.brightrootshomelearning.co.uk
+
+---
+
+## Running it locally
+
+### Prerequisites
 - Python 3.11+
 - Node.js 18+
-- PostgreSQL 15+
 
----
-
-## 1. Database Setup
-
-Open psql as a superuser and run:
-```sql
-CREATE USER homeschool_user WITH PASSWORD 'CHANGE_ME_TO_A_STRONG_PASSWORD';
-CREATE DATABASE homeschool_db OWNER homeschool_user;
-GRANT ALL PRIVILEGES ON DATABASE homeschool_db TO homeschool_user;
-```
-
-Or run the file:
-```
-psql -U postgres -f setup.sql
-```
-
----
-
-## 2. Backend Setup
+### Backend
 
 ```bash
-cd homeschool-app/backend
-
-# Create and activate virtual environment
+cd backend
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # Mac/Linux
-
-# Install dependencies
 pip install -r requirements.txt
+```
 
-# Create backend/.env locally with your own DATABASE_URL and SECRET_KEY.
-# Real environment files are intentionally not committed.
+Create `backend/.env` (it is not committed). The two required settings are:
 
-# Optional first-account bootstrap:
-# set the BOOTSTRAP_* environment variables, then run:
-python add_users.py
+```
+DATABASE_URL=sqlite:///./homeschool.db
+SECRET_KEY=<a long random string>
+```
 
-# Start the API server
+Optional settings (all in `backend/config.py`): `FRONTEND_URL`, `RESEND_API_KEY` and `RESEND_FROM_EMAIL` for email,
+`OAK_API_KEY` for Oak National Academy, `STRIPE_*` for billing, `ADMIN_EMAILS` for newsletter admins, and
+`UPLOAD_ROOT` for where uploaded files are kept.
+
+The database tables and any schema updates are created automatically when the server starts.
+
+To create a first parent and child account, set the `BOOTSTRAP_*` environment variables described in
+`backend/add_users.py`, then run `python add_users.py`. There are no built-in demo logins.
+
+Start the API:
+
+```bash
 uvicorn main:app --reload --port 8000
 ```
 
-API runs at http://localhost:8000
-Swagger docs at http://localhost:8000/docs
+The API runs at http://localhost:8000, and its interactive docs are at http://localhost:8000/docs. The docs are
+only switched on when `FRONTEND_URL` is a localhost address, so they don't appear on the live site.
 
----
-
-## 3. Frontend Setup
+### Frontend
 
 ```bash
-cd homeschool-app/frontend
-
+cd frontend
 npm install
 npm run dev
 ```
 
-App runs at http://localhost:3000
+The site runs at http://localhost:3000. It talks to the API at `NEXT_PUBLIC_API_URL`, which defaults to
+http://localhost:8000.
 
 ---
 
-## Accounts
+## Deploying
 
-Bright Roots does not include default or demo login credentials.
-Accounts should be created intentionally using the bootstrap environment variables
-documented in `backend/add_users.py`.
+The live site runs in Coolify. To deploy, push to `main` on GitHub, then redeploy the frontend and/or backend in
+Coolify. When the frontend depends on a new API change, redeploy the backend first.
 
----
+On the live server the database is `/data/homeschool.db` and uploads go to `/data/uploads`. The `/data` folder
+survives redeploys, but the app folder is replaced each time, so never save files relative to the app folder.
 
-## Usage Flow
+The live database holds real family data. Schema changes run as startup migrations in `backend/main.py`: keep
+them additive, back up the database first (`backup_sqlite_database`), and test them on a copy.
 
-1. Log in as **parent** → Add lessons → They appear in the weekly planner
-2. Log in as **child** → See today's lessons → Click "Mark Done" to complete them
-
----
-
-## Project Structure
-
-```
-homeschool-app/
-├── backend/
-│   ├── main.py          # FastAPI app entry point
-│   ├── config.py        # Settings from .env
-│   ├── database.py      # SQLAlchemy engine + session
-│   ├── models.py        # User, Lesson, PlannerEntry ORM models
-│   ├── schemas.py       # Pydantic request/response schemas
-│   ├── auth.py          # JWT + bcrypt helpers + dependencies
-│   ├── seed.py          # Demo data seeder
-│   ├── requirements.txt
-│   ├── .env
-│   └── routers/
-│       ├── auth.py      # /api/auth/register, /login, /me
-│       ├── lessons.py   # /api/lessons CRUD
-│       └── planner.py   # /api/planner week/today/complete
-└── frontend/
-    ├── src/
-    │   ├── app/
-    │   │   ├── layout.tsx
-    │   │   ├── page.tsx         # Root redirect
-    │   │   ├── login/page.tsx   # Login + Register
-    │   │   ├── parent/page.tsx  # Parent dashboard
-    │   │   └── child/page.tsx   # Child dashboard
-    │   ├── components/
-    │   │   └── Navbar.tsx
-    │   ├── lib/
-    │   │   ├── api.ts           # Axios client + API calls
-    │   │   └── auth.ts          # localStorage helpers
-    │   └── types/
-    │       └── index.ts         # TypeScript interfaces
-    ├── package.json
-    ├── tsconfig.json
-    ├── tailwind.config.js
-    └── next.config.js
-```
+The `deploy/` folder and `setup.sql` are from an older self-managed setup and are not used by the live site.

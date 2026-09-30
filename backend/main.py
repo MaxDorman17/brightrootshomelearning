@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
+from config import settings
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
@@ -361,7 +362,15 @@ def backfill_extra_work_flag():
 
 backfill_extra_work_flag()
 
-app = FastAPI(title="Homeschool API", version="1.0.0")
+# The interactive API docs are handy when running locally, but on the live site they'd list every server address publicly.
+_local = settings.FRONTEND_URL.startswith("http://localhost")
+app = FastAPI(
+    title="Homeschool API",
+    version="1.0.0",
+    docs_url="/docs" if _local else None,
+    redoc_url="/redoc" if _local else None,
+    openapi_url="/openapi.json" if _local else None,
+)
 
 app.add_middleware(
     CORSMiddleware,

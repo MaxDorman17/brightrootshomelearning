@@ -31,3 +31,7 @@ Thumbs.db
 
 # Max's full-size original illustrations (the site uses the trimmed copies in public/home/icons)
 frontend/public/images/
+
+# Build and local tooling files
+frontend/*.tsbuildinfo
+.claude/launch.json

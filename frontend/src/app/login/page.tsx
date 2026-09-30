@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fraunces } from "next/font/google";
-import { getMe, login } from "@/lib/api";
+import { checkSession, getMe, login } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 import { applyTheme } from "@/lib/theme";
 
@@ -39,6 +39,19 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // A child who is already logged in and wanders onto a parent page gets sent here. Take them back to their
+  // own Today page rather than asking them to log in again.
+  useEffect(() => {
+    checkSession()
+      .then((res) => {
+        if (res.data.role === "child") {
+          setAuth(res.data.role, res.data.username);
+          router.replace("/child");
+        }
+      })
+      .catch(() => {});
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

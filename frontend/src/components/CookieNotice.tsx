@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Emoji from "@/components/Emoji";
 
 const SEEN_KEY = "cookie_notice_seen";
 
@@ -34,7 +35,7 @@ export default function CookieNotice() {
       className="fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-2xl flex-col gap-3 rounded-2xl border border-[#E4DCCD] bg-[#FFFDF8] p-4 text-sm text-[#4A3B2C] shadow-xl shadow-black/10 sm:flex-row sm:items-center print:hidden"
     >
       <p className="flex-1">
-        🍪 We only use essential cookies to keep you logged in and the site secure. No tracking, no adverts.{" "}
+        <Emoji e="🍪" /> We only use essential cookies to keep you logged in and the site secure. No tracking, no adverts.{" "}
         <Link href="/cookies" className="font-bold text-[#2F5D3A] underline">
           Cookie policy
         </Link>

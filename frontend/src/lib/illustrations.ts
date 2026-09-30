@@ -69,6 +69,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🔒": "padlock",
   "🙋": "raised-hand",
   "💬": "speech-bubble",
+  "🍪": "cookie",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
