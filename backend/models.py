@@ -689,3 +689,15 @@ class ActivityLog(Base):
     note = Column(Text, nullable=True)
     created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class LearningAidSeed(Base):
+    """Which Bright Roots learning aids (hundred square, times tables...) a family has been given, so
+    one they delete from their Resources isn't added back."""
+    __tablename__ = "learning_aid_seeds"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    slug = Column(String(60), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("parent_id", "slug", name="uq_learning_aid_seed"),)

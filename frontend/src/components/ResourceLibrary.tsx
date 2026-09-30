@@ -30,9 +30,21 @@ type Item = {
 
 const input = "rounded-xl border border-[#D9D1C4] bg-white px-3 py-2 text-sm text-brand-charcoal outline-none focus:border-brand-softsage";
 
+/** The website a link goes to; Bright Roots' own learning aids are links within the site. */
+function linkHost(url: string | null) {
+  if (!url) return "";
+  if (url.startsWith("/")) return "Bright Roots learning aid";
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
 function icon(item: Item) {
   if (item.kind === "link") {
-    const host = item.url ? new URL(item.url).hostname : "";
+    if (item.url?.startsWith("/learning-aids/")) return "📐";
+    const host = linkHost(item.url);
     if (host.includes("twinkl")) return "🟣";
     if (host.includes("youtube") || host.includes("youtu.be")) return "▶️";
     if (host.includes("bbc")) return "📺";
@@ -79,7 +91,8 @@ function ItemRow({
 
   const open = async () => {
     if (item.kind === "link" && item.url) {
-      window.open(item.url, "_blank", "noopener,noreferrer");
+      if (item.url.startsWith("/")) window.location.href = item.url;
+      else window.open(item.url, "_blank", "noopener,noreferrer");
       return;
     }
     setBusy(true);
@@ -145,7 +158,7 @@ function ItemRow({
         <button onClick={open} disabled={busy} className="min-w-0 flex-1 text-left">
           <p className="truncate font-bold text-brand-charcoal hover:text-brand-sage hover:underline">{item.title}</p>
           <p className="truncate text-xs text-[#6E5A46]">
-            {item.kind === "link" ? (item.url ? new URL(item.url).hostname.replace(/^www\./, "") : "") : `${item.original_name} · ${fileSize(item.size)}`}
+            {item.kind === "link" ? linkHost(item.url) : `${item.original_name} · ${fileSize(item.size)}`}
             {item.note ? ` · ${item.note}` : ""}
           </p>
         </button>

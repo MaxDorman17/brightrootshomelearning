@@ -7,11 +7,12 @@ from urllib.parse import quote, urlparse
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from auth import get_current_user, require_parent
 from database import get_db
-from models import Resource, ResourceFolder, TimetableConfig, User
+from models import LearningAidSeed, Resource, ResourceFolder, TimetableConfig, User
 from routers.timetable import DEFAULT_TIMETABLE
 from storage import upload_dir
 
@@ -20,6 +21,16 @@ router = APIRouter(prefix="/api/resources", tags=["resources"])
 UPLOAD_DIR = upload_dir("resources")
 MAX_FILE_SIZE = 20 * 1024 * 1024
 GENERAL_FOLDER = "General"
+LEARNING_AIDS_FOLDER = "Learning Aids"
+
+# Printable charts every family gets in their Resources. Each opens at /learning-aids/<slug> on the site.
+# A family can delete any of them, and it won't come back. Add new ones here and every family gets them.
+LEARNING_AIDS = [
+    ("hundred-square", "Hundred Square", "Find patterns, practise counting and discover number facts."),
+    ("number-line-0-20", "Number Line 0 to 20", "Count forwards and backwards, add and take away."),
+    ("times-tables-1-12", "Times Tables 1 to 12", "A grid of every times table up to 12 x 12."),
+    ("periodic-table", "Periodic Table of Elements", "A clear reference chart for young scientists."),
+]
 ALLOWED_FILES = {
     ".pdf": "application/pdf",
     ".doc": "application/msword",
@@ -137,10 +148,35 @@ def _own_resource(db: Session, parent: User, resource_id: int) -> Resource:
     return resource
 
 
+def _add_learning_aids(db: Session, parent_id: int) -> None:
+    """Give the family any learning aids they haven't had yet."""
+    had = {s for (s,) in db.query(LearningAidSeed.slug).filter(LearningAidSeed.parent_id == parent_id)}
+    new = [aid for aid in LEARNING_AIDS if aid[0] not in had]
+    if not new:
+        return
+    for slug, title, note in new:
+        db.add(Resource(
+            parent_id=parent_id,
+            folder=LEARNING_AIDS_FOLDER,
+            title=title,
+            kind="link",
+            url=f"/learning-aids/{slug}",
+            note=note,
+            visible_to_children=True,
+        ))
+        db.add(LearningAidSeed(parent_id=parent_id, slug=slug))
+    try:
+        db.commit()
+    except IntegrityError:
+        # Two requests at once both tried to add them; the other one did.
+        db.rollback()
+
+
 @router.get("/")
 def list_resources(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     parent_id = _family_id(current_user)
     is_child = current_user.role == "child"
+    _add_learning_aids(db, parent_id)
 
     query = db.query(Resource).filter(Resource.parent_id == parent_id)
     if is_child:
