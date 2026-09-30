@@ -229,9 +229,16 @@ export default function HomePage() {
                 </a>
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold" style={{ color: C.earth }}>
-                <span>🗓️ Weekly planning</span>
-                <span>👨‍👩‍👧 Parent & child logins</span>
-                <span>📱 Any device</span>
+                {[
+                  { src: "/home/icons/weekly-planning.png", fallback: "🗓️", label: "Weekly planning" },
+                  { src: "/home/icons/family-logins.png", fallback: "👨‍👩‍👧", label: "Parent & child logins" },
+                  { src: "/home/icons/any-device.png", fallback: "📱", label: "Any device" },
+                ].map((f) => (
+                  <span key={f.label} className="flex items-center gap-2">
+                    <Art src={f.src} className="h-8 w-8 object-contain" fallback={<span aria-hidden>{f.fallback}</span>} />
+                    {f.label}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

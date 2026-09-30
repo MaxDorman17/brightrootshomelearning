@@ -32,7 +32,8 @@ export default function NewsletterSignup({ variant = "box" }: { variant?: "box" 
       <section className="border-t border-[#E4DCCD] bg-[#E9EEE1] py-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 sm:px-6 md:flex-row md:justify-between">
           <div className="flex items-center gap-4 text-center md:text-left">
-            <span className="hidden text-3xl sm:block" aria-hidden>✉️</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/home/icons/newsletter-envelope.png" alt="" className="hidden h-14 w-14 object-contain sm:block" />
             <div>
               <p className={`${serif.className} text-xl font-semibold text-[#24452C]`}>Home learning ideas, straight to your inbox</p>
               <p className="text-sm text-[#6E5A46]">Tips, free resources and Bright Roots news. Unsubscribe any time.</p>
