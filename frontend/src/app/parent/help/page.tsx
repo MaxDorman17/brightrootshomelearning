@@ -141,6 +141,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         steps: [
           <><L href="/parent/report">Progress, then Reports</L> gives a summary of lessons, results and reading for the period you pick.</>,
           <><L href="/parent/council-report">Council Report</L> puts together a tidy report for a local authority, ready to print or save as a PDF.</>,
+          <>Both reports include P.E., Outdoors and clubs from the <L href="/clubs">activity diary</L>.</>,
           <>Keep notes and photos along the way in <L href="/parent/journal">Journal</L> and <L href="/moments">Moments &amp; Photos</L>. They make the reports richer.</>,
         ],
       },
@@ -199,6 +200,20 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           <>Press <b>Add to shopping list</b> on anything you&apos;ll make, then print or share the <L href="/make/shopping">Shopping List</L>.</>,
           "Add your own with '+ Add your own', or copy a ready-made one and change it.",
           "Any of them can be added to the planner as a lesson.",
+          <>After a P.E. or Outdoors activity, press <b>We did this</b> to add it to the activity diary.</>,
+        ],
+      },
+      {
+        id: "clubs",
+        emoji: "🏅",
+        title: "Clubs and the activity diary",
+        intro: "Record clubs like chess, football or swimming, so they count in your reports.",
+        steps: [
+          <>Open <L href="/clubs">Active, then Clubs &amp; Activities</L> and press <b>+ Add a club</b>. Pick the type, add when and where, and who goes.</>,
+          <>After each session, press <b>Log a session</b> on the club&apos;s card. Children can press <b>I went!</b> themselves.</>,
+          <>Use <b>Log an activity</b> for anything else active, like a bike ride or a beach clean.</>,
+          "When a child stops going, edit the club and tick 'finished'. Its sessions stay in the reports.",
+          "Everything in the diary shows in the learning report and the council report.",
         ],
       },
     ],

@@ -95,6 +95,7 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
+      { href: "/clubs", label: "Clubs & Activities" },
     ],
   },
   {
@@ -137,6 +138,7 @@ const CHILD_NAV: NavEntry[] = [
     items: [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
+      { href: "/clubs", label: "Clubs & Activities" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },

@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks } from "@/lib/api";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks, getActiveSummary, ActiveSummary } from "@/lib/api";
 import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import Emoji from "@/components/Emoji";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
 
 const TIMETABLE_SUBJECTS = [
@@ -81,6 +82,7 @@ export default function ReportPage() {
   const [readingChapters, setReadingChapters] = useState(0);
   const [currentReadingTitle, setCurrentReadingTitle] = useState<string | null>(null);
   const [showOakDetails, setShowOakDetails] = useState(false);
+  const [active, setActive] = useState<ActiveSummary | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -184,6 +186,9 @@ export default function ReportPage() {
     getReadingChapterSummary(params)
       .then(res => setReadingChapters(res.data.chapters ?? 0))
       .catch(() => setReadingChapters(0));
+    getActiveSummary(params)
+      .then(res => setActive(res.data))
+      .catch(() => setActive(null));
   }, [period, selectedChildId, loading]);
 
   useEffect(() => {
@@ -384,6 +389,74 @@ export default function ReportPage() {
           Open reading
         </a>
       </div>
+    </div>
+  );
+
+  const activeTotals = active?.totals;
+  const activeCard = (
+    <div className="brand-card p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">P.E., Outdoors & Clubs</p>
+          {!activeTotals || activeTotals.sessions === 0 ? (
+            <h2 className="text-lg font-bold text-[#2E342F] mt-1">Nothing logged {readingPeriodLabel}</h2>
+          ) : (
+            <div className="flex items-end gap-3 mt-1">
+              <p className="text-3xl font-bold text-brand-sage">{activeTotals.sessions}</p>
+              <h2 className="text-lg font-bold text-[#2E342F] pb-0.5">
+                active session{activeTotals.sessions === 1 ? "" : "s"} {readingPeriodLabel}
+              </h2>
+            </div>
+          )}
+        </div>
+        <a href="/clubs" className="text-sm font-semibold text-brand-sage hover:underline shrink-0">
+          Open diary
+        </a>
+      </div>
+      {activeTotals && activeTotals.sessions > 0 && (
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          {([
+            [activeTotals.pe, "P.E."],
+            [activeTotals.outdoor, "Outdoors"],
+            [activeTotals.club, "Club sessions"],
+          ] as [number, string][]).map(([n, label]) => (
+            <div key={label} className="rounded-xl bg-brand-cream p-3">
+              <p className="text-xl font-bold text-[#2E342F]">{n}</p>
+              <p className="text-xs font-semibold text-[#6E5A46] mt-0.5">{label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {active && active.clubs.length > 0 && (
+        <ul className="mt-4 space-y-1.5">
+          {active.clubs.map(c => (
+            <li key={c.name} className="flex items-center justify-between gap-3 text-sm">
+              <span className="font-semibold text-[#2E342F]">
+                {c.emoji ? <><Emoji e={c.emoji} />{" "}</> : null}{c.name}
+                {!selectedChildId && c.children.length > 0 && (
+                  <span className="font-normal text-[#6E5A46]"> · {c.children.join(", ")}</span>
+                )}
+              </span>
+              <span className="text-xs font-bold text-[#6E5A46] shrink-0">
+                {c.sessions} session{c.sessions === 1 ? "" : "s"}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {active && active.log.length > 0 && (
+        <div className="mt-4 border-t border-brand-line pt-3">
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">Latest</p>
+          <ul className="space-y-1">
+            {active.log.slice(0, 5).map((l, i) => (
+              <li key={i} className="text-sm text-[#2E342F]">
+                <span className="font-semibold">{format(parseISO(l.date), "EEE d MMM")}</span> · {l.kind_label}: {l.title}
+                {!selectedChildId && <span className="text-[#6E5A46]"> ({l.child})</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 
@@ -637,6 +710,44 @@ export default function ReportPage() {
                 })()}
               </section>
 
+              <section className="mb-6">
+                <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
+                  P.E., Outdoors and Clubs
+                </h2>
+                {active && active.log.length > 0 ? (
+                  <>
+                    <p className="text-sm mb-2">
+                      {active.totals.sessions} sessions: {active.totals.pe} P.E., {active.totals.outdoor} outdoors, {active.totals.club} club
+                      {active.totals.minutes > 0 ? ` (at least ${active.totals.minutes} minutes)` : ""}.
+                    </p>
+                    <table className="w-full border-collapse text-xs">
+                      <thead>
+                        <tr>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Date</th>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Type</th>
+                          <th className="border border-gray-400 px-2 py-1 text-left">Activity</th>
+                          {!selectedChildId && <th className="border border-gray-400 px-2 py-1 text-left">Child</th>}
+                          <th className="border border-gray-400 px-2 py-1 text-right">Minutes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {active.log.map((l, i) => (
+                          <tr key={i}>
+                            <td className="border border-gray-400 px-2 py-1">{format(parseISO(l.date), "d MMM yyyy")}</td>
+                            <td className="border border-gray-400 px-2 py-1">{l.kind_label}</td>
+                            <td className="border border-gray-400 px-2 py-1">{l.title}{l.note ? ` (${l.note})` : ""}</td>
+                            {!selectedChildId && <td className="border border-gray-400 px-2 py-1">{l.child}</td>}
+                            <td className="border border-gray-400 px-2 py-1 text-right">{l.minutes ?? ""}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <p className="text-sm">No P.E., outdoor or club sessions logged for this period.</p>
+                )}
+              </section>
+
               <section>
                 <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
                   Submitted Work
@@ -800,8 +911,11 @@ export default function ReportPage() {
                     </div>
                   </div>
                 </div>
+                {activeCard}
               </div>
             )}
+
+            {tab === "progress" && <div className="mb-6">{activeCard}</div>}
 
             {/* Coding progress */}
             {tab === "progress" && (

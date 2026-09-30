@@ -465,3 +465,62 @@ export const updateShopping = (id: number, body: { done?: boolean; name?: string
   api.patch(`/api/make/shopping/${id}`, body);
 export const deleteShopping = (id: number) => api.delete(`/api/make/shopping/${id}`);
 export const clearShopping = (doneOnly = true) => api.post("/api/make/shopping/clear", null, { params: { done_only: doneOnly } });
+
+// Clubs and the activity diary (P.E., Outdoors and clubs)
+export type ActivityKind = "club" | "pe" | "outdoor";
+export type Club = {
+  id: number;
+  name: string;
+  activity: string;
+  emoji: string | null;
+  schedule: string | null;
+  place: string | null;
+  minutes: number | null;
+  child_ids: number[];
+  children: string[];
+  notes: string | null;
+  is_active: boolean;
+  sessions: number;
+  session_minutes: number;
+  last_session: string | null;
+};
+export type ClubIn = Omit<Club, "id" | "children" | "sessions" | "session_minutes" | "last_session">;
+export type ActivityLogEntry = {
+  id: number;
+  kind: ActivityKind;
+  title: string;
+  club_id: number | null;
+  make_item_id: number | null;
+  done_on: string;
+  minutes: number | null;
+  note: string | null;
+  child_id: number;
+  child: string;
+  can_remove: boolean;
+};
+export type ActiveSummary = {
+  totals: { sessions: number; days: number; minutes: number; pe: number; outdoor: number; club: number };
+  clubs: { name: string; activity: string; emoji: string | null; schedule: string | null; place: string | null; is_active: boolean; children: string[]; sessions: number; minutes: number; notes: string | null }[];
+  pe: { title: string; times: number; minutes: number; last: string }[];
+  outdoor: { title: string; times: number; minutes: number; last: string }[];
+  log: { date: string; kind: ActivityKind; kind_label: string; title: string; child: string; minutes: number | null; note: string | null }[];
+};
+export const getClubs = () => api.get<Club[]>("/api/activities/clubs");
+export const addClub = (body: ClubIn) => api.post<Club>("/api/activities/clubs", body);
+export const updateClub = (id: number, body: ClubIn) => api.put<Club>(`/api/activities/clubs/${id}`, body);
+export const deleteClub = (id: number) => api.delete(`/api/activities/clubs/${id}`);
+export const getActivityLog = (params: { child_id?: number; kind?: ActivityKind; start_date?: string; end_date?: string } = {}) =>
+  api.get<ActivityLogEntry[]>("/api/activities/", { params });
+export const logActivity = (body: {
+  kind: ActivityKind;
+  title?: string;
+  club_id?: number;
+  make_item_id?: number;
+  done_on: string;
+  minutes?: number | null;
+  note?: string;
+  child_ids: number[];
+}) => api.post<ActivityLogEntry[]>("/api/activities/", body);
+export const deleteActivity = (id: number) => api.delete(`/api/activities/${id}`);
+export const getActiveSummary = (params: { child_id?: number; start_date?: string; end_date?: string }) =>
+  api.get<ActiveSummary>("/api/activities/summary", { params });

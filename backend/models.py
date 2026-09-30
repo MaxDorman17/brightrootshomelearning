@@ -653,3 +653,39 @@ class ShoppingItem(Base):
     sources = Column(String(300), nullable=True)  # which recipes or crafts it's for
     done = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Club(Base):
+    """A club or class a child goes to outside home learning, e.g. chess or football."""
+    __tablename__ = "clubs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    name = Column(String(150), nullable=False)          # e.g. "Kirkcaldy Chess Club"
+    activity = Column(String(100), nullable=False)      # e.g. "Chess"
+    emoji = Column(String(16), nullable=True)
+    schedule = Column(String(150), nullable=True)       # e.g. "Tuesdays 4 to 5pm"
+    place = Column(String(150), nullable=True)
+    minutes = Column(Integer, nullable=True)            # usual session length
+    child_ids = Column(Text, nullable=True)             # JSON list of the children who go
+    notes = Column(Text, nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ActivityLog(Base):
+    """One thing a child did to keep active: a club session, a P.E. activity or an outdoor adventure."""
+    __tablename__ = "activity_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    kind = Column(String(10), nullable=False)  # club / pe / outdoor
+    club_id = Column(Integer, ForeignKey("clubs.id"), nullable=True, index=True)
+    make_item_id = Column(Integer, nullable=True)  # the P.E. or Outdoors activity, if it came from one
+    title = Column(String(200), nullable=False)
+    done_on = Column(Date, nullable=False, index=True)
+    minutes = Column(Integer, nullable=True)
+    note = Column(Text, nullable=True)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -16,6 +16,7 @@ import {
   getChildren,
   getMakeItem,
   getTimetable,
+  logActivity,
   planMakeItem,
   toggleMakeWish,
 } from "@/lib/api";
@@ -56,7 +57,7 @@ export default function MakeItemPage() {
   const [children, setChildren] = useState<Child[]>([]);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [got, setGot] = useState<Set<number>>(new Set());
-  const [modal, setModal] = useState<"shop" | "plan" | "made" | "delete" | null>(null);
+  const [modal, setModal] = useState<"shop" | "plan" | "made" | "did" | "delete" | null>(null);
   const [cooking, setCooking] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -177,8 +178,13 @@ export default function MakeItemPage() {
                   🗓️ Plan it
                 </button>
               )}
+              {(item.kind === "pe" || item.kind === "outdoor") && (
+                <button onClick={() => setModal("did")} className={secondary}>
+                  ✓ We did this
+                </button>
+              )}
               <button onClick={() => setModal("made")} className={secondary}>
-                <Emoji e="📸" /> We made this!
+                <Emoji e="📸" /> {item.kind === "pe" || item.kind === "outdoor" ? "Share a photo" : "We made this!"}
               </button>
             </div>
             {notice && <p className="mt-3 text-sm font-bold text-brand-sage">{notice}</p>}
@@ -316,6 +322,18 @@ export default function MakeItemPage() {
           }}
         />
       )}
+      {modal === "did" && (
+        <DidItModal
+          item={item}
+          role={role}
+          kids={children}
+          onClose={() => setModal(null)}
+          onDone={() => {
+            setModal(null);
+            flash("Added to the activity diary. It will show in the reports. 🎉");
+          }}
+        />
+      )}
       {modal === "delete" && (
         <Modal title={`Delete ${item.title}?`} onClose={() => setModal(null)}>
           <p className="text-sm text-brand-earth/80">This removes it from your {info.name}. It can&apos;t be undone.</p>
@@ -393,6 +411,109 @@ function ShopModal({ item, onClose, onDone }: { item: MakeDetail; onClose: () =>
           Open shopping list
         </Link>
       </div>
+    </Modal>
+  );
+}
+
+function DidItModal({
+  item,
+  role,
+  kids,
+  onClose,
+  onDone,
+}: {
+  item: MakeDetail;
+  role: string;
+  kids: Child[];
+  onClose: () => void;
+  onDone: () => void;
+}) {
+  const [day, setDay] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [minutes, setMinutes] = useState<number | "">(item.minutes ?? "");
+  const [note, setNote] = useState("");
+  const [picked, setPicked] = useState<number[]>(kids.length === 1 ? [kids[0].id] : []);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (role === "parent" && !picked.length) {
+      setError("Pick who did it.");
+      return;
+    }
+    setSaving(true);
+    try {
+      await logActivity({
+        kind: item.kind === "outdoor" ? "outdoor" : "pe",
+        title: item.title,
+        make_item_id: item.id,
+        done_on: day,
+        minutes: minutes === "" ? null : minutes,
+        note: note || undefined,
+        child_ids: picked,
+      });
+      onDone();
+    } catch (err) {
+      setError(errorText(err, "Could not save that."));
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Modal title="We did this!" onClose={onClose}>
+      <form onSubmit={submit} className="space-y-4">
+        <p className="text-sm text-brand-earth/80">This goes in the activity diary, and shows in the learning report and the council report.</p>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="mb-1.5 block text-sm font-bold text-brand-charcoal" htmlFor="did-day">Day</label>
+            <input id="did-day" type="date" required value={day} onChange={(e) => setDay(e.target.value)} className={input} />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-bold text-brand-charcoal" htmlFor="did-minutes">Minutes</label>
+            <input
+              id="did-minutes"
+              type="number"
+              min={1}
+              max={600}
+              value={minutes}
+              onChange={(e) => setMinutes(e.target.value ? Number(e.target.value) : "")}
+              className={input}
+            />
+          </div>
+        </div>
+        {role === "parent" && kids.length > 0 && (
+          <div>
+            <p className="mb-1.5 text-sm font-bold text-brand-charcoal">Who did it?</p>
+            <div className="flex flex-wrap gap-2">
+              {kids.map((k) => {
+                const on = picked.includes(k.id);
+                return (
+                  <button
+                    type="button"
+                    key={k.id}
+                    onClick={() => setPicked(on ? picked.filter((x) => x !== k.id) : [...picked, k.id])}
+                    className={
+                      "rounded-xl border-2 px-3 py-1.5 text-sm font-bold " +
+                      (on ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
+                    }
+                  >
+                    {on ? "✓ " : ""}
+                    {k.username}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        <div>
+          <label className="mb-1.5 block text-sm font-bold text-brand-charcoal" htmlFor="did-note">Note (optional)</label>
+          <textarea id="did-note" rows={2} value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Beat their best time!" className={input} />
+        </div>
+        {error && <p className="text-sm font-semibold text-red-700">{error}</p>}
+        <button type="submit" disabled={saving} className={primary}>
+          {saving ? "Saving..." : "Add to diary"}
+        </button>
+      </form>
     </Modal>
   );
 }

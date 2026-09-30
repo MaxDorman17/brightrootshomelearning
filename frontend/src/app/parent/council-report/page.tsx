@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import MomentImage from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
+import { ActiveSummary, getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
 
 type Child = { id: number; username: string };
 
@@ -37,10 +37,11 @@ type Report = {
   extra: { date: string; subject: string; title: string }[];
   journal: { date: string; content: string }[];
   moments: { date: string; subject: string | null; note: string | null; photo_ids: number[] }[];
+  active?: ActiveSummary;
 };
 
 type PeriodKey = "term" | "year" | "last-year" | "custom";
-type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "extra" | "journal";
+type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "active" | "extra" | "journal";
 
 const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "approach", label: "Our approach", defaultOn: true },
@@ -49,6 +50,7 @@ const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "results", label: "Results", defaultOn: true },
   { key: "reading", label: "Reading", defaultOn: true },
   { key: "work", label: "Examples of work", defaultOn: true },
+  { key: "active", label: "P.E., outdoors and clubs", defaultOn: true },
   { key: "moments", label: "Learning moments", defaultOn: true },
   { key: "extra", label: "Extra learning", defaultOn: true },
   { key: "journal", label: "Journal highlights", defaultOn: false },
@@ -83,6 +85,80 @@ function ReportSection({ title, children }: { title: string; children: React.Rea
       </h2>
       {children}
     </section>
+  );
+}
+
+const timesText = (n: number) => (n === 1 ? "once" : n === 2 ? "twice" : `${n} times`);
+
+function ActiveSection({ active }: { active: ActiveSummary }) {
+  const { totals, clubs, pe, outdoor } = active;
+  const sessionClubs = clubs.filter((c) => c.sessions > 0 || c.is_active);
+  return (
+    <ReportSection title="Physical activity, outdoor learning and clubs">
+      {totals.sessions === 0 && sessionClubs.length === 0 ? (
+        <p>No P.E., outdoor learning or club sessions were recorded in this period.</p>
+      ) : (
+        <>
+          <p>
+            {totals.sessions} recorded session{totals.sessions === 1 ? "" : "s"} of physical activity, outdoor learning and clubs
+            {totals.minutes > 0 ? <>, adding up to at least <strong>{formatDuration(totals.minutes)}</strong></> : null}:{" "}
+            {[
+              totals.pe ? `${totals.pe} P.E.` : "",
+              totals.outdoor ? `${totals.outdoor} outdoor learning` : "",
+              totals.club ? `${totals.club} club session${totals.club === 1 ? "" : "s"}` : "",
+            ]
+              .filter(Boolean)
+              .join(", ")}
+            .
+          </p>
+
+          {sessionClubs.length > 0 && (
+            <>
+              <p className="mt-4 font-bold">Clubs and classes</p>
+              <table className="mt-1 w-full text-left">
+                <thead>
+                  <tr className="text-xs text-[#6E5A46] print:text-gray-600">
+                    <th className="py-1.5 pr-3 font-bold">Club</th>
+                    <th className="py-1.5 pr-3 font-bold">When</th>
+                    <th className="py-1.5 font-bold">Sessions attended</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-brand-line print:divide-gray-300">
+                  {sessionClubs.map((c, i) => (
+                    <tr key={i} className="align-top">
+                      <td className="py-2 pr-3">
+                        <span className="font-bold">{c.activity}</span>: {c.name}
+                        {c.place ? `, ${c.place}` : ""}
+                        {c.notes ? <span className="block text-xs text-[#6E5A46] print:text-gray-600">{c.notes}</span> : null}
+                      </td>
+                      <td className="py-2 pr-3">{c.schedule || ""}</td>
+                      <td className="py-2 whitespace-nowrap">
+                        {c.sessions}
+                        {c.minutes ? ` (${formatDuration(c.minutes)})` : ""}
+                        {!c.is_active ? " · finished" : ""}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+
+          {pe.length > 0 && (
+            <>
+              <p className="mt-4 font-bold">Physical education</p>
+              <p>{pe.map((a) => `${a.title} (${timesText(a.times)})`).join("; ")}.</p>
+            </>
+          )}
+          {outdoor.length > 0 && (
+            <>
+              <p className="mt-4 font-bold">Outdoor learning</p>
+              <p>{outdoor.map((a) => `${a.title} (${timesText(a.times)})`).join("; ")}.</p>
+            </>
+          )}
+        </>
+      )}
+    </ReportSection>
   );
 }
 
@@ -488,6 +564,8 @@ export default function CouncilReportPage() {
                 )}
               </ReportSection>
             )}
+
+            {on("active") && report.active && <ActiveSection active={report.active} />}
 
             {on("moments") && report.moments.length > 0 && (
               <ReportSection title="Learning moments">
