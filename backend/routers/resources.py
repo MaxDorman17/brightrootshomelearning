@@ -30,6 +30,7 @@ LEARNING_AIDS = [
     ("number-line-0-20", "Number Line 0 to 20", "Count forwards and backwards, add and take away."),
     ("times-tables-1-12", "Times Tables 1 to 12", "A grid of every times table up to 12 x 12."),
     ("periodic-table", "Periodic Table of Elements", "A clear reference chart for young scientists."),
+    ("number-lines-0-20", "Cut-out Number Lines 0 to 20", "Three coloured number lines to cut out and use for counting, adding and taking away."),
 ]
 ALLOWED_FILES = {
     ".pdf": "application/pdf",

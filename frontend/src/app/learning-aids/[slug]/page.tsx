@@ -13,6 +13,7 @@ const AIDS: Record<string, { title: string; note: string; landscape: boolean }> 
   "number-line-0-20": { title: "Number Line 0 to 20", note: "Count forwards and backwards, add and take away.", landscape: true },
   "times-tables-1-12": { title: "Times Tables 1 to 12", note: "A grid of every times table up to 12 x 12.", landscape: false },
   "periodic-table": { title: "Periodic Table of Elements", note: "A clear reference chart for young scientists.", landscape: true },
+  "number-lines-0-20": { title: "Cut-out Number Lines 0 to 20", note: "Three coloured number lines to cut out and use for counting, adding and taking away.", landscape: false },
 };
 
 const btn = "rounded-xl px-4 py-2.5 text-sm font-extrabold transition-colors";
