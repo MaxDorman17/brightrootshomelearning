@@ -5,10 +5,6 @@ import Emoji from "@/components/Emoji";
 
 type Reward = { id: number; title: string; emoji: string | null; cost: number };
 
-// Where the stars sit inside the jar picture, as fractions of its height (top of the pile when full, bottom of the jar).
-const STARS_TOP = 0.4;
-const STARS_BOTTOM = 0.975;
-
 /** Works out which reward the jar is filling towards. */
 export function jarTarget(available: number, rewards: Reward[]) {
   const sorted = [...rewards].sort((a, b) => a.cost - b.cost);
@@ -18,10 +14,7 @@ export function jarTarget(available: number, rewards: Reward[]) {
   return { next, ready, fill: target > 0 ? Math.min(1, Math.max(0, available / target)) : 0 };
 }
 
-/**
- * The star jar illustration, filling up towards the next reward. The empty part of the jar is frosted over,
- * so the stars show from the bottom up.
- */
+/** The star jar illustration, with the child's stars and how many more they need for the next reward. */
 export default function StarJar({
   name,
   available,
@@ -35,8 +28,7 @@ export default function StarJar({
   rewards: Reward[];
   size?: "sm" | "md";
 }) {
-  const { next, ready, fill } = jarTarget(available, rewards);
-  const cut = STARS_TOP + (1 - fill) * (STARS_BOTTOM - STARS_TOP);
+  const { next, ready } = jarTarget(available, rewards);
 
   return (
     <div className="flex items-center gap-4">
@@ -48,20 +40,6 @@ export default function StarJar({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/illustrations/star-jar.webp" alt="" className="h-full w-auto select-none" draggable={false} />
-        {fill < 0.98 && (
-          <div
-            className="absolute transition-all duration-700"
-            style={{
-              left: "13%",
-              right: "25%",
-              top: `${(STARS_TOP - 0.03) * 100}%`,
-              height: `${(cut - STARS_TOP + 0.03) * 100}%`,
-              background: "rgba(255, 250, 238, 0.9)",
-              borderRadius: fill <= 0.02 ? "10px 10px 40px 40px" : "10px 10px 16px 16px",
-              boxShadow: "0 3px 6px -3px rgba(120, 90, 40, 0.15)",
-            }}
-          />
-        )}
       </div>
 
       <div className="min-w-0">
