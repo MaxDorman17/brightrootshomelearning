@@ -60,6 +60,9 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🗣": "speech",
   "📤": "share",
   "🖨": "printer",
+  "🌱": "sprout",
+  "🔑": "key",
+  "🌳": "oak-tree",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
