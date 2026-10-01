@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 from schemas import Token, UserOut, _parse_avatar
-from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE
+from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken
 from config import settings
 from newsletter_access import is_admin, subscribe_member
 
@@ -266,21 +266,20 @@ def register(
     email = body.email.strip().lower()
     username = body.username.strip()
 
-    if len(username) < 2:
-        raise HTTPException(status_code=400, detail="Username must be at least 2 characters")
+    if len(username) < 2 or len(username) > 50:
+        raise HTTPException(status_code=400, detail="Your name needs 2 to 50 characters")
 
     if len(body.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
 
-    if db.query(User).filter(func.lower(User.email) == email).first():
+    # Grown-ups log in with their email address, so their name doesn't have to be unique.
+    if login_name_taken(db, email):
         raise HTTPException(status_code=400, detail="An account already exists for that email")
-
-    if db.query(User).filter(func.lower(User.username) == username.lower()).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
 
     user = User(
         email=email,
         username=username,
+        login_name=email,
         hashed_password=hash_password(body.password),
         role="parent",
         subscription_status="trialing",
@@ -315,7 +314,7 @@ def login(
     client_ip = _client_ip(request)
     _check_login_rate_limit(client_ip, form_data.username)
 
-    user = db.query(User).filter(User.username == form_data.username).first()
+    user = find_login(db, form_data.username)
     if not user or not verify_password(form_data.password, user.hashed_password):
         _record_login_failure(client_ip, form_data.username)
         raise HTTPException(
@@ -377,6 +376,7 @@ def me(
     out.is_owner = is_family_owner(current_user)
     out.login_id = me_user.id
     out.relationship = me_user.relationship_label
+    out.login_name = me_user.login_name
     if not out.is_owner:
         # A second grown-up sees the family's account, but under their own name and picture.
         out.username = me_user.username
@@ -466,9 +466,10 @@ def forgot_password(
     client_ip = _client_ip(request)
     _check_reset_rate_limit(client_ip)
 
+    # Any grown-up with an email on their login can reset their own password.
     user = db.query(User).filter(
         func.lower(User.email) == body.email.strip().lower(),
-        User.role == "parent",
+        User.role.in_(["parent", COPARENT_ROLE]),
     ).first()
 
     if user:
@@ -513,7 +514,7 @@ def reset_password(
 
     user = db.query(User).filter(
         User.id == user_id,
-        User.role == "parent",
+        User.role.in_(["parent", COPARENT_ROLE]),
     ).first()
 
     if not user or user.session_version != token_version:

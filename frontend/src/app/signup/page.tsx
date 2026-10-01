@@ -105,12 +105,14 @@ export default function SignupPage() {
 
               <div>
                 <label className="mb-1.5 block text-sm font-bold text-gray-700">
-                  Username
+                  Your name
                 </label>
                 <input
                   required
                   minLength={2}
-                  autoComplete="username"
+                  maxLength={50}
+                  autoComplete="given-name"
+                  placeholder="What should we call you?"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"

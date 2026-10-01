@@ -4,6 +4,10 @@ from jose import JWTError, jwt
 import bcrypt
 from fastapi import Cookie, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+import re
+import secrets
+
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
@@ -19,6 +23,60 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode(), hashed.encode())
+
+
+def find_login(db: Session, typed: str) -> Optional[User]:
+    """Who is logging in: by login name (older accounts: their username) or by email address."""
+    typed = (typed or "").strip()
+    if not typed:
+        return None
+    exact = db.query(User).filter(User.login_name == typed).first()
+    if exact:
+        return exact
+    lowered = typed.lower()
+    matches = db.query(User).filter(func.lower(User.login_name) == lowered).limit(2).all()
+    if len(matches) == 1:
+        return matches[0]
+    if "@" in typed:
+        return db.query(User).filter(func.lower(User.email) == lowered).first()
+    return None
+
+
+def login_name_taken(db: Session, name: str) -> bool:
+    lowered = (name or "").strip().lower()
+    if not lowered:
+        return True
+    return (
+        db.query(User.id)
+        .filter((func.lower(User.login_name) == lowered) | (func.lower(User.email) == lowered))
+        .first()
+        is not None
+    )
+
+
+def clean_login_name(name: str) -> str:
+    """Login names are simple to type: letters, numbers, dots, dashes and underscores."""
+    return re.sub(r"[^A-Za-z0-9._-]", "", (name or "").strip())[:50]
+
+
+def suggest_login_names(db: Session, name: str, family_name: str = "", count: int = 3) -> list[str]:
+    """Free login names based on someone's name, best first: Oscar, Oscar.Max, Oscar27..."""
+    base = clean_login_name(name) or "learner"
+    extra = clean_login_name(family_name)
+    candidates = [base]
+    if extra and extra.lower() != base.lower():
+        candidates.append(f"{base}.{extra}")
+    found: list[str] = []
+    for candidate in candidates:
+        if len(candidate) >= 2 and not login_name_taken(db, candidate):
+            found.append(candidate)
+    tries = 0
+    while len(found) < count and tries < 200:
+        tries += 1
+        candidate = f"{base}{secrets.randbelow(900) + 10}"
+        if candidate not in found and not login_name_taken(db, candidate):
+            found.append(candidate)
+    return found[:count]
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

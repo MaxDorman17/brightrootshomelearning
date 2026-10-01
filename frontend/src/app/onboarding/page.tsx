@@ -23,7 +23,7 @@ import {
   subjectsInTimetable,
 } from "@/lib/subjects";
 
-type Child = { id: number; username: string; email: string | null };
+type Child = { id: number; username: string; login_name?: string | null; email: string | null };
 const TOTAL_STEPS = 4;
 
 export default function OnboardingPage() {
@@ -260,7 +260,7 @@ export default function OnboardingPage() {
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Your family</p>
               <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Add your first child.</h1>
               <p className="mt-3 text-[#6E5A46]">
-                They&apos;ll use their own username and password to open their learning dashboard.
+                They&apos;ll use their own login name and password to open their learning dashboard.
               </p>
 
               {children.length > 0 ? (
@@ -270,7 +270,7 @@ export default function OnboardingPage() {
                       {children.length === 1 ? "1 child already added" : String(children.length) + " children already added"}
                     </p>
                     <p className="mt-1 text-sm text-green-700">
-                      {children.map((child) => child.username).join(", ")}
+                      {children.map((child) => (child.login_name ? `${child.username} (logs in as ${child.login_name})` : child.username)).join(", ")}
                     </p>
                   </div>
                   <button type="button" onClick={() => setStep(3)} className="mt-6 w-full rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white">
@@ -280,13 +280,13 @@ export default function OnboardingPage() {
               ) : (
                 <form onSubmit={createChild} className="mt-7 space-y-4">
                   <div>
-                    <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child username</label>
+                    <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child&apos;s name</label>
                     <input required value={childUsername} onChange={(e) => setChildUsername(e.target.value)} placeholder="e.g. Sam" className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child email <span className="font-normal text-[#6E5A46]/70">(optional)</span></label>
                     <input type="email" value={childEmail} onChange={(e) => setChildEmail(e.target.value)} placeholder="child@example.com" className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
-                    <p className="mt-1 text-xs text-[#6E5A46]/70">Leave blank if your child doesn&apos;t have an email. Children sign in with their username.</p>
+                    <p className="mt-1 text-xs text-[#6E5A46]/70">Leave blank if your child doesn&apos;t have an email. We&apos;ll give them a login name based on their name and show it to you next.</p>
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child password</label>

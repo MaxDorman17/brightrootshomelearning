@@ -181,19 +181,30 @@ class TokenIn(BaseModel):
     token: str
 
 
-@router.post("/subscribe")
-def subscribe(body: SubscribeIn, request: Request, db: Session = Depends(get_db)):
-    _rate_limit(_client_ip(request))
-    row = find_subscriber(db, body.email)
-    message = {"message": "Nearly there! Check your inbox and click the link to confirm."}
+def invite_to_newsletter(db: Session, email: str, source: str = "visitor") -> None:
+    """Ask someone to confirm they want the newsletter. Nobody is added until they click the link in the email."""
+    email = email.strip().lower()
+    row = find_subscriber(db, email)
     if row and row.status == "subscribed":
-        return message  # same answer either way, so nobody can find out who is subscribed
+        return
     if not row:
-        row = NewsletterSubscriber(email=body.email, token=secrets.token_urlsafe(32), source="visitor", status="pending")
+        row = NewsletterSubscriber(email=email, token=secrets.token_urlsafe(32), source=source, status="pending")
         db.add(row)
     else:
         row.status = "pending"
     db.commit()
+    _send_confirmation(row)
+
+
+@router.post("/subscribe")
+def subscribe(body: SubscribeIn, request: Request, db: Session = Depends(get_db)):
+    _rate_limit(_client_ip(request))
+    # Same answer whether or not they're already subscribed, so nobody can find out who is.
+    invite_to_newsletter(db, body.email)
+    return {"message": "Nearly there! Check your inbox and click the link to confirm."}
+
+
+def _send_confirmation(row: NewsletterSubscriber) -> None:
     if _email_configured():
         confirm_url = f"{_site()}/newsletter/confirm#token={row.token}"
         inner = f"""
@@ -204,10 +215,9 @@ def subscribe(body: SubscribeIn, request: Request, db: Session = Depends(get_db)
           <p style="font-size:12px;color:#8A7A69">If you didn't ask for this, you can ignore this email.</p>
         </div>"""
         try:
-            _send_email(body.email, "Please confirm your Bright Roots newsletter", inner)
+            _send_email(row.email, "Please confirm your Bright Roots newsletter", inner)
         except Exception:
             logger.exception("Could not send newsletter confirmation")
-    return message
 
 
 @router.post("/confirm")

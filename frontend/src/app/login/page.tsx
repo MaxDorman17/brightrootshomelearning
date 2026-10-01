@@ -119,11 +119,11 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="mt-7 space-y-5 [@media(max-height:820px)]:mt-4 [@media(max-height:820px)]:space-y-3">
             <div>
-              <label htmlFor="username" className="mb-1.5 block text-sm font-bold text-[#2E342F]">Username</label>
+              <label htmlFor="username" className="mb-1.5 block text-sm font-bold text-[#2E342F]">Email or login name</label>
               <div className="relative">
                 <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8C7B66]"><UserIcon /></span>
                 <input id="username" type="text" required autoComplete="username" autoCapitalize="none" value={username}
-                  onChange={(e) => setUsername(e.target.value)} placeholder="Your username" className={input} />
+                  onChange={(e) => setUsername(e.target.value)} placeholder="Your email or login name" className={input} />
               </div>
             </div>
 
@@ -162,7 +162,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center [@media(max-height:820px)]:mt-3">
           <span className="inline-block rounded-full bg-[#FDFAF3]/85 px-3 py-1 text-xs font-semibold backdrop-blur-sm" style={{ color: EARTH }}>
-            Children log in with the username their grown-up made for them.
+            Children log in with the login name their grown-up made for them.
           </span>
         </p>
       </div>

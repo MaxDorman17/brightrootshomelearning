@@ -54,6 +54,7 @@ export default function AccountPage() {
     child_theme: string | null;
     subject_colors: Record<string, string> | null;
     is_owner?: boolean;
+    login_name?: string | null;
   } | null>(null);
   // False for a second grown-up: billing, email and deleting the account belong to the main account holder.
   const isOwner = me?.is_owner !== false;
@@ -165,6 +166,7 @@ export default function AccountPage() {
             </h1>
             <p className="mt-2 text-sm text-brand-earth/70">
               Signed in as <span className="font-bold">{username || "..."}</span>
+              {me?.login_name && me.login_name !== username ? <> · you log in with <span className="font-bold">{me.login_name}</span></> : null}
               {role ? ` · ${role}` : ""}.
             </p>
             </PageHero>

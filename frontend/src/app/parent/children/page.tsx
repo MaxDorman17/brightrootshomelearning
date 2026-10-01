@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getChildren, addChild, removeChild, resetChildPassword } from "@/lib/api";
+import { getChildren, addChild, removeChild, resetChildPassword, checkChildLoginName } from "@/lib/api";
 import { Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -21,6 +21,10 @@ export default function ChildrenPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // What the child types to log in. Suggested from their name until the parent types their own.
+  const [loginName, setLoginName] = useState("");
+  const [loginTouched, setLoginTouched] = useState(false);
+  const [loginCheck, setLoginCheck] = useState<{ login_name: string; available: boolean; suggestions: string[] } | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -44,6 +48,29 @@ export default function ChildrenPage() {
       .finally(() => setLoading(false));
   }, [router]);
 
+  // Check the login name is free (and suggest some) a moment after the parent stops typing.
+  useEffect(() => {
+    if (!showModal || !username.trim()) {
+      setLoginCheck(null);
+      if (!loginTouched) setLoginName("");
+      return;
+    }
+    const timer = setTimeout(() => {
+      checkChildLoginName(username.trim(), loginTouched ? loginName : "")
+        .then((res) => {
+          if (loginTouched) {
+            setLoginCheck(res.data);
+          } else {
+            const pick = res.data.suggestions[0] || "";
+            setLoginName(pick);
+            setLoginCheck({ login_name: pick, available: !!pick, suggestions: res.data.suggestions });
+          }
+        })
+        .catch(() => {});
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [showModal, username, loginName, loginTouched]);
+
   const handleAdd = async () => {
     if (!username.trim() || !password.trim()) return;
 
@@ -53,6 +80,7 @@ export default function ChildrenPage() {
     try {
       const res = await addChild({
         username: username.trim(),
+        login_name: loginName.trim() || undefined,
         email: email.trim() || undefined,
         password: password.trim(),
       });
@@ -62,6 +90,8 @@ export default function ChildrenPage() {
       setUsername("");
       setEmail("");
       setPassword("");
+      setLoginName("");
+      setLoginTouched(false);
       setShowModal(false);
     } catch (err: unknown) {
       const detail = (
@@ -88,6 +118,8 @@ export default function ChildrenPage() {
     setUsername("");
     setEmail("");
     setPassword("");
+    setLoginName("");
+    setLoginTouched(false);
     setError("");
   };
 
@@ -228,6 +260,12 @@ export default function ChildrenPage() {
                       </span>
                     </div>
 
+                    {child.login_name && (
+                      <p className="text-sm text-[#6E5A46] mt-1 truncate">
+                        Logs in as <span className="font-bold text-[#2E342F]">{child.login_name}</span>
+                      </p>
+                    )}
+
                     {child.email && (
                       <p className="text-sm text-[#6E5A46] mt-1 truncate">
                         {child.email}
@@ -308,16 +346,63 @@ export default function ChildrenPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-[#2E342F] mb-1.5">
-                    Name / Username
+                    Name
                   </label>
 
                   <input
                     autoFocus
                     value={username}
                     onChange={event => setUsername(event.target.value)}
-                    placeholder="e.g. oscar"
+                    placeholder="e.g. Oscar"
+                    maxLength={50}
                     className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
+                </div>
+
+                <div>
+                  <label htmlFor="child-login" className="block text-sm font-semibold text-[#2E342F] mb-1.5">
+                    Login name
+                  </label>
+
+                  <input
+                    id="child-login"
+                    value={loginName}
+                    onChange={event => {
+                      setLoginTouched(true);
+                      setLoginName(event.target.value.replace(/[^A-Za-z0-9._-]/g, ""));
+                    }}
+                    placeholder="What they type to log in"
+                    maxLength={50}
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
+                  />
+
+                  {loginName && loginCheck && loginCheck.login_name.toLowerCase() === loginName.toLowerCase() ? (
+                    loginCheck.available ? (
+                      <p className="mt-1.5 text-xs font-bold text-brand-sage">✓ {loginName} is free. This is what they&apos;ll type to log in.</p>
+                    ) : (
+                      <div className="mt-1.5">
+                        <p className="text-xs font-bold text-[#A64F42]">Another family is already using that one. Try:</p>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {loginCheck.suggestions.map(s => (
+                            <button
+                              key={s}
+                              type="button"
+                              onClick={() => { setLoginTouched(true); setLoginName(s); }}
+                              className="rounded-full border-2 border-brand-line bg-white px-3 py-1 text-xs font-bold text-brand-sage hover:border-brand-softsage"
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  ) : (
+                    <p className="mt-1.5 text-xs text-[#8A7A69]">
+                      Their name can be the same as other children&apos;s. The login name has to be one nobody else on Bright Roots has.
+                    </p>
+                  )}
                 </div>
 
                 <div>

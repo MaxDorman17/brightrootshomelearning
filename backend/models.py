@@ -9,7 +9,11 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=True)  # optional for child accounts
-    username = Column(String(100), unique=True, index=True, nullable=False)
+    # The name shown on the site. Two people can share one ("Charlotte", "Oscar"), so it isn't used to log in.
+    username = Column(String(100), index=True, nullable=False)
+    # What they type to log in: unique across the site. An email address for grown-ups who signed up with one,
+    # otherwise a login name (older accounts log in with the name they've always used).
+    login_name = Column(String(255), unique=True, index=True, nullable=True)
     hashed_password = Column(String(255), nullable=False)
     role = Column(String(10), nullable=False)
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=True)

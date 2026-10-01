@@ -31,6 +31,7 @@ try:
         parent = User(
             email=parent_email,
             username=parent_username,
+            login_name=parent_username,
             hashed_password=hash_password(parent_password),
             role="parent",
             email_verified_at=datetime.utcnow(),
@@ -49,6 +50,7 @@ try:
         child = User(
             email=child_email,
             username=child_username,
+            login_name=child_username,
             hashed_password=hash_password(child_password),
             role="child",
             parent_id=parent.id,

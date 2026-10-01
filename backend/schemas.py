@@ -55,6 +55,7 @@ class UserOut(BaseModel):
     is_owner: bool = True  # False for a second grown-up on someone else's family account
     login_id: Optional[int] = None  # the person logged in (differs from id for a second grown-up)
     relationship: Optional[str] = None  # Mum, Dad, Guardian...
+    login_name: Optional[str] = None  # what they type to log in
 
     @field_validator("avatar", "subject_colors", mode="before")
     @classmethod
@@ -67,7 +68,8 @@ class UserOut(BaseModel):
 
 
 class ChildCreate(BaseModel):
-    username: str
+    username: str  # the child's name, as shown on the site
+    login_name: Optional[str] = None  # what they type to log in; picked for them if left out
     email: Optional[EmailStr] = None
     password: str
 
@@ -82,6 +84,7 @@ class ChildCreate(BaseModel):
 class ChildOut(BaseModel):
     id: int
     username: str
+    login_name: Optional[str] = None
     email: Optional[str] = None
     role: str
     created_at: datetime
@@ -95,6 +98,7 @@ class ChildOut(BaseModel):
             return {
                 "id": data.id,
                 "username": data.username,
+                "login_name": data.login_name,
                 "email": data.email,
                 "role": data.role,
                 "created_at": data.created_at,

@@ -1,7 +1,7 @@
 """The grown-ups on a family account.
 
 The parent who signed up is the main account holder. They can add more grown-ups (the other parent,
-a guardian, a grandparent...), each with their own username and password. Everyone sees and manages
+a guardian, a grandparent...), who each log in with their own email address and password. Everyone sees and manages
 the same family; only the main account holder handles billing, deleting the account and who has access.
 Each grown-up can say what they are to the children (Mum, Dad, Guardian...).
 """
@@ -9,12 +9,12 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from auth import COPARENT_ROLE, actor, hash_password, is_family_owner, require_owner, require_parent
+from auth import COPARENT_ROLE, actor, hash_password, is_family_owner, login_name_taken, require_owner, require_parent
 from database import get_db
 from models import FamilyNote, User
+from routers.newsletter import EMAIL_RE, invite_to_newsletter
 from schemas import _parse_avatar
 
 router = APIRouter(prefix="/api/family", tags=["family"])
@@ -28,16 +28,26 @@ def _clean_relationship(value: Optional[str]) -> Optional[str]:
 
 
 class AdultIn(BaseModel):
-    username: str
+    name: str
+    email: str
     password: str
     relationship: Optional[str] = None
+    newsletter: bool = False
 
-    @field_validator("username")
+    @field_validator("name")
     @classmethod
-    def valid_username(cls, value: str) -> str:
-        value = value.strip()
+    def valid_name(cls, value: str) -> str:
+        value = " ".join(value.split())
         if len(value) < 2 or len(value) > 50:
-            raise ValueError("Usernames need 2 to 50 characters")
+            raise ValueError("Names need 2 to 50 characters")
+        return value
+
+    @field_validator("email")
+    @classmethod
+    def valid_email(cls, value: str) -> str:
+        value = value.strip().lower()
+        if len(value) > 255 or not EMAIL_RE.match(value):
+            raise ValueError("Please enter a valid email address")
         return value
 
     @field_validator("password")
@@ -60,6 +70,7 @@ def _adult_out(user: User, owner: User, me: User) -> dict:
     return {
         "id": user.id,
         "username": user.username,
+        "login_name": user.email or user.login_name,  # what they type to log in
         "relationship": user.relationship_label,
         "avatar": _parse_avatar(user.avatar),
         "is_owner": user.id == owner.id,
@@ -99,10 +110,12 @@ def list_adults(db: Session = Depends(get_db), current_user: User = Depends(requ
 def add_adult(body: AdultIn, db: Session = Depends(get_db), current_user: User = Depends(require_owner)):
     if len(_coparents(db, current_user)) >= MAX_EXTRA_ADULTS:
         raise HTTPException(status_code=400, detail=f"You can add up to {MAX_EXTRA_ADULTS} more grown-ups")
-    if db.query(User).filter(func.lower(User.username) == body.username.lower()).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
+    if login_name_taken(db, body.email):
+        raise HTTPException(status_code=400, detail="That email address already has a Bright Roots login")
     adult = User(
-        username=body.username,
+        username=body.name,
+        email=body.email,
+        login_name=body.email,  # grown-ups log in with their email, so names can repeat
         hashed_password=hash_password(body.password),
         role=COPARENT_ROLE,
         family_owner_id=current_user.id,
@@ -111,6 +124,9 @@ def add_adult(body: AdultIn, db: Session = Depends(get_db), current_user: User =
     db.add(adult)
     db.commit()
     db.refresh(adult)
+    if body.newsletter:
+        # They get an email asking them to confirm, so nobody is signed up without agreeing themselves.
+        invite_to_newsletter(db, body.email, source="member")
     return _adult_out(adult, current_user, actor(current_user))
 
 

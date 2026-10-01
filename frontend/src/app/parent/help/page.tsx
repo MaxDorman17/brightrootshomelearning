@@ -39,8 +39,8 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         intro: "Both parents, a guardian or a grandparent can each have their own login for the same family.",
         steps: [
           <>Open <L href="/account">Family, then Account</L> and find <b>Grown-ups on this account</b>.</>,
-          <>Press <b>+ Add another grown-up</b>, choose a username and password for them, and say who they are to the children (Mum, Dad, Guardian and so on).</>,
-          "They log in on the normal login page and see everything you do. They can change their own password and picture.",
+          <>Press <b>+ Add another grown-up</b>, enter their name, email address and a password, and say who they are to the children (Mum, Dad, Guardian and so on).</>,
+          "They log in on the normal login page with their email address and see everything you do. They can change their own password and picture.",
           "Notes left for the children show who they're from.",
           "Only the main account holder can manage billing, add or remove grown-ups, or delete the account.",
         ],
@@ -49,9 +49,10 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         id: "children-login",
         emoji: "🔑",
         title: "How children log in",
-        intro: "Children use the same login page as you, with their own username and password.",
+        intro: "Children use the same login page as you, with their own login name and password.",
         steps: [
-          "Go to the Bright Roots login page and enter the child's username and password.",
+          <>Each child has a <b>login name</b>, shown under their name on <L href="/parent/children">Family, then Children</L>. Two children can share a name, but every login name is different.</>,
+          "Go to the Bright Roots login page and enter the child's login name and password.",
           "They land on their Today page, which shows only their lessons for the day.",
           <>Forgotten password? Reset it on <L href="/parent/children">Family, then Children</L>.</>,
         ],

@@ -110,7 +110,10 @@ function AdultRow({ adult, canManage, onChanged }: { adult: FamilyAdult; canMana
             {adult.username}
             {adult.is_you && <span className="ml-2 text-xs font-bold text-brand-earth/60">(you)</span>}
           </p>
-          <p className="text-xs font-semibold text-brand-earth/70">{adult.is_owner ? "Main account holder" : "Has their own login"}</p>
+          <p className="text-xs font-semibold text-brand-earth/70">
+            {adult.is_owner ? "Main account holder" : "Has their own login"}
+            {adult.login_name ? ` · logs in with ${adult.login_name}` : ""}
+          </p>
         </div>
         {canEdit ? (
           <RelationshipPicker id={`rel-${adult.id}`} value={relationship} onChange={save} />
@@ -157,9 +160,11 @@ export default function FamilyAdultsCard() {
   const [canManage, setCanManage] = useState(false);
   const [maxExtra, setMaxExtra] = useState(3);
   const [adding, setAdding] = useState(false);
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [relationship, setRelationship] = useState("");
+  const [newsletter, setNewsletter] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -182,11 +187,13 @@ export default function FamilyAdultsCard() {
     setSaving(true);
     setError("");
     try {
-      await addAdult({ username: username.trim(), password, relationship: relationship || undefined });
+      await addAdult({ name: name.trim(), email: email.trim(), password, relationship: relationship || undefined, newsletter });
       setAdding(false);
-      setUsername("");
+      setName("");
+      setEmail("");
       setPassword("");
       setRelationship("");
+      setNewsletter(false);
       load();
     } catch (err) {
       setError(detail(err, "That didn't work. Please try again."));
@@ -226,23 +233,34 @@ export default function FamilyAdultsCard() {
       {adding && (
         <form onSubmit={submit} className="mt-3 space-y-4 rounded-xl border border-brand-line bg-white p-4">
           <p className="text-sm text-brand-earth/80">
-            They&apos;ll log in on the normal login page with this username and password, and see everything you do.
+            They&apos;ll log in on the normal login page with their email address and this password, and see everything you do.
             They can change their password after logging in.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className={label} htmlFor="adult-username">Their username</label>
-              <input id="adult-username" value={username} onChange={(e) => setUsername(e.target.value)} required minLength={2} maxLength={50} autoComplete="off" className={input} />
+              <label className={label} htmlFor="adult-name">Their name</label>
+              <input id="adult-name" value={name} onChange={(e) => setName(e.target.value)} required minLength={2} maxLength={50} autoComplete="off" placeholder="e.g. Charlotte" className={input} />
             </div>
             <div>
-              <label className={label} htmlFor="adult-password">A password for them</label>
-              <input id="adult-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" placeholder="8 or more characters" className={input} />
+              <label className={label} htmlFor="adult-email">Their email address</label>
+              <input id="adult-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength={255} autoComplete="off" placeholder="They'll use this to log in" className={input} />
             </div>
+          </div>
+          <div>
+            <label className={label} htmlFor="adult-password">A password for them</label>
+            <input id="adult-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" placeholder="8 or more characters" className={`${input} sm:max-w-sm`} />
           </div>
           <div>
             <label className={label} htmlFor="rel-new">Who are they to the children?</label>
             <RelationshipPicker id="rel-new" value={relationship} onChange={setRelationship} />
           </div>
+          <label className="flex items-start gap-3 text-sm text-brand-earth/90">
+            <input type="checkbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#3F5D46]" />
+            <span>
+              Invite them to the Bright Roots newsletter (home learning tips and news). We&apos;ll email them to confirm first, so
+              they only get it if they say yes.
+            </span>
+          </label>
           {error && <p className="text-sm font-semibold text-[#A64F42]">{error}</p>}
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-extrabold text-white disabled:opacity-60">

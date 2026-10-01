@@ -72,6 +72,8 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN family_owner_id INTEGER REFERENCES users(id)"))
             if "relationship_label" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN relationship_label VARCHAR(30)"))
+            if "login_name" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN login_name VARCHAR(255)"))
             conn.commit()
     if "lessons" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("lessons")]
@@ -410,6 +412,37 @@ def copy_polish_sessions_to_languages():
 
 
 copy_polish_sessions_to_languages()
+
+
+def split_names_from_logins():
+    """Idempotent: let two people share a name by moving "what you type to log in" into users.login_name.
+
+    Everyone keeps logging in exactly as before, because their login name starts out as their old username.
+    The username column then stops being unique (it's just the name shown on the site).
+    """
+    if "users" not in sa_inspect(engine).get_table_names():
+        return
+    with engine.connect() as conn:
+        missing = conn.execute(text("SELECT COUNT(*) FROM users WHERE login_name IS NULL")).scalar()
+        indexes = {i["name"]: i for i in sa_inspect(engine).get_indexes("users")}
+        username_unique = [n for n, i in indexes.items() if i.get("unique") and i["column_names"] == ["username"]]
+        if not missing and not username_unique and "ix_users_login_name" in indexes:
+            return
+        backup_sqlite_database("login-names")
+        if missing:
+            conn.execute(text("UPDATE users SET login_name = username WHERE login_name IS NULL"))
+        if "ix_users_login_name" not in indexes:
+            conn.execute(text("CREATE UNIQUE INDEX ix_users_login_name ON users (login_name)"))
+        for name in username_unique:
+            if name.startswith("sqlite_autoindex"):
+                continue  # built into the table itself; names stay unique there until the table is rebuilt
+            conn.execute(text(f'DROP INDEX "{name}"'))
+        if username_unique or "ix_users_username" not in indexes:
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_users_username ON users (username)"))
+        conn.commit()
+
+
+split_names_from_logins()
 
 # The interactive API docs are handy when running locally, but on the live site they'd list every server address publicly.
 _local = settings.FRONTEND_URL.startswith("http://localhost")

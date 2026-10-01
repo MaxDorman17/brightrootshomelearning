@@ -339,8 +339,11 @@ export const deletePolishSession = (id: number) => api.delete(`/api/polish/${id}
 
 // Children
 export const getChildren = () => api.get("/api/children/");
-export const addChild = (data: { username: string; email?: string; password: string }) =>
+export const addChild = (data: { username: string; login_name?: string; email?: string; password: string }) =>
   api.post("/api/children/", data);
+/** Is this login name free, and which ones could a child with this name use? */
+export const checkChildLoginName = (name: string, login_name = "") =>
+  api.get<{ login_name: string; available: boolean; suggestions: string[] }>("/api/children/login-name", { params: { name, login_name } });
 export const removeChild = (id: number) => api.delete(`/api/children/${id}`);
 export const resetChildPassword = (id: number, new_password: string) =>
   api.post(`/api/children/${id}/reset-password`, { new_password });
@@ -590,13 +593,14 @@ export const deleteNote = (id: number) => api.delete(`/api/notes/${id}`);
 export type FamilyAdult = {
   id: number;
   username: string;
+  login_name: string | null;
   relationship: string | null;
   avatar: AvatarChoice | null;
   is_owner: boolean;
   is_you: boolean;
 };
 export const getAdults = () => api.get<{ adults: FamilyAdult[]; can_manage: boolean; max_extra: number }>("/api/family/adults");
-export const addAdult = (body: { username: string; password: string; relationship?: string }) =>
+export const addAdult = (body: { name: string; email: string; password: string; relationship?: string; newsletter?: boolean }) =>
   api.post<FamilyAdult>("/api/family/adults", body);
 export const setAdultRelationship = (id: number, relationship: string) =>
   api.put<FamilyAdult>(`/api/family/adults/${id}`, { relationship });

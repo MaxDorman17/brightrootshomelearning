@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from database import get_db
 from models import User
 from schemas import ChildCreate, ChildOut
-from auth import require_parent, hash_password
+from auth import require_parent, hash_password, clean_login_name, login_name_taken, suggest_login_names
 
 router = APIRouter(prefix="/api/children", tags=["children"])
 
@@ -22,18 +22,46 @@ def list_children(
     return db.query(User).filter(User.parent_id == current_user.id, User.role == "child").all()
 
 
+@router.get("/login-name")
+def check_login_name(
+    name: str = "",
+    login_name: str = "",
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """For the add-a-child form: is this login name free, and which ones could they use?"""
+    wanted = clean_login_name(login_name)
+    return {
+        "login_name": wanted,
+        "available": len(wanted) >= 2 and not login_name_taken(db, wanted),
+        "suggestions": suggest_login_names(db, name or login_name, current_user.username),
+    }
+
+
 @router.post("/", response_model=ChildOut, status_code=201)
 def add_child(
     body: ChildCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    if db.query(User).filter(User.username == body.username).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
-    if body.email and db.query(User).filter(User.email == body.email).first():
+    name = " ".join(body.username.split())
+    if not name or len(name) > 50:
+        raise HTTPException(status_code=400, detail="Names need 1 to 50 characters")
+    if body.email and login_name_taken(db, body.email):
         raise HTTPException(status_code=400, detail="Email already taken")
+    if body.login_name and body.login_name.strip():
+        login_name = clean_login_name(body.login_name)
+        if len(login_name) < 2:
+            raise HTTPException(status_code=400, detail="Login names need at least 2 letters or numbers")
+        if login_name_taken(db, login_name):
+            ideas = ", ".join(suggest_login_names(db, name, current_user.username))
+            raise HTTPException(status_code=400, detail=f"That login name is taken. Try one of these: {ideas}")
+    else:
+        # No login name given: use their name if nobody else has it, otherwise the closest free one.
+        login_name = suggest_login_names(db, name, current_user.username, count=1)[0]
     child = User(
-        username=body.username,
+        username=name,
+        login_name=login_name,
         email=body.email,
         hashed_password=hash_password(body.password),
         role="child",
