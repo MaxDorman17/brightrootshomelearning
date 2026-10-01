@@ -603,3 +603,33 @@ export const setAdultRelationship = (id: number, relationship: string) =>
 export const resetAdultPassword = (id: number, new_password: string) =>
   api.post(`/api/family/adults/${id}/reset-password`, { new_password });
 export const removeAdult = (id: number) => api.delete(`/api/family/adults/${id}`);
+
+// A family's own badges, made by the grown-ups with their own pictures
+export type FamilyBadge = {
+  id: number;
+  title: string;
+  description: string | null;
+  emoji: string | null;
+  has_image: boolean;
+  image_version: string | null;
+  awarded_to: number[];
+  earned: boolean | null; // for a child: whether they have it
+};
+const badgeForm = (body: { title: string; description?: string; emoji?: string; file?: File | null; remove_image?: boolean }) => {
+  const form = new FormData();
+  form.append("title", body.title);
+  if (body.description) form.append("description", body.description);
+  if (body.emoji) form.append("emoji", body.emoji);
+  if (body.remove_image) form.append("remove_image", "true");
+  if (body.file) form.append("file", body.file);
+  return form;
+};
+export const getFamilyBadges = () => api.get<FamilyBadge[]>("/api/badges/");
+export const addFamilyBadge = (body: Parameters<typeof badgeForm>[0]) =>
+  api.post<FamilyBadge>("/api/badges/", badgeForm(body), { headers: { "Content-Type": "multipart/form-data" } });
+export const updateFamilyBadge = (id: number, body: Parameters<typeof badgeForm>[0]) =>
+  api.put<FamilyBadge>(`/api/badges/${id}`, badgeForm(body), { headers: { "Content-Type": "multipart/form-data" } });
+export const deleteFamilyBadge = (id: number) => api.delete(`/api/badges/${id}`);
+export const setFamilyBadgeAwards = (id: number, child_ids: number[]) =>
+  api.put<FamilyBadge>(`/api/badges/${id}/awards`, { child_ids });
+export const getFamilyBadgeImage = (id: number) => api.get(`/api/badges/${id}/image`, { responseType: "blob" });

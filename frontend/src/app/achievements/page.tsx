@@ -9,6 +9,7 @@ import PageHero from "@/components/PageHero";
 import RewardsTabs from "@/components/RewardsTabs";
 import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
+import FamilyBadges from "@/components/FamilyBadges";
 
 const SEEN_KEY = "seen_badges";
 
@@ -141,6 +142,7 @@ export default function AchievementsPage() {
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [languages, setLanguages] = useState<LanguageSummary["totals"] | null>(null);
+  const [familyEarned, setFamilyEarned] = useState(0);
   const [badgeView, setBadgeView] = useState<"earned" | "locked" | "all">("earned");
   const [badgeCategory, setBadgeCategory] = useState<string>("All");
 
@@ -281,7 +283,7 @@ export default function AchievementsPage() {
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               <div className="brand-card p-4">
-                <p className="text-2xl font-bold text-brand-sage">{earned.length}</p>
+                <p className="text-2xl font-bold text-brand-sage">{earned.length + familyEarned}</p>
                 <p className="text-xs font-semibold text-[#6E5A46] mt-1">Badges earned</p>
               </div>
               <div className="brand-card p-4">
@@ -426,6 +428,8 @@ export default function AchievementsPage() {
                 </div>
               )}
             </div>
+
+            <FamilyBadges role={role} kids={children} viewingChildId={selectedChildId} onEarnedCount={setFamilyEarned} />
           </>
         )}
       </div>

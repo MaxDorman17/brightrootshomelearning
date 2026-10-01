@@ -737,3 +737,27 @@ class FamilyNote(Base):
     read_at = Column(DateTime(timezone=True), nullable=True)
     reaction = Column(String(16), nullable=True)  # the child's reply, e.g. a heart
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CustomBadge(Base):
+    """A badge a family made themselves, e.g. "Kind Friend", with their own picture."""
+    __tablename__ = "custom_badges"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    title = Column(String(80), nullable=False)
+    description = Column(String(300), nullable=True)  # what it's for
+    emoji = Column(String(16), nullable=True)         # shown when there's no picture
+    image = Column(String(255), nullable=True)        # file name of the uploaded illustration
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CustomBadgeAward(Base):
+    """A family badge given to one child."""
+    __tablename__ = "custom_badge_awards"
+
+    id = Column(Integer, primary_key=True, index=True)
+    badge_id = Column(Integer, ForeignKey("custom_badges.id"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    awarded_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("badge_id", "child_id", name="uq_custom_badge_child"),)
