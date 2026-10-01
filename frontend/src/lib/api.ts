@@ -577,7 +577,7 @@ export type FamilyNote = {
   created_at: string | null;
   read_at: string | null;
   reaction: string | null;
-  author: { id: number; username: string; avatar: AvatarChoice | null };
+  author: { id: number; username: string; relationship: string | null; avatar: AvatarChoice | null };
   child_id: number;
   child: string;
 };
@@ -585,3 +585,21 @@ export const getNotes = () => api.get<FamilyNote[]>("/api/notes/");
 export const sendNote = (body: string, child_ids: number[]) => api.post<FamilyNote[]>("/api/notes/", { body, child_ids });
 export const readNote = (id: number, reaction?: string) => api.post<FamilyNote>(`/api/notes/${id}/read`, { reaction: reaction ?? null });
 export const deleteNote = (id: number) => api.delete(`/api/notes/${id}`);
+
+// The grown-ups on a family account (the main parent plus any others they add)
+export type FamilyAdult = {
+  id: number;
+  username: string;
+  relationship: string | null;
+  avatar: AvatarChoice | null;
+  is_owner: boolean;
+  is_you: boolean;
+};
+export const getAdults = () => api.get<{ adults: FamilyAdult[]; can_manage: boolean; max_extra: number }>("/api/family/adults");
+export const addAdult = (body: { username: string; password: string; relationship?: string }) =>
+  api.post<FamilyAdult>("/api/family/adults", body);
+export const setAdultRelationship = (id: number, relationship: string) =>
+  api.put<FamilyAdult>(`/api/family/adults/${id}`, { relationship });
+export const resetAdultPassword = (id: number, new_password: string) =>
+  api.post(`/api/family/adults/${id}/reset-password`, { new_password });
+export const removeAdult = (id: number) => api.delete(`/api/family/adults/${id}`);

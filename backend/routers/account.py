@@ -18,7 +18,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from auth import require_parent, verify_password
+from auth import require_owner, require_parent, verify_password
 from config import settings
 from database import Base, get_db
 from models import User
@@ -160,7 +160,7 @@ def _cancel_stripe(user: User) -> None:
 def delete_account(
     body: DeleteAccountIn,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_parent),
+    current_user: User = Depends(require_owner),
 ):
     if body.confirm.strip().upper() != "DELETE":
         raise HTTPException(status_code=400, detail='Type DELETE to confirm.')
@@ -181,8 +181,8 @@ def delete_account(
         pk = list(table.primary_key.columns)[0]
         ids = [r[pk.name] for r in table_rows]
         if table.name == "users":
-            # Children first, then the parent, since children point at the parent.
-            db.execute(table.delete().where(pk.in_(ids), table.c.parent_id.is_not(None)))
+            # Children and other grown-ups first, then the parent, since they point at the parent.
+            db.execute(table.delete().where(pk.in_(ids), table.c.parent_id.is_not(None) | table.c.family_owner_id.is_not(None)))
             db.execute(table.delete().where(pk.in_(ids)))
         else:
             db.execute(table.delete().where(pk.in_(ids)))

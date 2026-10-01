@@ -52,6 +52,9 @@ class UserOut(BaseModel):
     subject_colors: Optional[dict] = None
     is_admin: bool = False
     rewards_set_up: bool = False
+    is_owner: bool = True  # False for a second grown-up on someone else's family account
+    login_id: Optional[int] = None  # the person logged in (differs from id for a second grown-up)
+    relationship: Optional[str] = None  # Mum, Dad, Guardian...
 
     @field_validator("avatar", "subject_colors", mode="before")
     @classmethod

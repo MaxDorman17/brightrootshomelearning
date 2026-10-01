@@ -14,8 +14,8 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
-from schemas import Token, UserOut
-from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, user_has_membership_access
+from schemas import Token, UserOut, _parse_avatar
+from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE
 from config import settings
 from newsletter_access import is_admin, subscribe_member
 
@@ -335,14 +335,20 @@ def login(
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/",
     )
+    # A second grown-up uses the site as a parent of the family's main account.
+    account = user
+    if user.role == COPARENT_ROLE:
+        account = db.query(User).filter(User.id == user.family_owner_id, User.role == "parent").first()
+        if account is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
     return Token(
         access_token=token,
         token_type="bearer",
-        role=user.role,
+        role=account.role,
         username=user.username,
-        email_verified=(user.email_verified_at is not None),
-        onboarding_completed=(user.onboarding_completed_at is not None),
-        billing_required=not user_has_membership_access(user, db),
+        email_verified=(account.email_verified_at is not None),
+        onboarding_completed=(account.onboarding_completed_at is not None),
+        billing_required=not user_has_membership_access(account, db),
     )
 
 
@@ -367,6 +373,16 @@ def me(
     out.has_photo = bool(current_user.avatar_photo)
     out.is_admin = is_admin(current_user)
     out.rewards_set_up = current_user.rewards_set_up_at is not None
+    me_user = actor(current_user)
+    out.is_owner = is_family_owner(current_user)
+    out.login_id = me_user.id
+    out.relationship = me_user.relationship_label
+    if not out.is_owner:
+        # A second grown-up sees the family's account, but under their own name and picture.
+        out.username = me_user.username
+        out.email = me_user.email
+        out.avatar = _parse_avatar(me_user.avatar)
+        out.is_admin = False
     if current_user.role == "parent":
         out.family_theme = current_user.theme
     elif current_user.parent_id:
@@ -399,7 +415,7 @@ def change_password(
     response: Response,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_authenticated_user),
+    current_user: User = Depends(get_login_user),  # your own password, even as a second grown-up
 ):
     if not verify_password(body.current_password, current_user.hashed_password):
         raise HTTPException(

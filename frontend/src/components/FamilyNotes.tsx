@@ -26,7 +26,10 @@ function Author({ note }: { note: FamilyNote }) {
       <Avatar username={note.author.username} avatar={note.author.avatar ?? DEFAULT_PARENT_AVATAR} size="md" />
       <div>
         <p className="text-sm font-extrabold text-[#5B4630]">From {note.author.username}</p>
-        <p className="text-xs text-[#8A7358]">{ago(note.created_at)}</p>
+        <p className="text-xs text-[#8A7358]">
+          {note.author.relationship ? `${note.author.relationship} · ` : ""}
+          {ago(note.created_at)}
+        </p>
       </div>
     </div>
   );

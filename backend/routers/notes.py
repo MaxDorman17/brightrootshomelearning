@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
-from auth import get_current_user
+from auth import actor, get_current_user
 from database import get_db
 from models import FamilyNote, User
 from routers.moments import _clean_child_ids, _family_children, _family_id
@@ -60,6 +60,7 @@ def _note_out(note: FamilyNote, people: dict[int, User]) -> dict:
         "author": {
             "id": note.author_id,
             "username": author.username if author else "",
+            "relationship": author.relationship_label if author else None,
             "avatar": _parse_avatar(author.avatar) if author else None,
         },
         "child_id": note.child_id,
@@ -69,9 +70,9 @@ def _note_out(note: FamilyNote, people: dict[int, User]) -> dict:
 
 def _people(db: Session, family: int) -> dict[int, User]:
     people = dict(_family_children(db, family))
-    parent = db.query(User).filter(User.id == family).first()
-    if parent:
-        people[parent.id] = parent
+    # The main parent and any other grown-ups on the account
+    for adult in db.query(User).filter((User.id == family) | (User.family_owner_id == family)).all():
+        people[adult.id] = adult
     return people
 
 
@@ -93,7 +94,7 @@ def send_note(body: NoteIn, db: Session = Depends(get_db), current_user: User = 
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     if not children:
         raise HTTPException(status_code=400, detail="Pick who the note is for")
-    notes = [FamilyNote(parent_id=current_user.id, author_id=current_user.id, child_id=c, body=body.body) for c in children]
+    notes = [FamilyNote(parent_id=current_user.id, author_id=actor(current_user).id, child_id=c, body=body.body) for c in children]
     db.add_all(notes)
     db.commit()
     people = _people(db, current_user.id)

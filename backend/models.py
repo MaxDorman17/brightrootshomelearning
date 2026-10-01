@@ -32,6 +32,10 @@ class User(Base):
     subject_colors = Column(Text, nullable=True)  # JSON {subject: colour name} chosen by the child
     summary_email_time = Column(String(5), nullable=True)  # "HH:MM" for the parent's daily summary email, None = off
     summary_last_sent = Column(Date, nullable=True)
+    # A second grown-up on a family account has role "coparent" and points at the family's main parent here.
+    # They log in with their own username and password, then act for the main parent's family.
+    family_owner_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    relationship_label = Column(String(30), nullable=True)  # what a grown-up is to the children: Mum, Dad, Guardian...
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")

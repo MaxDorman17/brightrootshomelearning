@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
-from auth import get_current_user, require_parent
+from auth import get_current_user, require_parent, actor
 from database import get_db
 from models import User
 from storage import upload_dir
@@ -93,7 +93,7 @@ def _target(db: Session, current_user: User, child_id: Optional[int]) -> User:
             raise HTTPException(status_code=403, detail="You can only change your own profile")
         return current_user
     if child_id is None:
-        return current_user
+        return actor(current_user)  # a second grown-up changes their own picture, not the main parent's
     child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id, User.role == "child").first()
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")

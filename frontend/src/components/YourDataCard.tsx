@@ -14,7 +14,7 @@ function errorText(err: unknown, fallback: string) {
 }
 
 /** Parent-only: download all the family's data, or delete the whole account. */
-export default function YourDataCard() {
+export default function YourDataCard({ canDelete = true }: { canDelete?: boolean }) {
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState("");
   const [open, setOpen] = useState(false);
@@ -77,6 +77,7 @@ export default function YourDataCard() {
       </button>
       {downloadError && <p className="mt-2 text-sm font-semibold text-red-700">{downloadError}</p>}
 
+      {canDelete && (
       <div className="mt-6 border-t border-brand-line pt-5">
         <h3 className="font-extrabold text-red-800">Delete account</h3>
         <p className="mt-1 text-sm text-brand-earth/70">
@@ -145,6 +146,7 @@ export default function YourDataCard() {
           </form>
         )}
       </div>
+      )}
     </div>
   );
 }

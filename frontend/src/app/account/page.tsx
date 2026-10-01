@@ -11,6 +11,7 @@ import AvatarBuilder from "@/components/AvatarBuilder";
 import { AvatarChoice, DEFAULT_PARENT_AVATAR, PARENT_AVATAR_PICTURES } from "@/lib/avatar";
 import ChildColours from "@/components/ChildColours";
 import YourDataCard from "@/components/YourDataCard";
+import FamilyAdultsCard from "@/components/FamilyAdults";
 import AppCard from "@/components/AppCard";
 import {
   changePassword,
@@ -52,7 +53,10 @@ export default function AccountPage() {
     has_photo: boolean;
     child_theme: string | null;
     subject_colors: Record<string, string> | null;
+    is_owner?: boolean;
   } | null>(null);
+  // False for a second grown-up: billing, email and deleting the account belong to the main account holder.
+  const isOwner = me?.is_owner !== false;
   const [subjects, setSubjects] = useState<string[]>([]);
   const [newsletter, setNewsletter] = useState<boolean | null>(null);
 
@@ -66,7 +70,7 @@ export default function AccountPage() {
         setAuth(res.data.role, res.data.username);
         if (isFamilyTheme(res.data.family_theme)) setTheme(res.data.family_theme);
         setMe(res.data);
-        if (res.data.role === "parent") {
+        if (res.data.role === "parent" && res.data.is_owner !== false) {
           getMyNewsletter()
             .then((n) => setNewsletter(n.data.subscribed))
             .catch(() => {});
@@ -166,7 +170,7 @@ export default function AccountPage() {
             </PageHero>
           </div>
 
-          {role === "parent" && (
+          {role === "parent" && isOwner && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -237,6 +241,8 @@ export default function AccountPage() {
               </div>
             </div>
           )}
+
+          {role === "parent" && <FamilyAdultsCard />}
 
           {role === "child" && me && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
@@ -313,7 +319,7 @@ export default function AccountPage() {
             </div>
           )}
 
-          {role === "parent" && (
+          {role === "parent" && isOwner && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
               <h2 className="text-lg font-extrabold text-brand-charcoal">Membership & billing</h2>
               <p className="mt-1 text-sm text-brand-earth/70">
@@ -423,7 +429,7 @@ export default function AccountPage() {
             </div>
           )}
 
-          {role === "parent" && <YourDataCard />}
+          {role === "parent" && <YourDataCard canDelete={isOwner} />}
         </div>
       </main>
     </div>

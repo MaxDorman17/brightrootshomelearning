@@ -64,6 +64,21 @@ export default function BillingPage() {
     return <div className="min-h-screen bg-brand-cream flex items-center justify-center"><p className="font-bold text-brand-earth/70">Loading billing...</p></div>;
   }
 
+  // A second grown-up can use everything, but the membership belongs to the main account holder.
+  if (account?.is_owner === false) {
+    return (
+      <div className="min-h-screen bg-brand-cream">
+        <Navbar />
+        <main className="mx-auto max-w-xl px-4 py-16 text-center">
+          <h1 className="text-2xl font-extrabold text-brand-charcoal">Membership & billing</h1>
+          <p className="mt-3 text-brand-earth/80">
+            Only the main account holder can manage billing. Please ask them to open this page from their own login.
+          </p>
+        </main>
+      </div>
+    );
+  }
+
   const active = ["active", "grandfathered"].includes(account?.subscription_status);
   const trialSubscriptionAttached =
     account?.subscription_status === "trialing" && !!account?.billing_plan;

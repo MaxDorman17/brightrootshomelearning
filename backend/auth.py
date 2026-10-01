@@ -28,7 +28,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def get_authenticated_user(
+COPARENT_ROLE = "coparent"
+
+
+def get_login_user(
     token: Optional[str] = Depends(oauth2_scheme),
     session_token: Optional[str] = Cookie(default=None, alias=SESSION_COOKIE_NAME),
     db: Session = Depends(get_db),
@@ -58,6 +61,36 @@ def get_authenticated_user(
         raise credentials_exception
 
     return user
+
+
+def get_authenticated_user(
+    login_user: User = Depends(get_login_user),
+    db: Session = Depends(get_db),
+) -> User:
+    """The account this request acts for.
+
+    A second grown-up (role "coparent") has their own login but works on the family's main parent account,
+    so everything that belongs to the family keeps a single owner. The person actually logged in is kept on
+    `acting_user`; use `actor(user)` to get them, and `get_login_user` for things that are personal to a
+    login, such as changing a password.
+    """
+    if login_user.role != COPARENT_ROLE:
+        login_user.acting_user = login_user
+        return login_user
+    owner = db.query(User).filter(User.id == login_user.family_owner_id, User.role == "parent").first()
+    if owner is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
+    owner.acting_user = login_user
+    return owner
+
+
+def actor(user: User) -> User:
+    """The person actually logged in (differs from `user` for a second grown-up)."""
+    return getattr(user, "acting_user", None) or user
+
+
+def is_family_owner(user: User) -> bool:
+    return actor(user).id == user.id
 
 
 def user_has_membership_access(user: User, db: Session) -> bool:
@@ -108,6 +141,13 @@ def require_parent(current_user: User = Depends(get_current_user)) -> User:
         raise HTTPException(status_code=403, detail="Parent access required")
     if current_user.email_verified_at is None:
         raise HTTPException(status_code=403, detail="Please verify your email address")
+    return current_user
+
+
+def require_owner(current_user: User = Depends(require_parent)) -> User:
+    """Things only the main account holder can do: billing, deleting the account, managing grown-ups."""
+    if not is_family_owner(current_user):
+        raise HTTPException(status_code=403, detail="Only the main account holder can do this")
     return current_user
 
 

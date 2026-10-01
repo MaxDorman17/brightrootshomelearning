@@ -33,6 +33,19 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         ],
       },
       {
+        id: "grown-ups",
+        emoji: "🏠",
+        title: "Adding another parent or guardian",
+        intro: "Both parents, a guardian or a grandparent can each have their own login for the same family.",
+        steps: [
+          <>Open <L href="/account">Family, then Account</L> and find <b>Grown-ups on this account</b>.</>,
+          <>Press <b>+ Add another grown-up</b>, choose a username and password for them, and say who they are to the children (Mum, Dad, Guardian and so on).</>,
+          "They log in on the normal login page and see everything you do. They can change their own password and picture.",
+          "Notes left for the children show who they're from.",
+          "Only the main account holder can manage billing, add or remove grown-ups, or delete the account.",
+        ],
+      },
+      {
         id: "children-login",
         emoji: "🔑",
         title: "How children log in",

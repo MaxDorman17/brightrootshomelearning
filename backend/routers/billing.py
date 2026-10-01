@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from auth import get_authenticated_user
+from auth import get_authenticated_user, is_family_owner
 from config import settings
 from database import get_db
 from models import User
@@ -110,6 +110,8 @@ def create_checkout(
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
+    if not is_family_owner(current_user):
+        raise HTTPException(status_code=403, detail="Only the main account holder can manage billing")
     if current_user.email_verified_at is None:
         raise HTTPException(status_code=403, detail="Please verify your email address first")
 
@@ -174,6 +176,8 @@ def create_portal(
 ):
     if current_user.role != "parent":
         raise HTTPException(status_code=403, detail="Parent access required")
+    if not is_family_owner(current_user):
+        raise HTTPException(status_code=403, detail="Only the main account holder can manage billing")
     if not current_user.stripe_customer_id:
         raise HTTPException(status_code=400, detail="No Stripe billing account exists yet")
 
