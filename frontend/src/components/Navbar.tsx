@@ -526,7 +526,8 @@ export default function Navbar() {
           </div>
 
           {mobileOpen && (
-            <div className="border-t border-brand-softsage/15 py-3 lg:hidden">
+            // The bar is stuck to the top of the screen, so a long menu scrolls inside itself (4rem is the bar's height).
+            <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-brand-softsage/15 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 lg:hidden">
               <div className="space-y-3">
                 {nav.map((entry) => {
                   const links = isGroup(entry) ? entry.items : [entry];
