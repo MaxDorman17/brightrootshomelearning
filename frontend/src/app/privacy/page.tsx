@@ -48,7 +48,8 @@ const sections = [
           </li>
           <li>
             <strong>Learning records:</strong> your timetable, plans and lessons, completed work, notes and
-            feedback, reading, spellings, language practice, test and quiz results, game scores, study time,
+            feedback, reading, spellings, language practice, test and quiz results, exam entries and results
+            (such as the exam centre, dates and fees you note down), trips and days out, game scores, study time,
             P.E., outdoor and club activities, stars, rewards and badges (including any you make yourself),
             reminders, journal entries, notes you leave for your children and their replies, and anything you
             write for reports.
@@ -152,6 +153,14 @@ const sections = [
             it says.
           </li>
         </ul>
+        <p>
+          If you switch on <strong>calendar sync</strong>, the calendar app you add it to (such as Google, Apple
+          or Microsoft Outlook) collects your planned lessons, exams and days off from a private web address,
+          including your children&apos;s names on each event. That company then keeps a copy under its own
+          privacy policy. Anyone with the address can see the same information, so keep it private. You can make a
+          new address or turn calendar sync off on your Account page at any time, and the old address stops
+          working straight away.
+        </p>
         <p>
           When you add an Oak National Academy results link, Bright Roots fetches the quiz scores from Oak.
           We don&apos;t send Oak any information about your family.

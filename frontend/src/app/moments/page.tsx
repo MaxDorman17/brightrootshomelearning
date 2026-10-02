@@ -1,7 +1,7 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -28,6 +28,7 @@ type Moment = {
   note: string | null;
   moment_date: string;
   subject: string | null;
+  trip_place: string | null;
   child_ids: number[];
   children: string[];
   author: string;
@@ -52,6 +53,7 @@ function errorText(err: any, fallback: string) {
 
 function MomentForm({
   moment,
+  trip,
   isParent,
   childList,
   subjects,
@@ -59,6 +61,7 @@ function MomentForm({
   onClose,
 }: {
   moment: Moment | null;
+  trip: boolean;
   isParent: boolean;
   childList: Child[];
   subjects: string[];
@@ -68,6 +71,8 @@ function MomentForm({
   const [note, setNote] = useState(moment?.note ?? "");
   const [date, setDate] = useState(moment?.moment_date ?? format(new Date(), "yyyy-MM-dd"));
   const [subject, setSubject] = useState(moment?.subject ?? "");
+  const [place, setPlace] = useState(moment?.trip_place ?? "");
+  const isTrip = trip || !!moment?.trip_place;
   const [childIds, setChildIds] = useState<number[]>(moment?.child_ids ?? (childList.length === 1 ? [childList[0].id] : []));
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -93,10 +98,11 @@ function MomentForm({
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!note.trim() && files.length === 0 && existing === 0) return setError("Add a photo or write a note.");
+    if (isTrip && !place.trim()) return setError("Say where you went.");
+    if (!note.trim() && files.length === 0 && existing === 0 && !place.trim()) return setError("Add a photo or write a note.");
     setSaving(true);
     setError("");
-    const fields = { note: note.trim(), moment_date: date, subject: subject.trim(), child_ids: childIds };
+    const fields = { note: note.trim(), moment_date: date, subject: subject.trim(), child_ids: childIds, trip_place: place.trim() };
     try {
       if (moment) {
         await updateMoment(moment.id, fields);
@@ -115,9 +121,17 @@ function MomentForm({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
       <form onSubmit={submit} onClick={(e) => e.stopPropagation()} className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-brand-white p-6 shadow-xl">
-        <h2 className="text-xl font-bold text-brand-charcoal">{moment ? "Edit moment" : "Add a learning moment"}</h2>
+        <h2 className="text-xl font-bold text-brand-charcoal">
+          {moment ? (isTrip ? "Edit trip" : "Edit moment") : isTrip ? "Add a trip or day out" : "Add a learning moment"}
+        </h2>
 
         <div className="mt-5 space-y-4">
+          {isTrip && (
+            <label className="block text-sm font-semibold text-brand-charcoal">
+              Where did you go?
+              <input value={place} onChange={(e) => setPlace(e.target.value)} maxLength={200} required placeholder="e.g. Natural History Museum, London" className={input + " mt-1.5 w-full"} />
+            </label>
+          )}
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-brand-charcoal">
               Photos <span className="font-normal text-[#8A7A69]">(up to {MAX_PHOTOS})</span>
@@ -147,8 +161,8 @@ function MomentForm({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-semibold text-brand-charcoal">What happened?</label>
-            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} maxLength={5000} placeholder="e.g. Built a volcano and it actually erupted!" className={input + " w-full"} />
+            <label className="mb-1.5 block text-sm font-semibold text-brand-charcoal">{isTrip ? "What did you see and learn?" : "What happened?"}</label>
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} maxLength={5000} placeholder={isTrip ? "e.g. Saw the dinosaur skeletons and learned how fossils form." : "e.g. Built a volcano and it actually erupted!"} className={input + " w-full"} />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -192,7 +206,7 @@ function MomentForm({
         <div className="mt-6 flex gap-3">
           <button type="button" onClick={onClose} className="flex-1 rounded-xl border border-[#D9D1C4] bg-white px-4 py-2.5 text-sm font-semibold text-[#6E5A46]">Cancel</button>
           <button type="submit" disabled={saving} className="flex-1 rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">
-            {saving ? "Saving..." : moment ? "Save" : "Share moment"}
+            {saving ? "Saving..." : moment ? "Save" : isTrip ? "Save trip" : "Share moment"}
           </button>
         </div>
       </form>
@@ -275,6 +289,7 @@ function MomentCard({ moment, onChanged, onEdit, onView }: { moment: Moment; onC
             {format(parseISO(moment.moment_date), "EEEE d MMMM")}
             {moment.subject && <span className="ml-1 rounded-full bg-brand-tint px-2 py-0.5 font-bold text-brand-sage">{moment.subject}</span>}
           </p>
+          {moment.trip_place && <p className="mt-1 text-sm font-bold text-[#7A5B22]">📍 Trip to {moment.trip_place}</p>}
         </div>
         {moment.can_edit && (
           <div className="flex gap-3">
@@ -348,15 +363,24 @@ function MomentCard({ moment, onChanged, onEdit, onView }: { moment: Moment; onC
   );
 }
 
-export default function MomentsPage() {
+export default function MomentsPageWrapper() {
+  return (
+    <Suspense>
+      <MomentsPage />
+    </Suspense>
+  );
+}
+
+function MomentsPage() {
   const router = useRouter();
+  const params = useSearchParams();
   const [role, setRole] = useState("");
-  const [tab, setTab] = useState<"feed" | "photos">("feed");
+  const [tab, setTab] = useState<"feed" | "photos" | "trips">("feed");
   const [moments, setMoments] = useState<Moment[]>([]);
   const [childList, setChildList] = useState<Child[]>([]);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<{ moment: Moment | null } | null>(null);
+  const [form, setForm] = useState<{ moment: Moment | null; trip?: boolean } | null>(null);
   const [viewing, setViewing] = useState<number | null>(null);
   const [filterChild, setFilterChild] = useState("");
   const [filterSubject, setFilterSubject] = useState("");
@@ -381,6 +405,13 @@ export default function MomentsPage() {
     getTimetable().then((res) => setSubjects(subjectsInTimetable(res.data.config || {}))).catch(() => {});
   }, [load, router]);
 
+  useEffect(() => {
+    if (params.get("tab") === "trips") setTab("trips");
+  }, [params]);
+
+  const trips = useMemo(() => moments.filter((m) => m.trip_place), [moments]);
+  const tripsThisYear = trips.filter((m) => m.moment_date.startsWith(String(new Date().getFullYear()))).length;
+
   const photoRows = useMemo(
     () => moments.flatMap((m) => m.photo_ids.map((id) => ({ id, moment: m }))),
     [moments]
@@ -400,23 +431,29 @@ export default function MomentsPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <PageHero art="moments" tint={3}>
+        <PageHero art={tab === "trips" ? "trips" : "moments"} tint={3}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Our family</p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Learning moments</h1>
-        <p className="mt-2 text-sm text-[#6E5A46] sm:text-base">Photos and notes from your learning, just for your family.</p>
+        <p className="mt-2 text-sm text-[#6E5A46] sm:text-base">Photos and notes from your learning, and your trips and days out, just for your family.</p>
         </PageHero>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex gap-1 rounded-2xl bg-brand-white p-1">
-            {(["feed", "photos"] as const).map((t) => (
-              <button key={t} onClick={() => setTab(t)} className={"rounded-xl px-4 py-2 text-sm font-bold " + (tab === t ? "bg-brand-sage text-white" : "text-[#6E5A46]")}>
-                {t === "feed" ? "Moments" : `Photos (${photoRows.length})`}
+            {(["feed", "trips", "photos"] as const).map((t) => (
+              <button key={t} onClick={() => setTab(t)} className={"rounded-xl px-3 py-2 text-sm font-bold sm:px-4 " + (tab === t ? "bg-brand-sage text-white" : "text-[#6E5A46]")}>
+                {t === "feed" ? "Moments" : t === "trips" ? `Trips (${trips.length})` : `Photos (${photoRows.length})`}
               </button>
             ))}
           </div>
-          <button onClick={() => setForm({ moment: null })} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-sagedark">
-            + Add a moment
-          </button>
+          {tab === "trips" ? (
+            <button onClick={() => setForm({ moment: null, trip: true })} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-sagedark">
+              + Add a trip
+            </button>
+          ) : (
+            <button onClick={() => setForm({ moment: null })} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-sagedark">
+              + Add a moment
+            </button>
+          )}
         </div>
 
         {loading && <p className="mt-6 text-sm text-[#6E5A46]">Loading...</p>}
@@ -433,6 +470,29 @@ export default function MomentsPage() {
               moments.map((m) => (
                 <MomentCard key={m.id} moment={m} onChanged={load} onEdit={() => setForm({ moment: m })} onView={setViewing} />
               ))
+            )}
+          </div>
+        )}
+
+        {!loading && tab === "trips" && (
+          <div className="mt-5 space-y-5">
+            {trips.length === 0 ? (
+              <div className="brand-card p-8 text-center">
+                <Emoji e="🚌" className="mx-auto h-16 w-16" />
+                <p className="mt-2 font-bold text-brand-charcoal">No trips yet</p>
+                <p className="mt-1 text-sm text-[#6E5A46]">
+                  Museums, farms, castles, nature reserves, the library: add where you went, a few photos and what you learned. Trips show up in your reports too.
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-sm font-semibold text-[#6E5A46]">
+                  {tripsThisYear} {tripsThisYear === 1 ? "trip or day out" : "trips and days out"} this year, {trips.length} in all.
+                </p>
+                {trips.map((m) => (
+                  <MomentCard key={m.id} moment={m} onChanged={load} onEdit={() => setForm({ moment: m })} onView={setViewing} />
+                ))}
+              </>
             )}
           </div>
         )}
@@ -479,6 +539,7 @@ export default function MomentsPage() {
       {form && (
         <MomentForm
           moment={form.moment}
+          trip={!!form.trip}
           isParent={isParent}
           childList={childList}
           subjects={subjects}

@@ -81,6 +81,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/council-report", label: "Council Report" },
       { href: "/parent/journal", label: "Journal" },
       { href: "/moments", label: "Moments & Photos" },
+      { href: "/moments?tab=trips", label: "Trips & days out" },
     ],
   },
   {
@@ -110,6 +111,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/teens/pe", label: "P.E." },
       { href: "/teens/outdoors", label: "Outdoors" },
       { href: "/teens/life-skills", label: "Life skills" },
+      { href: "/teens/exams", label: "Exams" },
     ],
   },
   {
@@ -164,6 +166,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/teens/pe", label: "P.E." },
       { href: "/teens/outdoors", label: "Outdoors" },
       { href: "/teens/life-skills", label: "Life skills" },
+      { href: "/teens/exams", label: "Exams" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },

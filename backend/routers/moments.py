@@ -29,6 +29,7 @@ class MomentUpdate(BaseModel):
     moment_date: date
     subject: Optional[str] = None
     child_ids: list[int] = []
+    trip_place: Optional[str] = None  # left out: unchanged; "" turns a trip back into an ordinary moment
 
 
 class ReactionIn(BaseModel):
@@ -155,6 +156,7 @@ def _moments_out(db: Session, user: User, moments: list[Moment]) -> list[dict]:
             "note": m.note,
             "moment_date": m.moment_date.isoformat(),
             "subject": m.subject,
+            "trip_place": m.trip_place,
             "child_ids": child_ids,
             "children": [children[i].username for i in child_ids if i in children],
             "author": author.username if author else "Someone",
@@ -185,7 +187,7 @@ def moments_for_child(db: Session, parent_id: int, child_id: int, start: date, e
         tagged = _parse_ids(m.child_ids)
         if tagged and child_id not in tagged:
             continue
-        out.append({"date": m.moment_date.isoformat(), "subject": m.subject, "note": m.note, "photo_ids": photos.get(m.id, [])})
+        out.append({"date": m.moment_date.isoformat(), "subject": m.subject, "note": m.note, "trip_place": m.trip_place, "photo_ids": photos.get(m.id, [])})
     return out
 
 
@@ -194,10 +196,13 @@ def list_moments(
     child_id: Optional[int] = Query(None),
     subject: Optional[str] = Query(None),
     month: Optional[str] = Query(None, description="yyyy-mm"),
+    trips: bool = Query(False, description="only trips and days out"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     query = db.query(Moment).filter(Moment.parent_id == _family_id(current_user))
+    if trips:
+        query = query.filter(Moment.trip_place.is_not(None))
     if subject:
         query = query.filter(Moment.subject == subject)
     if month:
@@ -220,13 +225,15 @@ async def add_moment(
     moment_date: date = Form(...),
     subject: str = Form(""),
     child_ids: str = Form(""),
+    trip_place: str = Form(""),
     files: List[UploadFile] = File(default=[]),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     parent_id = _family_id(current_user)
     note = note.strip()[:5000]
-    if not note and not files:
+    trip_place = " ".join(trip_place.split())[:200]
+    if not note and not files and not trip_place:
         raise HTTPException(status_code=400, detail="Add a photo or write a note")
     if len(files) > MAX_PHOTOS:
         raise HTTPException(status_code=400, detail=f"Up to {MAX_PHOTOS} photos per moment")
@@ -240,6 +247,7 @@ async def add_moment(
         moment_date=moment_date,
         subject=subject.strip()[:100] or None,
         child_ids=json.dumps(_clean_child_ids(db, parent_id, ids)),
+        trip_place=trip_place or None,
     )
     db.add(moment)
     db.flush()
@@ -257,6 +265,8 @@ def update_moment(moment_id: int, body: MomentUpdate, db: Session = Depends(get_
     moment.moment_date = body.moment_date
     moment.subject = (body.subject or "").strip()[:100] or None
     moment.child_ids = json.dumps(_clean_child_ids(db, moment.parent_id, body.child_ids))
+    if body.trip_place is not None:
+        moment.trip_place = " ".join(body.trip_place.split())[:200] or None
     moment.updated_at = datetime.utcnow()
     db.commit()
     return _moments_out(db, current_user, [moment])[0]

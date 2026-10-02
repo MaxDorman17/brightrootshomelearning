@@ -43,6 +43,8 @@ class User(Base):
     # Which activity pages a child sees: "young" (Make and Active), "teen" (the Teens menu) or "both".
     # Chosen by their grown-up. Empty means both. A choice of pages, not a date of birth.
     activity_level = Column(String(10), nullable=True)
+    # Secret part of the family's private calendar feed address. Empty until they turn calendar sync on.
+    calendar_token = Column(String(64), nullable=True, unique=True, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")
@@ -491,6 +493,7 @@ class Moment(Base):
     moment_date = Column(Date, nullable=False)
     subject = Column(String(100), nullable=True)
     child_ids = Column(Text, nullable=True)  # JSON list of the children it's about
+    trip_place = Column(String(200), nullable=True)  # set when the moment is a trip or day out: where they went
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=True)
 
@@ -768,3 +771,25 @@ class CustomBadgeAward(Base):
     child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     awarded_at = Column(DateTime(timezone=True), server_default=func.now())
     __table_args__ = (UniqueConstraint("badge_id", "child_id", name="uq_custom_badge_child"),)
+
+
+class ExamEntry(Base):
+    """One exam a teenager plans to sit, e.g. GCSE Maths Paper 1, usually as a private candidate."""
+    __tablename__ = "exam_entries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    subject = Column(String(100), nullable=False)          # e.g. "Maths"
+    qualification = Column(String(30), nullable=False)     # GCSE / IGCSE / A level / Functional Skills / Other
+    board = Column(String(50), nullable=True)              # e.g. AQA, Pearson Edexcel, Cambridge
+    paper = Column(String(100), nullable=True)             # e.g. "Paper 1 (Non-calculator)"
+    exam_date = Column(Date, nullable=True, index=True)
+    exam_time = Column(String(20), nullable=True)          # e.g. "9:00am" or "Afternoon"
+    centre = Column(String(150), nullable=True)            # where they sit it
+    entry_deadline = Column(Date, nullable=True)
+    fee = Column(String(30), nullable=True)                # free text, e.g. "£180"
+    status = Column(String(15), nullable=False, default="planning")  # planning / entered / sat / result
+    result = Column(String(30), nullable=True)             # e.g. "7" or "B"
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

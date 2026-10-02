@@ -10,7 +10,7 @@ from config import settings
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges, exams, starter_week, calendar_feed
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -76,7 +76,16 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN login_name VARCHAR(255)"))
             if "activity_level" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN activity_level VARCHAR(10)"))
+            if "calendar_token" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN calendar_token VARCHAR(64)"))
+                conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS ix_users_calendar_token ON users (calendar_token)"))
             conn.commit()
+    if "moments" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("moments")]
+        if "trip_place" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE moments ADD COLUMN trip_place VARCHAR(200)"))
+                conn.commit()
     if "lessons" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("lessons")]
         lesson_columns = {
@@ -507,6 +516,9 @@ app.include_router(languages.router)
 app.include_router(notes.router)
 app.include_router(family.router)
 app.include_router(badges.router)
+app.include_router(exams.router)
+app.include_router(starter_week.router)
+app.include_router(calendar_feed.router)
 
 
 @app.on_event("startup")

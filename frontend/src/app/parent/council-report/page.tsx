@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import MomentImage from "@/components/MomentImage";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { ActiveSummary, LanguageSummary, getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
+import { ActiveSummary, Exam, LanguageSummary, getChildren, getCouncilReport, saveEheApproach } from "@/lib/api";
 
 type Child = { id: number; username: string };
 
@@ -36,23 +36,26 @@ type Report = {
   work_samples: { date: string; subject: string; title: string; url: string | null; is_oak_result: boolean; note: string | null }[];
   extra: { date: string; subject: string; title: string }[];
   journal: { date: string; content: string }[];
-  moments: { date: string; subject: string | null; note: string | null; photo_ids: number[] }[];
+  moments: { date: string; subject: string | null; note: string | null; trip_place: string | null; photo_ids: number[] }[];
+  exams?: Exam[];
   active?: ActiveSummary;
   languages?: LanguageSummary;
 };
 
 type PeriodKey = "term" | "year" | "last-year" | "custom";
-type SectionKey = "approach" | "summary" | "subjects" | "results" | "reading" | "work" | "moments" | "active" | "languages" | "extra" | "journal";
+type SectionKey = "approach" | "summary" | "subjects" | "results" | "exams" | "reading" | "work" | "trips" | "moments" | "active" | "languages" | "extra" | "journal";
 
 const SECTIONS: { key: SectionKey; label: string; defaultOn: boolean }[] = [
   { key: "approach", label: "Our approach", defaultOn: true },
   { key: "summary", label: "Summary", defaultOn: true },
   { key: "subjects", label: "Subjects covered", defaultOn: true },
   { key: "results", label: "Results", defaultOn: true },
+  { key: "exams", label: "Exams", defaultOn: true },
   { key: "reading", label: "Reading", defaultOn: true },
   { key: "work", label: "Examples of work", defaultOn: true },
   { key: "active", label: "P.E., outdoors and clubs", defaultOn: true },
   { key: "languages", label: "Languages", defaultOn: true },
+  { key: "trips", label: "Trips and visits", defaultOn: true },
   { key: "moments", label: "Learning moments", defaultOn: true },
   { key: "extra", label: "Extra learning", defaultOn: true },
   { key: "journal", label: "Journal highlights", defaultOn: false },
@@ -484,6 +487,11 @@ export default function CouncilReportPage() {
                     {report.summary.study_sessions} session{report.summary.study_sessions === 1 ? "" : "s"}.
                   </p>
                 )}
+                {report.moments.some((m) => m.trip_place) && (
+                  <p className="mt-2">
+                    Educational trips and visits: <strong>{report.moments.filter((m) => m.trip_place).length}</strong>.
+                  </p>
+                )}
               </ReportSection>
             )}
 
@@ -620,10 +628,59 @@ export default function CouncilReportPage() {
 
             {on("languages") && report.languages && <LanguagesSection languages={report.languages} />}
 
-            {on("moments") && report.moments.length > 0 && (
+            {on("exams") && report.exams && report.exams.length > 0 && (
+              <ReportSection title="Exams">
+                <ul className="space-y-2">
+                  {report.exams.map((e) => (
+                    <li key={e.id}>
+                      <span className="font-bold">
+                        {e.qualification} {e.subject}
+                        {e.paper ? ` (${e.paper})` : ""}
+                      </span>
+                      {e.board ? `, ${e.board}` : ""}
+                      {" · "}
+                      {e.status === "result"
+                        ? `Result: ${e.result || "received"}`
+                        : e.status === "sat"
+                        ? "Sat, awaiting result"
+                        : e.status === "entered"
+                        ? "Entered"
+                        : "Planned"}
+                      {e.exam_date ? ` · ${format(parseISO(e.exam_date), "d MMM yyyy")}` : ""}
+                      {e.centre ? ` · ${e.centre}` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </ReportSection>
+            )}
+
+            {on("trips") && report.moments.some((m) => m.trip_place) && (
+              <ReportSection title="Trips and visits">
+                <div className="space-y-4">
+                  {report.moments.filter((m) => m.trip_place).map((m, i) => (
+                    <div key={i} className="break-inside-avoid">
+                      <p className="font-bold">
+                        {format(parseISO(m.date), "d MMM yyyy")} · {m.trip_place}
+                        {m.subject ? ` · ${m.subject}` : ""}
+                      </p>
+                      {m.note && <p className="whitespace-pre-line">{m.note}</p>}
+                      {m.photo_ids.length > 0 && (
+                        <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5">
+                          {m.photo_ids.map((id) => (
+                            <MomentImage key={id} photoId={id} alt={m.note ?? `Trip to ${m.trip_place}`} className="aspect-square w-full rounded-lg" />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ReportSection>
+            )}
+
+            {on("moments") && report.moments.some((m) => !m.trip_place) && (
               <ReportSection title="Learning moments">
                 <div className="space-y-4">
-                  {report.moments.map((m, i) => (
+                  {report.moments.filter((m) => !m.trip_place).map((m, i) => (
                     <div key={i} className="break-inside-avoid">
                       <p className="font-bold">
                         {format(parseISO(m.date), "d MMM yyyy")}

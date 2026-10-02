@@ -31,6 +31,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           <>Set your week under <L href="/parent/timetable">Plan, then Timetable</L>: add the subjects you teach on each day. Oak imports use this to decide which days lessons go on.</>,
           <>Fill your planner with lessons: import an Oak unit (see below), or click an empty slot in the <L href="/parent">Planner</L> to add your own.</>,
         ],
+        tip: <>Not sure where to start? When a week in the <L href="/parent">Planner</L> is empty, press <b>Add the starter week</b> for a ready-made week of lessons you can change.</>,
       },
       {
         id: "grown-ups",
@@ -127,6 +128,31 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         ],
       },
       {
+        id: "starter-week",
+        emoji: "🌱",
+        title: "Start with a ready-made week",
+        intro: "A sample week of lessons so your planner isn't empty while you find your feet.",
+        steps: [
+          <>Open the <L href="/parent">Planner</L> on a week with nothing planned. A <b>Start with a ready-made week?</b> card appears at the top.</>,
+          "Tick which children it's for and choose younger children or teenagers. It picks this from each child's settings if you leave it.",
+          <>Press <b>Add the starter week</b>. Maths and English go in every day, with science, history, geography, art, P.E. and more around them, each with simple steps.</>,
+          "They're ordinary lessons, so change, move or delete any of them.",
+        ],
+        tip: "Lessons use the subject names from your timetable where they match, so they land in the right rows.",
+      },
+      {
+        id: "calendar",
+        emoji: "📅",
+        title: "See your plans in Google, Apple or Outlook calendar",
+        intro: "Lessons, exams and days off can show up in the calendar on your phone.",
+        steps: [
+          <>Open <L href="/account">Family, then Account</L> and press <b>Turn on calendar sync</b>.</>,
+          <>Press <b>Add to Apple Calendar</b> or <b>Add to Google Calendar</b>, or copy the address and paste it into your calendar app. <b>How do I add it?</b> shows the steps for each one.</>,
+          "Changes in Bright Roots show up in your calendar on their own, usually within a few hours.",
+          <>Keep the address private. If it gets shared by mistake, press <b>Make a new address</b>, or <b>Turn off</b> to stop it completely.</>,
+        ],
+      },
+      {
         id: "print",
         emoji: "🖨️",
         title: "Print the week",
@@ -171,6 +197,19 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           <><L href="/parent/council-report">Council Report</L> puts together a tidy report for a local authority, ready to print or save as a PDF.</>,
           <>Both reports include P.E., Outdoors and clubs from the <L href="/clubs">activity diary</L>, and practice from <L href="/languages">Languages</L>.</>,
           <>Keep notes and photos along the way in <L href="/parent/journal">Journal</L> and <L href="/moments">Moments &amp; Photos</L>. They make the reports richer.</>,
+          "The council report has its own sections for trips and visits, and for exams.",
+        ],
+      },
+      {
+        id: "trips",
+        emoji: "🚌",
+        title: "Trips and days out",
+        intro: "Museums, farms, castles, nature reserves: keep a record of where you went and what you learned.",
+        steps: [
+          <>Open <L href="/moments?tab=trips">Progress, then Trips &amp; days out</L> and press <b>+ Add a trip</b>.</>,
+          "Say where you went, add the date, a few photos and what the children saw and learned.",
+          "Pick a subject if it fits, like History for a castle or Science for a museum, and tick who went.",
+          "Trips show on the Moments page too, and in their own Trips and visits section of the council report.",
         ],
       },
     ],
@@ -232,6 +271,17 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         ],
         tip: "Children see the family badges on their own Badges page, and earned ones count towards their total.",
       },
+      {
+        id: "certificates",
+        emoji: "🏆",
+        title: "Print a badge certificate",
+        intro: "Turn an earned badge into a certificate for the fridge or the record folder.",
+        steps: [
+          <>On the <L href="/achievements">Badges</L> page, pick the child at the top, then press <b>Print certificate</b> under an earned badge.</>,
+          <>For your own family badges, press <b>Certificate for</b> and the child&apos;s name.</>,
+          <>Check the name and date, then press <b>Print</b>. It prints on one landscape A4 page, or choose Save as PDF.</>,
+        ],
+      },
     ],
   },
   {
@@ -274,6 +324,20 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           "Anything marked from age 10 appears in both, because it suits both.",
           <>To hide the Teens menu for a younger child (or the younger pages for a teenager), press <b>Edit</b> on <L href="/parent/children">Family, then Children</L>.</>,
         ],
+      },
+      {
+        id: "exams",
+        emoji: "📝",
+        title: "Planning GCSEs and other exams",
+        intro: "Keep track of exams sat as a private candidate: the centre, entry deadline, date and revision.",
+        steps: [
+          <>Open <L href="/teens/exams">Teens, then Exams</L> and press <b>+ Add an exam</b>. Add one for each paper.</>,
+          "Fill in what you know: the board, the centre, the entry deadline and fee, and the date and time when they're published.",
+          "Until you mark an exam as Entered, its entry deadline shows on the card, in red when it's close.",
+          <>Press <b>Plan revision</b> to put revision sessions in the planner on the days you choose, up to the day before the exam.</>,
+          "Your teenager sees their exams and a countdown on the same page. Add the result when it comes in.",
+        ],
+        tip: "Exams and entry deadlines also appear in your calendar if you've turned on calendar sync.",
       },
       {
         id: "languages",

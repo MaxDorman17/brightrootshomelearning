@@ -12,10 +12,11 @@ import {
 } from "@/lib/api";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
+import StarterWeekCard from "@/components/StarterWeekCard";
 import HolidayImporter, { type HolidayRange } from "@/components/HolidayImporter";
 import { Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
-import { format, addDays, startOfWeek } from "date-fns";
+import { format, addDays, parseISO, startOfWeek } from "date-fns";
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
@@ -166,6 +167,7 @@ export default function ParentPlanner() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
+  const [plannerLoaded, setPlannerLoaded] = useState(false);
   const [daysOff, setDaysOff] = useState<DayOff[]>([]);
   const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [children, setChildren] = useState<Child[]>([]);
@@ -244,6 +246,7 @@ export default function ParentPlanner() {
     setEntries(entriesRes.data);
     setAllEntries(allEntriesRes.data);
     setDaysOff(daysOffRes.data);
+    setPlannerLoaded(true);
   }, [weekStartStr, selectedChildId]);
 
   const loadGoals = useCallback(async () => {
@@ -653,6 +656,13 @@ export default function ParentPlanner() {
             </div>
           </div>
         </div>
+        {plannerLoaded && entries.length === 0 && allEntries.length < 20 && (
+          <StarterWeekCard
+            kids={children}
+            weekStart={weekStartStr}
+            onAdded={start => (start === weekStartStr ? loadData() : setWeekStart(parseISO(start)))}
+          />
+        )}
         {/* Bookmarklet panel */}
         {showBookmarklet && (
           <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
@@ -1186,10 +1196,10 @@ export default function ParentPlanner() {
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <div>
                               <p className="text-[10px] font-extrabold uppercase tracking-wide text-brand-earth/60">
-                                Moved lessons
+                                Also on this day
                               </p>
                               <p className="text-xs text-brand-earth/55">
-                                Lessons manually moved onto this day
+                                Lessons moved here, or not in this day's timetable
                               </p>
                             </div>
                             <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/15 text-brand-earth">

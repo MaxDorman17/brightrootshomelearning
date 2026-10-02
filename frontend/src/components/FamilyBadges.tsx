@@ -12,6 +12,7 @@ import {
   updateFamilyBadge,
 } from "@/lib/api";
 import { Child } from "@/types";
+import type { CertificateBadge } from "@/components/BadgeCertificate";
 
 const EMOJIS = ["⭐", "🏆", "🏅", "👑", "💖", "🎉", "🌈", "🚀", "🦁", "💪", "🎨", "📚"];
 const input = "w-full rounded-xl border-2 border-brand-line bg-white px-3.5 py-2.5 text-sm outline-none focus:border-brand-softsage";
@@ -214,10 +215,12 @@ type Props = {
   viewingChildId: number | null;
   /** How many family badges the viewed child has, so the page total can include them. */
   onEarnedCount?: (count: number) => void;
+  /** Opens a printable certificate for an earned badge. */
+  onCertificate?: (badge: CertificateBadge) => void;
 };
 
 /** "Our family's badges" on the Badges page: grown-ups make, award and remove them; children see theirs. */
-export default function FamilyBadges({ role, kids, viewingChildId, onEarnedCount }: Props) {
+export default function FamilyBadges({ role, kids, viewingChildId, onEarnedCount, onCertificate }: Props) {
   const [badges, setBadges] = useState<FamilyBadge[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [editing, setEditing] = useState<FamilyBadge | "new" | null>(null);
@@ -253,6 +256,11 @@ export default function FamilyBadges({ role, kids, viewingChildId, onEarnedCount
     } catch (err) {
       setError(detail(err, "That didn't save."));
     }
+  };
+
+  const certificate = async (badge: FamilyBadge, name?: string) => {
+    const imageUrl = badge.has_image ? await loadImage(badge) : null;
+    onCertificate?.({ title: badge.title, description: badge.description, emoji: badge.emoji || "🏅", imageUrl, name });
   };
 
   const remove = async (badge: FamilyBadge) => {
@@ -340,6 +348,17 @@ export default function FamilyBadges({ role, kids, viewingChildId, onEarnedCount
                         );
                       })}
                     </div>
+                    {onCertificate && b.awarded_to.length > 0 && (
+                      <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs font-bold">
+                        {kids
+                          .filter((k) => b.awarded_to.includes(k.id) && (!viewingChildId || k.id === viewingChildId))
+                          .map((k) => (
+                            <button key={k.id} onClick={() => certificate(b, k.username)} className="text-brand-sage hover:underline">
+                              🖨️ Certificate for {k.username}
+                            </button>
+                          ))}
+                      </div>
+                    )}
                     <div className="mt-3 flex justify-center gap-4 text-xs font-bold">
                       <button onClick={() => setEditing(b)} className="text-brand-sage hover:underline">Edit</button>
                       <button onClick={() => remove(b)} className="text-[#A64F42] hover:underline">Remove</button>
@@ -354,6 +373,11 @@ export default function FamilyBadges({ role, kids, viewingChildId, onEarnedCount
                     >
                       {earned ? "Earned" : "Not yet"}
                     </span>
+                    {earned && onCertificate && (
+                      <button onClick={() => certificate(b)} className="mt-2 block w-full text-xs font-bold text-brand-sage hover:underline">
+                        Print certificate
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

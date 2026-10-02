@@ -148,16 +148,18 @@ export const addResourceFolder = (name: string) => api.post("/api/resources/fold
 export const renameResourceFolder = (old_name: string, new_name: string) => api.put("/api/resources/folders", { old_name, new_name });
 export const deleteResourceFolder = (name: string) => api.delete(`/api/resources/folders/${encodeURIComponent(name)}`);
 export const getMoments = () => api.get("/api/moments/");
-export const addMoment = (fields: { note: string; moment_date: string; subject: string; child_ids: number[] }, files: File[]) => {
+export type MomentFields = { note: string; moment_date: string; subject: string; child_ids: number[]; trip_place?: string };
+export const addMoment = (fields: MomentFields, files: File[]) => {
   const form = new FormData();
   form.append("note", fields.note);
+  if (fields.trip_place) form.append("trip_place", fields.trip_place);
   form.append("moment_date", fields.moment_date);
   form.append("subject", fields.subject);
   form.append("child_ids", fields.child_ids.join(","));
   files.forEach((f) => form.append("files", f));
   return api.post("/api/moments/", form);
 };
-export const updateMoment = (id: number, body: { note: string; moment_date: string; subject: string; child_ids: number[] }) =>
+export const updateMoment = (id: number, body: MomentFields) =>
   api.put(`/api/moments/${id}`, body);
 export const deleteMoment = (id: number) => api.delete(`/api/moments/${id}`);
 export const addMomentPhotos = (id: number, files: File[]) => {
@@ -639,3 +641,40 @@ export const deleteFamilyBadge = (id: number) => api.delete(`/api/badges/${id}`)
 export const setFamilyBadgeAwards = (id: number, child_ids: number[]) =>
   api.put<FamilyBadge>(`/api/badges/${id}/awards`, { child_ids });
 export const getFamilyBadgeImage = (id: number) => api.get(`/api/badges/${id}/image`, { responseType: "blob" });
+
+// Exams for teens sitting GCSEs and similar as private candidates
+export type Exam = {
+  id: number;
+  child_id: number;
+  child: string;
+  subject: string;
+  qualification: string;
+  board: string | null;
+  paper: string | null;
+  exam_date: string | null;
+  exam_time: string | null;
+  centre: string | null;
+  entry_deadline: string | null;
+  fee: string | null;
+  status: "planning" | "entered" | "sat" | "result";
+  result: string | null;
+  notes: string | null;
+  days_to_go: number | null;
+};
+export type ExamBody = Omit<Exam, "id" | "child" | "days_to_go">;
+export const getExams = () => api.get<Exam[]>("/api/exams/");
+export const addExam = (body: ExamBody) => api.post<Exam>("/api/exams/", body);
+export const updateExam = (id: number, body: ExamBody) => api.put<Exam>(`/api/exams/${id}`, body);
+export const deleteExam = (id: number) => api.delete(`/api/exams/${id}`);
+export const planRevision = (id: number, body: { weekdays: number[]; minutes: number; start_date?: string }) =>
+  api.post<{ sessions: number; first: string | null; last: string | null }>(`/api/exams/${id}/revision`, body);
+
+// A ready-made sample week for families just starting out
+export const addStarterWeek = (child_ids: number[], start_date?: string, level?: string) =>
+  api.post<{ lessons: number; level: string; start_date: string }>("/api/planner/starter-week", { child_ids, start_date, level });
+
+// Calendar sync: a private feed address for Google, Apple or Outlook calendars
+export const getCalendarLink = () => api.get<{ token: string | null }>("/api/calendar/link");
+export const makeCalendarLink = () => api.post<{ token: string }>("/api/calendar/link");
+export const removeCalendarLink = () => api.delete("/api/calendar/link");
+export const calendarFeedUrl = (token: string) => `${API_URL.replace(/\/$/, "")}/api/calendar/${token}.ics`;

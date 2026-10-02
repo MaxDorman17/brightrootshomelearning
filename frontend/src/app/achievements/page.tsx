@@ -10,6 +10,8 @@ import RewardsTabs from "@/components/RewardsTabs";
 import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
 import FamilyBadges from "@/components/FamilyBadges";
+import BadgeCertificate, { CertificateBadge } from "@/components/BadgeCertificate";
+import { getUsername } from "@/lib/auth";
 
 const SEEN_KEY = "seen_badges";
 
@@ -145,6 +147,7 @@ export default function AchievementsPage() {
   const [familyEarned, setFamilyEarned] = useState(0);
   const [badgeView, setBadgeView] = useState<"earned" | "locked" | "all">("earned");
   const [badgeCategory, setBadgeCategory] = useState<string>("All");
+  const [certificate, setCertificate] = useState<CertificateBadge | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
@@ -422,6 +425,14 @@ export default function AchievementsPage() {
                             {isEarned ? "Earned" : "Locked"}
                           </span>
                         </div>
+                        {isEarned && (
+                          <button
+                            onClick={() => setCertificate({ title: b.title, description: b.desc, emoji: b.icon })}
+                            className="mt-2 text-xs font-bold text-brand-sage hover:underline"
+                          >
+                            Print certificate
+                          </button>
+                        )}
                       </div>
                     );
                   })}
@@ -429,10 +440,17 @@ export default function AchievementsPage() {
               )}
             </div>
 
-            <FamilyBadges role={role} kids={children} viewingChildId={selectedChildId} onEarnedCount={setFamilyEarned} />
+            <FamilyBadges role={role} kids={children} viewingChildId={selectedChildId} onEarnedCount={setFamilyEarned} onCertificate={setCertificate} />
           </>
         )}
       </div>
+      {certificate && (
+        <BadgeCertificate
+          badge={certificate}
+          name={certificate.name ?? (role === "parent" ? children.find(c => c.id === selectedChildId)?.username ?? (children.length === 1 ? children[0].username : "") : getUsername() ?? "")}
+          onClose={() => setCertificate(null)}
+        />
+      )}
     </div>
   );
 }

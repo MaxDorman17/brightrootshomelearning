@@ -68,7 +68,7 @@ const sections = [
           <li>your family&apos;s colour theme;</li>
           <li>the study timer, if one is running;</li>
           <li>which lesson steps you&apos;ve ticked off, which badges you&apos;ve already seen, and which of today&apos;s notifications you&apos;ve opened;</li>
-          <li>whether you&apos;ve hidden the getting-started card, the install-the-app card or the cookie notice;</li>
+          <li>whether you&apos;ve hidden the getting-started card, the starter week card, the install-the-app card or the cookie notice;</li>
           <li>an unsent newsletter draft, for the site owner only.</li>
         </ul>
       </>

@@ -106,6 +106,9 @@ export default function TeenCornerPage() {
                   <EmojiText text={t.label} />
                 </Link>
               ))}
+              <Link href="/teens/exams" className="rounded-xl bg-brand-cream px-4 py-2 text-sm font-extrabold text-brand-earth hover:bg-brand-tint">
+                <EmojiText text="📝 Exams" />
+              </Link>
             </div>
             {section("Cook", "Dinners, bakes and a budget challenge.", recipes, "/teens/cooking")}
             {section("Make and create", "Printmaking, textiles, woodwork, film and more.", projects, "/teens/projects")}

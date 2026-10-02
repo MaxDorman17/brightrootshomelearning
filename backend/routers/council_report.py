@@ -20,6 +20,7 @@ from models import (
 )
 from routers.activities import active_summary
 from routers.languages import language_summary
+from routers.exams import exams_for_child
 from routers.oak import OAK_SHARE_RE
 from routers.moments import moments_for_child
 from routers.study import study_minutes
@@ -236,6 +237,7 @@ def council_report(
         "moments": moments_for_child(db, parent_id, child.id, start_date, end_date),
         "active": active_summary(db, parent_id, [child.id], start_date, end_date),
         "languages": language_summary(db, parent_id, [child.id], start_date, end_date),
+        "exams": exams_for_child(db, parent_id, child.id, start_date, end_date),
     }
 
 

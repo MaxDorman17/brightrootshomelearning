@@ -36,6 +36,8 @@ const FALLBACK: Record<string, string> = {
   spellings: "/home/books.png",
   oak: "/home/progress.png",
   clubs: "/home/children.png",
+  exams: "/home/books.png",
+  trips: "/home/icons/moments.png?v=2",
   newsletter: "/home/parents.png",
 };
 

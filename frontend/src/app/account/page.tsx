@@ -13,6 +13,7 @@ import ChildColours from "@/components/ChildColours";
 import YourDataCard from "@/components/YourDataCard";
 import FamilyAdultsCard from "@/components/FamilyAdults";
 import AppCard from "@/components/AppCard";
+import CalendarSyncCard from "@/components/CalendarSyncCard";
 import {
   changePassword,
   checkSession,
@@ -297,6 +298,8 @@ export default function AccountPage() {
               {themeMessage && <p className="mt-3 text-sm font-semibold text-brand-earth">{themeMessage}</p>}
             </div>
           )}
+
+          {role === "parent" && <CalendarSyncCard />}
 
           {role === "parent" && newsletter !== null && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
