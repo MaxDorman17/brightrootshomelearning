@@ -105,6 +105,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/teens/projects", label: "Projects" },
       { href: "/teens/pe", label: "P.E." },
       { href: "/teens/outdoors", label: "Outdoors" },
+      { href: "/teens/life-skills", label: "Life skills" },
     ],
   },
   {
@@ -157,6 +158,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/teens/projects", label: "Projects" },
       { href: "/teens/pe", label: "P.E." },
       { href: "/teens/outdoors", label: "Outdoors" },
+      { href: "/teens/life-skills", label: "Life skills" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },

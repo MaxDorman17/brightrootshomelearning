@@ -89,8 +89,8 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <PageHero
-          art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies" }[kind]}
-          tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0 }[kind]}
+          art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies", life: "account" }[kind]}
+          tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0, life: 3 }[kind]}
         >
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : "Make together"}</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
@@ -104,6 +104,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                     craft: "Projects with real skills: printmaking, textiles, woodwork, film and more.",
                     pe: "Training you can plan and track yourself: running, circuits, sport skills and your own workout plan.",
                     outdoor: "Map reading, bushcraft, photography and leading a hike. Skills for getting out on your own.",
+                    life: "The everyday jobs nobody teaches you: washing, ironing, wiring a plug, budgeting, first aid and getting about on your own.",
                   }[kind]
                 : kind === "recipe"
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
@@ -147,7 +148,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                       (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
                     }
                   >
-                    <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors" }[k]} />
+                    <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors", life: "🧺 Life skills" }[k]} />
                   </Link>
                 ))}
                 {/* The 11 to 16 version of this page */}
@@ -160,9 +161,11 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           <div className="flex flex-wrap gap-2">
             {role === "parent" && (
               <>
-                <Link href="/make/shopping" className="rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm font-extrabold text-brand-sage hover:border-brand-softsage">
-                  🛒 Shopping list{shopCount ? ` (${shopCount})` : ""}
-                </Link>
+                {kind !== "life" && (
+                  <Link href="/make/shopping" className="rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm font-extrabold text-brand-sage hover:border-brand-softsage">
+                    🛒 Shopping list{shopCount ? ` (${shopCount})` : ""}
+                  </Link>
+                )}
                 <Link href={`/make/new?kind=${kind}${teen ? "&teen=1" : ""}`} className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark">
                   + Add your own {info.one}
                 </Link>
@@ -189,7 +192,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={{ recipe: "Search recipes, e.g. muffins", craft: "Search crafts, e.g. paper", pe: "Search activities, e.g. relay", outdoor: "Search activities, e.g. bugs" }[kind]}
+            placeholder={{ recipe: "Search recipes, e.g. muffins", craft: "Search crafts, e.g. paper", pe: "Search activities, e.g. relay", outdoor: "Search activities, e.g. bugs", life: "Search life skills, e.g. washing" }[kind]}
             className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-softsage sm:max-w-md"
           />
           <div className="flex flex-wrap gap-2">

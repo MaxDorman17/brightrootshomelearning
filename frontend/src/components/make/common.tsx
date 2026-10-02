@@ -29,6 +29,8 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
   pe: { name: "P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
   outdoor: { name: "Outdoors", one: "activity", path: "/make/outdoors", materials: "You'll need", subject: "Outdoor Learning", tint: "bg-lime-50" },
+  // Life skills are written for 11 to 16, so they only live in the Teens menu.
+  life: { name: "Life skills", one: "life skill", path: "/teens/life-skills", materials: "You'll need", subject: "Life Skills", tint: "bg-orange-50" },
 };
 
 /** Cookbook and Craft Corner sit together; P.E. and Outdoors are the "Active" pair. */
@@ -37,6 +39,7 @@ export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
   craft: ["recipe", "craft"],
   pe: ["pe", "outdoor"],
   outdoor: ["pe", "outdoor"],
+  life: ["life"],
 };
 
 export type AgeBand = "little" | "junior" | "teen";
@@ -74,11 +77,12 @@ export const TEEN_TABS: { kind: MakeKind; label: string; name: string; path: str
   { kind: "craft", label: "🎨 Projects", name: "Teen projects", path: "/teens/projects" },
   { kind: "pe", label: "🏃 P.E.", name: "Teen P.E.", path: "/teens/pe" },
   { kind: "outdoor", label: "🌳 Outdoors", name: "Teen outdoors", path: "/teens/outdoors" },
+  { kind: "life", label: "🧺 Life skills", name: "Life skills", path: "/teens/life-skills" },
 ];
 
 /** Where an activity's list lives: the teen page for 11+ activities, otherwise the usual one. */
 export function listPathFor(item: { kind: MakeKind; age_from: number | null }): string {
-  if ((item.age_from ?? 0) >= 11) return TEEN_TABS.find((t) => t.kind === item.kind)!.path;
+  if (item.kind === "life" || (item.age_from ?? 0) >= 11) return TEEN_TABS.find((t) => t.kind === item.kind)!.path;
   return KIND_INFO[item.kind].path;
 }
 
@@ -124,13 +128,13 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
         loading="lazy"
         onError={() => setStockFailed(true)}
         // The P.E. illustrations are whole scenes, so show all of each one rather than cropping heads off.
-        className={`${!src && (item.kind === "pe" || item.kind === "outdoor") ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
+        className={`${!src && (item.kind === "pe" || item.kind === "outdoor" || item.kind === "life") ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
       />
     );
   }
   return (
     <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>
-      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃", outdoor: "🌳" } as const)[item.kind]}</span>
+      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃", outdoor: "🌳", life: "🧺" } as const)[item.kind]}</span>
     </div>
   );
 }

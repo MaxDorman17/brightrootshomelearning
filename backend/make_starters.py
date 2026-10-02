@@ -339,9 +339,10 @@ def seed_starters(db: Session) -> None:
     """Create or update every starter recipe and craft."""
     from make_starters_outdoor import OUTDOOR
     from make_starters_pe import PE_GROUP, PE_SOLO
+    from make_starters_life import LIFE_SKILLS
     from make_starters_teen import TEEN_CRAFTS, TEEN_PE, TEEN_RECIPES
 
-    for data in RECIPES + CRAFTS + TEEN_RECIPES + TEEN_CRAFTS + PE_SOLO + PE_GROUP + TEEN_PE + OUTDOOR:
+    for data in RECIPES + CRAFTS + TEEN_RECIPES + TEEN_CRAFTS + PE_SOLO + PE_GROUP + TEEN_PE + OUTDOOR + LIFE_SKILLS:
         item = db.query(MakeItem).filter(MakeItem.slug == data["slug"]).first()
         if item is None:
             item = MakeItem(slug=data["slug"], parent_id=None)

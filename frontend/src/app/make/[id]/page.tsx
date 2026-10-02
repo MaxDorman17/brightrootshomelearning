@@ -153,7 +153,7 @@ export default function MakeItemPage() {
             <div className="mt-5 flex flex-wrap gap-2">
               {item.steps.length > 0 && (
                 <button onClick={() => setCooking(true)} className={primary}>
-                  ▶ Start making
+                  ▶ {item.kind === "life" ? "Start" : "Start making"}
                 </button>
               )}
               {role === "child" && (
@@ -165,10 +165,10 @@ export default function MakeItemPage() {
                   }}
                   className={item.wished_by.length ? `${btn} bg-rose-100 text-rose-700` : secondary}
                 >
-                  {item.wished_by.length ? "❤️ On my wish list" : "🤍 I'd love to make this"}
+                  {item.wished_by.length ? "❤️ On my wish list" : item.kind === "life" ? "🤍 I'd love to learn this" : "🤍 I'd love to make this"}
                 </button>
               )}
-              {isParent && item.materials.length > 0 && (
+              {isParent && item.materials.length > 0 && item.kind !== "life" && (
                 <button onClick={() => setModal("shop")} className={secondary}>
                   🛒 Add to shopping list
                 </button>
@@ -184,7 +184,7 @@ export default function MakeItemPage() {
                 </button>
               )}
               <button onClick={() => setModal("made")} className={secondary}>
-                <Emoji e="📸" /> {item.kind === "pe" || item.kind === "outdoor" ? "Share a photo" : "We made this!"}
+                <Emoji e="📸" /> {item.kind === "pe" || item.kind === "outdoor" || item.kind === "life" ? "Share a photo" : "We made this!"}
               </button>
             </div>
             {notice && <p className="mt-3 text-sm font-bold text-brand-sage">{notice}</p>}
@@ -255,7 +255,7 @@ export default function MakeItemPage() {
           </section>
 
           <section className="lg:col-span-3">
-            <h2 className="text-lg font-extrabold text-brand-charcoal">How to make it</h2>
+            <h2 className="text-lg font-extrabold text-brand-charcoal">{item.kind === "life" ? "How to do it" : "How to make it"}</h2>
             <ol className="mt-3 space-y-3">
               {item.steps.map((s, i) => (
                 <li key={i} className="flex gap-3 rounded-2xl border border-brand-line bg-white p-4">

@@ -25,7 +25,7 @@ function Card({ item }: { item: MakeSummary }) {
   );
 }
 
-/** Cooking, projects, P.E. and outdoor skills for ages 11 to 16, all in one place. */
+/** Cooking, projects, P.E., outdoor skills and life skills for ages 11 to 16, all in one place. */
 export default function TeenCornerPage() {
   const router = useRouter();
   const [role, setRole] = useState("");
@@ -46,6 +46,7 @@ export default function TeenCornerPage() {
   const projects = (items || []).filter((i) => i.kind === "craft");
   const fitness = (items || []).filter((i) => i.kind === "pe");
   const outdoors = (items || []).filter((i) => i.kind === "outdoor");
+  const life = (items || []).filter((i) => i.kind === "life");
 
   const section = (title: string, blurb: string, list: MakeSummary[], more: string) => list.length === 0 ? null : (
     <section className="mt-10">
@@ -89,6 +90,7 @@ export default function TeenCornerPage() {
                 <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🛠️ {projects.length || "–"} projects</span>
                 <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🏃 {fitness.length || "–"} P.E.</span>
                 <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🌳 {outdoors.length || "–"} outdoors</span>
+                <span className="rounded-full bg-white/85 px-3 py-1.5 shadow-sm">🧺 {life.length || "–"} life skills</span>
               </div>
             </div>
           </div>
@@ -109,6 +111,7 @@ export default function TeenCornerPage() {
             {section("Make and create", "Printmaking, textiles, woodwork, film and more.", projects, "/teens/projects")}
             {section("Get fit", "Running, circuits, sport skills and designing your own workout.", fitness, "/teens/pe")}
             {section("Get outdoors", "Map reading, geocaching, bushcraft and leading a hike.", outdoors, "/teens/outdoors")}
+            {section("Life skills", "Washing, ironing, wiring a plug, budgeting, first aid and getting about on your own.", life, "/teens/life-skills")}
           </>
         )}
       </div>

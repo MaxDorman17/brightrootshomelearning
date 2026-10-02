@@ -23,7 +23,7 @@ from storage import upload_dir
 router = APIRouter(prefix="/api/make", tags=["make"])
 
 PHOTO_DIR = upload_dir("make")
-KINDS = {"recipe", "craft", "pe", "outdoor"}
+KINDS = {"recipe", "craft", "pe", "outdoor", "life"}
 DIFFICULTIES = {"easy", "medium", "tricky"}
 
 
@@ -351,7 +351,7 @@ def clear_wishes(item_id: int, db: Session = Depends(get_db), current_user: User
 @router.post("/items/{item_id}/plan", status_code=201)
 def plan_item(item_id: int, body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     item = _get_item(db, current_user, item_id)
-    subject = body.subject.strip()[:100] or {"recipe": "Cooking", "pe": "PE", "outdoor": "Outdoor Learning"}.get(item.kind, "Art")
+    subject = body.subject.strip()[:100] or {"recipe": "Cooking", "pe": "PE", "outdoor": "Outdoor Learning", "life": "Life Skills"}.get(item.kind, "Art")
     materials = _loads(item.materials)
     need = ", ".join(f"{m.get('qty')} {m.get('name')}".strip() for m in materials)
     label = "Ingredients" if item.kind == "recipe" else "You'll need"
