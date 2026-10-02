@@ -38,6 +38,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   "💡": "lightbulb",
   "🐝": "bee",
   "➕": "maths",
+  "🚌": "bus",
   "🔬": "microscope",
   "🎓": "graduation",
   "💎": "gem",
