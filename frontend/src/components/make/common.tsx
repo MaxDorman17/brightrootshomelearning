@@ -56,6 +56,32 @@ export function inAgeBand(item: { age_from: number | null }, band: AgeBand | "")
   return age >= 10;
 }
 
+/**
+ * Who a page is for. The Make and Active menus show the younger activities; the Teens menu shows the
+ * 11 to 16 ones. Things marked "from age 10" suit both, so they appear in each.
+ */
+export type Audience = "young" | "teen";
+
+export function inAudience(item: { age_from: number | null; is_own?: boolean }, audience: Audience): boolean {
+  // A family's own activity with no age set could be for anyone, so it shows in both.
+  if (item.age_from == null) return audience === "young" || !!item.is_own;
+  return audience === "teen" ? item.age_from >= 10 : item.age_from <= 10;
+}
+
+/** The Teens menu: the same four kinds of activity, at their own addresses. */
+export const TEEN_TABS: { kind: MakeKind; label: string; name: string; path: string }[] = [
+  { kind: "recipe", label: "🍳 Cooking", name: "Teen cooking", path: "/teens/cooking" },
+  { kind: "craft", label: "🎨 Projects", name: "Teen projects", path: "/teens/projects" },
+  { kind: "pe", label: "🏃 P.E.", name: "Teen P.E.", path: "/teens/pe" },
+  { kind: "outdoor", label: "🌳 Outdoors", name: "Teen outdoors", path: "/teens/outdoors" },
+];
+
+/** Where an activity's list lives: the teen page for 11+ activities, otherwise the usual one. */
+export function listPathFor(item: { kind: MakeKind; age_from: number | null }): string {
+  if ((item.age_from ?? 0) >= 11) return TEEN_TABS.find((t) => t.kind === item.kind)!.path;
+  return KIND_INFO[item.kind].path;
+}
+
 export const DIFFICULTY_LABEL: Record<string, string> = { easy: "Easy", medium: "A bit trickier", tricky: "Tricky" };
 
 // Photos are behind login, so they're fetched once and kept for the page's lifetime.

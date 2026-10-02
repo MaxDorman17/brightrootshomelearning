@@ -7,13 +7,18 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { AGE_BANDS, AgeBand, inAgeBand, KIND_FAMILY, KIND_INFO, MakePhoto, MakeSummary, MetaChips } from "./common";
+import { AGE_BANDS, AgeBand, Audience, inAgeBand, inAudience, KIND_FAMILY, KIND_INFO, MakePhoto, MakeSummary, MetaChips, TEEN_TABS } from "./common";
 import Emoji, { EmojiText } from "@/components/Emoji";
 
-/** The Cookbook or Craft Corner: browse, search and filter recipes or crafts. */
-export default function MakeLibrary({ kind }: { kind: MakeKind }) {
+/**
+ * The Cookbook, Craft Corner, P.E. or Outdoors: browse, search and filter.
+ * `audience` picks the younger activities (the Make and Active menus) or the 11 to 16 ones (the Teens menu).
+ */
+export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKind; audience?: Audience }) {
   const router = useRouter();
   const info = KIND_INFO[kind];
+  const teen = audience === "teen";
+  const teenTab = TEEN_TABS.find((t) => t.kind === kind)!;
   const [role, setRole] = useState("");
   const [items, setItems] = useState<MakeSummary[] | null>(null);
   const [search, setSearch] = useState("");
@@ -30,18 +35,23 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
       return;
     }
     const fromUrl = new URLSearchParams(window.location.search).get("age");
-    if (fromUrl === "little" || fromUrl === "junior" || fromUrl === "teen") setAge(fromUrl);
+    if (fromUrl === "teen" && !teen) {
+      // Older links: the teen activities now have their own pages.
+      router.replace(teenTab.path);
+      return;
+    }
+    if (!teen && (fromUrl === "little" || fromUrl === "junior")) setAge(fromUrl);
     const r = getRole() || "";
     setRole(r);
     getMakeItems(kind)
-      .then((res) => setItems(res.data))
+      .then((res) => setItems((res.data as MakeSummary[]).filter((i) => inAudience(i, audience))))
       .catch(() => setItems([]));
     if (r === "parent") {
       getShoppingCount()
         .then((res) => setShopCount(res.data.count))
         .catch(() => {});
     }
-  }, [kind, router]);
+  }, [kind, router, audience, teen, teenTab.path]);
 
   const categories = useMemo(
     () =>
@@ -82,13 +92,20 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
           art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies" }[kind]}
           tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0 }[kind]}
         >
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Make together</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : "Make together"}</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
-              {info.name}
+              {teen ? teenTab.name : info.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
-              {kind === "recipe"
+              {teen
+                ? {
+                    recipe: "Real meals and proper bakes to cook from start to finish on your own.",
+                    craft: "Projects with real skills: printmaking, textiles, woodwork, film and more.",
+                    pe: "Training you can plan and track yourself: running, circuits, sport skills and your own workout plan.",
+                    outdoor: "Map reading, bushcraft, photography and leading a hike. Skills for getting out on your own.",
+                  }[kind]
+                : kind === "recipe"
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
                 : kind === "pe"
                   ? "Get moving! P.E. ideas for one child on their own and for a group, indoors and out. Add your own too."
@@ -99,23 +116,45 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
         </PageHero>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
-            {KIND_FAMILY[kind].map((k) => (
-              <Link
-                key={k}
-                href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
-                aria-current={k === kind ? "page" : undefined}
-                className={
-                  "rounded-xl px-4 py-2 text-sm font-extrabold " +
-                  (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
-                }
-              >
-                <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors" }[k]} />
-              </Link>
-            ))}
-            {(kind === "recipe" || kind === "craft") && (
-              <Link href="/make/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
-                <Emoji e="🚀" /> Teen Corner
-              </Link>
+            {teen ? (
+              <>
+                <Link href="/teens" className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+                  <Emoji e="🚀" /> Teen Corner
+                </Link>
+                {TEEN_TABS.map((t) => (
+                  <Link
+                    key={t.kind}
+                    href={t.path}
+                    aria-current={t.kind === kind ? "page" : undefined}
+                    className={
+                      "rounded-xl px-4 py-2 text-sm font-extrabold " +
+                      (t.kind === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
+                    }
+                  >
+                    <EmojiText text={t.label} />
+                  </Link>
+                ))}
+              </>
+            ) : (
+              <>
+                {KIND_FAMILY[kind].map((k) => (
+                  <Link
+                    key={k}
+                    href={KIND_INFO[k].path + (age ? `?age=${age}` : "")}
+                    aria-current={k === kind ? "page" : undefined}
+                    className={
+                      "rounded-xl px-4 py-2 text-sm font-extrabold " +
+                      (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
+                    }
+                  >
+                    <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors" }[k]} />
+                  </Link>
+                ))}
+                {/* The 11 to 16 version of this page */}
+                <Link href={teenTab.path} className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+                  <Emoji e="🚀" /> For teens
+                </Link>
+              </>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
@@ -124,7 +163,7 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
                 <Link href="/make/shopping" className="rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm font-extrabold text-brand-sage hover:border-brand-softsage">
                   🛒 Shopping list{shopCount ? ` (${shopCount})` : ""}
                 </Link>
-                <Link href={`/make/new?kind=${kind}`} className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark">
+                <Link href={`/make/new?kind=${kind}${teen ? "&teen=1" : ""}`} className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-extrabold text-white hover:bg-brand-sagedark">
                   + Add your own {info.one}
                 </Link>
               </>
@@ -132,17 +171,19 @@ export default function MakeLibrary({ kind }: { kind: MakeKind }) {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-brand-earth/60">Age</span>
-          <button onClick={() => chooseAge("")} className={chip(!age)}>
-            All ages
-          </button>
-          {AGE_BANDS.map((b) => (
-            <button key={b.id} onClick={() => chooseAge(age === b.id ? "" : b.id)} className={chip(age === b.id)}>
-              {b.label}
+        {!teen && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-brand-earth/60">Age</span>
+            <button onClick={() => chooseAge("")} className={chip(!age)}>
+              All
             </button>
-          ))}
-        </div>
+            {AGE_BANDS.filter((b) => b.id !== "teen").map((b) => (
+              <button key={b.id} onClick={() => chooseAge(age === b.id ? "" : b.id)} className={chip(age === b.id)}>
+                {b.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="mt-5 space-y-3">
           <input

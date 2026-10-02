@@ -6,11 +6,14 @@ import { MakeKind } from "@/lib/api";
 
 export default function NewMakePage() {
   const [kind, setKind] = useState<MakeKind | null>(null);
+  const [teen, setTeen] = useState(false);
 
   useEffect(() => {
-    const k = new URLSearchParams(window.location.search).get("kind");
+    const params = new URLSearchParams(window.location.search);
+    const k = params.get("kind");
+    setTeen(params.get("teen") === "1");
     setKind(k === "craft" || k === "pe" || k === "outdoor" ? k : "recipe");
   }, []);
 
-  return kind ? <MakeEditor kind={kind} /> : null;
+  return kind ? <MakeEditor kind={kind} teen={teen} /> : null;
 }

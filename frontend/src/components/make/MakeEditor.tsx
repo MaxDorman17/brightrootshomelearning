@@ -23,7 +23,7 @@ const input = "w-full rounded-xl border-2 border-brand-line bg-white px-3.5 py-2
 const label = "mb-1.5 block text-sm font-bold text-brand-charcoal";
 
 /** Add or edit a family's own recipe or craft. */
-export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind; id?: number }) {
+export default function MakeEditor({ kind: initialKind, id, teen = false }: { kind?: MakeKind; id?: number; teen?: boolean }) {
   const router = useRouter();
   const [loaded, setLoaded] = useState(!id);
   const [kind, setKind] = useState<MakeKind>(initialKind || "recipe");
@@ -33,7 +33,8 @@ export default function MakeEditor({ kind: initialKind, id }: { kind?: MakeKind;
   const [category, setCategory] = useState("");
   const [minutes, setMinutes] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
-  const [ageFrom, setAgeFrom] = useState("");
+  // Added from a Teens page: start at 11 so it shows there (it can be changed).
+  const [ageFrom, setAgeFrom] = useState(teen ? "11" : "");
   const [serves, setServes] = useState("");
   const [materials, setMaterials] = useState<MakeMaterial[]>([{ name: "", qty: "" }]);
   const [steps, setSteps] = useState<MakeStep[]>([{ text: "", grown_up: false }]);

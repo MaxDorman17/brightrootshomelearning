@@ -85,7 +85,6 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
-      { href: "/make/teens", label: "Teen Corner" },
       { href: "/make/shopping", label: "Shopping List" },
     ],
   },
@@ -95,6 +94,17 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
+    ],
+  },
+  // Ages 11 to 16: the same four kinds of activity, written for teenagers. Make and Active show the younger ones.
+  {
+    label: "Teens",
+    items: [
+      { href: "/teens", label: "Teen Corner" },
+      { href: "/teens/cooking", label: "Cooking" },
+      { href: "/teens/projects", label: "Projects" },
+      { href: "/teens/pe", label: "P.E." },
+      { href: "/teens/outdoors", label: "Outdoors" },
     ],
   },
   {
@@ -128,7 +138,6 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/child/games", label: "Games" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
-      { href: "/make/teens", label: "Teen Corner" },
       { href: "/account", label: "My Look" },
     ],
   },
@@ -138,6 +147,16 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
+    ],
+  },
+  {
+    label: "Teens",
+    items: [
+      { href: "/teens", label: "Teen Corner" },
+      { href: "/teens/cooking", label: "Cooking" },
+      { href: "/teens/projects", label: "Projects" },
+      { href: "/teens/pe", label: "P.E." },
+      { href: "/teens/outdoors", label: "Outdoors" },
     ],
   },
   { href: "/child/stars", label: "My Stars" },
@@ -312,7 +331,7 @@ export default function Navbar() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between">
 
-            <div className="flex min-w-0 items-center gap-5">
+            <div className="flex min-w-0 items-center gap-3 xl:gap-5">
               <Link
                 href={home}
                 className="flex shrink-0 items-center gap-2"
@@ -329,20 +348,20 @@ export default function Navbar() {
                   <p className="font-extrabold text-brand-sage">
                     Bright Roots
                   </p>
-                  <p className="text-[10px] font-bold tracking-[0.16em] text-brand-earth/60">
+                  <p className="text-[10px] font-bold tracking-[0.16em] text-brand-earth/60 lg:hidden xl:block">
                     LEARN · GROW · BELONG
                   </p>
                 </div>
               </Link>
 
-              <div ref={menusRef} className="hidden items-center gap-1 lg:flex">
+              <div ref={menusRef} className="hidden items-center gap-0.5 lg:flex xl:gap-1">
                 {nav.map((entry) =>
                   isGroup(entry) ? (
                     <div key={entry.label} className="relative">
                       <button
                         onClick={() => setOpenMenu((value) => (value === entry.label ? null : entry.label))}
                         aria-expanded={openMenu === entry.label}
-                        className={`flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
+                        className={`flex items-center gap-1 rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
                           groupActive(entry) || openMenu === entry.label
                             ? "bg-brand-sage text-white"
                             : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
@@ -373,7 +392,7 @@ export default function Navbar() {
                     <Link
                       key={entry.href}
                       href={entry.href}
-                      className={`relative rounded-xl px-3 py-2 text-sm font-bold transition-colors ${
+                      className={`relative rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
                         isActive(entry.href)
                           ? "bg-brand-sage text-white"
                           : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
@@ -479,7 +498,7 @@ export default function Navbar() {
                     size="sm"
                   />
 
-                  <span className="pr-2 text-sm font-bold text-brand-charcoal">
+                  <span className="pr-2 text-sm font-bold text-brand-charcoal lg:hidden xl:inline">
                     {username}
                   </span>
                 </Link>
@@ -487,7 +506,7 @@ export default function Navbar() {
 
               <button
                 onClick={handleLogout}
-                className="hidden rounded-xl px-3 py-2 text-sm font-bold text-brand-earth/70 transition-colors hover:bg-brand-softsage/15 hover:text-brand-sage sm:block"
+                className="hidden whitespace-nowrap rounded-xl px-3 py-2 text-sm font-bold text-brand-earth/70 transition-colors hover:bg-brand-softsage/15 hover:text-brand-sage sm:block"
               >
                 Log out
               </button>

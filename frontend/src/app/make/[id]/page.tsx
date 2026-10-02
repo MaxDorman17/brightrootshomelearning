@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Navbar from "@/components/Navbar";
 import CookAlong from "@/components/make/CookAlong";
-import { errorText, KIND_INFO, MakeDetail, MakePhoto, MetaChips } from "@/components/make/common";
+import { errorText, KIND_INFO, listPathFor, MakeDetail, MakePhoto, MetaChips, TEEN_TABS } from "@/components/make/common";
 import {
   addItemToShopping,
   addMoment,
@@ -118,8 +118,8 @@ export default function MakeItemPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
-        <Link href={info.path} className="text-sm font-bold text-brand-sage hover:underline">
-          ← {info.name}
+        <Link href={listPathFor(item)} className="text-sm font-bold text-brand-sage hover:underline">
+          ← {(item.age_from ?? 0) >= 11 ? TEEN_TABS.find((t) => t.kind === item.kind)!.name : info.name}
         </Link>
 
         <div className="mt-4 grid gap-6 lg:grid-cols-5">
