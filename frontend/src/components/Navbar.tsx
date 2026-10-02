@@ -193,6 +193,8 @@ export default function Navbar() {
   // Which activity pages suit this child, or this parent's children ("young", "teen", "both"). Everything until loaded.
   const [levels, setLevels] = useState<string[]>(["both"]);
   const [notifOpen, setNotifOpen] = useState(false);
+  // On the Moments page, the Trips tab belongs to the Active menu.
+  const [onTrips, setOnTrips] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -323,8 +325,16 @@ export default function Navbar() {
       ? "/parent/dashboard"
       : "/child";
 
+  useEffect(() => {
+    const check = () => setOnTrips(window.location.pathname === "/moments" && window.location.search.includes("tab=trips"));
+    check();
+    window.addEventListener("moments-tab-changed", check);
+    return () => window.removeEventListener("moments-tab-changed", check);
+  }, [pathname]);
+
   const isActive = (href: string) =>
-    pathname === href ||
+    (href === "/moments?tab=trips" && onTrips) ||
+    (pathname === href && !(href === "/moments" && onTrips)) ||
     (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
     // A single recipe or craft, or the add/edit form, lights up the Make menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));

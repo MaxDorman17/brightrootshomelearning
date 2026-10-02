@@ -375,7 +375,7 @@ function MomentsPage() {
   const router = useRouter();
   const params = useSearchParams();
   const [role, setRole] = useState("");
-  const [tab, setTab] = useState<"feed" | "photos" | "trips">("feed");
+  const [tab, setTab] = useState<"feed" | "photos" | "trips">(() => (params.get("tab") === "trips" ? "trips" : "feed"));
   const [moments, setMoments] = useState<Moment[]>([]);
   const [childList, setChildList] = useState<Child[]>([]);
   const [subjects, setSubjects] = useState<string[]>([]);
@@ -407,7 +407,15 @@ function MomentsPage() {
 
   useEffect(() => {
     if (params.get("tab") === "trips") setTab("trips");
+    else setTab((current) => (current === "trips" ? "feed" : current));
   }, [params]);
+
+  // Trips live under Active in the menu, so the address and the menu follow the tab.
+  useEffect(() => {
+    const url = tab === "trips" ? "/moments?tab=trips" : "/moments";
+    if (window.location.pathname + window.location.search !== url) window.history.replaceState(null, "", url);
+    window.dispatchEvent(new Event("moments-tab-changed"));
+  }, [tab]);
 
   const trips = useMemo(() => moments.filter((m) => m.trip_place), [moments]);
   const tripsThisYear = trips.filter((m) => m.moment_date.startsWith(String(new Date().getFullYear()))).length;
@@ -478,7 +486,7 @@ function MomentsPage() {
           <div className="mt-5 space-y-5">
             {trips.length === 0 ? (
               <div className="brand-card p-8 text-center">
-                <Emoji e="🚌" className="mx-auto h-16 w-16" />
+                <Emoji e="🚌" className="mx-auto h-16 w-16 text-6xl" />
                 <p className="mt-2 font-bold text-brand-charcoal">No trips yet</p>
                 <p className="mt-1 text-sm text-[#6E5A46]">
                   Museums, farms, castles, nature reserves, the library: add where you went, a few photos and what you learned. Trips show up in your reports too.

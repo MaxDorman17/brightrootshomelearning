@@ -49,10 +49,15 @@ function useArt(name: string) {
   const own = `/home/icons/${name}.png?v=2`;
   const [src, setSrc] = useState(FALLBACK[name] || "/home/plan.png");
   useEffect(() => {
+    let current = true;
+    setSrc(FALLBACK[name] || "/home/plan.png");
     const img = new Image();
-    img.onload = () => setSrc(own);
+    img.onload = () => current && setSrc(own);
     img.src = own;
-  }, [own]);
+    return () => {
+      current = false;
+    };
+  }, [own, name]);
   return src;
 }
 
