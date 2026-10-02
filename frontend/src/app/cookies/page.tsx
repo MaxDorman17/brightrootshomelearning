@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
-import { SUPPORT_EMAIL } from "@/lib/site";
+import { SUPPORT_EMAIL, PRIVACY_UPDATED } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Cookie policy",
@@ -64,10 +64,10 @@ const sections = [
       <>
         <p>These stay on your own device and are never used to track you:</p>
         <ul>
-          <li>who is logged in (parent or child) and their username, so the right pages are shown;</li>
+          <li>who is logged in (parent or child) and their name, so the right pages are shown;</li>
           <li>your family&apos;s colour theme;</li>
           <li>the study timer, if one is running;</li>
-          <li>which lesson steps you&apos;ve ticked off, and which badges you&apos;ve already seen;</li>
+          <li>which lesson steps you&apos;ve ticked off, which badges you&apos;ve already seen, and which of today&apos;s notifications you&apos;ve opened;</li>
           <li>whether you&apos;ve hidden the getting-started card, the install-the-app card or the cookie notice;</li>
           <li>an unsent newsletter draft, for the site owner only.</li>
         </ul>
@@ -112,6 +112,7 @@ export default function CookiesPage() {
       title="Cookie policy"
       intro={<p>No tracking, no adverts. Just what&apos;s needed to keep you logged in and the site secure.</p>}
       sections={sections}
+      updated={PRIVACY_UPDATED}
     />
   );
 }

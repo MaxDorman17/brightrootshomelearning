@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import TraderDetails from "@/components/TraderDetails";
-import { SUPPORT_EMAIL } from "@/lib/site";
+import { PRIVACY_UPDATED, SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -31,27 +31,40 @@ const sections = [
         <p>We only collect what we need to run Bright Roots for your family:</p>
         <ul>
           <li>
-            <strong>Your parent account:</strong> your email address, username and password. Passwords are stored
-            in a scrambled (hashed) form, so we can never see them.
+            <strong>Your parent account:</strong> your name, email address and password, the avatar you pick, and,
+            if you choose to add it, what you are to the children (such as Mum, Dad or Guardian). Passwords are
+            stored in a scrambled (hashed) form, so we can never see them.
           </li>
           <li>
-            <strong>Your children&apos;s accounts:</strong> the name or username you choose for each child, an
-            optional email address, and the avatar, photo and colours you or they pick.
+            <strong>Other grown-ups you add:</strong> if you give another parent, guardian or relative their own
+            login, we hold their name, email address, password and what they are to the children, in the same way
+            as your own. Please only add someone who has agreed to it.
+          </li>
+          <li>
+            <strong>Your children&apos;s accounts:</strong> the name you choose for each child, the login name they
+            use, an optional email address, the avatar, photo and colours you or they pick, and whether you&apos;ve
+            chosen for them to see the younger activities, the teen activities or both. We don&apos;t ask for a
+            date of birth.
           </li>
           <li>
             <strong>Learning records:</strong> your timetable, plans and lessons, completed work, notes and
-            feedback, reading, spellings, test and quiz results, game scores, study time, stars, rewards,
-            reminders, journal entries and anything you write for reports.
+            feedback, reading, spellings, language practice, test and quiz results, game scores, study time,
+            P.E., outdoor and club activities, stars, rewards and badges (including any you make yourself),
+            reminders, journal entries, notes you leave for your children and their replies, and anything you
+            write for reports.
           </li>
           <li>
-            <strong>Photos and files you upload:</strong> moments and photos, worksheets and resources.
+            <strong>Photos and files you upload:</strong> moments and photos, worksheets and resources, and
+            pictures for any badges you make.
           </li>
           <li>
             <strong>Membership details:</strong> your plan, trial dates and subscription status. Card payments
             are handled by Stripe, and we never see or store your card details.
           </li>
           <li>
-            <strong>Newsletter:</strong> if you sign up, your email address and when you confirmed.
+            <strong>Newsletter:</strong> if you sign up, your email address and when you confirmed. If another
+            grown-up on your account invites you, we send you one email asking you to confirm, and you are only
+            added if you do.
           </li>
         </ul>
       </>
@@ -103,7 +116,8 @@ const sections = [
         <p>
           Child accounts are created and managed by a parent or guardian, who decides what goes into them.
           Children don&apos;t need an email address, and they can only see their own learning and what their
-          parent shares with them.
+          parent shares with them. Children can reply to a parent&apos;s note with a picture, such as a heart, but
+          can&apos;t send messages, and nobody outside the family can contact them through Bright Roots.
         </p>
         <p>
           We treat children&apos;s information with extra care and follow the ICO&apos;s Children&apos;s Code. It is
@@ -131,6 +145,11 @@ const sections = [
           </li>
           <li>
             <strong>Cloudflare</strong>, which protects the website from attacks and helps it load quickly.
+          </li>
+          <li>
+            <strong>Your browser&apos;s notification service</strong> (for example Google, Apple or Mozilla), only if
+            you switch on phone notifications. It passes each notification to your device and can&apos;t read what
+            it says.
           </li>
         </ul>
         <p>
@@ -186,6 +205,10 @@ const sections = [
         </ul>
         <p>Children have these rights too. We don&apos;t make any automated decisions about you or your children.</p>
         <p>
+          Every grown-up on a family account can download the family&apos;s information. Only the parent who
+          opened the account can delete it, and that removes every child and grown-up login on it too.
+        </p>
+        <p>
           You can download everything, or delete your whole account, yourself from the{" "}
           <Link href="/account">Account page</Link>. For anything else, email {mail}.
         </p>
@@ -231,6 +254,7 @@ export default function PrivacyPage() {
         </p>
       }
       sections={sections}
+      updated={PRIVACY_UPDATED}
     />
   );
 }

@@ -9,7 +9,7 @@ const cards = [
   {
     emoji: "📝",
     title: "What we know about you",
-    text: "Your name or nickname, your password (kept secret, even from us), your picture and colours, and your learning: lessons, reading, spellings, scores, stars, notes and anything you upload. If your grown-up adds your email address, we know that too.",
+    text: "Your name or nickname, the login name you type, your password (kept secret, even from us), your picture and colours, and your learning: lessons, reading, spellings, languages, scores, stars, badges, notes from your grown-ups and anything you upload. Your grown-up also chooses which activities you see. If your grown-up adds your email address, we know that too.",
   },
   {
     emoji: "🎯",
