@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Avatar from "@/components/Avatar";
 import ChildProfileModal from "@/components/ChildProfileModal";
+import ChildEditModal, { ActivityLevel, ActivityLevelPicker } from "@/components/ChildEditModal";
 import { format, parseISO } from "date-fns";
 
 export default function ChildrenPage() {
@@ -31,6 +32,8 @@ export default function ChildrenPage() {
 
   const [resetChild, setResetChild] = useState<Child | null>(null);
   const [profileChild, setProfileChild] = useState<Child | null>(null);
+  const [editChild, setEditChild] = useState<Child | null>(null);
+  const [level, setLevel] = useState<ActivityLevel>("both");
   const [resetPassword, setResetPassword] = useState("");
   const [resetConfirm, setResetConfirm] = useState("");
   const [resetSaving, setResetSaving] = useState(false);
@@ -83,15 +86,18 @@ export default function ChildrenPage() {
         login_name: loginName.trim() || undefined,
         email: email.trim() || undefined,
         password: password.trim(),
+        activity_level: level,
       });
 
       setChildren(prev => [...prev, res.data]);
+      window.dispatchEvent(new Event("activity-levels-changed"));
 
       setUsername("");
       setEmail("");
       setPassword("");
       setLoginName("");
       setLoginTouched(false);
+      setLevel("both");
       setShowModal(false);
     } catch (err: unknown) {
       const detail = (
@@ -111,6 +117,7 @@ export default function ChildrenPage() {
 
     await removeChild(id);
     setChildren(prev => prev.filter(child => child.id !== id));
+    window.dispatchEvent(new Event("activity-levels-changed"));
   };
 
   const closeModal = () => {
@@ -120,6 +127,7 @@ export default function ChildrenPage() {
     setPassword("");
     setLoginName("");
     setLoginTouched(false);
+    setLevel("both");
     setError("");
   };
 
@@ -263,6 +271,9 @@ export default function ChildrenPage() {
                     {child.login_name && (
                       <p className="text-sm text-[#6E5A46] mt-1 truncate">
                         Logs in as <span className="font-bold text-[#2E342F]">{child.login_name}</span>
+                        {child.activity_level && child.activity_level !== "both"
+                          ? ` · sees ${child.activity_level === "teen" ? "teen" : "younger"} activities`
+                          : ""}
                       </p>
                     )}
 
@@ -278,6 +289,13 @@ export default function ChildrenPage() {
                   </div>
 
                   <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    <button
+                      onClick={() => setEditChild(child)}
+                      className="px-3 py-2 rounded-xl text-sm font-semibold text-brand-sage hover:bg-brand-tint transition-colors"
+                    >
+                      Edit
+                    </button>
+
                     <button
                       onClick={() => setProfileChild(child)}
                       className="px-3 py-2 rounded-xl text-sm font-semibold text-brand-sage hover:bg-brand-tint transition-colors"
@@ -319,6 +337,19 @@ export default function ChildrenPage() {
           </p>
         </section>
       </main>
+
+      {editChild && (
+        <ChildEditModal
+          child={editChild}
+          onClose={() => setEditChild(null)}
+          onSaved={(updated) => {
+            setChildren((prev) => prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)));
+            setEditChild(null);
+            // The menu shows or hides the Teens and younger pages to suit the children.
+            window.dispatchEvent(new Event("activity-levels-changed"));
+          }}
+        />
+      )}
 
       {showModal && (
         <div
@@ -431,6 +462,11 @@ export default function ChildrenPage() {
                     placeholder="Choose a password they can remember"
                     className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
+                </div>
+
+                <div>
+                  <p className="block text-sm font-semibold text-[#2E342F] mb-1.5">Which activities should they see?</p>
+                  <ActivityLevelPicker value={level} onChange={setLevel} />
                 </div>
 
                 {error && (

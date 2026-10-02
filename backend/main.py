@@ -74,6 +74,8 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN relationship_label VARCHAR(30)"))
             if "login_name" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN login_name VARCHAR(255)"))
+            if "activity_level" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN activity_level VARCHAR(10)"))
             conn.commit()
     if "lessons" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("lessons")]

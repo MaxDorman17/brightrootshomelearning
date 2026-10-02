@@ -46,6 +46,20 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         ],
       },
       {
+        id: "edit-child",
+        emoji: "🧒",
+        title: "Change a child's name, login or activities",
+        intro: "Fix a spelling, give them an easier login name, or choose whether they see the younger or teen activities.",
+        steps: [
+          <>Open <L href="/parent/children">Family, then Children</L> and press <b>Edit</b> next to the child.</>,
+          "Change their name. Two children can have the same name, even in different families.",
+          "Change their login name if you like. The page tells you if it's free and suggests others if it isn't. Their password stays the same.",
+          <>Under <b>Which activities should they see?</b>, pick Younger, Teens or Both. This decides whether the Teens menu or the younger Make and Active pages show for them.</>,
+          "Press Save changes. Your own menu updates too: if all your children are set to Younger, the Teens menu is hidden for you as well.",
+        ],
+        tip: "We ask which activities to show rather than a date of birth, so you choose what suits your child.",
+      },
+      {
         id: "children-login",
         emoji: "🔑",
         title: "How children log in",
@@ -202,6 +216,25 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
     ],
   },
   {
+    group: "Badges",
+    guides: [
+      {
+        id: "own-badges",
+        emoji: "🏅",
+        title: "Make your own badges",
+        intro: "Alongside the built-in badges, make your own for anything you like: kindness, swimming a length, tidying up without being asked.",
+        steps: [
+          <>Open <L href="/achievements">Family, then Rewards &amp; Badges, then Badges</L> and scroll to <b>Our family&apos;s badges</b> at the bottom.</>,
+          <>Press <b>+ Make a badge</b>. Give it a name and say what it&apos;s for.</>,
+          "Upload your own picture (a square PNG or JPG works best), or pick a symbol instead.",
+          "Tick each child who has earned it. Untick to take it back.",
+          "Use Edit to change a badge, or Remove to delete it for everyone.",
+        ],
+        tip: "Children see the family badges on their own Badges page, and earned ones count towards their total.",
+      },
+    ],
+  },
+  {
     group: "Make together",
     guides: [
       {
@@ -215,6 +248,31 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           "Add your own with '+ Add your own', or copy a ready-made one and change it.",
           "Any of them can be added to the planner as a lesson.",
           <>After a P.E. or Outdoors activity, press <b>We did this</b> to add it to the activity diary.</>,
+        ],
+      },
+      {
+        id: "life-skills",
+        emoji: "🧺",
+        title: "Life skills",
+        intro: "Everyday skills with step-by-step instructions, for younger children and for teenagers.",
+        steps: [
+          <>For younger children, open <L href="/make/life-skills">Make, then Life Skills</L>: tying laces, making the bed, telling the time, crossing the road and more.</>,
+          <>For 11 to 16, open <L href="/teens/life-skills">Teens, then Life skills</L>: using a washing machine, wiring a plug, ironing, budgeting, first aid and planning a journey.</>,
+          <>Press <b>Plan it</b> to add one to the planner as a Life Skills lesson.</>,
+          "Steps marked 'Grown-up job' are the ones to do together or check.",
+          "Add your own with '+ Add your own life skill'.",
+        ],
+      },
+      {
+        id: "teens",
+        emoji: "🚀",
+        title: "The Teens menu",
+        intro: "Cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16 to do on their own.",
+        steps: [
+          <>Open <L href="/teens">Teens, then Teen Corner</L> to see everything, or go straight to Cooking, Projects, P.E., Outdoors or Life skills.</>,
+          "The Make and Active menus show the younger versions of the same pages.",
+          "Anything marked from age 10 appears in both, because it suits both.",
+          <>To hide the Teens menu for a younger child (or the younger pages for a teenager), press <b>Edit</b> on <L href="/parent/children">Family, then Children</L>.</>,
         ],
       },
       {

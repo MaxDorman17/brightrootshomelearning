@@ -34,7 +34,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
   const [minutes, setMinutes] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
   // Added from a Teens page: start at 11 so it shows there (it can be changed).
-  const [ageFrom, setAgeFrom] = useState(teen || initialKind === "life" ? "11" : "");
+  const [ageFrom, setAgeFrom] = useState(teen ? "11" : "");
   const [serves, setServes] = useState("");
   const [materials, setMaterials] = useState<MakeMaterial[]>([{ name: "", qty: "" }]);
   const [steps, setSteps] = useState<MakeStep[]>([{ text: "", grown_up: false }]);

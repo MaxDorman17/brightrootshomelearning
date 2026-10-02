@@ -56,6 +56,8 @@ class UserOut(BaseModel):
     login_id: Optional[int] = None  # the person logged in (differs from id for a second grown-up)
     relationship: Optional[str] = None  # Mum, Dad, Guardian...
     login_name: Optional[str] = None  # what they type to log in
+    # Which activity pages to show: a child's own choice, or every choice among a parent's children.
+    activity_levels: list[str] = ["both"]
 
     @field_validator("avatar", "subject_colors", mode="before")
     @classmethod
@@ -72,6 +74,7 @@ class ChildCreate(BaseModel):
     login_name: Optional[str] = None  # what they type to log in; picked for them if left out
     email: Optional[EmailStr] = None
     password: str
+    activity_level: Optional[str] = None  # young / teen / both
 
     @field_validator("email", mode="before")
     @classmethod
@@ -85,6 +88,7 @@ class ChildOut(BaseModel):
     id: int
     username: str
     login_name: Optional[str] = None
+    activity_level: Optional[str] = None
     email: Optional[str] = None
     role: str
     created_at: datetime
@@ -99,6 +103,7 @@ class ChildOut(BaseModel):
                 "id": data.id,
                 "username": data.username,
                 "login_name": data.login_name,
+                "activity_level": data.activity_level,
                 "email": data.email,
                 "role": data.role,
                 "created_at": data.created_at,

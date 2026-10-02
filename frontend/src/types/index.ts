@@ -153,6 +153,8 @@ export interface Child {
   username: string;
   /** What the child types to log in. Their name (username) can be the same as another child's. */
   login_name?: string | null;
+  /** Which activity pages they see: "young", "teen" or "both" (empty means both). */
+  activity_level?: string | null;
   email: string | null;
   role: "child";
   created_at: string;

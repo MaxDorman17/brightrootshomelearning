@@ -1,0 +1,3 @@
+-r requirements.txt
+# Only needed to run the tests in backend/tests
+pytest==8.4.2

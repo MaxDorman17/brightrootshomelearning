@@ -38,7 +38,7 @@ const featureGroups = [
     emoji: "📚",
     tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
-    items: ["Child dashboards", "Reading log", "Spellings", "Learning games", "Cookbook & Craft Corner"],
+    items: ["Child dashboards", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16"],
   },
   {
     name: "Progress",
@@ -54,7 +54,7 @@ const featureGroups = [
     emoji: "🏡",
     tint: "#F5EFE1",
     blurb: "Keep everyone motivated and on track.",
-    items: ["Stars & rewards", "Badges", "Reminders & phone notifications", "Avatars & colour themes"],
+    items: ["Stars & rewards", "Badges, plus your own", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
   },
 ];
 
@@ -67,7 +67,9 @@ const steps = [
 
 const faqs = [
   ["How many children can I add?", "As many as you need. One family membership covers every child in your home, each with their own login."],
-  ["Do my children need their own email address?", "No. You create a simple username and password for each child from your parent account."],
+  ["Do my children need their own email address?", "No. You create a simple login name and password for each child from your parent account."],
+  ["Can both parents use it?", "Yes. The parent who signs up can add the other parent, a guardian or a grandparent, each with their own login. Everyone sees the same family, and it's all covered by one membership."],
+  ["Is there anything for teenagers?", "Yes. The Teens menu has cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16, from making dinner to wiring a plug. Younger children get their own versions, and you choose which each child sees."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share."],
   ["What happens when my free trial ends?", "You can choose monthly or yearly membership from your account. If you decide not to carry on, you won't be charged, because no card is taken for the trial."],

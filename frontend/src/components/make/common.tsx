@@ -29,17 +29,16 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
   craft: { name: "Craft Corner", one: "craft", path: "/make/crafts", materials: "You'll need", subject: "Art", tint: "bg-sky-50" },
   pe: { name: "P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
   outdoor: { name: "Outdoors", one: "activity", path: "/make/outdoors", materials: "You'll need", subject: "Outdoor Learning", tint: "bg-lime-50" },
-  // Life skills are written for 11 to 16, so they only live in the Teens menu.
-  life: { name: "Life skills", one: "life skill", path: "/teens/life-skills", materials: "You'll need", subject: "Life Skills", tint: "bg-orange-50" },
+  life: { name: "Life skills", one: "life skill", path: "/make/life-skills", materials: "You'll need", subject: "Life Skills", tint: "bg-orange-50" },
 };
 
-/** Cookbook and Craft Corner sit together; P.E. and Outdoors are the "Active" pair. */
+/** Cookbook, Craft Corner and Life skills sit together; P.E. and Outdoors are the "Active" pair. */
 export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
-  recipe: ["recipe", "craft"],
-  craft: ["recipe", "craft"],
+  recipe: ["recipe", "craft", "life"],
+  craft: ["recipe", "craft", "life"],
   pe: ["pe", "outdoor"],
   outdoor: ["pe", "outdoor"],
-  life: ["life"],
+  life: ["recipe", "craft", "life"],
 };
 
 export type AgeBand = "little" | "junior" | "teen";
@@ -82,7 +81,7 @@ export const TEEN_TABS: { kind: MakeKind; label: string; name: string; path: str
 
 /** Where an activity's list lives: the teen page for 11+ activities, otherwise the usual one. */
 export function listPathFor(item: { kind: MakeKind; age_from: number | null }): string {
-  if (item.kind === "life" || (item.age_from ?? 0) >= 11) return TEEN_TABS.find((t) => t.kind === item.kind)!.path;
+  if ((item.age_from ?? 0) >= 11) return TEEN_TABS.find((t) => t.kind === item.kind)!.path;
   return KIND_INFO[item.kind].path;
 }
 

@@ -35,3 +35,6 @@ frontend/public/images/
 # Build and local tooling files
 frontend/*.tsbuildinfo
 .claude/launch.json
+
+# Test runs
+.pytest_cache/

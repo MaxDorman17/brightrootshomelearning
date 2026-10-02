@@ -61,6 +61,20 @@ npm run dev
 The site runs at http://localhost:3000. It talks to the API at `NEXT_PUBLIC_API_URL`, which defaults to
 http://localhost:8000.
 
+### Tests
+
+The backend has automated tests for the things that matter most: signing up and logging in, children and
+extra grown-ups, planning, stars and rewards, notes, languages, family badges and deleting an account.
+
+```bash
+cd backend
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
+They run against a brand-new temporary database each time, with email, Stripe and Oak switched off, so they
+never touch real family data. Run them before pushing a change to the backend.
+
 ---
 
 ## Deploying

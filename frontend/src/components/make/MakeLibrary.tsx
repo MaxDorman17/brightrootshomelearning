@@ -112,6 +112,8 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                   ? "Get moving! P.E. ideas for one child on their own and for a group, indoors and out. Add your own too."
                   : kind === "outdoor"
                     ? "Pull on your wellies! Bug trails and dens for little explorers, maps, stargazing and bushcraft for older ones. Add your own too."
+                  : kind === "life"
+                    ? "First steps to doing things for yourself: tying laces, making your bed, telling the time and staying safe."
                   : "Crafts and makes with easy steps, what you'll need, and ideas for every age."}
             </p>
         </PageHero>

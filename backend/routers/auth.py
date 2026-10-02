@@ -377,6 +377,11 @@ def me(
     out.login_id = me_user.id
     out.relationship = me_user.relationship_label
     out.login_name = me_user.login_name
+    if current_user.role == "child":
+        out.activity_levels = [current_user.activity_level or "both"]
+    else:
+        kids = db.query(User.activity_level).filter(User.parent_id == current_user.id, User.role == "child").all()
+        out.activity_levels = sorted({level or "both" for (level,) in kids}) or ["both"]
     if not out.is_owner:
         # A second grown-up sees the family's account, but under their own name and picture.
         out.username = me_user.username

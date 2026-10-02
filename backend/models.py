@@ -40,6 +40,9 @@ class User(Base):
     # They log in with their own username and password, then act for the main parent's family.
     family_owner_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     relationship_label = Column(String(30), nullable=True)  # what a grown-up is to the children: Mum, Dad, Guardian...
+    # Which activity pages a child sees: "young" (Make and Active), "teen" (the Teens menu) or "both".
+    # Chosen by their grown-up. Empty means both. A choice of pages, not a date of birth.
+    activity_level = Column(String(10), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")

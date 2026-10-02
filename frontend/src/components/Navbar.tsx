@@ -46,6 +46,9 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
   "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
 };
 
+// The younger activity pages. Hidden when every child in the family is set to see only the teen ones.
+const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors"];
+
 const PARENT_NAV: NavEntry[] = [
   { href: "/parent/dashboard", label: "Home" },
   {
@@ -85,6 +88,7 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/life-skills", label: "Life Skills" },
       { href: "/make/shopping", label: "Shopping List" },
     ],
   },
@@ -139,6 +143,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/child/games", label: "Games" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/life-skills", label: "Life Skills" },
       { href: "/account", label: "My Look" },
     ],
   },
@@ -181,6 +186,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[] | null>(null);
+  // Which activity pages suit this child, or this parent's children ("young", "teen", "both"). Everything until loaded.
+  const [levels, setLevels] = useState<string[]>(["both"]);
   const [notifOpen, setNotifOpen] = useState(false);
 
   const [unreadCount, setUnreadCount] = useState(0);
@@ -202,6 +209,13 @@ export default function Navbar() {
       checkSession()
         .then((res) => setMyAvatar({ id: res.data.id, avatar: res.data.avatar, has_photo: res.data.has_photo }))
         .catch(() => {});
+
+    const loadLevels = () =>
+      checkSession()
+        .then((res) => setLevels(res.data.activity_levels?.length ? res.data.activity_levels : ["both"]))
+        .catch(() => {});
+    loadLevels();
+    window.addEventListener("activity-levels-changed", loadLevels);
 
     if (r === "child") {
       loadAvatar();
@@ -238,7 +252,10 @@ export default function Navbar() {
         .catch(() => setSubjects([]));
     }
 
-    return () => window.removeEventListener("avatar-changed", loadAvatar);
+    return () => {
+      window.removeEventListener("avatar-changed", loadAvatar);
+      window.removeEventListener("activity-levels-changed", loadLevels);
+    };
   }, []);
 
   useEffect(() => {
@@ -308,7 +325,12 @@ export default function Navbar() {
     // A single recipe or craft, or the add/edit form, lights up the Make menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
+  const showTeen = levels.some((l) => l !== "young");
+  const showYoung = levels.some((l) => l !== "teen");
+
   const visible = (link: NavLink) => {
+    if (link.href.startsWith("/teens") && !showTeen) return false;
+    if (YOUNG_PAGES.includes(link.href) && !showYoung) return false;
     const rule = OPTIONAL_PAGES[link.href];
     // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
     return !rule || (subjects !== null && rule(subjects));

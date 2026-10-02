@@ -339,8 +339,10 @@ export const deletePolishSession = (id: number) => api.delete(`/api/polish/${id}
 
 // Children
 export const getChildren = () => api.get("/api/children/");
-export const addChild = (data: { username: string; login_name?: string; email?: string; password: string }) =>
+export const addChild = (data: { username: string; login_name?: string; email?: string; password: string; activity_level?: string }) =>
   api.post("/api/children/", data);
+export const updateChild = (id: number, data: { username?: string; login_name?: string; activity_level?: string }) =>
+  api.put(`/api/children/${id}`, data);
 /** Is this login name free, and which ones could a child with this name use? */
 export const checkChildLoginName = (name: string, login_name = "") =>
   api.get<{ login_name: string; available: boolean; suggestions: string[] }>("/api/children/login-name", { params: { name, login_name } });
