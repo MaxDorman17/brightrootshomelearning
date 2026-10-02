@@ -458,6 +458,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        settings.FRONTEND_URL.rstrip("/"),
         "https://brightrootshomelearning.co.uk",
         "https://www.brightrootshomelearning.co.uk",
     ],
