@@ -81,7 +81,6 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/council-report", label: "Council Report" },
       { href: "/parent/journal", label: "Journal" },
       { href: "/moments", label: "Moments & Photos" },
-      { href: "/moments?tab=trips", label: "Trips & days out" },
     ],
   },
   {
@@ -99,6 +98,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
+      { href: "/moments?tab=trips", label: "Trips & days out" },
     ],
   },
   // Ages 11 to 16: the same four kinds of activity, written for teenagers. Make and Active show the younger ones.
@@ -155,6 +155,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
+      { href: "/moments?tab=trips", label: "Trips & days out" },
     ],
   },
   {

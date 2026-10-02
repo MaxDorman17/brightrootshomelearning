@@ -206,7 +206,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         title: "Trips and days out",
         intro: "Museums, farms, castles, nature reserves: keep a record of where you went and what you learned.",
         steps: [
-          <>Open <L href="/moments?tab=trips">Progress, then Trips &amp; days out</L> and press <b>+ Add a trip</b>.</>,
+          <>Open <L href="/moments?tab=trips">Active, then Trips &amp; days out</L> and press <b>+ Add a trip</b>.</>,
           "Say where you went, add the date, a few photos and what the children saw and learned.",
           "Pick a subject if it fits, like History for a castle or Science for a museum, and tick who went.",
           "Trips show on the Moments page too, and in their own Trips and visits section of the council report.",
