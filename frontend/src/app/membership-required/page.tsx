@@ -83,6 +83,11 @@ export default function MembershipRequiredPage() {
               >
                 Account settings
               </Link>
+
+              <p className="mt-4 text-center text-xs leading-5 text-[#6E5A46]">
+                You don&apos;t need a membership to download your family&apos;s data or delete your account. Both are at the
+                bottom of Account settings.
+              </p>
             </>
           ) : (
             <>

@@ -18,7 +18,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from auth import require_owner, require_parent, verify_password
+from auth import require_grown_up_any_membership, require_owner_any_membership, verify_password
 from config import settings
 from database import Base, get_db
 from models import User
@@ -105,7 +105,7 @@ def _json_default(value):
 def export_account(
     background: BackgroundTasks,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_parent),
+    current_user: User = Depends(require_grown_up_any_membership),  # works after a membership has ended too
 ):
     rows = _family_rows(db, current_user)
     for table, hidden in PRIVATE_COLUMNS.items():
@@ -163,7 +163,7 @@ def _cancel_stripe(user: User) -> None:
 def delete_account(
     body: DeleteAccountIn,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_owner),
+    current_user: User = Depends(require_owner_any_membership),  # works after a membership has ended too
 ):
     if body.confirm.strip().upper() != "DELETE":
         raise HTTPException(status_code=400, detail='Type DELETE to confirm.')

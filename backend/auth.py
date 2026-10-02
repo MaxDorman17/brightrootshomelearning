@@ -209,6 +209,23 @@ def require_owner(current_user: User = Depends(require_parent)) -> User:
     return current_user
 
 
+def require_grown_up_any_membership(current_user: User = Depends(get_authenticated_user)) -> User:
+    """A grown-up on the family account, whether or not the membership is active or the email is verified.
+
+    People must always be able to get a copy of their data and delete their account, including after a
+    trial or membership has ended, so those two things don't go through the membership check.
+    """
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+    return current_user
+
+
+def require_owner_any_membership(current_user: User = Depends(require_grown_up_any_membership)) -> User:
+    if not is_family_owner(current_user):
+        raise HTTPException(status_code=403, detail="Only the main account holder can do this")
+    return current_user
+
+
 def require_child(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role != "child":
         raise HTTPException(status_code=403, detail="Child access required")
