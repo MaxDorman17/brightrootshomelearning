@@ -7,6 +7,7 @@ a green button and a quiet footer. It uses tables and inline styles because that
 import base64
 import html
 import os
+import re
 from typing import Optional
 
 import httpx
@@ -47,8 +48,28 @@ def site() -> str:
     return settings.FRONTEND_URL.rstrip("/")
 
 
+def plain_text(body_html: str) -> str:
+    """A plain-text copy of an email. Spam filters trust emails more when they carry one alongside the designed version."""
+    text = re.sub(r"<(head|style|script)\b.*?</\1>", "", body_html, flags=re.S | re.I)
+    text = re.sub(r'<div style="display:none.*?</div>', "", text, flags=re.S)  # the hidden inbox preview line
+    text = re.sub(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', lambda m: f"{m.group(2)} ({html.unescape(m.group(1))})", text, flags=re.S | re.I)
+    text = re.sub(r"<li\b[^>]*>", "\n- ", text, flags=re.I)
+    text = re.sub(r"</(p|h1|h2|h3|tr|ul|ol|table|div)>|<br\s*/?>", "\n", text, flags=re.I)
+    text = html.unescape(re.sub(r"<[^>]+>", "", text))
+    lines = [re.sub(r"[ \t\xa0]+", " ", line).strip() for line in text.split("\n")]
+    out, blank = [], True
+    for line in lines:
+        if line:
+            out.append(line)
+            blank = False
+        elif not blank:
+            out.append("")
+            blank = True
+    return "\n".join(out).strip() + "\n"
+
+
 def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] = None) -> None:
-    payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html}
+    payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html, "text": plain_text(body_html)}
     if unsubscribe_url:
         payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}
     if _LOGO_B64 and f"cid:{LOGO_CID}" in body_html:

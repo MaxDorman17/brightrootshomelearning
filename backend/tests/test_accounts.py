@@ -336,3 +336,13 @@ def test_newsletter_subject_drops_a_heading_mark():
 
     assert DraftIn(subject="# A little update", body="Hello").subject == "A little update"
     assert DraftIn(subject="## Autumn news ", body="Hello").subject == "Autumn news"
+
+
+def test_every_email_has_a_plain_text_copy():
+    import emails
+
+    subject, page = emails.welcome_email("Wendy", "https://example.test/verify-email#token=abc", 14)
+    text = emails.plain_text(page)
+    assert "<" not in text and "Hi Wendy," in text
+    assert "Confirm my email (https://example.test/verify-email#token=abc)" in text
+    assert "Add your children" in text and "One click to confirm" not in text  # the hidden preview line is left out
