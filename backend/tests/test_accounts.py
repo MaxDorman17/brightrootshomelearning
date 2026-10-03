@@ -293,6 +293,14 @@ def test_owner_can_see_who_is_on_the_newsletter_list(db):
         assert people["owner@example.test"]["status"] == "subscribed" and people["owner@example.test"]["name"] == "Owner"
         assert people["reader@example.test"]["status"] == "unverified"  # ticked the box, but email not confirmed
         assert login("reader@example.test").get("/api/newsletter/admin").status_code == 403
+        # The owner can take someone off the list; their account stays.
+        owner = login("owner@example.test")
+        reader_row = people["reader@example.test"]["id"]
+        assert login("reader@example.test").delete(f"/api/newsletter/admin/subscribers/{reader_row}").status_code == 403
+        assert owner.delete(f"/api/newsletter/admin/subscribers/{reader_row}").status_code == 204
+        assert "reader@example.test" not in {s["email"] for s in owner.get("/api/newsletter/admin").json()["subscribers"]}
+        assert owner.delete(f"/api/newsletter/admin/subscribers/{reader_row}").status_code == 404
+        assert try_login("reader@example.test").status_code == 200
     finally:
         settings.ADMIN_EMAILS = real
 

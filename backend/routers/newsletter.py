@@ -304,6 +304,7 @@ def admin_overview(db: Session = Depends(get_db), admin: User = Depends(_require
         "email_enabled": _email_configured(),
         "subscribers": [
             {
+                "id": r.id,
                 "email": r.email,
                 "name": names.get(r.user_id),
                 "source": r.source,
@@ -331,6 +332,16 @@ def admin_overview(db: Session = Depends(get_db), admin: User = Depends(_require
             for n in past
         ],
     }
+
+
+@router.delete("/admin/subscribers/{subscriber_id}", status_code=204)
+def remove_subscriber(subscriber_id: int, db: Session = Depends(get_db), admin: User = Depends(_require_admin)):
+    """Take someone off the list completely. If they have an account, it is not touched."""
+    row = db.query(NewsletterSubscriber).filter(NewsletterSubscriber.id == subscriber_id).first()
+    if not row:
+        raise HTTPException(status_code=404, detail="That person isn't on the list")
+    db.delete(row)
+    db.commit()
 
 
 @router.post("/admin/preview")

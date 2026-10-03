@@ -194,6 +194,7 @@ export const confirmNewsletter = (token: string) => api.post("/api/newsletter/co
 export const unsubscribeNewsletter = (token: string) => api.post("/api/newsletter/unsubscribe", { token }, { skipAuthRedirect: true } as any);
 export const getMyNewsletter = () => api.get("/api/newsletter/me");
 export const setMyNewsletter = (subscribed: boolean) => api.put("/api/newsletter/me", { subscribed });
+export const removeNewsletterSubscriber = (id: number) => api.delete(`/api/newsletter/admin/subscribers/${id}`);
 export const getNewsletterAdmin = () => api.get("/api/newsletter/admin");
 export const previewNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/preview", { subject, body });
 export const testNewsletter = (subject: string, body: string) => api.post("/api/newsletter/admin/test", { subject, body });

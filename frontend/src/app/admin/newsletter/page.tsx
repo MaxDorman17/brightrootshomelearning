@@ -6,13 +6,13 @@ import { format, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getNewsletterAdmin, previewNewsletter, sendNewsletter, testNewsletter } from "@/lib/api";
+import { getNewsletterAdmin, removeNewsletterSubscriber, previewNewsletter, sendNewsletter, testNewsletter } from "@/lib/api";
 
 type Overview = {
   email_enabled: boolean;
   counts: { subscribed: number; members: number; visitors: number; pending: number; unsubscribed: number };
   newsletters: { id: number; subject: string; status: string; recipients: number; sent_count: number; created_at: string | null }[];
-  subscribers: { email: string; name: string | null; source: string; status: string; since: string | null }[];
+  subscribers: { id: number; email: string; name: string | null; source: string; status: string; since: string | null }[];
 };
 
 const STATUS_TEXT: Record<string, string> = {
@@ -117,6 +117,13 @@ export default function NewsletterAdminPage() {
       setBody("");
       setPreviewHtml("");
       load();
+    });
+
+  const remove = (id: number, email: string) =>
+    run(async () => {
+      if (!confirm(`Take ${email} off the newsletter list? They won't get any more newsletters unless they sign up again.`)) return;
+      await removeNewsletterSubscriber(id);
+      await load();
     });
 
   if (denied) {
@@ -228,6 +235,9 @@ export default function NewsletterAdminPage() {
                         {s.source === "member" ? "Member" : "Website visitor"}
                         {s.status !== "subscribed" && <span className="font-bold text-[#A64F42]"> · {STATUS_TEXT[s.status] ?? s.status}</span>}
                         {s.since ? ` · ${format(parseISO(s.since), "d MMM yyyy")}` : ""}
+                        <button onClick={() => remove(s.id, s.email)} disabled={busy} className="ml-3 font-bold text-[#A64F42] hover:underline disabled:opacity-40">
+                          Remove
+                        </button>
                       </span>
                     </div>
                   ))}
