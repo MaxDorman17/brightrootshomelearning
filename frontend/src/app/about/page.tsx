@@ -114,14 +114,14 @@ export default function AboutPage() {
             <h2 className="text-2xl font-black">One membership for the whole family</h2>
             <p className="mt-3 text-[#6E5A46]">
               £5.99 a month or £59 a year, with parent tools and multiple child accounts included.
-              Start with a 7-day free trial. No card is needed to create your trial account.
+              Start with a 14-day free trial. No card is needed to create your trial account.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/signup"
                 className="rounded-xl bg-brand-sage px-6 py-3.5 text-center text-sm font-extrabold text-white hover:bg-brand-sagedark"
               >
-                Start 7-day free trial
+                Start 14-day free trial
               </Link>
               <Link
                 href="/#demo"

@@ -20,6 +20,9 @@ from config import settings
 from newsletter_access import is_admin, subscribe_member
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+# How long a new family can use everything for free before choosing a membership.
+TRIAL_DAYS = 14
 logger = logging.getLogger(__name__)
 
 
@@ -283,7 +286,7 @@ def register(
         hashed_password=hash_password(body.password),
         role="parent",
         subscription_status="trialing",
-        trial_ends_at=datetime.utcnow() + timedelta(days=7),
+        trial_ends_at=datetime.utcnow() + timedelta(days=TRIAL_DAYS),
     )
     db.add(user)
     db.commit()
@@ -299,7 +302,7 @@ def register(
         logger.exception("Failed to send signup verification email")
 
     return {
-        "message": "Account created. Check your email to verify your account and start your 7-day trial.",
+        "message": "Account created. Check your email to verify your account and start your 14-day trial.",
         "username": user.username,
     }
 

@@ -212,3 +212,10 @@ def test_delete_account_removes_the_whole_family_and_nobody_else(family, db):
 def test_unverified_parent_can_still_delete():
     unverified = sign_up(verified=False)
     assert unverified.parent.post("/api/account/delete", json={"password": PASSWORD, "confirm": "DELETE"}).status_code == 204
+
+
+def test_new_families_get_a_fourteen_day_trial(db):
+    family = sign_up()
+    user = db.query(User).filter(User.email == family.email).one()
+    days = (user.trial_ends_at - user.created_at).total_seconds() / 86400
+    assert 13.9 < days < 14.1

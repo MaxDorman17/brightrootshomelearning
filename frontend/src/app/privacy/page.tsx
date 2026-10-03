@@ -139,6 +139,10 @@ const sections = [
         <p>We only share information with trusted services that help us run Bright Roots:</p>
         <ul>
           <li>
+            <strong>Scaleway</strong>, which provides the server Bright Roots runs on. It is in Amsterdam, in the
+            Netherlands, and is where your family&apos;s information is stored.
+          </li>
+          <li>
             <strong>Stripe</strong>, to take membership payments.
           </li>
           <li>
@@ -171,8 +175,10 @@ const sections = [
           <Link href="/safeguarding">safeguarding policy</Link>.
         </p>
         <p>
-          Some of these services are based in the USA. Where information leaves the UK, it is protected by the
-          UK&apos;s data adequacy rules (the UK-US &quot;data bridge&quot;) or by the UK&apos;s standard contract terms.
+          Our server is in the Netherlands. UK law treats countries in the European Union as protecting personal
+          information to the same standard as the UK. Some of the other services are based in the USA. Where
+          information goes there, it is protected by the UK&apos;s data adequacy rules (the UK-US &quot;data
+          bridge&quot;) or by the UK&apos;s standard contract terms.
         </p>
       </>
     ),
@@ -233,8 +239,8 @@ const sections = [
     title: "Keeping it safe",
     body: (
       <p>
-        Bright Roots runs on our own server in Scotland, so your family&apos;s information is stored in the UK.
-        It is only available over a secure (HTTPS) connection. Passwords are hashed, each family
+        Bright Roots runs on a server we rent from Scaleway in Amsterdam, so your family&apos;s information is
+        stored in the Netherlands, inside the European Union. It is only available over a secure (HTTPS) connection. Passwords are hashed, each family
         can only see its own information, and uploaded files are only available to the family that added
         them.
       </p>

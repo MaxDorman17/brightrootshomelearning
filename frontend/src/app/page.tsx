@@ -430,7 +430,7 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.3fr_0.3fr]">
             <div>
               <h2 className={`${serif.className} text-3xl font-semibold`}>Simple family membership</h2>
-              <p className="mt-3 max-w-md text-white/75">Every feature and every child included. Try it free for 7 days, no card needed.</p>
+              <p className="mt-3 max-w-md text-white/75">Every feature and every child included. Try it free for 14 days, no card needed.</p>
               <Link href="/signup" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FFFDF8] px-6 py-3 text-sm font-bold" style={{ color: C.deep }}>
                 Start your free trial <span aria-hidden>→</span>
               </Link>

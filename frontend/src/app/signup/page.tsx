@@ -67,7 +67,7 @@ export default function SignupPage() {
           </div>
           <h1 className="text-4xl font-extrabold text-white">Start your free trial</h1>
           <p className="mt-2 text-sm font-semibold text-white/80">
-            7 days free, then £5.99/month or £59/year.
+            14 days free, then £5.99/month or £59/year.
           </p>
         </div>
 
@@ -165,7 +165,7 @@ export default function SignupPage() {
                 disabled={loading}
                 className="w-full rounded-xl bg-brand-sage py-3 text-sm font-extrabold text-white disabled:opacity-60"
               >
-                {loading ? "Creating account..." : "Start 7-day free trial"}
+                {loading ? "Creating account..." : "Start 14-day free trial"}
               </button>
 
               <p className="text-center text-xs text-gray-500">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import TraderDetails from "@/components/TraderDetails";
-import { SUPPORT_EMAIL } from "@/lib/site";
+import { SUPPORT_EMAIL, TERMS_UPDATED } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Subscriptions, cancelling and refunds",
@@ -20,7 +20,7 @@ const sections = [
     title: "The free trial",
     body: (
       <ul>
-        <li>Every new family gets 7 days of full access for free.</li>
+        <li>Every new family gets 14 days of full access for free.</li>
         <li>We don&apos;t ask for a card to start the trial, so you will never be charged by surprise when it ends.</li>
         <li>When the trial ends, Bright Roots asks you to choose a membership. Your records stay in your account while you decide.</li>
       </ul>
@@ -116,6 +116,7 @@ export default function RefundsPage() {
       title="Subscriptions, cancelling and refunds"
       intro={<p>Everything you need to know about paying for Bright Roots, and how to stop.</p>}
       sections={sections}
+      updated={TERMS_UPDATED}
     />
   );
 }

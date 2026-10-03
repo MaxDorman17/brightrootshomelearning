@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
 import TraderDetails from "@/components/TraderDetails";
-import { SUPPORT_EMAIL } from "@/lib/site";
+import { SUPPORT_EMAIL, TERMS_UPDATED } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of service",
@@ -45,7 +45,7 @@ const sections = [
     title: "Free trial",
     body: (
       <p>
-        New families get a 7-day free trial with full access. No card is needed to start. When the trial ends
+        New families get a 14-day free trial with full access. No card is needed to start. When the trial ends
         you&apos;ll need a membership to keep using Bright Roots, and your records stay safe in your account in the
         meantime.
       </p>
@@ -187,6 +187,7 @@ export default function TermsPage() {
       title="Terms of service"
       intro={<p>We&apos;ve tried to keep these terms short and in plain English.</p>}
       sections={sections}
+      updated={TERMS_UPDATED}
     />
   );
 }
