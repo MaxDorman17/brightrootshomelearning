@@ -84,7 +84,7 @@ export default function BadgeCertificate({ badge, name, onClose }: { badge: Cert
             </div>
             <div className="flex flex-col items-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="" className="h-[clamp(24px,4vw,44px)] w-auto" onError={(e) => (e.currentTarget.style.display = "none")} />
+              <img src="/brand/house-mark.png" alt="" className="h-[clamp(24px,4vw,44px)] w-auto" onError={(e) => (e.currentTarget.style.display = "none")} />
               <p className="mt-1 font-bold text-[#24452C]">Bright Roots Home Learning</p>
             </div>
             <div className="w-[34%] text-center">

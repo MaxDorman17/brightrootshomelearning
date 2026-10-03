@@ -111,7 +111,7 @@ export default function HomeOverview() {
         </section>
       )}
 
-      <section className="grid gap-3 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Link href="/parent/rewards" className="brand-card block p-4 transition-shadow hover:shadow-md">
           <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-brand-earth/55">Reward requests</p>
           <p className="mt-2 text-3xl font-extrabold text-brand-sage">{pendingRewards}</p>

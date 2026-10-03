@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { serif } from "@/lib/fonts";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import {
   clearAuth,
   getRole,
@@ -374,22 +374,9 @@ export default function Navbar() {
                 href={home}
                 className="flex shrink-0 items-center gap-2"
               >
-                <Image
-                  src="/logo.png"
-                  alt="Bright Roots"
-                  width={40}
-                  height={40}
-                  className="rounded-xl"
-                />
-
-                <div className="hidden sm:block leading-tight">
-                  <p className="font-extrabold text-brand-sage">
-                    Bright Roots
-                  </p>
-                  <p className="text-[10px] font-bold tracking-[0.16em] text-brand-earth/60 lg:hidden xl:block">
-                    LEARN · GROW · BELONG
-                  </p>
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/brand/house-mark.png" alt="Bright Roots" className="h-9 w-auto" />
+                <span className={`${serif.className} hidden text-xl font-semibold text-[#24452C] sm:block`}>Bright Roots</span>
               </Link>
 
               <div ref={menusRef} className="hidden items-center gap-0.5 lg:flex xl:gap-1">
