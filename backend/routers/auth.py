@@ -17,6 +17,7 @@ from models import User
 from schemas import Token, UserOut, _parse_avatar
 from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken
 from config import settings
+import emails
 from newsletter_access import is_admin, subscribe_member
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -178,40 +179,24 @@ def _create_email_verification_token(user: User) -> str:
     return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
+def _verify_url(token: str) -> str:
+    return f"{settings.FRONTEND_URL.rstrip('/')}/verify-email#token={token}"
+
+
 def _send_email_verification(email: str, token: str) -> None:
-    if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
+    """A fresh confirmation link, for a parent who asks for one again."""
+    if not emails.configured():
         raise RuntimeError("Email verification is not configured")
+    subject, body = emails.verify_email(_verify_url(token))
+    emails.send(email, subject, body)
 
-    verify_url = f"{settings.FRONTEND_URL.rstrip('/')}/verify-email#token={token}"
-    html = f"""
-    <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
-      <h2>Verify your Bright Roots email</h2>
-      <p>Please confirm that this email address belongs to your Bright Roots parent account.</p>
-      <p>
-        <a href="{verify_url}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">
-          Verify email
-        </a>
-      </p>
-      <p>This link expires in 24 hours.</p>
-      <p>If you did not expect this email, you can ignore it.</p>
-    </div>
-    """
 
-    response = httpx.post(
-        "https://api.resend.com/emails",
-        headers={
-            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "from": settings.RESEND_FROM_EMAIL,
-            "to": [email],
-            "subject": "Verify your Bright Roots email",
-            "html": html,
-        },
-        timeout=10.0,
-    )
-    response.raise_for_status()
+def _send_welcome_email(user: User, token: str) -> None:
+    """Sent at sign-up: a welcome, with the button that confirms the email address."""
+    if not emails.configured():
+        raise RuntimeError("Email verification is not configured")
+    subject, body = emails.welcome_email(user.username, _verify_url(token), TRIAL_DAYS)
+    emails.send(user.email, subject, body)
 
 
 def _create_password_reset_token(user: User) -> str:
@@ -226,39 +211,11 @@ def _create_password_reset_token(user: User) -> str:
 
 
 def _send_password_reset_email(email: str, token: str) -> None:
-    if not settings.RESEND_API_KEY or not settings.RESEND_FROM_EMAIL:
+    if not emails.configured():
         raise RuntimeError("Password reset email is not configured")
-
     reset_url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password#token={token}"
-    html = f"""
-    <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
-      <h2>Reset your Bright Roots password</h2>
-      <p>We received a request to reset your Bright Roots parent account password.</p>
-      <p>
-        <a href="{reset_url}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">
-          Reset password
-        </a>
-      </p>
-      <p>This link expires in 30 minutes.</p>
-      <p>If you did not request this, you can ignore this email.</p>
-    </div>
-    """
-
-    response = httpx.post(
-        "https://api.resend.com/emails",
-        headers={
-            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "from": settings.RESEND_FROM_EMAIL,
-            "to": [email],
-            "subject": "Reset your Bright Roots password",
-            "html": html,
-        },
-        timeout=10.0,
-    )
-    response.raise_for_status()
+    subject, body = emails.password_reset_email(reset_url)
+    emails.send(email, subject, body)
 
 
 @router.post("/register", status_code=201)
@@ -297,9 +254,9 @@ def register(
 
     token = _create_email_verification_token(user)
     try:
-        _send_email_verification(user.email, token)
+        _send_welcome_email(user, token)
     except Exception:
-        logger.exception("Failed to send signup verification email")
+        logger.exception("Failed to send signup welcome email")
 
     return {
         "message": "Account created. Check your email to verify your account and start your 14-day trial.",
@@ -606,6 +563,13 @@ def verify_email(
     if user.email_verified_at is None:
         user.email_verified_at = datetime.utcnow()
         db.commit()
+        # The first time only: a short email on how to get started.
+        try:
+            if emails.configured():
+                subject, body = emails.getting_started_email(user.username)
+                emails.send(user.email, subject, body)
+        except Exception:
+            logger.exception("Failed to send getting-started email")
 
     return {"message": "Email verified successfully."}
 

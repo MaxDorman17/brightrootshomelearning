@@ -16,6 +16,7 @@ from sqlalchemy.orm import Session
 
 from auth import get_authenticated_user
 from config import settings
+import emails
 from database import SessionLocal, get_db
 from models import Newsletter, NewsletterSubscriber, User
 from newsletter_access import find_subscriber, is_admin, subscribe_member
@@ -126,17 +127,15 @@ def render_body(body: str) -> str:
 
 
 def _newsletter_html(subject: str, body: str, unsubscribe_url: str) -> str:
-    return f"""
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#2E342F;background:#FFFDF8;padding:24px;border-radius:16px">
-      <p style="font-size:12px;letter-spacing:2px;color:#8FA382;font-weight:bold;margin:0">BRIGHT ROOTS HOME LEARNING</p>
-      <h1 style="font-size:24px;margin:8px 0 16px">{html.escape(subject)}</h1>
-      {render_body(body)}
-      <p style="margin-top:24px"><a href="{_site()}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:10px 16px;border-radius:10px;font-weight:700">Visit Bright Roots</a></p>
-      <hr style="border:none;border-top:1px solid #E7DFD1;margin:24px 0 12px">
-      <p style="font-size:12px;color:#8A7A69">You're receiving this because you asked for the Bright Roots newsletter.
-      <a href="{unsubscribe_url}" style="color:#8A7A69">Unsubscribe</a></p>
-    </div>
-    """
+    inner = (
+        f"<div style=\"font-family:{emails.FONT};font-size:15px;color:{emails.INK}\">{render_body(body)}</div>"
+        + emails.button("Visit Bright Roots", _site())
+    )
+    footer = (
+        "You're receiving this because you asked for the Bright Roots newsletter. "
+        f'<a href="{unsubscribe_url}" style="color:#8A7A69">Unsubscribe</a>'
+    )
+    return emails.layout(subject, inner, eyebrow="Newsletter", footer=footer)
 
 
 def _unsubscribe_url(sub: NewsletterSubscriber) -> str:
@@ -206,16 +205,9 @@ def subscribe(body: SubscribeIn, request: Request, db: Session = Depends(get_db)
 
 def _send_confirmation(row: NewsletterSubscriber) -> None:
     if _email_configured():
-        confirm_url = f"{_site()}/newsletter/confirm#token={row.token}"
-        inner = f"""
-        <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
-          <h2 style="color:#3F5D46">Confirm your Bright Roots newsletter</h2>
-          <p>Please confirm you'd like home learning tips and news from Bright Roots.</p>
-          <p><a href="{confirm_url}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Yes, sign me up</a></p>
-          <p style="font-size:12px;color:#8A7A69">If you didn't ask for this, you can ignore this email.</p>
-        </div>"""
+        subject, body = emails.newsletter_confirm_email(f"{_site()}/newsletter/confirm#token={row.token}")
         try:
-            _send_email(row.email, "Please confirm your Bright Roots newsletter", inner)
+            _send_email(row.email, subject, body)
         except Exception:
             logger.exception("Could not send newsletter confirmation")
 

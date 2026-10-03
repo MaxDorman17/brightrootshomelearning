@@ -17,9 +17,11 @@ from sqlalchemy.orm import Session
 
 from auth import require_child, require_parent
 from config import settings
+import emails
 from database import SessionLocal, get_db
 from push import send_to_user
 from models import (
+    DayOff,
     Lesson,
     PlannerCompletion,
     PlannerEntry,
@@ -331,16 +333,9 @@ def _send_email(to: str, subject: str, body_html: str) -> None:
     response.raise_for_status()
 
 
-def _wrap(title: str, inner: str) -> str:
-    link = settings.FRONTEND_URL.rstrip("/")
-    return f"""
-    <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#2E342F">
-      <h2 style="color:#3F5D46">{html.escape(title)}</h2>
-      {inner}
-      <p><a href="{link}" style="display:inline-block;background:#3F5D46;color:white;text-decoration:none;padding:10px 16px;border-radius:10px;font-weight:700">Open Bright Roots</a></p>
-      <p style="font-size:12px;color:#8A7A69">You're getting this because reminders are turned on in Bright Roots.</p>
-    </div>
-    """
+def _wrap(title: str, inner: str, eyebrow: str = "Reminder") -> str:
+    footer = "You're getting this because reminders are turned on in Bright Roots. A grown-up can change them under Family, then Reminders."
+    return emails.layout(title, inner + emails.button("Open Bright Roots", settings.FRONTEND_URL.rstrip("/")), eyebrow=eyebrow, footer=footer)
 
 
 def _claim(db: Session, reminder: Reminder, child: User, day: date, kind: str = "emailed") -> bool:
@@ -368,8 +363,10 @@ def _send_child_reminders(db: Session, now: datetime) -> None:
             status = _status(db, reminder, child, now.date())
             if status["done"] or not _claim(db, reminder, child, now.date()):
                 continue
-            items = "".join(f"<li>{html.escape(i)}</li>" for i in status["items"])
-            inner = f"<p>Hi {html.escape(child.username)}, just a friendly reminder.</p>" + (f"<ul>{items}</ul>" if items else "")
+            items = "".join(f"<li style='margin-bottom:4px'>{html.escape(i)}</li>" for i in status["items"])
+            inner = emails.paragraph(f"Hi {html.escape(child.username)}, just a friendly reminder.") + (
+                f"<ul style=\"margin:0 0 14px;padding-left:20px;font-family:{emails.FONT};font-size:15px;line-height:1.5;color:{emails.INK}\">{items}</ul>" if items else ""
+            )
             try:
                 _send_email(child.email, f"Reminder: {status['label']}", _wrap(status["label"], inner))
             except Exception:
@@ -426,25 +423,30 @@ def _summary_push_text(db: Session, parent: User, day: date) -> str:
     return ("Done today: " + ", ".join(parts) + ". Tap to see more.") if parts else "Tap to see today's learning."
 
 
-def _summary_html(db: Session, parent: User, day: date) -> str:
+def _planned_today(db: Session, parent: User, child: User, day: date) -> int:
+    """How many lessons were on this child's planner for the day."""
+    return (
+        db.query(PlannerEntry)
+        .join(Lesson, Lesson.id == PlannerEntry.lesson_id)
+        .filter(Lesson.created_by == parent.id, PlannerEntry.scheduled_date == day, or_(PlannerEntry.assigned_to == child.id, PlannerEntry.assigned_to.is_(None)))
+        .count()
+    )
+
+
+def _summary(db: Session, parent: User, day: date) -> tuple[str, bool]:
+    """The daily summary email, and whether there is anything worth sending.
+
+    Nothing is sent on a day with no learning recorded and nothing planned (a weekend, or a day off),
+    so families don't get an email that only says "Lessons completed: 0".
+    """
     start, end = _uk_day_bounds_utc(day)
     now = uk_now()
+    day_off = db.query(DayOff).filter(DayOff.parent_id == parent.id, DayOff.date == day).first() is not None
+    worth_sending = False
     sections = []
     for child in db.query(User).filter(User.parent_id == parent.id, User.role == "child").order_by(User.username).all():
-        direct = (
-            db.query(Lesson.title)
-            .join(PlannerEntry, PlannerEntry.lesson_id == Lesson.id)
-            .filter(PlannerEntry.assigned_to == child.id, PlannerEntry.completed_at >= start, PlannerEntry.completed_at < end)
-            .all()
-        )
-        shared = (
-            db.query(Lesson.title)
-            .join(PlannerEntry, PlannerEntry.lesson_id == Lesson.id)
-            .join(PlannerCompletion, PlannerCompletion.entry_id == PlannerEntry.id)
-            .filter(PlannerCompletion.user_id == child.id, PlannerCompletion.completed_at >= start, PlannerCompletion.completed_at < end)
-            .all()
-        )
-        lessons = [t for (t,) in direct + shared]
+        lessons = _lessons_done(db, child, start, end)
+        planned = _planned_today(db, parent, child, day)
         minutes = sum(
             s.minutes
             for s in db.query(StudySession).filter(
@@ -457,18 +459,31 @@ def _summary_html(db: Session, parent: User, day: date) -> str:
             for r in db.query(Reminder).filter(Reminder.parent_id == parent.id).all()
             if _applies(r, child, now) and not _status(db, r, child, day)["done"]
         ]
-        lesson_list = "".join(f"<li>{html.escape(t)}</li>" for t in lessons[:15])
-        sections.append(
-            f"<h3 style='margin-bottom:4px'>{html.escape(child.username)}</h3>"
-            f"<p style='margin:0'>Lessons completed: <b>{len(lessons)}</b>"
-            + (f" &middot; Studied for <b>{minutes} min</b>" if minutes else "")
-            + (" &middot; Spellings practised ✓" if spelling else "")
-            + "</p>"
-            + (f"<ul>{lesson_list}</ul>" if lesson_list else "")
-            + (f"<p style='color:#A64F42'>Still to do: {html.escape(', '.join(undone))}</p>" if undone else "")
-        )
-    body = "".join(sections) or "<p>No children on your account yet.</p>"
-    return _wrap(f"Today at Bright Roots: {day.strftime('%A %d %B')}", body)
+        if lessons or minutes or spelling or (planned and not day_off):
+            worth_sending = True
+
+        done_text = f"{len(lessons)} of {planned}" if planned and planned >= len(lessons) else str(len(lessons))
+        facts = [f"<strong>{done_text}</strong> lesson{'' if done_text == '1' else 's'} done"]
+        if minutes:
+            facts.append(f"studied for <strong>{minutes} min</strong>")
+        if spelling:
+            facts.append("spellings practised")
+        lesson_list = "".join(f"<li style='margin-bottom:3px'>{html.escape(t)}</li>" for t in lessons[:15])
+        text = f"font-family:{emails.FONT};font-size:15px;line-height:1.5;color:{emails.INK}"
+        sections.append(emails.panel(
+            f"<p style=\"margin:0 0 4px;font-family:{emails.SERIF};font-size:18px;font-weight:700;color:{emails.DEEP}\">{html.escape(child.username)}</p>"
+            f"<p style=\"margin:0;{text}\">{' &middot; '.join(facts)}</p>"
+            + (f"<ul style=\"margin:10px 0 0;padding-left:20px;{text}\">{lesson_list}</ul>" if lesson_list else "")
+            + (f"<p style=\"margin:10px 0 0;{text};color:#A64F42\">Still to do: {html.escape(', '.join(undone))}</p>" if undone else "")
+        ))
+    body = "".join(sections) or emails.paragraph("No children on your account yet.")
+    footer = "You're getting this because the daily summary is turned on. You can change the time or turn it off under Family, then Reminders."
+    page = emails.layout(
+        day.strftime("%A %d %B").replace(" 0", " "),
+        body + emails.button("Open Bright Roots", f"{settings.FRONTEND_URL.rstrip('/')}/parent/dashboard"),
+        eyebrow="Today at Bright Roots", footer=footer, preview="What your children did today.",
+    )
+    return page, worth_sending
 
 
 def _send_summaries(db: Session, now: datetime, email_on: bool, subscribed: set[int]) -> None:
@@ -490,9 +505,16 @@ def _send_summaries(db: Session, now: datetime, email_on: bool, subscribed: set[
         db.commit()
         if not claimed:
             continue
+        try:
+            page, worth_sending = _summary(db, parent, today)
+        except Exception:
+            logger.exception("Could not build daily summary for parent %s", parent.id)
+            continue
+        if not worth_sending:
+            continue  # nothing planned and nothing done today, such as a weekend
         if wants_email:
             try:
-                _send_email(parent.email, f"Your Bright Roots day: {today.strftime('%A %d %B')}", _summary_html(db, parent, today))
+                _send_email(parent.email, f"Your Bright Roots day: {today.strftime('%A %d %B')}", page)
             except Exception:
                 logger.exception("Could not send daily summary to parent %s", parent.id)
         if wants_push:

@@ -219,3 +219,53 @@ def test_new_families_get_a_fourteen_day_trial(db):
     user = db.query(User).filter(User.email == family.email).one()
     days = (user.trial_ends_at - user.created_at).total_seconds() / 86400
     assert 13.9 < days < 14.1
+
+
+# ---------- emails ----------
+
+def _capture_emails():
+    """Collect emails instead of sending them; returns the list and a function that puts things back."""
+    import emails
+
+    sent, real_send, real_configured = [], emails.send, emails.configured
+    emails.send = lambda to, subject, body, unsubscribe_url=None: sent.append((to, subject, body))
+    emails.configured = lambda: True
+    return sent, lambda: (setattr(emails, "send", real_send), setattr(emails, "configured", real_configured))
+
+
+def test_sign_up_sends_a_welcome_then_a_getting_started_email(db):
+    import re
+    sent, undo = _capture_emails()
+    try:
+        response = new_client().post("/api/auth/register", json={"email": "welcome@example.test", "username": "Wendy", "password": PASSWORD})
+        assert response.status_code == 201
+        assert len(sent) == 1
+        to, subject, body = sent[0]
+        assert to == "welcome@example.test" and subject.startswith("Welcome to Bright Roots")
+        assert "Hi Wendy" in body and "14-day free trial" in body and "Confirm my email" in body
+        token = re.search(r"/verify-email#token=([^\"]+)", body).group(1)
+        assert new_client().post("/api/auth/verify-email", json={"token": token}).status_code == 200
+        assert len(sent) == 2 and sent[1][1].startswith("You're in")
+        # Clicking the link a second time doesn't send it again.
+        assert new_client().post("/api/auth/verify-email", json={"token": token}).status_code == 200
+        assert len(sent) == 2
+    finally:
+        undo()
+
+
+def test_daily_summary_is_skipped_when_there_is_nothing_to_say(family, db):
+    from datetime import date
+    from routers.reminders import _summary
+
+    child = family.add_child("Quiet")
+    parent = db.query(User).filter(User.email == family.email).one()
+    page, worth_sending = _summary(db, parent, date.today())
+    assert not worth_sending  # nothing planned and nothing done, like a weekend
+    lesson = family.parent.post("/api/lessons/", json={"title": "Fractions", "subject": "Maths"}).json()
+    family.parent.post("/api/planner/", json={"lesson_id": lesson["id"], "scheduled_date": date.today().isoformat(), "assigned_to": child["id"]})
+    page, worth_sending = _summary(db, parent, date.today())
+    assert worth_sending and "Quiet" in page and "0 of 1" in page
+    # A day off with nothing done is skipped too.
+    family.parent.post("/api/days-off/", json={"date": date.today().isoformat(), "reason": "Holiday"})
+    db.expire_all()
+    assert not _summary(db, parent, date.today())[1]
