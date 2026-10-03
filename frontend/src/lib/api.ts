@@ -670,8 +670,9 @@ export const planRevision = (id: number, body: { weekdays: number[]; minutes: nu
   api.post<{ sessions: number; first: string | null; last: string | null }>(`/api/exams/${id}/revision`, body);
 
 // A ready-made sample week for families just starting out
-export const addStarterWeek = (child_ids: number[], start_date?: string, level?: string) =>
-  api.post<{ lessons: number; level: string; start_date: string }>("/api/planner/starter-week", { child_ids, start_date, level });
+// `years` is the school year (1 to 11) each child is working at; those children get Oak National Academy lessons.
+export const addStarterWeek = (child_ids: number[], start_date?: string, years: Record<number, number> = {}) =>
+  api.post<{ lessons: number; from_oak: number; level: string; start_date: string }>("/api/planner/starter-week", { child_ids, start_date, years });
 
 // Calendar sync: a private feed address for Google, Apple or Outlook calendars
 export const getCalendarLink = () => api.get<{ token: string | null }>("/api/calendar/link");

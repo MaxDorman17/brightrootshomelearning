@@ -1,13 +1,19 @@
 """A ready-made sample week, so a new family's planner isn't empty on day one.
 
-Two versions: one for younger children and one for teenagers. It puts one lesson in every slot of the
-family's timetable. Every lesson is an ordinary lesson in the family's own list, so they can change it,
-move it or delete it like anything else they plan.
+It puts one lesson in every slot of the family's timetable. When the family says which school year a child
+is working at, the lessons are real Oak National Academy lessons: the first ones from the first unit of each
+subject for that year. Where Oak has nothing (or can't be reached), a short lesson written here is used
+instead. Every lesson is an ordinary lesson in the family's own list, so they can change it, move it or
+delete it like anything else they plan.
 """
+import asyncio
 import json
+import re
+import time
 from datetime import date, timedelta
 from typing import Optional
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -305,41 +311,195 @@ def lessons_for_week(level: str, timetable: dict) -> list[list[dict]]:
     return days
 
 
+# ---------- Oak National Academy lessons ----------
+
+OAK_PUPILS = "https://www.thenational.academy/pupils/programmes"
+# Oak's name for each subject in its web addresses. Subjects not listed here use our own lessons.
+OAK_SUBJECT = {
+    "Maths": "maths",
+    "English": "english",
+    "Science": "science",
+    "History": "history",
+    "Geography": "geography",
+    "Art": "art",
+    "PE": "physical-education",
+    "Computing": "computing",
+    "Cooking": "cooking-nutrition",
+    "Design and Technology": "design-technology",
+    "Languages": "french",
+    "Music": "music",
+    "RE": "religious-education",
+    "PSHE": "rshe-pshe",
+}
+OAK_LANGUAGES = {"french": "french", "spanish": "spanish", "german": "german"}
+_NEXT_DATA = re.compile(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', re.DOTALL)
+_OAK_CACHE: dict[str, tuple[float, list[dict]]] = {}
+_OAK_CACHE_SECONDS = 12 * 60 * 60
+
+
+def _oak_slug(timetable_name: str) -> Optional[str]:
+    name = timetable_name.strip().lower()
+    if name in OAK_LANGUAGES:
+        return OAK_LANGUAGES[name]
+    return OAK_SUBJECT.get(_CANONICAL.get(name, ""))
+
+
+def _oak_programmes(slug: str, year: int) -> list[str]:
+    """The Oak programme addresses to try for a subject and year, most likely first."""
+    phase = "primary" if year <= 6 else "secondary"
+    base = f"{slug}-{phase}-year-{year}"
+    if year <= 9:
+        return [base]
+    # GCSE years are split by tier and exam board. Foundation tier and AQA are used as a sensible start.
+    if slug == "maths":
+        return [f"{base}-foundation"]
+    if slug == "science":
+        return [f"combined-science-{phase}-year-{year}-foundation-aqa"]
+    return [base, f"{base}-aqa", f"{base}-core", f"{base}-foundation-aqa"]
+
+
+async def _oak_page(client: httpx.AsyncClient, url: str) -> Optional[dict]:
+    try:
+        resp = await client.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; HomeschoolApp/1.0)"})
+    except httpx.RequestError:
+        return None
+    if resp.status_code != 200:
+        return None
+    found = _NEXT_DATA.search(resp.text)
+    if not found:
+        return None
+    try:
+        return json.loads(found.group(1)).get("props", {}).get("pageProps", {})
+    except json.JSONDecodeError:
+        return None
+
+
+async def _oak_lessons(client: httpx.AsyncClient, slug: str, year: int, need: int) -> list[dict]:
+    """The first `need` lessons of a subject for a year, in Oak's own order. Empty if Oak has none or is unreachable."""
+    key = f"{slug}:{year}"
+    cached = _OAK_CACHE.get(key)
+    if cached and time.time() - cached[0] < _OAK_CACHE_SECONDS and len(cached[1]) >= need:
+        return cached[1][:need]
+
+    lessons: list[dict] = []
+    for programme in _oak_programmes(slug, year):
+        page = await _oak_page(client, f"{OAK_PUPILS}/{programme}/units")
+        sections = (page or {}).get("unitSections") or []
+        units = [variants[0] for variants in (sections[0].get("units") or []) if variants] if sections else []
+        if not units:
+            continue
+        for unit in units[:4]:  # a few units is plenty for one week
+            unit_slug = unit.get("unitSlug")
+            if not unit_slug:
+                continue
+            unit_page = await _oak_page(client, f"{OAK_PUPILS}/{programme}/units/{unit_slug}/lessons")
+            browse = (unit_page or {}).get("browseData") or []
+            if not browse:
+                continue
+            unit_title = (browse[0].get("unitData") or {}).get("title") or (unit.get("unitData") or {}).get("title") or ""
+            listed = (browse[0].get("supplementaryData") or {}).get("staticLessonList") or []
+            for item in sorted(listed, key=lambda x: x.get("order", 0)):
+                if item.get("_state") == "published" and item.get("slug") and item.get("title"):
+                    lessons.append({
+                        "title": item["title"],
+                        "unit": unit_title,
+                        "url": f"{OAK_PUPILS}/{programme}/units/{unit_slug}/lessons/{item['slug']}",
+                    })
+            if len(lessons) >= need:
+                break
+        if lessons:
+            break
+    if lessons:
+        _OAK_CACHE[key] = (time.time(), lessons)
+    return lessons[:need]
+
+
+async def oak_lessons_for(year: int, needs: dict[str, int]) -> dict[str, list[dict]]:
+    """For each Oak subject, the lessons to use this week. Subjects Oak can't supply come back empty."""
+    limit = asyncio.Semaphore(5)
+
+    async def one(client, slug, need):
+        async with limit:
+            try:
+                return slug, await _oak_lessons(client, slug, year, need)
+            except Exception:
+                return slug, []
+
+    async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
+        return dict(await asyncio.gather(*(one(client, slug, need) for slug, need in needs.items())))
+
+
 class StarterWeekIn(BaseModel):
     child_ids: list[int]
     level: Optional[str] = None  # "young" or "teen"; picked from the first child's setting if left out
     start_date: Optional[date] = None  # the Monday to start on; this week's Monday if left out
+    # School year (1 to 11) each child is working at, by child id. Children with a year get Oak lessons.
+    years: dict[int, int] = {}
+
+
+def _add_lesson(db: Session, owner: int, item: dict, day: date, children: list[int]) -> int:
+    lesson = Lesson(
+        title=item["title"][:255],
+        subject=item["subject"],
+        description=item.get("description"),
+        lesson_url=item.get("url"),
+        steps=json.dumps(item["steps"]) if item.get("steps") else None,
+        duration_minutes=item.get("minutes"),
+        created_by=owner,
+    )
+    db.add(lesson)
+    db.flush()
+    for child_id in children:
+        db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
+    return len(children)
 
 
 @router.post("", status_code=201)
-def add_starter_week(body: StarterWeekIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+async def add_starter_week(body: StarterWeekIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     if not children:
         raise HTTPException(status_code=400, detail="Pick at least one child")
+    family = _family_children(db, current_user.id)
+    years = {cid: year for cid, year in body.years.items() if cid in children}
+    if any(not 1 <= year <= 11 for year in years.values()):
+        raise HTTPException(status_code=400, detail="Choose a year from 1 to 11")
     level = body.level
     if level not in ("young", "teen"):
-        first = _family_children(db, current_user.id)[children[0]]
-        level = "teen" if first.activity_level == "teen" else "young"
+        level = "teen" if family[children[0]].activity_level == "teen" else "young"
     start = body.start_date or date.today()
     start -= timedelta(days=start.weekday())  # always start on a Monday
-
     timetable = _get_config(db, current_user.id).config
-    count = 0
-    for offset, lessons in enumerate(lessons_for_week(level, timetable)):
-        day = start + timedelta(days=offset)
-        for item in lessons:
-            lesson = Lesson(
-                title=item["title"],
-                subject=item["subject"],
-                description=item["description"],
-                steps=json.dumps(item["steps"]),
-                duration_minutes=item["minutes"],
-                created_by=current_user.id,
-            )
-            db.add(lesson)
-            db.flush()
-            for child_id in children:
-                db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
-                count += 1
+
+    # Children working at the same year share their lessons; children with no year share our own lessons.
+    groups: dict[Optional[int], list[int]] = {}
+    for cid in children:
+        groups.setdefault(years.get(cid), []).append(cid)
+
+    count = from_oak = 0
+    for year, group in groups.items():
+        group_level = level if year is None else ("teen" if year >= 7 else "young")
+        week = lessons_for_week(group_level, timetable)
+        oak: dict[str, list[dict]] = {}
+        if year is not None:
+            needs: dict[str, int] = {}
+            for item in (i for day in week for i in day):
+                slug = _oak_slug(item["subject"])
+                if slug:
+                    needs[slug] = needs.get(slug, 0) + 1
+            oak = {slug: list(found) for slug, found in (await oak_lessons_for(year, needs)).items()}
+        for offset, lessons in enumerate(week):
+            day = start + timedelta(days=offset)
+            for item in lessons:
+                queue = oak.get(_oak_slug(item["subject"]) or "")
+                if queue:
+                    found = queue.pop(0)
+                    item = {
+                        "title": found["title"],
+                        "subject": item["subject"],
+                        "description": f"Oak National Academy lesson from the unit “{found['unit']}”." if found["unit"] else "Oak National Academy lesson.",
+                        "url": found["url"],
+                    }
+                    from_oak += len(group)
+                count += _add_lesson(db, current_user.id, item, day, group)
     db.commit()
-    return {"lessons": count, "level": level, "start_date": start.isoformat()}
+    return {"lessons": count, "from_oak": from_oak, "level": level, "start_date": start.isoformat()}

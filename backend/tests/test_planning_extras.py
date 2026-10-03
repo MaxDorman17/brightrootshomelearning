@@ -200,3 +200,69 @@ def test_starter_week_follows_a_familys_own_timetable(family):
     assert on(2) == {"P.E.": "Garden obstacle course"}
     assert on(3) == {"Maths": "Shape hunt"}
     assert list(on(4)) == ["Music"]
+
+
+# ---------- starter week from Oak National Academy ----------
+
+def _fake_oak(monkey_lessons):
+    """Swap the Oak lookup for a stand-in; returns a function that puts the real one back."""
+    import routers.starter_week as starter
+
+    real = starter.oak_lessons_for
+
+    async def fake(year, needs):
+        return {slug: [{"title": f"Oak {slug} Y{year} lesson {n + 1}", "unit": f"{slug} unit", "url": f"https://www.thenational.academy/pupils/programmes/{slug}/units/u/lessons/l{n + 1}"}
+                       for n in range(need)] if slug in monkey_lessons else [] for slug, need in needs.items()}
+
+    starter.oak_lessons_for = fake
+    return lambda: setattr(starter, "oak_lessons_for", real)
+
+
+def test_starter_week_uses_oak_lessons_for_the_childs_year(family):
+    child = family.add_child("Little", activity_level="young")
+    undo = _fake_oak({"maths", "english", "science", "history", "geography", "computing", "art"})
+    try:
+        monday = date.today() - timedelta(days=date.today().weekday())
+        made = family.parent.post("/api/planner/starter-week", json={"child_ids": [child["id"]], "start_date": monday.isoformat(), "years": {child["id"]: 3}})
+    finally:
+        undo()
+    assert made.status_code == 201, made.text
+    assert made.json()["lessons"] == 24
+    week = family.parent.get("/api/planner/week", params={"child_id": child["id"], "start_date": monday.isoformat()}).json()
+    by_subject = {}
+    for e in week:
+        by_subject.setdefault(e["lesson"]["subject"], []).append(e["lesson"])
+    assert [l["title"] for l in sorted(by_subject["Maths"], key=lambda l: l["title"])] == [f"Oak maths Y3 lesson {n}" for n in range(1, 6)]
+    assert all(l["lesson_url"].startswith("https://www.thenational.academy/pupils/") for l in by_subject["Maths"])
+    assert by_subject["Art & Design"][0]["title"] == "Oak art Y3 lesson 1"  # found under the family's own subject name
+    # Oak had nothing for these, so our own lessons fill the gap.
+    assert by_subject["Life Skills"][0]["title"] == "Lay the table" and not by_subject["Life Skills"][0]["lesson_url"]
+    assert by_subject["Cooking"][0]["title"] == "Fruit kebabs"
+    assert made.json()["from_oak"] == 5 + 5 + 5 + 2 + 1 + 1 + 1
+
+
+def test_starter_week_gives_each_child_their_own_year(family):
+    young = family.add_child("Little", activity_level="young")
+    teen = family.add_child("Big", activity_level="teen")
+    undo = _fake_oak({"maths"})
+    try:
+        made = family.parent.post("/api/planner/starter-week", json={"child_ids": [young["id"], teen["id"]], "years": {young["id"]: 2, teen["id"]: 9}})
+    finally:
+        undo()
+    assert made.json()["lessons"] == 48
+    monday = made.json()["start_date"]
+    titles = lambda child: {e["lesson"]["title"] for e in family.parent.get("/api/planner/week", params={"child_id": child["id"], "start_date": monday}).json()}
+    assert "Oak maths Y2 lesson 1" in titles(young) and "Oak maths Y9 lesson 1" in titles(teen)
+    assert "Number bonds to 10" not in titles(young)
+    assert "Analyse a poem" in titles(teen)  # English came from our own teen lessons
+    assert family.parent.post("/api/planner/starter-week", json={"child_ids": [young["id"]], "years": {young["id"]: 14}}).status_code == 400
+
+
+def test_starter_week_still_works_if_oak_cannot_be_reached(family):
+    child = family.add_child("Little", activity_level="young")
+    undo = _fake_oak(set())
+    try:
+        made = family.parent.post("/api/planner/starter-week", json={"child_ids": [child["id"]], "years": {child["id"]: 3}})
+    finally:
+        undo()
+    assert made.status_code == 201 and made.json()["lessons"] == 24 and made.json()["from_oak"] == 0

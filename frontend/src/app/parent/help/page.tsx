@@ -131,14 +131,14 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         id: "starter-week",
         emoji: "🌱",
         title: "Start with a ready-made week",
-        intro: "A sample week of lessons so your planner isn't empty while you find your feet.",
+        intro: "A week of Oak National Academy lessons so your planner isn't empty while you find your feet.",
         steps: [
           <>Open the <L href="/parent">Planner</L> on a week with nothing planned. A <b>Start with a ready-made week?</b> card appears at the top.</>,
-          "Tick which children it's for and choose younger children or teenagers. It picks this from each child's settings if you leave it.",
-          <>Press <b>Add the starter week</b>. Every slot on your timetable gets a lesson with simple steps, from Maths and English to science, history, art and cooking.</>,
+          "Choose the school year each child is working at. Pick the year that suits them, not just their age.",
+          <>Press <b>Add the starter week</b>. Every slot on your timetable gets a free Oak National Academy lesson for that subject and year, with a video and quizzes.</>,
           "They're ordinary lessons, so change, move or delete any of them.",
         ],
-        tip: "It follows your own timetable, so set that up first if you teach different subjects. A subject we don't have a lesson for gets a simple 'Getting started' lesson to make your own.",
+        tip: "It follows your own timetable, so set that up first if you teach different subjects. Where Oak has no lesson for a subject, such as Life Skills, we add a simple one of our own.",
       },
       {
         id: "calendar",
