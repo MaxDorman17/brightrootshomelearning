@@ -56,7 +56,9 @@ const sections = [
     body: (
       <>
         <p>
-          A family membership costs £5.99 a month or £59 a year, including all child accounts. Prices include
+          A family membership costs £5.99 a month or £59 a year. It is for one household and covers up to four
+          grown-ups and up to 10 children. If your family is bigger than that, get in touch and we&apos;ll help.
+          Prices include
           any VAT that applies. Payments are taken by Stripe, and your membership renews automatically at the
           end of each month or year until you cancel.
         </p>

@@ -56,6 +56,9 @@ def check_login_name(
     }
 
 
+MAX_CHILDREN = 10
+
+
 @router.post("/", response_model=ChildOut, status_code=201)
 def add_child(
     body: ChildCreate,
@@ -65,6 +68,12 @@ def add_child(
     name = " ".join(body.username.split())
     if not name or len(name) > 50:
         raise HTTPException(status_code=400, detail="Names need 1 to 50 characters")
+    # One membership is for one household. The limit is generous so large families fit, but a group can't share one.
+    if db.query(User).filter(User.parent_id == current_user.id, User.role == "child").count() >= MAX_CHILDREN:
+        raise HTTPException(
+            status_code=400,
+            detail=f"A family membership covers up to {MAX_CHILDREN} children. If your family is bigger, send us a message in Help & feedback and we'll sort it out.",
+        )
     if body.email and login_name_taken(db, body.email):
         raise HTTPException(status_code=400, detail="Email already taken")
     if body.login_name and body.login_name.strip():

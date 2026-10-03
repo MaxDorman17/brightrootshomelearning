@@ -66,7 +66,7 @@ const steps = [
 ];
 
 const faqs = [
-  ["How many children can I add?", "As many as you need. One family membership covers every child in your home, each with their own login."],
+  ["How many children can I add?", "One family membership covers every child in your home, each with their own login, up to 10 children. Up to four grown-ups can have a login too."],
   ["Do my children need their own email address?", "No. You create a simple login name and password for each child from your parent account."],
   ["Can both parents use it?", "Yes. The parent who signs up can add the other parent, a guardian or a grandparent, each with their own login. Everyone sees the same family, and it's all covered by one membership."],
   ["Is there anything for teenagers?", "Yes. The Teens menu has cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16, from making dinner to wiring a plug. Younger children get their own versions, and you choose which each child sees."],

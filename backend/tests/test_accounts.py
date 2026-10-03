@@ -391,3 +391,14 @@ def test_parent_can_send_a_message_and_a_review(family, db):
 def test_messages_are_kept_even_when_email_is_off(family):
     sent = family.parent.post("/api/support/messages", json={"kind": "suggestion", "message": "A dark mode would be lovely"})
     assert sent.status_code == 201 and sent.json()["emailed"] is False
+
+
+def test_a_family_can_have_up_to_ten_children(family):
+    for n in range(10):
+        family.add_child(f"Child{n}")
+    eleventh = family.parent.post("/api/children/", json={"username": "Eleven", "password": PASSWORD})
+    assert eleventh.status_code == 400 and "up to 10 children" in eleventh.json()["detail"]
+    # Removing one makes room again.
+    first = family.parent.get("/api/children/").json()[0]
+    assert family.parent.delete(f"/api/children/{first['id']}").status_code in (200, 204)
+    assert family.parent.post("/api/children/", json={"username": "Eleven", "password": PASSWORD}).status_code == 201
