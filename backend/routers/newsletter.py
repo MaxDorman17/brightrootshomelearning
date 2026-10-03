@@ -271,7 +271,8 @@ class DraftIn(BaseModel):
     @field_validator("subject")
     @classmethod
     def valid_subject(cls, value: str) -> str:
-        value = value.strip()
+        # A subject is plain text, so a heading mark typed by habit ("# My title") is dropped.
+        value = value.strip().lstrip("#").strip()
         if not value:
             raise ValueError("Add a subject")
         return value[:200]

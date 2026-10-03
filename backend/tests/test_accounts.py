@@ -321,3 +321,10 @@ def test_emails_carry_the_logo_and_newsletters_do_not_repeat_their_title():
         emails.httpx.post = real_post
     attachment = posted["attachments"][0]
     assert attachment["content_id"] == emails.LOGO_CID and len(attachment["content"]) > 1000
+
+
+def test_newsletter_subject_drops_a_heading_mark():
+    from routers.newsletter import DraftIn
+
+    assert DraftIn(subject="# A little update", body="Hello").subject == "A little update"
+    assert DraftIn(subject="## Autumn news ", body="Hello").subject == "Autumn news"
