@@ -324,13 +324,7 @@ def mark_done(reminder_id: int, db: Session = Depends(get_db), current_user: Use
 # ---------------------------------------------------------------------------
 
 def _send_email(to: str, subject: str, body_html: str) -> None:
-    response = httpx.post(
-        "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}", "Content-Type": "application/json"},
-        json={"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html},
-        timeout=15.0,
-    )
-    response.raise_for_status()
+    emails.send(to, subject, body_html)
 
 
 def _wrap(title: str, inner: str, eyebrow: str = "Reminder") -> str:

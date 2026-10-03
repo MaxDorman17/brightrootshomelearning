@@ -4,7 +4,9 @@
 a green button and a quiet footer. It uses tables and inline styles because that is what email apps
 (Outlook, Gmail, Apple Mail) display reliably. `send()` hands the finished email to Resend.
 """
+import base64
 import html
+import os
 from typing import Optional
 
 import httpx
@@ -21,6 +23,22 @@ FONT = "'Segoe UI',Helvetica,Arial,sans-serif"
 SERIF = "Georgia,'Times New Roman',serif"
 
 
+# The logo travels inside each email (an inline attachment) instead of being fetched from the website.
+# Email providers fetch pictures through their own servers, and those requests can be turned away.
+LOGO_CID = "brightroots-logo"
+_LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "email-logo.png")
+try:
+    with open(_LOGO_PATH, "rb") as _f:
+        _LOGO_B64 = base64.b64encode(_f.read()).decode()
+except OSError:
+    _LOGO_B64 = ""
+
+
+def for_browser(body_html: str) -> str:
+    """The same email for showing on a web page, where an attached picture can't be used."""
+    return body_html.replace(f"cid:{LOGO_CID}", f"data:image/png;base64,{_LOGO_B64}")
+
+
 def configured() -> bool:
     return bool(settings.RESEND_API_KEY and settings.RESEND_FROM_EMAIL)
 
@@ -33,6 +51,8 @@ def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] =
     payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html}
     if unsubscribe_url:
         payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}
+    if _LOGO_B64 and f"cid:{LOGO_CID}" in body_html:
+        payload["attachments"] = [{"filename": "bright-roots.png", "content": _LOGO_B64, "content_type": "image/png", "content_id": LOGO_CID}]
     response = httpx.post(
         "https://api.resend.com/emails",
         headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}", "Content-Type": "application/json"},
@@ -75,6 +95,12 @@ def panel(inner_html: str) -> str:
     )
 
 
+def _logo_html() -> str:
+    if not _LOGO_B64:
+        return ""
+    return f'<img src="cid:{LOGO_CID}" width="50" alt="Bright Roots" style="display:block;margin:0 auto 6px;border:0">'
+
+
 def layout(title: str, body_html: str, *, preview: str = "", eyebrow: str = "", footer: str = "") -> str:
     """The whole email. `preview` is the line inboxes show after the subject; `footer` says why they got it."""
     hidden = (
@@ -94,7 +120,7 @@ def layout(title: str, body_html: str, *, preview: str = "", eyebrow: str = "", 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:580px">
       <tr><td align="center" style="padding:0 0 18px">
         <a href="{site()}" style="text-decoration:none">
-          <img src="{site()}/brand/house-mark.png" width="54" alt="" style="display:block;margin:0 auto 6px;border:0">
+{_logo_html()}
           <span style="font-family:{SERIF};font-size:21px;font-weight:700;color:{DEEP}">Bright Roots</span>
         </a>
       </td></tr>

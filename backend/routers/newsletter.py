@@ -61,16 +61,7 @@ def _email_configured() -> bool:
 
 
 def _send_email(to: str, subject: str, body_html: str, unsubscribe_url: str | None = None) -> None:
-    payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html}
-    if unsubscribe_url:
-        payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}
-    response = httpx.post(
-        "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}", "Content-Type": "application/json"},
-        json=payload,
-        timeout=15.0,
-    )
-    response.raise_for_status()
+    emails.send(to, subject, body_html, unsubscribe_url)
 
 
 def _site() -> str:
@@ -126,7 +117,17 @@ def render_body(body: str) -> str:
     return "".join(blocks)
 
 
+def _without_repeated_title(subject: str, body: str) -> str:
+    """The subject is already the email's heading, so drop a first line that just repeats it."""
+    lines = body.replace("\r\n", "\n").split("\n")
+    first = next((i for i, line in enumerate(lines) if line.strip()), None)
+    if first is not None and lines[first].lstrip("# ").strip().lower() == subject.strip().lower():
+        del lines[first]
+    return "\n".join(lines)
+
+
 def _newsletter_html(subject: str, body: str, unsubscribe_url: str) -> str:
+    body = _without_repeated_title(subject, body)
     inner = (
         f"<div style=\"font-family:{emails.FONT};font-size:15px;color:{emails.INK}\">{render_body(body)}</div>"
         + emails.button("Visit Bright Roots", _site())
@@ -333,7 +334,7 @@ def admin_overview(db: Session = Depends(get_db), admin: User = Depends(_require
 
 @router.post("/admin/preview")
 def preview(body: DraftIn, admin: User = Depends(_require_admin)):
-    return {"html": _newsletter_html(body.subject, body.body, f"{_site()}/newsletter/unsubscribe")}
+    return {"html": emails.for_browser(_newsletter_html(body.subject, body.body, f"{_site()}/newsletter/unsubscribe"))}
 
 
 @router.post("/admin/test")

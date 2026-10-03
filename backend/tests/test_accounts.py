@@ -295,3 +295,29 @@ def test_owner_can_see_who_is_on_the_newsletter_list(db):
         assert login("reader@example.test").get("/api/newsletter/admin").status_code == 403
     finally:
         settings.ADMIN_EMAILS = real
+
+
+def test_emails_carry_the_logo_and_newsletters_do_not_repeat_their_title():
+    import emails
+    from routers.newsletter import _newsletter_html
+
+    page = _newsletter_html("A little update", "# A little update\n\nHello families,\n\n## What's new\n\n- One thing", "https://example.test/unsub")
+    assert page.count("A little update") == 2  # the page title and the heading, not a third copy from the body
+    assert "Hello families" in page and "What&#x27;s new" in page
+    assert f"cid:{emails.LOGO_CID}" in page
+    assert "data:image/png;base64," in emails.for_browser(page) and "cid:" not in emails.for_browser(page)
+
+    posted = {}
+    real_post = emails.httpx.post
+
+    class Ok:
+        def raise_for_status(self):
+            pass
+
+    emails.httpx.post = lambda url, **kw: posted.update(kw["json"]) or Ok()
+    try:
+        emails.send("someone@example.test", "Hello", page)
+    finally:
+        emails.httpx.post = real_post
+    attachment = posted["attachments"][0]
+    assert attachment["content_id"] == emails.LOGO_CID and len(attachment["content"]) > 1000
