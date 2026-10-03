@@ -84,9 +84,14 @@ def test_starter_week_fills_a_week(family):
     made = family.parent.post("/api/planner/starter-week", json={"child_ids": [young["id"]], "start_date": monday.isoformat()})
     assert made.status_code == 201, made.text
     assert made.json()["level"] == "young"
-    assert made.json()["lessons"] == 15  # three a day, Monday to Friday
+    assert made.json()["lessons"] == 24  # one for every slot on the default timetable
     week = family.parent.get("/api/planner/week", params={"child_id": young["id"], "start_date": monday.isoformat()}).json()
-    assert len(week) == 15
+    assert len(week) == 24
+    timetable = family.parent.get("/api/timetable/").json()["config"]
+    for offset, day_name in enumerate(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]):
+        day = (monday + timedelta(days=offset)).isoformat()
+        assert sorted(e["lesson"]["subject"] for e in week if e["scheduled_date"] == day) == sorted(timetable[day_name])
+    assert len({e["lesson"]["title"] for e in week}) == 24  # no lesson is used twice
     assert {e["scheduled_date"] for e in week} == {(monday + timedelta(days=i)).isoformat() for i in range(5)}
 
 
@@ -95,7 +100,7 @@ def test_starter_week_for_teens_and_two_children(family):
     b = family.add_child("Teen2", activity_level="teen")
     made = family.parent.post("/api/planner/starter-week", json={"child_ids": [a["id"], b["id"]]})
     assert made.json()["level"] == "teen"
-    assert made.json()["lessons"] == 40  # four a day for each of two children
+    assert made.json()["lessons"] == 48  # every slot, for each of two children
     assert family.parent.post("/api/planner/starter-week", json={"child_ids": []}).status_code == 400
     kid = family.child_client(a)
     assert kid.post("/api/planner/starter-week", json={"child_ids": [a["id"]]}).status_code == 403
@@ -180,3 +185,18 @@ def test_starter_week_uses_the_family_timetable_names(family):
     wednesday = (monday + timedelta(days=2)).isoformat()
     # The default timetable calls it "Art & Design", so the art lesson lands in that row.
     assert "Art & Design" in {e["lesson"]["subject"] for e in week if e["scheduled_date"] == wednesday}
+
+
+def test_starter_week_follows_a_familys_own_timetable(family):
+    child = family.add_child("Little", activity_level="young")
+    config = {"Monday": ["Numeracy", "Forest School", "Latin"], "Tuesday": [], "Wednesday": ["P.E."], "Thursday": ["Maths"], "Friday": ["Music"]}
+    assert family.parent.put("/api/timetable/", json={"config": config}).status_code == 200
+    monday = date.today() - timedelta(days=date.today().weekday())
+    family.parent.post("/api/planner/starter-week", json={"child_ids": [child["id"]], "start_date": monday.isoformat()})
+    week = family.parent.get("/api/planner/week", params={"child_id": child["id"], "start_date": monday.isoformat()}).json()
+    on = lambda offset: {e["lesson"]["subject"]: e["lesson"]["title"] for e in week if e["scheduled_date"] == (monday + timedelta(days=offset)).isoformat()}
+    assert on(0) == {"Numeracy": "Number bonds to 10", "Forest School": "Nature walk and bug hunt", "Latin": "Getting started with Latin"}
+    assert len(on(1)) == 3  # nothing on the timetable for Tuesday, so the ready-made day is used
+    assert on(2) == {"P.E.": "Garden obstacle course"}
+    assert on(3) == {"Maths": "Shape hunt"}
+    assert list(on(4)) == ["Music"]

@@ -62,9 +62,8 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Nothing planned this week</p>
           <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">Start with a ready-made week?</h2>
           <p className="mt-1 max-w-2xl text-sm text-[#6E5A46]">
-            We&apos;ll fill {weekOver ? "next week, starting" : "the week of"} {format(parseISO(target), "d MMMM")}, with Maths and English every day, plus science, history,
-            geography, art, P.E. and more, each with simple steps to follow. They&apos;re ordinary lessons, so you can change, move or
-            delete any of them.
+            We&apos;ll fill {weekOver ? "next week, starting" : "the week of"} {format(parseISO(target), "d MMMM")}, with a lesson in every slot of your timetable, each with
+            simple steps to follow. They&apos;re ordinary lessons, so you can change, move or delete any of them.
           </p>
         </div>
         <button onClick={hide} className="shrink-0 text-xs font-bold text-[#8A7A69] hover:text-brand-charcoal" aria-label="Don't show this again">

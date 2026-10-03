@@ -1,7 +1,8 @@
 """A ready-made sample week, so a new family's planner isn't empty on day one.
 
-Two versions: one for younger children and one for teenagers. Every lesson is an ordinary lesson in the
-family's own list, so they can change it, move it or delete it like anything else they plan.
+Two versions: one for younger children and one for teenagers. It puts one lesson in every slot of the
+family's timetable. Every lesson is an ordinary lesson in the family's own list, so they can change it,
+move it or delete it like anything else they plan.
 """
 import json
 from datetime import date, timedelta
@@ -24,7 +25,7 @@ def L(subject, title, description, steps, minutes=30):
     return {"subject": subject, "title": title, "description": description, "steps": steps, "minutes": minutes}
 
 
-# Monday to Friday, a few lessons a day.
+# Monday to Friday. These are also what a day gets when the timetable has nothing on it.
 YOUNG_WEEK = [
     [
         L("Maths", "Number bonds to 10", "Find all the pairs of numbers that make 10.",
@@ -158,25 +159,150 @@ TEEN_WEEK = [
 ]
 
 
-# Other names a family's timetable might use for the subjects in the starter week.
+# More starter lessons, so every subject on a family's timetable has something to put in its slot.
+YOUNG_EXTRA = [
+    L("Science", "Living or not living?", "Sort things into living, once living and never living.",
+      ["Collect or draw 10 things: a leaf, a stone, a pet, a wooden spoon, a toy...", "Talk about what living things do: grow, eat, move, breathe.",
+       "Sort them into living, once living and never living.", "Explain your trickiest choice."]),
+    L("Science", "Shadow shapes", "Find out how shadows change.",
+      ["On a sunny day, or with a torch, make a shadow with a toy.", "Move the light closer and further away. What happens?",
+       "Draw round a shadow in chalk or pencil.", "Come back an hour later and draw it again."]),
+    L("Science", "Magnet hunt", "Find out which things a magnet sticks to.",
+      ["Find a fridge magnet.", "Guess which things around the house it will stick to.",
+       "Test 10 things and make two piles: sticks and doesn't stick.", "What are the sticking things made of?"]),
+    L("Science", "Melting race", "Find out what makes ice melt faster.",
+      ["Put an ice cube on each of three plates.", "Leave one in a warm place, one in a cool place, and sprinkle salt on the third.",
+       "Guess which will melt first.", "Check every five minutes and say what you notice."]),
+    L("History", "My family timeline", "Put your own life in order on a timeline.",
+      ["Find three or four photos of you at different ages.", "Put them in order from youngest to oldest.",
+       "Stick or draw them on a long strip of paper.", "Add what you could do at each age."]),
+    L("History", "Toys then and now", "Compare a toy from the past with one of yours.",
+      ["Ask a grown-up what toys they played with as a child.", "Look at a picture of an old toy together.",
+       "Say what is the same and what is different from your toys.", "Draw both toys side by side."]),
+    L("Geography", "Weather diary", "Watch the weather and record it for a week.",
+      ["Look out of the window. Is it sunny, cloudy, rainy or windy?", "Draw today's weather in a box.",
+       "Make five boxes, one for each day this week.", "At the end of the week, count which weather you had most."], 15),
+    L("Computing", "Robot instructions", "Give step-by-step instructions, like a computer program.",
+      ["One person is the robot and can only do exactly what they're told.", "Give instructions to get the robot across the room: forward 2 steps, turn left...",
+       "If the robot bumps into something, fix your instructions.", "Swap over and try a trickier route."], 20),
+    L("Cooking", "Fruit kebabs", "Wash, chop and thread fruit to make a snack.",
+      ["Wash your hands and the fruit.", "With help, cut soft fruit like banana and strawberries into chunks.",
+       "Thread the pieces onto a skewer in a pattern.", "Say your pattern out loud, then eat it!"]),
+    L("Design and Technology", "Build a paper bridge", "Make a bridge strong enough to hold a toy car.",
+      ["Put two piles of books a hand-width apart.", "Lay one sheet of paper across. Does it hold a toy car?",
+       "Try folding the paper in different ways to make it stronger.", "Which fold held the most? Why do you think that is?"]),
+    L("Life Skills", "Lay the table", "Lay the table for a family meal.",
+      ["Count how many people are eating.", "Put out a plate, knife, fork and cup for each person.",
+       "Knife on the right, fork on the left.", "Clear your own plate after the meal."], 15),
+    L("Languages", "Hello around the world", "Learn to say hello in three languages.",
+      ["Learn hello in French (bonjour), Spanish (hola) and one more you choose.", "Practise saying each one to someone at home.",
+       "Make a card for each with the word and a flag.", "Use one of them every time you say hello today."], 20),
+    L("Music", "Kitchen band", "Make rhythms with things from the kitchen.",
+      ["Collect a pan, a wooden spoon, a tub of rice and two lids.", "Tap a steady beat and count 1, 2, 3, 4.",
+       "Copy each other's rhythms.", "Play along to a favourite song."], 20),
+    L("RE", "Special days", "Find out about a celebration and why it matters.",
+      ["Choose a special day: a birthday, Diwali, Christmas, Eid or another.", "Find out what people do, eat and wear.",
+       "Talk about a special day in your own family.", "Draw a picture of the celebration."]),
+    L("PSHE", "Feelings faces", "Name feelings and talk about what helps.",
+      ["Draw four faces: happy, sad, cross and worried.", "Talk about a time you felt each one.",
+       "For each, say one thing that helps.", "Choose which face you feel like today."], 20),
+]
+
+TEEN_EXTRA = [
+    L("History", "Compare two sources", "Read two accounts of the same event and compare them.",
+      ["Choose an event and find two different accounts of it.", "Note who wrote each one and when.",
+       "List where they agree and disagree.", "Explain which you trust more and why."], 45),
+    L("Geography", "Grid references", "Use four- and six-figure grid references on a map.",
+      ["Find an Ordnance Survey map of your area, on paper or online.", "Give the four-figure reference for five places.",
+       "Give six-figure references for three of them.", "Plan a short route and describe it using references."], 45),
+    L("Cooking", "Cook a one-pan dinner", "Plan and cook a simple dinner for the family.",
+      ["Choose a one-pan recipe from the Teens cookbook.", "Check what you have and write a shopping list.",
+       "Cook it, keeping your workspace clean as you go.", "Ask the family for one thing to improve next time."], 60),
+    L("Art", "Observational drawing", "Draw an everyday object from life, using tone.",
+      ["Choose an object with an interesting shape: a trainer, a plant, a mug.", "Sketch the outline lightly, checking proportions.",
+       "Add light, mid and dark tones.", "Write a sentence on what went well and what you'd change."], 45),
+    L("Design and Technology", "Design a phone stand", "Design, make and test a phone stand from cardboard.",
+      ["Write a short design brief: what must it do?", "Sketch three ideas and pick the best.",
+       "Make it from cardboard.", "Test it, then improve one thing."], 50),
+    L("Languages", "Introduce yourself", "Introduce yourself in the language you're learning.",
+      ["Learn how to say your name, age and where you live.", "Add two things you like and one you don't.",
+       "Write it out as a short paragraph.", "Record yourself saying it and listen back."], 40),
+    L("Music", "How is this song built?", "Listen closely to a song and map its structure.",
+      ["Choose a song you like.", "Listen and mark the intro, verses, chorus and bridge with timings.",
+       "Note which instruments come in and when.", "Write what makes the chorus stand out."], 40),
+    L("RE", "A big question", "Explore how two worldviews answer an ethical question.",
+      ["Choose a question, such as: should we always forgive?", "Find out how two religions or worldviews answer it.",
+       "Write a paragraph on each.", "Give your own view, with a reason."], 45),
+    L("PSHE", "Online safety check-up", "Review your privacy settings and online habits.",
+      ["List the apps and sites you use most.", "Check the privacy settings on two of them.",
+       "Write three rules for dealing with messages from people you don't know.", "Talk them through with a grown-up."], 40),
+    L("Outdoor Learning", "Plan a walk with a map", "Plan a local walk and lead it.",
+      ["Choose a route of two to three miles on a map.", "Work out how long it will take and what to bring.",
+       "Lead the walk, navigating yourself.", "Note what you'd change next time."], 90),
+]
+
+# Other names a family's timetable might use for a subject.
 ALIASES = {
-    "Art": ["Art & Design", "Art and Design", "Arts and Crafts", "Craft"],
-    "PE": ["P.E.", "Physical Education", "Sport", "PE & Sport"],
-    "Outdoor Learning": ["Outdoors", "Forest School", "Nature", "Science"],
-    "Computing": ["Coding", "ICT", "Computer Science"],
-    "Life Skills": ["Cooking", "Home Economics", "PSHE"],
-    "English": ["Literacy", "English Language", "Reading"],
     "Maths": ["Mathematics", "Numeracy", "Math"],
+    "English": ["Literacy", "English Language", "English Literature", "Reading", "Writing"],
+    "Science": ["Biology", "Chemistry", "Physics"],
+    "History": [],
+    "Geography": [],
+    "Art": ["Art & Design", "Art and Design", "Arts and Crafts", "Craft", "Crafts"],
+    "PE": ["P.E.", "Physical Education", "Sport", "PE & Sport", "Games"],
+    "Outdoor Learning": ["Outdoors", "Forest School", "Nature"],
+    "Computing": ["Coding", "ICT", "Computer Science"],
+    "Cooking": ["Food Technology", "Food Tech", "Home Economics", "Baking"],
+    "Design and Technology": ["Design & Technology", "D&T", "DT", "Technology"],
+    "Life Skills": [],
+    "Languages": ["Language", "Modern Languages", "MFL", "French", "Spanish", "German"],
+    "Music": [],
+    "RE": ["Religious Education", "Religious Studies", "RME"],
+    "PSHE": ["Wellbeing", "Health and Wellbeing", "PSE"],
 }
+_CANONICAL = {name.lower(): subject for subject, names in ALIASES.items() for name in [subject, *names]}
 
 
-def _timetable_name(subject: str, day_subjects: list[str]) -> str:
-    """Use the family's own name for a subject, so the lesson lands in the right row of the planner."""
-    lower = {s.lower(): s for s in day_subjects}
-    for name in [subject, *ALIASES.get(subject, [])]:
-        if name.lower() in lower:
-            return lower[name.lower()]
-    return subject
+def _bank(level: str) -> dict[str, list[dict]]:
+    """Every starter lesson for a level, grouped by subject, in the order they should be used through the week."""
+    week, extra = (TEEN_WEEK, TEEN_EXTRA) if level == "teen" else (YOUNG_WEEK, YOUNG_EXTRA)
+    bank: dict[str, list[dict]] = {}
+    for item in [lesson for day in week for lesson in day] + extra:
+        bank.setdefault(item["subject"], []).append(item)
+    return bank
+
+
+def _first_lesson(subject: str) -> dict:
+    """For a subject we have no starter lessons for: a simple first lesson the family can make their own."""
+    return L(subject, f"Getting started with {subject}", f"A first {subject} lesson to make your own.",
+             ["Choose a topic you'd like to begin with.", "Find a video, book or website about it.",
+              "Do one activity or make some notes.", "Say or write three things you learned."])
+
+
+def lessons_for_week(level: str, timetable: dict) -> list[list[dict]]:
+    """Monday to Friday: one starter lesson for every slot on the family's timetable, under the family's own subject names."""
+    week = TEEN_WEEK if level == "teen" else YOUNG_WEEK
+    bank = _bank(level)
+    used: dict[str, int] = {}
+    days = []
+    for offset, day_name in enumerate(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]):
+        subjects = [s for s in timetable.get(day_name, []) if isinstance(s, str) and s.strip()]
+        if not subjects:
+            days.append(list(week[offset]))  # nothing on the timetable for this day: use the ready-made day
+            continue
+        day = []
+        for name in subjects:
+            canonical = _CANONICAL.get(name.strip().lower())
+            choices = bank.get(canonical or "")
+            if choices:
+                n = used.get(canonical, 0)
+                used[canonical] = n + 1
+                item = choices[n % len(choices)]
+            else:
+                item = _first_lesson(name.strip())
+            day.append({**item, "subject": name})
+        days.append(day)
+    return days
 
 
 class StarterWeekIn(BaseModel):
@@ -196,20 +322,15 @@ def add_starter_week(body: StarterWeekIn, db: Session = Depends(get_db), current
         level = "teen" if first.activity_level == "teen" else "young"
     start = body.start_date or date.today()
     start -= timedelta(days=start.weekday())  # always start on a Monday
-    week = TEEN_WEEK if level == "teen" else YOUNG_WEEK
 
     timetable = _get_config(db, current_user.id).config
     count = 0
-    for offset, lessons in enumerate(week):
+    for offset, lessons in enumerate(lessons_for_week(level, timetable)):
         day = start + timedelta(days=offset)
-        day_subjects = list(timetable.get(day.strftime("%A"), []))
         for item in lessons:
-            subject = _timetable_name(item["subject"], day_subjects)
-            if subject in day_subjects:
-                day_subjects.remove(subject)  # one starter lesson per timetable slot
             lesson = Lesson(
                 title=item["title"],
-                subject=subject,
+                subject=item["subject"],
                 description=item["description"],
                 steps=json.dumps(item["steps"]),
                 duration_minutes=item["minutes"],

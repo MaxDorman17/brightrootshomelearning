@@ -135,10 +135,10 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         steps: [
           <>Open the <L href="/parent">Planner</L> on a week with nothing planned. A <b>Start with a ready-made week?</b> card appears at the top.</>,
           "Tick which children it's for and choose younger children or teenagers. It picks this from each child's settings if you leave it.",
-          <>Press <b>Add the starter week</b>. Maths and English go in every day, with science, history, geography, art, P.E. and more around them, each with simple steps.</>,
+          <>Press <b>Add the starter week</b>. Every slot on your timetable gets a lesson with simple steps, from Maths and English to science, history, art and cooking.</>,
           "They're ordinary lessons, so change, move or delete any of them.",
         ],
-        tip: "Lessons use the subject names from your timetable where they match, so they land in the right rows.",
+        tip: "It follows your own timetable, so set that up first if you teach different subjects. A subject we don't have a lesson for gets a simple 'Getting started' lesson to make your own.",
       },
       {
         id: "calendar",
