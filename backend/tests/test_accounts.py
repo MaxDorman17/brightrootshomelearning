@@ -269,3 +269,29 @@ def test_daily_summary_is_skipped_when_there_is_nothing_to_say(family, db):
     family.parent.post("/api/days-off/", json={"date": date.today().isoformat(), "reason": "Holiday"})
     db.expire_all()
     assert not _summary(db, parent, date.today())[1]
+
+
+def test_owner_can_see_who_is_on_the_newsletter_list(db):
+    import os
+    from config import settings
+
+    new_client().post("/api/auth/register", json={"email": "owner@example.test", "username": "Owner", "password": PASSWORD, "newsletter": True})
+    new_client().post("/api/auth/register", json={"email": "reader@example.test", "username": "Reader", "password": PASSWORD, "newsletter": True})
+    for user in db.query(User).filter(User.email.in_(["owner@example.test", "reader@example.test"])):
+        user.email_verified_at = user.created_at if user.email == "reader@example.test" else None
+        user.onboarding_completed_at = user.created_at
+    db.query(User).filter(User.email == "owner@example.test").one().email_verified_at = datetime.utcnow()
+    reader = db.query(User).filter(User.email == "reader@example.test").one()
+    reader.email_verified_at = None
+    db.commit()
+    real = settings.ADMIN_EMAILS
+    settings.ADMIN_EMAILS = "owner@example.test"
+    try:
+        overview = login("owner@example.test").get("/api/newsletter/admin")
+        assert overview.status_code == 200, overview.text
+        people = {s["email"]: s for s in overview.json()["subscribers"]}
+        assert people["owner@example.test"]["status"] == "subscribed" and people["owner@example.test"]["name"] == "Owner"
+        assert people["reader@example.test"]["status"] == "unverified"  # ticked the box, but email not confirmed
+        assert login("reader@example.test").get("/api/newsletter/admin").status_code == 403
+    finally:
+        settings.ADMIN_EMAILS = real

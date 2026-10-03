@@ -12,6 +12,14 @@ type Overview = {
   email_enabled: boolean;
   counts: { subscribed: number; members: number; visitors: number; pending: number; unsubscribed: number };
   newsletters: { id: number; subject: string; status: string; recipients: number; sent_count: number; created_at: string | null }[];
+  subscribers: { email: string; name: string | null; source: string; status: string; since: string | null }[];
+};
+
+const STATUS_TEXT: Record<string, string> = {
+  subscribed: "Subscribed",
+  unverified: "Email not confirmed yet",
+  pending: "Awaiting confirmation",
+  unsubscribed: "Unsubscribed",
 };
 
 const DRAFT_KEY = "newsletter_draft";
@@ -34,6 +42,7 @@ export default function NewsletterAdminPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -189,6 +198,41 @@ export default function NewsletterAdminPage() {
           <section className="mt-6">
             <p className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-softsage">Preview</p>
             <iframe title="Newsletter preview" srcDoc={previewHtml} sandbox="" className="h-[32rem] w-full rounded-2xl border border-brand-line bg-white" />
+          </section>
+        )}
+
+        {data && (
+          <section className="brand-card mt-6 p-5 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Who is on the list</h2>
+              {data.subscribers.some((s) => s.status !== "subscribed") && (
+                <label className="flex items-center gap-2 text-sm text-[#6E5A46]">
+                  <input type="checkbox" checked={showAll} onChange={(e) => setShowAll(e.target.checked)} className="accent-brand-sage" />
+                  Also show people not receiving it
+                </label>
+              )}
+            </div>
+            {data.subscribers.filter((s) => showAll || s.status === "subscribed").length === 0 ? (
+              <p className="mt-3 text-sm text-[#6E5A46]">Nobody has subscribed yet.</p>
+            ) : (
+              <div className="mt-2 divide-y divide-brand-line">
+                {data.subscribers
+                  .filter((s) => showAll || s.status === "subscribed")
+                  .map((s) => (
+                    <div key={s.email} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5 text-sm">
+                      <span className="min-w-0 break-all font-bold text-brand-charcoal">
+                        {s.email}
+                        {s.name && <span className="font-normal text-[#6E5A46]"> · {s.name}</span>}
+                      </span>
+                      <span className="text-[#6E5A46]">
+                        {s.source === "member" ? "Member" : "Website visitor"}
+                        {s.status !== "subscribed" && <span className="font-bold text-[#A64F42]"> · {STATUS_TEXT[s.status] ?? s.status}</span>}
+                        {s.since ? ` · ${format(parseISO(s.since), "d MMM yyyy")}` : ""}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            )}
           </section>
         )}
 

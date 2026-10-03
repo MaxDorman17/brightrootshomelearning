@@ -288,8 +288,28 @@ def admin_overview(db: Session = Depends(get_db), admin: User = Depends(_require
     rows = db.query(NewsletterSubscriber).all()
     recipients = _recipients(db)
     past = db.query(Newsletter).order_by(Newsletter.created_at.desc()).limit(50).all()
+    receiving = {r.id for r in recipients}
+    names = {u.id: u.username for u in db.query(User).filter(User.id.in_([r.user_id for r in rows if r.user_id] or [0])).all()}
+
+    def state(row: NewsletterSubscriber) -> str:
+        if row.id in receiving:
+            return "subscribed"
+        if row.status == "subscribed":
+            return "unverified"  # a member who ticked the box but hasn't confirmed their email address yet
+        return row.status
+
     return {
         "email_enabled": _email_configured(),
+        "subscribers": [
+            {
+                "email": r.email,
+                "name": names.get(r.user_id),
+                "source": r.source,
+                "status": state(r),
+                "since": (r.confirmed_at or r.created_at).isoformat() if (r.confirmed_at or r.created_at) else None,
+            }
+            for r in sorted(rows, key=lambda r: (r.confirmed_at or r.created_at or datetime.min).replace(tzinfo=None), reverse=True)
+        ],
         "counts": {
             "subscribed": len(recipients),
             "members": sum(1 for r in recipients if r.source == "member"),
