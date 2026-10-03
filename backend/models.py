@@ -793,3 +793,20 @@ class ExamEntry(Base):
     result = Column(String(30), nullable=True)             # e.g. "7" or "B"
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SupportMessage(Base):
+    """A problem, suggestion, question or review a parent sent to the site owner."""
+    __tablename__ = "support_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # the family's main account
+    kind = Column(String(20), nullable=False)  # problem / suggestion / question / review
+    message = Column(Text, nullable=False)
+    rating = Column(Integer, nullable=True)  # 1 to 5 stars, reviews only
+    can_publish = Column(Boolean, nullable=False, default=False)  # the family agreed their review may be shown
+    display_name = Column(String(60), nullable=True)
+    page = Column(String(200), nullable=True)
+    reply_email = Column(String(255), nullable=True)  # the grown-up who wrote it
+    emailed = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, nullable=False)

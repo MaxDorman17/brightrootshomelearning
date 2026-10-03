@@ -59,6 +59,11 @@ const sections = [
             pictures for any badges you make.
           </li>
           <li>
+            <strong>Messages you send us:</strong> anything you write in Help and feedback or by email, including
+            reviews and star ratings. A review is only shown on our website if you tick the box to allow it, with
+            the name you choose.
+          </li>
+          <li>
             <strong>Membership details:</strong> your plan, trial dates and subscription status. Card payments
             are handled by Stripe, and we never see or store your card details.
           </li>
@@ -82,6 +87,7 @@ const sections = [
           <li>send reminders and summary emails you have switched on;</li>
           <li>manage your trial and membership;</li>
           <li>send the newsletter, only if you have asked for it;</li>
+          <li>answer your questions, fix problems you report and act on your suggestions;</li>
           <li>keep Bright Roots secure and working properly.</li>
         </ul>
         <p>

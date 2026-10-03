@@ -68,10 +68,12 @@ def plain_text(body_html: str) -> str:
     return "\n".join(out).strip() + "\n"
 
 
-def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] = None) -> None:
+def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] = None, reply_to: Optional[str] = None) -> None:
     payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html, "text": plain_text(body_html)}
     if unsubscribe_url:
         payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}
+    if reply_to:
+        payload["reply_to"] = reply_to
     if _LOGO_B64 and f"cid:{LOGO_CID}" in body_html:
         payload["attachments"] = [{"filename": "bright-roots.png", "content": _LOGO_B64, "content_type": "image/png", "content_id": LOGO_CID}]
     response = httpx.post(

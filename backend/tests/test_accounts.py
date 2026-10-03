@@ -346,3 +346,48 @@ def test_every_email_has_a_plain_text_copy():
     assert "<" not in text and "Hi Wendy," in text
     assert "Confirm my email (https://example.test/verify-email#token=abc)" in text
     assert "Add your children" in text and "One click to confirm" not in text  # the hidden preview line is left out
+
+
+# ---------- help and feedback ----------
+
+def test_parent_can_send_a_message_and_a_review(family, db):
+    from config import settings
+
+    sent = []
+    import emails
+    real_send, real_configured = emails.send, emails.configured
+    emails.send = lambda to, subject, body, unsubscribe_url=None, reply_to=None: sent.append((to, subject, body, reply_to))
+    emails.configured = lambda: True
+    try:
+        problem = family.parent.post("/api/support/messages", json={"kind": "problem", "message": "The planner won't load on my phone", "page": "/parent"})
+        assert problem.status_code == 201 and problem.json()["emailed"] is True
+        review = family.parent.post("/api/support/messages", json={"kind": "review", "message": "We love it, thank you!", "rating": 5, "can_publish": True, "display_name": "Sam, mum of two"})
+        assert review.status_code == 201
+    finally:
+        emails.send, emails.configured = real_send, real_configured
+    assert sent[0][0] == settings.SUPPORT_EMAIL and sent[0][3] == family.email  # replying goes straight to the parent
+    assert "A problem from" in sent[0][1] and "planner won" in sent[0][2]
+    assert "Sam, mum of two" in sent[1][2]
+
+    assert family.parent.post("/api/support/messages", json={"kind": "moan", "message": "Hello there"}).status_code == 422
+    assert family.parent.post("/api/support/messages", json={"kind": "review", "message": "Great site", "rating": 9}).status_code == 422
+    assert family.parent.post("/api/support/messages", json={"kind": "problem", "message": "Hi"}).status_code == 422
+    child = family.add_child()
+    assert family.child_client(child).post("/api/support/messages", json={"kind": "problem", "message": "Something broke"}).status_code == 403
+    # Only the owner can read what families sent.
+    assert family.parent.get("/api/support/messages").status_code == 403
+    real_admins = settings.ADMIN_EMAILS
+    settings.ADMIN_EMAILS = family.email
+    try:
+        listed = family.parent.get("/api/support/messages").json()
+        assert [m["kind"] for m in listed[:2]] == ["review", "problem"] and listed[0]["rating"] == 5 and listed[0]["can_publish"] is True
+        assert listed[1]["from_email"] == family.email
+        assert family.parent.delete(f"/api/support/messages/{listed[1]['id']}").status_code == 204
+        assert len(family.parent.get("/api/support/messages").json()) == len(listed) - 1
+    finally:
+        settings.ADMIN_EMAILS = real_admins
+
+
+def test_messages_are_kept_even_when_email_is_off(family):
+    sent = family.parent.post("/api/support/messages", json={"kind": "suggestion", "message": "A dark mode would be lovely"})
+    assert sent.status_code == 201 and sent.json()["emailed"] is False

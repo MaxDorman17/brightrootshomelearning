@@ -680,3 +680,23 @@ export const getCalendarLink = () => api.get<{ token: string | null }>("/api/cal
 export const makeCalendarLink = () => api.post<{ token: string }>("/api/calendar/link");
 export const removeCalendarLink = () => api.delete("/api/calendar/link");
 export const calendarFeedUrl = (token: string) => `${API_URL.replace(/\/$/, "")}/api/calendar/${token}.ics`;
+
+// Help and feedback: a parent's problem, question, suggestion or review, sent to the site owner
+export type SupportMessage = {
+  id: number;
+  kind: string;
+  message: string;
+  rating: number | null;
+  can_publish: boolean;
+  display_name: string | null;
+  page: string | null;
+  from_name: string | null;
+  from_email: string | null;
+  emailed: boolean;
+  created_at: string | null;
+};
+export const sendSupportMessage = (body: { kind: string; message: string; rating?: number | null; can_publish?: boolean; display_name?: string | null; page?: string | null }) =>
+  api.post<{ id: number; emailed: boolean }>("/api/support/messages", body);
+// Owner only
+export const getSupportMessages = () => api.get<SupportMessage[]>("/api/support/messages", { skipAuthRedirect: true } as any);
+export const deleteSupportMessage = (id: number) => api.delete(`/api/support/messages/${id}`);

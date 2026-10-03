@@ -122,6 +122,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/reminders", label: "Reminders" },
       { href: "/account", label: "Account" },
       { href: "/parent/help", label: "How-to guides" },
+      { href: "/parent/feedback", label: "Help & feedback" },
     ],
   },
 ];

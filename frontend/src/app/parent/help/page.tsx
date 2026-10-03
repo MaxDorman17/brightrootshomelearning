@@ -381,6 +381,18 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           <>Set up reminders for your children in <L href="/parent/reminders">Family, then Reminders</L>.</>,
         ],
       },
+      {
+        id: "feedback",
+        emoji: "💬",
+        title: "Get help, make a suggestion or leave a review",
+        intro: "Send us a message without leaving Bright Roots.",
+        steps: [
+          <>Open <L href="/parent/feedback">Family, then Help &amp; feedback</L>.</>,
+          "Choose what it's about: something isn't working, a question, a suggestion or a review.",
+          "Write your message and press Send. We reply to the email address on your account.",
+          "For a review, pick your stars. Tick the box only if you're happy for it to be shown on the website, and choose the name to show.",
+        ],
+      },
     ],
   },
 ];
