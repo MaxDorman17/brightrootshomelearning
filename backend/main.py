@@ -10,7 +10,7 @@ from config import settings
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges, exams, starter_week, calendar_feed, support
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges, exams, starter_week, calendar_feed, support, backup
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -520,11 +520,19 @@ app.include_router(exams.router)
 app.include_router(starter_week.router)
 app.include_router(calendar_feed.router)
 app.include_router(support.router)
+app.include_router(backup.router)
 
 
 @app.on_event("startup")
 def start_reminder_emails():
     reminders.start_email_scheduler()
+
+
+@app.on_event("startup")
+def start_backups():
+    import backups
+
+    backups.start_scheduler()
 
 
 @app.get("/health")

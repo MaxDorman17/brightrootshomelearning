@@ -12,7 +12,15 @@ class Settings(BaseSettings):
     RESEND_FROM_EMAIL: str = ""
     FRONTEND_URL: str = "http://localhost:3000"
     SUPPORT_EMAIL: str = "help@brightrootshomelearning.co.uk"  # where Help and feedback messages are sent
-    ADMIN_EMAILS: str = ""  # comma-separated; these parent accounts can send the newsletter
+    ADMIN_EMAILS: str = ""
+    # Nightly off-site backups, to any S3-compatible bucket (see backups.py). Off until these are filled in.
+    BACKUP_S3_ENDPOINT: str = ""  # e.g. https://s3.fr-par.scw.cloud
+    BACKUP_S3_REGION: str = ""  # e.g. fr-par
+    BACKUP_S3_BUCKET: str = ""
+    BACKUP_S3_ACCESS_KEY: str = ""
+    BACKUP_S3_SECRET_KEY: str = ""
+    BACKUP_KEEP_DAYS: int = 30  # how long daily database copies are kept
+    BACKUP_HOUR: int = 3  # UK time; the nightly backup runs at or after this hour  # comma-separated; these parent accounts can send the newsletter
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_MONTHLY_PRICE_ID: str = "price_1UJb5zD6aHVbx1WGHlgqqk7o"

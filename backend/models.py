@@ -810,3 +810,16 @@ class SupportMessage(Base):
     reply_email = Column(String(255), nullable=True)  # the grown-up who wrote it
     emailed = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False)
+
+
+class BackupRun(Base):
+    """One run of the off-site backup, so the owner can see it is working."""
+    __tablename__ = "backup_runs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    kind = Column(String(20), nullable=False)  # nightly / manual
+    claim = Column(String(40), nullable=True, unique=True)  # "nightly-2026-10-05": only one process runs it
+    status = Column(String(20), nullable=False, default="running")  # running / ok / failed
+    detail = Column(Text, nullable=True)
+    started_at = Column(DateTime, nullable=False)
+    finished_at = Column(DateTime, nullable=True)

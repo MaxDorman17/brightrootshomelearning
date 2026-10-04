@@ -700,3 +700,9 @@ export const sendSupportMessage = (body: { kind: string; message: string; rating
 // Owner only
 export const getSupportMessages = () => api.get<SupportMessage[]>("/api/support/messages", { skipAuthRedirect: true } as any);
 export const deleteSupportMessage = (id: number) => api.delete(`/api/support/messages/${id}`);
+
+// Owner only: off-site backups
+export type BackupRun = { id: number; kind: string; status: "running" | "ok" | "failed"; detail: string | null; started_at: string | null; finished_at: string | null };
+export type BackupStatus = { configured: boolean; bucket: string | null; endpoint: string | null; keep_days: number; hour: number; last_ok: BackupRun | null; runs: BackupRun[] };
+export const getBackupStatus = () => api.get<BackupStatus>("/api/backup/status", { skipAuthRedirect: true } as any);
+export const runBackupNow = () => api.post("/api/backup/run");
