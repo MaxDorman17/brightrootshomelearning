@@ -706,3 +706,5 @@ export type BackupRun = { id: number; kind: string; status: "running" | "ok" | "
 export type BackupStatus = { configured: boolean; bucket: string | null; endpoint: string | null; keep_days: number; hour: number; last_ok: BackupRun | null; runs: BackupRun[] };
 export const getBackupStatus = () => api.get<BackupStatus>("/api/backup/status", { skipAuthRedirect: true } as any);
 export const runBackupNow = () => api.post("/api/backup/run");
+// Fails on purpose, so the owner can check that error reports reach GlitchTip.
+export const sendTestErrorReport = () => api.post("/api/backup/test-error-report");

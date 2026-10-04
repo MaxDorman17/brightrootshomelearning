@@ -18,3 +18,7 @@ export const STATS_SCRIPT = "https://stats.brightrootshomelearning.co.uk/script.
 export const STATS_WEBSITE_ID = "26df8761-6a46-4a06-9650-654d63125ee6";
 // Only the live site is counted, never a local or staging copy.
 export const STATS_HOSTS = ["brightrootshomelearning.co.uk", "www.brightrootshomelearning.co.uk"];
+
+// Where broken-page reports go: our own GlitchTip server. Like the statistics ID, this address
+// is public by design (every browser needs it to send a report), so it is not a secret.
+export const ERRORS_DSN = "https://f53d04922b1d4ea7b1cac9d1639a244b@errors.brightrootshomelearning.co.uk/1";

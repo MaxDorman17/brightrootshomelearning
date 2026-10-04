@@ -193,7 +193,7 @@ const sections = [
     ),
   },
   {
-    title: "Cookies",
+    title: "Cookies, visit counts and error reports",
     body: (
       <>
         <p>
@@ -209,6 +209,12 @@ const sections = [
           browser and country, and it can&apos;t tell who you are or follow you to other websites. Pages you see
           after logging in, including everything a child sees, are never counted. If your browser&apos;s &quot;Do
           Not Track&quot; setting is on, your visit isn&apos;t counted at all.
+        </p>
+        <p>
+          If a page breaks, or our server hits an unexpected error, a short technical report is sent to our own
+          server so we can fix it. It holds the kind of error, where in our code it happened, which page it was
+          on and the type of browser. It doesn&apos;t hold anything you or your children typed, any names, or any
+          work, and we delete these reports after 90 days.
         </p>
       </>
     ),

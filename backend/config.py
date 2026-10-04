@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     BACKUP_S3_SECRET_KEY: str = ""
     BACKUP_KEEP_DAYS: int = 30  # how long daily database copies are kept
     BACKUP_HOUR: int = 3  # UK time; the nightly backup runs at or after this hour  # comma-separated; these parent accounts can send the newsletter
+    GLITCHTIP_DSN: str = ""  # where unexpected server errors are reported (see error_reports.py); off when empty
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_MONTHLY_PRICE_ID: str = "price_1UJb5zD6aHVbx1WGHlgqqk7o"

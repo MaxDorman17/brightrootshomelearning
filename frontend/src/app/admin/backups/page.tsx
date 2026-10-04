@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { format, formatDistanceToNow, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
-import { BackupStatus, getBackupStatus, runBackupNow } from "@/lib/api";
+import { BackupStatus, getBackupStatus, runBackupNow, sendTestErrorReport } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 
 const when = (iso: string | null) => (iso ? format(parseISO(iso), "EEE d MMM yyyy, HH:mm") : "");
@@ -17,6 +17,7 @@ export default function BackupsPage() {
   const [denied, setDenied] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [tested, setTested] = useState("");
 
   const load = useCallback(() => getBackupStatus().then((res) => setData(res.data)).catch(() => setDenied(true)), []);
 
@@ -35,6 +36,16 @@ export default function BackupsPage() {
     const id = setInterval(load, 4000);
     return () => clearInterval(id);
   }, [running, load]);
+
+  // Breaks the server and this page on purpose, once each, so both kinds of report can be checked.
+  const testReports = async () => {
+    setTested("Sending...");
+    await sendTestErrorReport().catch(() => {});
+    setTimeout(() => {
+      throw new Error("Test error report from the website, sent on purpose by the site owner");
+    }, 0);
+    setTested("Sent. Two test reports should appear in GlitchTip within a minute: one in backend, one in website.");
+  };
 
   const run = async () => {
     setBusy(true);
@@ -136,6 +147,18 @@ export default function BackupsPage() {
             <code>restore_backup.py</code>, that downloads the lot into a folder ready to put on a new server. Ask Claude to walk you through it, and try it
             once before you need it.
           </p>
+        </section>
+
+        <section className="brand-card mt-6 p-5 text-sm text-brand-charcoal sm:p-6">
+          <h2 className="text-lg font-extrabold">Error reports</h2>
+          <p className="mt-1 text-[#4A3B2C]">
+            When a page breaks or the server hits an unexpected error, a short report goes to GlitchTip. This button causes one harmless error of each
+            kind, so you can check the reports are arriving.
+          </p>
+          <button onClick={testReports} className="mt-3 rounded-full border border-brand-line px-5 py-2.5 text-sm font-bold text-brand-sage hover:bg-white">
+            Send test error reports
+          </button>
+          {tested && <p className="mt-3 font-semibold text-brand-sage">{tested}</p>}
         </section>
       </div>
     </div>

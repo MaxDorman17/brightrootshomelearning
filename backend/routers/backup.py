@@ -21,6 +21,12 @@ def _require_owner(user: User = Depends(get_authenticated_user)) -> User:
     return user
 
 
+@router.post("/test-error-report")
+def test_error_report(_: User = Depends(_require_owner)):
+    """Fails on purpose, so the owner can check that error reports arrive."""
+    raise RuntimeError("Test error report, sent on purpose by the site owner")
+
+
 def _out(row: BackupRun) -> dict:
     return {
         "id": row.id,

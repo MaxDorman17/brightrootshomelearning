@@ -2,11 +2,12 @@ import os
 import sqlite3
 from datetime import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from config import settings
+import error_reports
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
@@ -517,6 +518,17 @@ app.include_router(notes.router)
 app.include_router(family.router)
 app.include_router(badges.router)
 app.include_router(exams.router)
+@app.middleware("http")
+async def report_unexpected_errors(request: Request, call_next):
+    """Anything that would become a "500" page is reported to the owner, then handled as before."""
+    try:
+        return await call_next(request)
+    except Exception as exc:
+        route = getattr(request.scope.get("route"), "path", "") or "(no route)"
+        error_reports.report(exc, request.method, route)
+        raise
+
+
 app.include_router(starter_week.router)
 app.include_router(calendar_feed.router)
 app.include_router(support.router)

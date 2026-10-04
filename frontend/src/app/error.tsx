@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { serif } from "@/lib/fonts";
 import { SUPPORT_EMAIL } from "@/lib/site";
+import { reportError } from "@/lib/errorReports";
 
 /** Shown if a page crashes, so families see a calm Bright Roots message instead of a blank screen. */
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error(error);
+    reportError(error, "error page");
   }, [error]);
 
   return (
