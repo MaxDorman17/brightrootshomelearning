@@ -208,7 +208,7 @@ def _send_confirmation(row: NewsletterSubscriber) -> None:
     if _email_configured():
         subject, body = emails.newsletter_confirm_email(f"{_site()}/newsletter/confirm#token={row.token}")
         try:
-            _send_email(row.email, subject, body)
+            _send_email(row.email, subject, body, _unsubscribe_url(row))  # lets an inbox show its own Unsubscribe button
         except Exception:
             logger.exception("Could not send newsletter confirmation")
 

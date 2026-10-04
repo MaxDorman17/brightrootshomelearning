@@ -402,3 +402,18 @@ def test_a_family_can_have_up_to_ten_children(family):
     first = family.parent.get("/api/children/").json()[0]
     assert family.parent.delete(f"/api/children/{first['id']}").status_code in (200, 204)
     assert family.parent.post("/api/children/", json={"username": "Eleven", "password": PASSWORD}).status_code == 201
+
+
+def test_newsletter_confirmation_carries_an_unsubscribe_link():
+    import emails
+    from routers import newsletter
+
+    sent = []
+    real_send, real_configured = emails.send, newsletter._email_configured
+    emails.send = lambda to, subject, body, unsubscribe_url=None, reply_to=None: sent.append((to, unsubscribe_url))
+    newsletter._email_configured = lambda: True
+    try:
+        assert new_client().post("/api/newsletter/subscribe", json={"email": "curious@example.test"}).status_code == 200
+    finally:
+        emails.send, newsletter._email_configured = real_send, real_configured
+    assert sent and sent[0][0] == "curious@example.test" and "/newsletter/unsubscribe#token=" in sent[0][1]
