@@ -247,7 +247,8 @@ const sections = [
       <p>
         Bright Roots runs on a server we rent from Scaleway in Amsterdam, so your family&apos;s information is
         stored in the Netherlands, inside the European Union. A backup copy is made every night and kept on
-        separate Scaleway storage in Paris, France, so your records can be brought back if the server fails. It is only available over a secure (HTTPS) connection. Passwords are hashed, each family
+        separate Scaleway storage in Paris, France, so your records can be brought back if the server fails.
+        Bright Roots is only available over a secure (HTTPS) connection. Passwords are hashed, each family
         can only see its own information, and uploaded files are only available to the family that added
         them.
       </p>
