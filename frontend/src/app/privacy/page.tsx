@@ -158,6 +158,9 @@ const sections = [
             <strong>Cloudflare</strong>, which protects the website from attacks and helps it load quickly.
           </li>
           <li>
+            <strong>Fasthosts</strong>, which provides our email inboxes, so it holds any emails you send us.
+          </li>
+          <li>
             <strong>Your browser&apos;s notification service</strong> (for example Google, Apple or Mozilla), only if
             you switch on phone notifications. It passes each notification to your device and can&apos;t read what
             it says.
