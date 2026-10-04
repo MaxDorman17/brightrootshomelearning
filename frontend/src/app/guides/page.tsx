@@ -32,7 +32,6 @@ export default function GuidesPage() {
             </Link>
           ))}
         </div>
-        <p className="mt-8 text-sm text-[#6E5A46]">More guides are on the way.</p>
       </section>
     </PublicShell>
   );
