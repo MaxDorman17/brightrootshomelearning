@@ -30,7 +30,7 @@ const featureGroups = [
     emoji: "🗓️",
     tint: "#E7EADE",
     blurb: "Get the whole week sorted in one sitting.",
-    items: ["Weekly planner", "Your timetable", "Lesson plans", "Oak National Academy lessons", "Print the week"],
+    items: ["Weekly planner", "Your timetable", "Ready-made starter week", "Oak National Academy lessons", "Lesson plans", "Calendar sync", "Print the week"],
   },
   {
     name: "Learn",
@@ -38,7 +38,7 @@ const featureGroups = [
     emoji: "📚",
     tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
-    items: ["Child dashboards", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16"],
+    items: ["Child dashboards", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
   },
   {
     name: "Progress",
@@ -46,7 +46,7 @@ const featureGroups = [
     emoji: "🌱",
     tint: "#E7EADE",
     blurb: "See how they're really getting on.",
-    items: ["Results & quiz scores", "Review & feedback", "Printable reports", "Council report", "Moments & photos"],
+    items: ["Results & quiz scores", "Review & feedback", "Printable reports", "Council report", "Moments & photos", "Trips & days out"],
   },
   {
     name: "Family",
@@ -54,7 +54,7 @@ const featureGroups = [
     emoji: "🏡",
     tint: "#F5EFE1",
     blurb: "Keep everyone motivated and on track.",
-    items: ["Stars & rewards", "Badges, plus your own", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
+    items: ["Stars & rewards", "Badges, plus your own", "Printable certificates", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
   },
 ];
 
@@ -62,7 +62,7 @@ const steps = [
   ["Start your free trial", "Set up your family account in minutes. No card needed."],
   ["Add your children", "Give each child their own simple login."],
   ["Set your timetable", "Choose your subjects and when you teach them."],
-  ["Plan your first week", "Add lessons and you're away."],
+  ["Plan your first week", "Add a ready-made week of Oak lessons, or plan your own."],
 ];
 
 const faqs = [
@@ -70,6 +70,8 @@ const faqs = [
   ["Do my children need their own email address?", "No. You create a simple login name and password for each child from your parent account."],
   ["Can both parents use it?", "Yes. The parent who signs up can add the other parent, a guardian or a grandparent, each with their own login. Everyone sees the same family, and it's all covered by one membership."],
   ["Is there anything for teenagers?", "Yes. The Teens menu has cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16, from making dinner to wiring a plug. Younger children get their own versions, and you choose which each child sees."],
+  ["I'm new to home education. Where do I start?", "Tell us which school year each child is working at and Bright Roots fills your first week with free Oak National Academy lessons for every subject on your timetable. You can change any of them, and the how-to guides walk you through the rest."],
+  ["My teenager is working towards GCSEs. Can it help?", "Yes. The exam planner keeps each exam's centre, entry deadline, date and fee in one place, counts down the days, and adds revision sessions to the planner."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share."],
   ["What happens when my free trial ends?", "You can choose monthly or yearly membership from your account. If you decide not to carry on, you won't be charged, because no card is taken for the trial."],
