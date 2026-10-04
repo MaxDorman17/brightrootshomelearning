@@ -6,6 +6,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["", 1],
     ["/about", 0.8],
     ["/signup", 0.8],
+    ["/guides", 0.8],
+    ["/guides/first-week", 0.8],
     ["/contact", 0.5],
     ["/privacy", 0.3],
     ["/terms", 0.3],

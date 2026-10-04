@@ -31,6 +31,7 @@ const NAV_LINKS = [
   { href: "/#demo", label: "Demo" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
+  { href: "/guides", label: "Guides" },
   { href: "/about", label: "About" },
 ];
 
@@ -132,6 +133,7 @@ export function PublicFooter() {
         </Link>
         <div className="flex flex-wrap gap-5">
           <Link href="/about" className="hover:text-[#2F5D3A]">About</Link>
+          <Link href="/guides" className="hover:text-[#2F5D3A]">Guides</Link>
           <Link href="/#demo" className="hover:text-[#2F5D3A]">Demo</Link>
           <Link href="/#pricing" className="hover:text-[#2F5D3A]">Pricing</Link>
           <Link href="/contact" className="hover:text-[#2F5D3A]">Contact</Link>
