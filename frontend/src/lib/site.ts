@@ -11,3 +11,10 @@ export const TERMS_UPDATED = "3 October 2026";
 export const TRADING_NAME = "Bright Roots Home Learning";
 export const TRADER_NAME = "Max Dorman";
 export const TRADER_ADDRESS = "18 Alison Street, Kirkcaldy, KY1 1UE";
+
+// Cookie-free visitor statistics for the public pages, on our own Umami server.
+// The website ID is not a secret: it is part of the public page code.
+export const STATS_SCRIPT = "https://stats.brightrootshomelearning.co.uk/script.js";
+export const STATS_WEBSITE_ID = "26df8761-6a46-4a06-9650-654d63125ee6";
+// Only the live site is counted, never a local or staging copy.
+export const STATS_HOSTS = ["brightrootshomelearning.co.uk", "www.brightrootshomelearning.co.uk"];

@@ -195,12 +195,22 @@ const sections = [
   {
     title: "Cookies",
     body: (
-      <p>
-        Bright Roots uses one essential cookie to keep you logged in, a security cookie from Cloudflare, and
-        your browser&apos;s local storage to remember small settings such as your colour theme. We don&apos;t use
-        analytics, advertising or tracking cookies, so there is nothing to opt out of. Our{" "}
-        <Link href="/cookies">cookie policy</Link> lists them all.
-      </p>
+      <>
+        <p>
+          Bright Roots uses one essential cookie to keep you logged in, a security cookie from Cloudflare, and
+          your browser&apos;s local storage to remember small settings such as your colour theme. We don&apos;t use
+          analytics, advertising or tracking cookies, so there is nothing to opt out of. Our{" "}
+          <Link href="/cookies">cookie policy</Link> lists them all.
+        </p>
+        <p>
+          We count visits to our public pages, such as the home page and the guides, so we can see which pages
+          are useful and how people find us. The counting is done on our own server, uses no cookies and stores
+          nothing on your device. It records the page, the website you came from, and your type of device,
+          browser and country, and it can&apos;t tell who you are or follow you to other websites. Pages you see
+          after logging in, including everything a child sees, are never counted. If your browser&apos;s &quot;Do
+          Not Track&quot; setting is on, your visit isn&apos;t counted at all.
+        </p>
+      </>
     ),
   },
   {

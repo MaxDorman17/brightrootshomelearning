@@ -23,6 +23,16 @@ const sections = [
     ),
   },
   {
+    title: "Counting visits without cookies",
+    body: (
+      <p>
+        We count visits to our public pages, such as the home page and the guides, on our own server. This uses
+        no cookies and stores nothing on your device, and it can&apos;t tell who you are. Pages you see after
+        logging in are never counted. Our <Link href="/privacy">privacy policy</Link> explains what is recorded.
+      </p>
+    ),
+  },
+  {
     title: "What cookies are",
     body: (
       <p>

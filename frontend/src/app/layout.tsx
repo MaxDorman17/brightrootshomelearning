@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeSync from "@/components/ThemeSync";
 import ServiceWorker from "@/components/ServiceWorker";
 import CookieNotice from "@/components/CookieNotice";
+import VisitorStats from "@/components/VisitorStats";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import { SITE_URL } from "@/lib/site";
 
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeSync />
         <ServiceWorker />
         <CookieNotice />
+        <VisitorStats />
         {children}
       </body>
     </html>

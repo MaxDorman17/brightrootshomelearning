@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { registerParent } from "@/lib/api";
+import { countEvent } from "@/components/VisitorStats";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -33,6 +34,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       const res = await registerParent(email.trim(), username.trim(), password, newsletter);
+      countEvent("signup");
       setMessage(
         res.data.message ||
           "Account created. Check your email to verify your account."
