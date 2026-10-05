@@ -247,6 +247,85 @@ function Lightbox({ photoId, moment, onClose }: { photoId: number; moment?: Mome
   );
 }
 
+/** One moment as a small tile in the grid. Clicking it opens the whole moment. */
+function MomentTile({ moment, onOpen }: { moment: Moment; onOpen: () => void }) {
+  const photos = moment.photo_ids;
+  const label = `Open ${moment.trip_place ? `trip to ${moment.trip_place}` : "moment"} from ${format(parseISO(moment.moment_date), "d MMMM")}`;
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={label}
+      className="group flex flex-col overflow-hidden rounded-2xl bg-brand-white text-left shadow-sm ring-1 ring-[#E4DCCD] transition-shadow hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sage"
+    >
+      <div className="relative aspect-square w-full overflow-hidden bg-[#F1EADC]">
+        {photos.length > 0 ? (
+          <MomentImage photoId={photos[0]} alt={moment.note ?? "Learning moment"} className="absolute inset-0 h-full w-full transition-transform duration-300 group-hover:scale-105" />
+        ) : (
+          // No photo: the note itself fills the tile.
+          <div className="absolute inset-0 flex items-center p-4">
+            <p className="line-clamp-6 text-sm font-semibold leading-relaxed text-[#6E5A46]">{moment.note || (moment.trip_place ? `Trip to ${moment.trip_place}` : "")}</p>
+          </div>
+        )}
+        {photos.length > 1 && (
+          <span className="absolute right-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-xs font-bold text-white">{photos.length} photos</span>
+        )}
+      </div>
+      <div className="p-3">
+        <p className="text-xs font-bold text-[#6E5A46]">
+          {format(parseISO(moment.moment_date), "d MMM")}
+          {moment.children.length > 0 && <span className="font-semibold"> · {moment.children.join(", ")}</span>}
+        </p>
+        {moment.trip_place ? (
+          <p className="mt-0.5 truncate text-sm font-bold text-[#7A5B22]">📍 {moment.trip_place}</p>
+        ) : (
+          photos.length > 0 && moment.note && <p className="mt-0.5 truncate text-sm font-semibold text-brand-charcoal">{moment.note}</p>
+        )}
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
+          {moment.subject && <span className="rounded-full bg-brand-tint px-2 py-0.5 font-bold text-brand-sage">{moment.subject}</span>}
+          {moment.comments.length > 0 && (
+            <span className="font-semibold text-[#8A7A69]">
+              {moment.comments.length} comment{moment.comments.length === 1 ? "" : "s"}
+            </span>
+          )}
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function MomentGrid({ moments, onOpen }: { moments: Moment[]; onOpen: (id: number) => void }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {moments.map((m) => (
+        <MomentTile key={m.id} moment={m} onOpen={() => onOpen(m.id)} />
+      ))}
+    </div>
+  );
+}
+
+/** The whole moment, enlarged: its photos, note, reactions and comments. */
+function MomentPopup({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/45 p-3 sm:p-6" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="relative mx-auto my-4 w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
+        {children}
+        <div className="mt-3 text-center">
+          <button onClick={onClose} className="rounded-xl bg-brand-white px-5 py-2 text-sm font-bold text-brand-charcoal shadow">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // How a moment's photos are laid out, by how many there are (up to five).
 function photoGrid(count: number) {
   if (count === 1) return "grid-cols-1";
@@ -408,6 +487,7 @@ function MomentsPage() {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<{ moment: Moment | null; trip?: boolean } | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
   const [viewing, setViewing] = useState<number | null>(null);
   const [filterChild, setFilterChild] = useState("");
   const [filterSubject, setFilterSubject] = useState("");
@@ -470,12 +550,16 @@ function MomentsPage() {
     return Array.from(groups.entries()).sort((a, b) => b[0].localeCompare(a[0]));
   }, [shownPhotos]);
 
+  // The moment that is open in the pop-up. It is looked up fresh, so a new comment or reaction shows straight away,
+  // and the pop-up closes by itself if the moment is deleted.
+  const openMoment = open != null ? moments.find((m) => m.id === open) : undefined;
+
   const viewingMoment = viewing != null ? photoRows.find((p) => p.id === viewing)?.moment : undefined;
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <PageHero art={tab === "trips" ? "trips" : "moments"} tint={3}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Our family</p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Learning moments</h1>
@@ -512,9 +596,7 @@ function MomentsPage() {
                 <p className="mt-1 text-sm text-[#6E5A46]">Share a photo or a note about something you learned today.</p>
               </div>
             ) : (
-              moments.map((m) => (
-                <MomentCard key={m.id} moment={m} onChanged={load} onEdit={() => setForm({ moment: m })} onView={setViewing} />
-              ))
+              <MomentGrid moments={moments} onOpen={setOpen} />
             )}
           </div>
         )}
@@ -534,9 +616,7 @@ function MomentsPage() {
                 <p className="text-sm font-semibold text-[#6E5A46]">
                   {tripsThisYear} {tripsThisYear === 1 ? "trip or day out" : "trips and days out"} this year, {trips.length} in all.
                 </p>
-                {trips.map((m) => (
-                  <MomentCard key={m.id} moment={m} onChanged={load} onEdit={() => setForm({ moment: m })} onView={setViewing} />
-                ))}
+                <MomentGrid moments={trips} onOpen={setOpen} />
               </>
             )}
           </div>
@@ -618,6 +698,19 @@ function MomentsPage() {
             load();
           }}
         />
+      )}
+      {openMoment && (
+        <MomentPopup onClose={() => setOpen(null)}>
+          <MomentCard
+            moment={openMoment}
+            onChanged={load}
+            onEdit={() => {
+              setOpen(null);
+              setForm({ moment: openMoment });
+            }}
+            onView={setViewing}
+          />
+        </MomentPopup>
       )}
       {viewing != null && <Lightbox photoId={viewing} moment={viewingMoment} onClose={() => setViewing(null)} />}
     </div>
