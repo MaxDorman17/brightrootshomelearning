@@ -47,7 +47,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
 };
 
 // The Saplings pages (ages 5 to 10). Hidden when no child is set to Saplings or Both.
-const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors"];
+const YOUNG_PAGES = ["/make/comics", "/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors"];
 // The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
 const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
 
@@ -100,6 +100,7 @@ const PARENT_NAV: NavEntry[] = [
   {
     label: "Saplings",
     items: [
+      { href: "/make/comics", label: "Comics" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
       { href: "/make/life-skills", label: "Life Skills" },
@@ -151,6 +152,7 @@ const CHILD_NAV: NavEntry[] = [
     label: "Play",
     items: [
       { href: "/child/games", label: "Games" },
+      { href: "/make/comics", label: "Comics" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
       { href: "/make/life-skills", label: "Life Skills" },
@@ -344,6 +346,7 @@ export default function Navbar() {
     (href === "/moments?tab=trips" && onTrips) ||
     (pathname === href && !(href === "/moments" && onTrips)) ||
     (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
+    (href === "/make/comics" && pathname.startsWith("/make/comics/")) ||
     // A single recipe or craft, or the add/edit form, lights up the Saplings menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 

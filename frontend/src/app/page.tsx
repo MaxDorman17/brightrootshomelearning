@@ -417,6 +417,7 @@ export default function HomePage() {
                   {[
                     "Free Oak National Academy lessons for every subject, chosen by school year",
                     "Reading log, spellings, languages and learning games",
+                    "Ten comic heroes who teach maths, English, science, geography and history",
                     "Cookbook and Craft Corner, with grown-up jobs clearly marked",
                     "P.E. and Outdoors: den building, bug hotels, sports day and more",
                     "Life skills: tying laces, telling the time and crossing the road",
