@@ -38,7 +38,7 @@ const featureGroups = [
     emoji: "📚",
     tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
-    items: ["Child dashboards", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
+    items: ["Child dashboards", "Little Roots for ages 3 to 4", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
   },
   {
     name: "Progress",
@@ -71,6 +71,7 @@ const faqs = [
   ["Can both parents use it?", "Yes. The parent who signs up can add the other parent, a guardian or a grandparent, each with their own login. Everyone sees the same family, and it's all covered by one membership."],
   ["Is there anything for teenagers?", "Yes. The Teens menu has cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16, from making dinner to wiring a plug. Younger children get their own versions, and you choose which each child sees."],
   ["I'm new to home education. Where do I start?", "Tell us which school year each child is working at and Bright Roots fills your first week with free Oak National Academy lessons for every subject on your timetable. You can change any of them, and the how-to guides walk you through the rest."],
+  ["Is there anything for my 3 or 4 year old?", "Yes. Little Roots has short, playful activities to do together, each one a picture book with a little story, what you need and what to say. There's a new set of three activities and a rhyme every week, and little ones don't need a login: you do it together from your account, and their stars and progress are still saved."],
   ["My teenager is working towards GCSEs. Can it help?", "Yes. The exam planner keeps each exam's centre, entry deadline, date and fee in one place, counts down the days, and adds revision sessions to the planner."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share."],
@@ -351,6 +352,52 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Little Roots: ages 3 to 4 */}
+        <section id="little-roots" className="scroll-mt-16 pb-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr]" style={{ background: "#FDF6E3" }}>
+              <div className="relative mx-auto w-full max-w-sm">
+                <div className="relative rotate-[2deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/20">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/make-photos/little-teddys-tea-party.jpg" alt="A child and a grown-up having a teddy bears' tea party" className="aspect-square w-full object-cover" />
+                  <p className={`${hand.className} mt-3 text-center text-xl leading-6`} style={{ color: C.earth }}>
+                    One for Teddy, one for Bunny ♡
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>New · ages 3 to 4</p>
+                <H2 className="mt-2">Little Roots: story books to do together</H2>
+                <p className="mt-4 leading-7" style={{ color: C.earth }}>
+                  Ten-minute activities for little ones, with things you already have at home. Each one is a picture book you
+                  read together, with a little story, what you need, what to say and an easier version for tired days.
+                </p>
+                <ul className="mt-5 space-y-3">
+                  {[
+                    "A new set every week: three activities and a rhyme, planned in one click",
+                    "Counting, sounds, moving, making and the world around us",
+                    "No login needed for little ones, but their stars and progress are still saved",
+                    "Print any activity as a fridge card",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
+                      <Check />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                  <Link href={memberHome ? "/make/little-roots" : "/signup"} className={primaryBtn} style={{ background: C.green }}>
+                    {memberHome ? "Open Little Roots" : "Start your free trial"} <span aria-hidden>→</span>
+                  </Link>
+                  <Link href="/guides/three-and-four-year-olds" className={ghostBtn} style={{ borderColor: C.green, color: C.green }}>
+                    Read our guide for 3 and 4 year olds
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>
