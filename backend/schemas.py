@@ -121,6 +121,7 @@ class LessonCreate(BaseModel):
     subject: str
     description: Optional[str] = None
     lesson_url: Optional[str] = None
+    scheme: Optional[str] = None
     objectives: Optional[str] = None
     steps: Optional[list[str]] = None
     duration_minutes: Optional[int] = None
@@ -132,6 +133,7 @@ class LessonUpdate(BaseModel):
     subject: Optional[str] = None
     description: Optional[str] = None
     lesson_url: Optional[str] = None
+    scheme: Optional[str] = None
     objectives: Optional[str] = None
     steps: Optional[list[str]] = None
     duration_minutes: Optional[int] = None
@@ -154,6 +156,7 @@ class LessonOut(BaseModel):
     subject: str
     description: Optional[str]
     lesson_url: Optional[str]
+    scheme: Optional[str] = None
     objectives: Optional[str] = None
     steps: list[str] = []
     duration_minutes: Optional[int] = None
@@ -202,6 +205,7 @@ class UnitCreate(BaseModel):
     subject: str
     title: str
     unit_url: Optional[str] = None
+    scheme: Optional[str] = None
     notes: Optional[str] = None
 
 
@@ -210,6 +214,7 @@ class UnitOut(BaseModel):
     subject: str
     title: str
     unit_url: Optional[str]
+    scheme: Optional[str] = None
     notes: Optional[str]
     updated_at: datetime
 
@@ -221,12 +226,14 @@ class UnitQueueCreate(BaseModel):
     subject: str
     title: str
     unit_url: Optional[str] = None
+    scheme: Optional[str] = None
     notes: Optional[str] = None
 
 
 class UnitQueueUpdate(BaseModel):
     title: Optional[str] = None
     unit_url: Optional[str] = None
+    scheme: Optional[str] = None
     notes: Optional[str] = None
 
 
@@ -235,6 +242,7 @@ class UnitQueueOut(BaseModel):
     subject: str
     title: str
     unit_url: Optional[str]
+    scheme: Optional[str] = None
     notes: Optional[str]
     position: int
     created_at: datetime

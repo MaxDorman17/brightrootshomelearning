@@ -897,7 +897,7 @@ export default function ChildDashboard() {
 
             {/* Submit work URL */}
             <div className="mb-4">
-              <p className="text-xs font-bold text-gray-600 mb-2"><Emoji e="📎" /> Paste your results link</p>
+              <p className="text-xs font-bold text-gray-600 mb-2"><Emoji e="📎" /> Paste a link to your work or results</p>
               <div className="flex gap-2">
                 <input
                   value={workUrl}

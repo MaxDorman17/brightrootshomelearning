@@ -24,6 +24,8 @@ def _storable(values: dict) -> dict:
         out["resource_ids"] = json.dumps(ids) if ids else None
     if "duration_minutes" in out and out["duration_minutes"] is not None:
         out["duration_minutes"] = max(1, min(600, int(out["duration_minutes"])))
+    if "scheme" in out and out["scheme"] is not None:
+        out["scheme"] = out["scheme"].strip()[:100] or None
     if "objectives" in out and out["objectives"] is not None:
         out["objectives"] = out["objectives"].strip() or None
     return out
@@ -41,7 +43,7 @@ def create_lesson(
         Lesson.subject == lesson_in.subject,
         Lesson.created_by == current_user.id,
     ).first()
-    extra = _storable(lesson_in.model_dump(include={"objectives", "steps", "duration_minutes", "resource_ids"}, exclude_none=True))
+    extra = _storable(lesson_in.model_dump(include={"scheme", "objectives", "steps", "duration_minutes", "resource_ids"}, exclude_none=True))
     if existing:
         if lesson_in.lesson_url is not None:
             existing.lesson_url = lesson_in.lesson_url

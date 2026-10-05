@@ -17,6 +17,8 @@ import { subjectsInTimetable } from "@/lib/subjects";
 import { Unit, UnitQueueItem } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import SchemeInput from "@/components/SchemeInput";
+import { schemeOf } from "@/lib/schemes";
 import { format, parseISO } from "date-fns";
 
 // Used only if the family's timetable can't be loaded.
@@ -47,6 +49,7 @@ export default function UnitsPage() {
   const [modal, setModal] = useState<Modal | null>(null);
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [scheme, setScheme] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -69,7 +72,7 @@ export default function UnitsPage() {
 
   useEffect(() => {
     if (!isAuthenticated()) { router.replace("/login"); return; }
-    // Oak units are for grown-ups planning lessons; children go to their Today page.
+    // Units are for grown-ups planning lessons; children go to their Today page.
     if (getRole() === "child") { router.replace("/child"); return; }
     setRole(getRole() || "");
     load();
@@ -81,6 +84,7 @@ export default function UnitsPage() {
     setModal({ subject, mode: "current", existing });
     setTitle(existing?.title ?? "");
     setUrl(existing?.unit_url ?? "");
+    setScheme(existing?.scheme ?? "");
     setNotes(existing?.notes ?? "");
   };
 
@@ -89,6 +93,7 @@ export default function UnitsPage() {
     setModal({ subject, mode: "queue", existing });
     setTitle(existing?.title ?? "");
     setUrl(existing?.unit_url ?? "");
+    setScheme(existing?.scheme ?? "");
     setNotes(existing?.notes ?? "");
   };
 
@@ -96,6 +101,7 @@ export default function UnitsPage() {
     setModal(null);
     setTitle("");
     setUrl("");
+    setScheme("");
     setNotes("");
   };
 
@@ -108,12 +114,14 @@ export default function UnitsPage() {
           subject: modal.subject,
           title,
           unit_url: url || undefined,
+          scheme: scheme.trim(),
           notes: notes || undefined,
         });
       } else if (modal.existing) {
         await updateQueuedUnit(modal.existing.id, {
           title,
           unit_url: url || "",
+          scheme: scheme.trim(),
           notes: notes || "",
         });
       } else {
@@ -121,6 +129,7 @@ export default function UnitsPage() {
           subject: modal.subject,
           title,
           unit_url: url || undefined,
+          scheme: scheme.trim(),
           notes: notes || undefined,
         });
       }
@@ -196,11 +205,11 @@ export default function UnitsPage() {
                 Learning
               </p>
               <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-                Oak Units
+                Units
               </h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
                 {isParent
-                  ? "Keep each subject's current Oak unit and link in one tidy place."
+                  ? "Keep each subject's current unit and link in one tidy place, whichever scheme you use."
                   : "The current units you are studying across each subject."}
               </p>
               </PageHero>
@@ -281,6 +290,9 @@ export default function UnitsPage() {
                         {unit ? (
                           <div className="mt-2">
                             <h3 className="text-base font-bold text-[#2E342F] leading-snug">{unit.title}</h3>
+                            {schemeOf(unit.scheme, unit.unit_url) && (
+                              <p className="text-xs font-bold text-brand-sage mt-1">{schemeOf(unit.scheme, unit.unit_url)}</p>
+                            )}
                             {unit.notes && (
                               <p className="text-sm text-[#6E5A46] mt-2 line-clamp-2">{unit.notes}</p>
                             )}
@@ -361,6 +373,9 @@ export default function UnitsPage() {
 
                                     <div className="flex-1 min-w-0">
                                       <p className="text-sm font-bold text-[#2E342F]">{item.title}</p>
+                                      {schemeOf(item.scheme, item.unit_url) && (
+                                        <p className="text-xs font-bold text-brand-sage mt-0.5">{schemeOf(item.scheme, item.unit_url)}</p>
+                                      )}
                                       {item.notes && (
                                         <p className="text-xs text-[#6E5A46] mt-1 line-clamp-2">{item.notes}</p>
                                       )}
@@ -428,7 +443,7 @@ export default function UnitsPage() {
                 <h3 className="text-2xl font-bold text-[#2E342F] mt-1">{modal.subject}</h3>
                 <p className="text-sm text-[#6E5A46] mt-1">
                   {modal.mode === "current"
-                    ? "Keep the current topic and Oak link up to date."
+                    ? "Keep the current topic and its link up to date."
                     : "Add or edit a unit you plan to use after the current one."}
                 </p>
               </div>
@@ -464,7 +479,18 @@ export default function UnitsPage() {
                   type="url"
                   value={url}
                   onChange={e => setUrl(e.target.value)}
-                  placeholder="https://www.thenational.academy/…"
+                  placeholder="https://…"
+                  className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wide text-brand-softsage mb-2">
+                  Scheme
+                </label>
+                <SchemeInput
+                  value={scheme}
+                  onChange={setScheme}
                   className="w-full border border-[#D8D1C4] bg-brand-white rounded-xl px-4 py-3 text-sm text-[#2E342F] focus:outline-none focus:border-brand-softsage"
                 />
               </div>

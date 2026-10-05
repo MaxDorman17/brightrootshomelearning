@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { createLesson, getResources, updateLesson } from "@/lib/api";
 import { Lesson } from "@/types";
+import SchemeInput from "@/components/SchemeInput";
 
 type ResourceItem = { id: number; folder: string; title: string; kind: string; visible_to_children: boolean };
 
@@ -24,6 +25,7 @@ export default function LessonEditor({ lesson, subjects, defaultSubject, onSaved
   const [steps, setSteps] = useState<string[]>(lesson?.steps?.length ? lesson.steps : [""]);
   const [duration, setDuration] = useState(lesson?.duration_minutes ? String(lesson.duration_minutes) : "");
   const [url, setUrl] = useState(lesson?.lesson_url ?? "");
+  const [scheme, setScheme] = useState(lesson?.scheme ?? "");
   const [notes, setNotes] = useState(lesson?.description ?? "");
   const [resourceIds, setResourceIds] = useState<number[]>(lesson?.resource_ids ?? []);
   const [resources, setResources] = useState<ResourceItem[]>([]);
@@ -63,6 +65,7 @@ export default function LessonEditor({ lesson, subjects, defaultSubject, onSaved
       steps: steps.map((s) => s.trim()).filter(Boolean),
       duration_minutes: duration ? Number(duration) : null,
       lesson_url: url.trim() || null,
+      scheme: scheme.trim(),
       description: notes.trim() || null,
       resource_ids: resourceIds,
     };
@@ -140,6 +143,12 @@ export default function LessonEditor({ lesson, subjects, defaultSubject, onSaved
               <label className="mb-1.5 block text-sm font-semibold text-brand-charcoal">Lesson link <span className="font-normal text-[#8A7A69]">(optional)</span></label>
               <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://..." className={input} />
             </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-brand-charcoal">Scheme <span className="font-normal text-[#8A7A69]">(optional)</span></label>
+            <SchemeInput value={scheme} onChange={setScheme} className={input} />
+            <p className="mt-1 text-xs text-[#8A7A69]">Where the lesson comes from. We only keep the name and your link.</p>
           </div>
 
           <div>

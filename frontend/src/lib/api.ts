@@ -233,6 +233,7 @@ export type LessonFields = {
   subject?: string;
   description?: string | null;
   lesson_url?: string | null;
+  scheme?: string | null;
   objectives?: string;
   steps?: string[];
   duration_minutes?: number | null;
@@ -371,13 +372,13 @@ export const deleteGoal = (id: number) => api.delete(`/api/goals/${id}`);
 
 // Units
 export const getUnits = () => api.get("/api/units/");
-export const upsertUnit = (data: { subject: string; title: string; unit_url?: string; notes?: string }) =>
+export const upsertUnit = (data: { subject: string; title: string; unit_url?: string; scheme?: string; notes?: string }) =>
   api.post("/api/units/", data);
 export const deleteUnit = (subject: string) => api.delete(`/api/units/${encodeURIComponent(subject)}`);
 export const getUnitQueue = () => api.get("/api/units/queue");
-export const addQueuedUnit = (data: { subject: string; title: string; unit_url?: string; notes?: string }) =>
+export const addQueuedUnit = (data: { subject: string; title: string; unit_url?: string; scheme?: string; notes?: string }) =>
   api.post("/api/units/queue", data);
-export const updateQueuedUnit = (id: number, data: { title?: string; unit_url?: string; notes?: string }) =>
+export const updateQueuedUnit = (id: number, data: { title?: string; unit_url?: string; scheme?: string; notes?: string }) =>
   api.put(`/api/units/queue/${id}`, data);
 export const deleteQueuedUnit = (id: number) => api.delete(`/api/units/queue/${id}`);
 export const promoteQueuedUnit = (id: number) => api.post(`/api/units/queue/${id}/promote`);

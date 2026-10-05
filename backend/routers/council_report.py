@@ -1,3 +1,4 @@
+import re
 from datetime import date
 from typing import Optional
 
@@ -37,6 +38,18 @@ class ApproachRequest(BaseModel):
     approach: str
 
 
+OAK_SITE_RE = re.compile(r"^https?://(?:[a-z0-9-]+\.)*thenational\.academy(?:[/?#]|$)", re.IGNORECASE)
+
+
+def _scheme_of(lesson: Lesson) -> Optional[str]:
+    """The scheme the parent named for a lesson, or Oak when its link is an Oak one."""
+    if lesson.scheme and lesson.scheme.strip():
+        return lesson.scheme.strip()
+    if lesson.lesson_url and OAK_SITE_RE.match(lesson.lesson_url):
+        return "Oak National Academy"
+    return None
+
+
 def _completed_lessons(db: Session, child: User, parent_id: int, start: date, end: date) -> list:
     """Every lesson this child completed that was scheduled within the period."""
     rows = []
@@ -58,6 +71,7 @@ def _completed_lessons(db: Session, child: User, parent_id: int, start: date, en
             "date": entry.scheduled_date,
             "subject": lesson.subject,
             "title": lesson.title,
+            "scheme": _scheme_of(lesson),
             "is_extra": bool(entry.is_extra),
             "work_url": entry.completed_work_url,
             "note": entry.completed_note,
@@ -81,6 +95,7 @@ def _completed_lessons(db: Session, child: User, parent_id: int, start: date, en
             "date": entry.scheduled_date,
             "subject": lesson.subject,
             "title": lesson.title,
+            "scheme": _scheme_of(lesson),
             "is_extra": bool(entry.is_extra),
             "work_url": completion.completed_work_url,
             "note": completion.completed_note,
@@ -109,8 +124,10 @@ def council_report(
 
     subjects: dict = {}
     for lesson in planned:
-        s = subjects.setdefault(lesson["subject"], {"subject": lesson["subject"], "lessons": 0, "examples": []})
+        s = subjects.setdefault(lesson["subject"], {"subject": lesson["subject"], "lessons": 0, "examples": [], "schemes": []})
         s["lessons"] += 1
+        if lesson["scheme"] and lesson["scheme"] not in s["schemes"]:
+            s["schemes"].append(lesson["scheme"])
     # Most recent distinct lesson titles make the best examples.
     for lesson in reversed(planned):
         s = subjects[lesson["subject"]]

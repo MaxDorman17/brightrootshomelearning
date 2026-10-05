@@ -11,6 +11,7 @@ import { useParentName } from "@/lib/useParentName";
 import LessonGuide from "@/components/LessonGuide";
 import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
+import { schemeOf } from "@/lib/schemes";
 
 export default function LessonDetailPage() {
   const parentName = useParentName();
@@ -56,7 +57,8 @@ export default function LessonDetailPage() {
 
   if (!entry) return null;
 
-  const oakUrl = entry.lesson.lesson_url;
+  const lessonUrl = entry.lesson.lesson_url;
+  const scheme = schemeOf(entry.lesson.scheme, lessonUrl);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -76,7 +78,12 @@ export default function LessonDetailPage() {
                 <span className="text-xs bg-brand-lime/20 text-brand-deep px-2 py-0.5 rounded-full font-medium">
                   {entry.lesson.subject}
                 </span>
-                {oakUrl && (
+                {scheme && (
+                  <span className="text-xs bg-brand-mist text-brand-deep px-2 py-0.5 rounded-full font-medium">
+                    {scheme}
+                  </span>
+                )}
+                {lessonUrl && (
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
                     🔗 Has Link
                   </span>
@@ -112,11 +119,11 @@ export default function LessonDetailPage() {
           )}
         </div>
 
-        {/* Oak Academy content */}
-        {oakUrl ? (
+        {/* The lesson itself, on whichever site it comes from */}
+        {lessonUrl ? (
           <div className="space-y-4">
             <a
-              href={oakUrl}
+              href={lessonUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-5 bg-brand-deep hover:bg-brand-leaf text-white rounded-2xl p-6 transition-colors shadow-sm"
@@ -124,7 +131,7 @@ export default function LessonDetailPage() {
               <span className="text-4xl">▶️</span>
               <div>
                 <p className="font-bold text-lg">Open Lesson</p>
-                <p className="text-white/60 text-sm">Click to open the lesson link</p>
+                <p className="text-white/60 text-sm">{scheme ? `Opens on ${scheme}` : "Click to open the lesson link"}</p>
               </div>
               <span className="ml-auto text-2xl">→</span>
             </a>

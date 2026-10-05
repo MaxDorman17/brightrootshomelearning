@@ -24,7 +24,7 @@ type Report = {
     minutes_studied: number;
     study_sessions: number;
   };
-  subjects: { subject: string; lessons: number; examples: string[] }[];
+  subjects: { subject: string; lessons: number; examples: string[]; schemes?: string[] }[];
   results: {
     spelling_tests: number;
     spelling_average: number | null;
@@ -404,7 +404,7 @@ export default function CouncilReportPage() {
                     onChange={(e) => setApproach(e.target.value)}
                     rows={5}
                     maxLength={5000}
-                    placeholder="e.g. We follow a structured morning routine using Oak National Academy lessons for Maths, English and Science, with project-based learning, reading and outdoor activities in the afternoons..."
+                    placeholder="e.g. We follow a structured morning routine using White Rose Maths, Twinkl and Oak National Academy lessons for Maths, English and Science, with project-based learning, reading and outdoor activities in the afternoons..."
                     className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm outline-none focus:border-brand-softsage"
                   />
                   <div className="mt-2 flex items-center gap-3">
@@ -511,7 +511,12 @@ export default function CouncilReportPage() {
                     <tbody className="divide-y divide-brand-line print:divide-gray-300">
                       {report.subjects.map((s) => (
                         <tr key={s.subject} className="align-top">
-                          <td className="py-2 pr-3 font-bold">{s.subject}</td>
+                          <td className="py-2 pr-3 font-bold">
+                            {s.subject}
+                            {s.schemes && s.schemes.length > 0 && (
+                              <span className="block text-xs font-normal text-[#6E5A46] print:text-gray-600">{s.schemes.join(", ")}</span>
+                            )}
+                          </td>
                           <td className="py-2 pr-3">{s.lessons}</td>
                           <td className="py-2">{s.examples.join("; ")}</td>
                         </tr>
@@ -529,10 +534,12 @@ export default function CouncilReportPage() {
                     Spelling: {report.results.spelling_tests} weekly test{report.results.spelling_tests === 1 ? "" : "s"}
                     {report.results.spelling_average != null ? `, average ${report.results.spelling_average}%` : ""}
                   </li>
-                  <li>
-                    Oak National Academy lesson quizzes: {report.results.oak_quizzes} completed
-                    {report.results.oak_exit_average != null ? `, average exit quiz score ${report.results.oak_exit_average}%` : ""}
-                  </li>
+                  {report.results.oak_quizzes > 0 && (
+                    <li>
+                      Oak National Academy lesson quizzes: {report.results.oak_quizzes} completed
+                      {report.results.oak_exit_average != null ? `, average exit quiz score ${report.results.oak_exit_average}%` : ""}
+                    </li>
+                  )}
                 </ul>
                 {report.results.tests.length > 0 && (
                   <table className="mt-4 w-full text-left">

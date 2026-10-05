@@ -10,6 +10,8 @@ import {
   getTimetable, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
   getOakQuizResults, getWeekQuizScores,
 } from "@/lib/api";
+import SchemeInput from "@/components/SchemeInput";
+import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
 import Navbar from "@/components/Navbar";
 import StarterWeekCard from "@/components/StarterWeekCard";
@@ -27,6 +29,11 @@ interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/programmes\/[^/?#]+\/units\/[^/?#]+\/lessons\/[^/?#]+$/;
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
+// Starter and exit quiz boxes belong to Oak lessons. A lesson from another scheme only shows them if it has a score.
+const showsQuizBoxes = (
+  lesson: { scheme?: string | null; lesson_url: string | null },
+  result?: { starter_total?: number | null; exit_total?: number | null } | null,
+) => !!result && (schemeOf(lesson.scheme, lesson.lesson_url) === OAK_SCHEME || result.starter_total != null || result.exit_total != null);
 const getOakQuizResult = (url: string | null | undefined, results: Record<string, OakQuizResult>) => {
   const shareUrl = url?.match(OAK_SHARE_RE)?.[0];
   return shareUrl ? results[shareUrl] : undefined;
@@ -188,6 +195,7 @@ export default function ParentPlanner() {
 
   const [slotTitle, setSlotTitle] = useState("");
   const [slotUrl, setSlotUrl] = useState("");
+  const [slotScheme, setSlotScheme] = useState("");
   const [slotNotes, setSlotNotes] = useState("");
   const [slotAssignedTo, setSlotAssignedTo] = useState<number | null>(null);
   const [slotSaving, setSlotSaving] = useState(false);
@@ -325,11 +333,12 @@ export default function ParentPlanner() {
     setModal({ dayName: DAYS[dayIndex], dayDate, subject, existingEntry: existing });
     setSlotTitle(existing?.lesson.title ?? "");
     setSlotUrl(existing?.lesson.lesson_url ?? "");
+    setSlotScheme(existing?.lesson.scheme ?? "");
     setSlotNotes(existing?.lesson.description ?? "");
     setSlotAssignedTo(existing?.assigned_to ?? selectedChildId ?? null);
   };
 
-  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotNotes(""); setSlotAssignedTo(null); };
+  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotScheme(""); setSlotNotes(""); setSlotAssignedTo(null); };
 
   const handleSaveSlot = async () => {
     if (!modal || !slotTitle.trim()) return;
@@ -340,6 +349,7 @@ export default function ParentPlanner() {
           updateLesson(modal.existingEntry.lesson.id, {
             title: slotTitle,
             lesson_url: slotUrl || undefined,
+            scheme: slotScheme.trim(),
             description: slotNotes || undefined,
           }),
           updatePlannerEntry(modal.existingEntry.id, {
@@ -351,6 +361,7 @@ export default function ParentPlanner() {
           title: slotTitle,
           subject: modal.subject,
           lesson_url: slotUrl || undefined,
+          scheme: slotScheme.trim(),
           description: slotNotes || undefined,
         });
         await createPlannerEntry({
@@ -514,6 +525,7 @@ export default function ParentPlanner() {
           title: lesson.title,
           subject: oakSubject,
           lesson_url: lesson.url,
+          scheme: OAK_SCHEME,
         });
         await createPlannerEntry({
           lesson_id: lessonRes.data.id,
@@ -1064,7 +1076,8 @@ export default function ParentPlanner() {
                       const weekQuizEntry = entry
                         ? (weekQuizScores?.days ?? []).flatMap(day => day.entries).find(q => q.entry_id === entry.id)
                         : undefined;
-                      const quizResult = weekQuizEntry ?? (entry ? getOakQuizResult(entry.completed_work_url, quizResults) : undefined);
+                      const anyQuizResult = weekQuizEntry ?? (entry ? getOakQuizResult(entry.completed_work_url, quizResults) : undefined);
+                      const quizResult = entry && showsQuizBoxes(entry.lesson, anyQuizResult) ? anyQuizResult : undefined;
                       const childName = entry?.assigned_to
                         ? children.find(c => c.id === entry.assigned_to)?.username
                         : null;
@@ -1117,6 +1130,11 @@ export default function ParentPlanner() {
                                   {childName && (
                                     <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
                                       {childName}
+                                    </span>
+                                  )}
+                                  {schemeOf(entry.lesson.scheme, entry.lesson.lesson_url) && (
+                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
+                                      {schemeOf(entry.lesson.scheme, entry.lesson.lesson_url)}
                                     </span>
                                   )}
                                   {entry.lesson.lesson_url && (
@@ -1213,7 +1231,8 @@ export default function ParentPlanner() {
                                 .flatMap(day => day.entries)
                                 .find(q => q.entry_id === entry.id);
                               const fallbackQuiz = getOakQuizResult(entry.completed_work_url, quizResults);
-                              const result = quizEntry ?? fallbackQuiz;
+                              const anyResult = quizEntry ?? fallbackQuiz;
+                              const result = showsQuizBoxes(entry.lesson, anyResult) ? anyResult : undefined;
                               const childName = entry.assigned_to
                                 ? children.find(c => c.id === entry.assigned_to)?.username
                                 : null;
@@ -1252,6 +1271,11 @@ export default function ParentPlanner() {
                                       {childName && (
                                         <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
                                           {childName}
+                                        </span>
+                                      )}
+                                      {schemeOf(entry.lesson.scheme, entry.lesson.lesson_url) && (
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-softsage/15 text-brand-sage">
+                                          {schemeOf(entry.lesson.scheme, entry.lesson.lesson_url)}
                                         </span>
                                       )}
                                       {entry.lesson.lesson_url && (
@@ -1685,7 +1709,7 @@ export default function ParentPlanner() {
                 <input
                   value={slotUrl}
                   onChange={e => setSlotUrl(e.target.value)}
-                  placeholder="https://www.thenational.academy/..."
+                  placeholder="https://..."
                   type="url"
                   className="w-full bg-brand-white border border-brand-softsage/30 rounded-xl px-3 py-2.5 text-sm text-brand-charcoal focus:outline-none focus:border-brand-sage"
                 />
@@ -1705,6 +1729,18 @@ export default function ParentPlanner() {
                     </a>
                   ) : null;
                 })()}
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-brand-charcoal mb-1.5">
+                  Scheme
+                  <span className="font-medium text-brand-earth/45"> optional</span>
+                </label>
+                <SchemeInput
+                  value={slotScheme}
+                  onChange={setSlotScheme}
+                  className="w-full bg-brand-white border border-brand-softsage/30 rounded-xl px-3 py-2.5 text-sm text-brand-charcoal focus:outline-none focus:border-brand-sage"
+                />
               </div>
 
               <div>

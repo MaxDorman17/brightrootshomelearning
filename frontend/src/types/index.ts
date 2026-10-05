@@ -4,6 +4,7 @@ export interface Lesson {
   subject: string;
   description: string | null;
   lesson_url: string | null;
+  scheme?: string | null;
   objectives?: string | null;
   steps?: string[];
   duration_minutes?: number | null;
@@ -79,6 +80,7 @@ export interface Unit {
   subject: string;
   title: string;
   unit_url: string | null;
+  scheme?: string | null;
   notes: string | null;
   updated_at: string;
 }
@@ -88,6 +90,7 @@ export interface UnitQueueItem {
   subject: string;
   title: string;
   unit_url: string | null;
+  scheme?: string | null;
   notes: string | null;
   position: number;
   created_at: string;

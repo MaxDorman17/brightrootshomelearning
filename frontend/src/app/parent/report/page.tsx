@@ -981,7 +981,7 @@ export default function ReportPage() {
                       >
                         <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Results</p>
                         <p className="text-sm font-bold text-[#2E342F] mt-1">Quiz & submitted work</p>
-                        <p className="text-xs text-[#6E5A46] mt-1">Oak scores and lesson evidence</p>
+                        <p className="text-xs text-[#6E5A46] mt-1">Quiz scores and lesson evidence</p>
                       </button>
 
                       <button

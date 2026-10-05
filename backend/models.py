@@ -59,6 +59,7 @@ class Lesson(Base):
     subject = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
     lesson_url = Column(String(512), nullable=True)
+    scheme = Column(String(100), nullable=True)  # where the lesson comes from, e.g. "Twinkl" or "White Rose Maths"
     objectives = Column(Text, nullable=True)  # "What we'll learn"
     steps = Column(Text, nullable=True)  # JSON list of activity steps
     duration_minutes = Column(Integer, nullable=True)
@@ -98,6 +99,7 @@ class Unit(Base):
     subject = Column(String(100), nullable=False)
     title = Column(String(255), nullable=False)
     unit_url = Column(String(512), nullable=True)
+    scheme = Column(String(100), nullable=True)
     notes = Column(Text, nullable=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     __table_args__ = (UniqueConstraint("parent_id", "subject", name="uq_unit_parent_subject"),)
@@ -111,6 +113,7 @@ class UnitQueue(Base):
     subject = Column(String(100), nullable=False, index=True)
     title = Column(String(255), nullable=False)
     unit_url = Column(String(512), nullable=True)
+    scheme = Column(String(100), nullable=True)
     notes = Column(Text, nullable=True)
     position = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

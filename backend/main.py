@@ -101,6 +101,7 @@ def run_migrations():
             "steps": "ALTER TABLE lessons ADD COLUMN steps TEXT",
             "duration_minutes": "ALTER TABLE lessons ADD COLUMN duration_minutes INTEGER",
             "resource_ids": "ALTER TABLE lessons ADD COLUMN resource_ids TEXT",
+            "scheme": "ALTER TABLE lessons ADD COLUMN scheme VARCHAR(100)",
         }
         with engine.connect() as conn:
             for column_name, statement in lesson_columns.items():
@@ -256,6 +257,15 @@ def run_migrations():
 
                 conn.execute(text("DROP TABLE unit_queue"))
                 conn.execute(text("ALTER TABLE unit_queue_new RENAME TO unit_queue"))
+
+    # After the rebuilds above, so the column is never lost by one of them.
+    fresh = sa_inspect(engine)
+    for table_name in ("units", "unit_queue"):
+        if table_name in tables:
+            if "scheme" not in [c["name"] for c in fresh.get_columns(table_name)]:
+                with engine.connect() as conn:
+                    conn.execute(text(f"ALTER TABLE {table_name} ADD COLUMN scheme VARCHAR(100)"))
+                    conn.commit()
 
 run_migrations()
 Base.metadata.create_all(bind=engine)

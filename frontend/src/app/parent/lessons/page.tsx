@@ -21,6 +21,7 @@ import {
 } from "@/lib/api";
 import { subjectsInTimetable } from "@/lib/subjects";
 import { Lesson } from "@/types";
+import { schemeOf } from "@/lib/schemes";
 
 type LibraryLesson = Lesson & { times_planned: number; last_planned: string | null };
 type Plan = { id: number; title: string; subject: string | null; description: string | null; lessons: Lesson[]; total_minutes: number };
@@ -519,6 +520,7 @@ export default function MyLessonsPage() {
                               {l.objectives && <p className="mt-1 line-clamp-2 text-sm text-[#6E5A46]">{l.objectives}</p>}
                               <p className="mt-2 text-xs text-[#8A7A69]">
                                 {[
+                                  schemeOf(l.scheme, l.lesson_url),
                                   l.steps?.length ? `${l.steps.length} step${l.steps.length === 1 ? "" : "s"}` : null,
                                   l.duration_minutes ? `${l.duration_minutes} min` : null,
                                   l.resource_ids?.length ? `${l.resource_ids.length} resource${l.resource_ids.length === 1 ? "" : "s"}` : null,

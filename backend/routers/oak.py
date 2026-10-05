@@ -695,7 +695,8 @@ def get_today_quiz_results(
         .filter(
             PlannerEntry.scheduled_date == today,
             Lesson.created_by == current_user.id,
-            Lesson.lesson_url.is_not(None),
+            # Only Oak lessons have quiz scores to collect; lessons from other schemes are left out.
+            Lesson.lesson_url.like("%thenational.academy%"),
             or_(
                 PlannerEntry.assigned_to.in_(target_child_ids),
                 PlannerEntry.assigned_to.is_(None),

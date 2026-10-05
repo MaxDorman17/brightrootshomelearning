@@ -326,7 +326,7 @@ export default function ParentDashboardPage() {
           <DashboardStat
             art="/home/learn.png"
             tint="#E3EAF0"
-            label="Oak Results"
+            label={oakPossible > 0 ? "Oak Results" : "Quiz Results"}
             value={
               loading
                 ? "..."
@@ -527,14 +527,12 @@ export default function ParentDashboardPage() {
               </p>
 
               <div className="mt-4 space-y-4">
-                <SnapshotRow
-                  label="Oak today"
-                  value={
-                    selectedTodayQuiz.length > 0
-                      ? `${selectedTodayQuiz.filter((row) => row.completed).length}/${selectedTodayQuiz.length} completed`
-                      : "No Oak results today"
-                  }
-                />
+                {selectedTodayQuiz.length > 0 && (
+                  <SnapshotRow
+                    label="Oak today"
+                    value={`${selectedTodayQuiz.filter((row) => row.completed).length}/${selectedTodayQuiz.length} completed`}
+                  />
+                )}
 
                 <SnapshotRow
                   label="Reading"
@@ -591,7 +589,7 @@ export default function ParentDashboardPage() {
               tint="#E3EAF0"
               href="/parent/results"
               title="Test Results"
-              description="Spelling, Oak and your own tests, with time studied and games."
+              description="Spelling, quizzes and your own tests, with time studied and games."
             />
 
             <QuickCard

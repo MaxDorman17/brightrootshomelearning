@@ -11,6 +11,10 @@ from auth import get_current_user, require_parent
 router = APIRouter(prefix="/api/units", tags=["units"])
 
 
+def _clean_scheme(value: Optional[str]) -> Optional[str]:
+    return (value or "").strip()[:100] or None
+
+
 def _family_parent_id(current_user: User) -> Optional[int]:
     if current_user.role == "parent":
         return current_user.id
@@ -49,6 +53,7 @@ def upsert_unit(
     if existing:
         existing.title = unit_in.title
         existing.unit_url = unit_in.unit_url
+        existing.scheme = _clean_scheme(unit_in.scheme)
         existing.notes = unit_in.notes
         existing.updated_at = datetime.utcnow()
         db.commit()
@@ -60,6 +65,7 @@ def upsert_unit(
         subject=unit_in.subject,
         title=unit_in.title,
         unit_url=unit_in.unit_url,
+        scheme=_clean_scheme(unit_in.scheme),
         notes=unit_in.notes,
     )
     db.add(unit)
@@ -105,6 +111,7 @@ def add_queued_unit(
         subject=unit_in.subject,
         title=unit_in.title,
         unit_url=unit_in.unit_url,
+        scheme=_clean_scheme(unit_in.scheme),
         notes=unit_in.notes,
         position=max_position + 1,
     )
@@ -132,6 +139,8 @@ def update_queued_unit(
         queued.title = unit_in.title
     if unit_in.unit_url is not None:
         queued.unit_url = unit_in.unit_url
+    if unit_in.scheme is not None:
+        queued.scheme = _clean_scheme(unit_in.scheme)
     if unit_in.notes is not None:
         queued.notes = unit_in.notes
     queued.updated_at = datetime.utcnow()
@@ -207,6 +216,7 @@ def promote_queued_unit(
     if current:
         current.title = queued.title
         current.unit_url = queued.unit_url
+        current.scheme = queued.scheme
         current.notes = queued.notes
         current.updated_at = datetime.utcnow()
     else:
@@ -215,6 +225,7 @@ def promote_queued_unit(
             subject=queued.subject,
             title=queued.title,
             unit_url=queued.unit_url,
+            scheme=queued.scheme,
             notes=queued.notes,
         )
         db.add(current)
