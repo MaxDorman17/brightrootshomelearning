@@ -402,11 +402,59 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Ages 5 to 10 */}
+        <section id="ages-5-to-10" className="scroll-mt-16 pb-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]" style={{ background: C.sand }}>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Ages 5 to 10</p>
+                <H2 className="mt-2">Learning, making and getting outside</H2>
+                <p className="mt-4 leading-7" style={{ color: C.earth }}>
+                  Each child gets their own simple login and a dashboard showing today&apos;s learning. Lessons for every
+                  subject, plus plenty of hands-on things to do away from the screen.
+                </p>
+                <ul className="mt-5 space-y-3">
+                  {[
+                    "Free Oak National Academy lessons for every subject, chosen by school year",
+                    "Reading log, spellings, languages and learning games",
+                    "Cookbook and Craft Corner, with grown-up jobs clearly marked",
+                    "P.E. and Outdoors: den building, bug hotels, sports day and more",
+                    "Life skills: tying laces, telling the time and crossing the road",
+                    "Stars, rewards and badges to keep them going",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
+                      <Check />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                  <Link href={memberHome || "/signup"} className={primaryBtn} style={{ background: C.green }}>
+                    {memberHome ? "Open your dashboard" : "Start your free trial"} <span aria-hidden>→</span>
+                  </Link>
+                  <Link href="/guides/first-week" className={ghostBtn} style={{ borderColor: C.green, color: C.green }}>
+                    Read our first week guide
+                  </Link>
+                </div>
+              </div>
+              <div className="relative mx-auto w-full max-w-sm">
+                <div className="relative rotate-[-2deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/20">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/make-photos/out-den-building.jpg" alt="Two children peeping out of a den made from sticks" className="aspect-square w-full object-cover" />
+                  <p className={`${hand.className} mt-3 text-center text-xl leading-6`} style={{ color: C.earth }}>
+                    Our den in the woods!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Teens: ages 11 to 16 */}
         <section id="teens" className="scroll-mt-16 pb-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]" style={{ background: C.sage }}>
-              <div className="lg:order-1">
+            <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr]" style={{ background: C.sage }}>
+              <div className="lg:order-2">
                 <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Ages 11 to 16</p>
                 <H2 className="mt-2">Teens: real skills, their own way</H2>
                 <p className="mt-4 leading-7" style={{ color: C.earth }}>
@@ -436,8 +484,8 @@ export default function HomePage() {
                   </Link>
                 </div>
               </div>
-              <div className="relative mx-auto w-full max-w-sm lg:order-2">
-                <div className="relative rotate-[-2deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/20">
+              <div className="relative mx-auto w-full max-w-sm lg:order-1">
+                <div className="relative rotate-[2deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/make-photos/teen-pizza-from-scratch.jpg" alt="Kneading pizza dough on a floured worktop" className="aspect-[4/3] w-full object-cover" />
                   <p className={`${hand.className} mt-3 text-center text-xl leading-6`} style={{ color: C.earth }}>
