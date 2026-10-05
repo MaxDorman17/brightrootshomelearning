@@ -343,7 +343,7 @@ export const deletePolishSession = (id: number) => api.delete(`/api/polish/${id}
 
 // Children
 export const getChildren = () => api.get("/api/children/");
-export const addChild = (data: { username: string; login_name?: string; email?: string; password: string; activity_level?: string }) =>
+export const addChild = (data: { username: string; login_name?: string; email?: string; password?: string; activity_level?: string }) =>
   api.post("/api/children/", data);
 export const updateChild = (id: number, data: { username?: string; login_name?: string; activity_level?: string }) =>
   api.put(`/api/children/${id}`, data);
@@ -472,6 +472,12 @@ export const toggleMakeWish = (id: number) => api.post(`/api/make/items/${id}/wi
 export const clearMakeWishes = (id: number) => api.delete(`/api/make/wishes/${id}`);
 export const planMakeItem = (id: number, body: { scheduled_date: string; subject: string; child_ids: number[] }) =>
   api.post(`/api/make/items/${id}/plan`, body);
+/** Little Roots "We did it!": stars for each child, the planner ticked off, and what they said in the journal. */
+export const saveLittleDidIt = (id: number, body: { child_ids: number[]; stars: number; said?: string; day: string }) =>
+  api.post(`/api/make/items/${id}/did-it`, body);
+export const getLittleWeek = (offset = 0) => api.get("/api/make/little/week", { params: { offset } });
+export const planLittleWeek = (monday: string, childIds: number[]) =>
+  api.post("/api/make/little/week/plan", { monday, child_ids: childIds });
 export const addItemToShopping = (id: number, names?: string[]) => api.post(`/api/make/items/${id}/shopping`, { names: names ?? null });
 export const getShopping = () => api.get("/api/make/shopping");
 export const getShoppingCount = () => api.get("/api/make/shopping/count");

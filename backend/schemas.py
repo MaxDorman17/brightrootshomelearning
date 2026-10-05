@@ -73,8 +73,8 @@ class ChildCreate(BaseModel):
     username: str  # the child's name, as shown on the site
     login_name: Optional[str] = None  # what they type to log in; picked for them if left out
     email: Optional[EmailStr] = None
-    password: str
-    activity_level: Optional[str] = None  # young / teen / both
+    password: str = ""  # not needed for a Little Roots child, who never logs in
+    activity_level: Optional[str] = None  # little / young / teen / both
 
     @field_validator("email", mode="before")
     @classmethod

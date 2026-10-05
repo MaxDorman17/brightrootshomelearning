@@ -3,7 +3,7 @@ import json
 import os
 import re
 import uuid
-from datetime import date
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
@@ -15,8 +15,8 @@ from sqlalchemy.orm import Session
 
 from auth import get_current_user, require_child, require_parent
 from database import get_db
-from models import Lesson, MakeItem, MakeWish, PlannerEntry, ShoppingItem, User
-from routers.moments import PHOTO_TYPES, MAX_PHOTO_SIZE, _clean_child_ids, _family_id
+from models import JournalEntry, Lesson, MakeItem, MakeWish, PlannerEntry, ShoppingItem, StarAward, User
+from routers.moments import PHOTO_TYPES, MAX_PHOTO_SIZE, _clean_child_ids, _family_children, _family_id
 from routers.profile import _looks_like_image
 from storage import upload_dir
 
@@ -516,3 +516,113 @@ def shopping_clear(done_only: bool = True, db: Session = Depends(get_db), curren
     q.delete()
     db.commit()
     return shopping_list(db, current_user)
+
+
+# ---------- Little Roots: "We did it!" and the week's set ----------
+
+
+class DidItIn(BaseModel):
+    child_ids: list[int]
+    stars: int
+    said: Optional[str] = None  # what the child said, saved to the learning journal
+    day: Optional[date] = None  # the family's own today, so a late-evening book lands on the right day
+
+    @field_validator("stars")
+    @classmethod
+    def valid_stars(cls, v: int) -> int:
+        if not 1 <= v <= 5:
+            raise ValueError("Choose 1 to 5 stars")
+        return v
+
+    @field_validator("said")
+    @classmethod
+    def clean_said(cls, v: Optional[str]) -> Optional[str]:
+        v = " ".join((v or "").split())[:500]
+        return v or None
+
+
+@router.post("/items/{item_id}/did-it", status_code=201)
+def did_it(item_id: int, body: DidItIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """The end of a Little Roots story book: stars for each child, the planner ticked, and their words in the journal."""
+    item = _get_item(db, current_user, item_id)
+    family = _family_children(db, current_user.id)
+    children = _clean_child_ids(db, current_user.id, body.child_ids)
+    if not children:
+        raise HTTPException(status_code=400, detail="Choose who did it")
+    day = body.day or date.today()
+    if abs((day - date.today()).days) > 1:
+        day = date.today()
+    ticked = 0
+    for child_id in children:
+        db.add(StarAward(parent_id=current_user.id, child_id=child_id, stars=body.stars, reason=f"Little Roots: {item.title}"[:200]))
+        # Tick off this card in the planner if it was planned for them (today's, or the latest one still to do).
+        entry = (
+            db.query(PlannerEntry)
+            .join(Lesson, Lesson.id == PlannerEntry.lesson_id)
+            .filter(
+                Lesson.created_by == current_user.id,
+                Lesson.lesson_url == f"/make/{item.id}",
+                PlannerEntry.assigned_to == child_id,
+                PlannerEntry.is_complete.is_not(True),
+                PlannerEntry.scheduled_date <= day + timedelta(days=6),
+            )
+            .order_by(PlannerEntry.scheduled_date.desc())
+            .first()
+        )
+        if entry:
+            entry.is_complete = True
+            entry.completed_at = datetime.utcnow()
+            ticked += 1
+    if body.said:
+        names = " and ".join(family[c].username for c in children)
+        line = f"Little Roots, {item.title} ({names}): \u201c{body.said}\u201d"
+        journal = db.query(JournalEntry).filter(JournalEntry.created_by == current_user.id, JournalEntry.entry_date == day).first()
+        if journal:
+            journal.content = f"{journal.content.rstrip()}\n\n{line}"
+        else:
+            db.add(JournalEntry(entry_date=day, content=line, created_by=current_user.id))
+    db.commit()
+    return {"stars": body.stars, "children": children, "ticked": ticked, "journal": bool(body.said)}
+
+
+def _week_number(day: date) -> int:
+    from make_starters_little import LITTLE_WEEKS
+    return (day.isocalendar()[1] - 1) % len(LITTLE_WEEKS)
+
+
+def _week_items(db: Session, user: User, index: int) -> list[MakeItem]:
+    from make_starters_little import LITTLE_WEEKS
+    slugs = LITTLE_WEEKS[index % len(LITTLE_WEEKS)]
+    found = {i.slug: i for i in db.query(MakeItem).filter(MakeItem.parent_id.is_(None), MakeItem.slug.in_(slugs))}
+    return [found[s] for s in slugs if s in found]
+
+
+@router.get("/little/week")
+def little_week(offset: int = 0, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """This week's Little Roots set (offset 1 = next week). The weeks go round in order, one per calendar week."""
+    from make_starters_little import LITTLE_WEEKS
+    monday = date.today() - timedelta(days=date.today().weekday()) + timedelta(weeks=max(-4, min(offset, 8)))
+    index = _week_number(monday)
+    items = _week_items(db, current_user, index)
+    return {"week": index + 1, "weeks": len(LITTLE_WEEKS), "monday": monday, "items": [_out(i, [], full=False) for i in items]}
+
+
+class PlanWeekIn(BaseModel):
+    monday: date
+    child_ids: list[int] = []
+
+
+# Activities on Monday, Wednesday and Friday; the rhyme goes on Monday too, as it's quick.
+_WEEK_DAYS = [0, 2, 4, 0]
+
+
+@router.post("/little/week/plan", status_code=201)
+def plan_little_week(body: PlanWeekIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    monday = body.monday - timedelta(days=body.monday.weekday())
+    items = _week_items(db, current_user, _week_number(monday))
+    planned = 0
+    for item, offset in zip(items, _WEEK_DAYS):
+        plan_item(item.id, PlanIn(scheduled_date=monday + timedelta(days=offset), subject="", child_ids=body.child_ids), db, current_user)
+        planned += 1
+    return {"planned": planned, "monday": monday}
+

@@ -1,3 +1,5 @@
+import secrets
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -14,7 +16,8 @@ class ChildPasswordReset(BaseModel):
     new_password: str
 
 
-ACTIVITY_LEVELS = {"young", "teen", "both"}
+# "little" is a Little Roots child (3 or 4): no login of their own, a grown-up does everything with them.
+ACTIVITY_LEVELS = {"young", "teen", "both", "little"}
 
 
 class ChildUpdate(BaseModel):
@@ -28,7 +31,7 @@ def _clean_level(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     if value not in ACTIVITY_LEVELS:
-        raise HTTPException(status_code=400, detail="Choose younger, teens or both")
+        raise HTTPException(status_code=400, detail="Choose Little Roots, younger, teens or both")
     return value
 
 
@@ -74,6 +77,23 @@ def add_child(
             status_code=400,
             detail=f"A family membership covers up to {MAX_CHILDREN} children. If your family is bigger, send us a message in Help & feedback and we'll sort it out.",
         )
+    level = _clean_level(body.activity_level)
+    if level == "little":
+        # Nobody logs in as a little one, so they get no login name and a long random password nobody knows.
+        child = User(
+            username=name,
+            login_name=None,
+            activity_level=level,
+            hashed_password=hash_password(secrets.token_urlsafe(32)),
+            role="child",
+            parent_id=current_user.id,
+        )
+        db.add(child)
+        db.commit()
+        db.refresh(child)
+        return child
+    if not (body.password or "").strip():
+        raise HTTPException(status_code=400, detail="Please choose a password")
     if body.email and login_name_taken(db, body.email):
         raise HTTPException(status_code=400, detail="Email already taken")
     if body.login_name and body.login_name.strip():
@@ -89,7 +109,7 @@ def add_child(
     child = User(
         username=name,
         login_name=login_name,
-        activity_level=_clean_level(body.activity_level),
+        activity_level=level,
         email=body.email,
         hashed_password=hash_password(body.password),
         role="child",
@@ -126,7 +146,17 @@ def update_child(
             raise HTTPException(status_code=400, detail=f"That login name is taken. Try one of these: {ideas}")
         child.login_name = login_name
     if body.activity_level is not None:
-        child.activity_level = _clean_level(body.activity_level)
+        level = _clean_level(body.activity_level)
+        if level == "little" and child.activity_level != "little":
+            # Becoming a Little Roots child: the login stops working straight away.
+            child.login_name = None
+            child.email = None
+            child.hashed_password = hash_password(secrets.token_urlsafe(32))
+            child.session_version = (child.session_version or 1) + 1
+        elif level != "little" and child.activity_level == "little" and not child.login_name:
+            # Growing out of Little Roots: give them a login name now; the grown-up sets a password next.
+            child.login_name = suggest_login_names(db, child.username, current_user.username, count=1)[0]
+        child.activity_level = level
     db.commit()
     db.refresh(child)
     return child
@@ -163,6 +193,8 @@ def reset_child_password(
 
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")
+    if child.activity_level == "little":
+        raise HTTPException(status_code=400, detail="Little Roots children don't log in. Change them to Younger first to give them a login.")
 
     child.hashed_password = hash_password(body.new_password)
     child.session_version = (child.session_version or 1) + 1

@@ -3,7 +3,7 @@ Written for Bright Roots.
 
 The category is the area of learning. The areas loosely follow Realising the Ambition (Scotland) and
 the EYFS: Talk, Early maths, Letters and sounds, Moving, Creating and The world around us. The words
-are our own; only the headings are borrowed.
+are our own; only the headings are borrowed. The rhymes are written for Bright Roots too.
 """
 from make_starters import _item
 
@@ -13,6 +13,7 @@ SOUNDS = "Letters and sounds"
 MOVING = "Moving"
 CREATING = "Creating"
 WORLD = "The world around us"
+RHYMES = "Rhymes and songs"
 
 
 def _little(slug, title, emoji, category, minutes, summary, materials, steps, talk, more, easier, safety, story):
@@ -347,4 +348,101 @@ LITTLE_ROOTS = [
          "Time for the shadow show! Then lights on, and the shadows run away.",
          "\"What a wonderful night,\" yawned Little Owl. \"Goodnight, shadows. See you next time it gets dark!\""],
     ),
+    # ---------- rhymes and songs: each step is a verse with its action, the story lines are the words ----------
+    _little(
+        "little-five-little-stars", "Five little stars", "🌟", RHYMES, 5,
+        "A counting-down finger rhyme for winding down before a nap or bedtime.",
+        [],
+        ["Hold up five fingers as the stars and wiggle them to make them twinkle.",
+         "Say the verse. On the yawn, fold one finger down, then count the stars that are left.",
+         "Keep going with four, three, two and one, folding a finger down each time.",
+         "When no stars are left, whisper \"Goodnight, stars\". Then do it again with them holding up the fingers."],
+        ["How many stars are left?",
+         "What comes after five when we count down?",
+         "Can you show me three fingers?"],
+        "Start with ten stars on two hands. Or count back up in the morning: \"One little star woke up...\"",
+        "Just wiggle your fingers and say it together. Folding fingers down can come later.",
+        None,
+        ["Up in the sky, when the sun went to bed, five little stars came out to play.",
+         "Five little stars, twinkle, twinkle, bright, dancing in the sky on a cosy winter night.",
+         "One little star gave a great big yawn. It curled up to sleep until the early morn. How many now?",
+         "Four... three... two... one little star, each one yawning, near and far.",
+         "No little stars, the sky is dark and deep. Shh... goodnight, stars. It's time to sleep.",
+         "In the morning the sun came up and smiled. \"Good morning! Did you count all my stars?\""],
+    ),
+    _little(
+        "little-bumpity-bus", "The bumpity bus", "🚌", RHYMES, 5,
+        "An action rhyme on a pretend bus: bounce over bumps, lean round bends and wave at the bus stop.",
+        [],
+        ["Sit on the floor together as if you're on a bus, holding a pretend steering wheel.",
+         "Say the bumpity verse and bounce gently on every \"bump\".",
+         "Lean one way, then the other, as you go round the bend.",
+         "Ding ding! Stop at the bus stop: freeze, then wave to a pretend friend getting on.",
+         "Slow right down, stop, and call out \"Everybody off!\""],
+        ["Where shall our bus go today?",
+         "Who do you think is getting on?",
+         "Can we go fast? Now slow?"],
+        "Add new stops, like the zoo, the beach or the moon, and let them choose what happens at each one.",
+        "Just bounce and say \"bumpity bump\" together.",
+        "Bounce on the floor or a cushion, not on a high chair or the edge of the sofa.",
+        ["Beep beep! The big green bus is coming down the road. Hop on, there's a seat for you!",
+         "Climb aboard the big green bus. There's room for you and room for us!",
+         "Bumpity, bumpity, bumpity bump, over the hill and over the hump!",
+         "Round the bend we lean, lean, lean, past the shop and past the green!",
+         "Ding ding! The bus stops here. Wave hello, a friend is near!",
+         "Slow, slow, slower still... everybody off at the top of the hill!",
+         "The driver waved goodbye. \"Thank you for riding my bus! See you tomorrow!\""],
+    ),
+    _little(
+        "little-wiggle-your-toes", "Wiggle your toes", "👋", RHYMES, 5,
+        "A wake-up rhyme that names body parts: wiggle toes, pat knees, rub tummies and touch noses.",
+        [],
+        ["Sit facing each other with your legs out. Say the hello verse and wave.",
+         "Wiggle your toes together, fast and then slow.",
+         "Pat your knees gently.",
+         "Rub your tummies round and round.",
+         "Touch your nose, then reach up high for a big stretch."],
+        ["Where are your toes? Where are your knees?",
+         "What else can we wiggle?",
+         "Can you do it fast? Now very slowly?"],
+        "Make up new verses for elbows, ears and shoulders. Or let them be the leader while you copy.",
+        "Just name and touch each part together: toes, knees, tummy, nose.",
+        None,
+        ["Good morning, body! Are you awake? Let's find out!",
+         "Hello, hello, how do you do? Let's wake up, me and you!",
+         "Wiggle, wiggle, wiggle your toes. Wiggle them fast, and off it goes!",
+         "Pat, pat, pat your knees. Pat them softly, if you please.",
+         "Round and round, rub your tum. Round and round, yum, yum, yum!",
+         "Touch your nose, and then... reach up high and stretch again!",
+         "Every bit of you is wide awake now. Give yourself a great big hug!"],
+    ),
+    _little(
+        "little-knock-knock", "Knock knock, who's there?", "🔔", RHYMES, 5,
+        "A guessing rhyme: knock on the floor, make an animal noise behind the door and guess who's there.",
+        [],
+        ["Knock on the floor, a table or a box: knock, knock, knock!",
+         "Ask \"Who's there?\" and answer with an animal noise. Can they guess who it is?",
+         "Swap over: now they knock and make a noise for you to guess.",
+         "For the last one, knock very quietly and make the tiniest squeak: a sleepy mouse."],
+        ["Who do you think is at the door?",
+         "What sound does a dog make? A sheep?",
+         "Was that a loud knock or a quiet knock?"],
+        "Use voices instead of animals: a giant, a baby, a robot. Or knock a little pattern (knock-knock, knock) for them to copy.",
+        "Just knock and make the animal noises together.",
+        None,
+        ["Somebody is knocking on the little red door. Who could it be?",
+         "Knock, knock, knock on the little red door. Knock, knock, knock, and knock some more!",
+         "Who's there? Who's there? \"Moo!\" says a voice. Is it a cow? Make your choice!",
+         "Knock, knock, now it's your turn. Make a sound for me to learn!",
+         "Tap, tap... tiny and small. \"Squeak!\" Who's there? The smallest of all!",
+         "Everyone came in for a cup of tea: the cow, the dog, the mouse and me!"],
+    ),
+]
+
+# The "This week" set: three activities and a rhyme, one week after another, round and round.
+LITTLE_WEEKS = [
+    ["little-teddys-tea-party", "little-mystery-bag", "little-animal-moves", "little-five-little-stars"],
+    ["little-leaf-faces", "little-little-shop", "little-minibeast-hunt", "little-bumpity-bus"],
+    ["little-rainbow-hunt", "little-whos-that-sound", "little-rocket-blast-off", "little-wiggle-your-toes"],
+    ["little-water-painting", "little-story-basket", "little-shadow-play", "little-knock-knock"],
 ]

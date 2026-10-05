@@ -24,4 +24,10 @@ export const GUIDES = [
     summary: "Private candidates, exam centres, entry deadlines, fees and coursework, step by step.",
     minutes: 7,
   },
+  {
+    slug: "three-and-four-year-olds",
+    title: "Learning at home with a 3 or 4 year old",
+    summary: "How much is enough, what to cover, and five ten-minute activities you can try today.",
+    minutes: 5,
+  },
 ] as const;

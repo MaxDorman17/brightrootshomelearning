@@ -9,6 +9,7 @@ import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { AGE_BANDS, AgeBand, Audience, inAgeBand, inAudience, KIND_FAMILY, KIND_INFO, MakePhoto, MakeSummary, MetaChips, TEEN_TABS } from "./common";
 import Emoji, { EmojiText } from "@/components/Emoji";
+import LittleWeek from "./LittleWeek";
 
 /**
  * The Cookbook, Craft Corner, P.E. or Outdoors: browse, search and filter.
@@ -143,7 +144,11 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                   </Link>
                 ))}
               </>
-            ) : little ? null : (
+            ) : little ? (
+              <Link href="/make/little-roots/getting-started" className="rounded-xl bg-amber-50 px-4 py-2 text-sm font-extrabold text-amber-800 hover:bg-amber-100">
+                <Emoji e="📖" /> Getting started with Little Roots
+              </Link>
+            ) : (
               <>
                 {KIND_FAMILY[kind].map((k) => (
                   <Link
@@ -180,6 +185,8 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
             )}
           </div>
         </div>
+
+        {little && role === "parent" && <LittleWeek />}
 
         {!teen && !little && (
           <div className="mt-4 flex flex-wrap items-center gap-2">

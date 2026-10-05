@@ -275,6 +275,9 @@ def login(
     _check_login_rate_limit(client_ip, form_data.username)
 
     user = find_login(db, form_data.username)
+    # Little Roots children (3 and 4) never log in; a grown-up does everything with them.
+    if user and user.role == "child" and user.activity_level == "little":
+        user = None
     if not user or not verify_password(form_data.password, user.hashed_password):
         _record_login_failure(client_ip, form_data.username)
         raise HTTPException(

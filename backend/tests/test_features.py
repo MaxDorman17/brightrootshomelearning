@@ -1,7 +1,7 @@
 """The everyday features: planning, rewards, notes, languages, family badges and the activity library."""
 from datetime import date, timedelta
 
-from conftest import PASSWORD, login, new_client, sign_up
+from conftest import PASSWORD, login, new_client, sign_up, try_login
 
 # The smallest valid PNG: a single transparent pixel.
 PNG = bytes.fromhex(
@@ -185,6 +185,53 @@ def test_little_roots_cards_carry_talk_and_next_steps(family):
     assert planned.status_code == 201, planned.text
     today = family.child_client(child).get("/api/planner/today").json()
     assert today and today[0]["lesson"]["subject"] == "Little Roots"
+
+
+def test_little_roots_we_did_it_gives_stars_ticks_the_planner_and_keeps_their_words(family):
+    child = family.add_child("Pip")
+    kid = family.child_client(child)
+    item = next(i for i in family.parent.get("/api/make/items", params={"kind": "little"}).json() if i["slug"] == "little-teddys-tea-party")
+    today = date.today()
+    family.parent.post(f"/api/make/items/{item['id']}/plan", json={"scheduled_date": today.isoformat(), "subject": "", "child_ids": [child["id"]]})
+    done = family.parent.post(
+        f"/api/make/items/{item['id']}/did-it",
+        json={"child_ids": [child["id"]], "stars": 4, "said": "  Duck was  hungry! ", "day": today.isoformat()},
+    )
+    assert done.status_code == 201, done.text
+    assert done.json()["ticked"] == 1
+    assert kid.get("/api/rewards/me").json()["available"] == 4
+    assert all(e["is_complete"] for e in kid.get("/api/planner/today").json())
+    journal = family.parent.get(f"/api/journal/{today.isoformat()}").json()
+    assert "Teddy's tea party (Pip)" in journal["content"] and "Duck was hungry!" in journal["content"]
+    # Only grown-ups save, only for their own children, and only 1 to 5 stars.
+    assert kid.post(f"/api/make/items/{item['id']}/did-it", json={"child_ids": [child["id"]], "stars": 5}).status_code == 403
+    assert family.parent.post(f"/api/make/items/{item['id']}/did-it", json={"child_ids": [child["id"]], "stars": 9}).status_code == 422
+    other = sign_up("Other")
+    assert other.parent.post(f"/api/make/items/{item['id']}/did-it", json={"child_ids": [child["id"]], "stars": 1}).status_code == 400
+
+
+def test_little_roots_children_have_no_login(family):
+    little = family.parent.post("/api/children/", json={"username": "Tiny", "activity_level": "little"})
+    assert little.status_code == 201, little.text
+    assert little.json()["login_name"] is None and little.json()["activity_level"] == "little"
+    assert family.parent.post(f"/api/children/{little.json()['id']}/reset-password", json={"new_password": "longenough1"}).status_code == 400
+    # An older child switched to Little Roots can't log in any more; switched back, they get a login name again.
+    older = family.add_child("Bigger")
+    assert family.parent.put(f"/api/children/{older['id']}", json={"activity_level": "little"}).json()["login_name"] is None
+    assert try_login(older["login_name"]).status_code == 401
+    back = family.parent.put(f"/api/children/{older['id']}", json={"activity_level": "young"}).json()
+    assert back["login_name"]
+    # Everyone else still needs a password.
+    assert family.parent.post("/api/children/", json={"username": "NoPass", "activity_level": "young"}).status_code == 400
+
+
+def test_little_roots_week_set_plans_a_whole_week(family):
+    child = family.add_child()
+    week = family.parent.get("/api/make/little/week").json()
+    assert len(week["items"]) == 4 and 1 <= week["week"] <= week["weeks"]
+    assert family.parent.get("/api/make/little/week", params={"offset": 1}).json()["items"] != week["items"]
+    planned = family.parent.post("/api/make/little/week/plan", json={"monday": week["monday"], "child_ids": [child["id"]]})
+    assert planned.status_code == 201 and planned.json()["planned"] == 4
 
 
 def test_a_reading_worksheet_can_be_ticked_done_by_the_child_or_parent(family):

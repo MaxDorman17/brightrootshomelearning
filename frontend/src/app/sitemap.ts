@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/guides/oak-at-home", 0.8],
     ["/guides/keeping-records", 0.8],
     ["/guides/gcses-at-home", 0.8],
+    ["/guides/three-and-four-year-olds", 0.8],
     ["/contact", 0.5],
     ["/privacy", 0.3],
     ["/terms", 0.3],

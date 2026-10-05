@@ -8,9 +8,10 @@ const input =
   "w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20";
 const label = "block text-sm font-semibold text-[#2E342F] mb-1.5";
 
-export type ActivityLevel = "young" | "teen" | "both";
+export type ActivityLevel = "little" | "young" | "teen" | "both";
 
 const LEVELS: { id: ActivityLevel; title: string; text: string }[] = [
+  { id: "little", title: "Little Roots", text: "Ages 3 to 4. No login: you do the story books together from your account" },
   { id: "young", title: "Younger", text: "Cookbook, crafts, P.E., Outdoors and life skills for up to about 10" },
   { id: "teen", title: "Teens", text: "The Teens menu: cooking, projects, P.E., outdoors and life skills for 11 to 16" },
   { id: "both", title: "Both", text: "Show everything" },
@@ -19,7 +20,7 @@ const LEVELS: { id: ActivityLevel; title: string; text: string }[] = [
 /** Which activity pages a child sees. A choice of pages, so nobody has to give a date of birth. */
 export function ActivityLevelPicker({ value, onChange }: { value: ActivityLevel; onChange: (level: ActivityLevel) => void }) {
   return (
-    <div className="grid gap-2 sm:grid-cols-3">
+    <div className="grid gap-2 sm:grid-cols-2">
       {LEVELS.map((l) => (
         <button
           type="button"
@@ -72,7 +73,7 @@ export default function ChildEditModal({ child, onClose, onSaved }: { child: Chi
     try {
       const res = await updateChild(child.id, {
         username: name.trim(),
-        ...(loginChanged ? { login_name: loginName.trim() } : {}),
+        ...(loginChanged && level !== "little" && loginName.trim() ? { login_name: loginName.trim() } : {}),
         activity_level: level,
       });
       onSaved(res.data);
@@ -103,6 +104,7 @@ export default function ChildEditModal({ child, onClose, onSaved }: { child: Chi
             <input id="edit-child-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={50} className={input} />
           </div>
 
+          {level !== "little" && (
           <div>
             <label className={label} htmlFor="edit-child-login">Login name</label>
             <input
@@ -135,13 +137,23 @@ export default function ChildEditModal({ child, onClose, onSaved }: { child: Chi
                 </div>
               )
             ) : (
-              <p className="mt-1.5 text-xs text-[#8A7A69]">What they type on the login page. Their password stays the same.</p>
+              <p className="mt-1.5 text-xs text-[#8A7A69]">
+                {child.activity_level === "little"
+                  ? "Ready for their own login? Save, then use Reset password to give them a password."
+                  : "What they type on the login page. Their password stays the same."}
+              </p>
             )}
           </div>
+          )}
 
           <div>
             <p className={label}>Which activities should they see?</p>
             <ActivityLevelPicker value={level} onChange={setLevel} />
+            {level === "little" && child.activity_level !== "little" && (
+              <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+                Little Roots children don&apos;t log in, so {child.username}&apos;s login will stop working. Their planner, stars and reports all stay.
+              </p>
+            )}
           </div>
 
           {error && (

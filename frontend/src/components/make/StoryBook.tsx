@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { format } from "date-fns";
 import { hand, serif } from "@/lib/fonts";
+import { saveLittleDidIt } from "@/lib/api";
 import { MakeDetail, MakePhoto } from "./common";
 import Emoji from "@/components/Emoji";
 
@@ -30,7 +32,20 @@ function talkForSteps(steps: number, talk: string[]): (string | null)[] {
  * Little Roots "Start": the activity as a picture book a grown-up reads with their child.
  * Cover, what we need, one page per step with something to say, then "The End" with stars to tap.
  */
-export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetail; onClose: () => void; onFinish: () => void }) {
+type Kid = { id: number; username: string; activity_level?: string | null };
+
+export default function StoryBook({
+  item,
+  kids = [],
+  onClose,
+  onFinish,
+}: {
+  item: MakeDetail;
+  /** The family's children, for a grown-up to save the stars to. Empty for a child, who can't hand out stars. */
+  kids?: Kid[];
+  onClose: () => void;
+  onFinish: () => void;
+}) {
   const talk = talkForSteps(item.steps.length, item.talk || []);
   // The story: first line opens the book, last line ends it, the ones between go with each step.
   const story = item.story || [];
@@ -50,6 +65,15 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
   const [turn, setTurn] = useState<"next" | "back">("next");
   const [stars, setStars] = useState(0);
   const [got, setGot] = useState<Set<number>>(new Set());
+  // Who did it: the Little Roots children to start with, or the only child.
+  const [who, setWho] = useState<Set<number>>(() => {
+    const little = kids.filter((k) => k.activity_level === "little");
+    return new Set((little.length ? little : kids.length === 1 ? kids : []).map((k) => k.id));
+  });
+  const [said, setSaid] = useState("");
+  const [saved, setSaved] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const touchX = useRef<number | null>(null);
 
   const go = (to: number) => {
@@ -77,6 +101,30 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
     return () => window.removeEventListener("keydown", onKey);
   });
 
+  const save = async () => {
+    if (!stars || !who.size) return;
+    setSaving(true);
+    setSaveError("");
+    try {
+      const res = await saveLittleDidIt(item.id, {
+        child_ids: Array.from(who),
+        stars,
+        said: said.trim() || undefined,
+        day: format(new Date(), "yyyy-MM-dd"),
+      });
+      const names = kids.filter((k) => who.has(k.id)).map((k) => k.username).join(" and ");
+      setSaved(
+        `${stars} ${stars === 1 ? "star" : "stars"} for ${names}!` +
+          (res.data.ticked ? " Ticked off in the planner." : "") +
+          (res.data.journal ? " Their words are in your journal." : "")
+      );
+    } catch {
+      setSaveError("That didn't save. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const page = pages[at];
   const title = `${serif.className} font-semibold text-[#24452C]`;
   const reading = `${serif.className} text-[clamp(22px,3.2vw,34px)] leading-snug text-[#2E342F]`;
@@ -93,7 +141,7 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
       </div>
 
       <div
-        className="flex flex-1 items-center justify-center overflow-y-auto px-3 pb-3 sm:px-6"
+        className="flex flex-1 justify-center overflow-y-auto px-3 pb-3 sm:px-6"
         onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
         onTouchEnd={(e) => {
           if (touchX.current === null) return;
@@ -105,7 +153,7 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
         {/* The open book: two pages and a spine. On a phone the pages stack. */}
         <div
           key={at}
-          className={`storybook-page relative grid w-full max-w-5xl overflow-hidden rounded-[28px] bg-[#FDF9F0] shadow-[0_20px_50px_-20px_rgba(60,45,20,0.45)] md:min-h-[520px] md:grid-cols-2 ${turn === "next" ? "storybook-next" : "storybook-back"}`}
+          className={`storybook-page relative my-auto grid w-full max-w-5xl overflow-hidden rounded-[28px] bg-[#FDF9F0] shadow-[0_20px_50px_-20px_rgba(60,45,20,0.45)] md:min-h-[520px] md:grid-cols-2 ${turn === "next" ? "storybook-next" : "storybook-back"}`}
         >
           <div aria-hidden className={`pointer-events-none absolute inset-y-0 left-1/2 w-16 ${page.kind === "end" ? "hidden" : "hidden md:block"} -translate-x-1/2 bg-[linear-gradient(90deg,transparent,rgba(120,95,50,0.14)_45%,rgba(120,95,50,0.22)_50%,rgba(120,95,50,0.14)_55%,transparent)]`} />
 
@@ -263,6 +311,58 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
                   </button>
                 ))}
               </div>
+              {kids.length > 0 && stars > 0 && (
+                <div className="mt-6 w-full max-w-lg rounded-3xl bg-white/80 p-5 text-left shadow-sm">
+                  {saved ? (
+                    <p className={`${hand.className} text-center text-[clamp(22px,2.6vw,28px)] leading-tight text-brand-sage`}>
+                      <Emoji e="⭐" /> {saved}
+                    </p>
+                  ) : (
+                    <>
+                      <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-brand-softsage">For the grown-up: who did it?</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {kids.map((k) => (
+                          <button
+                            key={k.id}
+                            onClick={() =>
+                              setWho((prev) => {
+                                const next = new Set(prev);
+                                if (next.has(k.id)) next.delete(k.id);
+                                else next.add(k.id);
+                                return next;
+                              })
+                            }
+                            aria-pressed={who.has(k.id)}
+                            className={`rounded-full border-2 px-4 py-1.5 text-sm font-extrabold ${who.has(k.id) ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth"}`}
+                          >
+                            {who.has(k.id) ? "✓ " : ""}
+                            {k.username}
+                          </button>
+                        ))}
+                      </div>
+                      <label className="mt-4 block text-sm font-bold text-brand-charcoal" htmlFor="little-said">
+                        What did they say? <span className="font-normal text-brand-earth/70">(optional, saved to your journal)</span>
+                      </label>
+                      <input
+                        id="little-said"
+                        value={said}
+                        onChange={(e) => setSaid(e.target.value)}
+                        maxLength={500}
+                        placeholder="e.g. Duck was hungry so he got two!"
+                        className="mt-1.5 w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-brand-charcoal outline-none focus:border-brand-softsage"
+                      />
+                      {saveError && <p className="mt-2 text-sm font-bold text-[#A64F42]">{saveError}</p>}
+                      <button
+                        onClick={save}
+                        disabled={saving || !who.size}
+                        className="mt-4 w-full rounded-full bg-[#E3A73B] px-6 py-3 text-lg font-extrabold text-white hover:bg-[#cf952c] disabled:opacity-50"
+                      >
+                        {saving ? "Saving..." : `We did it! Save ${stars} ${stars === 1 ? "star" : "stars"}`}
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <button onClick={onFinish} className="rounded-full bg-brand-sage px-6 py-3 text-lg font-extrabold text-white hover:bg-brand-sagedark">
                   <Emoji e="📸" /> Share a photo

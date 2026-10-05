@@ -44,7 +44,7 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
 };
 
 /** The areas of learning Little Roots activities are grouped by (the card's category). */
-export const LITTLE_AREAS = ["Talk", "Early maths", "Letters and sounds", "Moving", "Creating", "The world around us"];
+export const LITTLE_AREAS = ["Talk", "Early maths", "Letters and sounds", "Moving", "Creating", "The world around us", "Rhymes and songs"];
 
 /** Cookbook, Craft Corner and Life skills sit together; P.E. and Outdoors are the "Active" pair. */
 export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {

@@ -47,7 +47,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
 };
 
 // The younger activity pages. Hidden when every child in the family is set to see only the teen ones.
-const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors", "/make/little-roots", "/make/new?kind=little"];
+const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors", "/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
 
 const PARENT_NAV: NavEntry[] = [
   { href: "/parent/dashboard", label: "Home" },
@@ -106,6 +106,7 @@ const PARENT_NAV: NavEntry[] = [
     label: "Little Roots",
     items: [
       { href: "/make/little-roots", label: "Activities" },
+      { href: "/make/little-roots/getting-started", label: "Getting started" },
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
@@ -348,7 +349,7 @@ export default function Navbar() {
     // A single recipe or craft, or the add/edit form, lights up the Make menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
-  const showTeen = levels.some((l) => l !== "young");
+  const showTeen = levels.some((l) => l === "teen" || l === "both");
   const showYoung = levels.some((l) => l !== "teen");
 
   const visible = (link: NavLink) => {

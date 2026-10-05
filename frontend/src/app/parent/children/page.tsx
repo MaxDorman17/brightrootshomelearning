@@ -53,7 +53,7 @@ export default function ChildrenPage() {
 
   // Check the login name is free (and suggest some) a moment after the parent stops typing.
   useEffect(() => {
-    if (!showModal || !username.trim()) {
+    if (!showModal || !username.trim() || level === "little") {
       setLoginCheck(null);
       if (!loginTouched) setLoginName("");
       return;
@@ -72,22 +72,28 @@ export default function ChildrenPage() {
         .catch(() => {});
     }, 350);
     return () => clearTimeout(timer);
-  }, [showModal, username, loginName, loginTouched]);
+  }, [showModal, username, loginName, loginTouched, level]);
+
+  const little = level === "little";
 
   const handleAdd = async () => {
-    if (!username.trim() || !password.trim()) return;
+    if (!username.trim() || (!little && !password.trim())) return;
 
     setSaving(true);
     setError("");
 
     try {
-      const res = await addChild({
-        username: username.trim(),
-        login_name: loginName.trim() || undefined,
-        email: email.trim() || undefined,
-        password: password.trim(),
-        activity_level: level,
-      });
+      const res = await addChild(
+        little
+          ? { username: username.trim(), activity_level: level }
+          : {
+              username: username.trim(),
+              login_name: loginName.trim() || undefined,
+              email: email.trim() || undefined,
+              password: password.trim(),
+              activity_level: level,
+            }
+      );
 
       setChildren(prev => [...prev, res.data]);
       window.dispatchEvent(new Event("activity-levels-changed"));
@@ -268,6 +274,12 @@ export default function ChildrenPage() {
                       </span>
                     </div>
 
+                    {child.activity_level === "little" && (
+                      <p className="text-sm text-[#6E5A46] mt-1 truncate">
+                        Little Roots · no login, you do it together
+                      </p>
+                    )}
+
                     {child.login_name && (
                       <p className="text-sm text-[#6E5A46] mt-1 truncate">
                         Logs in as <span className="font-bold text-[#2E342F]">{child.login_name}</span>
@@ -303,6 +315,7 @@ export default function ChildrenPage() {
                       Avatar &amp; photo
                     </button>
 
+                    {child.activity_level !== "little" && (
                     <button
                       onClick={() => {
                         setResetChild(child);
@@ -313,6 +326,7 @@ export default function ChildrenPage() {
                     >
                       Reset password
                     </button>
+                    )}
 
                     <button
                       onClick={() => handleRemove(child.id, child.username)}
@@ -369,7 +383,7 @@ export default function ChildrenPage() {
               </h2>
 
               <p className="text-sm text-[#6E5A46] mt-1">
-                Create their Bright Roots login details.
+                {little ? "Little ones do everything with you, so they don't need a login." : "Create their Bright Roots login details."}
               </p>
             </div>
 
@@ -390,6 +404,17 @@ export default function ChildrenPage() {
                   />
                 </div>
 
+                <div>
+                  <p className="block text-sm font-semibold text-[#2E342F] mb-1.5">Which activities should they see?</p>
+                  <ActivityLevelPicker value={level} onChange={setLevel} />
+                  {little && (
+                    <p className="mt-2 text-xs text-[#8A7A69]">
+                      No login name or password needed. You&apos;ll do Little Roots together from your own account, and they still get their own planner, stars and reports.
+                    </p>
+                  )}
+                </div>
+
+                {!little && (<>
                 <div>
                   <label htmlFor="child-login" className="block text-sm font-semibold text-[#2E342F] mb-1.5">
                     Login name
@@ -464,10 +489,7 @@ export default function ChildrenPage() {
                   />
                 </div>
 
-                <div>
-                  <p className="block text-sm font-semibold text-[#2E342F] mb-1.5">Which activities should they see?</p>
-                  <ActivityLevelPicker value={level} onChange={setLevel} />
-                </div>
+                </>)}
 
                 {error && (
                   <div className="rounded-xl border border-[#E9B8AE] bg-[#FBEFEB] px-4 py-3">
@@ -491,7 +513,7 @@ export default function ChildrenPage() {
                   disabled={
                     saving ||
                     !username.trim() ||
-                    !password.trim()
+                    (!little && !password.trim())
                   }
                   className="sm:flex-1 px-4 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >

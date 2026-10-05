@@ -25,7 +25,7 @@ import { getRole, isAuthenticated } from "@/lib/auth";
 import { subjectsInTimetable } from "@/lib/subjects";
 import Emoji, { EmojiText } from "@/components/Emoji";
 
-type Child = { id: number; username: string };
+type Child = { id: number; username: string; activity_level?: string | null };
 
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
@@ -212,9 +212,15 @@ export default function MakeItemPage() {
                     ✏️ Make my own version
                   </button>
                 )}
-                <button onClick={() => window.print()} className="text-brand-sage hover:underline">
-                  <EmojiText text="🖨️ Print" />
-                </button>
+                {item.kind === "little" ? (
+                  <Link href={`/make/${item.id}/print`} className="text-brand-sage hover:underline">
+                    <EmojiText text="🖨️ Print a fridge card" />
+                  </Link>
+                ) : (
+                  <button onClick={() => window.print()} className="text-brand-sage hover:underline">
+                    <EmojiText text="🖨️ Print" />
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -307,6 +313,7 @@ export default function MakeItemPage() {
       {cooking && item.kind === "little" && (
         <StoryBook
           item={item}
+          kids={isParent ? children : []}
           onClose={() => setCooking(false)}
           onFinish={() => {
             setCooking(false);
