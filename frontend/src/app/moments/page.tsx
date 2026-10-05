@@ -247,6 +247,23 @@ function Lightbox({ photoId, moment, onClose }: { photoId: number; moment?: Mome
   );
 }
 
+// How a moment's photos are laid out, by how many there are (up to five).
+function photoGrid(count: number) {
+  if (count === 1) return "grid-cols-1";
+  if (count === 3) return "grid-cols-3 grid-rows-2";
+  return "grid-cols-6";
+}
+
+function photoTile(count: number, index: number) {
+  if (count === 1) return "";
+  if (count === 2) return "col-span-3 aspect-square";
+  // Three: one large photo with two smaller ones stacked beside it.
+  if (count === 3) return index === 0 ? "col-span-2 row-span-2" : "aspect-square";
+  if (count === 4) return "col-span-3 aspect-[4/3]";
+  // Five: two across the top, three underneath.
+  return index < 2 ? "col-span-3 aspect-[4/3]" : "col-span-2 aspect-square";
+}
+
 function MomentCard({ moment, onChanged, onEdit, onView }: { moment: Moment; onChanged: () => void; onEdit: () => void; onView: (photoId: number) => void }) {
   const [comment, setComment] = useState("");
 
@@ -300,12 +317,22 @@ function MomentCard({ moment, onChanged, onEdit, onView }: { moment: Moment; onC
       </div>
 
       {photos.length > 0 && (
-        <div className={"grid gap-1 " + (photos.length === 1 ? "grid-cols-1" : photos.length === 2 ? "grid-cols-2" : "grid-cols-3")}>
+        <div className={"mx-4 grid gap-1.5 overflow-hidden rounded-2xl " + photoGrid(photos.length)}>
           {photos.map((id, i) => (
-            <div key={id} className={"group relative " + (photos.length === 3 && i === 0 ? "col-span-3" : photos.length >= 4 && i === 0 ? "col-span-3 sm:col-span-2 sm:row-span-2" : "")}>
-              <MomentImage photoId={id} alt={moment.note ?? "Learning moment"} onClick={() => onView(id)} className={"w-full " + (photos.length === 1 ? "max-h-[28rem]" : "aspect-square h-full")} />
+            <div key={id} className={"group relative overflow-hidden bg-[#F1EADC] " + photoTile(photos.length, i)}>
+              {/* One photo is shown whole, never cropped. Several are tidy tiles; tap one to see all of it. */}
+              <MomentImage
+                photoId={id}
+                alt={moment.note ?? "Learning moment"}
+                onClick={() => onView(id)}
+                className={photos.length === 1 ? "mx-auto block max-h-[26rem] w-auto max-w-full !object-contain" : "absolute inset-0 h-full w-full transition-transform duration-300 group-hover:scale-[1.03]"}
+              />
               {moment.can_edit && (
-                <button onClick={() => removePhoto(id)} className="absolute right-2 top-2 hidden rounded-full bg-black/60 px-2 py-0.5 text-xs text-white group-hover:block" aria-label="Remove photo">
+                <button
+                  onClick={() => removePhoto(id)}
+                  className="absolute right-2 top-2 rounded-full bg-black/55 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity focus:opacity-100 group-hover:opacity-100"
+                  aria-label="Remove photo"
+                >
                   ✕
                 </button>
               )}
@@ -433,6 +460,16 @@ function MomentsPage() {
       (!filterSubject || moment.subject === filterSubject) &&
       (!filterMonth || moment.moment_date.startsWith(filterMonth))
   );
+  // The gallery is grouped by month, newest first.
+  const photoMonths = useMemo(() => {
+    const groups = new Map<string, typeof shownPhotos>();
+    for (const row of shownPhotos) {
+      const month = row.moment.moment_date.slice(0, 7);
+      groups.set(month, [...(groups.get(month) ?? []), row]);
+    }
+    return Array.from(groups.entries()).sort((a, b) => b[0].localeCompare(a[0]));
+  }, [shownPhotos]);
+
   const viewingMoment = viewing != null ? photoRows.find((p) => p.id === viewing)?.moment : undefined;
 
   return (
@@ -534,9 +571,33 @@ function MomentsPage() {
                 {photoRows.length === 0 ? "No photos yet. Add a moment with a photo to start your gallery." : "No photos match."}
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
-                {shownPhotos.map(({ id, moment }) => (
-                  <MomentImage key={id} photoId={id} alt={moment.note ?? "Photo"} onClick={() => setViewing(id)} className="aspect-square w-full rounded-lg" />
+              <div className="space-y-7">
+                {photoMonths.map(([month, rows]) => (
+                  <section key={month}>
+                    <h2 className="mb-3 flex items-baseline gap-2 text-sm font-extrabold uppercase tracking-wider text-[#6E5A46]">
+                      {format(parseISO(`${month}-01`), "MMMM yyyy")}
+                      <span className="font-semibold normal-case tracking-normal text-[#8A7A69]">
+                        {rows.length} photo{rows.length === 1 ? "" : "s"}
+                      </span>
+                    </h2>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                      {rows.map(({ id, moment }) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => setViewing(id)}
+                          className="group relative aspect-square overflow-hidden rounded-2xl bg-[#F1EADC] shadow-sm ring-1 ring-[#E4DCCD] transition-shadow hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sage"
+                          aria-label={`Open photo from ${format(parseISO(moment.moment_date), "d MMMM")}`}
+                        >
+                          <MomentImage photoId={id} alt={moment.note ?? "Photo"} className="absolute inset-0 h-full w-full cursor-zoom-in transition-transform duration-300 group-hover:scale-105" />
+                          <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-black/55 to-transparent px-2.5 pb-2 pt-8 text-left text-xs font-bold text-white">
+                            <span>{format(parseISO(moment.moment_date), "d MMM")}</span>
+                            {moment.children.length > 0 && <span className="truncate font-semibold opacity-90">{moment.children.join(", ")}</span>}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             )}
