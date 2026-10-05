@@ -402,6 +402,53 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Teens: ages 11 to 16 */}
+        <section id="teens" className="scroll-mt-16 pb-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]" style={{ background: C.sage }}>
+              <div className="lg:order-1">
+                <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Ages 11 to 16</p>
+                <H2 className="mt-2">Teens: real skills, their own way</H2>
+                <p className="mt-4 leading-7" style={{ color: C.earth }}>
+                  Teenagers get their own menu, written for them rather than for little ones. Proper meals to cook from start to
+                  finish, projects with real skills, training they can plan themselves, and the everyday jobs nobody teaches you.
+                </p>
+                <ul className="mt-5 space-y-3">
+                  {[
+                    "Cooking: dinners, bakes and a budget dinner challenge",
+                    "Projects: printmaking, textiles, woodwork and stop-motion film",
+                    "P.E. and outdoors: couch to 5K, circuits, map reading and bushcraft",
+                    "Life skills: washing, ironing, budgeting, first aid and wiring a plug",
+                    "A GCSE exam planner for entries, deadlines, fees and revision",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
+                      <Check />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                  <Link href={memberHome ? "/teens" : "/signup"} className={primaryBtn} style={{ background: C.green }}>
+                    {memberHome ? "Open Teen Corner" : "Start your free trial"} <span aria-hidden>→</span>
+                  </Link>
+                  <Link href="/guides/gcses-at-home" className={ghostBtn} style={{ borderColor: C.green, color: C.green }}>
+                    Read our GCSE guide
+                  </Link>
+                </div>
+              </div>
+              <div className="relative mx-auto w-full max-w-sm lg:order-2">
+                <div className="relative rotate-[-2deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/20">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/make-photos/teen-pizza-from-scratch.jpg" alt="Kneading pizza dough on a floured worktop" className="aspect-[4/3] w-full object-cover" />
+                  <p className={`${hand.className} mt-3 text-center text-xl leading-6`} style={{ color: C.earth }}>
+                    Pizza from scratch, all by themselves
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* See it in action */}
         <section id="demo" className="scroll-mt-16 border-t py-14" style={{ background: C.paper, borderColor: C.line }}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
