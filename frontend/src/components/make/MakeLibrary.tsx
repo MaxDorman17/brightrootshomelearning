@@ -13,7 +13,7 @@ import LittleWeek from "./LittleWeek";
 
 /**
  * The Cookbook, Craft Corner, P.E. or Outdoors: browse, search and filter.
- * `audience` picks the younger activities (the Make and Active menus) or the 11 to 16 ones (the Teens menu).
+ * `audience` picks the younger activities (the Saplings menu) or the 11 to 16 ones (the Teens menu).
  */
 export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKind; audience?: Audience }) {
   const router = useRouter();
@@ -95,7 +95,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies", life: "account", little: "children" }[kind]}
           tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0, life: 3, little: 2 }[kind]}
         >
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : little ? "Ages 3 to 4 · with a grown-up" : "Make together"}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : little ? "Ages 3 to 4 · with a grown-up" : "Saplings · ages 5 to 10"}</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
               {teen && teenTab ? teenTab.name : info.name}

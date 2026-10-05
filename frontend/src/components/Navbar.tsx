@@ -46,8 +46,10 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
   "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
 };
 
-// The younger activity pages. Hidden when every child in the family is set to see only the teen ones.
-const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors", "/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
+// The Saplings pages (ages 5 to 10). Hidden when no child is set to Saplings or Both.
+const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors"];
+// The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
+const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
 
 const PARENT_NAV: NavEntry[] = [
   { href: "/parent/dashboard", label: "Home" },
@@ -81,22 +83,6 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/council-report", label: "Council Report" },
       { href: "/parent/journal", label: "Journal" },
       { href: "/moments", label: "Moments & Photos" },
-    ],
-  },
-  {
-    label: "Make",
-    items: [
-      { href: "/make/cookbook", label: "Cookbook" },
-      { href: "/make/crafts", label: "Craft Corner" },
-      { href: "/make/life-skills", label: "Life Skills" },
-      { href: "/make/shopping", label: "Shopping List" },
-    ],
-  },
-  {
-    label: "Active",
-    items: [
-      { href: "/make/pe", label: "P.E." },
-      { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
       { href: "/moments?tab=trips", label: "Trips & days out" },
     ],
@@ -110,7 +96,18 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
-  // Ages 11 to 16: the same four kinds of activity, written for teenagers. Make and Active show the younger ones.
+  // Saplings, ages 5 to 10: the younger cooking, crafts, life skills, P.E. and outdoors.
+  {
+    label: "Saplings",
+    items: [
+      { href: "/make/cookbook", label: "Cookbook" },
+      { href: "/make/crafts", label: "Craft Corner" },
+      { href: "/make/life-skills", label: "Life Skills" },
+      { href: "/make/pe", label: "P.E." },
+      { href: "/make/outdoors", label: "Outdoors" },
+    ],
+  },
+  // Ages 11 to 16: the same kinds of activity, written for teenagers.
   {
     label: "Teens",
     items: [
@@ -129,6 +126,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/children", label: "Children" },
       { href: "/parent/rewards", label: "Rewards & Badges" },
       { href: "/parent/reminders", label: "Reminders" },
+      { href: "/make/shopping", label: "Shopping List" },
       { href: "/account", label: "Account" },
       { href: "/parent/help", label: "How-to guides" },
       { href: "/parent/feedback", label: "Help & feedback" },
@@ -346,15 +344,17 @@ export default function Navbar() {
     (href === "/moments?tab=trips" && onTrips) ||
     (pathname === href && !(href === "/moments" && onTrips)) ||
     (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
-    // A single recipe or craft, or the add/edit form, lights up the Make menu.
+    // A single recipe or craft, or the add/edit form, lights up the Saplings menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
   const showTeen = levels.some((l) => l === "teen" || l === "both");
-  const showYoung = levels.some((l) => l !== "teen");
+  const showYoung = levels.some((l) => l === "young" || l === "both");
+  const showLittle = levels.some((l) => l !== "teen");
 
   const visible = (link: NavLink) => {
     if (link.href.startsWith("/teens") && !showTeen) return false;
     if (YOUNG_PAGES.includes(link.href) && !showYoung) return false;
+    if (LITTLE_PAGES.includes(link.href) && !showLittle) return false;
     const rule = OPTIONAL_PAGES[link.href];
     // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
     return !rule || (subjects !== null && rule(subjects));

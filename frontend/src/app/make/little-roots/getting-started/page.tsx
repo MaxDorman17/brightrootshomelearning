@@ -109,7 +109,7 @@ export default function LittleRootsGettingStarted() {
               In <Link href="/parent/children" className="font-bold text-brand-sage underline">Children</Link>, add them and choose{" "}
               <b>Little Roots</b>. They don&apos;t need a login name or a password, because you do everything together from your
               own account. They still get their own planner, star jar and reports. When they&apos;re ready for their own login, edit
-              them, choose Younger and set a password.
+              them, choose Saplings and set a password.
             </p>
           </section>
 

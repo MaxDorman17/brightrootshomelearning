@@ -38,7 +38,7 @@ const featureGroups = [
     emoji: "📚",
     tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
-    items: ["Child dashboards", "Little Roots for ages 3 to 4", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
+    items: ["Child dashboards", "Little Roots for ages 3 to 4", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Saplings for ages 5 to 10", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
   },
   {
     name: "Progress",
@@ -407,7 +407,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]" style={{ background: C.sand }}>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Ages 5 to 10</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.earth }}>Saplings · ages 5 to 10</p>
                 <H2 className="mt-2">Learning, making and getting outside</H2>
                 <p className="mt-4 leading-7" style={{ color: C.earth }}>
                   Each child gets their own simple login and a dashboard showing today&apos;s learning. Lessons for every

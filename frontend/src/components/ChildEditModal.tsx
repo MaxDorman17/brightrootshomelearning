@@ -11,10 +11,10 @@ const label = "block text-sm font-semibold text-[#2E342F] mb-1.5";
 export type ActivityLevel = "little" | "young" | "teen" | "both";
 
 const LEVELS: { id: ActivityLevel; title: string; text: string }[] = [
-  { id: "little", title: "Little Roots", text: "Ages 3 to 4. No login: you do the story books together from your account" },
-  { id: "young", title: "Younger", text: "Cookbook, crafts, P.E., Outdoors and life skills for up to about 10" },
-  { id: "teen", title: "Teens", text: "The Teens menu: cooking, projects, P.E., outdoors and life skills for 11 to 16" },
-  { id: "both", title: "Both", text: "Show everything" },
+  { id: "little", title: "Little Roots", text: "Ages 3 to 4: story books you do together, with no login" },
+  { id: "young", title: "Saplings", text: "Ages 5 to 10: cookbook, crafts, P.E., Outdoors and life skills, with their own login" },
+  { id: "teen", title: "Teens", text: "Ages 11 to 16: the Teens menu with cooking, projects, P.E., outdoors, life skills and exams" },
+  { id: "both", title: "Everything", text: "Show every age group" },
 ];
 
 /** Which activity pages a child sees. A choice of pages, so nobody has to give a date of birth. */

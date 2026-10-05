@@ -194,7 +194,7 @@ def reset_child_password(
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")
     if child.activity_level == "little":
-        raise HTTPException(status_code=400, detail="Little Roots children don't log in. Change them to Younger first to give them a login.")
+        raise HTTPException(status_code=400, detail="Little Roots children don't log in. Change them to Saplings first to give them a login.")
 
     child.hashed_password = hash_password(body.new_password)
     child.session_version = (child.session_version or 1) + 1

@@ -74,7 +74,7 @@ export function inAgeBand(item: { age_from: number | null }, band: AgeBand | "")
 }
 
 /**
- * Who a page is for. The Make and Active menus show the younger activities; the Teens menu shows the
+ * Who a page is for. The Saplings menu shows the younger activities; the Teens menu shows the
  * 11 to 16 ones. Things marked "from age 10" suit both, so they appear in each.
  */
 export type Audience = "young" | "teen";
