@@ -50,3 +50,4 @@ teen-friendship-bracelets.jpg  https://images.unsplash.com/photo-1607013408726-c
 teen-clay-trinket-dish.jpg  https://images.unsplash.com/photo-1613989999943-115051d0aed8
 
 P.E. activity pictures (pe-*.jpg): illustrations made for Bright Roots by Max Dorman.
+Little Roots pictures (little-*.jpg): illustrations made for Bright Roots by Max Dorman.
