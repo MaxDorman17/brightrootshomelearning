@@ -11,8 +11,10 @@ import {
   getReviewedEntryIds,
   markEntryReviewed,
   markEntryUnreviewed,
+  getOakQuizResults,
+  refreshOakQuizResults,
 } from "@/lib/api";
-import { PlannerEntry, WorkFeedback, Child } from "@/types";
+import { PlannerEntry, WorkFeedback, Child, OakQuizResult } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
@@ -37,6 +39,26 @@ const subjectColor = (subj: string) => {
   return colors[subj] || "bg-[#F0ECE6] text-[#6E6256]";
 };
 
+// A child hands in an Oak lesson by pasting its results link. The quiz scores are read from that link.
+const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
+const oakShareUrl = (url?: string | null) => url?.match(OAK_SHARE_RE)?.[0];
+
+const percent = (score: number, total: number) => (total > 0 ? Math.round((score / total) * 100) : 0);
+// Green for a strong score, amber for middling, soft red for one worth going over again.
+const scoreColor = (score: number, total: number) => {
+  const p = percent(score, total);
+  return p >= 80 ? "bg-brand-tint text-brand-sage" : p >= 50 ? "bg-[#F8F0DA] text-[#8A6A22]" : "bg-[#FAE4DA] text-[#A85F46]";
+};
+
+function Fact({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <dt className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">{label}</dt>
+      <dd className="mt-0.5 text-sm font-semibold text-[#2E342F]">{children}</dd>
+    </div>
+  );
+}
+
 export default function ProgressPage() {
   const router = useRouter();
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
@@ -50,6 +72,27 @@ export default function ProgressPage() {
   const [reviewingEntryId, setReviewingEntryId] = useState<number | null>(null);
   const [page, setPage] = useState(0);
   const [subject, setSubject] = useState("");
+  // Which lesson has its details open, and the Oak quiz scores keyed by results link.
+  const [detailsOpen, setDetailsOpen] = useState<number | null>(null);
+  const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
+  const [checkingScores, setCheckingScores] = useState(false);
+
+  const loadQuizResults = () =>
+    getOakQuizResults()
+      .then(res => setQuizResults(Object.fromEntries((res.data as OakQuizResult[]).map(r => [r.url, r]))))
+      .catch(() => {});
+
+  const checkScores = async () => {
+    setCheckingScores(true);
+    try {
+      await refreshOakQuizResults();
+      await loadQuizResults();
+    } catch {
+      // Oak may be slow or down. The scores simply stay as they were.
+    } finally {
+      setCheckingScores(false);
+    }
+  };
 
   // Feedback form state
   const [feedbackOpen, setFeedbackOpen] = useState<number | null>(null);
@@ -66,6 +109,8 @@ export default function ProgressPage() {
     const entryParam = params.get("entry");
     const entryId = entryParam ? Number(entryParam) : null;
     if (entryId) setHighlightId(entryId);
+    if (entryId) setDetailsOpen(entryId);
+    loadQuizResults();
     Promise.all([getAllEntries(), getFeedback(), getChildren(), getReviewedEntryIds()]).then(([eRes, fRes, cRes, rRes]) => {
       const loadedEntries: PlannerEntry[] = eRes.data;
       const loadedFeedback: WorkFeedback[] = fRes.data;
@@ -344,6 +389,11 @@ export default function ProgressPage() {
                       const isOpen = feedbackOpen === entry.id;
                       const isReviewed = reviewedEntryIds.has(entry.id);
                       const needsReview = needsReviewFor(entry);
+                      const shareUrl = oakShareUrl(entry.completed_work_url);
+                      const quiz = shareUrl ? quizResults[shareUrl] : undefined;
+                      const hasStarter = quiz?.starter_score != null && quiz.starter_total != null;
+                      const hasExit = quiz?.exit_score != null && quiz.exit_total != null;
+                      const showDetails = detailsOpen === entry.id;
 
                       return (
                         <div
@@ -376,8 +426,25 @@ export default function ProgressPage() {
                                   <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#F0ECE6] text-[#8A7A69] font-semibold">Not done yet</span>
                                 )}
                               </div>
-                              <h3 className="mt-1.5 font-bold text-[#2E342F] leading-snug">{entry.lesson.title}</h3>
-                              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                              <h3 className="mt-1.5 font-bold text-[#2E342F] leading-snug">
+                                <button
+                                  type="button"
+                                  onClick={() => setDetailsOpen(showDetails ? null : entry.id)}
+                                  aria-expanded={showDetails}
+                                  aria-controls={`details-${entry.id}`}
+                                  title={showDetails ? "Hide the details" : "See scores, notes and details"}
+                                  className="group inline-flex items-start gap-1.5 text-left hover:text-brand-sage"
+                                >
+                                  <span className="group-hover:underline">{entry.lesson.title}</span>
+                                  <span aria-hidden className={`mt-0.5 shrink-0 text-xs text-brand-softsage transition-transform ${showDetails ? "rotate-180" : ""}`}>▾</span>
+                                </button>
+                              </h3>
+                              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                                {hasExit && (
+                                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${scoreColor(quiz!.exit_score!, quiz!.exit_total!)}`}>
+                                    Exit quiz {quiz!.exit_score}/{quiz!.exit_total}
+                                  </span>
+                                )}
                                 {entry.completed_work_url && (
                                   <a href={entry.completed_work_url} target="_blank" rel="noopener noreferrer" className="font-bold text-[#B07F1F] hover:underline">
                                     <Emoji e="📎" /> Their work
@@ -426,6 +493,78 @@ export default function ProgressPage() {
                               )}
                             </div>
                           </div>
+
+                          {showDetails && (
+                            <div id={`details-${entry.id}`} className="mt-3 rounded-2xl border border-brand-line bg-brand-cream p-4">
+                              <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4">
+                                <Fact label="Planned for">{format(parseISO(entry.scheduled_date), "EEE d MMM yyyy")}</Fact>
+                                <Fact label="Finished">
+                                  {entry.completed_at ? format(parseISO(entry.completed_at), "EEE d MMM, HH:mm") : entry.is_complete ? "Yes" : "Not done yet"}
+                                </Fact>
+                                <Fact label="Who">{childName(entry)}</Fact>
+                                <Fact label="Kind">
+                                  {entry.is_extra ? "Extra work" : "Planned lesson"}
+                                  {entry.lesson.duration_minutes ? `, ${entry.lesson.duration_minutes} min` : ""}
+                                </Fact>
+                              </dl>
+
+                              <div className="mt-4">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">Quiz scores</p>
+                                {hasStarter || hasExit ? (
+                                  <div className="mt-1.5 flex flex-wrap gap-2">
+                                    {hasStarter && (
+                                      <span className={`rounded-xl px-3 py-1.5 text-sm font-bold ${scoreColor(quiz!.starter_score!, quiz!.starter_total!)}`}>
+                                        Starter quiz: {quiz!.starter_score} out of {quiz!.starter_total} ({percent(quiz!.starter_score!, quiz!.starter_total!)}%)
+                                      </span>
+                                    )}
+                                    {hasExit && (
+                                      <span className={`rounded-xl px-3 py-1.5 text-sm font-bold ${scoreColor(quiz!.exit_score!, quiz!.exit_total!)}`}>
+                                        Exit quiz: {quiz!.exit_score} out of {quiz!.exit_total} ({percent(quiz!.exit_score!, quiz!.exit_total!)}%)
+                                      </span>
+                                    )}
+                                  </div>
+                                ) : shareUrl ? (
+                                  <p className="mt-1 text-sm text-[#6E5A46]">
+                                    The scores haven&apos;t been collected from Oak yet.{" "}
+                                    <button onClick={checkScores} disabled={checkingScores} className="font-bold text-brand-sage underline disabled:opacity-50">
+                                      {checkingScores ? "Checking..." : "Check now"}
+                                    </button>
+                                  </p>
+                                ) : (
+                                  <p className="mt-1 text-sm text-[#6E5A46]">
+                                    {entry.completed_work_url
+                                      ? "No quiz scores for this one. Scores appear when the work handed in is an Oak results link."
+                                      : "No quiz scores, because no work has been handed in for this lesson."}
+                                  </p>
+                                )}
+                              </div>
+
+                              {(entry.lesson.objectives || entry.lesson.description) && (
+                                <div className="mt-4">
+                                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">About the lesson</p>
+                                  <p className="mt-1 whitespace-pre-line text-sm text-[#4A3B2C]">
+                                    {(entry.lesson.objectives || entry.lesson.description || "").slice(0, 600)}
+                                  </p>
+                                </div>
+                              )}
+
+                              <div className="mt-4 flex flex-wrap gap-2 text-sm">
+                                {entry.completed_work_url && (
+                                  <a href={entry.completed_work_url} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-[#E3CF9E] bg-[#FBF4E2] px-3 py-1.5 font-bold text-[#8A6A22] hover:bg-[#F8EDD0]">
+                                    <Emoji e="📎" /> Open their work
+                                  </a>
+                                )}
+                                {entry.lesson.lesson_url && (
+                                  <a href={entry.lesson.lesson_url} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-[#D8D1C4] bg-brand-white px-3 py-1.5 font-bold text-brand-sage hover:border-brand-softsage">
+                                    Open the lesson
+                                  </a>
+                                )}
+                              </div>
+                              {!entry.completed_note && entryFeedback.length === 0 && (
+                                <p className="mt-3 text-xs text-[#8A7A69]">No note from your child and no feedback from you yet.</p>
+                              )}
+                            </div>
+                          )}
 
                           {entry.completed_note && (
                             <p className="mt-3 rounded-xl bg-brand-cream border border-brand-line px-3 py-2 text-sm text-[#6E5A46]">
