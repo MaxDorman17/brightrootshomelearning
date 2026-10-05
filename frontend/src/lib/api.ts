@@ -315,6 +315,7 @@ export const getReadingChapterSummary = (params?: { child_id?: number; start_dat
   api.get("/api/reading/chapter-summary", { params: params ?? {} });
 
 // Reading Worksheets
+export const setWorksheetDone = (id: number, done: boolean) => api.put(`/api/reading/worksheets/${id}/done`, { done });
 export const getWorksheets = () => api.get("/api/reading/worksheets");
 export const addWorksheet = (bookId: number, data: { title: string; url: string }) =>
   api.post(`/api/reading/${bookId}/worksheets`, data);

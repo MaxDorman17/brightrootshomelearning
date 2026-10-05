@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, downloadReadingFile, getChildren } from "@/lib/api";
+import { getBooks, addBook, updateBook, deleteBook, getWorksheets, addWorksheet, uploadWorksheet, deleteWorksheet, setWorksheetDone, downloadReadingFile, getChildren } from "@/lib/api";
 import { ReadingLogBook, ReadingWorksheet, Child } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -268,6 +268,18 @@ export default function ReadingLogPage() {
   const handleDeleteWorksheet = async (id: number) => {
     await deleteWorksheet(id);
     setWorksheets(prev => prev.filter(w => w.id !== id));
+  };
+
+  const handleWorksheetDone = async (ws: ReadingWorksheet, done: boolean) => {
+    // Show the tick straight away, and put it back if saving fails.
+    const before = ws.completed_at;
+    setWorksheets(prev => prev.map(w => (w.id === ws.id ? { ...w, completed_at: done ? new Date().toISOString() : null } : w)));
+    try {
+      const res = await setWorksheetDone(ws.id, done);
+      setWorksheets(prev => prev.map(w => (w.id === ws.id ? res.data : w)));
+    } catch {
+      setWorksheets(prev => prev.map(w => (w.id === ws.id ? { ...w, completed_at: before } : w)));
+    }
   };
 
   const handleDownloadWorksheet = async (ws: ReadingWorksheet) => {
@@ -733,10 +745,18 @@ export default function ReadingLogPage() {
                             <div className="space-y-1.5">
                               {bookWs.map(ws => (
                                 <div key={ws.id} className="flex items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!ws.completed_at}
+                                    onChange={(e) => handleWorksheetDone(ws, e.target.checked)}
+                                    aria-label={`${ws.title}: done`}
+                                    title={ws.completed_at ? "Done. Untick if it isn't finished." : "Tick when this worksheet is done"}
+                                    className="h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 accent-[#2F5D3A]"
+                                  />
                                   {ws.url.startsWith("/api/reading/files/") ? (
                                     <button
                                       onClick={() => handleDownloadWorksheet(ws)}
-                                      className="flex-1 text-left text-sm font-semibold text-brand-leaf hover:text-brand-deep hover:underline truncate"
+                                      className={`flex-1 text-left text-sm font-semibold hover:text-brand-deep hover:underline truncate ${ws.completed_at ? "text-gray-400 line-through" : "text-brand-leaf"}`}
                                     >
                                       📥 {ws.title}
                                     </button>
@@ -745,10 +765,15 @@ export default function ReadingLogPage() {
                                       href={ws.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex-1 text-sm font-semibold text-brand-leaf hover:text-brand-deep hover:underline truncate"
+                                      className={`flex-1 text-sm font-semibold hover:text-brand-deep hover:underline truncate ${ws.completed_at ? "text-gray-400 line-through" : "text-brand-leaf"}`}
                                     >
                                       📄 {ws.title}
                                     </a>
+                                  )}
+                                  {ws.completed_at && (
+                                    <span className="shrink-0 text-xs font-bold text-brand-sage">
+                                      Done {new Date(ws.completed_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                                    </span>
                                   )}
                                   {isParent && (
                                     <button

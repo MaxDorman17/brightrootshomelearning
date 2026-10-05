@@ -204,6 +204,8 @@ class ReadingWorksheet(Base):
     title = Column(String(255), nullable=False)
     url = Column(String(512), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    # When the worksheet was ticked as done, by the child or a grown-up. Empty means not done yet.
+    completed_at = Column(DateTime(timezone=True), nullable=True)
 
 
 class PlannerCompletion(Base):

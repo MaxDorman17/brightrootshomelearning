@@ -100,6 +100,12 @@ def run_migrations():
                 if column_name not in existing_cols:
                     conn.execute(text(statement))
             conn.commit()
+    if "reading_worksheets" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("reading_worksheets")]
+        if "completed_at" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE reading_worksheets ADD COLUMN completed_at DATETIME"))
+                conn.commit()
     if "reading_log" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_log")]
         reading_columns = {

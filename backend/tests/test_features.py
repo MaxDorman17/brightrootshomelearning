@@ -158,3 +158,25 @@ def test_plan_a_life_skill_as_a_lesson(family):
     assert planned.status_code == 201, planned.text
     today = family.child_client(child).get("/api/planner/today").json()
     assert today and today[0]["lesson"]["subject"] == "Life Skills"
+
+
+def test_a_reading_worksheet_can_be_ticked_done_by_the_child_or_parent(family):
+    child = family.add_child("Reader")
+    other = sign_up("Other Family")
+    book = family.parent.post("/api/reading/", json={"title": "The Iron Man", "status": "reading", "child_id": child["id"]})
+    assert book.status_code in (200, 201), book.text
+    ws = family.parent.post(f"/api/reading/{book.json()['id']}/worksheets", json={"title": "Chapter 1 questions", "url": "https://example.test/ws"}).json()
+    assert ws["completed_at"] is None
+
+    kid = family.child_client(child)
+    done = kid.put(f"/api/reading/worksheets/{ws['id']}/done", json={"done": True})
+    assert done.status_code == 200 and done.json()["completed_at"]
+    first = done.json()["completed_at"]
+    # Ticking again keeps the day it was first done; it shows for the parent too.
+    assert kid.put(f"/api/reading/worksheets/{ws['id']}/done", json={"done": True}).json()["completed_at"] == first
+    assert [w["completed_at"] for w in family.parent.get("/api/reading/worksheets").json() if w["id"] == ws["id"]] == [first]
+
+    # A grown-up can untick it, and another family can't touch it.
+    assert family.parent.put(f"/api/reading/worksheets/{ws['id']}/done", json={"done": False}).json()["completed_at"] is None
+    assert other.parent.put(f"/api/reading/worksheets/{ws['id']}/done", json={"done": True}).status_code == 404
+    assert new_client().put(f"/api/reading/worksheets/{ws['id']}/done", json={"done": True}).status_code == 401

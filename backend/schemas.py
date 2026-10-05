@@ -346,9 +346,14 @@ class ReadingWorksheetOut(BaseModel):
     title: str
     url: str
     created_at: datetime
+    completed_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
+
+
+class ReadingWorksheetDone(BaseModel):
+    done: bool
 
 
 class ReadingLogCreate(BaseModel):

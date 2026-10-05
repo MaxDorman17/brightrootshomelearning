@@ -116,6 +116,7 @@ export interface ReadingWorksheet {
   title: string;
   url: string;
   created_at: string;
+  completed_at: string | null;
 }
 
 export interface ReadingLogBook {

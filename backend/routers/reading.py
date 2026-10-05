@@ -9,7 +9,7 @@ import uuid
 from database import get_db
 from models import ReadingLog, ReadingWorksheet, ReadingChapterProgress, User
 from storage import upload_dir
-from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut
+from schemas import ReadingLogCreate, ReadingLogUpdate, ReadingLogOut, ReadingWorksheetCreate, ReadingWorksheetOut, ReadingWorksheetDone
 from auth import get_current_user, require_parent
 
 router = APIRouter(prefix="/api/reading", tags=["reading"])
@@ -316,6 +316,31 @@ def add_worksheet(
         raise HTTPException(status_code=404, detail="Book not found")
     ws = ReadingWorksheet(book_id=book_id, title=body.title.strip(), url=body.url.strip())
     db.add(ws)
+    db.commit()
+    db.refresh(ws)
+    return ws
+
+
+@router.put("/worksheets/{worksheet_id}/done", response_model=ReadingWorksheetOut)
+def set_worksheet_done(
+    worksheet_id: int,
+    body: ReadingWorksheetDone,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Tick a worksheet as done, or untick it. The child it belongs to can, and so can their grown-ups."""
+    ws = (
+        db.query(ReadingWorksheet)
+        .join(ReadingLog, ReadingWorksheet.book_id == ReadingLog.id)
+        .filter(ReadingWorksheet.id == worksheet_id, _family_book_filter(current_user))
+        .first()
+    )
+    if not ws:
+        raise HTTPException(status_code=404, detail="Worksheet not found")
+    if body.done and not ws.completed_at:
+        ws.completed_at = datetime.utcnow()
+    elif not body.done:
+        ws.completed_at = None
     db.commit()
     db.refresh(ws)
     return ws
