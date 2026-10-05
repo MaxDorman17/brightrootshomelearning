@@ -9,6 +9,8 @@ import ComicPicture from "@/components/comics/ComicPicture";
 import { COMICS } from "@/lib/comics";
 import { isAuthenticated } from "@/lib/auth";
 import { comic as comicFont } from "@/lib/fonts";
+import { isNew } from "@/lib/newContent";
+import NewEveryMonth, { NewBadge } from "@/components/NewEveryMonth";
 
 /** Saplings comics: ten heroes, each with a short comic that teaches one thing. */
 export default function ComicsPage() {
@@ -27,6 +29,7 @@ export default function ComicsPage() {
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             Meet ten heroes who make learning fun. Read a comic together, then try the quick quiz and something to do at home.
           </p>
+          <NewEveryMonth what="comic" />
         </PageHero>
 
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -39,7 +42,10 @@ export default function ComicsPage() {
               <div className="px-3 py-1.5 text-white" style={{ background: c.color }}>
                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-90">{c.subject}</p>
               </div>
-              <ComicPicture comic={c} className="aspect-[4/5] w-full" />
+              <div className="relative">
+                <ComicPicture comic={c} className="aspect-[4/5] w-full" />
+                {isNew(c.slug) && <NewBadge className="absolute right-2 top-2" />}
+              </div>
               <div className="border-t-[3px] border-brand-charcoal p-3">
                 <p className={`${comicFont.className} text-xl leading-tight tracking-wide`} style={{ color: c.color }}>
                   {c.hero.name}

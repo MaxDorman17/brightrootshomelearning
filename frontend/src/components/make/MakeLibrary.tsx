@@ -10,6 +10,8 @@ import { getRole, isAuthenticated } from "@/lib/auth";
 import { AGE_BANDS, AgeBand, Audience, inAgeBand, inAudience, KIND_FAMILY, KIND_INFO, MakePhoto, MakeSummary, MetaChips, TEEN_TABS } from "./common";
 import Emoji, { EmojiText } from "@/components/Emoji";
 import LittleWeek from "./LittleWeek";
+import NewEveryMonth, { NewBadge } from "@/components/NewEveryMonth";
+import { isNew } from "@/lib/newContent";
 
 /**
  * The Cookbook, Craft Corner, P.E. or Outdoors: browse, search and filter.
@@ -186,6 +188,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           </div>
         </div>
 
+        {little && <NewEveryMonth what="Little Roots story book" />}
         {little && role === "parent" && <LittleWeek />}
 
         {!teen && !little && (
@@ -251,6 +254,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                       ❤️ {role === "child" ? "On my wish list" : item.wished_by.join(", ")}
                     </span>
                   )}
+                  {little && isNew(item.slug) && <NewBadge className="absolute bottom-2 right-2" />}
                   {item.is_own && (
                     <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs font-extrabold text-brand-sage">
                       🏠 Our own
