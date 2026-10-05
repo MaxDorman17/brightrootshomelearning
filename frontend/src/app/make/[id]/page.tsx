@@ -129,7 +129,7 @@ export default function MakeItemPage() {
           <div className="lg:col-span-3">
             {item.category && <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{item.category}</p>}
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-              {item.emoji} {item.title}
+              <Emoji e={item.emoji} /> {item.title}
             </h1>
             {item.summary && <p className="mt-2 text-brand-earth/80">{item.summary}</p>}
             <div className="mt-3">

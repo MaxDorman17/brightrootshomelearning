@@ -23,7 +23,7 @@ def _little(slug, title, emoji, category, minutes, summary, materials, steps, ta
 
 LITTLE_ROOTS = [
     _little(
-        "little-teddys-tea-party", "Teddy's tea party", "🧸", MATHS, 15,
+        "little-teddys-tea-party", "Teddy's tea party", "🍪", MATHS, 15,
         "Lay a tea party for the soft toys and share things out: one for you, one for you.",
         [("3", "soft toys"), ("3", "plastic cups or bowls"), ("3", "spoons"),
          ("a small tub of", "dry cereal pieces or crackers broken into bits"), ("1", "tea towel for a tablecloth")],
@@ -41,7 +41,7 @@ LITTLE_ROOTS = [
         "Check for allergies if anyone else joins in.",
     ),
     _little(
-        "little-mystery-bag", "The mystery bag", "👜", SOUNDS, 10,
+        "little-mystery-bag", "The mystery bag", "🎁", SOUNDS, 10,
         "Feel a hidden object, guess what it is, then hear the sound its name starts with.",
         [("1", "pillowcase or cloth bag"),
          ("5", "familiar things that start with a clear sound, e.g. a sock, spoon, teddy, cup and brush")],
@@ -61,7 +61,7 @@ LITTLE_ROOTS = [
         "put it over their head.",
     ),
     _little(
-        "little-animal-moves", "Animal moves", "🐸", MOVING, 15,
+        "little-animal-moves", "Animal moves", "🐱", MOVING, 15,
         "Hop like a frog, waddle like a penguin and freeze like a statue when the music stops.",
         [("", "a clear space indoors or outside"), ("", "music on a phone (optional)")],
         ["Clear a space together and check the floor. Bare feet are best on a slippy floor.",
