@@ -219,3 +219,40 @@ body {
     background: #fff !important;
   }
 }
+
+/* Little Roots story book: a gentle page turn */
+.storybook-page {
+  transform-origin: left center;
+}
+.storybook-next {
+  animation: storybook-next 0.45s ease-out;
+}
+.storybook-back {
+  animation: storybook-back 0.45s ease-out;
+}
+@keyframes storybook-next {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) translateX(24px) rotateY(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes storybook-back {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) translateX(-24px) rotateY(10deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .storybook-next,
+  .storybook-back {
+    animation: none;
+  }
+}

@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Navbar from "@/components/Navbar";
 import CookAlong from "@/components/make/CookAlong";
+import StoryBook from "@/components/make/StoryBook";
 import { errorText, KIND_INFO, listPathFor, MakeDetail, MakePhoto, MetaChips, TEEN_TABS } from "@/components/make/common";
 import {
   addItemToShopping,
@@ -303,7 +304,17 @@ export default function MakeItemPage() {
         </div>
       </div>
 
-      {cooking && (
+      {cooking && item.kind === "little" && (
+        <StoryBook
+          item={item}
+          onClose={() => setCooking(false)}
+          onFinish={() => {
+            setCooking(false);
+            setModal("made");
+          }}
+        />
+      )}
+      {cooking && item.kind !== "little" && (
         <CookAlong
           item={item}
           onClose={() => setCooking(false)}
