@@ -15,9 +15,11 @@ CREATING = "Creating"
 WORLD = "The world around us"
 
 
-def _little(slug, title, emoji, category, minutes, summary, materials, steps, talk, more, easier, safety):
+def _little(slug, title, emoji, category, minutes, summary, materials, steps, talk, more, easier, safety, story):
+    """`story` is read aloud in the story book: an opening, one line for each step, then an ending."""
+    assert len(story) == len(steps) + 2, slug
     data = _item("little", slug, title, emoji, category, minutes, "easy", 3, None, summary, materials, steps, safety)
-    data.update({"talk": talk, "more": more, "easier": easier})
+    data.update({"talk": talk, "more": more, "easier": easier, "story": story})
     return data
 
 
@@ -39,6 +41,13 @@ LITTLE_ROOTS = [
         "Just lay the table together and say \"one each\" as you go. That's the whole skill.",
         "Stay with them while there's food out. No whole nuts, popcorn, whole grapes or hard sweets for under 5s. "
         "Check for allergies if anyone else joins in.",
+        ["It was a sunny morning, and Teddy had a big idea. \"Let's have a tea party!\" he said. \"But who will help me get ready?\"",
+         "Teddy needs a tablecloth and some friends. Who is coming to the party today?",
+         "Everybody needs a cup and a spoon. One for Teddy, one for Bunny, one for Duck. Has everyone got one?",
+         "Snack time! Teddy shares them out very carefully, so nobody is left out.",
+         "Teddy counts his snacks: one, two, three. How many have his friends got?",
+         "Oh no! Duck looks sad. Duck hasn't got any! Can you help Teddy make it fair?",
+         "Everybody had the same, and everybody was happy. \"Thank you for helping,\" said Teddy. \"That was the best tea party ever!\""],
     ),
     _little(
         "little-mystery-bag", "The mystery bag", "🎁", SOUNDS, 10,
@@ -59,6 +68,13 @@ LITTLE_ROOTS = [
         "Only use things bigger than a toilet roll tube is wide, so nothing can be swallowed. No coins, button "
         "batteries, magnets, balloons or anything sharp. Keep the bag out of reach afterwards and don't let them "
         "put it over their head.",
+        ["Deep in the cupboard lived a magic bag. Nobody knew what was inside it. Shall we find out?",
+         "Shh! Close your eyes. The magic bag is filling up with surprises.",
+         "Put your hand in, slowly, slowly. What can you feel? Is it soft? Is it bumpy?",
+         "Out it comes! Let's say its name slowly, like a snake: sssss-ock!",
+         "Say it with me! Then put it in the line, all in a row.",
+         "Look at everything the magic bag gave us! Let's say them all together.",
+         "The magic bag is empty now. \"Thank you for playing,\" it whispered. \"Fill me up again another day!\""],
     ),
     _little(
         "little-animal-moves", "Animal moves", "🐱", MOVING, 15,
@@ -79,5 +95,11 @@ LITTLE_ROOTS = [
         "Just play Freeze with any wiggly dancing. Stopping on a signal is the skill.",
         "Move furniture with sharp corners out of the way, and keep away from stairs, fireplaces and open doors. "
         "Bare feet or grippy socks, not plain socks on hard floors. Under the table only if it's sturdy.",
+        ["Far away in the jungle, the animals were having a party. Everyone was invited, even you!",
+         "The animals need lots of room to play. Is the floor all clear? Off we go!",
+         "Can you hop like a frog? Stomp like a bear? Stand on one leg like a flamingo?",
+         "When the music stops... freeze! Don't move a whisker!",
+         "All that dancing made the animals sleepy. Curl up like a cat and breathe slowly, in and out.",
+         "Shh, the jungle is quiet now. Every animal had a wonderful time. Goodnight, little animals!"],
     ),
 ]

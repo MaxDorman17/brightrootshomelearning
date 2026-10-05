@@ -90,7 +90,7 @@ def run_migrations():
     if "make_items" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("make_items")]
         with engine.connect() as conn:
-            for column_name in ("talk", "more", "easier"):
+            for column_name in ("talk", "more", "easier", "story"):
                 if column_name not in existing_cols:
                     conn.execute(text(f"ALTER TABLE make_items ADD COLUMN {column_name} TEXT"))
             conn.commit()

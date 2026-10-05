@@ -30,6 +30,8 @@ export type MakeDetail = MakeSummary & {
   talk: string[];
   more: string | null;
   easier: string | null;
+  // The story book's words: an opening, one line per step, then an ending
+  story: string[];
 };
 
 export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: string; materials: string; subject: string; tint: string }> = {

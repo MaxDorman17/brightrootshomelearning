@@ -43,6 +43,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
   const [talk, setTalk] = useState("");
   const [more, setMore] = useState("");
   const [easier, setEasier] = useState("");
+  const [story, setStory] = useState("");
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [removePhoto, setRemovePhoto] = useState(false);
@@ -77,6 +78,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
         setTalk((d.talk || []).join("\n"));
         setMore(d.more || "");
         setEasier(d.easier || "");
+        setStory((d.story || []).join("\n"));
         setHasPhoto(d.has_photo);
         setLoaded(true);
       })
@@ -105,6 +107,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
       talk: kind === "little" ? talk.split("\n").map((t) => t.trim()).filter(Boolean) : [],
       more: kind === "little" ? more || null : null,
       easier: kind === "little" ? easier || null : null,
+      story: kind === "little" ? story.split("\n").map((t) => t.trim()).filter(Boolean) : [],
     };
     try {
       const res = id ? await updateMakeItem(id, body) : await addMakeItem(body);
@@ -299,6 +302,13 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
             <div>
               <label className={label}>If it&apos;s not a good day</label>
               <textarea value={easier} onChange={(e) => setEasier(e.target.value)} rows={2} maxLength={1000} className={input} placeholder="A simpler version for tired days" />
+            </div>
+            <div>
+              <label className={label}>Story for the story book (optional)</label>
+              <p className="mb-1.5 text-xs text-brand-earth/70">
+                One line per page. The first line opens the story, the last line ends it, and the lines in between go with each step in order.
+              </p>
+              <textarea value={story} onChange={(e) => setStory(e.target.value)} rows={5} className={input} placeholder={"Once upon a time...\nA line for step 1\nA line for step 2\n...and they all lived happily ever after."} />
             </div>
           </div>
         )}

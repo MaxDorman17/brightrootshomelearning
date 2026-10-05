@@ -56,6 +56,7 @@ class ItemIn(BaseModel):
     talk: list[str] = []
     more: Optional[str] = None
     easier: Optional[str] = None
+    story: list[str] = []
 
     @field_validator("kind")
     @classmethod
@@ -98,6 +99,11 @@ class ItemIn(BaseModel):
     @classmethod
     def valid_talk(cls, v: list[str]) -> list[str]:
         return [t.strip()[:300] for t in v if t.strip()][:12]
+
+    @field_validator("story")
+    @classmethod
+    def valid_story(cls, v: list[str]) -> list[str]:
+        return [t.strip()[:500] for t in v if t.strip()][:42]
 
 
 class PlanIn(BaseModel):
@@ -191,6 +197,7 @@ def _out(item: MakeItem, wished_by: list[str], full: bool = True) -> dict:
             "talk": _loads(item.talk),
             "more": item.more,
             "easier": item.easier,
+            "story": _loads(item.story),
         })
     else:
         data["material_count"] = len(_loads(item.materials))
@@ -213,6 +220,7 @@ def _fill(item: MakeItem, body: ItemIn) -> None:
     item.talk = json.dumps(body.talk) if body.talk else None
     item.more = (body.more or "").strip()[:1000] or None
     item.easier = (body.easier or "").strip()[:1000] or None
+    item.story = json.dumps(body.story) if body.story else None
 
 
 def _photo_path(name: str) -> str:
@@ -273,7 +281,7 @@ def copy_item(item_id: int, db: Session = Depends(get_db), current_user: User = 
         parent_id=current_user.id, kind=src.kind, title=src.title, emoji=src.emoji, summary=src.summary,
         category=src.category, minutes=src.minutes, difficulty=src.difficulty, age_from=src.age_from,
         serves=src.serves, materials=src.materials, steps=src.steps, tips=src.tips,
-        talk=src.talk, more=src.more, easier=src.easier,
+        talk=src.talk, more=src.more, easier=src.easier, story=src.story,
     )
     db.add(item)
     db.commit()

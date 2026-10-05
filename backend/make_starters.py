@@ -349,7 +349,7 @@ def seed_starters(db: Session) -> None:
             item = MakeItem(slug=data["slug"], parent_id=None)
             db.add(item)
         for key, value in data.items():
-            if key in ("materials", "steps", "talk"):
+            if key in ("materials", "steps", "talk", "story"):
                 value = json.dumps(value)
             setattr(item, key, value)
     db.commit()

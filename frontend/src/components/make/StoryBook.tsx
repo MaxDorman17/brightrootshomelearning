@@ -7,8 +7,10 @@ import Emoji from "@/components/Emoji";
 
 type Page =
   | { kind: "cover" }
+  | { kind: "opening" }
   | { kind: "need" }
   | { kind: "step"; index: number; talk: string | null }
+  | { kind: "chat" }
   | { kind: "more" }
   | { kind: "end" };
 
@@ -30,10 +32,17 @@ function talkForSteps(steps: number, talk: string[]): (string | null)[] {
  */
 export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetail; onClose: () => void; onFinish: () => void }) {
   const talk = talkForSteps(item.steps.length, item.talk || []);
+  // The story: first line opens the book, last line ends it, the ones between go with each step.
+  const story = item.story || [];
+  const opening = story.length >= 2 ? story[0] : null;
+  const ending = story.length >= 2 ? story[story.length - 1] : null;
+  const storyFor = (i: number) => (story.length >= 3 ? story[1 + i] ?? null : null);
   const pages: Page[] = [
     { kind: "cover" },
+    ...(opening ? [{ kind: "opening" } as Page] : []),
     ...(item.materials.length || item.tips ? [{ kind: "need" } as Page] : []),
     ...item.steps.map((_, i) => ({ kind: "step", index: i, talk: talk[i] }) as Page),
+    { kind: "chat" },
     ...(item.more || item.easier ? [{ kind: "more" } as Page] : []),
     { kind: "end" },
   ];
@@ -117,6 +126,16 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
                 </button>
               </div>
             </>
+          ) : page.kind === "opening" ? (
+            <>
+              <div className="flex items-center justify-center p-6 md:p-10">
+                <MakePhoto item={item} className="aspect-square w-full max-w-xs rounded-2xl md:max-w-sm" />
+              </div>
+              <div className="flex flex-col justify-center p-7 md:p-12">
+                <p className={`${serif.className} text-[clamp(56px,7vw,88px)] font-semibold leading-none text-[#C9B27E]`}>&ldquo;</p>
+                <p className={`${reading} -mt-4`}>{opening}</p>
+              </div>
+            </>
           ) : page.kind === "need" ? (
             <>
               <div className="p-7 md:p-12">
@@ -158,7 +177,18 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
             <>
               <div className="flex flex-col justify-center p-7 md:p-12">
                 <p className={`${serif.className} text-[clamp(64px,9vw,110px)] font-semibold leading-none text-[#D9C9A3]`}>{page.index + 1}</p>
-                <p className={`${reading} mt-3`}>{item.steps[page.index].text}</p>
+                {storyFor(page.index) ? (
+                  <>
+                    {/* The story line is read aloud to the child; the step underneath is for the grown-up. */}
+                    <p className={`${reading} mt-3`}>{storyFor(page.index)}</p>
+                    <div className="mt-6 rounded-2xl bg-white/70 px-5 py-4">
+                      <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-brand-softsage">For the grown-up</p>
+                      <p className="mt-1 text-base leading-relaxed text-brand-charcoal">{item.steps[page.index].text}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p className={`${reading} mt-3`}>{item.steps[page.index].text}</p>
+                )}
               </div>
               <div className="flex flex-col items-center justify-center gap-6 p-7 md:p-12">
                 {page.talk ? (
@@ -175,6 +205,22 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
                     <Emoji e="🧑" /> Grown-up job
                   </span>
                 )}
+              </div>
+            </>
+          ) : page.kind === "chat" ? (
+            <>
+              <div className="flex flex-col justify-center p-7 md:p-12">
+                <h2 className={`${title} text-[clamp(28px,3.2vw,40px)]`}>
+                  <Emoji e="💬" /> Let&apos;s talk about it
+                </h2>
+                <p className={`${reading} mt-4 !text-[clamp(20px,2.6vw,28px)]`}>Snuggle up and remember what you did together.</p>
+              </div>
+              <div className="flex flex-col justify-center gap-4 p-7 md:p-12">
+                {["What was your favourite part?", "What was a bit tricky?", "What shall we do next time?"].map((q) => (
+                  <div key={q} className="rounded-[28px] bg-[#EAF0E4] px-6 py-4">
+                    <p className={`${hand.className} text-[clamp(24px,2.8vw,32px)] leading-tight text-[#24452C]`}>&ldquo;{q}&rdquo;</p>
+                  </div>
+                ))}
               </div>
             </>
           ) : page.kind === "more" ? (
@@ -202,6 +248,7 @@ export default function StoryBook({ item, onClose, onFinish }: { item: MakeDetai
             </>
           ) : (
             <div className="flex flex-col items-center justify-center p-8 text-center md:col-span-2 md:p-12">
+              {ending && <p className={`${reading} mb-6 max-w-2xl`}>{ending}</p>}
               <h2 className={`${title} text-[clamp(48px,7vw,84px)] italic`}>The End</h2>
               <p className={`${hand.className} mt-2 text-[clamp(24px,3vw,34px)] text-brand-earth`}>You did it together! Tap the stars.</p>
               <div className="mt-6 flex gap-2 sm:gap-4">

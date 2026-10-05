@@ -646,6 +646,7 @@ class MakeItem(Base):
     talk = Column(Text, nullable=True)  # JSON ["What can you feel?", ...]: things to say or ask
     more = Column(Text, nullable=True)  # "If they're ready for more"
     easier = Column(Text, nullable=True)  # "If it's not a good day"
+    story = Column(Text, nullable=True)  # JSON [opening, one line per step..., ending] for the story book
     photo = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

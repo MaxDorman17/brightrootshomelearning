@@ -453,6 +453,7 @@ export type MakeItemBody = {
   talk?: string[];
   more?: string | null;
   easier?: string | null;
+  story?: string[];
 };
 export const getMakeItems = (kind?: MakeKind) => api.get("/api/make/items", { params: kind ? { kind } : {} });
 export const getMakeItem = (id: number) => api.get(`/api/make/items/${id}`);

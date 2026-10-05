@@ -167,10 +167,12 @@ def test_little_roots_cards_carry_talk_and_next_steps(family):
     assert len(items) >= 3 and all(i["age_from"] == 3 for i in items)
     detail = family.parent.get(f"/api/make/items/{items[0]['id']}").json()
     assert detail["talk"] and detail["more"] and detail["easier"] and detail["tips"]
+    # The story book has an opening, a line for each step and an ending.
+    assert len(detail["story"]) == len(detail["steps"]) + 2
 
     # A family's own copy keeps the extra parts and can change them.
     copy = family.parent.post(f"/api/make/items/{detail['id']}/copy").json()
-    assert copy["talk"] == detail["talk"] and copy["more"] == detail["more"]
+    assert copy["talk"] == detail["talk"] and copy["more"] == detail["more"] and copy["story"] == detail["story"]
     body = {k: copy[k] for k in ("kind", "title", "materials", "steps", "tips", "more", "easier")}
     body["talk"] = ["  What colour is it?  ", ""]
     changed = family.parent.put(f"/api/make/items/{copy['id']}", json=body).json()
