@@ -18,7 +18,9 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
   const router = useRouter();
   const info = KIND_INFO[kind];
   const teen = audience === "teen";
-  const teenTab = TEEN_TABS.find((t) => t.kind === kind)!;
+  // Little Roots (ages 3 to 4) has no teen version.
+  const little = kind === "little";
+  const teenTab = TEEN_TABS.find((t) => t.kind === kind);
   const [role, setRole] = useState("");
   const [items, setItems] = useState<MakeSummary[] | null>(null);
   const [search, setSearch] = useState("");
@@ -35,7 +37,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
       return;
     }
     const fromUrl = new URLSearchParams(window.location.search).get("age");
-    if (fromUrl === "teen" && !teen) {
+    if (fromUrl === "teen" && !teen && teenTab) {
       // Older links: the teen activities now have their own pages.
       router.replace(teenTab.path);
       return;
@@ -51,7 +53,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
         .then((res) => setShopCount(res.data.count))
         .catch(() => {});
     }
-  }, [kind, router, audience, teen, teenTab.path]);
+  }, [kind, router, audience, teen, teenTab]);
 
   const categories = useMemo(
     () =>
@@ -89,13 +91,13 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
       <Navbar />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <PageHero
-          art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies", life: "account" }[kind]}
-          tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0, life: 3 }[kind]}
+          art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies", life: "account", little: "children" }[kind]}
+          tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0, life: 3, little: 2 }[kind]}
         >
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : "Make together"}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : little ? "Ages 3 to 4 · with a grown-up" : "Make together"}</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
-              {teen ? teenTab.name : info.name}
+              {teen && teenTab ? teenTab.name : info.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
               {teen
@@ -105,7 +107,10 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                     pe: "Training you can plan and track yourself: running, circuits, sport skills and your own workout plan.",
                     outdoor: "Map reading, bushcraft, photography and leading a hike. Skills for getting out on your own.",
                     life: "The everyday jobs nobody teaches you: washing, ironing, wiring a plug, budgeting, first aid and getting about on your own.",
+                    little: "",
                   }[kind]
+                : little
+                ? "Short, playful activities to do together in 10 to 15 minutes, with things you already have at home. Each one has what to say, an idea for more, and an easier version for tired days."
                 : kind === "recipe"
                 ? "Simple recipes to cook together, with steps children can follow and jobs marked for grown-ups."
                 : kind === "pe"
@@ -138,7 +143,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                   </Link>
                 ))}
               </>
-            ) : (
+            ) : little ? null : (
               <>
                 {KIND_FAMILY[kind].map((k) => (
                   <Link
@@ -150,11 +155,11 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
                       (k === kind ? "bg-brand-charcoal text-white" : "bg-brand-cream text-brand-earth hover:bg-brand-tint")
                     }
                   >
-                    <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors", life: "🧺 Life skills" }[k]} />
+                    <EmojiText text={{ recipe: "🍳 Cookbook", craft: "🎨 Craft Corner", pe: "🏃 P.E.", outdoor: "🌳 Outdoors", life: "🧺 Life skills", little: "🌱 Little Roots" }[k]} />
                   </Link>
                 ))}
                 {/* The 11 to 16 version of this page */}
-                <Link href={teenTab.path} className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
+                <Link href={teenTab?.path || "/teens"} className="rounded-xl bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100">
                   <Emoji e="🚀" /> For teens
                 </Link>
               </>
@@ -176,7 +181,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           </div>
         </div>
 
-        {!teen && (
+        {!teen && !little && (
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="text-xs font-extrabold uppercase tracking-wider text-brand-earth/60">Age</span>
             <button onClick={() => chooseAge("")} className={chip(!age)}>
@@ -194,7 +199,7 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={{ recipe: "Search recipes, e.g. muffins", craft: "Search crafts, e.g. paper", pe: "Search activities, e.g. relay", outdoor: "Search activities, e.g. bugs", life: "Search life skills, e.g. washing" }[kind]}
+            placeholder={{ recipe: "Search recipes, e.g. muffins", craft: "Search crafts, e.g. paper", pe: "Search activities, e.g. relay", outdoor: "Search activities, e.g. bugs", life: "Search life skills, e.g. washing", little: "Search activities, e.g. counting" }[kind]}
             className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-softsage sm:max-w-md"
           />
           <div className="flex flex-wrap gap-2">

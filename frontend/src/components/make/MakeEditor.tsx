@@ -34,11 +34,15 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
   const [minutes, setMinutes] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
   // Added from a Teens page: start at 11 so it shows there (it can be changed).
-  const [ageFrom, setAgeFrom] = useState(teen ? "11" : "");
+  const [ageFrom, setAgeFrom] = useState(teen ? "11" : initialKind === "little" ? "3" : "");
   const [serves, setServes] = useState("");
   const [materials, setMaterials] = useState<MakeMaterial[]>([{ name: "", qty: "" }]);
   const [steps, setSteps] = useState<MakeStep[]>([{ text: "", grown_up: false }]);
   const [tips, setTips] = useState("");
+  // Little Roots only: one question or prompt per line
+  const [talk, setTalk] = useState("");
+  const [more, setMore] = useState("");
+  const [easier, setEasier] = useState("");
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [removePhoto, setRemovePhoto] = useState(false);
@@ -70,6 +74,9 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
         setMaterials(d.materials.length ? d.materials : [{ name: "", qty: "" }]);
         setSteps(d.steps.length ? d.steps : [{ text: "", grown_up: false }]);
         setTips(d.tips || "");
+        setTalk((d.talk || []).join("\n"));
+        setMore(d.more || "");
+        setEasier(d.easier || "");
         setHasPhoto(d.has_photo);
         setLoaded(true);
       })
@@ -91,10 +98,13 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
       minutes: minutes ? Number(minutes) : null,
       difficulty,
       age_from: ageFrom ? Number(ageFrom) : null,
-      serves: kind === "craft" ? null : serves || null,
+      serves: kind === "craft" || kind === "little" ? null : serves || null,
       materials: materials.filter((m) => m.name.trim()),
       steps: steps.filter((s) => s.text.trim()),
       tips: tips || null,
+      talk: kind === "little" ? talk.split("\n").map((t) => t.trim()).filter(Boolean) : [],
+      more: kind === "little" ? more || null : null,
+      easier: kind === "little" ? easier || null : null,
     };
     try {
       const res = id ? await updateMakeItem(id, body) : await addMakeItem(body);
@@ -137,7 +147,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
         <div className="brand-card mt-6 space-y-4 p-5">
           {!id && (
             <div className="flex flex-wrap gap-2">
-              {(["recipe", "craft", "pe", "outdoor", "life"] as MakeKind[]).map((k) => (
+              {(["recipe", "craft", "pe", "outdoor", "life", "little"] as MakeKind[]).map((k) => (
                 <button
                   type="button"
                   key={k}
@@ -147,7 +157,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
                     (kind === k ? "border-brand-sage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-brand-earth")
                   }
                 >
-                  <EmojiText text={{ recipe: "🍳 Recipe", craft: "🎨 Craft", pe: "🏃 P.E. activity", outdoor: "🌳 Outdoor activity", life: "🧺 Life skill" }[k]} />
+                  <EmojiText text={{ recipe: "🍳 Recipe", craft: "🎨 Craft", pe: "🏃 P.E. activity", outdoor: "🌳 Outdoor activity", life: "🧺 Life skill", little: "🌱 Little Roots" }[k]} />
                 </button>
               ))}
             </div>
@@ -155,11 +165,11 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
           <div className="grid gap-4 sm:grid-cols-[1fr_6rem]">
             <div>
               <label className={label}>Name</label>
-              <input required maxLength={150} value={title} onChange={(e) => setTitle(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Nana's pancakes" : kind === "pe" ? "e.g. Beanbag relay" : kind === "outdoor" ? "e.g. Woodland bug hunt" : kind === "life" ? "e.g. Defrost the freezer" : "e.g. Egg box caterpillar"} />
+              <input required maxLength={150} value={title} onChange={(e) => setTitle(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Nana's pancakes" : kind === "pe" ? "e.g. Beanbag relay" : kind === "outdoor" ? "e.g. Woodland bug hunt" : kind === "life" ? "e.g. Defrost the freezer" : kind === "little" ? "e.g. Puddle splash count" : "e.g. Egg box caterpillar"} />
             </div>
             <div>
               <label className={label}>Emoji</label>
-              <input maxLength={4} value={emoji} onChange={(e) => setEmoji(e.target.value)} className={`${input} text-center text-xl`} placeholder={kind === "recipe" ? "🥞" : kind === "pe" ? "🏃" : kind === "outdoor" ? "🌳" : kind === "life" ? "🧺" : "🐛"} />
+              <input maxLength={4} value={emoji} onChange={(e) => setEmoji(e.target.value)} className={`${input} text-center text-xl`} placeholder={kind === "recipe" ? "🥞" : kind === "pe" ? "🏃" : kind === "outdoor" ? "🌳" : kind === "life" ? "🧺" : kind === "little" ? "🌱" : "🐛"} />
             </div>
           </div>
           <div>
@@ -169,7 +179,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className={label}>Category</label>
-              <input maxLength={40} value={category} onChange={(e) => setCategory(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Baking" : kind === "pe" ? "On your own / Group games" : kind === "outdoor" ? "e.g. Little explorers (5+)" : kind === "life" ? "e.g. Around the home" : "e.g. Paper"} />
+              <input maxLength={40} value={category} onChange={(e) => setCategory(e.target.value)} className={input} placeholder={kind === "recipe" ? "e.g. Baking" : kind === "pe" ? "On your own / Group games" : kind === "outdoor" ? "e.g. Little explorers (5+)" : kind === "life" ? "e.g. Around the home" : kind === "little" ? "e.g. Early maths" : "e.g. Paper"} />
             </div>
             <div>
               <label className={label}>How long (minutes)</label>
@@ -187,7 +197,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
               <label className={label}>Suitable from age</label>
               <input type="number" min={1} max={18} value={ageFrom} onChange={(e) => setAgeFrom(e.target.value)} className={input} />
             </div>
-            {kind !== "craft" && (
+            {kind !== "craft" && kind !== "little" && (
               <div>
                 <label className={label}>{kind === "pe" || kind === "outdoor" ? "How many children" : "Makes / serves"}</label>
                 <input maxLength={40} value={serves} onChange={(e) => setServes(e.target.value)} className={input} placeholder={kind === "pe" || kind === "outdoor" ? "e.g. 1 child, or 4 or more" : "e.g. 12 pancakes"} />
@@ -227,7 +237,7 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
                   value={m.name}
                   onChange={(e) => setMaterials(materials.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
                   className={`${input} min-w-0`}
-                  placeholder={kind === "recipe" ? "plain flour" : kind === "pe" ? "football" : kind === "outdoor" ? "magnifying glass" : kind === "life" ? "screwdriver" : "paper plate"}
+                  placeholder={kind === "recipe" ? "plain flour" : kind === "pe" ? "football" : kind === "outdoor" ? "magnifying glass" : kind === "life" ? "screwdriver" : kind === "little" ? "soft toys" : "paper plate"}
                   aria-label="Item"
                 />
                 <button type="button" onClick={() => setMaterials(materials.filter((_, j) => j !== i))} className="shrink-0 rounded-lg px-2 text-brand-earth/60 hover:bg-brand-cream" aria-label="Remove">
@@ -276,9 +286,26 @@ export default function MakeEditor({ kind: initialKind, id, teen = false }: { ki
           </button>
         </div>
 
+        {kind === "little" && (
+          <div className="brand-card mt-5 space-y-4 p-5">
+            <div>
+              <label className={label}>What to say or ask</label>
+              <textarea value={talk} onChange={(e) => setTalk(e.target.value)} rows={3} className={input} placeholder={"One per line, e.g.\nHow many are there?\nWhat do you think will happen?"} />
+            </div>
+            <div>
+              <label className={label}>If they&apos;re ready for more</label>
+              <textarea value={more} onChange={(e) => setMore(e.target.value)} rows={2} maxLength={1000} className={input} placeholder="A harder version or a next step" />
+            </div>
+            <div>
+              <label className={label}>If it&apos;s not a good day</label>
+              <textarea value={easier} onChange={(e) => setEasier(e.target.value)} rows={2} maxLength={1000} className={input} placeholder="A simpler version for tired days" />
+            </div>
+          </div>
+        )}
+
         <div className="brand-card mt-5 p-5">
-          <label className={label}>Tips (optional)</label>
-          <textarea value={tips} onChange={(e) => setTips(e.target.value)} rows={2} maxLength={2000} className={input} placeholder="Swaps, safety notes or ideas to try next time" />
+          <label className={label}>{kind === "little" ? "Keep it safe (optional)" : "Tips (optional)"}</label>
+          <textarea value={tips} onChange={(e) => setTips(e.target.value)} rows={2} maxLength={2000} className={input} placeholder={kind === "little" ? "Safety notes, e.g. choking risks or allergies" : "Swaps, safety notes or ideas to try next time"} />
         </div>
 
         {error && <p className="mt-4 text-sm font-semibold text-red-700">{error}</p>}

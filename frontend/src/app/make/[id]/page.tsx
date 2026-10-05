@@ -153,7 +153,7 @@ export default function MakeItemPage() {
             <div className="mt-5 flex flex-wrap gap-2">
               {item.steps.length > 0 && (
                 <button onClick={() => setCooking(true)} className={primary}>
-                  ▶ {item.kind === "life" ? "Start" : "Start making"}
+                  ▶ {item.kind === "life" || item.kind === "little" ? "Start" : "Start making"}
                 </button>
               )}
               {role === "child" && (
@@ -184,7 +184,7 @@ export default function MakeItemPage() {
                 </button>
               )}
               <button onClick={() => setModal("made")} className={secondary}>
-                <Emoji e="📸" /> {item.kind === "pe" || item.kind === "outdoor" || item.kind === "life" ? "Share a photo" : "We made this!"}
+                <Emoji e="📸" /> {item.kind === "pe" || item.kind === "outdoor" || item.kind === "life" || item.kind === "little" ? "Share a photo" : "We made this!"}
               </button>
             </div>
             {notice && <p className="mt-3 text-sm font-bold text-brand-sage">{notice}</p>}
@@ -255,7 +255,7 @@ export default function MakeItemPage() {
           </section>
 
           <section className="lg:col-span-3">
-            <h2 className="text-lg font-extrabold text-brand-charcoal">{item.kind === "life" ? "How to do it" : "How to make it"}</h2>
+            <h2 className="text-lg font-extrabold text-brand-charcoal">{item.kind === "little" ? "What to do" : item.kind === "life" ? "How to do it" : "How to make it"}</h2>
             <ol className="mt-3 space-y-3">
               {item.steps.map((s, i) => (
                 <li key={i} className="flex gap-3 rounded-2xl border border-brand-line bg-white p-4">
@@ -269,9 +269,34 @@ export default function MakeItemPage() {
                 </li>
               ))}
             </ol>
+            {item.talk?.length > 0 && (
+              <div className="mt-4 rounded-2xl border border-brand-line bg-white p-4">
+                <h3 className="font-extrabold text-brand-charcoal"><Emoji e="💬" /> What to say or ask</h3>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-brand-charcoal">
+                  {item.talk.map((t, i) => (
+                    <li key={i}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {item.more && (
+              <div className="mt-4 rounded-2xl bg-sky-50 p-4 text-sm text-brand-charcoal">
+                <b><Emoji e="🚀" /> If they&apos;re ready for more:</b> {item.more}
+              </div>
+            )}
+            {item.easier && (
+              <div className="mt-4 rounded-2xl bg-brand-cream p-4 text-sm text-brand-charcoal">
+                <b><Emoji e="🌙" /> If it&apos;s not a good day:</b> {item.easier}
+              </div>
+            )}
             {item.tips && (
-              <div className="mt-4 rounded-2xl bg-brand-tint p-4 text-sm text-brand-charcoal">
-                <b><Emoji e="💡" /> Tip:</b> {item.tips}
+              <div className={`mt-4 rounded-2xl p-4 text-sm text-brand-charcoal ${item.kind === "little" ? "bg-amber-50" : "bg-brand-tint"}`}>
+                {item.kind === "little" ? (
+                  <b><Emoji e="⚠️" /> Keep it safe:</b>
+                ) : (
+                  <b><Emoji e="💡" /> Tip:</b>
+                )}{" "}
+                {item.tips}
               </div>
             )}
           </section>

@@ -128,12 +128,13 @@ def test_starter_activities_cover_every_page(family):
     by_kind = {}
     for item in items:
         by_kind.setdefault(item["kind"], []).append(item)
-    assert set(by_kind) == {"recipe", "craft", "pe", "outdoor", "life"}
+    assert set(by_kind) == {"recipe", "craft", "pe", "outdoor", "life", "little"}
     for kind, things in by_kind.items():
         young = [i for i in things if (i["age_from"] or 3) <= 10]
         teen = [i for i in things if (i["age_from"] or 3) >= 10]
         assert young, f"no younger {kind} activities"
-        assert teen, f"no teen {kind} activities"
+        if kind != "little":  # Little Roots is only for 3 and 4 year olds
+            assert teen, f"no teen {kind} activities"
     # Every starter has steps to follow.
     slugs = [i["slug"] for i in items if i.get("slug")]
     assert len(slugs) == len(set(slugs))
@@ -158,6 +159,30 @@ def test_plan_a_life_skill_as_a_lesson(family):
     assert planned.status_code == 201, planned.text
     today = family.child_client(child).get("/api/planner/today").json()
     assert today and today[0]["lesson"]["subject"] == "Life Skills"
+
+
+def test_little_roots_cards_carry_talk_and_next_steps(family):
+    child = family.add_child()
+    items = family.parent.get("/api/make/items", params={"kind": "little"}).json()
+    assert len(items) >= 3 and all(i["age_from"] == 3 for i in items)
+    detail = family.parent.get(f"/api/make/items/{items[0]['id']}").json()
+    assert detail["talk"] and detail["more"] and detail["easier"] and detail["tips"]
+
+    # A family's own copy keeps the extra parts and can change them.
+    copy = family.parent.post(f"/api/make/items/{detail['id']}/copy").json()
+    assert copy["talk"] == detail["talk"] and copy["more"] == detail["more"]
+    body = {k: copy[k] for k in ("kind", "title", "materials", "steps", "tips", "more", "easier")}
+    body["talk"] = ["  What colour is it?  ", ""]
+    changed = family.parent.put(f"/api/make/items/{copy['id']}", json=body).json()
+    assert changed["talk"] == ["What colour is it?"]
+
+    planned = family.parent.post(
+        f"/api/make/items/{detail['id']}/plan",
+        json={"scheduled_date": date.today().isoformat(), "subject": "", "child_ids": [child["id"]]},
+    )
+    assert planned.status_code == 201, planned.text
+    today = family.child_client(child).get("/api/planner/today").json()
+    assert today and today[0]["lesson"]["subject"] == "Little Roots"
 
 
 def test_a_reading_worksheet_can_be_ticked_done_by_the_child_or_parent(family):

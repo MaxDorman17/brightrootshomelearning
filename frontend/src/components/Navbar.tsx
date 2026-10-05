@@ -47,7 +47,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
 };
 
 // The younger activity pages. Hidden when every child in the family is set to see only the teen ones.
-const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors"];
+const YOUNG_PAGES = ["/make/cookbook", "/make/crafts", "/make/life-skills", "/make/pe", "/make/outdoors", "/make/little-roots", "/make/new?kind=little"];
 
 const PARENT_NAV: NavEntry[] = [
   { href: "/parent/dashboard", label: "Home" },
@@ -99,6 +99,14 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/outdoors", label: "Outdoors" },
       { href: "/clubs", label: "Clubs & Activities" },
       { href: "/moments?tab=trips", label: "Trips & days out" },
+    ],
+  },
+  // Ages 3 to 4: short activities a grown-up does with the child. Not in the children's menus.
+  {
+    label: "Little Roots",
+    items: [
+      { href: "/make/little-roots", label: "Activities" },
+      { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
   // Ages 11 to 16: the same four kinds of activity, written for teenagers. Make and Active show the younger ones.

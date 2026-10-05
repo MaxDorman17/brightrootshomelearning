@@ -22,7 +22,15 @@ export type MakeSummary = {
   material_count?: number;
 };
 
-export type MakeDetail = MakeSummary & { materials: MakeMaterial[]; steps: MakeStep[]; tips: string | null };
+export type MakeDetail = MakeSummary & {
+  materials: MakeMaterial[];
+  steps: MakeStep[];
+  tips: string | null;
+  // Little Roots: things to say or ask, "if they're ready for more" and "if it's not a good day"
+  talk: string[];
+  more: string | null;
+  easier: string | null;
+};
 
 export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: string; materials: string; subject: string; tint: string }> = {
   recipe: { name: "Cookbook", one: "recipe", path: "/make/cookbook", materials: "Ingredients", subject: "Cooking", tint: "bg-amber-50" },
@@ -30,7 +38,11 @@ export const KIND_INFO: Record<MakeKind, { name: string; one: string; path: stri
   pe: { name: "P.E.", one: "activity", path: "/make/pe", materials: "You'll need", subject: "PE", tint: "bg-emerald-50" },
   outdoor: { name: "Outdoors", one: "activity", path: "/make/outdoors", materials: "You'll need", subject: "Outdoor Learning", tint: "bg-lime-50" },
   life: { name: "Life skills", one: "life skill", path: "/make/life-skills", materials: "You'll need", subject: "Life Skills", tint: "bg-orange-50" },
+  little: { name: "Little Roots", one: "Little Roots activity", path: "/make/little-roots", materials: "You'll need", subject: "Little Roots", tint: "bg-yellow-50" },
 };
+
+/** The areas of learning Little Roots activities are grouped by (the card's category). */
+export const LITTLE_AREAS = ["Talk", "Early maths", "Letters and sounds", "Moving", "Creating", "The world around us"];
 
 /** Cookbook, Craft Corner and Life skills sit together; P.E. and Outdoors are the "Active" pair. */
 export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
@@ -39,6 +51,7 @@ export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
   pe: ["pe", "outdoor"],
   outdoor: ["pe", "outdoor"],
   life: ["recipe", "craft", "life"],
+  little: ["little"],
 };
 
 export type AgeBand = "little" | "junior" | "teen";
@@ -127,13 +140,13 @@ export function MakePhoto({ item, className = "", big = false }: { item: MakeSum
         loading="lazy"
         onError={() => setStockFailed(true)}
         // The P.E. illustrations are whole scenes, so show all of each one rather than cropping heads off.
-        className={`${!src && (item.kind === "pe" || item.kind === "outdoor" || item.kind === "life") ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
+        className={`${!src && (item.kind === "pe" || item.kind === "outdoor" || item.kind === "life" || item.kind === "little") ? "bg-[#FAF6EC] object-contain" : "object-cover"} ${className}`}
       />
     );
   }
   return (
     <div className={`flex items-center justify-center ${KIND_INFO[item.kind].tint} ${className}`} aria-hidden>
-      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃", outdoor: "🌳", life: "🧺" } as const)[item.kind]}</span>
+      <span className={big ? "text-7xl sm:text-8xl" : "text-5xl"}>{item.emoji || ({ recipe: "🍽️", craft: "✂️", pe: "🏃", outdoor: "🌳", life: "🧺", little: "🌱" } as const)[item.kind]}</span>
     </div>
   );
 }

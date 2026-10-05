@@ -87,6 +87,13 @@ def run_migrations():
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE moments ADD COLUMN trip_place VARCHAR(200)"))
                 conn.commit()
+    if "make_items" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("make_items")]
+        with engine.connect() as conn:
+            for column_name in ("talk", "more", "easier"):
+                if column_name not in existing_cols:
+                    conn.execute(text(f"ALTER TABLE make_items ADD COLUMN {column_name} TEXT"))
+            conn.commit()
     if "lessons" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("lessons")]
         lesson_columns = {

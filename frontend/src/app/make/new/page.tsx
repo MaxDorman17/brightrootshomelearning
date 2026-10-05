@@ -12,7 +12,7 @@ export default function NewMakePage() {
     const params = new URLSearchParams(window.location.search);
     const k = params.get("kind");
     setTeen(params.get("teen") === "1");
-    setKind(k === "craft" || k === "pe" || k === "outdoor" || k === "life" ? k : "recipe");
+    setKind(k === "craft" || k === "pe" || k === "outdoor" || k === "life" || k === "little" ? k : "recipe");
   }, []);
 
   return kind ? <MakeEditor kind={kind} teen={teen} /> : null;

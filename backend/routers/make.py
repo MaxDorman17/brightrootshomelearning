@@ -23,7 +23,7 @@ from storage import upload_dir
 router = APIRouter(prefix="/api/make", tags=["make"])
 
 PHOTO_DIR = upload_dir("make")
-KINDS = {"recipe", "craft", "pe", "outdoor", "life"}
+KINDS = {"recipe", "craft", "pe", "outdoor", "life", "little"}
 DIFFICULTIES = {"easy", "medium", "tricky"}
 
 
@@ -53,6 +53,9 @@ class ItemIn(BaseModel):
     materials: list[Material] = []
     steps: list[Step] = []
     tips: Optional[str] = None
+    talk: list[str] = []
+    more: Optional[str] = None
+    easier: Optional[str] = None
 
     @field_validator("kind")
     @classmethod
@@ -90,6 +93,11 @@ class ItemIn(BaseModel):
     def valid_steps(cls, v: list[Step]) -> list[Step]:
         clean = [Step(text=s.text.strip()[:600], grown_up=s.grown_up) for s in v if s.text.strip()]
         return clean[:40]
+
+    @field_validator("talk")
+    @classmethod
+    def valid_talk(cls, v: list[str]) -> list[str]:
+        return [t.strip()[:300] for t in v if t.strip()][:12]
 
 
 class PlanIn(BaseModel):
@@ -176,7 +184,14 @@ def _out(item: MakeItem, wished_by: list[str], full: bool = True) -> dict:
         "wished_by": wished_by,
     }
     if full:
-        data.update({"materials": _loads(item.materials), "steps": _loads(item.steps), "tips": item.tips})
+        data.update({
+            "materials": _loads(item.materials),
+            "steps": _loads(item.steps),
+            "tips": item.tips,
+            "talk": _loads(item.talk),
+            "more": item.more,
+            "easier": item.easier,
+        })
     else:
         data["material_count"] = len(_loads(item.materials))
     return data
@@ -195,6 +210,9 @@ def _fill(item: MakeItem, body: ItemIn) -> None:
     item.materials = json.dumps([m.model_dump() for m in body.materials])
     item.steps = json.dumps([s.model_dump() for s in body.steps])
     item.tips = (body.tips or "").strip()[:2000] or None
+    item.talk = json.dumps(body.talk) if body.talk else None
+    item.more = (body.more or "").strip()[:1000] or None
+    item.easier = (body.easier or "").strip()[:1000] or None
 
 
 def _photo_path(name: str) -> str:
@@ -255,6 +273,7 @@ def copy_item(item_id: int, db: Session = Depends(get_db), current_user: User = 
         parent_id=current_user.id, kind=src.kind, title=src.title, emoji=src.emoji, summary=src.summary,
         category=src.category, minutes=src.minutes, difficulty=src.difficulty, age_from=src.age_from,
         serves=src.serves, materials=src.materials, steps=src.steps, tips=src.tips,
+        talk=src.talk, more=src.more, easier=src.easier,
     )
     db.add(item)
     db.commit()
@@ -351,7 +370,7 @@ def clear_wishes(item_id: int, db: Session = Depends(get_db), current_user: User
 @router.post("/items/{item_id}/plan", status_code=201)
 def plan_item(item_id: int, body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     item = _get_item(db, current_user, item_id)
-    subject = body.subject.strip()[:100] or {"recipe": "Cooking", "pe": "PE", "outdoor": "Outdoor Learning", "life": "Life Skills"}.get(item.kind, "Art")
+    subject = body.subject.strip()[:100] or {"recipe": "Cooking", "pe": "PE", "outdoor": "Outdoor Learning", "life": "Life Skills", "little": "Little Roots"}.get(item.kind, "Art")
     materials = _loads(item.materials)
     need = ", ".join(f"{m.get('qty')} {m.get('name')}".strip() for m in materials)
     label = "Ingredients" if item.kind == "recipe" else "You'll need"

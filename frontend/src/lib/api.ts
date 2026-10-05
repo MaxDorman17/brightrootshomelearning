@@ -433,7 +433,7 @@ export const pushUnsubscribe = (endpoint: string) => api.post("/api/push/unsubsc
 export const sendTestPush = () => api.post("/api/push/test");
 
 // Cookbook and Craft Corner
-export type MakeKind = "recipe" | "craft" | "pe" | "outdoor" | "life";
+export type MakeKind = "recipe" | "craft" | "pe" | "outdoor" | "life" | "little";
 export type MakeMaterial = { name: string; qty: string };
 export type MakeStep = { text: string; grown_up: boolean };
 export type MakeItemBody = {
@@ -449,6 +449,10 @@ export type MakeItemBody = {
   materials: MakeMaterial[];
   steps: MakeStep[];
   tips?: string | null;
+  // Little Roots only
+  talk?: string[];
+  more?: string | null;
+  easier?: string | null;
 };
 export const getMakeItems = (kind?: MakeKind) => api.get("/api/make/items", { params: kind ? { kind } : {} });
 export const getMakeItem = (id: number) => api.get(`/api/make/items/${id}`);

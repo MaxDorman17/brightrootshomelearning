@@ -642,6 +642,10 @@ class MakeItem(Base):
     materials = Column(Text, nullable=False, default="[]")  # JSON [{"name", "qty"}]
     steps = Column(Text, nullable=False, default="[]")  # JSON [{"text", "grown_up"}]
     tips = Column(Text, nullable=True)
+    # Little Roots activities (kind "little"), done by a grown-up with a 3 or 4 year old.
+    talk = Column(Text, nullable=True)  # JSON ["What can you feel?", ...]: things to say or ask
+    more = Column(Text, nullable=True)  # "If they're ready for more"
+    easier = Column(Text, nullable=True)  # "If it's not a good day"
     photo = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
