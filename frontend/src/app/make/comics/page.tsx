@@ -39,7 +39,7 @@ export default function ComicsPage() {
               <div className="px-3 py-1.5 text-white" style={{ background: c.color }}>
                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-90">{c.subject}</p>
               </div>
-              <ComicPicture comic={c} className="aspect-square w-full" />
+              <ComicPicture comic={c} className="aspect-[4/5] w-full" />
               <div className="border-t-[3px] border-brand-charcoal p-3">
                 <p className={`${comicFont.className} text-xl leading-tight tracking-wide`} style={{ color: c.color }}>
                   {c.hero.name}

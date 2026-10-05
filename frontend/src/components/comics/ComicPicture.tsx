@@ -37,6 +37,12 @@ export default function ComicPicture({ comic, panel, className = "" }: { comic: 
   }
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt="" className={`object-cover ${className}`} draggable={false} />
+    <img
+      src={src}
+      alt=""
+      // Hero portraits are tall, full-body pictures, so show all of them; panel pictures fill their frame.
+      className={`${src.includes("/heroes/") ? "bg-[#FAF6EC] object-contain p-2" : "object-cover"} ${className}`}
+      draggable={false}
+    />
   );
 }
