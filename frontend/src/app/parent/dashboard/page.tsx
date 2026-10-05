@@ -25,6 +25,7 @@ import AppCard from "@/components/AppCard";
 import { FamilyStarJars } from "@/components/StarJarCards";
 import { ParentNotesCard } from "@/components/FamilyNotes";
 import { useMounted } from "@/lib/useMounted";
+import { STORE_OPEN, useStoreVisible } from "@/lib/store";
 import { Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
 import {
@@ -66,6 +67,7 @@ export default function ParentDashboardPage() {
   const mounted = useMounted();
 
   const [parentName, setParentName] = useState("Parent");
+  const showStore = useStoreVisible();
   const [children, setChildren] = useState<ChildItem[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
@@ -615,6 +617,16 @@ export default function ParentDashboardPage() {
               title="Council Report"
               description="Download a home education report as a PDF."
             />
+
+            {showStore && (
+              <QuickCard
+                art="/home/books.png"
+                tint="#F3EAD7"
+                href="/store"
+                title={STORE_OPEN ? "Store" : "Store (only you can see this)"}
+                description="Workbooks, cookbooks and stationery for home learning."
+              />
+            )}
           </div>
         </section>
       </main>

@@ -1,5 +1,6 @@
 "use client";
 
+import { STORE_OPEN } from "@/lib/store";
 import { useEffect, useRef, useState } from "react";
 import { serif } from "@/lib/fonts";
 import { usePathname, useRouter } from "next/navigation";
@@ -373,6 +374,8 @@ export default function Navbar() {
       return { ...entry, items };
     })
     .filter((entry) => !isGroup(entry) || entry.items.length > 0);
+  // The Store: only the site owner sees it until it opens (lib/store.ts).
+  if (role === "parent" && (STORE_OPEN || isAdmin)) nav.push({ href: "/store", label: STORE_OPEN ? "Store" : "Store (owner)" });
 
   const groupActive = (group: NavGroup) => group.items.some((item) => isActive(item.href));
 
