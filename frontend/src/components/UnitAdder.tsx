@@ -8,10 +8,15 @@ import SchemeInput from "@/components/SchemeInput";
 export type UnitLesson = { title: string; url: string };
 export type PlannedUnitLesson = { lesson: UnitLesson; date: string; dayName: string };
 
+/** A unit handed over from the Units page, to save typing its details again. */
+export type UnitToPlan = { title: string; subject: string; scheme?: string | null; url?: string | null };
+export const UNIT_TO_PLAN_KEY = "unit-to-plan";
+
 type Props = {
   subjects: string[];
   children: { id: number; username: string }[];
   defaultChildId: number | null;
+  unit?: UnitToPlan | null;
   /** Works out which day each lesson lands on, from the family's timetable, days off and what is already planned. */
   plan: (lessons: UnitLesson[], subject: string, startDate: string) => PlannedUnitLesson[];
   onAdded: () => Promise<void> | void;
@@ -41,11 +46,11 @@ function readLessons(text: string, unitUrl: string): UnitLesson[] {
 }
 
 /** Adds a whole unit of your own lessons, from any scheme, and spreads it across the timetable. */
-export default function UnitAdder({ subjects, children, defaultChildId, plan, onAdded, onClose }: Props) {
-  const [scheme, setScheme] = useState("");
-  const [unitUrl, setUnitUrl] = useState("");
+export default function UnitAdder({ subjects, children, defaultChildId, unit, plan, onAdded, onClose }: Props) {
+  const [scheme, setScheme] = useState(unit?.scheme ?? "");
+  const [unitUrl, setUnitUrl] = useState(unit?.url ?? "");
   const [titles, setTitles] = useState("");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState(unit?.subject ?? "");
   const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [assignedTo, setAssignedTo] = useState<number | null>(defaultChildId);
   const [adding, setAdding] = useState(false);
@@ -82,7 +87,9 @@ export default function UnitAdder({ subjects, children, defaultChildId, plan, on
 
   return (
     <div className="mb-5 bg-brand-white rounded-2xl border border-brand-softsage/20 shadow-sm p-5">
-      <h3 className="text-lg font-extrabold text-brand-charcoal mb-1">Add a unit from any scheme</h3>
+      <h3 className="text-lg font-extrabold text-brand-charcoal mb-1">
+        {unit?.title ? `Plan the lessons for: ${unit.title}` : "Add a unit from any scheme"}
+      </h3>
       <p className="text-sm text-brand-earth/65 mb-4">
         For Twinkl, White Rose Maths, a workbook or your own plan. List the lessons and they are put on the right days for you.
         Only the titles and links you type are kept.
@@ -126,6 +133,7 @@ export default function UnitAdder({ subjects, children, defaultChildId, plan, on
               <label className={label}>Subject</label>
               <select value={subject} onChange={(e) => setSubject(e.target.value)} aria-label="Subject" className={field}>
                 <option value="">Choose</option>
+                {subject && !subjects.includes(subject) && <option value={subject}>{subject}</option>}
                 {subjects.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}

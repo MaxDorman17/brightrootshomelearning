@@ -19,6 +19,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import SchemeInput from "@/components/SchemeInput";
 import { schemeOf } from "@/lib/schemes";
+import { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitAdder";
 import { format, parseISO } from "date-fns";
 
 // Used only if the family's timetable can't be loaded.
@@ -77,6 +78,14 @@ export default function UnitsPage() {
     setRole(getRole() || "");
     load();
   }, [load, router]);
+
+  // Hands a unit to the planner's Add a Unit box, so its scheme and link don't need typing again.
+  const planUnit = (unit: UnitToPlan) => {
+    try {
+      sessionStorage.setItem(UNIT_TO_PLAN_KEY, JSON.stringify(unit));
+    } catch { /* the planner simply opens without it filled in */ }
+    router.push("/parent");
+  };
 
   const openCurrentModal = (subject: string) => {
     if (!isParent) return;
@@ -309,6 +318,15 @@ export default function UnitsPage() {
                                 >
                                   Open unit
                                 </a>
+                              )}
+                              {isParent && (
+                                <button
+                                  onClick={() => planUnit({ title: unit.title, subject, scheme: schemeOf(unit.scheme, unit.unit_url), url: unit.unit_url })}
+                                  title="Add this unit's lessons to the planner"
+                                  className="px-3 py-2 rounded-xl border border-[#D8D1C4] bg-brand-white text-brand-sage text-xs font-bold hover:border-brand-softsage"
+                                >
+                                  Plan this unit
+                                </button>
                               )}
                               {isParent && (
                                 <button

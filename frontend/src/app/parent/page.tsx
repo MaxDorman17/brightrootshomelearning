@@ -12,7 +12,7 @@ import {
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
 import LessonScoreBox from "@/components/LessonScoreBox";
-import UnitAdder from "@/components/UnitAdder";
+import UnitAdder, { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitAdder";
 import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
@@ -217,6 +217,7 @@ export default function ParentPlanner() {
 
   const [showOakImport, setShowOakImport] = useState(false);
   const [showUnitAdder, setShowUnitAdder] = useState(false);
+  const [unitToPlan, setUnitToPlan] = useState<UnitToPlan | null>(null);
   const [oakUrl, setOakUrl] = useState("");
   const [oakFetching, setOakFetching] = useState(false);
   const [oakError, setOakError] = useState("");
@@ -298,6 +299,15 @@ export default function ParentPlanner() {
     loadData();
     loadGoals();
     loadQuizData();
+    // Arriving from "Plan this unit" on the Units page: open Add a Unit with that unit filled in.
+    try {
+      const saved = sessionStorage.getItem(UNIT_TO_PLAN_KEY);
+      if (saved) {
+        sessionStorage.removeItem(UNIT_TO_PLAN_KEY);
+        setUnitToPlan(JSON.parse(saved));
+        setShowUnitAdder(true);
+      }
+    } catch { /* nothing to prefill */ }
     // Detect bookmarklet params
     const params = new URLSearchParams(window.location.search);
     const lt = params.get("lesson_title");
@@ -365,9 +375,10 @@ export default function ParentPlanner() {
         await Promise.all([
           updateLesson(modal.existingEntry.lesson.id, {
             title: slotTitle,
-            lesson_url: slotUrl || undefined,
+            // null, not undefined, so a box that has been emptied is saved as empty
+            lesson_url: slotUrl.trim() || null,
             scheme: slotScheme.trim(),
-            description: slotNotes || undefined,
+            description: slotNotes.trim() || null,
           }),
           updatePlannerEntry(modal.existingEntry.id, {
             assigned_to: slotAssignedTo ?? null,
@@ -744,9 +755,10 @@ export default function ParentPlanner() {
             subjects={allTimetableSubjects}
             children={children}
             defaultChildId={selectedChildId}
+            unit={unitToPlan}
             plan={(lessons, subject, startDate) => buildSchedule(lessons, subject, startDate, timetable, daysOff, allEntries)}
             onAdded={loadData}
-            onClose={() => setShowUnitAdder(false)}
+            onClose={() => { setShowUnitAdder(false); setUnitToPlan(null); }}
           />
         )}
 

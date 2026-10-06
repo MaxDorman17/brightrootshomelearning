@@ -82,3 +82,14 @@ def test_council_report_names_the_schemes_used(family):
         "Outdoors": [],
     }
     assert report["results"]["oak_quizzes"] == 0
+
+
+def test_a_lessons_link_and_notes_can_be_cleared(family):
+    made = family.parent.post(
+        "/api/lessons/",
+        json={"title": "Fractions", "subject": "Maths", "lesson_url": "https://example.test/fractions", "description": "Bring a ruler"},
+    ).json()
+    cleared = family.parent.put(f"/api/lessons/{made['id']}", json={"title": "Fractions", "lesson_url": None, "description": None})
+    assert cleared.status_code == 200, cleared.text
+    assert cleared.json()["lesson_url"] is None
+    assert cleared.json()["description"] is None

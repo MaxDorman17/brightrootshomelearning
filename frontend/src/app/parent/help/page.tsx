@@ -28,8 +28,8 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         intro: "Do these three things in this order and the rest of Bright Roots falls into place.",
         steps: [
           <>Add each child under <L href="/parent/children">Family, then Children</L>. Give them a username and a password they can remember.</>,
-          <>Set your week under <L href="/parent/timetable">Plan, then Timetable</L>: add the subjects you teach on each day. Oak imports use this to decide which days lessons go on.</>,
-          <>Fill your planner with lessons: import an Oak unit (see below), or click an empty slot in the <L href="/parent">Planner</L> to add your own.</>,
+          <>Set your week under <L href="/parent/timetable">Plan, then Timetable</L>: add the subjects you teach on each day, and tick the schemes you use at the bottom of that page. Units you add use the timetable to decide which days lessons go on.</>,
+          <>Fill your planner with lessons: add a whole unit from the scheme you use (see below), or click an empty slot in the <L href="/parent">Planner</L> to add one lesson.</>,
         ],
         tip: <>Not sure where to start? When a week in the <L href="/parent">Planner</L> is empty, press <b>Add the starter week</b> for a ready-made week of lessons you can change.</>,
       },
@@ -78,6 +78,20 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
   {
     group: "Planning lessons",
     guides: [
+      {
+        id: "add-unit",
+        emoji: "📚",
+        title: "Add a whole unit from any scheme",
+        intro: "For Twinkl, White Rose Maths, a workbook or your own plan. List the lessons once and they are spread across your timetable.",
+        steps: [
+          <>In the <L href="/parent">Planner</L>, press <b>Add a Unit</b>. Or on <L href="/units">Plan, then Units</L>, press <b>Plan this unit</b> under a subject&apos;s current unit.</>,
+          "Type or paste the lesson titles, one on each line. If a lesson has its own web page, paste the link after its title.",
+          <>Fill in the <b>Scheme</b>, and a link to the unit if there is one. Lessons without their own link use the unit&apos;s link.</>,
+          "Choose the subject, the date to start from, and which child (or all children).",
+          <>Check the preview, then press <b>Add lessons to planner</b>. Each lesson goes on the next day that subject is on your timetable, skipping days off.</>,
+        ],
+        tip: "Only the titles and links you type are kept. The worksheets and videos stay on the scheme's own site, and your child opens them from the link.",
+      },
       {
         id: "oak-unit",
         emoji: "🌳",
@@ -132,11 +146,11 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         id: "starter-week",
         emoji: "🌱",
         title: "Start with a ready-made week",
-        intro: "A week of Oak National Academy lessons so your planner isn't empty while you find your feet.",
+        intro: "A week of lessons so your planner isn't empty while you find your feet: free Oak National Academy lessons, or simple ones of our own.",
         steps: [
           <>Open the <L href="/parent">Planner</L> on a week with nothing planned. A <b>Start with a ready-made week?</b> card appears at the top.</>,
-          "Choose the school year each child is working at. Pick the year that suits them, not just their age.",
-          <>Press <b>Add the starter week</b>. Every slot on your timetable gets a free Oak National Academy lesson for that subject and year, with a video and quizzes.</>,
+          <>Choose the school year each child is working at for Oak lessons. Pick the year that suits them, not just their age. If you don&apos;t use Oak, choose <b>Our own simple lessons (no Oak)</b> instead.</>,
+          <>Press <b>Add the starter week</b>. Every slot on your timetable gets a lesson: a free Oak National Academy lesson for that subject and year, with a video and quizzes, or a short hands-on lesson of ours.</>,
           "They're ordinary lessons, so change, move or delete any of them.",
         ],
         tip: "It follows your own timetable, so set that up first if you teach different subjects. Where Oak has no lesson for a subject, such as Life Skills, we add a simple one of our own.",
@@ -258,7 +272,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         title: "Stars and rewards",
         intro: "Children earn stars for learning and spend them on rewards you choose.",
         steps: [
-          <>In <L href="/parent/rewards">Family, then Rewards &amp; Badges</L>, set how stars are earned (lessons, Oak quiz scores, spelling tests, books, games).</>,
+          <>In <L href="/parent/rewards">Family, then Rewards &amp; Badges</L>, set how stars are earned (lessons, Oak quiz scores, scores you mark yourself, spelling tests, books, games).</>,
           "Add rewards and their star cost, like 10 minutes of screen time.",
           "When a child asks for a reward, approve it from the star jar on your home page.",
           "Once they've had it, tick it off so it drops off the list.",
