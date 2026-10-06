@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import "./fonts.css";
 import "./globals.css";
 import ThemeSync from "@/components/ThemeSync";
 import ServiceWorker from "@/components/ServiceWorker";
@@ -10,14 +10,8 @@ import ProblemNotice from "@/components/ProblemNotice";
 import AccessHelper from "@/components/AccessHelper";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import { DISPLAY_BOOT_SCRIPT } from "@/lib/display";
-import { easyRead } from "@/lib/fonts";
+import { easyRead, nunito } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/site";
-
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
 
 const DESCRIPTION =
   "A calm home education planner for UK families. Plan the week or simply log what you did, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
@@ -85,6 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="theme-color" content="#3F5D46" />
         <meta name="mobile-web-app-capable" content="yes" />
+        {/* The everyday font is on every page, so the browser fetches it straight away. */}
+        <link rel="preload" href="/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: DISPLAY_BOOT_SCRIPT }} />
       </head>

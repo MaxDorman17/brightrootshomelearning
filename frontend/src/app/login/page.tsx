@@ -2,13 +2,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Fraunces } from "next/font/google";
 import { checkSession, getMe, login } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 import { applyTheme } from "@/lib/theme";
 import { applyDisplay } from "@/lib/display";
+import { serif } from "@/lib/fonts";
 
-const serif = Fraunces({ subsets: ["latin"], weight: ["600", "700"], display: "swap" });
 
 // Fixed colours here (not the theme variables), so the login page always looks the same
 // whatever theme the last person on this device picked.
