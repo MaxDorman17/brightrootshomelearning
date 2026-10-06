@@ -18,7 +18,7 @@ const nunito = Nunito({
 });
 
 const DESCRIPTION =
-  "A calm home learning planner for UK families. Plan the week, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
+  "A calm home education planner for UK families. Plan the week or simply log what you did, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
 
 // Draw every page fresh for each visit. Built-once pages kept the build day's date, so
 // the planner highlighted the day the site was last deployed instead of today.
@@ -33,6 +33,11 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   keywords: [
     "home education planner",
+    "homeschooling planner",
+    "home learning planner for families",
+    "home education record keeping",
+    "UK home education",
+    "homeschool progress tracking",
     "homeschool planner UK",
     "home learning",
     "elective home education",

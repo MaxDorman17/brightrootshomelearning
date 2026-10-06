@@ -7,7 +7,6 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSite";
 import { HandNote, Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
-import Emoji from "@/components/Emoji";
 
 // Fixed colours for the public pages, so they never pick up a family's theme.
 const C = {
@@ -55,6 +54,49 @@ const featureGroups = [
     tint: "#F5EFE1",
     blurb: "Keep everyone motivated and on track.",
     items: ["Stars & rewards", "Badges, plus your own", "Printable certificates", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
+  },
+];
+
+// "Why Bright Roots?": the same five worries, before and after.
+const beforeAfter: [string, string][] = [
+  ["Plans scattered across notebooks, printouts and bookmarks", "One calm family home page for the whole week"],
+  ["Reading records and spelling lists that go missing", "Reading, spellings and lessons kept together"],
+  ["No clear picture of how each child is getting on", "Progress builds itself as things are ticked off"],
+  ["A scramble when the council gets in touch", "A report ready whenever you need one"],
+  ["More evenings organising than days enjoying it", "More time learning together"],
+];
+
+// Real screens from the app, taken with a made-up family. Each one also lists what lives in that part of Bright Roots.
+const screens = [
+  {
+    src: "/home/shots/parent-home.jpg",
+    width: 1600,
+    height: 994,
+    alt: "The parent home page: a welcome, something a child did by themselves waiting for an OK, and a box to note down what the family did today",
+    eyebrow: "Your home page",
+    title: "Everything that needs you, in one place",
+    text: "See what is waiting for you, jot down what you did today and check how the week is going. No hunting through notebooks.",
+    group: "Family",
+  },
+  {
+    src: "/home/shots/planner.jpg",
+    width: 1600,
+    height: 885,
+    alt: "The weekly planner: a column for each day with colour-coded lessons, the scheme each one comes from, and scores",
+    eyebrow: "Weekly planner",
+    title: "A home education planner that fits your week",
+    text: "Plan a week in one sitting from whatever you use, or log things as they happen. Move a day along when life gets in the way.",
+    group: "Plan",
+  },
+  {
+    src: "/home/shots/child-today.jpg",
+    width: 1600,
+    height: 1035,
+    alt: "A child's own page: a greeting, what is up next, their star jar and the week ahead",
+    eyebrow: "Your child's page",
+    title: "Their own space, and only what they need today",
+    text: "Each child logs in to a simple page with today's learning, what is up next and the stars they have earned.",
+    group: "Learn",
   },
 ];
 
@@ -143,52 +185,7 @@ function MiniWeek() {
   );
 }
 
-/** Stacked book spines, like the ones on the shelf in the mock-up. */
-function BookStack({ words, className = "" }: { words: string[]; className?: string }) {
-  const colours = ["#F4ECDC", "#E9EEE1", "#EFE3CF", "#E3EADB"];
-  return (
-    <div className={`flex flex-col items-center ${className}`} aria-hidden>
-      {words.map((w, i) => (
-        <span
-          key={w}
-          className="rounded-sm border border-[#D9CCB4] px-4 py-0.5 text-[11px] font-bold tracking-[0.2em] shadow-sm"
-          style={{ background: colours[i % 4], color: C.deep, width: `${128 - (i % 2) * 10}px`, marginLeft: `${(i % 2) * 10}px`, textAlign: "center" }}
-        >
-          {w}
-        </span>
-      ))}
-    </div>
-  );
-}
 
-function FeatureCard({ g }: { g: (typeof featureGroups)[number] }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="flex flex-col items-center rounded-3xl p-6 text-center shadow-sm" style={{ background: g.tint }}>
-      <div className="flex h-24 items-end justify-center">
-        <Art src={g.art} className="h-24 w-auto object-contain" fallback={<span className="text-6xl" aria-hidden>{g.emoji}</span>} />
-      </div>
-      <h3 className={`${serif.className} mt-3 text-2xl font-semibold`} style={{ color: C.deep }}>{g.name}</h3>
-      <p className="mt-1 text-sm" style={{ color: C.earth }}>{g.blurb}</p>
-      {open && (
-        <ul className="mt-3 space-y-1 text-sm font-semibold" style={{ color: C.earth }}>
-          {g.items.map((i) => (
-            <li key={i}>{i}</li>
-          ))}
-        </ul>
-      )}
-      <button
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-label={`${open ? "Hide" : "Show"} what's in ${g.name}`}
-        className="mt-4 flex h-8 w-12 items-center justify-center rounded-full text-sm font-bold text-white transition-transform"
-        style={{ background: C.green }}
-      >
-        <span className={open ? "rotate-90" : ""} style={{ display: "inline-block", transition: "transform .2s" }}>→</span>
-      </button>
-    </div>
-  );
-}
 
 export default function HomePage() {
   const memberHome = useMemberHome();
@@ -237,7 +234,20 @@ export default function HomePage() {
                   Try the demo
                 </a>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold" style={{ color: C.earth }}>
+              <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm" style={{ color: C.earth }}>
+                <span className="font-bold" style={{ color: C.deep }}>For every stage:</span>
+                {[
+                  ["Early years", "#little-roots"],
+                  ["Primary", "#ages-5-to-10"],
+                  ["Secondary", "#teens"],
+                  ["GCSE preparation", "#teens"],
+                ].map(([label, href]) => (
+                  <a key={label} href={href} className="rounded-full border bg-white/70 px-3 py-1 text-xs font-bold transition-colors hover:bg-white" style={{ borderColor: C.line, color: C.green }}>
+                    ✓ {label}
+                  </a>
+                ))}
+              </p>
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold" style={{ color: C.earth }}>
                 {[
                   { src: "/home/icons/weekly-planning.png", fallback: "🗓️", label: "Plan it or log it" },
                   { src: "/home/icons/family-logins.png", fallback: "👨‍👩‍👧", label: "Parent & child logins" },
@@ -299,67 +309,142 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features */}
-        <section id="features" className="relative scroll-mt-16 py-14">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="relative flex items-center justify-center gap-3 text-center">
+        {/* Why Bright Roots: before and after */}
+        <section id="why" className="relative scroll-mt-16 py-14">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <div className="flex items-center justify-center gap-3 text-center">
               <Sprig className="h-12 w-auto" />
-              <H2>Everything your home learning needs</H2>
-              <Art src="/home/books.png" className="absolute right-0 top-1/2 hidden h-24 w-auto -translate-y-1/2 xl:block" fallback={<BookStack words={["PLAY", "EXPLORE", "LEARN", "BELONG"]} className="absolute right-0 top-1/2 hidden -translate-y-1/2 xl:flex" />} />
+              <H2>Why Bright Roots?</H2>
+              <Sprig className="h-12 w-auto" flip />
             </div>
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {featureGroups.map((g) => (
-                <FeatureCard key={g.name} g={g} />
-              ))}
+            <p className="mx-auto mt-3 max-w-2xl text-center" style={{ color: C.earth }}>
+              Whether you call it home education or homeschooling, a notebook or a spreadsheet can hold a plan. It can&apos;t give each child their own page, keep the reading log, count the
+              stars and write the report as well. Bright Roots does all of it in one place, so it saves time instead of adding a job.
+            </p>
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              <div className="rounded-3xl border p-6 sm:p-7" style={{ background: C.paper, borderColor: C.line }}>
+                <h3 className={`${serif.className} text-2xl font-semibold`} style={{ color: C.earth }}>Before Bright Roots</h3>
+                <ul className="mt-4 space-y-3">
+                  {beforeAfter.map(([before]) => (
+                    <li key={before} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#EFE6D6] text-[11px] font-black text-[#8C7B66]" aria-hidden>–</span>
+                      {before}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-3xl p-6 shadow-sm sm:p-7" style={{ background: C.sage }}>
+                <h3 className={`${serif.className} text-2xl font-semibold`} style={{ color: C.deep }}>With Bright Roots</h3>
+                <ul className="mt-4 space-y-3">
+                  {beforeAfter.map(([, after]) => (
+                    <li key={after} className="flex gap-3 text-sm font-semibold leading-6" style={{ color: C.ink }}>
+                      <Check />
+                      {after}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* For parents / children */}
-        <section className="pb-14">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="flex items-center justify-center gap-3">
-              <Sprig className="h-10 w-auto" />
-              <H2>A space for everyone</H2>
-              <Sprig className="h-10 w-auto" flip />
+        {/* See inside: real screens from the app */}
+        <section id="features" className="scroll-mt-16 border-t py-14" style={{ background: C.paper, borderColor: C.line }}>
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="text-center">
+              <H2>See inside</H2>
+              <p className="mx-auto mt-3 max-w-2xl" style={{ color: C.earth }}>
+                These are real screens from Bright Roots, shown with a made-up family. What you see is what you get.
+              </p>
             </div>
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
-              {[
-                {
-                  who: "For parents",
-                  art: "/home/parents.png",
-                  emoji: "☕",
-                  bg: C.sand,
-                  points: ["Plan the week ahead, or just jot down what you did", "See what's done and who needs a hand", "Reports ready whenever you need them"],
-                },
-                {
-                  who: "For children",
-                  art: "/home/children.png",
-                  emoji: "🌈",
-                  bg: C.sage,
-                  points: ["Their own space for today's learning", "Tick things off and earn stars", "Games, badges and their own look"],
-                },
-              ].map((p) => (
-                <div key={p.who} className="relative flex items-center gap-4 overflow-hidden rounded-3xl p-7" style={{ background: p.bg }}>
-                  <div className="flex-1">
-                    <h3 className={`${serif.className} text-2xl font-semibold`} style={{ color: C.deep }}>{p.who}</h3>
-                    <ul className="mt-4 space-y-3">
-                      {p.points.map((t) => (
-                        <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
-                          <Check />
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
+            <div className="mt-10 space-y-10 lg:space-y-14">
+              {screens.map((shot, i) => {
+                const group = featureGroups.find((g) => g.name === shot.group);
+                return (
+                  <div key={shot.src} className={"grid items-center gap-5 lg:gap-10 " + (i % 2 ? "lg:grid-cols-[1fr_1.45fr]" : "lg:grid-cols-[1.45fr_1fr]")}>
+                    <figure className={"overflow-hidden rounded-2xl border bg-white shadow-xl shadow-[#6E5A46]/10 " + (i % 2 ? "lg:order-2" : "")} style={{ borderColor: C.line }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" className="h-auto w-full" />
+                    </figure>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: "#6E8B62" }}>{shot.eyebrow}</p>
+                      <h3 className={`${serif.className} mt-2 text-2xl font-semibold leading-snug sm:text-[1.7rem]`} style={{ color: C.deep }}>{shot.title}</h3>
+                      <p className="mt-3 leading-7" style={{ color: C.earth }}>{shot.text}</p>
+                      {group && (
+                        <ul className="mt-4 hidden flex-wrap gap-2 sm:flex">
+                          {group.items.map((item) => (
+                            <li key={item} className="rounded-full border bg-white px-3 py-1 text-xs font-semibold" style={{ borderColor: C.line, color: C.earth }}>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </div>
-                  <div className="hidden h-32 w-40 shrink-0 items-center justify-center sm:flex">
-                    <Art src={p.art} className="h-36 w-auto object-contain" fallback={<span className="text-7xl" aria-hidden><Emoji e={p.emoji} /></span>} />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+            <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Link href={memberHome || "/signup"} className={primaryBtn} style={{ background: C.green }}>
+                {memberHome ? "Open your dashboard" : "Start your free trial"} <span aria-hidden>→</span>
+              </Link>
+              <a href="#demo" onClick={() => setDemoOpen(true)} className={ghostBtn} style={{ borderColor: C.line, color: C.green }}>
+                Try the demo
+              </a>
             </div>
           </div>
         </section>
+
+        {/* The council report */}
+        <section id="reports" className="scroll-mt-16 py-14" style={{ background: C.sage }}>
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: "#6E8B62" }}>Home education record keeping</p>
+              <H2 className="mt-2">Be ready when you&apos;re asked</H2>
+              <p className="mt-4 leading-7" style={{ color: C.earth }}>
+                If your council asks how home education is going, it is much less stressful when the answer is already written
+                down. Bright Roots keeps the record as you go, then puts it together for you.
+              </p>
+              <ul className="mt-5 space-y-3">
+                {[
+                  "Lessons, reading, results and days out, recorded as they happen",
+                  "A report for each child, for any dates you choose",
+                  "You decide which sections go in, and write your own approach in your own words",
+                  "Print it, or save it as a PDF",
+                ].map((t) => (
+                  <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.earth }}>
+                    <Check />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Link href="/sample-report" className={primaryBtn} style={{ background: C.green }}>
+                  See a sample report <span aria-hidden>→</span>
+                </Link>
+                <Link href="/guides/keeping-records" className={ghostBtn} style={{ borderColor: C.line, color: C.green }}>
+                  Read our record keeping guide
+                </Link>
+              </div>
+              <p className="mt-4 text-xs leading-5" style={{ color: C.earth }}>
+                Bright Roots helps you keep and present your records. It isn&apos;t legal advice, and what your council asks for is between you and them.
+              </p>
+              <ul className="mt-4 hidden flex-wrap gap-2 sm:flex">
+                {(featureGroups.find((g) => g.name === "Progress")?.items ?? []).map((item) => (
+                  <li key={item} className="rounded-full border bg-white/70 px-3 py-1 text-xs font-semibold" style={{ borderColor: C.line, color: C.earth }}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Link href="/sample-report" className="hidden rotate-[1.5deg] overflow-hidden rounded-2xl border bg-white shadow-xl sm:block shadow-[#6E5A46]/15 transition-transform hover:rotate-0" style={{ borderColor: C.line }} aria-label="See a sample council report">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/home/shots/report.jpg" alt="A home education report showing days of recorded learning, lessons completed and subjects covered" width={1600} height={935} loading="lazy" className="h-auto w-full" />
+            </Link>
+          </div>
+        </section>
+
+        <div className="h-14" aria-hidden />
 
         {/* Little Roots: ages 3 to 4 */}
         <section id="little-roots" className="scroll-mt-16 pb-14">
@@ -577,6 +662,39 @@ export default function HomePage() {
                 ))}
               </ol>
               <HandNote className="hidden rotate-[-8deg] lg:block">You&apos;ve got this</HandNote>
+            </div>
+          </div>
+        </section>
+
+        {/* Early members */}
+        <section id="early" className="scroll-mt-16 py-14">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <div className="rounded-3xl border p-7 sm:p-10" style={{ background: C.sand, borderColor: C.line }}>
+              <div className="grid items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: "#8A6A22" }}>New, and built by one family</p>
+                  <H2 className="mt-2">Help shape Bright Roots</H2>
+                  <p className="mt-4 leading-7" style={{ color: C.earth }}>
+                    We are a home-educating family in the UK, not a big company, and Bright Roots is still young. That means the people who
+                    join now have a real say in what it becomes. Tell us what would make your week easier and there is a good
+                    chance we will build it.
+                  </p>
+                </div>
+                <ul className="space-y-3">
+                  {[
+                    ["Ask for what you need", "Feature requests go straight to the people who build it."],
+                    ["Talk to us directly", "Help and feedback is one click away inside the app, and we read every message."],
+                    ["New things often", "We add and improve things regularly, and tell you what is new."],
+                  ].map(([title, text]) => (
+                    <li key={title} className="flex gap-3">
+                      <Check />
+                      <span className="text-sm leading-6" style={{ color: C.earth }}>
+                        <strong style={{ color: C.ink }}>{title}.</strong> {text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
