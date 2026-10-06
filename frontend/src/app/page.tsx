@@ -7,6 +7,7 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSite";
 import { HandNote, Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
+import { SUPPORT_EMAIL } from "@/lib/site";
 
 // Fixed colours for the public pages, so they never pick up a family's theme.
 const C = {
@@ -55,6 +56,16 @@ const featureGroups = [
     blurb: "Keep everyone motivated and on track.",
     items: ["Stars & rewards", "Badges, plus your own", "Printable certificates", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
   },
+];
+
+// Our promises. Each is something the site really does today; change one here only if the site changes too.
+const promises: [string, string][] = [
+  ["Free for 14 days", "No card needed to try it."],
+  ["Cancel any time", "In a couple of clicks, from your account page."],
+  ["Your data is yours", "Download everything, or delete it all, whenever you like."],
+  ["No adverts, ever", "We never sell your information or track you around the web."],
+  ["Backed up every night", "Your family's records are copied somewhere safe each night."],
+  ["Every child included", "One price for the whole family, up to 10 children."],
 ];
 
 // "Why Bright Roots?": the same five worries, before and after.
@@ -755,6 +766,73 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* What's included: the whole list, right before the price */}
+        <section id="included" className="scroll-mt-16 border-t py-14" style={{ background: C.paper, borderColor: C.line }}>
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="text-center">
+              <H2>What&apos;s included</H2>
+              <p className="mx-auto mt-3 max-w-2xl" style={{ color: C.earth }}>
+                Everything below comes with every membership. There are no extras to buy and nothing is held back for a dearer plan.
+              </p>
+            </div>
+            <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {featureGroups.map((group) => (
+                <div key={group.name} className="rounded-2xl border p-5" style={{ background: group.tint, borderColor: C.line }}>
+                  <div className="flex items-center gap-3">
+                    <Art src={group.art} className="h-12 w-12 object-contain" fallback={<span className="text-3xl" aria-hidden>{group.emoji}</span>} />
+                    <div>
+                      <h3 className={`${serif.className} text-xl font-semibold`} style={{ color: C.deep }}>{group.name}</h3>
+                      <p className="text-xs leading-4" style={{ color: C.earth }}>{group.blurb}</p>
+                    </div>
+                  </div>
+                  <ul className="mt-4 hidden space-y-2 sm:block">
+                    {group.items.map((item) => (
+                      <li key={item} className="flex gap-2.5 text-sm leading-5" style={{ color: C.ink }}>
+                        <Check />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  {/* On a phone each list opens with a tap, so the page stays short. */}
+                  <details className="group mt-3 sm:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl bg-white/70 px-3 py-2 text-sm font-bold" style={{ color: C.green }}>
+                      See all {group.items.length}
+                      <span className="text-lg leading-none transition-transform group-open:rotate-45">+</span>
+                    </summary>
+                    <ul className="mt-3 space-y-2">
+                      {group.items.map((item) => (
+                        <li key={item} className="flex gap-2.5 text-sm leading-5" style={{ color: C.ink }}>
+                          <Check />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 rounded-3xl border bg-white p-6 sm:p-8" style={{ borderColor: C.line }}>
+              <h3 className={`${serif.className} text-center text-2xl font-semibold`} style={{ color: C.deep }}>Our promises to your family</h3>
+              <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 sm:gap-y-5 lg:grid-cols-3">
+                {promises.map(([title, text]) => (
+                  <li key={title} className="flex gap-3">
+                    <Check />
+                    <span className="text-sm leading-6" style={{ color: C.earth }}>
+                      <strong className="block" style={{ color: C.ink }}>{title}</strong>
+                      {text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-center text-xs" style={{ color: C.earth }}>
+                The full detail is in our <Link href="/privacy" className="font-bold underline" style={{ color: C.green }}>privacy policy</Link> and{" "}
+                <Link href="/terms" className="font-bold underline" style={{ color: C.green }}>terms</Link>, written in plain English.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Membership */}
         <section id="pricing" className="relative scroll-mt-16 overflow-hidden py-12 text-white" style={{ background: "#2D3D32" }}>
           <Sprig className="absolute -left-2 bottom-2 hidden h-36 w-auto opacity-40 lg:block" />
@@ -805,10 +883,27 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="lg:pl-16">
               <H2>Questions, answered</H2>
-              <p className="mt-3" style={{ color: C.earth }}>
-                Anything else? <Link href="/contact" className="font-bold underline" style={{ color: C.green }}>Get in touch</Link>. We&apos;re a
-                family too, and always happy to help.
-              </p>
+              <div id="talk" className="mt-6 scroll-mt-20 rounded-2xl border p-5" style={{ background: C.sand, borderColor: C.line }}>
+                <div className="flex items-center gap-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/hero/our-family.jpg" alt="" width={1200} height={900} loading="lazy" className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow" />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: "#8A6A22" }}>Anything else?</p>
+                    <h3 className={`${serif.className} text-xl font-semibold leading-6`} style={{ color: C.deep }}>Talk to the person who built it</h3>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-6" style={{ color: C.earth }}>
+                  Hi, I&apos;m Max. I built Bright Roots for my own three children, and I still look after it myself. If you have a
+                  question before you sign up, or something isn&apos;t working, your message comes to me, not a call centre, and I answer it myself.
+                </p>
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white" style={{ background: C.green }}>
+                  Email Max <span aria-hidden>→</span>
+                </a>
+                <p className="mt-3 text-xs leading-5" style={{ color: C.earth }}>
+                  <span className="block break-all">{SUPPORT_EMAIL}</span>
+                  Or use the <Link href="/contact" className="font-bold underline" style={{ color: C.green }}>contact page</Link>.
+                </p>
+              </div>
             </div>
             <div className="space-y-2.5">
               {faqs.map(([q, a]) => (
