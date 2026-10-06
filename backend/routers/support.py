@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 KINDS = {"problem": "A problem", "suggestion": "A suggestion", "review": "A review", "question": "A question"}
 MAX_PER_DAY = 10
+REVIEW_PROMPT_AFTER_DAYS = 14  # how long a family has been with us before we ask how it is going
 
 
 class MessageIn(BaseModel):
@@ -129,6 +130,22 @@ def send_message(body: MessageIn, db: Session = Depends(get_db), current_user: U
         except Exception:
             logger.exception("Could not email support message %s", row.id)
     return {"id": row.id, "emailed": bool(row.emailed)}
+
+
+@router.get("/review-prompt")
+def review_prompt(db: Session = Depends(get_db), current_user: User = Depends(_require_grown_up)):
+    """Whether to ask this family how it is going: once they have been with us a couple of weeks,
+    and only until they have told us."""
+    started = current_user.email_verified_at or current_user.created_at
+    if started is None:
+        return {"show": False}
+    started = started.replace(tzinfo=None) if started.tzinfo else started
+    if datetime.utcnow() - started < timedelta(days=REVIEW_PROMPT_AFTER_DAYS):
+        return {"show": False}
+    already = db.query(SupportMessage.id).filter(
+        SupportMessage.user_id == current_user.id, SupportMessage.kind == "review"
+    ).first()
+    return {"show": already is None}
 
 
 @router.get("/messages")

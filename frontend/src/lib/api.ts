@@ -726,6 +726,8 @@ export type SupportMessage = {
 };
 export const sendSupportMessage = (body: { kind: string; message: string; rating?: number | null; can_publish?: boolean; display_name?: string | null; page?: string | null }) =>
   api.post<{ id: number; emailed: boolean }>("/api/support/messages", body);
+// Whether to ask this family how it is going (a couple of weeks in, until they have answered)
+export const getReviewPrompt = () => api.get<{ show: boolean }>("/api/support/review-prompt");
 // Owner only
 export const getSupportMessages = () => api.get<SupportMessage[]>("/api/support/messages", { skipAuthRedirect: true } as any);
 export const deleteSupportMessage = (id: number) => api.delete(`/api/support/messages/${id}`);
