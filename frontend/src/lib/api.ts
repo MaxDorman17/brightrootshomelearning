@@ -268,6 +268,14 @@ export const getTodayNotifications = () => api.get("/api/notifications/today");
 export const getAllMyEntries = () => api.get("/api/planner/mine");
 export const createPlannerEntry = (data: { lesson_id: number; scheduled_date: string; assigned_to?: number; is_extra?: boolean }) =>
   api.post("/api/planner/", data);
+// Put a lesson on the same weekday for the next few weeks, or copy one whole week onto another
+export const repeatPlannerEntry = (id: number, weeks: number) =>
+  api.post<{ added: number; skipped: number; last: string | null }>(`/api/planner/${id}/repeat`, { weeks });
+export const copyPlannerWeek = (from_start: string, to_start: string, child_id?: number) =>
+  api.post<{ copied: number; skipped: number; start_date: string }>("/api/planner/copy-week", { from_start, to_start, child_id });
+// Record something already done, with no planning first
+export const logLearning = (body: { title: string; subject: string; child_ids: number[]; day?: string; note?: string }) =>
+  api.post<{ logged: number; entry_ids: number[]; day: string }>("/api/planner/log", body);
 export const updatePlannerEntry = (id: number, data: { scheduled_date?: string; assigned_to?: number | null }) =>
   api.put(`/api/planner/${id}`, data);
 export const deletePlannerEntry = (id: number) => api.delete(`/api/planner/${id}`);

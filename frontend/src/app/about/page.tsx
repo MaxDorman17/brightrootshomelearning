@@ -30,7 +30,9 @@ const principles = [
 const whoFor = [
   "Families who home educate full time",
   "Parents who want a clear weekly plan for one child or several",
-  "Families who use Oak National Academy lessons and want the results in one place",
+  "Families who use Oak National Academy, Twinkl, White Rose Maths or their own mix, and want it all in one place",
+  "Child-led families who would rather record what happened than plan it",
+  "Families whose children have additional needs and learn at their own pace",
   "Anyone who needs a tidy record of learning to look back on or share",
 ];
 
@@ -55,6 +57,19 @@ export default function AboutPage() {
       <section className="border-t border-brand-line py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="text-3xl font-black">Our story</h2>
+          <figure className="mt-6 overflow-hidden rounded-3xl border border-brand-line bg-brand-white shadow-sm">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hero/our-family.jpg"
+              alt="The family behind Bright Roots, two parents and three children, smiling outdoors at sunset"
+              width={1200}
+              height={900}
+              className="aspect-[4/3] w-full object-cover"
+            />
+            <figcaption className="px-5 py-3 text-sm text-[#6E5A46]">
+              <span className="font-bold text-brand-charcoal">That&apos;s us.</span> Charlotte, Oscar and Max, with Rose and Lola in front.
+            </figcaption>
+          </figure>
           <div className="mt-5 space-y-4 leading-7 text-[#6E5A46]">
             <p>
               Bright Roots started at our own kitchen table. When we began home learning with our

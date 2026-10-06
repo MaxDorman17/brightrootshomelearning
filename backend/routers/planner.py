@@ -32,6 +32,40 @@ class SubmitNote(BaseModel):
     completed_note: str
 
 
+class LogLearning(BaseModel):
+    title: str
+    subject: str
+    child_ids: List[int]
+    day: Optional[date] = None  # today if left out
+    note: Optional[str] = None
+
+
+MAX_LOG_DAYS_BACK = 60
+MAX_REPEAT_WEEKS = 26
+
+
+class RepeatEntry(BaseModel):
+    weeks: int  # how many more weeks to put this lesson on the same weekday
+
+
+class CopyWeek(BaseModel):
+    from_start: date  # any day in the week to copy from
+    to_start: date  # any day in the week to copy to
+    child_id: Optional[int] = None  # only this child's lessons (and ones shared by all children)
+
+
+def _days_off(db: Session, parent: User) -> set:
+    return {d.date for d in db.query(DayOff).filter(DayOff.parent_id == parent.id).all()}
+
+
+def _already_planned(db: Session, lesson_id: int, assigned_to: Optional[int], day: date) -> bool:
+    return db.query(PlannerEntry.id).filter(
+        PlannerEntry.lesson_id == lesson_id,
+        PlannerEntry.assigned_to.is_(None) if assigned_to is None else PlannerEntry.assigned_to == assigned_to,
+        PlannerEntry.scheduled_date == day,
+    ).first() is not None
+
+
 def load_entry(db: Session, entry_id: int) -> PlannerEntry:
     return db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).filter(
         PlannerEntry.id == entry_id
@@ -443,6 +477,125 @@ def shift_day(
         raise
 
     return {"moved": moved}
+
+@router.post("/copy-week", status_code=201)
+def copy_week(
+    body: CopyWeek,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Put one week's lessons onto another week, on the same days. Nothing is marked done, days off are
+    skipped, and a lesson already on that day for that child is left alone, so copying twice adds nothing."""
+    _validate_parent_child(db, current_user, body.child_id)
+    source = body.from_start - timedelta(days=body.from_start.weekday())
+    target = body.to_start - timedelta(days=body.to_start.weekday())
+    if source == target:
+        raise HTTPException(status_code=400, detail="Choose two different weeks")
+    query = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(
+            Lesson.created_by == current_user.id,
+            PlannerEntry.is_extra.is_not(True),
+            PlannerEntry.scheduled_date >= source,
+            PlannerEntry.scheduled_date <= source + timedelta(days=6),
+        )
+    )
+    if body.child_id is not None:
+        query = query.filter(or_(PlannerEntry.assigned_to == body.child_id, PlannerEntry.assigned_to.is_(None)))
+    days_off = _days_off(db, current_user)
+    copied = skipped = 0
+    for entry in query.order_by(PlannerEntry.scheduled_date, PlannerEntry.id).all():
+        day = target + (entry.scheduled_date - source)
+        if day in days_off or _already_planned(db, entry.lesson_id, entry.assigned_to, day):
+            skipped += 1
+            continue
+        db.add(PlannerEntry(lesson_id=entry.lesson_id, assigned_to=entry.assigned_to, scheduled_date=day))
+        db.flush()
+        copied += 1
+    db.commit()
+    return {"copied": copied, "skipped": skipped, "start_date": target.isoformat()}
+
+
+@router.post("/{entry_id}/repeat", status_code=201)
+def repeat_entry(
+    entry_id: int,
+    body: RepeatEntry,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Put the same lesson on the same weekday for the next few weeks, skipping days off."""
+    entry = _entry_for_parent(db, entry_id, current_user)
+    if not entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    if not 1 <= body.weeks <= MAX_REPEAT_WEEKS:
+        raise HTTPException(status_code=400, detail=f"Choose between 1 and {MAX_REPEAT_WEEKS} weeks")
+    days_off = _days_off(db, current_user)
+    added = skipped = 0
+    last = None
+    for week in range(1, body.weeks + 1):
+        day = entry.scheduled_date + timedelta(weeks=week)
+        if day in days_off or _already_planned(db, entry.lesson_id, entry.assigned_to, day):
+            skipped += 1
+            continue
+        db.add(PlannerEntry(lesson_id=entry.lesson_id, assigned_to=entry.assigned_to, scheduled_date=day, is_extra=bool(entry.is_extra)))
+        db.flush()
+        added += 1
+        last = day
+    db.commit()
+    return {"added": added, "skipped": skipped, "last": last.isoformat() if last else None}
+
+
+@router.post("/log", status_code=201)
+def log_learning(
+    body: LogLearning,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Record something a family has already done, with no planning first.
+
+    It is saved as an ordinary lesson that is already complete, one for each child, so it counts
+    in the planner, progress, stars and the council report like any lesson that was ticked off.
+    """
+    title = " ".join(body.title.split())[:255]
+    subject = " ".join(body.subject.split())[:100]
+    if not title or not subject:
+        raise HTTPException(status_code=400, detail="Say what you did and which subject it was")
+    family = set(_child_ids_for_parent(db, current_user))
+    child_ids = list(dict.fromkeys(cid for cid in body.child_ids if cid in family))
+    if not child_ids or len(child_ids) != len(set(body.child_ids)):
+        raise HTTPException(status_code=400, detail="Pick who did it")
+    today = date.today()
+    day = body.day or today
+    if day > today:
+        raise HTTPException(status_code=400, detail="That day hasn't happened yet. Use the planner for things to come.")
+    if day < today - timedelta(days=MAX_LOG_DAYS_BACK):
+        raise HTTPException(status_code=400, detail=f"You can log up to {MAX_LOG_DAYS_BACK} days back")
+    note = (body.note or "").strip()[:1000] or None
+
+    lesson = db.query(Lesson).filter(
+        Lesson.title == title, Lesson.subject == subject, Lesson.created_by == current_user.id
+    ).first()
+    if not lesson:
+        lesson = Lesson(title=title, subject=subject, created_by=current_user.id)
+        db.add(lesson)
+        db.flush()
+    now = datetime.utcnow()
+    entries = []
+    for child_id in child_ids:
+        entry = PlannerEntry(
+            lesson_id=lesson.id,
+            assigned_to=child_id,
+            scheduled_date=day,
+            is_complete=True,
+            completed_at=now,
+            completed_note=note,
+        )
+        db.add(entry)
+        entries.append(entry)
+    db.commit()
+    return {"logged": len(entries), "entry_ids": [e.id for e in entries], "day": day.isoformat()}
+
 
 @router.post("/", response_model=PlannerEntryOut, status_code=201)
 def create_entry(

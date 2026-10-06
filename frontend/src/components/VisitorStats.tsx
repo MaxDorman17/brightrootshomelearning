@@ -11,6 +11,7 @@ import { STATS_HOSTS, STATS_SCRIPT, STATS_WEBSITE_ID } from "@/lib/site";
 const COUNTED = [
   "/",
   "/guides",
+  "/sample-report",
   "/about",
   "/contact",
   "/signup",

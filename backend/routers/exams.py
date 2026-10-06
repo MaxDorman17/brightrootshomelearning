@@ -18,7 +18,7 @@ from routers.moments import _family_children, _family_id
 
 router = APIRouter(prefix="/api/exams", tags=["exams"])
 
-QUALIFICATIONS = ["GCSE", "IGCSE", "A level", "AS level", "Functional Skills", "Other"]
+QUALIFICATIONS = ["GCSE", "IGCSE", "A level", "AS level", "National 4", "National 5", "Higher", "Advanced Higher", "Functional Skills", "Other"]
 STATUSES = ["planning", "entered", "sat", "result"]
 MAX_REVISION_SESSIONS = 80
 

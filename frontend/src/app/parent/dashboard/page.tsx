@@ -25,6 +25,7 @@ import HomeOverview from "@/components/HomeOverview";
 import AppCard from "@/components/AppCard";
 import { FamilyStarJars } from "@/components/StarJarCards";
 import { ParentNotesCard } from "@/components/FamilyNotes";
+import LogTodayCard from "@/components/LogTodayCard";
 import { useMounted } from "@/lib/useMounted";
 import { STORE_OPEN, useStoreVisible } from "@/lib/store";
 import { Sprig } from "@/components/Decor";
@@ -82,6 +83,8 @@ export default function ParentDashboardPage() {
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
 
   const [loading, setLoading] = useState(true);
+  // Bumped when something is logged, so the week's figures are fetched again.
+  const [logged, setLogged] = useState(0);
 
   const weekStart = useMemo(
     () => startOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -162,6 +165,7 @@ export default function ParentDashboardPage() {
     selectedChildId,
     weekStartStr,
     weekEndStr,
+    logged,
   ]);
 
   const todayStr = format(new Date(), "yyyy-MM-dd");
@@ -309,9 +313,7 @@ export default function ParentDashboardPage() {
 
         <HomeOverview />
 
-        <div className="mb-8">
-          <AppCard role="parent" dismissible />
-        </div>
+        <LogTodayCard kids={children} onLogged={() => setLogged((n) => n + 1)} />
 
         <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <DashboardStat
@@ -646,6 +648,11 @@ export default function ParentDashboardPage() {
             )}
           </div>
         </section>
+
+        {/* Set-up extras sit at the bottom, so the top of the page is about today's learning. */}
+        <div className="mt-8">
+          <AppCard role="parent" dismissible />
+        </div>
       </main>
     </div>
   );

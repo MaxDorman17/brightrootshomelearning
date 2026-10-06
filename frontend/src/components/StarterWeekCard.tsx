@@ -131,7 +131,7 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
       </div>
       <p className="mt-3 text-xs text-[#8A7A69]">
         {anyOak || usesOak
-          ? "Pick the year that suits your child, not just their age. Where Oak has no lesson for a subject, we add a simple one of our own."
+          ? "Pick the year that suits your child, not just their age. The year names are England's, so in Scotland, Wales or Northern Ireland go by the ages shown. Where Oak has no lesson for a subject, we add a simple one of our own."
           : "Prefer Oak for a child? Choose their school year instead and they get free Oak National Academy lessons."}
       </p>
       {error && <p className="mt-2 text-sm font-semibold text-[#A64F42]">{error}</p>}

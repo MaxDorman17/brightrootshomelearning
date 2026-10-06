@@ -19,6 +19,12 @@ export const GUIDES = [
     minutes: 5,
   },
   {
+    slug: "additional-needs",
+    title: "Home educating a child with additional needs",
+    summary: "Going at your child's pace, shorter days, a week they can see, and a record that shows the small steps.",
+    minutes: 6,
+  },
+  {
     slug: "keeping-records",
     title: "Keeping a record of home education without it taking over",
     summary: "What's worth writing down, a five-minute daily routine, and what to have ready if the council asks.",

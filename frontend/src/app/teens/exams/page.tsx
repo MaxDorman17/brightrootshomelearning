@@ -11,7 +11,7 @@ import { getRole, isAuthenticated } from "@/lib/auth";
 
 type Child = { id: number; username: string };
 
-const QUALIFICATIONS = ["GCSE", "IGCSE", "A level", "AS level", "Functional Skills", "Other"];
+const QUALIFICATIONS = ["GCSE", "IGCSE", "A level", "AS level", "National 4", "National 5", "Higher", "Advanced Higher", "Functional Skills", "Other"];
 const STATUSES: { value: Exam["status"]; label: string; style: string }[] = [
   { value: "planning", label: "Not entered yet", style: "bg-[#FBEFEB] text-[#A64F42]" },
   { value: "entered", label: "Entered", style: "bg-brand-tint text-brand-sage" },

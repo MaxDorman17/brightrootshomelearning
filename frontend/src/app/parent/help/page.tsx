@@ -79,6 +79,30 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
     group: "Planning lessons",
     guides: [
       {
+        id: "log-today",
+        emoji: "📝",
+        title: "Log what you did, with no plan",
+        intro: "For child-led days, trips, and anything that just happened. Nothing needs planning first.",
+        steps: [
+          <>On your <L href="/parent/dashboard">Home</L> page, find <b>What did you do today?</b></>,
+          "Type what you did, pick a subject (or type your own) and who did it.",
+          <>Press <b>Save as done</b>. To add a note or log it for an earlier day, press <b>Add a note or change the day</b> first.</>,
+          <>It appears in the planner as a finished lesson and counts in <L href="/parent/council-report">your council report</L>.</>,
+        ],
+        tip: "You can mix both ways: plan maths and English, and log everything else as it happens.",
+      },
+      {
+        id: "repeat-copy",
+        emoji: "🔁",
+        title: "Repeat a lesson or copy last week",
+        intro: "For things that happen every week, like swimming on Tuesdays or reading every day.",
+        steps: [
+          <>To repeat one lesson, click it in the <L href="/parent">Planner</L>, choose how many more weeks under <b>Repeat</b>, and press <b>Repeat</b>.</>,
+          <>To repeat a whole week, go to the new week in the Planner and press <b>Copy Last Week</b>.</>,
+          "Days off are skipped, and anything already planned is left alone, so it is safe to press twice.",
+        ],
+      },
+      {
         id: "add-unit",
         emoji: "📚",
         title: "Add a whole unit from any scheme",

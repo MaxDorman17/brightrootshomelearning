@@ -8,7 +8,7 @@ import {
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
   getTimetable, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
-  getOakQuizResults, getWeekQuizScores, getLessonScores,
+  getOakQuizResults, getWeekQuizScores, getLessonScores, repeatPlannerEntry, copyPlannerWeek,
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
 import LessonScoreBox from "@/components/LessonScoreBox";
@@ -201,6 +201,10 @@ export default function ParentPlanner() {
   const [slotNotes, setSlotNotes] = useState("");
   const [slotAssignedTo, setSlotAssignedTo] = useState<number | null>(null);
   const [slotSaving, setSlotSaving] = useState(false);
+  const [repeatWeeks, setRepeatWeeks] = useState(4);
+  const [repeating, setRepeating] = useState(false);
+  const [repeatMessage, setRepeatMessage] = useState("");
+  const [copyingWeek, setCopyingWeek] = useState(false);
 
   const [showHolidayPanel, setShowHolidayPanel] = useState(false);
 
@@ -365,7 +369,7 @@ export default function ParentPlanner() {
     setSlotAssignedTo(existing?.assigned_to ?? selectedChildId ?? null);
   };
 
-  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotScheme(""); setSlotNotes(""); setSlotAssignedTo(null); };
+  const closeModal = () => { setModal(null); setSlotTitle(""); setSlotUrl(""); setSlotScheme(""); setSlotNotes(""); setRepeatMessage(""); setSlotAssignedTo(null); };
 
   const handleSaveSlot = async () => {
     if (!modal || !slotTitle.trim()) return;
@@ -461,6 +465,48 @@ export default function ParentPlanner() {
     setGoals(prev => prev.filter(g => g.id !== id));
   };
 
+
+  const handleRepeat = async () => {
+    if (!modal?.existingEntry) return;
+    setRepeating(true);
+    setRepeatMessage("");
+    try {
+      const res = await repeatPlannerEntry(modal.existingEntry.id, repeatWeeks);
+      const { added, skipped, last } = res.data;
+      setRepeatMessage(
+        added === 0
+          ? "Nothing to add: it is already on those weeks, or they are days off."
+          : `Added to ${added} more week${added === 1 ? "" : "s"}, up to ${format(parseISO(last as string), "d MMM")}.` +
+            (skipped ? ` ${skipped} skipped (days off or already there).` : "")
+      );
+      await loadData();
+    } catch {
+      setRepeatMessage("Could not repeat this lesson. Please try again.");
+    } finally {
+      setRepeating(false);
+    }
+  };
+
+  const handleCopyLastWeek = async () => {
+    const lastWeek = format(addDays(weekStart, -7), "yyyy-MM-dd");
+    const who = selectedChildId ? `${children.find(c => c.id === selectedChildId)?.username ?? "this child"}'s` : "everyone's";
+    if (!confirm(`Copy ${who} lessons from the week of ${format(addDays(weekStart, -7), "d MMMM")} into this week? Nothing already here is changed.`)) return;
+    setCopyingWeek(true);
+    try {
+      const res = await copyPlannerWeek(lastWeek, weekStartStr, selectedChildId ?? undefined);
+      await loadData();
+      const { copied, skipped } = res.data;
+      alert(
+        copied === 0
+          ? (skipped ? "Nothing new to copy: those lessons are already here, or fall on days off." : "There were no lessons last week to copy.")
+          : `Copied ${copied} lesson${copied === 1 ? "" : "s"}.` + (skipped ? ` ${skipped} skipped (already here or days off).` : "")
+      );
+    } catch {
+      alert("Could not copy last week. Please try again.");
+    } finally {
+      setCopyingWeek(false);
+    }
+  };
 
   const handleQuickAdd = async () => {
     if (!quickAdd || !qaTitle.trim() || !qaSubject) return;
@@ -648,6 +694,15 @@ export default function ParentPlanner() {
                   }`}
                 >
                   Add a Unit
+                </button>
+
+                <button
+                  onClick={handleCopyLastWeek}
+                  disabled={copyingWeek}
+                  title="Put last week's lessons on the same days this week"
+                  className="px-4 py-2 text-sm rounded-xl font-bold border transition-all bg-brand-white text-brand-charcoal border-brand-softsage/30 hover:border-brand-sage disabled:opacity-50"
+                >
+                  {copyingWeek ? "Copying..." : "Copy Last Week"}
                 </button>
 
                 <button
@@ -1820,6 +1875,37 @@ export default function ParentPlanner() {
                   className="w-full bg-brand-white border border-brand-softsage/30 rounded-xl px-3 py-2.5 text-sm text-brand-charcoal focus:outline-none focus:border-brand-sage resize-none"
                 />
               </div>
+
+              {modal.existingEntry && (
+                <div>
+                  <label className="block text-sm font-bold text-brand-charcoal mb-1.5">
+                    Repeat
+                    <span className="font-medium text-brand-earth/45"> optional</span>
+                  </label>
+                  <div className="flex flex-wrap items-center gap-2 text-sm text-brand-earth">
+                    <span>Same day each week for</span>
+                    <select
+                      value={repeatWeeks}
+                      onChange={e => setRepeatWeeks(Number(e.target.value))}
+                      aria-label="How many more weeks"
+                      className="bg-brand-white border border-brand-softsage/30 rounded-xl px-2.5 py-2 text-sm font-semibold text-brand-charcoal focus:outline-none focus:border-brand-sage"
+                    >
+                      {[1, 2, 3, 4, 6, 8, 10, 12].map(n => (
+                        <option key={n} value={n}>{n} more week{n === 1 ? "" : "s"}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={handleRepeat}
+                      disabled={repeating}
+                      className="rounded-xl border border-brand-softsage/40 px-3 py-2 text-xs font-bold text-brand-sage hover:bg-brand-softsage/10 disabled:opacity-50"
+                    >
+                      {repeating ? "Adding..." : "Repeat"}
+                    </button>
+                  </div>
+                  {repeatMessage && <p className="mt-1.5 text-xs font-semibold text-brand-sage">{repeatMessage}</p>}
+                </div>
+              )}
 
               {modal.existingEntry && children.length > 0 && (() => {
                 const scored = modal.existingEntry;

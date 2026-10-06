@@ -30,7 +30,7 @@ const featureGroups = [
     emoji: "🗓️",
     tint: "#E7EADE",
     blurb: "Get the whole week sorted in one sitting.",
-    items: ["Weekly planner", "Your timetable", "Ready-made starter week", "Oak National Academy lessons", "Works with Twinkl, White Rose and more", "Lesson plans", "Calendar sync", "Print the week"],
+    items: ["Weekly planner", "Your timetable", "Ready-made starter week", "Works with Oak, Twinkl, White Rose and more", "Or just log what you did", "Repeat lessons & copy a week", "Lesson plans", "Calendar sync", "Print the week"],
   },
   {
     name: "Learn",
@@ -62,7 +62,7 @@ const steps = [
   ["Start your free trial", "Set up your family account in minutes. No card needed."],
   ["Add your children", "Give each child their own simple login."],
   ["Set your timetable", "Choose your subjects and when you teach them."],
-  ["Plan your first week", "Add a ready-made week of Oak lessons, or plan your own with whatever you already use."],
+  ["Plan your week, or just log it", "Add a ready-made week, bring in the scheme you already use, or simply note down what you do each day."],
 ];
 
 const faqs = [
@@ -74,8 +74,11 @@ const faqs = [
   ["Is there anything for my 3 or 4 year old?", "Yes. Little Roots has short, playful activities to do together, each one a picture book with a little story, what you need and what to say. There's a new set of three activities and a rhyme every week, and little ones don't need a login: you do it together from your account, and their stars and progress are still saved."],
   ["My teenager is working towards GCSEs. Can it help?", "Yes. The exam planner keeps each exam's centre, entry deadline, date and fee in one place, counts down the days, and adds revision sessions to the planner."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
+  ["We're child-led and don't plan lessons. Is it still for us?", "Yes. You don't have to plan anything. On your home page, type what you did today, pick the subject and who did it, and it is saved as learning done. Walks, books, baking, museum trips and long conversations all count, and they build into the same record and council report as planned lessons."],
+  ["My child has additional needs. Will it suit us?", "Many families home educate for exactly that reason. You choose the level for each subject rather than going by age, plan as little as suits the day, and move a day along when it isn't happening. Children see a short list for today rather than the whole week, and stars and rewards are yours to use or leave out. Our free guide has more ideas."],
+  ["We're in Scotland, Wales or Northern Ireland. Does it fit?", "Yes. The planner, records and report work the same wherever you live, with whatever subjects and curriculum you follow. The exam planner covers National 5s and Highers as well as GCSEs. The built-in Oak lessons follow England's curriculum and year names, so go by your child's age and ability when you pick a level, or use your own materials instead."],
   ["We use Twinkl or White Rose Maths, not Oak. Will it work for us?", "Yes. Add any lesson with a link to where it lives and the name of the scheme, and it sits in your planner like any other. You can type in a score for a worksheet or test, and it all shows in your records and council report. Bright Roots keeps the link and your notes; the materials stay on the scheme's own site."],
-  ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share."],
+  ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share. There is a sample report on this site if you would like to see one first."],
   ["What happens when my free trial ends?", "You can choose monthly or yearly membership from your account. If you decide not to carry on, you won't be charged, because no card is taken for the trial."],
   ["Is my family's information safe?", "Your family's data is private to your account, passwords are stored securely, and we never sell or share your information."],
   ["Does it work on a phone or tablet?", "Yes. Bright Roots works on any phone, tablet or computer, and you can add it to your home screen like an app."],
@@ -326,7 +329,7 @@ export default function HomePage() {
                   art: "/home/parents.png",
                   emoji: "☕",
                   bg: C.sand,
-                  points: ["Plan the whole week in one sitting", "See what's done and who needs a hand", "Reports ready whenever you need them"],
+                  points: ["Plan the week ahead, or just jot down what you did", "See what's done and who needs a hand", "Reports ready whenever you need them"],
                 },
                 {
                   who: "For children",
@@ -416,7 +419,7 @@ export default function HomePage() {
                 </p>
                 <ul className="mt-5 space-y-3">
                   {[
-                    "Free Oak National Academy lessons for every subject, chosen by school year",
+                    "Lessons from whatever you use: free Oak National Academy lessons built in, or your own from Twinkl, White Rose Maths and more",
                     "Reading log, spellings, languages and learning games",
                     "Ten comic heroes who teach maths, English, science, geography and history",
                     "Cookbook and Craft Corner, with grown-up jobs clearly marked",
@@ -512,6 +515,13 @@ export default function HomePage() {
                 <button onClick={() => setDemoOpen(!demoOpen)} className={`${primaryBtn} mt-6`} style={{ background: C.green }}>
                   {demoOpen ? "Hide the demo" : "Try the demo"} <span aria-hidden>{demoOpen ? "↑" : "→"}</span>
                 </button>
+                <p className="mt-4 text-sm" style={{ color: C.earth }}>
+                  Or{" "}
+                  <Link href="/sample-report" className="font-bold underline" style={{ color: C.green }}>
+                    see a sample council report
+                  </Link>
+                  , made from an example family&apos;s records.
+                </p>
                 <p className={`${hand.className} mt-6 hidden rotate-[-6deg] text-2xl lg:block`} style={{ color: "#4F6B4A" }}>
                   A tiny peek inside ↗
                 </p>
