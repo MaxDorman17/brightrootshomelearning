@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from auth import require_parent
 from database import get_db
 from models import DayOff, Lesson, LessonPlan, LessonPlanItem, PlannerEntry, TimetableConfig, User
-from routers.timetable import DEFAULT_TIMETABLE
+from routers.timetable import timetable_for
 from schemas import LessonOut
 
 router = APIRouter(prefix="/api/lesson-plans", tags=["lesson-plans"])
@@ -152,8 +152,8 @@ def schedule_plan(plan_id: int, body: ScheduleIn, db: Session = Depends(get_db),
         if not child:
             raise HTTPException(status_code=404, detail="Child not found")
 
-    row = db.query(TimetableConfig).filter(TimetableConfig.parent_id == current_user.id).first()
-    timetable = json.loads(row.config) if row else DEFAULT_TIMETABLE
+    # The child's own timetable if they have one, otherwise the family's.
+    timetable = timetable_for(db, current_user.id, body.assigned_to)
     days_off = {
         d.date for d in db.query(DayOff).filter(DayOff.parent_id == current_user.id, DayOff.date >= body.start_date).all()
     }

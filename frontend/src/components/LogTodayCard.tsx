@@ -2,8 +2,8 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { addDays, format, parseISO, startOfWeek } from "date-fns";
-import { addMoment, deletePlannerEntry, getTimetable, getWeekEntries, logLearning } from "@/lib/api";
-import { SUBJECT_OPTIONS, subjectsInTimetable } from "@/lib/subjects";
+import { addMoment, deletePlannerEntry, getFamilySubjects, getWeekEntries, logLearning } from "@/lib/api";
+import { SUBJECT_OPTIONS } from "@/lib/subjects";
 import { PlannerEntry } from "@/types";
 
 type Kid = { id: number; username: string };
@@ -49,9 +49,9 @@ export default function LogTodayCard({ kids, onLogged }: { kids: Kid[]; onLogged
 
   useEffect(() => {
     loadDone();
-    getTimetable()
+    getFamilySubjects()
       .then((res) => {
-        const mine = subjectsInTimetable(res.data.config || {});
+        const mine = res.data.subjects || [];
         setSubjects([...mine, ...SUBJECT_OPTIONS.filter((s) => !mine.includes(s))]);
       })
       .catch(() => {});

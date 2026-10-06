@@ -108,10 +108,15 @@ export default function ParentDashboardPage() {
       .then((res) => setChildren(res.data))
       .catch(() => {});
 
-    getTimetable()
+  }, [router]);
+
+  // Today's order follows the chosen child's own timetable, or the family's for everyone.
+  useEffect(() => {
+    if (!isAuthenticated() || getRole() !== "parent") return;
+    getTimetable(selectedChildId ?? undefined)
       .then((res) => setTimetable(res.data.config ?? {}))
       .catch(() => {});
-  }, [router]);
+  }, [selectedChildId]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") return;

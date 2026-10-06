@@ -187,7 +187,7 @@ export default function UnitAdder({ subjects, children, defaultChildId, unit, pl
 
       {subject && lessons.length > 0 && schedule.length === 0 && (
         <p className="mt-4 text-sm text-brand-terracotta">
-          {subject} isn&apos;t on your timetable yet, so there is no day to put these on. Add it under Plan, then Timetable.
+          {subject} isn&apos;t on {assignedTo === null ? "the family" : `${children.find((c) => c.id === assignedTo)?.username ?? "this child"}'s`} timetable yet, so there is no day to put these on. Add it under Plan, then Timetable.
         </p>
       )}
       {schedule.length > 0 && schedule.length < lessons.length && (

@@ -344,6 +344,8 @@ class TimetableConfigSave(BaseModel):
 class TimetableConfigOut(BaseModel):
     config: dict
     updated_at: Optional[datetime] = None
+    # False when a child was asked for and they simply follow the family timetable.
+    own: bool = True
 
 
 class ReadingWorksheetCreate(BaseModel):

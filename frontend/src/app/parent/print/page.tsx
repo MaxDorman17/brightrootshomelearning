@@ -52,9 +52,14 @@ export default function PrintPage() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
     getChildren().then(res => setChildren(res.data)).catch(() => {});
   }, [router]);
+
+  // The printed week follows the chosen child's own timetable, or the family's for everyone.
+  useEffect(() => {
+    if (!isAuthenticated() || getRole() !== "parent") return;
+    getTimetable(selectedChildId ?? undefined).then(res => setTimetable(res.data.config)).catch(() => {});
+  }, [selectedChildId]);
 
   useEffect(() => { loadEntries(); }, [loadEntries]);
 

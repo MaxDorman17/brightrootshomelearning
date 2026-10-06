@@ -11,9 +11,8 @@ import {
   updateQueuedUnit,
   deleteQueuedUnit,
   promoteQueuedUnit,
-  getTimetable,
+  getFamilySubjects,
 } from "@/lib/api";
-import { subjectsInTimetable } from "@/lib/subjects";
 import { Unit, UnitQueueItem } from "@/types";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -60,12 +59,12 @@ export default function UnitsPage() {
     const [unitsRes, queueRes, timetableRes] = await Promise.all([
       getUnits(),
       getUnitQueue(),
-      getTimetable().catch(() => null),
+      getFamilySubjects().catch(() => null),
     ]);
     setUnits(unitsRes.data);
     setQueue(queueRes.data);
     if (timetableRes) {
-      const familySubjects = subjectsInTimetable(timetableRes.data.config || {});
+      const familySubjects = timetableRes.data.subjects || [];
       if (familySubjects.length > 0) setTimetableSubjects(familySubjects);
     }
     setLoading(false);

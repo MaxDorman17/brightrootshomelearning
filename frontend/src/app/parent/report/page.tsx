@@ -107,12 +107,6 @@ export default function ReportPage() {
     ]).then(([eRes, childRes, sRes, qRes]) => {
       setEntries(eRes.data);
       setChildren(childRes.data);
-      const oscar = (childRes.data as Child[]).find(
-        child => child.username.trim().toLowerCase() === "oscar"
-      );
-      if (oscar) {
-        setSelectedChildId(current => current ?? oscar.id);
-      }
       setAllSpellingResults(sRes.data);
       setQuizResults(toMap(qRes.data));
       setLoading(false);

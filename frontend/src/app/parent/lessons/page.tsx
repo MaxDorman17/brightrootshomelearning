@@ -15,11 +15,10 @@ import {
   getChildren,
   getLessonLibrary,
   getLessonPlans,
-  getTimetable,
+  getFamilySubjects,
   scheduleLessonPlan,
   updateLessonPlan,
 } from "@/lib/api";
-import { subjectsInTimetable } from "@/lib/subjects";
 import { Lesson } from "@/types";
 import { schemeOf } from "@/lib/schemes";
 
@@ -339,7 +338,7 @@ export default function MyLessonsPage() {
     }
     load().catch(() => setLoading(false));
     getChildren().then((r) => setChildList(r.data)).catch(() => {});
-    getTimetable().then((r) => setSubjects(subjectsInTimetable(r.data.config || {}))).catch(() => {});
+    getFamilySubjects().then((r) => setSubjects(r.data.subjects || [])).catch(() => {});
   }, [load, router]);
 
   const allSubjects = useMemo(

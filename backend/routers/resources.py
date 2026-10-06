@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 from auth import get_current_user, require_parent
 from database import get_db
 from models import LearningAidSeed, Resource, ResourceFolder, TimetableConfig, User
-from routers.timetable import DEFAULT_TIMETABLE
+from routers.timetable import all_subjects
 from storage import upload_dir
 
 router = APIRouter(prefix="/api/resources", tags=["resources"])
@@ -112,14 +112,7 @@ def _family_id(user: User) -> int:
 
 
 def _subject_folders(db: Session, parent_id: int) -> list[str]:
-    row = db.query(TimetableConfig).filter(TimetableConfig.parent_id == parent_id).first()
-    config = json.loads(row.config) if row else DEFAULT_TIMETABLE
-    subjects: list[str] = []
-    for day_subjects in config.values():
-        for subject in day_subjects or []:
-            if subject not in subjects:
-                subjects.append(subject)
-    return subjects
+    return all_subjects(db, parent_id)
 
 
 def _resource_out(r: Resource) -> dict:

@@ -16,11 +16,10 @@ import {
   deleteMomentPhoto,
   getChildren,
   getMoments,
-  getTimetable,
+  getFamilySubjects,
   reactToMoment,
   updateMoment,
 } from "@/lib/api";
-import { subjectsInTimetable } from "@/lib/subjects";
 import Emoji from "@/components/Emoji";
 
 type Moment = {
@@ -509,7 +508,7 @@ function MomentsPage() {
     setRole(r);
     load().catch(() => setLoading(false));
     if (r === "parent") getChildren().then((res) => setChildList(res.data)).catch(() => {});
-    getTimetable().then((res) => setSubjects(subjectsInTimetable(res.data.config || {}))).catch(() => {});
+    getFamilySubjects().then((res) => setSubjects(res.data.subjects || [])).catch(() => {});
   }, [load, router]);
 
   useEffect(() => {

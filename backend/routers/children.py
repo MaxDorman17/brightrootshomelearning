@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from pydantic import BaseModel
 from database import get_db
-from models import User
+from models import ChildTimetable, User
 from schemas import ChildCreate, ChildOut
 from auth import require_parent, hash_password, clean_login_name, login_name_taken, suggest_login_names, CHILD_MIN_PASSWORD
 
@@ -173,6 +173,8 @@ def remove_child(
     child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id).first()
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")
+    # Their own timetable, if they had one, goes with them.
+    db.query(ChildTimetable).filter(ChildTimetable.child_id == child.id).delete(synchronize_session=False)
     db.delete(child)
     db.commit()
 

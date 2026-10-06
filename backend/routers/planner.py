@@ -5,7 +5,7 @@ from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
 from database import get_db
-from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig, TestResult
+from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig, TestResult, ChildTimetable
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
@@ -411,7 +411,13 @@ def shift_day(
         )
     }
 
-    def valid_for_subject(target: date, subject: str) -> bool:
+    # A child with a timetable of their own moves along their own week, not the family's.
+    own_timetables = {
+        row.child_id: json.loads(row.config)
+        for row in db.query(ChildTimetable).filter(ChildTimetable.parent_id == current_user.id).all()
+    }
+
+    def valid_for_subject(target: date, subject: str, assigned_to: Optional[int] = None) -> bool:
         if target.weekday() >= 5:
             return False
 
@@ -419,7 +425,8 @@ def shift_day(
             return False
 
         day_name = day_names[target.weekday()]
-        return subject in (timetable.get(day_name) or [])
+        week = own_timetables.get(assigned_to, timetable)
+        return subject in (week.get(day_name) or [])
 
     def find_slot(
         start: date,
@@ -433,7 +440,7 @@ def shift_day(
         for _ in range(730):
             key = (target, subject, assigned_to)
 
-            if valid_for_subject(target, subject) and key not in occupied:
+            if valid_for_subject(target, subject, assigned_to) and key not in occupied:
                 return target
 
             target += timedelta(days=step)

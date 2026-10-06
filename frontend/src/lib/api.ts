@@ -399,8 +399,16 @@ export const deleteQueuedUnit = (id: number) => api.delete(`/api/units/queue/${i
 export const promoteQueuedUnit = (id: number) => api.post(`/api/units/queue/${id}/promote`);
 
 // Timetable
-export const getTimetable = () => api.get("/api/timetable/");
-export const saveTimetable = (config: Record<string, string[]>) => api.put("/api/timetable/", { config });
+// The family timetable, or (with a child's id) the week that child follows: their own if they have one.
+// A child who is logged in always gets their own week.
+export const getTimetable = (childId?: number) => api.get("/api/timetable/", { params: childId != null ? { child_id: childId } : {} });
+// Every subject the family teaches: on the family timetable or on any child's own.
+export const getFamilySubjects = () => api.get<{ subjects: string[] }>("/api/timetable/subjects");
+// The children who have a timetable of their own, by child id.
+export const getChildTimetables = () => api.get<Record<string, Record<string, string[]>>>("/api/timetable/children");
+export const resetChildTimetable = (childId: number) => api.delete("/api/timetable/", { params: { child_id: childId } });
+export const saveTimetable = (config: Record<string, string[]>, childId?: number) =>
+  api.put("/api/timetable/", { config }, { params: childId != null ? { child_id: childId } : {} });
 
 // Oak National Academy
 export const searchOakLessons = (q: string, subject: string, year: string) =>

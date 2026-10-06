@@ -7,7 +7,7 @@ import {
   getWeekEntries, getAllEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
-  getTimetable, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
+  getTimetable, getChildTimetables, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
   getOakQuizResults, getWeekQuizScores, getLessonScores, repeatPlannerEntry, copyPlannerWeek,
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
@@ -223,7 +223,6 @@ export default function ParentPlanner() {
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [plannerLoaded, setPlannerLoaded] = useState(false);
   const [daysOff, setDaysOff] = useState<DayOff[]>([]);
-  const [timetable, setTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
@@ -266,6 +265,13 @@ export default function ParentPlanner() {
 
   const [showOakImport, setShowOakImport] = useState(false);
   const [showUnitAdder, setShowUnitAdder] = useState(false);
+  // The family timetable, and any timetables children have of their own (by child id).
+  const [familyTimetable, setFamilyTimetable] = useState<Record<string, string[]>>(DEFAULT_TIMETABLE);
+  const [childTimetables, setChildTimetables] = useState<Record<string, Record<string, string[]>>>({});
+  // The week a child follows: their own timetable if they have one, otherwise the family's.
+  const timetableOf = (childId: number | null) => (childId !== null && childTimetables[String(childId)]) || familyTimetable;
+  // The planner's rows: the week of the child being viewed, or the family's when viewing everyone.
+  const timetable = timetableOf(selectedChildId);
   const [unitToPlan, setUnitToPlan] = useState<UnitToPlan | null>(null);
   const [oakUrl, setOakUrl] = useState("");
   const [oakFetching, setOakFetching] = useState(false);
@@ -335,16 +341,9 @@ export default function ParentPlanner() {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
     getChildren().then(res => {
       setChildren(res.data);
-      const oscar = (res.data as Child[]).find(
-        child => child.username.trim().toLowerCase() === "oscar"
-      );
-      if (oscar) {
-        setSelectedChildId(current => current ?? oscar.id);
-        setQaAssignedTo(current => current ?? oscar.id);
-        setOakAssignedTo(current => current ?? oscar.id);
-      }
     }).catch(() => {});
-    getTimetable().then(res => setTimetable(res.data.config)).catch(() => {});
+    getTimetable().then(res => setFamilyTimetable(res.data.config)).catch(() => {});
+    getChildTimetables().then(res => setChildTimetables(res.data || {})).catch(() => {});
     loadData();
     loadGoals();
     loadQuizData();
@@ -665,12 +664,15 @@ export default function ParentPlanner() {
 
   const weekLabel = `${format(weekStart, "d MMM")} - ${format(addDays(weekStart, 4), "d MMM yyyy")}`;
   const selectedChild = children.find(c => c.id === selectedChildId);
-  const allTimetableSubjects = Array.from(new Set(Object.values(timetable).flat())).sort();
+  // Every subject on the family timetable or on any child's own, for the subject pickers.
+  const allTimetableSubjects = Array.from(
+    new Set([familyTimetable, ...Object.values(childTimetables)].flatMap(t => Object.values(t).flat()))
+  ).sort();
   const oakSchedule: ScheduledItem[] = oakLessons.length > 0 && oakSubject && oakStartDate
-    ? buildSchedule(oakLessons, oakSubject, oakStartDate, timetable, daysOff, allEntries, oakAssignedTo)
+    ? buildSchedule(oakLessons, oakSubject, oakStartDate, timetableOf(oakAssignedTo), daysOff, allEntries, oakAssignedTo)
     : [];
 
-  const oakLateReason = lateStartReason(oakSchedule, oakSubject, oakStartDate, timetable, daysOff, allEntries, oakAssignedTo);
+  const oakLateReason = lateStartReason(oakSchedule, oakSubject, oakStartDate, timetableOf(oakAssignedTo), daysOff, allEntries, oakAssignedTo);
 
   return (
     <div className="min-h-screen bg-[#FBF8F1]">
@@ -871,8 +873,8 @@ export default function ParentPlanner() {
             children={children}
             defaultChildId={selectedChildId}
             unit={unitToPlan}
-            plan={(lessons, subject, startDate, assignedTo) => buildSchedule(lessons, subject, startDate, timetable, daysOff, allEntries, assignedTo)}
-            explain={(schedule, subject, startDate, assignedTo) => lateStartReason(schedule, subject, startDate, timetable, daysOff, allEntries, assignedTo)}
+            plan={(lessons, subject, startDate, assignedTo) => buildSchedule(lessons, subject, startDate, timetableOf(assignedTo), daysOff, allEntries, assignedTo)}
+            explain={(schedule, subject, startDate, assignedTo) => lateStartReason(schedule, subject, startDate, timetableOf(assignedTo), daysOff, allEntries, assignedTo)}
             onAdded={loadData}
             onClose={() => { setShowUnitAdder(false); setUnitToPlan(null); }}
           />

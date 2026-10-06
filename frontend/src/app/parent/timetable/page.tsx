@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { checkSession, getTimetable, saveFamilySchemes, saveTimetable } from "@/lib/api";
+import { checkSession, getChildren, getTimetable, resetChildTimetable, saveFamilySchemes, saveTimetable } from "@/lib/api";
 import SchemePicker from "@/components/SchemePicker";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -64,13 +64,45 @@ export default function TimetablePage() {
     }
   };
 
+  // Whose timetable is on screen: the family's (null) or one child's.
+  const [kids, setKids] = useState<{ id: number; username: string }[]>([]);
+  const [who, setWho] = useState<number | null>(null);
+  // False when the chosen child has no timetable of their own yet and is following the family's.
+  const [own, setOwn] = useState(true);
+  const whoName = kids.find(k => k.id === who)?.username ?? "";
+
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
-    getTimetable()
-      .then(res => setTimetable(res.data.config))
+    getChildren().then(res => setKids(res.data || [])).catch(() => {});
+  }, [router]);
+
+  useEffect(() => {
+    if (!isAuthenticated() || getRole() !== "parent") return;
+    setLoading(true);
+    getTimetable(who ?? undefined)
+      .then(res => {
+        setTimetable(res.data.config);
+        setOwn(who === null ? true : res.data.own !== false);
+        setSaved(true);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [router]);
+  }, [who]);
+
+  const chooseWho = (next: number | null) => {
+    if (!saved && !confirm("You have changes that aren't saved. Leave them and switch?")) return;
+    setWho(next);
+  };
+
+  const backToFamily = async () => {
+    if (who === null) return;
+    if (!confirm(`Remove ${whoName}'s own timetable? ${whoName} will follow the family timetable again. Lessons already planned stay where they are.`)) return;
+    await resetChildTimetable(who);
+    const res = await getTimetable(who);
+    setTimetable(res.data.config);
+    setOwn(false);
+    setSaved(true);
+  };
 
   const removeSubject = (day: string, index: number) => {
     setTimetable(prev => ({
@@ -103,7 +135,8 @@ export default function TimetablePage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await saveTimetable(timetable);
+      await saveTimetable(timetable, who ?? undefined);
+      if (who !== null) setOwn(true);
       setSaved(true);
     } finally {
       setSaving(false);
@@ -137,7 +170,7 @@ export default function TimetablePage() {
               </p>
               <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Timetable</h1>
               <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">
-                Set the subject order for each school day. The planner uses this structure when laying out the week.
+                Set the subjects for each school day. The planner lays out the week from this. Children can share one timetable or each have their own.
               </p>
               </PageHero>
             </div>
@@ -163,11 +196,49 @@ export default function TimetablePage() {
                 disabled={saving}
                 className="px-5 py-2.5 rounded-xl bg-brand-sage text-white text-sm font-bold hover:bg-brand-sagedark disabled:opacity-60"
               >
-                {saving ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
+                {saving ? "Saving…" : saved ? "Saved ✓" : who !== null && !own ? `Save as ${whoName}'s own` : "Save changes"}
               </button>
             </div>
           </div>
         </div>
+
+        {kids.length > 0 && (
+          <div className="brand-card mb-6 p-4 sm:p-5">
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Whose timetable?</p>
+            <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Whose timetable">
+              {[{ id: null as number | null, username: "Whole family" }, ...kids].map(k => {
+                const on = who === k.id;
+                return (
+                  <button
+                    key={k.id ?? "family"}
+                    type="button"
+                    role="radio"
+                    aria-checked={on}
+                    onClick={() => chooseWho(k.id)}
+                    className={
+                      "rounded-xl border-2 px-4 py-2 text-sm font-bold transition-colors " +
+                      (on ? "border-brand-softsage bg-brand-tint text-brand-sage" : "border-brand-line bg-white text-[#6E5A46] hover:border-brand-softsage")
+                    }
+                  >
+                    {k.username}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-3 max-w-3xl text-sm text-[#6E5A46]">
+              {who === null
+                ? "This is the family timetable. Every child follows it unless you give them one of their own: pick a child above to do that."
+                : own
+                  ? `${whoName} has their own timetable. The planner, ${whoName}'s own page and new units all use it.`
+                  : `${whoName} is following the family timetable, shown below. Change anything and press Save to give ${whoName} a timetable of their own. The family one stays as it is.`}
+            </p>
+            {who !== null && own && (
+              <button type="button" onClick={backToFamily} className="mt-3 rounded-xl border border-[#D8D1C4] bg-brand-white px-4 py-2 text-sm font-bold text-[#A64F42] hover:border-brand-softsage">
+                Go back to the family timetable
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           <div className="brand-card p-4">

@@ -237,6 +237,18 @@ class TimetableConfig(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
+class ChildTimetable(Base):
+    """A child's own weekly timetable, for families whose children don't all follow the same week.
+    A child without one follows the family timetable (TimetableConfig)."""
+    __tablename__ = "child_timetables"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True)
+    config = Column(Text, nullable=False)  # JSON string, the same shape as the family timetable
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
 class PolishSession(Base):
     __tablename__ = "polish_sessions"
 

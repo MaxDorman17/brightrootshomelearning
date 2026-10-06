@@ -79,6 +79,19 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
     group: "Planning lessons",
     guides: [
       {
+        id: "child-timetable",
+        emoji: "🗓️",
+        title: "Give a child their own timetable",
+        intro: "For families whose children don't all follow the same week. Everyone starts on the family timetable.",
+        steps: [
+          <>Open <L href="/parent/timetable">Plan, then Timetable</L>. Under <b>Whose timetable?</b> pick the child.</>,
+          "You'll see the family timetable to start from. Add, remove or reorder subjects on each day.",
+          <>Press <b>Save as their own</b>. The family timetable, and your other children, are not changed.</>,
+          <>From then on the Planner (when you view that child), their own page, and any units or lesson plans you add for them follow their timetable.</>,
+        ],
+        tip: "Changed your mind? Pick the child again and press Go back to the family timetable. Lessons already planned stay where they are.",
+      },
+      {
         id: "log-today",
         emoji: "📝",
         title: "Log what you did, with no plan",

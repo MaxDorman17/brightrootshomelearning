@@ -22,7 +22,7 @@ from auth import require_parent
 from database import get_db
 from models import Lesson, PlannerEntry, User
 from routers.moments import _clean_child_ids, _family_children
-from routers.timetable import _get_config
+from routers.timetable import timetable_for
 
 router = APIRouter(prefix="/api/planner/starter-week", tags=["planner"])
 
@@ -468,15 +468,20 @@ async def add_starter_week(body: StarterWeekIn, db: Session = Depends(get_db), c
         level = "teen" if family[children[0]].activity_level == "teen" else "young"
     start = body.start_date or date.today()
     start -= timedelta(days=start.weekday())  # always start on a Monday
-    timetable = _get_config(db, current_user.id).config
-
-    # Children working at the same year share their lessons; children with no year share our own lessons.
-    groups: dict[Optional[int], list[int]] = {}
+    # Children working at the same year and following the same timetable share their lessons;
+    # a child with a timetable of their own gets a week built from it.
+    groups: dict[tuple, list[int]] = {}
+    timetables: dict[tuple, dict] = {}
     for cid in children:
-        groups.setdefault(years.get(cid), []).append(cid)
+        child_timetable = timetable_for(db, current_user.id, cid)
+        key = (years.get(cid), json.dumps(child_timetable, sort_keys=True))
+        groups.setdefault(key, []).append(cid)
+        timetables[key] = child_timetable
 
     count = from_oak = 0
-    for year, group in groups.items():
+    for key, group in groups.items():
+        year = key[0]
+        timetable = timetables[key]
         group_level = level if year is None else ("teen" if year >= 7 else "young")
         week = lessons_for_week(group_level, timetable)
         oak: dict[str, list[dict]] = {}
