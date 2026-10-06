@@ -64,7 +64,8 @@ export function buildReport(error: unknown, where: string) {
         {
           type: err.name || "Error",
           value: String(err.message || "").slice(0, 500),
-          stacktrace: { frames: frames(err.stack || "") },
+          // Only a real error knows where it happened. For a bare message the stack would be this file's own, which misleads.
+          stacktrace: { frames: error instanceof Error ? frames(err.stack || "") : [] },
         },
       ],
     },

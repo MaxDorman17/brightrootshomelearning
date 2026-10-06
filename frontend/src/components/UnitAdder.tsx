@@ -18,7 +18,9 @@ type Props = {
   defaultChildId: number | null;
   unit?: UnitToPlan | null;
   /** Works out which day each lesson lands on, from the family's timetable, days off and what is already planned. */
-  plan: (lessons: UnitLesson[], subject: string, startDate: string) => PlannedUnitLesson[];
+  plan: (lessons: UnitLesson[], subject: string, startDate: string, assignedTo: number | null) => PlannedUnitLesson[];
+  /** Says, in plain words, why the first lesson can't go on the chosen start date. Nothing when it can. */
+  explain?: (schedule: PlannedUnitLesson[], subject: string, startDate: string, assignedTo: number | null) => string | null;
   onAdded: () => Promise<void> | void;
   onClose: () => void;
 };
@@ -46,7 +48,7 @@ function readLessons(text: string, unitUrl: string): UnitLesson[] {
 }
 
 /** Adds a whole unit of your own lessons, from any scheme, and spreads it across the timetable. */
-export default function UnitAdder({ subjects, children, defaultChildId, unit, plan, onAdded, onClose }: Props) {
+export default function UnitAdder({ subjects, children, defaultChildId, unit, plan, explain, onAdded, onClose }: Props) {
   const [scheme, setScheme] = useState(unit?.scheme ?? "");
   const [unitUrl, setUnitUrl] = useState(unit?.url ?? "");
   const [titles, setTitles] = useState("");
@@ -59,7 +61,8 @@ export default function UnitAdder({ subjects, children, defaultChildId, unit, pl
   const cleanUrl = unitUrl.trim();
   const urlOk = !cleanUrl || /^https?:\/\//i.test(cleanUrl);
   const lessons = useMemo(() => readLessons(titles, urlOk ? cleanUrl : ""), [titles, cleanUrl, urlOk]);
-  const schedule = lessons.length > 0 && subject && startDate ? plan(lessons, subject, startDate) : [];
+  const schedule = lessons.length > 0 && subject && startDate ? plan(lessons, subject, startDate, assignedTo) : [];
+  const lateReason = explain ? explain(schedule, subject, startDate, assignedTo) : null;
 
   const add = async () => {
     if (!schedule.length || !urlOk) return;
@@ -179,6 +182,8 @@ export default function UnitAdder({ subjects, children, defaultChildId, unit, pl
           </div>
         </div>
       )}
+
+      {lateReason && <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">{lateReason}</p>}
 
       {subject && lessons.length > 0 && schedule.length === 0 && (
         <p className="mt-4 text-sm text-brand-terracotta">

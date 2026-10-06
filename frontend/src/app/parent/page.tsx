@@ -120,6 +120,54 @@ interface ShiftConfirm {
 interface OakLessonItem { title: string; url: string; }
 interface ScheduledItem { lesson: OakLessonItem; date: string; dayName: string; }
 
+/**
+ * The days that already have this subject for the child the new lessons are for. Another child's lesson
+ * doesn't take the day. A lesson shared by all children does, and lessons for all children avoid everyone's.
+ */
+function takenDays(existingEntries: PlannerEntry[], subject: string, assignedTo: number | null): Set<string> {
+  return new Set(
+    existingEntries
+      .filter(e => !e.is_extra && e.lesson.subject === subject)
+      .filter(e => assignedTo === null || e.assigned_to === null || e.assigned_to === assignedTo)
+      .map(e => e.scheduled_date)
+  );
+}
+
+/** When the first lesson can't go on the chosen start date, says why in plain words. */
+function lateStartReason(
+  schedule: { date: string }[],
+  subject: string,
+  startDateStr: string,
+  timetableConfig: Record<string, string[]>,
+  daysOffList: DayOff[],
+  existingEntries: PlannerEntry[],
+  assignedTo: number | null,
+): string | null {
+  if (!schedule.length) return null;
+  const first = schedule[0].date;
+  const subjectDays = DAYS.filter(d => (timetableConfig[d] ?? []).includes(subject));
+  const daysOffSet = new Set(daysOffList.map(d => d.date));
+  const occupied = takenDays(existingEntries, subject, assignedTo);
+  let busy = 0;
+  let off = 0;
+  const cur = new Date(startDateStr + "T12:00:00");
+  for (let safety = 0; safety < 500; safety++) {
+    const dateStr = format(cur, "yyyy-MM-dd");
+    if (dateStr >= first) break;
+    const dow = cur.getDay();
+    if (dow >= 1 && dow <= 5 && subjectDays.includes(DAYS[dow - 1])) {
+      if (daysOffSet.has(dateStr)) off++;
+      else if (occupied.has(dateStr)) busy++;
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  if (busy + off === 0) return null;
+  const parts = [];
+  if (busy) parts.push(`${subject} is already planned on ${busy} day${busy === 1 ? "" : "s"} before then`);
+  if (off) parts.push(`${off} ${off === 1 ? "is a day" : "are days"} off`);
+  return `The first lesson goes on ${format(parseISO(first), "EEEE d MMMM")} because ${parts.join(" and ")}. To start sooner, move or remove those lessons in the planner first.`;
+}
+
 function buildSchedule(
   lessons: OakLessonItem[],
   subject: string,
@@ -127,15 +175,12 @@ function buildSchedule(
   timetableConfig: Record<string, string[]>,
   daysOffList: DayOff[],
   existingEntries: PlannerEntry[],
+  assignedTo: number | null,
 ): ScheduledItem[] {
   const subjectDays = DAYS.filter(d => (timetableConfig[d] ?? []).includes(subject));
   if (!subjectDays.length || !lessons.length) return [];
   const daysOffSet = new Set(daysOffList.map(d => d.date));
-  const occupied = new Set(
-    existingEntries
-      .filter(e => !e.is_extra && e.lesson.subject === subject)
-      .map(e => e.scheduled_date)
-  );
+  const occupied = takenDays(existingEntries, subject, assignedTo);
   const result: ScheduledItem[] = [];
   const cur = new Date(startDateStr + "T12:00:00");
   for (const lesson of lessons) {
@@ -622,8 +667,10 @@ export default function ParentPlanner() {
   const selectedChild = children.find(c => c.id === selectedChildId);
   const allTimetableSubjects = Array.from(new Set(Object.values(timetable).flat())).sort();
   const oakSchedule: ScheduledItem[] = oakLessons.length > 0 && oakSubject && oakStartDate
-    ? buildSchedule(oakLessons, oakSubject, oakStartDate, timetable, daysOff, allEntries)
+    ? buildSchedule(oakLessons, oakSubject, oakStartDate, timetable, daysOff, allEntries, oakAssignedTo)
     : [];
+
+  const oakLateReason = lateStartReason(oakSchedule, oakSubject, oakStartDate, timetable, daysOff, allEntries, oakAssignedTo);
 
   return (
     <div className="min-h-screen bg-[#FBF8F1]">
@@ -824,7 +871,8 @@ export default function ParentPlanner() {
             children={children}
             defaultChildId={selectedChildId}
             unit={unitToPlan}
-            plan={(lessons, subject, startDate) => buildSchedule(lessons, subject, startDate, timetable, daysOff, allEntries)}
+            plan={(lessons, subject, startDate, assignedTo) => buildSchedule(lessons, subject, startDate, timetable, daysOff, allEntries, assignedTo)}
+            explain={(schedule, subject, startDate, assignedTo) => lateStartReason(schedule, subject, startDate, timetable, daysOff, allEntries, assignedTo)}
             onAdded={loadData}
             onClose={() => { setShowUnitAdder(false); setUnitToPlan(null); }}
           />
@@ -939,7 +987,7 @@ export default function ParentPlanner() {
                       {oakSchedule.slice(0, 6).map((item, i) => (
                         <div key={i} className="text-xs text-gray-700 flex justify-between gap-3">
                           <span className="font-semibold">{item.lesson.title}</span>
-                          <span className="text-gray-400 shrink-0">{item.date}</span>
+                          <span className="text-gray-500 shrink-0">{format(parseISO(item.date), "EEE d MMM")}</span>
                         </div>
                       ))}
 
@@ -950,6 +998,10 @@ export default function ParentPlanner() {
                       )}
                     </div>
                   </div>
+                )}
+
+                {oakLateReason && (
+                  <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">{oakLateReason}</p>
                 )}
 
                 {oakSubject && oakSchedule.length === 0 && (

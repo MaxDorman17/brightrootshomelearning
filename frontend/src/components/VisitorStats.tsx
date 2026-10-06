@@ -53,10 +53,17 @@ export default function VisitorStats() {
   const pathname = usePathname() || "/";
   const [live, setLive] = useState(false);
   const [ready, setReady] = useState(false);
+  // The statistics script is only fetched once a visitor is on a page we count. Someone who goes straight
+  // to their family's or child's pages never loads it at all.
+  const [wanted, setWanted] = useState(false);
 
   useEffect(() => {
     setLive(STATS_HOSTS.includes(window.location.hostname));
   }, []);
+
+  useEffect(() => {
+    if (counted(pathname)) setWanted(true);
+  }, [pathname]);
 
   useEffect(() => {
     if (!ready || !counted(pathname)) return;
@@ -67,7 +74,7 @@ export default function VisitorStats() {
     }
   }, [ready, pathname]);
 
-  if (!live) return null;
+  if (!live || !wanted) return null;
   return (
     <Script
       src={STATS_SCRIPT}
