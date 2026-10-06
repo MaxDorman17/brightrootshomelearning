@@ -2,21 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { addDays, format, parseISO } from "date-fns";
-import { addStarterWeek } from "@/lib/api";
+import { addStarterWeek, checkSession } from "@/lib/api";
+import { OAK_SCHEME } from "@/lib/schemes";
 
 type Kid = { id: number; username: string; activity_level?: string | null };
 
 const HIDE_KEY = "starter-week-hidden";
 // School years 1 to 11, with the usual ages so families outside England can pick the right one.
+// Chosen instead of a year: this child gets our own simple lessons rather than Oak ones.
+const NO_OAK = -1;
 const YEARS = Array.from({ length: 11 }, (_, i) => ({ year: i + 1, label: `Year ${i + 1} (age ${i + 5} to ${i + 6})` }));
 
-/** Offered on an empty planner week: fills it with Oak National Academy lessons for each child's year. */
+/** Offered on an empty planner week: fills it with Oak National Academy lessons for each child's year,
+ * or with simple lessons of our own for families who don't use Oak. */
 export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Kid[]; weekStart: string; onAdded: (start: string) => void }) {
   const [hidden, setHidden] = useState(true);
   // The year each child is working at: "" until chosen, 0 to leave that child out.
   const [years, setYears] = useState<Record<number, number | "">>({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  // False once a family has told us the schemes they use and Oak isn't one of them.
+  const [usesOak, setUsesOak] = useState(true);
 
   useEffect(() => {
     try {
@@ -24,7 +30,16 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
     } catch {
       setHidden(false);
     }
+    checkSession()
+      .then((res) => {
+        const schemes: string[] = Array.isArray(res.data.family_schemes) ? res.data.family_schemes : [];
+        setUsesOak(schemes.length === 0 || schemes.includes(OAK_SCHEME));
+      })
+      .catch(() => {});
   }, []);
+
+  // The year each child is set to, counting the family's default when nothing has been picked yet.
+  const yearOf = (id: number): number | "" => years[id] ?? (usesOak ? "" : NO_OAK);
 
   if (hidden || kids.length === 0) return null;
 
@@ -40,8 +55,9 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
     setHidden(true);
   };
 
-  const included = kids.filter((k) => years[k.id] !== 0);
-  const ready = included.every((k) => typeof years[k.id] === "number");
+  const included = kids.filter((k) => yearOf(k.id) !== 0);
+  const ready = included.every((k) => typeof yearOf(k.id) === "number");
+  const anyOak = included.some((k) => (yearOf(k.id) as number) > 0);
 
   const add = async () => {
     if (included.length === 0) return setError("Pick at least one child.");
@@ -50,7 +66,10 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
     setError("");
     try {
       const chosen: Record<number, number> = {};
-      included.forEach((k) => (chosen[k.id] = years[k.id] as number));
+      included.forEach((k) => {
+        const year = yearOf(k.id) as number;
+        if (year > 0) chosen[k.id] = year;
+      });
       const res = await addStarterWeek(included.map((k) => k.id), target, chosen);
       onAdded(res.data.start_date);
     } catch {
@@ -66,11 +85,19 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Nothing planned this week</p>
           <h2 className="mt-1 text-xl font-extrabold text-brand-charcoal">Start with a ready-made week?</h2>
-          <p className="mt-1 max-w-2xl text-sm text-[#6E5A46]">
-            We&apos;ll fill {weekOver ? "next week, starting" : "the week of"} {format(parseISO(target), "d MMMM")}, with free Oak National
-            Academy lessons: the first lessons for each subject on your timetable, each with a video and quizzes. You can change,
-            move or delete any of them.
-          </p>
+          {usesOak ? (
+            <p className="mt-1 max-w-2xl text-sm text-[#6E5A46]">
+              We&apos;ll fill {weekOver ? "next week, starting" : "the week of"} {format(parseISO(target), "d MMMM")}, with free Oak National
+              Academy lessons: the first lessons for each subject on your timetable, each with a video and quizzes. You can change,
+              move or delete any of them.
+            </p>
+          ) : (
+            <p className="mt-1 max-w-2xl text-sm text-[#6E5A46]">
+              We&apos;ll fill {weekOver ? "next week, starting" : "the week of"} {format(parseISO(target), "d MMMM")}, with simple hands-on
+              lessons of our own for each subject on your timetable, so there is something to do while you settle in. To bring in
+              lessons from your own scheme, press <b>Add a Unit</b> above. You can change, move or delete any of them.
+            </p>
+          )}
         </div>
         <button onClick={hide} className="shrink-0 text-xs font-bold text-[#8A7A69] hover:text-brand-charcoal" aria-label="Don't show this again">
           ✕
@@ -82,7 +109,7 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
           <label key={k.id} className="text-sm font-semibold text-brand-charcoal">
             {kids.length > 1 ? `${k.username} is working at` : "Working at"}
             <select
-              value={years[k.id] ?? ""}
+              value={yearOf(k.id)}
               onChange={(e) => {
                 setError("");
                 setYears((prev) => ({ ...prev, [k.id]: e.target.value === "" ? "" : Number(e.target.value) }));
@@ -90,6 +117,7 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
               className="mt-1.5 block rounded-xl border border-[#D9D1C4] bg-white px-3 py-2 text-sm"
             >
               <option value="">Choose a year</option>
+              <option value={NO_OAK}>Our own simple lessons (no Oak)</option>
               {YEARS.map((y) => (
                 <option key={y.year} value={y.year}>{y.label}</option>
               ))}
@@ -102,7 +130,9 @@ export default function StarterWeekCard({ kids, weekStart, onAdded }: { kids: Ki
         </button>
       </div>
       <p className="mt-3 text-xs text-[#8A7A69]">
-        Pick the year that suits your child, not just their age. Where Oak has no lesson for a subject, we add a simple one of our own.
+        {anyOak || usesOak
+          ? "Pick the year that suits your child, not just their age. Where Oak has no lesson for a subject, we add a simple one of our own."
+          : "Prefer Oak for a child? Choose their school year instead and they get free Oak National Academy lessons."}
       </p>
       {error && <p className="mt-2 text-sm font-semibold text-[#A64F42]">{error}</p>}
     </div>

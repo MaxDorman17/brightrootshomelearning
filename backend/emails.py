@@ -182,7 +182,7 @@ def welcome_email(name: str, verify_url: str, trial_days: int) -> tuple[str, str
             + steps([
                 ("Add your children", "Each child gets their own login and their own Today page."),
                 ("Set your timetable", "Choose the subjects you teach on each day."),
-                ("Fill your first week", "Use the ready-made starter week of Oak National Academy lessons, or add your own."),
+                ("Fill your first week", "Use the ready-made starter week, or add lessons from whatever you already use: Oak, Twinkl, White Rose Maths or your own."),
             ])
         )
         + paragraph("If you didn't sign up for Bright Roots, you can ignore this email and nothing will happen.", small=True)
@@ -210,7 +210,7 @@ def getting_started_email(name: str) -> tuple[str, str]:
         + steps([
             ("Add each child", "Go to Family, then Children. Give them a name and a password they can remember."),
             ("Set your week", "Go to Plan, then Timetable, and add the subjects you teach on each day."),
-            ("Add the starter week", "Open the Planner and press “Add the starter week” for a full week of Oak lessons."),
+            ("Fill your first week", "Open the Planner and press “Add the starter week” for a ready-made week, or “Add a Unit” to bring in lessons from the scheme you use."),
             ("Hand over the logins", "Your children log in on the same page as you and see just their lessons for today."),
         ])
         + button("Open Bright Roots", f"{site()}/parent/dashboard")

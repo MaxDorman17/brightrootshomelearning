@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getReadingChapterSummary, getBooks, getActiveSummary, ActiveSummary, getLanguageSummary, LanguageSummary } from "@/lib/api";
-import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores } from "@/types";
+import { getAllEntries, getCodingProgress, getChildren, getSpellingResults, getOakQuizResults, refreshOakQuizResults, exportOakResults, getWeekQuizScores, getLessonScores, getReadingChapterSummary, getBooks, getActiveSummary, ActiveSummary, getLanguageSummary, LanguageSummary } from "@/lib/api";
+import { PlannerEntry, Child, OakQuizResult, WeekQuizDay, WeekQuizScores, LessonScore } from "@/types";
+import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Emoji from "@/components/Emoji";
@@ -75,6 +76,14 @@ export default function ReportPage() {
   const [allSpellingResults, setAllSpellingResults] = useState<{id: number; child_id: number; week_start: string; score: number; total: number; wrong_words: string[]; is_practice_round: boolean; taken_at: string}[]>([]);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
+  // Scores the parent typed in for this week's lessons, from any scheme.
+  const [markedScores, setMarkedScores] = useState<LessonScore[]>([]);
+  useEffect(() => {
+    const start = startOfWeek(new Date(), { weekStartsOn: 1 });
+    getLessonScores({ start_date: format(start, "yyyy-MM-dd"), end_date: format(endOfWeek(start, { weekStartsOn: 1 }), "yyyy-MM-dd") })
+      .then(res => setMarkedScores(res.data))
+      .catch(() => {});
+  }, []);
   const [reportQuizScores, setReportQuizScores] = useState<WeekQuizScores | null>(null);
   const [exporting, setExporting] = useState(false);
   const [showSpellingHistory, setShowSpellingHistory] = useState(false);
@@ -351,7 +360,7 @@ export default function ReportPage() {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const a = document.createElement("a");
       a.href = url;
-      a.download = `bright-roots-oak-results-${format(new Date(), "yyyy-MM-dd")}.xlsx`;
+      a.download = `bright-roots-results-${format(new Date(), "yyyy-MM-dd")}.xlsx`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -575,7 +584,7 @@ export default function ReportPage() {
                   : "bg-brand-white border-brand-line text-[#6E5A46] hover:border-brand-softsage"
               }`}
             >
-              Oak Results
+              Quiz Results
             </button>
             <button
               onClick={() => setResultsView("work")}
@@ -1626,9 +1635,9 @@ export default function ReportPage() {
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div className="brand-card p-6">
                     <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Spreadsheet</p>
-                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">Export Oak Results</h2>
+                    <h2 className="text-xl font-bold text-[#2E342F] mt-1">Export Results</h2>
                     <p className="text-sm text-[#6E5A46] mt-2">
-                      Download the selected child's Oak quiz results for the chosen reporting period as an Excel file.
+                      Download the selected child's Oak quiz results, lesson scores and tests for the chosen reporting period as an Excel file.
                     </p>
 
                     <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-5">
@@ -1660,7 +1669,7 @@ export default function ReportPage() {
                     <div className="rounded-xl bg-brand-cream border border-brand-line p-4 mt-5">
                       <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Report includes</p>
                       <p className="text-sm font-semibold text-[#2E342F] mt-1">
-                        Progress, Oak results and submitted work
+                        Progress, quiz results and submitted work
                       </p>
                       <p className="text-xs text-[#6E5A46] mt-1">
                         Use “Save as PDF” in your browser's print window for a digital copy.
@@ -1700,8 +1709,52 @@ export default function ReportPage() {
                 0
               );
 
+              const marked = markedScores
+                .filter(s => !selectedChildId || s.child_id === selectedChildId)
+                .map(s => ({ ...s, entry: entries.find(e => e.id === s.entry_id) }))
+                .sort((a, b) => (a.entry?.scheduled_date ?? "").localeCompare(b.entry?.scheduled_date ?? ""));
+              const markedCard = (
+                <div className="brand-card p-6">
+                  <p className="text-xs font-bold uppercase tracking-wide text-brand-softsage">Any scheme</p>
+                  <h2 className="text-lg font-bold text-[#2E342F] mt-1">Scores you marked this week</h2>
+                  {marked.length === 0 ? (
+                    <p className="text-sm text-[#6E5A46] mt-2">
+                      None yet. Open a lesson in the Planner or in Review &amp; Feedback and type in a score, such as 8 out of 10.
+                    </p>
+                  ) : (
+                    <div className="mt-3 divide-y divide-brand-line">
+                      {marked.map(s => (
+                        <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-[#2E342F]">{s.entry?.lesson.title ?? "Lesson"}</p>
+                            <p className="text-xs text-[#6E5A46]">
+                              {[
+                                s.entry ? format(parseISO(s.entry.scheduled_date), "EEE d MMM") : null,
+                                s.entry?.lesson.subject,
+                                children.find(c => c.id === s.child_id)?.username,
+                              ].filter(Boolean).join(" · ")}
+                            </p>
+                          </div>
+                          <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-bold text-brand-sage">
+                            {s.score}/{s.total}{s.total > 0 ? ` (${Math.round((s.score / s.total) * 100)}%)` : ""}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+
+              // The Oak part is for weeks with Oak in them: an Oak lesson planned, or Oak quiz results handed in.
+              const hasOak = days.some(day => day.entries.some(q => {
+                const planned = entries.find(e => e.id === q.entry_id);
+                return q.has_share_url || (!!planned && schemeOf(planned.lesson.scheme, planned.lesson.lesson_url) === OAK_SCHEME);
+              }));
+              if (!hasOak) return <div className="space-y-6">{markedCard}</div>;
+
               return (
                 <div className="space-y-6">
+                  {markedCard}
                   <div className="brand-card p-6">
                     <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
                       <div>
@@ -1737,11 +1790,11 @@ export default function ReportPage() {
                       </div>
                       <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-brand-sage">{scoredLessons}</p>
-                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons with scores</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons with Oak scores</p>
                       </div>
                       <div className="rounded-xl bg-brand-cream p-4">
                         <p className="text-2xl font-bold text-[#D19A32]">{totalLessons}</p>
-                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Oak lessons this week</p>
+                        <p className="text-xs font-semibold text-[#6E5A46] mt-1">Lessons this week</p>
                       </div>
                     </div>
                   </div>

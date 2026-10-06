@@ -12,6 +12,7 @@ import {
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
 import LessonScoreBox from "@/components/LessonScoreBox";
+import UnitAdder from "@/components/UnitAdder";
 import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
@@ -215,6 +216,7 @@ export default function ParentPlanner() {
   const [showBookmarklet, setShowBookmarklet] = useState(false);
 
   const [showOakImport, setShowOakImport] = useState(false);
+  const [showUnitAdder, setShowUnitAdder] = useState(false);
   const [oakUrl, setOakUrl] = useState("");
   const [oakFetching, setOakFetching] = useState(false);
   const [oakError, setOakError] = useState("");
@@ -626,6 +628,18 @@ export default function ParentPlanner() {
                 </button>
 
                 <button
+                  onClick={() => setShowUnitAdder(v => !v)}
+                  title="Add a unit of lessons from any scheme"
+                  className={`px-4 py-2 text-sm rounded-xl font-bold border transition-all ${
+                    showUnitAdder
+                      ? "bg-brand-sage text-white border-brand-sage"
+                      : "bg-brand-white text-brand-charcoal border-brand-softsage/30 hover:border-brand-sage"
+                  }`}
+                >
+                  Add a Unit
+                </button>
+
+                <button
                   onClick={() => setShowBookmarklet(v => !v)}
                   title="One-click lesson importer"
                   className={`px-4 py-2 text-sm rounded-xl font-bold border transition-all ${
@@ -725,6 +739,17 @@ export default function ParentPlanner() {
             </p>
           </div>
         )}
+        {showUnitAdder && (
+          <UnitAdder
+            subjects={allTimetableSubjects}
+            children={children}
+            defaultChildId={selectedChildId}
+            plan={(lessons, subject, startDate) => buildSchedule(lessons, subject, startDate, timetable, daysOff, allEntries)}
+            onAdded={loadData}
+            onClose={() => setShowUnitAdder(false)}
+          />
+        )}
+
         {/* Oak Unit import panel */}
         {showOakImport && (
           <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">

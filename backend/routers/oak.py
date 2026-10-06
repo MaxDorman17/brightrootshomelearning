@@ -16,7 +16,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 from auth import get_current_user, require_parent
 from database import get_db, SessionLocal
-from models import User, OakQuizResult, PlannerEntry, PlannerCompletion, Lesson
+from models import User, OakQuizResult, PlannerEntry, PlannerCompletion, Lesson, TestResult
 from config import settings
 
 router = APIRouter(prefix="/api/oak", tags=["oak"])
@@ -634,11 +634,43 @@ async def export_oak_results(
     for i, width in enumerate(EXPORT_COLUMN_WIDTHS, start=1):
         ws.column_dimensions[get_column_letter(i)].width = width
 
+    # Scores the parent typed in for lessons from any scheme, and the family's own tests.
+    marked = db.query(TestResult).filter(
+        TestResult.parent_id == current_user.id,
+        TestResult.child_id.in_(target_child_ids),
+    )
+    if start_date:
+        marked = marked.filter(TestResult.taken_on >= start_date)
+    if end_date:
+        marked = marked.filter(TestResult.taken_on <= end_date)
+    ms = wb.create_sheet("Lesson scores and tests")
+    ms.append(["Date", "Child", "Subject", "Title", "Kind", "Score", "Out of", "%", "Notes"])
+    for cell in ms[1]:
+        cell.font = Font(bold=True)
+    for t in marked.order_by(TestResult.taken_on, TestResult.id).all():
+        ms.append([
+            t.taken_on,
+            child_names.get(t.child_id, "Unknown"),
+            t.subject,
+            t.title,
+            "Lesson score" if t.entry_id else "Test",
+            t.score,
+            t.total,
+            (t.score / t.total) if t.total else None,
+            t.notes or "",
+        ])
+    for row in ms.iter_rows(min_row=2, max_row=ms.max_row, min_col=1, max_col=8):
+        row[0].number_format = "yyyy-mm-dd"
+        row[7].number_format = "0%"
+    ms.freeze_panes = "A2"
+    for i, width in enumerate([14, 14, 16, 34, 14, 8, 8, 8, 40], start=1):
+        ms.column_dimensions[get_column_letter(i)].width = width
+
     buf = io.BytesIO()
     wb.save(buf)
     buf.seek(0)
 
-    filename = f"bright-roots-oak-results-{date.today().isoformat()}.xlsx"
+    filename = f"bright-roots-results-{date.today().isoformat()}.xlsx"
     return Response(
         content=buf.getvalue(),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

@@ -6,9 +6,9 @@ import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
   submitWorkUrl, submitNote, getFeedback, markFeedbackRead, getDaysOff,
-  getGoals, toggleGoal, getTimetable, getBooks, checkOakWorksheet,
+  getGoals, toggleGoal, getTimetable, getBooks, checkOakWorksheet, getLessonScores,
 } from "@/lib/api";
-import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook } from "@/types";
+import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
@@ -139,6 +139,13 @@ export default function ChildDashboard() {
   const [savingNote, setSavingNote] = useState(false);
 
   const [worksheetCache, setWorksheetCache] = useState<Record<string, WorksheetInfo>>({});
+  // The marks a grown-up has given this child's lessons, keyed by lesson.
+  const [myScores, setMyScores] = useState<Record<number, LessonScore>>({});
+  useEffect(() => {
+    getLessonScores()
+      .then(res => setMyScores(Object.fromEntries((res.data as LessonScore[]).map(s => [s.entry_id, s]))))
+      .catch(() => {});
+  }, []);
   const worksheetRequested = useRef<Set<string>>(new Set());
 
   const loadWeek = useCallback(async () => {
@@ -687,6 +694,11 @@ export default function ChildDashboard() {
                               )}
                               {entry.lesson.lesson_url && <span className="text-xs" title="Lesson link">🔗</span>}
                               {entry.completed_work_url && <span className="text-xs" title="Work submitted"><Emoji e="📎" /></span>}
+                              {myScores[entry.id] && (
+                                <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                  Score {myScores[entry.id].score}/{myScores[entry.id].total}
+                                </span>
+                              )}
                             </div>
                           </div>
 
@@ -773,6 +785,11 @@ export default function ChildDashboard() {
                             </div>
                             <p className="text-sm font-semibold text-gray-800 truncate">{e.lesson.title}</p>
                           </div>
+                          {myScores[e.id] && (
+                            <span className="shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                              {myScores[e.id].score}/{myScores[e.id].total}
+                            </span>
+                          )}
                           {e.completed_work_url && <span className="text-xs opacity-60 shrink-0"><Emoji e="📎" /></span>}
                         </button>
                       );
@@ -917,6 +934,15 @@ export default function ChildDashboard() {
                 <p className="text-xs text-emerald-600 font-bold mt-1.5">✓ Link submitted. {parentName} can see it!</p>
               )}
             </div>
+
+            {myScores[modal.entry.id] && (
+              <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2">
+                <p className="text-sm font-bold text-emerald-700">
+                  Your score: {myScores[modal.entry.id].score} out of {myScores[modal.entry.id].total}
+                </p>
+                <p className="text-xs text-emerald-700/80">Marked by {parentName}.</p>
+              </div>
+            )}
 
             {/* Note */}
             <div>

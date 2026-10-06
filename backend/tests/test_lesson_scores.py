@@ -112,3 +112,30 @@ def test_a_good_score_earns_stars_and_counts_in_a_challenge(family):
     assert "Scored 90%: Fractions" in str(history)
     board = family.parent.get("/api/family/overview").json()
     assert "'progress': 1" in str(board) or '"progress": 1' in str(board)
+
+
+def test_the_results_export_includes_marked_scores(family):
+    import io
+
+    from openpyxl import load_workbook
+
+    child = family.add_child("Robin")
+    entry = planned(family, child["id"])
+    family.parent.put(f"/api/test-results/lesson/{entry['id']}", json={"child_id": child["id"], "score": 8, "total": 10})
+    family.parent.post("/api/test-results/", json={
+        "child_id": child["id"], "subject": "Maths", "title": "End of term paper",
+        "taken_on": date.today().isoformat(), "score": 30, "total": 40,
+    })
+    other = sign_up("Other")
+    their_child = other.add_child()
+    their_entry = planned(other, their_child["id"], title="Not ours")
+    other.parent.put(f"/api/test-results/lesson/{their_entry['id']}", json={"child_id": their_child["id"], "score": 1, "total": 10})
+
+    exported = family.parent.get("/api/oak/export", params={"child_id": child["id"]})
+    assert exported.status_code == 200, exported.text
+    sheet = load_workbook(io.BytesIO(exported.content))["Lesson scores and tests"]
+    rows = [[c.value for c in row] for row in sheet.iter_rows(min_row=2)]
+    assert [(r[1], r[3], r[4], r[5], r[6]) for r in rows] == [
+        ("Robin", "Fractions", "Lesson score", 8, 10),
+        ("Robin", "End of term paper", "Test", 30, 40),
+    ]

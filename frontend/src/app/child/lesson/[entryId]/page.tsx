@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getTodayEntries, toggleComplete } from "@/lib/api";
-import { PlannerEntry } from "@/types";
+import { getLessonScores, getTodayEntries, toggleComplete } from "@/lib/api";
+import { LessonScore, PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import StudyTimer from "@/components/StudyTimer";
 import { useMounted } from "@/lib/useMounted";
@@ -23,6 +23,13 @@ export default function LessonDetailPage() {
   const [entry, setEntry] = useState<PlannerEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [completing, setCompleting] = useState(false);
+  const [myScore, setMyScore] = useState<LessonScore | null>(null);
+
+  useEffect(() => {
+    getLessonScores()
+      .then(res => setMyScore((res.data as LessonScore[]).find(s => s.entry_id === entryId) ?? null))
+      .catch(() => {});
+  }, [entryId]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "child") { router.replace("/login"); return; }
@@ -86,6 +93,11 @@ export default function LessonDetailPage() {
                 {lessonUrl && (
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
                     🔗 Has Link
+                  </span>
+                )}
+                {myScore && (
+                  <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-full font-bold">
+                    Your score: {myScore.score} out of {myScore.total}
                   </span>
                 )}
                 <span className="text-xs text-gray-400">{mounted ? format(new Date(), "EEEE, d MMMM") : " "}</span>
