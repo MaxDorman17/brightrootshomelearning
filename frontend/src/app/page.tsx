@@ -100,6 +100,14 @@ const screens = [
   },
 ];
 
+// The three age sections. One shows at a time, chosen with the "pick an age" buttons.
+type AgeId = "little-roots" | "ages-5-to-10" | "teens";
+const AGES: { id: AgeId; label: string; ages: string }[] = [
+  { id: "little-roots", label: "Little Roots", ages: "Ages 3 to 4" },
+  { id: "ages-5-to-10", label: "Saplings", ages: "Ages 5 to 10" },
+  { id: "teens", label: "Teens", ages: "Ages 11 to 16" },
+];
+
 const steps = [
   ["Start your free trial", "Set up your family account in minutes. No card needed."],
   ["Add your children", "Give each child their own simple login."],
@@ -191,10 +199,20 @@ export default function HomePage() {
   const memberHome = useMemberHome();
   const [deleted, setDeleted] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
+  const [age, setAge] = useState<AgeId>("ages-5-to-10");
+
+  // Show one age group and bring the "pick an age" buttons into view.
+  const showAge = (id: AgeId) => {
+    setAge(id);
+    document.getElementById("ages")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("deleted")) setDeleted(true);
     if (window.location.hash === "#demo") setDemoOpen(true);
+    // A link straight to one age group (such as /#teens) opens that one.
+    const wanted = AGES.find((a) => `#${a.id}` === window.location.hash);
+    if (wanted) setAge(wanted.id);
   }, []);
 
   const primaryBtn = "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md shadow-green-900/15 transition-opacity hover:opacity-95";
@@ -236,13 +254,24 @@ export default function HomePage() {
               </div>
               <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm" style={{ color: C.earth }}>
                 <span className="font-bold" style={{ color: C.deep }}>For every stage:</span>
-                {[
-                  ["Early years", "#little-roots"],
-                  ["Primary", "#ages-5-to-10"],
-                  ["Secondary", "#teens"],
-                  ["GCSE preparation", "#teens"],
-                ].map(([label, href]) => (
-                  <a key={label} href={href} className="rounded-full border bg-white/70 px-3 py-1 text-xs font-bold transition-colors hover:bg-white" style={{ borderColor: C.line, color: C.green }}>
+                {(
+                  [
+                    ["Early years", "little-roots"],
+                    ["Primary", "ages-5-to-10"],
+                    ["Secondary", "teens"],
+                    ["GCSE preparation", "teens"],
+                  ] as [string, AgeId][]
+                ).map(([label, id]) => (
+                  <a
+                    key={label}
+                    href="#ages"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      showAge(id);
+                    }}
+                    className="rounded-full border bg-white/70 px-3 py-1 text-xs font-bold transition-colors hover:bg-white"
+                    style={{ borderColor: C.line, color: C.green }}
+                  >
                     ✓ {label}
                   </a>
                 ))}
@@ -444,10 +473,37 @@ export default function HomePage() {
           </div>
         </section>
 
-        <div className="h-14" aria-hidden />
+        {/* Pick an age: the three sections below take turns, so the page stays short on a phone */}
+        <section id="ages" className="scroll-mt-16 pb-6 pt-14">
+          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+            <H2>Something for every age</H2>
+            <p className="mt-3" style={{ color: C.earth }}>
+              One membership covers every child. Pick an age to see what is inside for them.
+            </p>
+            <div role="tablist" aria-label="Pick an age" className="mt-5 inline-flex flex-wrap justify-center gap-2 rounded-3xl border p-1.5" style={{ background: C.paper, borderColor: C.line }}>
+              {AGES.map((a) => {
+                const on = age === a.id;
+                return (
+                  <button
+                    key={a.id}
+                    role="tab"
+                    aria-selected={on}
+                    aria-controls={a.id}
+                    onClick={() => setAge(a.id)}
+                    className="rounded-2xl px-4 py-2 text-sm font-bold transition-colors"
+                    style={on ? { background: C.green, color: "#fff" } : { color: C.earth }}
+                  >
+                    {a.label}
+                    <span className="block text-[11px] font-semibold opacity-80">{a.ages}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
         {/* Little Roots: ages 3 to 4 */}
-        <section id="little-roots" className="scroll-mt-16 pb-14">
+        <section id="little-roots" role="tabpanel" className={"scroll-mt-16 pb-14" + (age === "little-roots" ? "" : " hidden")}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr]" style={{ background: "#FDF6E3" }}>
               <div className="relative mx-auto w-full max-w-sm">
@@ -493,7 +549,7 @@ export default function HomePage() {
         </section>
 
         {/* Ages 5 to 10 */}
-        <section id="ages-5-to-10" className="scroll-mt-16 pb-14">
+        <section id="ages-5-to-10" role="tabpanel" className={"scroll-mt-16 pb-14" + (age === "ages-5-to-10" ? "" : " hidden")}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]" style={{ background: C.sand }}>
               <div>
@@ -542,7 +598,7 @@ export default function HomePage() {
         </section>
 
         {/* Teens: ages 11 to 16 */}
-        <section id="teens" className="scroll-mt-16 pb-14">
+        <section id="teens" role="tabpanel" className={"scroll-mt-16 pb-14" + (age === "teens" ? "" : " hidden")}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid items-center gap-8 overflow-hidden rounded-3xl p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr]" style={{ background: C.sage }}>
               <div className="lg:order-2">
@@ -705,7 +761,7 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.3fr_0.3fr]">
             <div>
               <h2 className={`${serif.className} text-3xl font-semibold`}>Simple family membership</h2>
-              <p className="mt-3 max-w-md text-white/75">Every feature and every child included. Try it free for 14 days, no card needed.</p>
+              <p className="mt-3 max-w-md text-white/75">Every feature and every child included. Try it free for 14 days, no card needed, and cancel any time.</p>
               <Link href="/signup" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FFFDF8] px-6 py-3 text-sm font-bold" style={{ color: C.deep }}>
                 Start your free trial <span aria-hidden>→</span>
               </Link>
@@ -725,10 +781,15 @@ export default function HomePage() {
                 <p className={`${serif.className} mt-2 text-4xl font-bold`} style={{ color: C.deep }}>
                   £5.99<span className="text-base font-semibold" style={{ color: C.earth }}>/month</span>
                 </p>
-                <p className="mt-1 text-sm" style={{ color: C.earth }}>or £59 a year</p>
+                <p className="mt-1 text-sm" style={{ color: C.earth }}>
+                  or £59 a year, <strong style={{ color: C.deep }}>about two months free</strong>
+                </p>
                 <Link href="/signup" className="mt-4 w-full rounded-full py-2.5 text-sm font-bold text-white" style={{ background: C.green }}>
                   Try it free
                 </Link>
+                <p className="mt-3 text-xs leading-5" style={{ color: C.earth }}>
+                  No card needed for the trial. Cancel any time, in a couple of clicks.
+                </p>
               </div>
             </div>
             <p className={`${hand.className} hidden rotate-[-8deg] text-2xl leading-7 text-white/80 lg:block`} aria-hidden>
