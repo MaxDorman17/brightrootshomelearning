@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
@@ -15,6 +17,25 @@ class Keys(BaseModel):
     auth: str
 
 
+# The notification services of Chrome and Android, Firefox, Safari and Edge. The server only ever
+# sends to these, so the address a device gives us can't be used to make it call anywhere else.
+PUSH_SERVICES = (
+    "fcm.googleapis.com",
+    "android.googleapis.com",
+    ".push.services.mozilla.com",
+    ".push.apple.com",
+    ".notify.windows.com",
+)
+
+
+def is_push_service(endpoint: str) -> bool:
+    parts = urlsplit(endpoint)
+    host = (parts.hostname or "").lower()
+    if parts.scheme != "https" or parts.username or parts.port not in (None, 443):
+        return False
+    return any(host == s or (s.startswith(".") and host.endswith(s)) for s in PUSH_SERVICES)
+
+
 class SubscriptionIn(BaseModel):
     endpoint: str
     keys: Keys
@@ -22,7 +43,7 @@ class SubscriptionIn(BaseModel):
     @field_validator("endpoint")
     @classmethod
     def valid_endpoint(cls, value: str) -> str:
-        if not value.startswith("https://") or len(value) > 2000:
+        if len(value) > 2000 or not is_push_service(value):
             raise ValueError("Invalid endpoint")
         return value
 

@@ -6,6 +6,8 @@ import ServiceWorker from "@/components/ServiceWorker";
 import CookieNotice from "@/components/CookieNotice";
 import VisitorStats from "@/components/VisitorStats";
 import ErrorReports from "@/components/ErrorReports";
+import ProblemNotice from "@/components/ProblemNotice";
+import AccessHelper from "@/components/AccessHelper";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import { DISPLAY_BOOT_SCRIPT } from "@/lib/display";
 import { easyRead } from "@/lib/fonts";
@@ -20,12 +22,15 @@ const nunito = Nunito({
 const DESCRIPTION =
   "A calm home education planner for UK families. Plan the week or simply log what you did, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
 
-// Draw every page fresh for each visit. Built-once pages kept the build day's date, so
-// the planner highlighted the day the site was last deployed instead of today.
-export const dynamic = "force-dynamic";
+// Public pages (home, guides, policies) are built once and refreshed every hour, so they load fast.
+// The private parts of the site are drawn fresh for each visit instead: each has its own layout.tsx
+// saying so, because built-once pages kept the build day's date and the planner showed the wrong "today".
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Each page names its own address as the real one, so copies with tracking codes on the end don't count separately.
+  alternates: { canonical: "./" },
   title: {
     default: "Bright Roots Home Learning | Home education planner for families",
     template: "%s | Bright Roots",
@@ -76,7 +81,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${nunito.className} ${easyRead.variable}`} suppressHydrationWarning>
+    <html lang="en-GB" className={`${nunito.className} ${easyRead.variable}`} suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#3F5D46" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -89,6 +94,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CookieNotice />
         <VisitorStats />
         <ErrorReports />
+        <ProblemNotice />
+        <AccessHelper />
         {children}
       </body>
     </html>

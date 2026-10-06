@@ -1,16 +1,17 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_, and_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
 from data_removal import delete_rows, linked_rows
+from clock import uk_today
 from database import get_db
 from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig, TestResult, ChildTimetable
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 router = APIRouter(prefix="/api/planner", tags=["planner"])
 
@@ -27,6 +28,14 @@ class MoveEntryRequest(BaseModel):
 
 class SubmitWorkUrl(BaseModel):
     completed_work_url: str
+
+    @field_validator("completed_work_url")
+    @classmethod
+    def a_web_link(cls, value: str) -> str:
+        value = (value or "").strip()
+        if value and not value.lower().startswith(("https://", "http://")):
+            raise ValueError("Paste a web link that starts with https://")
+        return value
 
 
 class SubmitNote(BaseModel):
@@ -526,7 +535,7 @@ def child_did_it(
     entry = PlannerEntry(
         lesson_id=lesson.id,
         assigned_to=current_user.id,
-        scheduled_date=date.today(),
+        scheduled_date=uk_today(),
         is_complete=False,
         completed_note=note,
         added_by_child=True,
@@ -624,7 +633,7 @@ def log_learning(
     child_ids = list(dict.fromkeys(cid for cid in body.child_ids if cid in family))
     if not child_ids or len(child_ids) != len(set(body.child_ids)):
         raise HTTPException(status_code=400, detail="Pick who did it")
-    today = date.today()
+    today = uk_today()
     day = body.day or today
     if day > today:
         raise HTTPException(status_code=400, detail="That day hasn't happened yet. Use the planner for things to come.")
@@ -691,7 +700,7 @@ def get_week(
     current_user: User = Depends(get_current_user),
 ):
     if start_date is None:
-        today = date.today()
+        today = uk_today()
         start_date = today - timedelta(days=today.weekday())
     end_date = start_date + timedelta(days=6)
 
@@ -766,7 +775,7 @@ def get_today(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    today = date.today()
+    today = uk_today()
     query = db.query(PlannerEntry).options(joinedload(PlannerEntry.lesson)).filter(
         PlannerEntry.scheduled_date == today,
     )
@@ -785,11 +794,15 @@ def get_today(
 
 @router.get("/all", response_model=List[PlannerEntryOut])
 def get_all(
+    since: Optional[date] = Query(None, description="Only lessons on or after this day"),
+    limit: Optional[int] = Query(None, ge=1, le=5000),
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
+    """Every planned lesson, newest first. Pages that don't need the whole history ask for less,
+    so they stay quick once a family has years of lessons."""
     child_ids = _child_ids_for_parent(db, current_user)
-    entries = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
+    query = db.query(PlannerEntry).join(Lesson, PlannerEntry.lesson_id == Lesson.id).options(
         joinedload(PlannerEntry.lesson)
     ).filter(
         Lesson.created_by == current_user.id,
@@ -797,9 +810,13 @@ def get_all(
             PlannerEntry.assigned_to.in_(child_ids),
             PlannerEntry.assigned_to.is_(None),
         ),
-    ).order_by(
-        PlannerEntry.scheduled_date.desc()
-    ).all()
+    )
+    if since is not None:
+        query = query.filter(PlannerEntry.scheduled_date >= since)
+    query = query.order_by(PlannerEntry.scheduled_date.desc())
+    if limit is not None:
+        query = query.limit(limit)
+    entries = query.all()
 
     shared_ids = [e.id for e in entries if e.assigned_to is None]
     best_completion = _best_shared_completions(db, shared_ids, child_ids)

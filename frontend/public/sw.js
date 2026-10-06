@@ -1,7 +1,19 @@
 // Bright Roots service worker: makes the site installable, shows a friendly page when
 // offline, and displays phone notifications. It never caches API data or pages, so
 // families always see their latest information.
-const VERSION = "br-v1";
+const VERSION = "br-v2";
+// Each redeploy brings a new set of build files. Only this many are kept, newest last, so old
+// versions don't pile up on people's phones.
+const MAX_CACHED_FILES = 120;
+
+async function trim(cache) {
+  const keys = await cache.keys();
+  const extra = keys.length - MAX_CACHED_FILES;
+  for (let i = 0; i < extra; i++) {
+    // Never the offline page or the icons it needs.
+    if (!PRECACHE.includes(new URL(keys[i].url).pathname)) await cache.delete(keys[i]);
+  }
+}
 const OFFLINE_URL = "/offline.html";
 const PRECACHE = [OFFLINE_URL, "/icons/icon-192.png", "/icons/icon-512.png"];
 
@@ -40,7 +52,7 @@ self.addEventListener("fetch", (event) => {
           fetch(request).then((response) => {
             if (response.ok) {
               const copy = response.clone();
-              caches.open(VERSION).then((cache) => cache.put(request, copy));
+              caches.open(VERSION).then((cache) => cache.put(request, copy).then(() => trim(cache)));
             }
             return response;
           })

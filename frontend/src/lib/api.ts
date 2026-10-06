@@ -265,7 +265,9 @@ export const getWeekEntries = (startDate?: string, childId?: number) =>
     params: { ...(startDate ? { start_date: startDate } : {}), ...(childId ? { child_id: childId } : {}) },
   });
 export const getTodayEntries = () => api.get("/api/planner/today");
-export const getAllEntries = () => api.get("/api/planner/all");
+// Every planned lesson, newest first. Pages that don't need the whole history can ask for less:
+// only lessons since a day ("yyyy-MM-dd"), or only the newest few.
+export const getAllEntries = (only?: { since?: string; limit?: number }) => api.get("/api/planner/all", { params: only ?? {} });
 export const getSubmissionCount = () => api.get("/api/planner/submission-count");
 export const getPendingFeedback = () => api.get("/api/planner/pending-feedback");
 export const getTodayNotifications = () => api.get("/api/notifications/today");

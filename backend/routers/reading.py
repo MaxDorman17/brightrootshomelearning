@@ -6,6 +6,7 @@ from typing import List, Optional
 from datetime import date, datetime, timedelta
 import os
 import uuid
+from clock import uk_today
 from database import get_db
 from models import ReadingLog, ReadingWorksheet, ReadingChapterProgress, User
 from storage import upload_dir
@@ -143,9 +144,9 @@ def update_book(
         if book.total_chapters and delta != 0:
             if next_chapters >= book.total_chapters and book.status == "reading":
                 book.status = "completed"
-                book.finish_date = date.today()
+                book.finish_date = uk_today()
                 if not book.start_date:
-                    book.start_date = date.today()
+                    book.start_date = uk_today()
             elif next_chapters < book.total_chapters and book.status == "completed":
                 book.status = "reading"
                 book.finish_date = None

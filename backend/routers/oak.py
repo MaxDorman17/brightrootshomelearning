@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session, joinedload
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
+from clock import uk_today
 from auth import get_current_user, require_parent
 from database import get_db, SessionLocal
 from models import User, OakQuizResult, PlannerEntry, PlannerCompletion, Lesson, TestResult
@@ -670,7 +671,7 @@ async def export_oak_results(
     wb.save(buf)
     buf.seek(0)
 
-    filename = f"bright-roots-results-{date.today().isoformat()}.xlsx"
+    filename = f"bright-roots-results-{uk_today().isoformat()}.xlsx"
     return Response(
         content=buf.getvalue(),
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -701,7 +702,7 @@ def get_today_quiz_results(
     If child_id is supplied, only that child is returned. Without child_id,
     results for all children belonging to the current parent are returned.
     """
-    today = date.today()
+    today = uk_today()
 
     children = db.query(User).filter(
         User.parent_id == current_user.id,

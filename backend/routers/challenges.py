@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, field_validator, model_validator
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import get_current_user, require_parent
 from database import get_db
 from models import Challenge, ChallengeTick, User
@@ -256,7 +257,7 @@ def _streak(days_with_learning: set, today: date) -> int:
 def _leaderboard(db: Session, parent_id: int, children: list[User], cache: _ActivityCache) -> dict:
     from routers.rewards import _award_events, _earned_events
 
-    today = datetime.utcnow().date()
+    today = uk_today()
     week_start = today - timedelta(days=today.weekday())
     week_end = week_start + timedelta(days=6)
     rows = []
@@ -302,7 +303,7 @@ def family_overview(
     children = _family_children(db, parent_id)
     cache = _ActivityCache(db, parent_id)
 
-    today = datetime.utcnow().date()
+    today = uk_today()
     query = db.query(Challenge).filter(Challenge.parent_id == parent_id, Challenge.is_archived.is_not(True))
     if not include_ended:
         query = query.filter(Challenge.end_date >= today - timedelta(days=RECENTLY_ENDED_DAYS))
@@ -350,7 +351,7 @@ def _custom_challenge(db: Session, parent: User, challenge_id: int, child_id: in
 @router.post("/challenges/{challenge_id}/tick", status_code=201)
 def tick_challenge(challenge_id: int, body: TickIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     challenge = _custom_challenge(db, current_user, challenge_id, body.child_id)
-    today = datetime.utcnow().date()
+    today = uk_today()
     if not challenge.start_date <= today <= challenge.end_date:
         raise HTTPException(status_code=400, detail="This challenge isn't running today")
     db.add(ChallengeTick(challenge_id=challenge.id, child_id=body.child_id))

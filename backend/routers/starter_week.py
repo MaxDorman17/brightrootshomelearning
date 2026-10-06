@@ -18,6 +18,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import require_parent
 from database import get_db
 from models import Lesson, PlannerEntry, User
@@ -466,7 +467,7 @@ async def add_starter_week(body: StarterWeekIn, db: Session = Depends(get_db), c
     level = body.level
     if level not in ("young", "teen"):
         level = "teen" if family[children[0]].activity_level == "teen" else "young"
-    start = body.start_date or date.today()
+    start = body.start_date or uk_today()
     start -= timedelta(days=start.weekday())  # always start on a Monday
     # Children working at the same year and following the same timetable share their lessons;
     # a child with a timetable of their own gets a week built from it.

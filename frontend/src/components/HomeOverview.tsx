@@ -38,7 +38,7 @@ export default function HomeOverview() {
     Promise.all([
       safe(getChildren(), [] as unknown[]),
       safe(getTimetable(), { updated_at: null } as { updated_at: string | null }),
-      safe(getAllEntries(), [] as unknown[]),
+      safe(getAllEntries({ limit: 1 }), [] as unknown[]),
       safe(checkSession(), { rewards_set_up: false } as { rewards_set_up: boolean }),
       safe(getReminders(), { reminders: [], today: [] } as { reminders: unknown[]; today: { done: boolean }[] }),
       safe(getMoments(), [] as Moment[]),

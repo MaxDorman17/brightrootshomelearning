@@ -270,3 +270,9 @@ body {
     animation: none;
   }
 }
+
+/* Tailwind's gray-400 is too pale to read on our cream and white backgrounds, so small print
+   written in it uses the next grey down, which passes the contrast guidelines. */
+.text-gray-400 {
+  color: #6b7280;
+}

@@ -12,6 +12,7 @@ from pydantic import BaseModel, field_validator
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import get_current_user
 from database import get_db
 from models import LanguageLog, User
@@ -64,7 +65,7 @@ class LanguageLogIn(BaseModel):
     @field_validator("done_on")
     @classmethod
     def not_future(cls, value: date) -> date:
-        if value > date.today() + timedelta(days=1):
+        if value > uk_today() + timedelta(days=1):
             raise ValueError("That date is in the future")
         return value
 
@@ -177,7 +178,7 @@ def _streaks(days: set[date]) -> tuple[int, int]:
         run = run + 1 if prev and d - prev == timedelta(days=1) else 1
         best = max(best, run)
         prev = d
-    today = date.today()
+    today = uk_today()
     day = today if today in days else today - timedelta(days=1)
     current = 0
     while day in days:

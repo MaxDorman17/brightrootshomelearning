@@ -41,6 +41,24 @@ export default function MomentImage({ photoId, alt, className = "", onClick }: P
   if (!src) return <div className={`animate-pulse bg-brand-cream ${className}`} aria-label={alt} />;
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} onClick={onClick} className={`object-cover ${onClick ? "cursor-zoom-in" : ""} ${className}`} />
+    <img
+      src={src}
+      alt={alt}
+      onClick={onClick}
+      // A photo that opens when clicked is a button for keyboard and screen reader users too.
+      {...(onClick
+        ? {
+            role: "button",
+            tabIndex: 0,
+            onKeyDown: (e: React.KeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            },
+          }
+        : {})}
+      className={`object-cover ${onClick ? "cursor-zoom-in" : ""} ${className}`}
+    />
   );
 }

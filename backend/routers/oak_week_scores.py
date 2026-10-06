@@ -6,6 +6,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, joinedload
+from clock import uk_today
 from database import get_db
 from models import PlannerEntry, Lesson, User, OakQuizResult, PlannerCompletion
 from auth import get_current_user, require_parent
@@ -25,7 +26,7 @@ def _build_day_buckets(start_date: date, end_date: date) -> list:
         days.append({
             "date": d.isoformat(),
             "day_name": d.strftime("%A"),
-            "is_today": d == date.today(),
+            "is_today": d == uk_today(),
             "entries": [],
         })
         d += timedelta(days=1)
@@ -75,6 +76,16 @@ def get_week_quiz_scores(
 
     grand = {"starter": 0, "starter_total": 0, "exit": 0, "exit_total": 0, "completed": 0, "total": 0}
 
+    # Each quiz link is looked up once, however many lessons and children share the week.
+    looked_up: dict = {}
+
+    def quiz_result(url):
+        if not url:
+            return None
+        if url not in looked_up:
+            looked_up[url] = db.query(OakQuizResult).filter(OakQuizResult.url == url).first()
+        return looked_up[url]
+
     for e in entries:
         lesson = e.lesson
         entry_url = e.completed_work_url or ""
@@ -102,7 +113,7 @@ def get_week_quiz_scores(
                 url = share_m.group(0) if share_m else None
                 done = comp is not None
 
-            result = db.query(OakQuizResult).filter(OakQuizResult.url == url).first() if url else None
+            result = quiz_result(url)
             ss = result.starter_score if result else None
             st = result.starter_total if result else None
             es = result.exit_score if result else None

@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import require_parent, user_has_membership_access
 from database import get_db
 from models import DayOff, ExamEntry, Lesson, PlannerEntry, User
@@ -76,7 +77,7 @@ def _all_day(uid: str, day: date, summary: str, description: str = "", stamp: st
 
 
 def build_feed(db: Session, family: User) -> str:
-    today = date.today()
+    today = uk_today()
     start, end = today - timedelta(days=PAST_DAYS), today + timedelta(days=FUTURE_DAYS)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     kids = {c.id: c.username for c in db.query(User).filter(User.parent_id == family.id, User.role == "child")}

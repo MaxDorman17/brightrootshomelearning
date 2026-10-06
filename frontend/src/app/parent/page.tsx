@@ -319,9 +319,12 @@ export default function ParentPlanner() {
     lessonScores.filter(s => s.entry_id === entryId && (!selectedChildId || s.child_id === selectedChildId));
 
   const loadData = useCallback(async () => {
+    // Working out which days are free only needs lessons from about now onwards, not years of history.
+    const shownWeek = parseISO(weekStartStr);
+    const recent = format(addDays(shownWeek < new Date() ? shownWeek : new Date(), -60), "yyyy-MM-dd");
     const [entriesRes, allEntriesRes, daysOffRes] = await Promise.all([
       getWeekEntries(weekStartStr, selectedChildId ?? undefined),
-      getAllEntries(),
+      getAllEntries({ since: recent }),
       getDaysOff(),
     ]);
     setEntries(entriesRes.data);

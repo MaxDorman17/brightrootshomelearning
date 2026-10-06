@@ -6,6 +6,7 @@ from pydantic import BaseModel, field_validator
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import get_current_user, require_child
 from database import get_db
 from models import Lesson, PlannerEntry, StudySession, User
@@ -101,7 +102,7 @@ def study_summary(
 ):
     """Time studied this week, by subject over the last 30 days, and recent sessions."""
     child, parent_id = _resolve_child(db, current_user, child_id)
-    today = datetime.utcnow().date()
+    today = uk_today()
     week_start = today - timedelta(days=today.weekday())
     since = today - timedelta(days=29)
 

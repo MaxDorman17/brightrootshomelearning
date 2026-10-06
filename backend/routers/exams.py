@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import get_current_user, require_parent
 from database import get_db
 from models import ExamEntry, Lesson, PlannerEntry, User
@@ -89,7 +90,7 @@ class RevisionIn(BaseModel):
 
 def _exam_out(exam: ExamEntry, kids: dict[int, User]) -> dict:
     child = kids.get(exam.child_id)
-    days_to_go = (exam.exam_date - date.today()).days if exam.exam_date else None
+    days_to_go = (exam.exam_date - uk_today()).days if exam.exam_date else None
     return {
         "id": exam.id,
         "child_id": exam.child_id,
@@ -186,7 +187,7 @@ def plan_revision(exam_id: int, body: RevisionIn, db: Session = Depends(get_db),
     exam = _get_exam(db, current_user.id, exam_id)
     if not exam.exam_date:
         raise HTTPException(status_code=400, detail="Add the exam date first")
-    start = max(body.start_date or date.today(), date.today())
+    start = max(body.start_date or uk_today(), uk_today())
     end = exam.exam_date - timedelta(days=1)
     days = []
     day = start

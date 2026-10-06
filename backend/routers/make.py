@@ -13,6 +13,7 @@ from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from clock import uk_today
 from auth import get_current_user, require_child, require_parent
 from database import get_db
 from models import JournalEntry, Lesson, MakeItem, MakeWish, PlannerEntry, ShoppingItem, StarAward, User
@@ -549,9 +550,9 @@ def did_it(item_id: int, body: DidItIn, db: Session = Depends(get_db), current_u
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     if not children:
         raise HTTPException(status_code=400, detail="Choose who did it")
-    day = body.day or date.today()
-    if abs((day - date.today()).days) > 1:
-        day = date.today()
+    day = body.day or uk_today()
+    if abs((day - uk_today()).days) > 1:
+        day = uk_today()
     ticked = 0
     for child_id in children:
         db.add(StarAward(parent_id=current_user.id, child_id=child_id, stars=body.stars, reason=f"Little Roots: {item.title}"[:200]))
@@ -601,7 +602,7 @@ def _week_items(db: Session, user: User, index: int) -> list[MakeItem]:
 def little_week(offset: int = 0, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """This week's Little Roots set (offset 1 = next week). The weeks go round in order, one per calendar week."""
     from make_starters_little import LITTLE_WEEKS
-    monday = date.today() - timedelta(days=date.today().weekday()) + timedelta(weeks=max(-4, min(offset, 8)))
+    monday = uk_today() - timedelta(days=uk_today().weekday()) + timedelta(weeks=max(-4, min(offset, 8)))
     index = _week_number(monday)
     items = _week_items(db, current_user, index)
     return {"week": index + 1, "weeks": len(LITTLE_WEEKS), "monday": monday, "items": [_out(i, [], full=False) for i in items]}

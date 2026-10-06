@@ -8,6 +8,7 @@ from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from config import settings
 import error_reports
+import limits
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
@@ -504,14 +505,17 @@ app = FastAPI(
     openapi_url="/openapi.json" if _local else None,
 )
 
+app.middleware("http")(limits.refuse_huge_requests)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
+    # Only the site itself may call the server from a browser. A developer's own computer is
+    # allowed only when the server is running on one.
+    allow_origins=sorted({
         settings.FRONTEND_URL.rstrip("/"),
         "https://brightrootshomelearning.co.uk",
         "https://www.brightrootshomelearning.co.uk",
-    ],
+    }),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
