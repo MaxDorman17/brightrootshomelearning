@@ -53,6 +53,8 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN subscription_cancel_at DATETIME"))
             if "theme" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN theme VARCHAR(20)"))
+            if "schemes" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN schemes TEXT"))
             if "ehe_approach" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN ehe_approach TEXT"))
             if "rewards_set_up_at" not in existing_cols:

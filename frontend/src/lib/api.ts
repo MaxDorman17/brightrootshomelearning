@@ -205,6 +205,7 @@ export const getGamesSummary = (child_id?: number) =>
   api.get("/api/games/summary", { params: child_id != null ? { child_id } : {} });
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
+export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });
 export const changePassword = (current_password: string, new_password: string) =>
   api.post("/api/auth/change-password", { current_password, new_password });
 export const forgotPassword = (email: string) =>

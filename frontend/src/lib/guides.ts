@@ -13,6 +13,12 @@ export const GUIDES = [
     minutes: 5,
   },
   {
+    slug: "twinkl-and-white-rose",
+    title: "Home educating with Twinkl, White Rose Maths and other schemes",
+    summary: "How to mix schemes without losing track: one plan for the week, one record, and scores in one place.",
+    minutes: 5,
+  },
+  {
     slug: "keeping-records",
     title: "Keeping a record of home education without it taking over",
     summary: "What's worth writing down, a five-minute daily routine, and what to have ready if the council asks.",

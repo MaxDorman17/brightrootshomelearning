@@ -2,6 +2,8 @@ from collections import defaultdict, deque
 from threading import Lock
 from time import monotonic
 from datetime import datetime, timedelta
+import json
+from typing import Optional
 import logging
 
 import httpx
@@ -50,6 +52,21 @@ class ResetPasswordRequest(BaseModel):
 
 class ThemeRequest(BaseModel):
     theme: str
+
+
+class SchemesRequest(BaseModel):
+    schemes: list[str]
+
+
+MAX_FAMILY_SCHEMES = 12
+
+
+def _family_schemes(user: Optional[User]) -> list[str]:
+    try:
+        value = json.loads(user.schemes) if user and user.schemes else []
+    except ValueError:
+        return []
+    return [s for s in value if isinstance(s, str)] if isinstance(value, list) else []
 
 
 FAMILY_THEMES = {"sage", "ocean", "sunshine", "berry"}
@@ -353,8 +370,10 @@ def me(
         out.is_admin = False
     if current_user.role == "parent":
         out.family_theme = current_user.theme
+        out.family_schemes = _family_schemes(current_user)
     elif current_user.parent_id:
         parent = db.query(User).filter(User.id == current_user.parent_id).first()
+        out.family_schemes = _family_schemes(parent)
         # A child's own choice of colours wins over the family theme.
         out.family_theme = current_user.child_theme or (parent.theme if parent else None)
         out.parent_name = parent.username if parent else None
@@ -375,6 +394,26 @@ def set_theme(
     current_user.theme = theme
     db.commit()
     return {"theme": theme}
+
+
+@router.put("/schemes")
+def set_schemes(
+    body: SchemesRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_authenticated_user),
+):
+    """The schemes a family uses. They are offered first whenever a lesson or unit is given a scheme."""
+    if current_user.role != "parent":
+        raise HTTPException(status_code=403, detail="Parent access required")
+    schemes: list[str] = []
+    for name in body.schemes:
+        name = " ".join(name.split())[:100]
+        if name and name.lower() not in {s.lower() for s in schemes}:
+            schemes.append(name)
+    schemes = schemes[:MAX_FAMILY_SCHEMES]
+    current_user.schemes = json.dumps(schemes) if schemes else None
+    db.commit()
+    return {"schemes": schemes}
 
 
 @router.post("/change-password")

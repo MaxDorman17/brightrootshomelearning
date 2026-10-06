@@ -97,10 +97,11 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         id: "single-lesson",
         emoji: "➕",
         title: "Add a single lesson",
-        intro: "For one-off lessons, your own activities, or a single Oak lesson.",
+        intro: "For one-off lessons, your own activities, or a lesson from any scheme: Twinkl, White Rose Maths, Oak, BBC Bitesize.",
         steps: [
           <>In the <L href="/parent">Planner</L>, click the slot for that day and subject.</>,
-          "Give it a title, and paste a link if there is one (an Oak lesson, a YouTube video, a worksheet).",
+          "Give it a title, and paste a link if there is one (a Twinkl resource, a White Rose video, an Oak lesson, a worksheet).",
+          <>In <b>Scheme</b>, say where it comes from. It shows as a tag on the lesson and in your council report.</>,
           "Add any notes for your child, choose who it's for, and save.",
         ],
         tip: <>Lessons you use again and again can live in <L href="/parent/lessons">My Lessons</L>, and you can group them into plans to schedule in one go.</>,
@@ -165,6 +166,18 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
     group: "Following progress",
     guides: [
       {
+        id: "lesson-scores",
+        emoji: "✏️",
+        title: "Give any lesson a score",
+        intro: "For a worksheet, quiz or test from any scheme. You type in the mark, and it counts like any other result.",
+        steps: [
+          <>In the <L href="/parent">Planner</L>, click the lesson. Or open its details in <L href="/parent/progress">Progress, then Review &amp; Feedback</L>.</>,
+          <>Under <b>Score</b>, type what your child got and what it was out of, for example 8 out of 10, then press <b>Save score</b>.</>,
+          <>The score shows on the lesson, in <L href="/parent/results">Progress, then Test Results</L>, and in your council report.</>,
+        ],
+        tip: <>In <L href="/parent/rewards">Rewards</L> you can add a rule so a good score earns stars: choose &quot;A lesson or test score you mark&quot;.</>,
+      },
+      {
         id: "oak-scores",
         emoji: "🎯",
         title: "Get Oak quiz scores into Bright Roots",
@@ -172,7 +185,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         steps: [
           "Your child does the Oak lesson as normal, including both quizzes.",
           "At the end, Oak offers a link to share their results. Copy that link.",
-          <>Back in Bright Roots, your child opens the lesson from their Today page and pastes the link into <b>Paste your results link</b>, then marks the lesson done.</>,
+          <>Back in Bright Roots, your child opens the lesson from their Today page and pastes the link into <b>Paste a link to your work or results</b>, then marks the lesson done.</>,
           <>The scores show on the lesson in your Planner, in <L href="/parent/results">Progress, then Test Results</L>, and on their Progress page. They can also earn stars (see Rewards).</>,
         ],
       },

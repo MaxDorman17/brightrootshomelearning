@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getTimetable, saveTimetable } from "@/lib/api";
+import { checkSession, getTimetable, saveFamilySchemes, saveTimetable } from "@/lib/api";
+import SchemePicker from "@/components/SchemePicker";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 
@@ -42,6 +43,26 @@ export default function TimetablePage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newSubjects, setNewSubjects] = useState<Record<string, string>>({});
+  // The schemes the family uses (Twinkl, White Rose Maths...), offered first when a lesson is given a scheme.
+  const [schemes, setSchemes] = useState<string[]>([]);
+  const [schemesState, setSchemesState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  useEffect(() => {
+    checkSession()
+      .then(res => { if (Array.isArray(res.data.family_schemes)) setSchemes(res.data.family_schemes); })
+      .catch(() => {});
+  }, []);
+
+  const changeSchemes = async (next: string[]) => {
+    setSchemes(next);
+    setSchemesState("saving");
+    try {
+      await saveFamilySchemes(next);
+      setSchemesState("saved");
+    } catch {
+      setSchemesState("error");
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
@@ -272,6 +293,19 @@ export default function TimetablePage() {
             })}
           </div>
         )}
+
+        <div className="brand-card mt-6 p-5 sm:p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-lg font-bold text-[#2E342F]">What you use for lessons</h2>
+            <p className="text-xs font-semibold text-[#6E5A46]" aria-live="polite">
+              {schemesState === "saving" ? "Saving…" : schemesState === "saved" ? "Saved" : schemesState === "error" ? "Could not save. Try again." : ""}
+            </p>
+          </div>
+          <p className="mt-1 mb-4 max-w-2xl text-sm text-[#6E5A46]">
+            Tick the schemes you use. They are offered first when you give a lesson or unit a scheme. Changes save straight away.
+          </p>
+          <SchemePicker value={schemes} onChange={changeSchemes} />
+        </div>
       </div>
     </div>
   );

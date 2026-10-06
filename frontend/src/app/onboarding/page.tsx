@@ -10,10 +10,12 @@ import {
   getMe,
   getTimetable,
   requestEmailVerification,
+  saveFamilySchemes,
   saveFamilyTheme,
   saveTimetable,
 } from "@/lib/api";
 import ThemePicker from "@/components/ThemePicker";
+import SchemePicker from "@/components/SchemePicker";
 import { DEFAULT_THEME, FamilyTheme, applyTheme, isFamilyTheme } from "@/lib/theme";
 import {
   DEFAULT_SELECTED_SUBJECTS,
@@ -42,6 +44,7 @@ export default function OnboardingPage() {
   const [childSaving, setChildSaving] = useState(false);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(DEFAULT_SELECTED_SUBJECTS);
   const [customSubject, setCustomSubject] = useState("");
+  const [schemes, setSchemes] = useState<string[]>([]);
   const [theme, setTheme] = useState<FamilyTheme>(DEFAULT_THEME);
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
   const [timetableSaving, setTimetableSaving] = useState(false);
@@ -82,6 +85,7 @@ export default function OnboardingPage() {
         setEmailVerified(!!meRes.data.email_verified_at);
         setChildren(childRes.data || []);
         if (isFamilyTheme(meRes.data.family_theme)) setTheme(meRes.data.family_theme);
+        if (Array.isArray(meRes.data.family_schemes)) setSchemes(meRes.data.family_schemes);
         // Only reuse a timetable this parent has actually saved, not the server default.
         if (timetableRes.data.updated_at) {
           const saved = subjectsInTimetable(timetableRes.data.config || {});
@@ -166,6 +170,7 @@ export default function OnboardingPage() {
     try {
       await saveTimetable(timetable);
       await saveFamilyTheme(theme);
+      await saveFamilySchemes(schemes);
       await completeOnboarding();
       router.replace("/parent");
     } catch (err: any) {
@@ -349,6 +354,17 @@ export default function OnboardingPage() {
                 <button type="button" onClick={addCustomSubject} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3 text-sm font-extrabold text-brand-sage">
                   Add
                 </button>
+              </div>
+
+              <div className="mt-9">
+                <h2 className="text-xl font-black text-[#2E342F]">What do you use for lessons?</h2>
+                <p className="mt-2 text-sm text-[#6E5A46]">
+                  Tick any you use, or skip this. Bright Roots works with all of them: you add a link and it keeps the plan, the
+                  record and the scores together.
+                </p>
+                <div className="mt-4">
+                  <SchemePicker value={schemes} onChange={setSchemes} />
+                </div>
               </div>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">

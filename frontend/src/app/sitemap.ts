@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/guides", 0.8],
     ["/guides/first-week", 0.8],
     ["/guides/oak-at-home", 0.8],
+    ["/guides/twinkl-and-white-rose", 0.8],
     ["/guides/keeping-records", 0.8],
     ["/guides/gcses-at-home", 0.8],
     ["/guides/three-and-four-year-olds", 0.8],

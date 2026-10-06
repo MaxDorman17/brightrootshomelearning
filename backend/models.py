@@ -28,6 +28,7 @@ class User(Base):
     subscription_cancel_at_period_end = Column(Boolean, nullable=False, default=False, server_default="0")
     subscription_cancel_at = Column(DateTime(timezone=True), nullable=True)
     theme = Column(String(20), nullable=True)  # family colour theme, set on the parent account
+    schemes = Column(Text, nullable=True)  # JSON list of the schemes this family uses, e.g. ["Twinkl", "White Rose Maths"]
     ehe_approach = Column(Text, nullable=True)  # parent's "our approach to home education" for council reports
     rewards_set_up_at = Column(DateTime(timezone=True), nullable=True)  # when example star rules/rewards were added
     avatar = Column(Text, nullable=True)  # JSON {"emoji", "bg", "frame"} from the avatar builder

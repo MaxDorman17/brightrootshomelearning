@@ -30,7 +30,7 @@ const featureGroups = [
     emoji: "🗓️",
     tint: "#E7EADE",
     blurb: "Get the whole week sorted in one sitting.",
-    items: ["Weekly planner", "Your timetable", "Ready-made starter week", "Oak National Academy lessons", "Lesson plans", "Calendar sync", "Print the week"],
+    items: ["Weekly planner", "Your timetable", "Ready-made starter week", "Oak National Academy lessons", "Works with Twinkl, White Rose and more", "Lesson plans", "Calendar sync", "Print the week"],
   },
   {
     name: "Learn",
@@ -62,7 +62,7 @@ const steps = [
   ["Start your free trial", "Set up your family account in minutes. No card needed."],
   ["Add your children", "Give each child their own simple login."],
   ["Set your timetable", "Choose your subjects and when you teach them."],
-  ["Plan your first week", "Add a ready-made week of Oak lessons, or plan your own."],
+  ["Plan your first week", "Add a ready-made week of Oak lessons, or plan your own with whatever you already use."],
 ];
 
 const faqs = [
@@ -74,6 +74,7 @@ const faqs = [
   ["Is there anything for my 3 or 4 year old?", "Yes. Little Roots has short, playful activities to do together, each one a picture book with a little story, what you need and what to say. There's a new set of three activities and a rhyme every week, and little ones don't need a login: you do it together from your account, and their stars and progress are still saved."],
   ["My teenager is working towards GCSEs. Can it help?", "Yes. The exam planner keeps each exam's centre, entry deadline, date and fee in one place, counts down the days, and adds revision sessions to the planner."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
+  ["We use Twinkl or White Rose Maths, not Oak. Will it work for us?", "Yes. Add any lesson with a link to where it lives and the name of the scheme, and it sits in your planner like any other. You can type in a score for a worksheet or test, and it all shows in your records and council report. Bright Roots keeps the link and your notes; the materials stay on the scheme's own site."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share."],
   ["What happens when my free trial ends?", "You can choose monthly or yearly membership from your account. If you decide not to carry on, you won't be charged, because no card is taken for the trial."],
   ["Is my family's information safe?", "Your family's data is private to your account, passwords are stored securely, and we never sell or share your information."],
