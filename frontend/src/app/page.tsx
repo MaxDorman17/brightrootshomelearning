@@ -509,8 +509,8 @@ export default function HomePage() {
               <div className="relative">
                 <H2>See it in action</H2>
                 <p className="mt-3" style={{ color: C.earth }}>
-                  Have a click around an example family with two children. Mark lessons done and watch the planner and
-                  progress update, just like the real thing.
+                  Click through one day with an example family, from the morning plan to bedtime. Tick off lessons,
+                  log an unplanned walk, OK a child&apos;s own idea, and watch the day&apos;s record write itself.
                 </p>
                 <button onClick={() => setDemoOpen(!demoOpen)} className={`${primaryBtn} mt-6`} style={{ background: C.green }}>
                   {demoOpen ? "Hide the demo" : "Try the demo"} <span aria-hidden>{demoOpen ? "↑" : "→"}</span>
