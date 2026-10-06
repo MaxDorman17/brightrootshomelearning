@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 import backups
 from auth import actor, get_authenticated_user
 from config import settings
+from data_removal import delete_rows, leftover_rows, remove_files, uploaded_files
 from database import get_db
 from models import BackupRun, User
 from newsletter_access import is_admin
@@ -63,3 +64,28 @@ def run_now(db: Session = Depends(get_db), _: User = Depends(_require_owner)):
     # It can take a while the first time (every photo is copied), so it runs in the background.
     threading.Thread(target=backups.run_and_record, args=("manual",), name="backup-now", daemon=True).start()
     return {"started": True}
+
+
+def _leftover_summary(rows: dict) -> dict:
+    counts = {name: len(table_rows) for name, table_rows in sorted(rows.items()) if table_rows}
+    return {"total": sum(counts.values()), "tables": counts, "files": len(uploaded_files(rows))}
+
+
+@router.get("/leftovers")
+def leftovers(db: Session = Depends(get_db), _: User = Depends(_require_owner)):
+    """How much is left behind by children (or accounts) removed before removing tidied up after itself.
+    Counts only: nothing is changed."""
+    return _leftover_summary(leftover_rows(db))
+
+
+@router.post("/leftovers/remove")
+def remove_leftovers(db: Session = Depends(get_db), _: User = Depends(_require_owner)):
+    """Delete the left-over rows and their uploaded files, and say what went."""
+    rows = leftover_rows(db)
+    summary = _leftover_summary(rows)
+    if rows:
+        files = uploaded_files(rows)
+        delete_rows(db, rows)
+        db.commit()
+        remove_files(files)
+    return summary

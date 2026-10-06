@@ -753,5 +753,9 @@ export type BackupRun = { id: number; kind: string; status: "running" | "ok" | "
 export type BackupStatus = { configured: boolean; bucket: string | null; endpoint: string | null; keep_days: number; hour: number; last_ok: BackupRun | null; runs: BackupRun[] };
 export const getBackupStatus = () => api.get<BackupStatus>("/api/backup/status", { skipAuthRedirect: true } as any);
 export const runBackupNow = () => api.post("/api/backup/run");
+// Owner only: data left behind by children removed before removing tidied up after itself.
+export type Leftovers = { total: number; tables: Record<string, number>; files: number };
+export const getLeftovers = () => api.get<Leftovers>("/api/backup/leftovers", { skipAuthRedirect: true } as any);
+export const removeLeftovers = () => api.post<Leftovers>("/api/backup/leftovers/remove");
 // Fails on purpose, so the owner can check that error reports reach GlitchTip.
 export const sendTestErrorReport = () => api.post("/api/backup/test-error-report");

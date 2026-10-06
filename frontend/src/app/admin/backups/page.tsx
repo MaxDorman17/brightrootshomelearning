@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { format, formatDistanceToNow, parseISO } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
-import { BackupStatus, getBackupStatus, runBackupNow, sendTestErrorReport } from "@/lib/api";
+import { BackupStatus, Leftovers, getBackupStatus, getLeftovers, removeLeftovers, runBackupNow, sendTestErrorReport } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 
 const when = (iso: string | null) => (iso ? format(parseISO(iso), "EEE d MMM yyyy, HH:mm") : "");
@@ -18,6 +18,9 @@ export default function BackupsPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [tested, setTested] = useState("");
+  const [leftovers, setLeftovers] = useState<Leftovers | null>(null);
+  const [cleared, setCleared] = useState("");
+  const [clearing, setClearing] = useState(false);
 
   const load = useCallback(() => getBackupStatus().then((res) => setData(res.data)).catch(() => setDenied(true)), []);
 
@@ -27,7 +30,21 @@ export default function BackupsPage() {
       return;
     }
     load();
+    getLeftovers().then((res) => setLeftovers(res.data)).catch(() => {});
   }, [load, router]);
+
+  const clearLeftovers = async () => {
+    if (!leftovers || leftovers.total === 0) return;
+    if (!confirm(`Delete ${leftovers.total} left-over records${leftovers.files ? ` and ${leftovers.files} files` : ""} for good? Nothing belonging to a family who still has an account is touched. Run a backup first if you haven't today.`)) return;
+    setClearing(true);
+    try {
+      const res = await removeLeftovers();
+      setCleared(`Deleted ${res.data.total} left-over records${res.data.files ? ` and ${res.data.files} files` : ""}.`);
+      setLeftovers((await getLeftovers()).data);
+    } finally {
+      setClearing(false);
+    }
+  };
 
   // Keep checking while a backup is running.
   const running = !!data?.runs.some((r) => r.status === "running");
@@ -112,6 +129,35 @@ export default function BackupsPage() {
             </button>
             {error && <p className="mt-3 text-sm font-semibold text-[#A64F42]">{error}</p>}
           </div>
+        )}
+
+        {leftovers && (
+          <section className="brand-card mt-6 p-5 sm:p-6">
+            <h2 className="text-lg font-extrabold text-brand-charcoal">Left-over data</h2>
+            <p className="mt-1 text-sm text-[#6E5A46]">
+              Until October 2026, removing a child left their lessons, scores and stars behind in the database. This finds what is still pointing at someone who no longer has an account.
+            </p>
+            {leftovers.total === 0 ? (
+              <p className="mt-3 text-sm font-bold text-brand-sage">{cleared || "Nothing left over."} All clear.</p>
+            ) : (
+              <>
+                <ul className="mt-3 grid gap-x-6 gap-y-1 text-sm text-brand-charcoal sm:grid-cols-2">
+                  {Object.entries(leftovers.tables).map(([name, count]) => (
+                    <li key={name} className="flex justify-between gap-3 border-b border-brand-line py-1">
+                      <span>{name.replace(/_/g, " ")}</span>
+                      <span className="font-bold">{count}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs text-[#6E5A46]">
+                  {leftovers.total} records{leftovers.files ? ` and ${leftovers.files} uploaded files` : ""} in all. Run a backup first, then delete them.
+                </p>
+                <button onClick={clearLeftovers} disabled={clearing} className="mt-3 rounded-xl border border-[#D8D1C4] bg-brand-white px-4 py-2 text-sm font-bold text-[#A64F42] hover:border-brand-softsage disabled:opacity-50">
+                  {clearing ? "Deleting..." : "Delete left-over data"}
+                </button>
+              </>
+            )}
+          </section>
         )}
 
         {data && data.runs.length > 0 && (

@@ -57,6 +57,39 @@ def linked_rows(db: Session, start: dict[str, set]) -> dict[str, list[dict]]:
     return result
 
 
+# Never touched by the left-over clean-up: these belong to the owner, not to a family.
+_OWNERS_TABLES = {"users", "newsletter_subscribers", "support_messages", "backup_runs"}
+
+
+def leftover_rows(db: Session) -> dict[str, list[dict]]:
+    """Rows still pointing at a person who is no longer there, plus everything hanging off those rows.
+
+    Before removing a child tidied up after itself, their planned lessons, scores, stars and so on
+    were left behind. This finds exactly those: nothing belonging to anyone who still has an account.
+    """
+    users = Base.metadata.tables["users"]
+    everyone = select(users.c.id)
+    start: dict[str, set] = {}
+    for table in Base.metadata.sorted_tables:
+        pk_cols = list(table.primary_key.columns)
+        if table.name in _OWNERS_TABLES or len(pk_cols) != 1:
+            continue
+        for fk in table.foreign_keys:
+            if fk.column.table is not users or _keeps_row(fk):
+                continue
+            ids = db.execute(
+                select(pk_cols[0]).where(fk.parent.is_not(None), fk.parent.not_in(everyone))
+            ).scalars().all()
+            if ids:
+                start.setdefault(table.name, set()).update(ids)
+    if not start:
+        return {}
+    rows = linked_rows(db, start)
+    for name in _OWNERS_TABLES:
+        rows.pop(name, None)
+    return rows
+
+
 def uploaded_files(rows: dict[str, list[dict]]) -> list[tuple[str, str]]:
     """(folder, file name) for every uploaded file these rows own."""
     files: list[tuple[str, str]] = []
