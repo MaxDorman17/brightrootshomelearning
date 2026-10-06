@@ -55,42 +55,44 @@ export default function AboutPage() {
       </section>
 
       <section className="border-t border-brand-line py-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <h2 className="text-3xl font-black">Our story</h2>
-          <figure className="mt-6 overflow-hidden rounded-3xl border border-brand-line bg-brand-white shadow-sm">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/hero/our-family.jpg"
-              alt="The family behind Bright Roots, two parents and three children, smiling outdoors at sunset"
-              width={1200}
-              height={900}
-              className="aspect-[4/3] w-full object-cover"
-            />
-            <figcaption className="px-5 py-3 text-sm text-[#6E5A46]">
-              <span className="font-bold text-brand-charcoal">That&apos;s us.</span> Charlotte, Oscar and Max, with Rose and Lola in front.
-            </figcaption>
-          </figure>
-          <div className="mt-5 space-y-4 leading-7 text-[#6E5A46]">
-            <p>
-              Bright Roots started at our own kitchen table. When we began home learning with our
-              children, we had notebooks, printouts, spreadsheets, bookmarks and sticky notes everywhere.
-              Every evening went on working out what was next, what had been finished and where we&apos;d
-              written it down.
-            </p>
-            <p>
-              Somewhere along the way we noticed we were spending more time organising the learning than
-              actually being with our children: reading together, exploring, answering the endless
-              questions and learning alongside them. That wasn&apos;t why we chose home education.
-            </p>
-            <p>
-              So we built the tool we wished we&apos;d had. One calm place where the week is planned, the
-              children can see what they&apos;re doing, and every bit of progress is recorded without extra
-              effort. We use it with our own family, and we keep improving it based on what real home
-              learning families need.
-            </p>
-            <p className="font-semibold text-brand-charcoal">
-              Our hope is simple: less time on admin, more time together.
-            </p>
+          <div className="mt-5 grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_280px] lg:gap-12">
+            <div className="space-y-4 leading-7 text-[#6E5A46]">
+              <p>
+                Bright Roots started at our own kitchen table. When we began home learning with our
+                children, we had notebooks, printouts, spreadsheets, bookmarks and sticky notes everywhere.
+                Every evening went on working out what was next, what had been finished and where we&apos;d
+                written it down.
+              </p>
+              <p>
+                Somewhere along the way we noticed we were spending more time organising the learning than
+                actually being with our children: reading together, exploring, answering the endless
+                questions and learning alongside them. That wasn&apos;t why we chose home education.
+              </p>
+              <p>
+                So we built the tool we wished we&apos;d had. One calm place where the week is planned, the
+                children can see what they&apos;re doing, and every bit of progress is recorded without extra
+                effort. We use it with our own family, and we keep improving it based on what real home
+                learning families need.
+              </p>
+              <p className="font-semibold text-brand-charcoal">
+                Our hope is simple: less time on admin, more time together.
+              </p>
+            </div>
+            <figure className="mx-auto w-full max-w-[280px] overflow-hidden rounded-3xl border border-brand-line bg-brand-white shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/hero/our-family.jpg"
+                alt="The family behind Bright Roots, two parents and three children, smiling outdoors at sunset"
+                width={1200}
+                height={900}
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="px-4 py-3 text-xs leading-5 text-[#6E5A46]">
+                <span className="font-bold text-brand-charcoal">That&apos;s us.</span> Charlotte, Oscar and Max, with Rose and Lola in front.
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
