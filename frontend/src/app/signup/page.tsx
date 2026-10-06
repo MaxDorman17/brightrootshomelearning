@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { serif } from "@/lib/fonts";
 import { registerParent } from "@/lib/api";
 import { countEvent } from "@/components/VisitorStats";
 
@@ -49,37 +49,39 @@ export default function SignupPage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{
-        background:
-          "linear-gradient(135deg, #2F5D3A 0%, #6EA76E 55%, #A8C67A 100%)",
-      }}
-    >
-      <div className="w-full max-w-lg">
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/20 p-2 shadow-xl backdrop-blur-sm">
-            <Image
-              src="/logo.png"
-              alt="Bright Roots"
-              width={64}
-              height={64}
-              className="rounded-2xl"
-            />
-          </div>
-          <h1 className="text-4xl font-extrabold text-white">Start your free trial</h1>
-          <p className="mt-2 text-sm font-semibold text-white/80">
-            14 days free, then £5.99/month or £59/year.
+    // Extra room at the bottom on phones, so the button can be scrolled clear of the cookie notice.
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#F6EEDF] px-4 pb-44 pt-20 sm:py-12">
+      {/* The same warm room as the log-in page. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/hero/login-bg-2.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-[15%_50%] md:object-center" />
+      <div className="absolute inset-0 bg-[#FDFAF3]/45" />
+
+      <Link
+        href="/"
+        className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-[#FDFAF3]/90 px-4 py-2 text-sm font-bold text-[#2F5D3A] shadow-md shadow-[#6E5A46]/15 ring-1 ring-[#E4DCCD] backdrop-blur-sm transition-colors hover:bg-white sm:left-6 sm:top-6"
+      >
+        ← Back to home
+      </Link>
+
+      <div className="relative w-full max-w-lg">
+        <div className="mb-6 text-center">
+          <span className="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-[#FDFAF3] shadow-lg shadow-[#6E5A46]/15 ring-1 ring-[#E4DCCD]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/house-mark.png" alt="Bright Roots" className="h-14 w-auto" />
+          </span>
+          <h1 className={`${serif.className} text-4xl font-bold leading-tight text-[#2F5D3A]`}>Start your free trial</h1>
+          <p className="mt-2 text-sm font-semibold text-[#4A3B2C]">
+            14 days free, no card needed. Then £5.99 a month or £59 a year for the whole family.
           </p>
         </div>
 
-        <div className="rounded-3xl bg-white/95 p-8 shadow-2xl">
+        <div className="rounded-3xl bg-[#FDFAF3]/95 p-6 shadow-xl shadow-[#6E5A46]/20 ring-1 ring-[#E4DCCD] backdrop-blur-sm sm:p-8">
           {message ? (
             <div>
               <div className="rounded-2xl border border-green-200 bg-green-50 p-5 text-sm font-semibold text-green-800">
                 {message}
               </div>
-              <p className="mt-4 text-sm text-gray-600">
+              <p className="mt-4 text-sm text-[#6E5A46]">
                 Once your email is verified, sign in and Bright Roots will guide you through adding your first child and timetable.
               </p>
               <Link
@@ -92,7 +94,7 @@ export default function SignupPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-gray-700">
+                <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">
                   Parent email
                 </label>
                 <input
@@ -101,12 +103,12 @@ export default function SignupPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
+                  className="w-full rounded-xl border border-[#E4DCCD] bg-white px-4 py-3 font-medium outline-none focus:border-[#6EA76E]"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-gray-700">
+                <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">
                   Your name
                 </label>
                 <input
@@ -117,12 +119,12 @@ export default function SignupPage() {
                   placeholder="What should we call you?"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
+                  className="w-full rounded-xl border border-[#E4DCCD] bg-white px-4 py-3 font-medium outline-none focus:border-[#6EA76E]"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-gray-700">
+                <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">
                   Password
                 </label>
                 <input
@@ -132,12 +134,12 @@ export default function SignupPage() {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
+                  className="w-full rounded-xl border border-[#E4DCCD] bg-white px-4 py-3 font-medium outline-none focus:border-[#6EA76E]"
                 />
               </div>
 
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-gray-700">
+                <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">
                   Confirm password
                 </label>
                 <input
@@ -147,7 +149,7 @@ export default function SignupPage() {
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none focus:border-brand-leaf"
+                  className="w-full rounded-xl border border-[#E4DCCD] bg-white px-4 py-3 font-medium outline-none focus:border-[#6EA76E]"
                 />
               </div>
 
@@ -170,7 +172,7 @@ export default function SignupPage() {
                 {loading ? "Creating account..." : "Start 14-day free trial"}
               </button>
 
-              <p className="text-center text-xs text-gray-500">
+              <p className="text-center text-xs text-[#6E5A46]">
                 No card is taken at this step. By creating an account you agree to our{" "}
                 <Link href="/terms" className="underline hover:text-brand-sage">terms</Link> and{" "}
                 <Link href="/privacy" className="underline hover:text-brand-sage">privacy policy</Link>.
@@ -178,7 +180,7 @@ export default function SignupPage() {
             </form>
           )}
 
-          <div className="mt-6 border-t border-gray-200 pt-5 text-center text-sm text-gray-600">
+          <div className="mt-6 border-t border-[#E4DCCD] pt-5 text-center text-sm text-[#6E5A46]">
             Already a member?{" "}
             <Link href="/login" className="font-extrabold text-brand-sage hover:underline">
               Log in

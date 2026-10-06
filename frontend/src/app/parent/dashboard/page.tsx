@@ -285,10 +285,10 @@ export default function ParentDashboardPage() {
           <img src="/home/hero.jpg" alt="" className="absolute right-0 top-0 hidden h-full w-auto max-w-none sm:block" />
           {/* On phones the picture sits across the top instead */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/home/hero.jpg" alt="" className="h-36 w-full object-cover sm:hidden" />
+          <img src="/home/hero.jpg" alt="" className="h-20 w-full object-cover sm:hidden" />
           <div className="absolute inset-y-0 right-0 hidden w-[62%] bg-gradient-to-r from-[#FBF8F1] via-[#FBF8F1]/40 to-transparent sm:block" />
           <Sprig className="absolute -left-3 bottom-2 hidden h-28 w-auto opacity-80 md:block" />
-          <div className="relative flex min-h-[220px] flex-col justify-center gap-4 p-6 sm:max-w-[60%] sm:p-8 md:pl-14">
+          <div className="relative flex flex-col justify-center gap-3 p-5 sm:min-h-[220px] sm:max-w-[60%] sm:gap-4 sm:p-8 md:pl-14">
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6E5A46]">
               {mounted ? format(new Date(), "EEEE, d MMMM yyyy") : " "}
             </p>
@@ -316,11 +316,12 @@ export default function ParentDashboardPage() {
           </div>
         </section>
 
-        <HomeOverview />
-
+        {/* What needs doing today comes first, above the set-up list, so it is near the top on a phone. */}
         <ChildAddedCard entries={allEntries} kids={children} onChanged={() => setLogged((n) => n + 1)} />
 
         <LogTodayCard kids={children} onLogged={() => setLogged((n) => n + 1)} />
+
+        <HomeOverview />
 
         <HowIsItGoingCard name={parentName} />
 

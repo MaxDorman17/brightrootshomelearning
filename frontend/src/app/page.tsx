@@ -268,16 +268,17 @@ export default function HomePage() {
               <Sprig className="absolute -right-10 bottom-6 h-24 w-auto" flip />
               <div className="relative rotate-[-4deg] bg-white p-3 pb-4 shadow-xl shadow-[#6E5A46]/25">
                 <div className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-3 bg-[#E3CFA3]/80" />
-                <Art
-                  src="/home/story.jpg"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/hero/our-family.jpg"
+                  alt="The family behind Bright Roots, two parents and three children, smiling outdoors at sunset"
+                  width={1200}
+                  height={900}
+                  loading="lazy"
                   className="aspect-[4/3] w-full object-cover"
-                  fallback={
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src="/hero/story.jpg" alt="Children reading and drawing together" className="aspect-[4/3] w-full object-cover" />
-                  }
                 />
                 <p className={`${hand.className} mt-3 text-center text-xl leading-6`} style={{ color: C.earth }}>
-                  Learning looks different here, and that&apos;s a good thing ♡
+                  That&apos;s us. Learning looks different here ♡
                 </p>
               </div>
             </div>
@@ -593,7 +594,7 @@ export default function HomePage() {
             </div>
             <div className="grid overflow-hidden rounded-2xl bg-[#FFFDF8] sm:grid-cols-[1.2fr_1fr]" style={{ color: C.ink }}>
               <ul className="space-y-2.5 p-6 text-sm">
-                {["Unlimited child accounts", "Planner, timetable & lesson plans", "Reading, spellings & games", "Reports & council report", "Stars, rewards & badges"].map((t) => (
+                {["Every child included, up to 10", "Planner, timetable & lesson plans", "Reading, spellings & games", "Reports & council report", "Stars, rewards & badges"].map((t) => (
                   <li key={t} className="flex gap-3" style={{ color: C.earth }}>
                     <Check />
                     {t}
