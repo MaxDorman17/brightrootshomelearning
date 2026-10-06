@@ -117,7 +117,7 @@ export default function ChildrenPage() {
   };
 
   const handleRemove = async (id: number, name: string) => {
-    if (!confirm(`Remove ${name}'s account? This will delete all their data.`)) {
+    if (!confirm(`Remove ${name}'s account? This deletes everything of theirs for good: planned lessons, scores, reading, stars and photos. Lessons shared with your other children stay.`)) {
       return;
     }
 

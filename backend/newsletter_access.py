@@ -14,7 +14,13 @@ def admin_emails() -> set[str]:
 
 
 def is_admin(user: User) -> bool:
-    return user.role == "parent" and bool(user.email) and user.email.lower() in admin_emails()
+    # Only once the address is confirmed: otherwise anyone could sign up with an owner's email.
+    return (
+        user.role == "parent"
+        and bool(user.email)
+        and user.email_verified_at is not None
+        and user.email.lower() in admin_emails()
+    )
 
 
 def find_subscriber(db: Session, email: str):

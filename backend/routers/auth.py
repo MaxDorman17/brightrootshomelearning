@@ -20,6 +20,7 @@ from schemas import Token, UserOut, _parse_avatar
 from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken, CHILD_MIN_PASSWORD, PARENT_MIN_PASSWORD
 from config import settings
 import emails
+from email_validator import EmailNotValidError, validate_email
 from newsletter_access import is_admin, subscribe_member
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -82,6 +83,9 @@ RESET_WINDOW_SECONDS = 15 * 60
 MAX_RESET_REQUESTS_PER_IP = 5
 VERIFY_WINDOW_SECONDS = 15 * 60
 MAX_VERIFY_REQUESTS_PER_IP = 5
+# Each sign-up sends an email, so a program must not be able to make thousands of them.
+SIGNUP_WINDOW_SECONDS = 60 * 60
+MAX_SIGNUPS_PER_IP = 8
 
 _failed_by_account_ip = defaultdict(deque)
 _failed_by_ip = defaultdict(deque)
@@ -89,6 +93,7 @@ _failed_by_account = defaultdict(deque)
 _rate_limit_lock = Lock()
 _reset_requests_by_ip = defaultdict(deque)
 _verify_requests_by_ip = defaultdict(deque)
+_signups_by_ip = defaultdict(deque)
 
 
 def _client_ip(request: Request) -> str:
@@ -202,6 +207,37 @@ def _check_verify_rate_limit(client_ip: str) -> None:
         attempts.append(now)
 
 
+def _check_signup_rate_limit(client_ip: str) -> None:
+    now = monotonic()
+    with _rate_limit_lock:
+        attempts = _signups_by_ip[client_ip]
+        cutoff = now - SIGNUP_WINDOW_SECONDS
+        while attempts and attempts[0] <= cutoff:
+            attempts.popleft()
+
+        if len(attempts) >= MAX_SIGNUPS_PER_IP:
+            retry_after = max(1, int(SIGNUP_WINDOW_SECONDS - (now - attempts[0])))
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many new accounts from here in a short time. Please try again in an hour.",
+                headers={"Retry-After": str(retry_after)},
+            )
+
+        attempts.append(now)
+
+
+def _clean_email(raw: str) -> str:
+    """The address in lower case, or a 400 if it could not be a real one."""
+    email = (raw or "").strip().lower()
+    try:
+        if len(email) > 254:
+            raise EmailNotValidError("too long")
+        validate_email(email, check_deliverability=False)
+    except EmailNotValidError:
+        raise HTTPException(status_code=400, detail="That doesn't look like an email address. Please check it.")
+    return email
+
+
 def _create_email_verification_token(user: User) -> str:
     expires = datetime.utcnow() + timedelta(hours=24)
     payload = {
@@ -255,9 +291,10 @@ def _send_password_reset_email(email: str, token: str) -> None:
 @router.post("/register", status_code=201)
 def register(
     body: RegisterRequest,
+    request: Request,
     db: Session = Depends(get_db),
 ):
-    email = body.email.strip().lower()
+    email = _clean_email(body.email)
     username = body.username.strip()
 
     if len(username) < 2 or len(username) > 50:
@@ -265,6 +302,8 @@ def register(
 
     if len(body.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    _check_signup_rate_limit(_client_ip(request))
 
     # Grown-ups log in with their email address, so their name doesn't have to be unique.
     if login_name_taken(db, email):
@@ -338,8 +377,6 @@ def login(
         if account is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
     return Token(
-        access_token=token,
-        token_type="bearer",
         role=account.role,
         username=user.username,
         email_verified=(account.email_verified_at is not None),

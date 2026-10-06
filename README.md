@@ -88,4 +88,4 @@ survives redeploys, but the app folder is replaced each time, so never save file
 The live database holds real family data. Schema changes run as startup migrations in `backend/main.py`: keep
 them additive, back up the database first (`backup_sqlite_database`), and test them on a copy.
 
-The `deploy/` folder and `setup.sql` are from an older self-managed setup and are not used by the live site.
+`setup.sql` is from an older self-managed setup and is not used by the live site. The old `deploy/` scripts from that setup have been removed: they left settings out that the live site needs.

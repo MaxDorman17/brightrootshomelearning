@@ -14,8 +14,7 @@ from datetime import date, datetime
 
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    """What the page is told after a login. The login pass itself travels only in the protected cookie."""
     role: str
     username: str
     email_verified: bool = True

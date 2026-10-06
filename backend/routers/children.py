@@ -4,8 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from pydantic import BaseModel
+from data_removal import delete_rows, linked_rows, remove_files, uploaded_files
 from database import get_db
-from models import ChildTimetable, User
+from models import User
 from schemas import ChildCreate, ChildOut
 from auth import require_parent, hash_password, clean_login_name, login_name_taken, suggest_login_names, CHILD_MIN_PASSWORD
 
@@ -173,10 +174,14 @@ def remove_child(
     child = db.query(User).filter(User.id == child_id, User.parent_id == current_user.id).first()
     if not child:
         raise HTTPException(status_code=404, detail="Child not found")
-    # Their own timetable, if they had one, goes with them.
-    db.query(ChildTimetable).filter(ChildTimetable.child_id == child.id).delete(synchronize_session=False)
-    db.delete(child)
+    # Everything of theirs goes with them: planned lessons, scores, reading, stars, photos, their timetable.
+    # Lessons shared by all the children stay, and so does the family's own lesson library.
+    rows = linked_rows(db, {"users": {child.id}})
+    files = uploaded_files(rows)
+    db.expunge(child)
+    delete_rows(db, rows)
     db.commit()
+    remove_files(files)
 
 
 @router.post("/{child_id}/reset-password")

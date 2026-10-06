@@ -401,7 +401,7 @@ export default function MyLessonsPage() {
   }
 
   const removeLesson = async (l: LibraryLesson) => {
-    if (!confirm(`Delete "${l.title}" from your library?`)) return;
+    if (!confirm(`Delete "${l.title}" from your library? It comes out of the planner too. Any scores you gave it stay in Results.`)) return;
     await deleteLesson(l.id);
     load();
   };

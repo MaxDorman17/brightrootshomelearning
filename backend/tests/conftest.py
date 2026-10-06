@@ -31,9 +31,16 @@ for name in ("RESEND_API_KEY", "RESEND_FROM_EMAIL", "STRIPE_SECRET_KEY", "STRIPE
 
 from fastapi.testclient import TestClient  # noqa: E402
 
+import email_validator  # noqa: E402
+
 import main  # noqa: E402
+import routers.auth as auth_routes  # noqa: E402
 from database import SessionLocal  # noqa: E402
 from models import User  # noqa: E402
+
+# The made-up families here use @example.test addresses and all sign up from one place.
+email_validator.TEST_ENVIRONMENT = True
+auth_routes.MAX_SIGNUPS_PER_IP = 10**6
 
 PASSWORD = "test-" + secrets.token_urlsafe(9)
 _counter = itertools.count(1)
@@ -53,8 +60,12 @@ def login(identifier: str, password: str = PASSWORD) -> TestClient:
     client = new_client()
     response = client.post("/api/auth/login", data={"username": identifier, "password": password})
     assert response.status_code == 200, response.text
-    client.cookies.clear()  # the cookie is HTTPS-only, so tests use the token instead
-    client.headers["Authorization"] = "Bearer " + response.json()["access_token"]
+    # The cookie is HTTPS-only and the test client talks plain HTTP, so its value is sent as a header instead.
+    token = response.cookies.get("brightroots_session")
+    assert token, "the login should set the session cookie"
+    assert "access_token" not in response.json()
+    client.cookies.clear()
+    client.headers["Authorization"] = "Bearer " + token
     return client
 
 

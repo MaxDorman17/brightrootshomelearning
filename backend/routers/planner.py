@@ -4,6 +4,7 @@ from sqlalchemy import or_, and_, exists as sa_exists, select
 from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
+from data_removal import delete_rows, linked_rows
 from database import get_db
 from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig, TestResult, ChildTimetable
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
@@ -1042,7 +1043,8 @@ def delete_entry(
     entry = _entry_for_parent(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
-    # Scores given to this lesson stay in Results, no longer tied to a planner slot.
-    db.query(TestResult).filter(TestResult.entry_id == entry.id).update({TestResult.entry_id: None}, synchronize_session=False)
-    db.delete(entry)
+    # Ticks and handed-in work go with the slot. Scores given to it stay in Results.
+    rows = linked_rows(db, {"planner_entries": {entry.id}})
+    db.expunge(entry)
+    delete_rows(db, rows)
     db.commit()

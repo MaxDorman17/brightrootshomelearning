@@ -17,12 +17,20 @@ SESSION_COOKIE_NAME = "brightroots_session"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
 
 
+def _password_bytes(password: str) -> bytes:
+    # bcrypt only ever reads the first 72 bytes, and newer versions refuse anything longer outright.
+    return password.encode()[:72]
+
+
 def hash_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    return bcrypt.hashpw(_password_bytes(password), bcrypt.gensalt()).decode()
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return bcrypt.checkpw(plain.encode(), hashed.encode())
+    try:
+        return bcrypt.checkpw(_password_bytes(plain), hashed.encode())
+    except ValueError:
+        return False
 
 
 PARENT_MIN_PASSWORD = 8
@@ -111,7 +119,8 @@ def get_login_user(
     try:
         payload = jwt.decode(auth_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id: int = payload.get("sub")
-        if user_id is None:
+        # The links we email (confirm your address, reset your password) are for that one job only.
+        if user_id is None or payload.get("purpose"):
             raise credentials_exception
     except JWTError:
         raise credentials_exception
