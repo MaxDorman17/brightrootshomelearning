@@ -323,6 +323,8 @@ class TestResult(Base):
     id = Column(Integer, primary_key=True, index=True)
     child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    # Set when this is the score for a planned lesson, rather than a separate test.
+    entry_id = Column(Integer, nullable=True, index=True)
     subject = Column(String(100), nullable=False)
     title = Column(String(255), nullable=False)
     taken_on = Column(Date, nullable=False)

@@ -8,11 +8,12 @@ import {
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
   getTimetable, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
-  getOakQuizResults, getWeekQuizScores,
+  getOakQuizResults, getWeekQuizScores, getLessonScores,
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
+import LessonScoreBox from "@/components/LessonScoreBox";
 import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
-import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores } from "@/types";
+import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
 import StarterWeekCard from "@/components/StarterWeekCard";
 import HolidayImporter, { type HolidayRange } from "@/components/HolidayImporter";
@@ -229,6 +230,7 @@ export default function ParentPlanner() {
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
   const [quizLoading, setQuizLoading] = useState(true);
+  const [lessonScores, setLessonScores] = useState<LessonScore[]>([]);
 
   const weekStartStr = format(weekStart, "yyyy-MM-dd");
   const weekEndStr = format(addDays(weekStart, 4), "yyyy-MM-dd");
@@ -244,6 +246,19 @@ export default function ParentPlanner() {
     } catch { /* non-fatal */ }
     finally { setQuizLoading(false); }
   }, [weekStartStr, selectedChildId]);
+
+  const loadLessonScores = useCallback(async () => {
+    try {
+      const res = await getLessonScores({ start_date: weekStartStr, end_date: weekEndStr });
+      setLessonScores(res.data);
+    } catch { /* non-fatal */ }
+  }, [weekStartStr, weekEndStr]);
+
+  useEffect(() => { loadLessonScores(); }, [loadLessonScores]);
+
+  // The scores to show on a lesson: one child's when a child is picked, otherwise everyone's.
+  const scoresFor = (entryId: number) =>
+    lessonScores.filter(s => s.entry_id === entryId && (!selectedChildId || s.child_id === selectedChildId));
 
   const loadData = useCallback(async () => {
     const [entriesRes, allEntriesRes, daysOffRes] = await Promise.all([
@@ -1147,6 +1162,12 @@ export default function ParentPlanner() {
                                       Work submitted
                                     </span>
                                   )}
+                                  {scoresFor(entry.id).map(s => (
+                                    <span key={s.id} className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                      {!entry.assigned_to && children.length > 1 ? `${children.find(c => c.id === s.child_id)?.username ?? "Child"}: ` : "Score "}
+                                      {s.score}/{s.total}
+                                    </span>
+                                  ))}
                                 </div>
 
                                 {quizResult && (
@@ -1288,6 +1309,12 @@ export default function ParentPlanner() {
                                           Work submitted
                                         </span>
                                       )}
+                                      {scoresFor(entry.id).map(s => (
+                                        <span key={s.id} className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                          {!entry.assigned_to && children.length > 1 ? `${children.find(c => c.id === s.child_id)?.username ?? "Child"}: ` : "Score "}
+                                          {s.score}/{s.total}
+                                        </span>
+                                      ))}
                                     </div>
 
                                     {result && (
@@ -1756,6 +1783,32 @@ export default function ParentPlanner() {
                   className="w-full bg-brand-white border border-brand-softsage/30 rounded-xl px-3 py-2.5 text-sm text-brand-charcoal focus:outline-none focus:border-brand-sage resize-none"
                 />
               </div>
+
+              {modal.existingEntry && children.length > 0 && (() => {
+                const scored = modal.existingEntry;
+                const who = scored.assigned_to ? children.filter(c => c.id === scored.assigned_to) : children;
+                return (
+                  <div>
+                    <label className="block text-sm font-bold text-brand-charcoal mb-1.5">
+                      Score
+                      <span className="font-medium text-brand-earth/45"> optional</span>
+                    </label>
+                    <div className="space-y-2">
+                      {who.map(c => (
+                        <LessonScoreBox
+                          key={c.id}
+                          entryId={scored.id}
+                          childId={c.id}
+                          childName={who.length > 1 ? c.username : undefined}
+                          score={lessonScores.find(s => s.entry_id === scored.id && s.child_id === c.id)}
+                          onChanged={loadLessonScores}
+                        />
+                      ))}
+                    </div>
+                    <p className="mt-1 text-xs text-brand-earth/55">For a quiz, worksheet or test from any scheme. It counts in Results and reports.</p>
+                  </div>
+                );
+              })()}
 
               {children.length > 0 && (
                 <div>

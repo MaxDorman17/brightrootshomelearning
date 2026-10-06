@@ -19,13 +19,14 @@ router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 
 UK = ZoneInfo("Europe/London")
 
-RULE_KINDS = {"lesson", "oak", "oak_starter", "spelling", "book", "game"}
+RULE_KINDS = {"lesson", "oak", "oak_starter", "score", "spelling", "book", "game"}
 GAMES_PER_DAY_CAP = 3  # stars for at most this many games a day, so they can't be farmed
-KINDS_WITH_THRESHOLD = {"oak", "oak_starter", "spelling"}
+KINDS_WITH_THRESHOLD = {"oak", "oak_starter", "score", "spelling"}
 
 DEFAULT_RULES = [
     {"kind": "lesson", "threshold_pct": None, "stars": 1},
     {"kind": "oak", "threshold_pct": 80, "stars": 3},
+    {"kind": "score", "threshold_pct": 80, "stars": 3},
     {"kind": "spelling", "threshold_pct": 90, "stars": 5},
     {"kind": "book", "threshold_pct": None, "stars": 5},
 ]
@@ -152,6 +153,8 @@ def _rule_label(rule: RewardRule) -> str:
         return f"Score {rule.threshold_pct or 0}% or more on an Oak exit quiz"
     if rule.kind == "oak_starter":
         return f"Score {rule.threshold_pct or 0}% or more on an Oak starter quiz"
+    if rule.kind == "score":
+        return f"Score {rule.threshold_pct or 0}% or more on a lesson or test you mark"
     if rule.kind == "spelling":
         return f"Score {rule.threshold_pct or 0}% or more on a spelling test"
     if rule.kind == "game":
@@ -176,6 +179,7 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
     lessons = activity.lesson_completions(db, child, parent_id) if "lesson" in kinds else []
     quizzes = activity.oak_scores(db, child, parent_id) if "oak" in kinds else []
     starters = activity.oak_starter_scores(db, child, parent_id) if "oak_starter" in kinds else []
+    marked = activity.test_scores(db, child, parent_id) if "score" in kinds else []
     spellings = activity.spelling_scores(db, child, parent_id) if "spelling" in kinds else []
     books = activity.books_finished(db, child, parent_id) if "book" in kinds else []
     games = sorted(activity.games_played(db, child, parent_id)) if "game" in kinds else []
@@ -194,6 +198,10 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
             for when, score, title in starters:
                 if in_window(rule, when) and score >= threshold:
                     events.append({"when": when, "stars": rule.stars, "reason": f"Oak starter quiz {round(score)}%: {title}"})
+        elif rule.kind == "score":
+            for when, score, title in marked:
+                if in_window(rule, when) and score >= threshold:
+                    events.append({"when": when, "stars": rule.stars, "reason": f"Scored {round(score)}%: {title}"})
         elif rule.kind == "spelling":
             for when, score, label in spellings:
                 if in_window(rule, when) and score >= threshold:

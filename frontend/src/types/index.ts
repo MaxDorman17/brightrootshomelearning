@@ -26,6 +26,15 @@ export interface PlannerEntry {
   lesson: Lesson;
 }
 
+/** A score a parent has given a planned lesson. */
+export interface LessonScore {
+  id: number;
+  entry_id: number;
+  child_id: number;
+  score: number;
+  total: number;
+}
+
 export interface OakQuizResult {
   url: string;
   starter_score: number | null;

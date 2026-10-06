@@ -168,7 +168,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
         <div className="brand-card p-6 text-center text-sm text-[#6E5A46]">
           {forChild
             ? "No test results yet. Your spelling tests and quiz scores will show up here."
-            : "No results yet. Spelling tests and Oak quiz scores appear here automatically, and you can add any other test yourself."}
+            : "No results yet. Spelling tests and Oak quiz scores appear here automatically. Scores you give lessons in the planner show here too, and you can add any other test yourself."}
         </div>
       )}
 
@@ -323,7 +323,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
       )}
 
       {data.tests.length > 0 && (
-        <Card title={forChild ? "Other tests" : "Your own tests"}>
+        <Card title={forChild ? "Lesson scores and other tests" : "Lesson scores and your own tests"}>
           <div className="divide-y divide-brand-line">
             {data.tests.map((t) => (
               <div key={t.id} className="flex flex-wrap items-center justify-between gap-3 py-3">

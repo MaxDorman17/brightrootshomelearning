@@ -9,6 +9,7 @@ import {
   getChildren,
   getSpellingResults,
   getTodayOakQuizResults,
+  getLessonScores,
   getTimetable,
   getWeekEntries,
   getWeekQuizScores,
@@ -18,7 +19,7 @@ import {
   getRole,
   getUsername,
 } from "@/lib/auth";
-import { PlannerEntry, ReadingLogBook, WeekQuizScores } from "@/types";
+import { PlannerEntry, ReadingLogBook, WeekQuizScores, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
 import HomeOverview from "@/components/HomeOverview";
 import AppCard from "@/components/AppCard";
@@ -76,6 +77,7 @@ export default function ParentDashboardPage() {
   const [books, setBooks] = useState<ReadingLogBook[]>([]);
   const [todayQuiz, setTodayQuiz] = useState<TodayQuizRow[]>([]);
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
+  const [lessonScores, setLessonScores] = useState<LessonScore[]>([]);
   const [spellingResults, setSpellingResults] = useState<SpellingResult[]>([]);
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
 
@@ -105,6 +107,13 @@ export default function ParentDashboardPage() {
       .then((res) => setTimetable(res.data.config ?? {}))
       .catch(() => {});
   }, [router]);
+
+  useEffect(() => {
+    if (!isAuthenticated() || getRole() !== "parent") return;
+    getLessonScores({ start_date: weekStartStr, end_date: weekEndStr })
+      .then((res) => setLessonScores(res.data))
+      .catch(() => {});
+  }, [weekStartStr, weekEndStr]);
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") return;
@@ -213,11 +222,21 @@ export default function ParentDashboardPage() {
       )
     : todayQuiz;
 
+  // Scores the parent typed in for this week's lessons count alongside Oak quiz scores.
+  const markedScores = lessonScores.filter(
+    (s) => !selectedChildId || s.child_id === selectedChildId
+  );
+  const markedPossible = markedScores.reduce((sum, s) => sum + s.total, 0);
+  const markedScore = markedScores.reduce((sum, s) => sum + s.score, 0);
+
+  const onlyOak =
+    (weekQuizScores?.grand_total_possible ?? 0) > 0 && markedPossible === 0;
+
   const oakPossible =
-    weekQuizScores?.grand_total_possible ?? 0;
+    (weekQuizScores?.grand_total_possible ?? 0) + markedPossible;
 
   const oakScore =
-    weekQuizScores?.grand_total_score ?? 0;
+    (weekQuizScores?.grand_total_score ?? 0) + markedScore;
 
   const oakPercent =
     oakPossible > 0
@@ -326,7 +345,7 @@ export default function ParentDashboardPage() {
           <DashboardStat
             art="/home/learn.png"
             tint="#E3EAF0"
-            label={oakPossible > 0 ? "Oak Results" : "Quiz Results"}
+            label={onlyOak ? "Oak Results" : "Quiz Results"}
             value={
               loading
                 ? "..."

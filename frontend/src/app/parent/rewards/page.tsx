@@ -40,11 +40,12 @@ const KIND_LABELS: Record<string, string> = {
   lesson: "Complete a lesson",
   oak: "Oak exit quiz score",
   oak_starter: "Oak starter quiz score",
+  score: "A lesson or test score you mark",
   spelling: "Spelling test score",
   book: "Finish a book",
   game: "Play a learning game (up to 3 a day)",
 };
-const HAS_THRESHOLD = new Set(["oak", "oak_starter", "spelling"]);
+const HAS_THRESHOLD = new Set(["oak", "oak_starter", "score", "spelling"]);
 
 const inputClass =
   "rounded-xl border border-[#D9D1C4] bg-white px-3 py-2 text-sm text-brand-charcoal outline-none focus:border-brand-softsage";

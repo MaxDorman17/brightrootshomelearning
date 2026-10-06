@@ -50,6 +50,7 @@ def _test_out(r: TestResult) -> dict:
     return {
         "id": r.id,
         "child_id": r.child_id,
+        "entry_id": r.entry_id,
         "subject": r.subject,
         "title": r.title,
         "taken_on": r.taken_on.isoformat(),
@@ -180,6 +181,109 @@ def results_overview(
         "oak": _oak_results_for_child(db, child, parent_id),
         "tests": [_test_out(r) for r in own_tests],
     }
+
+
+class LessonScoreIn(BaseModel):
+    child_id: int
+    score: float
+    total: float
+
+    @field_validator("total")
+    @classmethod
+    def total_positive(cls, value: float) -> float:
+        if value <= 0:
+            raise ValueError("Total must be more than 0")
+        return value
+
+    @field_validator("score")
+    @classmethod
+    def score_not_negative(cls, value: float) -> float:
+        if value < 0:
+            raise ValueError("Score can't be negative")
+        return value
+
+
+def _own_entry(db: Session, parent: User, entry_id: int, child_id: int) -> tuple[PlannerEntry, Lesson]:
+    """A planned lesson of this family's that this child does (their own, or one shared by all children)."""
+    _own_child(db, parent, child_id)
+    row = (
+        db.query(PlannerEntry, Lesson)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(PlannerEntry.id == entry_id, Lesson.created_by == parent.id)
+        .first()
+    )
+    if not row or row[0].assigned_to not in (None, child_id):
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    return row
+
+
+@router.get("/lesson-scores")
+def lesson_scores(
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """The scores a parent has given planned lessons. Parents see the family's; a child sees their own."""
+    query = db.query(TestResult).filter(TestResult.entry_id.is_not(None))
+    if current_user.role == "parent":
+        query = query.filter(TestResult.parent_id == current_user.id)
+    else:
+        query = query.filter(TestResult.child_id == current_user.id)
+    if start_date:
+        query = query.filter(TestResult.taken_on >= start_date)
+    if end_date:
+        query = query.filter(TestResult.taken_on <= end_date)
+    return [
+        {"id": r.id, "entry_id": r.entry_id, "child_id": r.child_id, "score": r.score, "total": r.total}
+        for r in query.all()
+    ]
+
+
+@router.put("/lesson/{entry_id}")
+def set_lesson_score(
+    entry_id: int,
+    body: LessonScoreIn,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    """Give a planned lesson a score, for any scheme. It then counts like any other test result."""
+    entry, lesson = _own_entry(db, current_user, entry_id, body.child_id)
+    if body.score > body.total:
+        raise HTTPException(status_code=400, detail="The score can't be more than the total")
+    result = db.query(TestResult).filter(
+        TestResult.entry_id == entry_id,
+        TestResult.child_id == body.child_id,
+        TestResult.parent_id == current_user.id,
+    ).first()
+    if result:
+        result.updated_at = datetime.utcnow()
+    else:
+        result = TestResult(child_id=body.child_id, parent_id=current_user.id, entry_id=entry_id)
+        db.add(result)
+    result.subject = lesson.subject
+    result.title = lesson.title
+    result.taken_on = entry.scheduled_date
+    result.score = body.score
+    result.total = body.total
+    db.commit()
+    db.refresh(result)
+    return _test_out(result)
+
+
+@router.delete("/lesson/{entry_id}", status_code=204)
+def clear_lesson_score(
+    entry_id: int,
+    child_id: int = Query(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_parent),
+):
+    db.query(TestResult).filter(
+        TestResult.entry_id == entry_id,
+        TestResult.child_id == child_id,
+        TestResult.parent_id == current_user.id,
+    ).delete(synchronize_session=False)
+    db.commit()
 
 
 @router.post("/", status_code=201)

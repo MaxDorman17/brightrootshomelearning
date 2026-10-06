@@ -15,8 +15,8 @@ from schemas import _parse_avatar
 
 router = APIRouter(prefix="/api/family", tags=["family"])
 
-CHALLENGE_KINDS = {"lessons", "spelling", "oak", "books", "stars", "custom"}
-KINDS_WITH_THRESHOLD = {"spelling", "oak"}
+CHALLENGE_KINDS = {"lessons", "spelling", "oak", "score", "books", "stars", "custom"}
+KINDS_WITH_THRESHOLD = {"spelling", "oak", "score"}
 RECENTLY_ENDED_DAYS = 14
 
 
@@ -112,6 +112,8 @@ class _ActivityCache:
             return activity.spelling_scores(db, child, parent_id)
         if name == "oak":
             return activity.oak_scores(db, child, parent_id)
+        if name == "score":
+            return activity.test_scores(db, child, parent_id)
         if name == "books":
             return activity.books_finished(db, child, parent_id)
         if name == "stars":
@@ -136,6 +138,8 @@ def _events_for(challenge: Challenge, child: User, cache: _ActivityCache) -> lis
         raw = [(when, 1) for when, score, _ in cache.get("spelling", child) if score >= threshold]
     elif kind == "oak":
         raw = [(when, 1) for when, score, _ in cache.get("oak", child) if score >= threshold]
+    elif kind == "score":
+        raw = [(when, 1) for when, score, _ in cache.get("score", child) if score >= threshold]
     elif kind == "books":
         raw = [(datetime.combine(d, datetime.min.time()), 1) for d, _ in cache.get("books", child)]
     elif kind == "stars":

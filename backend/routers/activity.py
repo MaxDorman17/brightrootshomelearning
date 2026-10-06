@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from models import GameScore, Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, User
+from models import GameScore, Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, TestResult, User
 from routers.test_results import _oak_results_for_child
 
 
@@ -87,6 +87,20 @@ def spelling_scores(db: Session, child: User, parent_id: int) -> list[tuple[date
         score = pct(t.score, t.total)
         if t.taken_at and score is not None:
             out.append((naive(t.taken_at), score, f"{t.score}/{t.total}"))
+    return out
+
+
+def test_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime, float, str]]:
+    """(recorded at, %, title) for every score the parent has entered: lesson scores and the family's own tests."""
+    out = []
+    for t in (
+        db.query(TestResult)
+        .filter(TestResult.child_id == child.id, TestResult.parent_id == parent_id)
+        .all()
+    ):
+        score = pct(t.score, t.total)
+        if t.created_at and score is not None:
+            out.append((naive(t.created_at), score, t.title))
     return out
 
 

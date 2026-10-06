@@ -59,6 +59,7 @@ const KIND_OPTIONS: { kind: string; label: string; unit: string }[] = [
   { kind: "lessons", label: "Complete lessons", unit: "lessons" },
   { kind: "spelling", label: "Spelling tests at a score", unit: "tests" },
   { kind: "oak", label: "Oak quizzes at a score", unit: "quizzes" },
+  { kind: "score", label: "Lessons or tests you mark, at a score", unit: "scores" },
   { kind: "books", label: "Finish books", unit: "books" },
   { kind: "stars", label: "Earn stars", unit: "stars" },
   { kind: "custom", label: "Something else (you tick it off)", unit: "times" },
@@ -120,7 +121,7 @@ function NewChallengeForm({ today, onDone }: { today: string; onDone: () => void
         title: title.trim() || `${KIND_OPTIONS.find((k) => k.kind === kind)?.label}: ${target}`,
         kind,
         target: Number(target),
-        threshold_pct: kind === "spelling" || kind === "oak" ? Number(threshold) : null,
+        threshold_pct: kind === "spelling" || kind === "oak" || kind === "score" ? Number(threshold) : null,
         mode,
         start_date: start,
         end_date: end,
@@ -153,7 +154,7 @@ function NewChallengeForm({ today, onDone }: { today: string; onDone: () => void
           <input type="number" min={1} value={target} onChange={(e) => setTarget(e.target.value)} className={input + " w-20"} />
           {unitFor(kind)}
         </label>
-        {(kind === "spelling" || kind === "oak") && (
+        {(kind === "spelling" || kind === "oak" || kind === "score") && (
           <label className="flex items-center gap-1.5">
             at
             <input type="number" min={0} max={100} value={threshold} onChange={(e) => setThreshold(e.target.value)} className={input + " w-16"} />

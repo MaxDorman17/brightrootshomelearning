@@ -5,7 +5,7 @@ from typing import List, Optional
 from datetime import date, timedelta, datetime
 import json
 from database import get_db
-from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig
+from models import PlannerEntry, Lesson, User, WorkFeedback, WorkReview, PlannerCompletion, DayOff, TimetableConfig, TestResult
 from schemas import PlannerEntryCreate, PlannerEntryUpdate, PlannerEntryOut, LessonOut
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE, fetch_and_store_share_result
@@ -827,5 +827,7 @@ def delete_entry(
     entry = _entry_for_parent(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
+    # Scores given to this lesson stay in Results, no longer tied to a planner slot.
+    db.query(TestResult).filter(TestResult.entry_id == entry.id).update({TestResult.entry_id: None}, synchronize_session=False)
     db.delete(entry)
     db.commit()

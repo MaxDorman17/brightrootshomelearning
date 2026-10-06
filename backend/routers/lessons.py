@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
-from models import Lesson, User
+from models import Lesson, PlannerEntry, TestResult, User
 from schemas import LessonCreate, LessonUpdate, LessonOut
 from auth import require_parent, get_current_user
 
@@ -111,5 +111,9 @@ def delete_lesson(
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id, Lesson.created_by == current_user.id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+    # Scores given to this lesson stay in Results, no longer tied to a planner slot.
+    entry_ids = [row.id for row in db.query(PlannerEntry.id).filter(PlannerEntry.lesson_id == lesson.id).all()]
+    if entry_ids:
+        db.query(TestResult).filter(TestResult.entry_id.in_(entry_ids)).update({TestResult.entry_id: None}, synchronize_session=False)
     db.delete(lesson)
     db.commit()

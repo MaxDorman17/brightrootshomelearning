@@ -404,6 +404,13 @@ export const getWeekQuizScores = (startDate: string, endDate: string, childId?: 
   api.get("/api/oak/week-scores", {
     params: { start_date: startDate, end_date: endDate, ...(childId ? { child_id: childId } : {}) },
   });
+// Scores a parent gives a planned lesson, whichever scheme it comes from
+export const getLessonScores = (params?: { start_date?: string; end_date?: string }) =>
+  api.get("/api/test-results/lesson-scores", { params });
+export const setLessonScore = (entryId: number, body: { child_id: number; score: number; total: number }) =>
+  api.put(`/api/test-results/lesson/${entryId}`, body);
+export const clearLessonScore = (entryId: number, childId: number) =>
+  api.delete(`/api/test-results/lesson/${entryId}`, { params: { child_id: childId } });
 export const checkOakWorksheet = (lesson_url: string) =>
   api.get("/api/oak/has-worksheet", { params: { lesson_url } });
 

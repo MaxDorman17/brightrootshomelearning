@@ -108,6 +108,13 @@ def run_migrations():
                 if column_name not in existing_cols:
                     conn.execute(text(statement))
             conn.commit()
+    if "test_results" in tables:
+        existing_cols = [c["name"] for c in insp.get_columns("test_results")]
+        if "entry_id" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE test_results ADD COLUMN entry_id INTEGER"))
+                conn.execute(text("CREATE INDEX IF NOT EXISTS ix_test_results_entry_id ON test_results (entry_id)"))
+                conn.commit()
     if "reading_worksheets" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("reading_worksheets")]
         if "completed_at" not in existing_cols:

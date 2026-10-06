@@ -12,9 +12,11 @@ import {
   markEntryReviewed,
   markEntryUnreviewed,
   getOakQuizResults,
+  getLessonScores,
   refreshOakQuizResults,
 } from "@/lib/api";
-import { PlannerEntry, WorkFeedback, Child, OakQuizResult } from "@/types";
+import { PlannerEntry, WorkFeedback, Child, OakQuizResult, LessonScore } from "@/types";
+import LessonScoreBox from "@/components/LessonScoreBox";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { format, parseISO } from "date-fns";
@@ -76,6 +78,13 @@ export default function ProgressPage() {
   const [detailsOpen, setDetailsOpen] = useState<number | null>(null);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [checkingScores, setCheckingScores] = useState(false);
+  // Scores the parent has typed in for lessons, from any scheme.
+  const [lessonScores, setLessonScores] = useState<LessonScore[]>([]);
+  const loadLessonScores = () =>
+    getLessonScores()
+      .then(res => setLessonScores(res.data))
+      .catch(() => {});
+  useEffect(() => { loadLessonScores(); }, []);
 
   const loadQuizResults = () =>
     getOakQuizResults()
@@ -508,8 +517,8 @@ export default function ProgressPage() {
                                 </Fact>
                               </dl>
 
-                              <div className="mt-4">
-                                <p className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">Quiz scores</p>
+                              <div className={hasStarter || hasExit || shareUrl ? "mt-4" : "hidden"}>
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">Oak quiz scores</p>
                                 {hasStarter || hasExit ? (
                                   <div className="mt-1.5 flex flex-wrap gap-2">
                                     {hasStarter && (
@@ -530,13 +539,26 @@ export default function ProgressPage() {
                                       {checkingScores ? "Checking..." : "Check now"}
                                     </button>
                                   </p>
-                                ) : (
-                                  <p className="mt-1 text-sm text-[#6E5A46]">
-                                    {entry.completed_work_url
-                                      ? "No quiz scores for this one. Scores appear when the work handed in is an Oak results link."
-                                      : "No quiz scores, because no work has been handed in for this lesson."}
-                                  </p>
-                                )}
+                                ) : null}
+                              </div>
+
+                              <div className="mt-4">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-[#8A7A69]">Your score for this lesson</p>
+                                <div className="mt-1.5 space-y-2">
+                                  {(entry.assigned_to ? children.filter(c => c.id === entry.assigned_to) : children).map((c, _, who) => (
+                                    <LessonScoreBox
+                                      key={c.id}
+                                      entryId={entry.id}
+                                      childId={c.id}
+                                      childName={who.length > 1 ? c.username : undefined}
+                                      score={lessonScores.find(s => s.entry_id === entry.id && s.child_id === c.id)}
+                                      onChanged={loadLessonScores}
+                                    />
+                                  ))}
+                                </div>
+                                <p className="mt-1 text-xs text-[#8A7A69]">
+                                  Type in a mark for any quiz, worksheet or test. Oak quiz scores are collected for you when an Oak results link is handed in.
+                                </p>
                               </div>
 
                               {(entry.lesson.objectives || entry.lesson.description) && (
