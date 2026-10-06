@@ -27,6 +27,7 @@ import { FamilyStarJars } from "@/components/StarJarCards";
 import { ParentNotesCard } from "@/components/FamilyNotes";
 import LogTodayCard from "@/components/LogTodayCard";
 import HowIsItGoingCard from "@/components/HowIsItGoingCard";
+import ChildAddedCard from "@/components/ChildAddedCard";
 import { useMounted } from "@/lib/useMounted";
 import { STORE_OPEN, useStoreVisible } from "@/lib/store";
 import { Sprig } from "@/components/Decor";
@@ -153,7 +154,8 @@ export default function ParentDashboardPage() {
           weekQuizRes,
           spellingRes,
         ]) => {
-          setWeekEntries(weekRes.data);
+          // Things a child added that are still waiting for an OK aren't part of the week's lessons yet.
+          setWeekEntries((weekRes.data as PlannerEntry[]).filter((e) => !(e.added_by_child && !e.is_complete)));
           setAllEntries(allRes.data);
           setBooks(booksRes.data);
           setTodayQuiz(quizRes.data);
@@ -174,15 +176,17 @@ export default function ParentDashboardPage() {
   const todayDayName = format(new Date(), "EEEE");
   const todaySubjects = timetable[todayDayName] ?? [];
 
-  const todayEntries = todaySubjects
-    .map((subject) =>
-      weekEntries.find(
-        (entry) =>
-          entry.scheduled_date === todayStr &&
-          entry.lesson.subject === subject
-      )
-    )
-    .filter((entry): entry is PlannerEntry => Boolean(entry));
+  // Everything on today, in timetable order, then anything else (such as things logged after the fact).
+  const todayEntries = weekEntries
+    .filter((entry) => entry.scheduled_date === todayStr && !entry.is_extra)
+    .sort((a, b) => {
+      const ai = todaySubjects.indexOf(a.lesson.subject);
+      const bi = todaySubjects.indexOf(b.lesson.subject);
+      if (ai === -1 && bi === -1) return a.id - b.id;
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi || a.id - b.id;
+    });
 
   const todayComplete = todayEntries.filter(
     (entry) => entry.is_complete
@@ -313,6 +317,8 @@ export default function ParentDashboardPage() {
         </section>
 
         <HomeOverview />
+
+        <ChildAddedCard entries={allEntries} kids={children} onChanged={() => setLogged((n) => n + 1)} />
 
         <LogTodayCard kids={children} onLogged={() => setLogged((n) => n + 1)} />
 

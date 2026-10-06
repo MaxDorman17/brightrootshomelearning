@@ -42,6 +42,13 @@ class LogLearning(BaseModel):
 
 MAX_LOG_DAYS_BACK = 60
 MAX_REPEAT_WEEKS = 26
+MAX_WAITING_PER_CHILD = 5  # "I did this" notes a child can have waiting for a grown-up at once
+
+
+class ChildDidIt(BaseModel):
+    title: str
+    subject: Optional[str] = None
+    note: Optional[str] = None
 
 
 class RepeatEntry(BaseModel):
@@ -77,7 +84,7 @@ def _to_out(e: PlannerEntry) -> PlannerEntryOut:
         id=e.id, lesson_id=e.lesson_id, assigned_to=e.assigned_to,
         scheduled_date=e.scheduled_date, is_complete=e.is_complete,
         completed_at=e.completed_at, completed_work_url=e.completed_work_url,
-        completed_note=e.completed_note, is_extra=bool(e.is_extra),
+        completed_note=e.completed_note, is_extra=bool(e.is_extra), added_by_child=bool(e.added_by_child),
         lesson=LessonOut.model_validate(e.lesson),
     )
 
@@ -89,7 +96,7 @@ def _to_out_with_comp(e: PlannerEntry, comp) -> PlannerEntryOut:
         completed_at=comp.completed_at if comp else None,
         completed_work_url=comp.completed_work_url if comp else None,
         completed_note=comp.completed_note if comp else None,
-        is_extra=bool(e.is_extra),
+        is_extra=bool(e.is_extra), added_by_child=bool(e.added_by_child),
         lesson=LessonOut.model_validate(e.lesson),
     )
 
@@ -106,7 +113,7 @@ def _to_out_with_shared_completion(e: PlannerEntry, comp) -> PlannerEntryOut:
         completed_at=e.completed_at,
         completed_work_url=comp.completed_work_url if comp else e.completed_work_url,
         completed_note=comp.completed_note if comp else e.completed_note,
-        is_extra=bool(e.is_extra),
+        is_extra=bool(e.is_extra), added_by_child=bool(e.added_by_child),
         lesson=LessonOut.model_validate(e.lesson),
     )
 
@@ -478,6 +485,49 @@ def shift_day(
 
     return {"moved": moved}
 
+@router.post("/i-did", status_code=201)
+def child_did_it(
+    body: ChildDidIt,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """A child tells their grown-up about something they did by themselves. It waits, not yet counted,
+    until a grown-up OKs it (by ticking it done) or removes it, so it can't be used to collect stars."""
+    if current_user.role != "child" or not current_user.parent_id:
+        raise HTTPException(status_code=403, detail="This is for children to tell a grown-up what they did")
+    title = " ".join(body.title.split())[:255]
+    if len(title) < 2:
+        raise HTTPException(status_code=400, detail="Say what you did")
+    subject = " ".join((body.subject or "").split())[:100] or "My own learning"
+    note = (body.note or "").strip()[:1000] or None
+    waiting = db.query(PlannerEntry).filter(
+        PlannerEntry.assigned_to == current_user.id,
+        PlannerEntry.added_by_child.is_(True),
+        PlannerEntry.is_complete.is_not(True),
+    ).count()
+    if waiting >= MAX_WAITING_PER_CHILD:
+        raise HTTPException(status_code=400, detail="You have a few waiting already. Ask a grown-up to look at those first.")
+
+    lesson = db.query(Lesson).filter(
+        Lesson.title == title, Lesson.subject == subject, Lesson.created_by == current_user.parent_id
+    ).first()
+    if not lesson:
+        lesson = Lesson(title=title, subject=subject, created_by=current_user.parent_id)
+        db.add(lesson)
+        db.flush()
+    entry = PlannerEntry(
+        lesson_id=lesson.id,
+        assigned_to=current_user.id,
+        scheduled_date=date.today(),
+        is_complete=False,
+        completed_note=note,
+        added_by_child=True,
+    )
+    db.add(entry)
+    db.commit()
+    return _to_out(load_entry(db, entry.id))
+
+
 @router.post("/copy-week", status_code=201)
 def copy_week(
     body: CopyWeek,
@@ -497,6 +547,7 @@ def copy_week(
         .filter(
             Lesson.created_by == current_user.id,
             PlannerEntry.is_extra.is_not(True),
+            PlannerEntry.added_by_child.is_not(True),  # a child's own note isn't part of the plan
             PlannerEntry.scheduled_date >= source,
             PlannerEntry.scheduled_date <= source + timedelta(days=6),
         )
@@ -861,6 +912,10 @@ def mark_complete(
     entry = _entry_for_user(db, entry_id, current_user)
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
+
+    if current_user.role == "child" and entry.added_by_child and not entry.is_complete:
+        # Something the child added themselves only counts once a grown-up has OK'd it.
+        raise HTTPException(status_code=403, detail="A grown-up needs to OK this one")
 
     if current_user.role == "child" and entry.assigned_to is None:
         comp = db.query(PlannerCompletion).filter(

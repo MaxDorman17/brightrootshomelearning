@@ -23,6 +23,8 @@ export interface PlannerEntry {
   completed_work_url: string | null;
   completed_note: string | null;
   is_extra: boolean;
+  /** The child added this themselves; until it is done, it is waiting for a grown-up's OK. */
+  added_by_child?: boolean;
   lesson: Lesson;
 }
 

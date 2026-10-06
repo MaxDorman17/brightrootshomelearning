@@ -19,6 +19,10 @@ def run_migrations():
     tables = insp.get_table_names()
     if "planner_entries" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("planner_entries")]
+        if "added_by_child" not in existing_cols:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE planner_entries ADD COLUMN added_by_child BOOLEAN DEFAULT 0"))
+                conn.commit()
         if "completed_note" not in existing_cols:
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE planner_entries ADD COLUMN completed_note TEXT"))
@@ -53,6 +57,8 @@ def run_migrations():
                 conn.execute(text("ALTER TABLE users ADD COLUMN subscription_cancel_at DATETIME"))
             if "theme" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN theme VARCHAR(20)"))
+            if "display_prefs" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN display_prefs TEXT"))
             if "schemes" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN schemes TEXT"))
             if "ehe_approach" not in existing_cols:

@@ -763,7 +763,20 @@ export default function ParentPlanner() {
             </div>
           </div>
         </div>
-        {plannerLoaded && entries.length === 0 && allEntries.length < 20 && (
+        {plannerLoaded && allTimetableSubjects.length === 0 && (
+          <div className="mb-6 rounded-3xl border border-brand-line bg-brand-white p-5">
+            <p className="text-lg font-extrabold text-brand-charcoal">You don&apos;t have a timetable, and that&apos;s fine</p>
+            <p className="mt-1 max-w-2xl text-sm text-[#6E5A46]">
+              Anything you log from your home page shows here on the day it happened. To plan lessons ahead as well, add the
+              subjects you want on each day.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <a href="/parent/dashboard#log" className="rounded-xl bg-brand-sage px-4 py-2.5 text-sm font-bold text-white">Log what we did</a>
+              <a href="/parent/timetable" className="rounded-xl border border-[#D9D1C4] bg-white px-4 py-2.5 text-sm font-bold text-brand-sage">Set a timetable</a>
+            </div>
+          </div>
+        )}
+        {plannerLoaded && allTimetableSubjects.length > 0 && entries.length === 0 && allEntries.length < 20 && (
           <StarterWeekCard
             kids={children}
             weekStart={weekStartStr}
@@ -1254,6 +1267,11 @@ export default function ParentPlanner() {
                                       Work submitted
                                     </span>
                                   )}
+                                  {entry.added_by_child && (
+                                    <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#FBF4DF] text-[#8A6A22] border border-[#EBD9A8]">
+                                      {entry.is_complete ? "Their own idea" : "Waiting for your OK"}
+                                    </span>
+                                  )}
                                   {scoresFor(entry.id).map(s => (
                                     <span key={s.id} className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
                                       {!entry.assigned_to && children.length > 1 ? `${children.find(c => c.id === s.child_id)?.username ?? "Child"}: ` : "Score "}
@@ -1399,6 +1417,11 @@ export default function ParentPlanner() {
                                       {entry.completed_work_url && (
                                         <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-brand-gold/20 text-brand-earth">
                                           Work submitted
+                                        </span>
+                                      )}
+                                      {entry.added_by_child && (
+                                        <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#FBF4DF] text-[#8A6A22] border border-[#EBD9A8]">
+                                          {entry.is_complete ? "Their own idea" : "Waiting for your OK"}
                                         </span>
                                       )}
                                       {scoresFor(entry.id).map(s => (

@@ -2,11 +2,14 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { addDays, format, parseISO, startOfWeek } from "date-fns";
-import { deletePlannerEntry, getTimetable, getWeekEntries, logLearning } from "@/lib/api";
+import { addMoment, deletePlannerEntry, getTimetable, getWeekEntries, logLearning } from "@/lib/api";
 import { SUBJECT_OPTIONS, subjectsInTimetable } from "@/lib/subjects";
 import { PlannerEntry } from "@/types";
 
 type Kid = { id: number; username: string };
+
+const MAX_PHOTOS = 5;
+const MAX_PHOTO_MB = 10;
 
 const input =
   "w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-brand-charcoal outline-none focus:border-brand-softsage";
@@ -26,6 +29,8 @@ export default function LogTodayCard({ kids, onLogged }: { kids: Kid[]; onLogged
   const [more, setMore] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoNote, setPhotoNote] = useState("");
   const [subjects, setSubjects] = useState<string[]>(SUBJECT_OPTIONS);
   const [done, setDone] = useState<PlannerEntry[]>([]);
 
@@ -57,6 +62,14 @@ export default function LogTodayCard({ kids, onLogged }: { kids: Kid[]; onLogged
     []
   );
 
+  const pickPhotos = (files: FileList | null) => {
+    const chosenFiles = Array.from(files || []).filter((f) => f.type.startsWith("image/"));
+    const tooBig = chosenFiles.find((f) => f.size > MAX_PHOTO_MB * 1024 * 1024);
+    if (tooBig) return setError(`Each photo needs to be under ${MAX_PHOTO_MB} MB.`);
+    setError("");
+    setPhotos(chosenFiles.slice(0, MAX_PHOTOS));
+  };
+
   const toggle = (id: number) => setWho((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   const save = async (e: FormEvent) => {
@@ -68,6 +81,20 @@ export default function LogTodayCard({ kids, onLogged }: { kids: Kid[]; onLogged
     setError("");
     try {
       await logLearning({ title: title.trim(), subject: subject.trim(), child_ids: chosen, day, note: note.trim() || undefined });
+      setPhotoNote("");
+      if (photos.length > 0) {
+        // The photos are kept as a learning moment, so they show in Moments & Photos and the council report.
+        try {
+          await addMoment(
+            { note: note.trim() ? `${title.trim()}: ${note.trim()}` : title.trim(), moment_date: day, subject: subject.trim(), child_ids: chosen },
+            photos
+          );
+          setPhotoNote(photos.length === 1 ? "Saved, with your photo in Moments." : `Saved, with your ${photos.length} photos in Moments.`);
+        } catch {
+          setPhotoNote("Saved, but the photo could not be added. You can add it from Moments & Photos.");
+        }
+        setPhotos([]);
+      }
       setTitle("");
       setNote("");
       setDay(today);
@@ -176,11 +203,31 @@ export default function LogTodayCard({ kids, onLogged }: { kids: Kid[]; onLogged
           <button type="submit" disabled={saving} className="rounded-xl bg-brand-sage px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50">
             {saving ? "Saving..." : "Save as done"}
           </button>
+          <label className="cursor-pointer text-sm font-bold text-brand-sage underline">
+            {photos.length > 0 ? `${photos.length} photo${photos.length === 1 ? "" : "s"} chosen` : "Add a photo"}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              className="sr-only"
+              aria-label="Add a photo"
+              onChange={(e) => {
+                pickPhotos(e.target.files);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          {photos.length > 0 && (
+            <button type="button" onClick={() => setPhotos([])} className="text-xs font-bold text-[#8A7A69] underline">
+              Remove
+            </button>
+          )}
           {!more && (
             <button type="button" onClick={() => setMore(true)} className="text-sm font-bold text-brand-sage underline">
               Add a note or change the day
             </button>
           )}
+          {photoNote && !error && <p className="text-sm font-semibold text-brand-sage">{photoNote}</p>}
           {error && <p className="text-sm font-semibold text-[#A64F42]">{error}</p>}
         </div>
       </form>

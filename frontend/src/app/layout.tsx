@@ -7,6 +7,8 @@ import CookieNotice from "@/components/CookieNotice";
 import VisitorStats from "@/components/VisitorStats";
 import ErrorReports from "@/components/ErrorReports";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
+import { DISPLAY_BOOT_SCRIPT } from "@/lib/display";
+import { easyRead } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/site";
 
 const nunito = Nunito({
@@ -69,11 +71,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={nunito.className} suppressHydrationWarning>
+    <html lang="en" className={`${nunito.className} ${easyRead.variable}`} suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#3F5D46" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: DISPLAY_BOOT_SCRIPT }} />
       </head>
       <body className="min-h-screen text-gray-900 antialiased">
         <ThemeSync />

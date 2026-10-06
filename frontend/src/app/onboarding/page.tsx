@@ -45,6 +45,8 @@ export default function OnboardingPage() {
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(DEFAULT_SELECTED_SUBJECTS);
   const [customSubject, setCustomSubject] = useState("");
   const [schemes, setSchemes] = useState<string[]>([]);
+  // True when the family chose to log learning as it happens instead of following a timetable.
+  const [noTimetable, setNoTimetable] = useState(false);
   const [theme, setTheme] = useState<FamilyTheme>(DEFAULT_THEME);
   const [timetable, setTimetable] = useState<Record<string, string[]>>({});
   const [timetableSaving, setTimetableSaving] = useState(false);
@@ -112,8 +114,8 @@ export default function OnboardingPage() {
   const createChild = async (event: FormEvent) => {
     event.preventDefault();
     setChildError("");
-    if (childPassword.length < 8) {
-      setChildError("Password must be at least 8 characters.");
+    if (childPassword.length < 4) {
+      setChildError("Their password needs at least 4 characters.");
       return;
     }
     setChildSaving(true);
@@ -151,7 +153,14 @@ export default function OnboardingPage() {
   };
 
   const continueToWeek = () => {
+    setNoTimetable(false);
     setTimetable(buildTimetable(selectedSubjects));
+    setStep(4);
+  };
+
+  const skipTimetable = () => {
+    setNoTimetable(true);
+    setTimetable(Object.fromEntries(days.map((day) => [day, [] as string[]])));
     setStep(4);
   };
 
@@ -172,7 +181,8 @@ export default function OnboardingPage() {
       await saveFamilyTheme(theme);
       await saveFamilySchemes(schemes);
       await completeOnboarding();
-      router.replace("/parent");
+      // Families without a timetable start on their home page, where the "What did you do today?" box is.
+      router.replace(noTimetable ? "/parent/dashboard" : "/parent");
     } catch (err: any) {
       setFinishError(err.response?.data?.detail || "Could not finish setup.");
       setTimetableSaving(false);
@@ -295,7 +305,8 @@ export default function OnboardingPage() {
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-bold text-[#2E342F]">Child password</label>
-                    <input type="password" required minLength={8} value={childPassword} onChange={(e) => setChildPassword(e.target.value)} className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
+                    <input type="password" required minLength={4} value={childPassword} onChange={(e) => setChildPassword(e.target.value)} className="w-full rounded-xl border-2 border-brand-line bg-white px-4 py-3 outline-none focus:border-brand-softsage" />
+                    <p className="mt-1 text-xs text-[#6E5A46]/70">Something they can type themselves: a short word or four numbers is fine for a young child. At least 4 characters.</p>
                   </div>
                   {childError && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{childError}</div>}
                   <button type="submit" disabled={childSaving} className="w-full rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-60">
@@ -373,15 +384,28 @@ export default function OnboardingPage() {
                   {selectedSubjects.length === 0 ? "Choose at least one subject" : "Build my week"}
                 </button>
               </div>
+
+              <div className="mt-5 rounded-2xl border border-brand-line bg-brand-cream p-4">
+                <p className="text-sm font-extrabold text-[#2E342F]">Don&apos;t follow a timetable?</p>
+                <p className="mt-1 text-sm text-[#6E5A46]">
+                  Many families are child-led and record what happened afterwards. Skip this step and just note down what you
+                  do each day. You can add a timetable later if you ever want one.
+                </p>
+                <button type="button" onClick={skipTimetable} className="mt-3 rounded-xl border border-[#D9D1C4] bg-white px-4 py-2.5 text-sm font-extrabold text-brand-sage">
+                  Skip the timetable, we&apos;ll log as we go
+                </button>
+              </div>
             </section>
           )}
 
           {step === 4 && (
             <section>
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-softsage">Your week</p>
-              <h1 className="mt-2 text-3xl font-black text-[#2E342F]">Your week and your colours.</h1>
+              <h1 className="mt-2 text-3xl font-black text-[#2E342F]">{noTimetable ? "Your colours." : "Your week and your colours."}</h1>
               <p className="mt-3 text-[#6E5A46]">
-                Built from your subjects. Tap a subject to remove it from that day, or change anything later from Timetable.
+                {noTimetable
+                  ? "No timetable for you: on your home page you'll find a box to note down what you did each day. If you ever want a timetable, it is under Plan, then Timetable."
+                  : "Built from your subjects. Tap a subject to remove it from that day, or change anything later from Timetable."}
               </p>
 
               <div className="mt-7">
@@ -389,7 +413,7 @@ export default function OnboardingPage() {
                 <ThemePicker value={theme} onChange={chooseTheme} />
               </div>
 
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
+              <div className={noTimetable ? "hidden" : "mt-7 grid gap-3 sm:grid-cols-2"}>
                 {days.map((day) => (
                   <div key={day} className="rounded-2xl border border-brand-line bg-white p-4">
                     <p className="font-extrabold text-[#2E342F]">{day}</p>
@@ -418,7 +442,7 @@ export default function OnboardingPage() {
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <button type="button" onClick={() => setStep(3)} className="rounded-xl border border-[#D9D1C4] bg-white px-5 py-3.5 text-sm font-extrabold text-brand-sage">Back</button>
                 <button type="button" onClick={finishSetup} disabled={timetableSaving || children.length === 0} className="flex-1 rounded-xl bg-brand-sage px-5 py-3.5 text-sm font-extrabold text-white disabled:opacity-50">
-                  {timetableSaving ? "Finishing setup..." : "Save timetable and open planner"}
+                  {timetableSaving ? "Finishing setup..." : noTimetable ? "Finish and open Bright Roots" : "Save timetable and open planner"}
                 </button>
               </div>
             </section>

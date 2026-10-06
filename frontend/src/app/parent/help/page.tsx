@@ -92,6 +92,18 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         tip: "You can mix both ways: plan maths and English, and log everything else as it happens.",
       },
       {
+        id: "child-added",
+        emoji: "🙋",
+        title: "When your child adds something themselves",
+        intro: "Children can tell you about things they did by themselves. Nothing counts until you say OK.",
+        steps: [
+          <>On their Today page, your child types what they did under <b>Did something else today?</b> and presses <b>Tell them</b>.</>,
+          <>It appears at the top of your <L href="/parent/dashboard">Home</L> page under <b>Waiting for your OK</b>.</>,
+          <>Press <b>OK</b> and it becomes a finished lesson, with stars and a place in your records. Press <b>Remove</b> and it goes.</>,
+        ],
+        tip: "A child can have up to five waiting at once, so the list never runs away.",
+      },
+      {
         id: "repeat-copy",
         emoji: "🔁",
         title: "Repeat a lesson or copy last week",

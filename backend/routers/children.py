@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from database import get_db
 from models import User
 from schemas import ChildCreate, ChildOut
-from auth import require_parent, hash_password, clean_login_name, login_name_taken, suggest_login_names
+from auth import require_parent, hash_password, clean_login_name, login_name_taken, suggest_login_names, CHILD_MIN_PASSWORD
 
 router = APIRouter(prefix="/api/children", tags=["children"])
 
@@ -94,6 +94,8 @@ def add_child(
         return child
     if not (body.password or "").strip():
         raise HTTPException(status_code=400, detail="Please choose a password")
+    if len(body.password) < CHILD_MIN_PASSWORD:
+        raise HTTPException(status_code=400, detail=f"Password must be at least {CHILD_MIN_PASSWORD} characters")
     if body.email and login_name_taken(db, body.email):
         raise HTTPException(status_code=400, detail="Email already taken")
     if body.login_name and body.login_name.strip():
@@ -182,8 +184,8 @@ def reset_child_password(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_parent),
 ):
-    if len(body.new_password) < 8:
-        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+    if len(body.new_password) < CHILD_MIN_PASSWORD:
+        raise HTTPException(status_code=400, detail=f"Password must be at least {CHILD_MIN_PASSWORD} characters")
 
     child = db.query(User).filter(
         User.id == child_id,

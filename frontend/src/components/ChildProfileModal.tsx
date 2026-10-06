@@ -5,6 +5,7 @@ import Avatar, { forgetPhoto } from "@/components/Avatar";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import { deleteChildPhoto, saveAvatar, saveChildColours, uploadChildPhoto } from "@/lib/api";
 import { Child } from "@/types";
+import ReadingComfort from "@/components/ReadingComfort";
 
 type Props = {
   child: Child;
@@ -100,6 +101,14 @@ export default function ChildProfileModal({ child, onClose, onChanged }: Props) 
               </button>
             )}
           </div>
+        </section>
+
+        <section className="mt-6">
+          <h3 className="text-sm font-extrabold text-brand-charcoal">Easier to read</h3>
+          <p className="mb-3 mt-1 text-xs text-[#6E5A46]">
+            Bigger text or an easy-read font on {child.username}&apos;s pages. They can change it themselves under My Look.
+          </p>
+          <ReadingComfort childId={child.id} childName={child.username} />
         </section>
 
         <section className="mt-6">

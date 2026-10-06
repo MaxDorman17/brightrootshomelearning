@@ -28,6 +28,7 @@ class User(Base):
     subscription_cancel_at_period_end = Column(Boolean, nullable=False, default=False, server_default="0")
     subscription_cancel_at = Column(DateTime(timezone=True), nullable=True)
     theme = Column(String(20), nullable=True)  # family colour theme, set on the parent account
+    display_prefs = Column(Text, nullable=True)  # JSON: text size and easy-read font for this person's screens
     schemes = Column(Text, nullable=True)  # JSON list of the schemes this family uses, e.g. ["Twinkl", "White Rose Maths"]
     ehe_approach = Column(Text, nullable=True)  # parent's "our approach to home education" for council reports
     rewards_set_up_at = Column(DateTime(timezone=True), nullable=True)  # when example star rules/rewards were added
@@ -85,6 +86,8 @@ class PlannerEntry(Base):
     completed_work_url = Column(String(512), nullable=True)
     completed_note = Column(Text, nullable=True)
     is_extra = Column(Boolean, default=False)
+    # True when the child added this themselves ("I did this"); it waits for a grown-up to OK it.
+    added_by_child = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lesson = relationship("Lesson", back_populates="planner_entries")

@@ -6,6 +6,7 @@ import { Fraunces } from "next/font/google";
 import { checkSession, getMe, login } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 import { applyTheme } from "@/lib/theme";
+import { applyDisplay } from "@/lib/display";
 
 const serif = Fraunces({ subsets: ["latin"], weight: ["600", "700"], display: "swap" });
 
@@ -60,7 +61,12 @@ export default function LoginPage() {
     try {
       const res = await login(username, password);
       setAuth(res.data.role, res.data.username);
-      getMe().then((me) => applyTheme(me.data.family_theme)).catch(() => {});
+      getMe()
+        .then((me) => {
+          applyTheme(me.data.family_theme);
+          applyDisplay(me.data.display); // this person's text size and font
+        })
+        .catch(() => {});
       if (res.data.role === "parent" && !res.data.email_verified) {
         router.push("/account");
       } else if (res.data.role === "parent" && !res.data.onboarding_completed) {

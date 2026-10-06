@@ -11,6 +11,7 @@ import AvatarBuilder from "@/components/AvatarBuilder";
 import { AvatarChoice, DEFAULT_PARENT_AVATAR, PARENT_AVATAR_PICTURES } from "@/lib/avatar";
 import ChildColours from "@/components/ChildColours";
 import YourDataCard from "@/components/YourDataCard";
+import ReadingComfort from "@/components/ReadingComfort";
 import FamilyAdultsCard from "@/components/FamilyAdults";
 import AppCard from "@/components/AppCard";
 import CalendarSyncCard from "@/components/CalendarSyncCard";
@@ -127,8 +128,9 @@ export default function AccountPage() {
     setMessage("");
     setError("");
 
-    if (newPassword.length < 8) {
-      setError("Your new password must be at least 8 characters.");
+    const shortest = role === "child" ? 4 : 8;
+    if (newPassword.length < shortest) {
+      setError(`Your new password must be at least ${shortest} characters.`);
       return;
     }
 
@@ -271,6 +273,16 @@ export default function AccountPage() {
             </div>
           )}
 
+          {me && (
+            <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Easier to read</h2>
+              <p className="mb-3 mt-1 text-sm text-[#6E5A46]">
+                {role === "child" ? "Make the words bigger or clearer on your pages." : "Make the words bigger or clearer on your own screens. To set this for a child, open their profile under Family, then Children."}
+              </p>
+              <ReadingComfort />
+            </div>
+          )}
+
           {role === "child" && me && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
               <h2 className="mb-3 text-lg font-extrabold text-brand-charcoal">My colours</h2>
@@ -370,7 +382,7 @@ export default function AccountPage() {
                   type="password"
                   autoComplete="new-password"
                   required
-                  minLength={8}
+                  minLength={role === "child" ? 4 : 8}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full rounded-xl border-2 border-brand-softsage/30 bg-white px-4 py-2.5 outline-none transition-colors focus:border-brand-sage"
@@ -385,7 +397,7 @@ export default function AccountPage() {
                   type="password"
                   autoComplete="new-password"
                   required
-                  minLength={8}
+                  minLength={role === "child" ? 4 : 8}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full rounded-xl border-2 border-brand-softsage/30 bg-white px-4 py-2.5 outline-none transition-colors focus:border-brand-sage"

@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 from schemas import Token, UserOut, _parse_avatar
-from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken
+from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken, CHILD_MIN_PASSWORD, PARENT_MIN_PASSWORD
 from config import settings
 import emails
 from newsletter_access import is_admin, subscribe_member
@@ -75,6 +75,9 @@ FAMILY_THEMES = {"sage", "ocean", "sunshine", "berry"}
 LOGIN_WINDOW_SECONDS = 10 * 60
 MAX_FAILURES_PER_ACCOUNT_IP = 5
 MAX_FAILURES_PER_IP = 25
+# Wrong tries at one login name from anywhere at all, so a short child password can't be guessed by spreading
+# the guesses over many computers.
+MAX_FAILURES_PER_ACCOUNT = 10
 RESET_WINDOW_SECONDS = 15 * 60
 MAX_RESET_REQUESTS_PER_IP = 5
 VERIFY_WINDOW_SECONDS = 15 * 60
@@ -82,6 +85,7 @@ MAX_VERIFY_REQUESTS_PER_IP = 5
 
 _failed_by_account_ip = defaultdict(deque)
 _failed_by_ip = defaultdict(deque)
+_failed_by_account = defaultdict(deque)
 _rate_limit_lock = Lock()
 _reset_requests_by_ip = defaultdict(deque)
 _verify_requests_by_ip = defaultdict(deque)
@@ -112,9 +116,19 @@ def _check_login_rate_limit(client_ip: str, username: str) -> None:
     with _rate_limit_lock:
         account_attempts = _failed_by_account_ip[account_key]
         ip_attempts = _failed_by_ip[client_ip]
+        everywhere = _failed_by_account[username.lower()]
 
         _trim_attempts(account_attempts, now)
         _trim_attempts(ip_attempts, now)
+        _trim_attempts(everywhere, now)
+
+        if len(everywhere) >= MAX_FAILURES_PER_ACCOUNT:
+            retry_after = max(1, int(LOGIN_WINDOW_SECONDS - (now - everywhere[0])))
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many failed login attempts. Please try again later.",
+                headers={"Retry-After": str(retry_after)},
+            )
 
         if len(account_attempts) >= MAX_FAILURES_PER_ACCOUNT_IP or len(ip_attempts) >= MAX_FAILURES_PER_IP:
             oldest = account_attempts[0] if len(account_attempts) >= MAX_FAILURES_PER_ACCOUNT_IP else ip_attempts[0]
@@ -139,6 +153,9 @@ def _record_login_failure(client_ip: str, username: str) -> None:
 
         account_attempts.append(now)
         ip_attempts.append(now)
+        everywhere = _failed_by_account[username.lower()]
+        _trim_attempts(everywhere, now)
+        everywhere.append(now)
 
 
 def _clear_account_failures(client_ip: str, username: str) -> None:
@@ -368,6 +385,9 @@ def me(
         out.email = me_user.email
         out.avatar = _parse_avatar(me_user.avatar)
         out.is_admin = False
+    from routers.profile import display_prefs
+
+    out.display = display_prefs(me_user)
     if current_user.role == "parent":
         out.family_theme = current_user.theme
         out.family_schemes = _family_schemes(current_user)
@@ -430,10 +450,11 @@ def change_password(
             detail="Current password is incorrect",
         )
 
-    if len(body.new_password) < 8:
+    shortest = CHILD_MIN_PASSWORD if current_user.role == "child" else PARENT_MIN_PASSWORD
+    if len(body.new_password) < shortest:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="New password must be at least 8 characters",
+            detail=f"New password must be at least {shortest} characters",
         )
 
     if verify_password(body.new_password, current_user.hashed_password):

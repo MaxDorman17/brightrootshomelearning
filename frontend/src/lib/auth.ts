@@ -1,4 +1,5 @@
 import { clearTheme } from "@/lib/theme";
+import { clearDisplay } from "@/lib/display";
 
 export function getRole(): string | null {
   if (typeof window === "undefined") return null;
@@ -19,6 +20,7 @@ export function clearAuth() {
   localStorage.removeItem("role");
   localStorage.removeItem("username");
   clearTheme();
+  clearDisplay(); // the next person on this device gets their own text size and font
 }
 
 export function isAuthenticated(): boolean {

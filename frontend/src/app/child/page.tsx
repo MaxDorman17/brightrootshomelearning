@@ -9,6 +9,7 @@ import {
   getGoals, toggleGoal, getTimetable, getBooks, checkOakWorksheet, getLessonScores,
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook, LessonScore } from "@/types";
+import IDidThisCard from "@/components/IDidThisCard";
 import Navbar from "@/components/Navbar";
 import { useMounted } from "@/lib/useMounted";
 import { useParentName } from "@/lib/useParentName";
@@ -117,6 +118,8 @@ export default function ChildDashboard() {
   const [username, setUsername] = useState("");
   const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
   const [entries, setEntries] = useState<PlannerEntry[]>([]);
+  // Things this child added themselves that a grown-up hasn't OK'd yet. Kept out of the lesson lists.
+  const [waiting, setWaiting] = useState<PlannerEntry[]>([]);
   const [allEntries, setAllEntries] = useState<PlannerEntry[]>([]);
   const [feedbackList, setFeedbackList] = useState<WorkFeedback[]>([]);
   const [daysOffSet, setDaysOffSet] = useState<Set<string>>(new Set());
@@ -152,7 +155,10 @@ export default function ChildDashboard() {
     setLoading(true);
     try {
       const res = await getWeekEntries(format(weekStart, "yyyy-MM-dd"));
-      setEntries(res.data);
+      const all = res.data as PlannerEntry[];
+      const isWaiting = (e: PlannerEntry) => !!e.added_by_child && !e.is_complete;
+      setEntries(all.filter(e => !isWaiting(e)));
+      setWaiting(all.filter(isWaiting));
     } finally {
       setLoading(false);
     }
@@ -718,6 +724,13 @@ export default function ChildDashboard() {
           <span className="flex items-center gap-1"><Emoji e="📎" /> Work submitted</span>
           <span className="ml-auto text-gray-400">Choose a day, then tap a lesson to open it</span>
         </div>
+
+        <IDidThisCard
+          subjects={Array.from(new Set(Object.values(timetable).flat()))}
+          waiting={waiting}
+          grownUp={parentName}
+          onAdded={entry => setWaiting(prev => [...prev, entry])}
+        />
 
         {/* Reading — sourced from the real Reading Log, never spellings or Extra Work */}
         {readingBook && (

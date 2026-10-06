@@ -80,7 +80,7 @@ const faqs = [
   ["We use Twinkl or White Rose Maths, not Oak. Will it work for us?", "Yes. Add any lesson with a link to where it lives and the name of the scheme, and it sits in your planner like any other. You can type in a score for a worksheet or test, and it all shows in your records and council report. Bright Roots keeps the link and your notes; the materials stay on the scheme's own site."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share. There is a sample report on this site if you would like to see one first."],
   ["What happens when my free trial ends?", "You can choose monthly or yearly membership from your account. If you decide not to carry on, you won't be charged, because no card is taken for the trial."],
-  ["Is my family's information safe?", "Your family's data is private to your account, passwords are stored securely, and we never sell or share your information."],
+  ["Is my family's information safe?", "Yes. Each family can only see its own information, passwords are stored in scrambled form, and the site only works over a secure connection. Your records are kept in the Netherlands, inside the European Union, with a backup made every night. We never sell your information, show adverts or track you around the web. You can download everything, or delete your whole account, from your Account page at any time."],
   ["Does it work on a phone or tablet?", "Yes. Bright Roots works on any phone, tablet or computer, and you can add it to your home screen like an app."],
 ];
 
@@ -226,8 +226,8 @@ export default function HomePage() {
                 Grow together.
               </h1>
               <p className="mt-5 text-lg leading-8" style={{ color: C.earth }}>
-                A calm home learning planner for families. Plan the week, give each child their own space to learn,
-                and keep a record of everything they achieve.
+                A calm place for home learning. Plan the week ahead, or simply note down what you did. Give each
+                child their own space to learn, and keep a record of everything they achieve.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Link href={memberHome || "/signup"} className={primaryBtn} style={{ background: C.green }}>
@@ -239,7 +239,7 @@ export default function HomePage() {
               </div>
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold" style={{ color: C.earth }}>
                 {[
-                  { src: "/home/icons/weekly-planning.png", fallback: "🗓️", label: "Weekly planning" },
+                  { src: "/home/icons/weekly-planning.png", fallback: "🗓️", label: "Plan it or log it" },
                   { src: "/home/icons/family-logins.png", fallback: "👨‍👩‍👧", label: "Parent & child logins" },
                   { src: "/home/icons/any-device.png", fallback: "📱", label: "Any device" },
                 ].map((f) => (

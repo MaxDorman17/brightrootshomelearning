@@ -62,6 +62,34 @@ class AvatarIn(BaseModel):
         return value
 
 
+TEXT_SIZES = ("normal", "large", "larger")
+
+
+class DisplayIn(BaseModel):
+    text_size: str = "normal"
+    easy_font: bool = False
+
+    @field_validator("text_size")
+    @classmethod
+    def valid_size(cls, value: str) -> str:
+        if value not in TEXT_SIZES:
+            raise ValueError("Unknown text size")
+        return value
+
+
+def display_prefs(user: Optional[User]) -> dict:
+    """A person's reading settings, with the defaults filled in."""
+    try:
+        saved = json.loads(user.display_prefs) if user and user.display_prefs else {}
+    except ValueError:
+        saved = {}
+    size = saved.get("text_size") if isinstance(saved, dict) else None
+    return {
+        "text_size": size if size in TEXT_SIZES else "normal",
+        "easy_font": bool(saved.get("easy_font")) if isinstance(saved, dict) else False,
+    }
+
+
 class ColoursIn(BaseModel):
     theme: Optional[str] = None  # None means "use the family theme"
     subject_colors: dict[str, str] = {}
@@ -138,6 +166,30 @@ def save_avatar(
     child.avatar = json.dumps(body.model_dump())
     db.commit()
     return {"avatar": body.model_dump()}
+
+
+@router.get("/display")
+def get_display(
+    child_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return display_prefs(_target(db, current_user, child_id))
+
+
+@router.put("/display")
+def save_display(
+    body: DisplayIn,
+    child_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Bigger text and an easy-read font. Children set their own; a parent can set their own or a child's."""
+    person = _target(db, current_user, child_id)
+    prefs = {"text_size": body.text_size, "easy_font": body.easy_font}
+    person.display_prefs = None if prefs == {"text_size": "normal", "easy_font": False} else json.dumps(prefs)
+    db.commit()
+    return display_prefs(person)
 
 
 @router.put("/colours")

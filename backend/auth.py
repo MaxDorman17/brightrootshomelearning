@@ -25,6 +25,12 @@ def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode(), hashed.encode())
 
 
+PARENT_MIN_PASSWORD = 8
+# Young children can't manage a long password, so theirs can be short. Logins are slowed right down after
+# a few wrong tries (see routers/auth.py), which is what keeps a short one safe enough.
+CHILD_MIN_PASSWORD = 4
+
+
 def find_login(db: Session, typed: str) -> Optional[User]:
     """Who is logging in: by login name (older accounts: their username) or by email address."""
     typed = (typed or "").strip()

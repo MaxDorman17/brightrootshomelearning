@@ -117,6 +117,10 @@ export const saveStudySession = (body: {
 }) => api.post("/api/study/sessions", body);
 export const getStudySummary = (child_id?: number) =>
   api.get("/api/study/summary", { params: child_id != null ? { child_id } : {} });
+export const getDisplayPrefs = (child_id?: number) =>
+  api.get<{ text_size: "normal" | "large" | "larger"; easy_font: boolean }>("/api/profile/display", { params: child_id != null ? { child_id } : {} });
+export const saveDisplayPrefs = (body: { text_size: string; easy_font: boolean }, child_id?: number) =>
+  api.put("/api/profile/display", body, { params: child_id != null ? { child_id } : {} });
 export const saveAvatar = (avatar: { emoji: string; bg: string; frame: string }, child_id?: number) =>
   api.put("/api/profile/avatar", avatar, { params: child_id != null ? { child_id } : {} });
 export const saveChildColours = (theme: string | null, subject_colors: Record<string, string>, child_id?: number) =>
@@ -273,6 +277,8 @@ export const repeatPlannerEntry = (id: number, weeks: number) =>
   api.post<{ added: number; skipped: number; last: string | null }>(`/api/planner/${id}/repeat`, { weeks });
 export const copyPlannerWeek = (from_start: string, to_start: string, child_id?: number) =>
   api.post<{ copied: number; skipped: number; start_date: string }>("/api/planner/copy-week", { from_start, to_start, child_id });
+// A child tells their grown-up about something they did by themselves; it waits for the grown-up's OK
+export const childDidIt = (body: { title: string; subject?: string; note?: string }) => api.post("/api/planner/i-did", body);
 // Record something already done, with no planning first
 export const logLearning = (body: { title: string; subject: string; child_ids: number[]; day?: string; note?: string }) =>
   api.post<{ logged: number; entry_ids: number[]; day: string }>("/api/planner/log", body);

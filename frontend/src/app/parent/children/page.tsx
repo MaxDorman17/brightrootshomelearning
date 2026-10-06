@@ -151,8 +151,8 @@ export default function ChildrenPage() {
     setResetError("");
     setResetMessage("");
 
-    if (resetPassword.length < 8) {
-      setResetError("Password must be at least 8 characters.");
+    if (resetPassword.length < 4) {
+      setResetError("Password must be at least 4 characters.");
       return;
     }
 
@@ -487,6 +487,9 @@ export default function ChildrenPage() {
                     placeholder="Choose a password they can remember"
                     className="w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20"
                   />
+                  <p className="mt-1 text-xs text-[#6E5A46]">
+                    A short word or four numbers is fine for a young child. At least 4 characters.
+                  </p>
                 </div>
 
                 </>)}

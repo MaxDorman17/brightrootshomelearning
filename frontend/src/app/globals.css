@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* A person's reading settings (lib/display.ts). Sizes are in rem everywhere, so this scales the whole page. */
+html[data-text="large"] {
+  font-size: 112.5%;
+}
+html[data-text="larger"] {
+  font-size: 125%;
+}
+html[data-font="easy"],
+html[data-font="easy"] body {
+  font-family: var(--font-easy), system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  word-spacing: 0.04em;
+}
+
 /* Family themes. Values are "R G B" so Tailwind opacity modifiers (e.g. /20) keep working.
    Sage is the original Bright Roots look and the default. */
 :root,
