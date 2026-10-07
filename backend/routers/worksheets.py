@@ -1,0 +1,175 @@
+"""Bright Roots' own worksheets and comic quizzes: saving a half-done sheet, and keeping each child's best score.
+
+The sheets themselves live in the frontend (src/lib/worksheets.ts and src/lib/comics.ts) and are marked
+there, the same way the learning games are. Each child has one row per sheet, so doing a sheet again
+can raise their best score but never counts twice for stars.
+"""
+import json
+import re
+from datetime import datetime
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, field_validator, model_validator
+from sqlalchemy.orm import Session
+
+from auth import get_current_user, require_child
+from database import get_db
+from models import User, WorksheetScore
+from routers.test_results import _resolve_child
+
+router = APIRouter(prefix="/api/worksheets", tags=["worksheets"])
+
+KINDS = {"worksheet", "comic"}
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+MAX_QUESTIONS = 50
+MAX_ANSWERS_CHARS = 20_000
+
+
+class SheetIn(BaseModel):
+    kind: str
+    slug: str
+    title: str
+    subject: str
+
+    @field_validator("kind")
+    @classmethod
+    def valid_kind(cls, value: str) -> str:
+        if value not in KINDS:
+            raise ValueError("Unknown kind")
+        return value
+
+    @field_validator("slug")
+    @classmethod
+    def valid_slug(cls, value: str) -> str:
+        if len(value) > 80 or not SLUG_RE.match(value):
+            raise ValueError("Unknown sheet")
+        return value
+
+    @field_validator("title", "subject")
+    @classmethod
+    def not_blank(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Required")
+        return value[:100]
+
+
+class ProgressIn(SheetIn):
+    answers: dict
+
+    @field_validator("answers")
+    @classmethod
+    def not_huge(cls, value: dict) -> dict:
+        if len(json.dumps(value)) > MAX_ANSWERS_CHARS:
+            raise ValueError("Too many answers")
+        return value
+
+
+class FinishIn(SheetIn):
+    score: int
+    total: int
+
+    @model_validator(mode="after")
+    def sensible_score(self):
+        if not 1 <= self.total <= MAX_QUESTIONS or not 0 <= self.score <= self.total:
+            raise ValueError("Score out of range")
+        return self
+
+
+def _out(row: WorksheetScore, with_answers: bool = False) -> dict:
+    out = {
+        "kind": row.kind,
+        "slug": row.slug,
+        "title": row.title,
+        "subject": row.subject,
+        "score": row.score,
+        "total": row.total,
+        "tries": row.tries or 0,
+        "in_progress": bool(row.answers),
+        "finished_at": row.finished_at.isoformat() if row.finished_at else None,
+    }
+    if with_answers:
+        out["answers"] = json.loads(row.answers) if row.answers else None
+    return out
+
+
+def _row(db: Session, child: User, kind: str, slug: str) -> Optional[WorksheetScore]:
+    return (
+        db.query(WorksheetScore)
+        .filter(WorksheetScore.child_id == child.id, WorksheetScore.kind == kind, WorksheetScore.slug == slug)
+        .first()
+    )
+
+
+def _row_for(db: Session, child: User, body: SheetIn) -> WorksheetScore:
+    if not child.parent_id:
+        raise HTTPException(status_code=400, detail="No parent linked to this account")
+    row = _row(db, child, body.kind, body.slug)
+    if row is None:
+        row = WorksheetScore(child_id=child.id, parent_id=child.parent_id, kind=body.kind, slug=body.slug, tries=0)
+        db.add(row)
+    row.title, row.subject = body.title, body.subject
+    return row
+
+
+def finished_sheets(db: Session, child: User, parent_id: int) -> list[WorksheetScore]:
+    """Every worksheet and comic quiz this child has finished, newest first."""
+    return (
+        db.query(WorksheetScore)
+        .filter(
+            WorksheetScore.child_id == child.id,
+            WorksheetScore.parent_id == parent_id,
+            WorksheetScore.finished_at.is_not(None),
+        )
+        .order_by(WorksheetScore.finished_at.desc(), WorksheetScore.id.desc())
+        .all()
+    )
+
+
+@router.get("/mine")
+def my_sheets(db: Session = Depends(get_db), current_user: User = Depends(require_child)):
+    """Where this child has got to on every sheet they have opened."""
+    rows = db.query(WorksheetScore).filter(WorksheetScore.child_id == current_user.id).all()
+    return [_out(r) for r in rows]
+
+
+@router.get("/mine/{kind}/{slug}")
+def my_sheet(kind: str, slug: str, db: Session = Depends(get_db), current_user: User = Depends(require_child)):
+    """One sheet, with any half-done answers. Empty if the child hasn't opened it yet."""
+    row = _row(db, current_user, kind, slug)
+    return _out(row, with_answers=True) if row else None
+
+
+@router.put("/progress")
+def save_progress(body: ProgressIn, db: Session = Depends(get_db), current_user: User = Depends(require_child)):
+    row = _row_for(db, current_user, body)
+    row.answers = json.dumps(body.answers) if body.answers else None
+    db.commit()
+    return _out(row)
+
+
+@router.post("/finish")
+def finish_sheet(body: FinishIn, db: Session = Depends(get_db), current_user: User = Depends(require_child)):
+    """Record a finished go. Only a better score than before replaces the best one."""
+    row = _row_for(db, current_user, body)
+    first_time = row.finished_at is None
+    better = first_time or body.score * (row.total or 1) > (row.score or 0) * body.total
+    if better:
+        row.score, row.total = body.score, body.total
+        row.finished_at = datetime.utcnow()
+    row.tries = (row.tries or 0) + 1
+    row.answers = None
+    db.commit()
+    return {**_out(row), "first_time": first_time, "new_best": better and not first_time}
+
+
+@router.get("/summary")
+def sheets_summary(
+    child_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Finished sheets for one child. Parents pass child_id; children get their own."""
+    child, parent_id = _resolve_child(db, current_user, child_id)
+    return [_out(r) for r in finished_sheets(db, child, parent_id)]

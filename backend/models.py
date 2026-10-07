@@ -623,6 +623,27 @@ class GameScore(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class WorksheetScore(Base):
+    """One child's go at a Bright Roots worksheet or comic quiz: answers so far, then their best score."""
+    __tablename__ = "worksheet_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    kind = Column(String(10), nullable=False)  # worksheet / comic
+    slug = Column(String(80), nullable=False)
+    title = Column(String(150), nullable=False)  # copied so results still read well if a sheet is renamed
+    subject = Column(String(100), nullable=False)
+    answers = Column(Text, nullable=True)  # JSON of a half-done sheet, so a child can stop and come back
+    score = Column(Integer, nullable=True)  # best so far; empty until the sheet has been finished once
+    total = Column(Integer, nullable=True)
+    tries = Column(Integer, nullable=False, default=0)
+    finished_at = Column(DateTime(timezone=True), nullable=True)  # when the best score was reached
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    __table_args__ = (UniqueConstraint("child_id", "kind", "slug", name="uq_worksheet_score"),)
+
+
 class PushSubscription(Base):
     """A phone, tablet or computer that has allowed Bright Roots notifications."""
     __tablename__ = "push_subscriptions"

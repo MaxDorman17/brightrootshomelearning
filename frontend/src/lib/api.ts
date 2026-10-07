@@ -207,6 +207,22 @@ export const saveGameScore = (game: string, score: number, detail?: string) =>
   api.post("/api/games/scores", { game, score, detail });
 export const getGamesSummary = (child_id?: number) =>
   api.get("/api/games/summary", { params: child_id != null ? { child_id } : {} });
+// Bright Roots worksheets and comic quizzes. Only children save answers and scores.
+export type SheetRef = { kind: "worksheet" | "comic"; slug: string; title: string; subject: string };
+export type SheetProgress = SheetRef & {
+  score: number | null;
+  total: number | null;
+  tries: number;
+  in_progress: boolean;
+  finished_at: string | null;
+  answers?: Record<string, unknown> | null;
+};
+export const getMySheets = () => api.get<SheetProgress[]>("/api/worksheets/mine");
+export const getMySheet = (kind: SheetRef["kind"], slug: string) => api.get<SheetProgress | null>(`/api/worksheets/mine/${kind}/${slug}`);
+export const saveSheetProgress = (sheet: SheetRef, answers: Record<string, unknown>) =>
+  api.put<SheetProgress>("/api/worksheets/progress", { ...sheet, answers });
+export const finishSheet = (sheet: SheetRef, score: number, total: number) =>
+  api.post<SheetProgress & { first_time: boolean; new_best: boolean }>("/api/worksheets/finish", { ...sheet, score, total });
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });

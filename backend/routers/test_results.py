@@ -148,7 +148,9 @@ def results_overview(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """All of one child's results in one place: spelling tests, Oak quizzes and the family's own tests."""
+    """All of one child's results in one place: spelling tests, Oak quizzes, worksheets and the family's own tests."""
+    from routers.worksheets import _out as _sheet_out, finished_sheets  # imported here to avoid a circular import
+
     child, parent_id = _resolve_child(db, current_user, child_id)
 
     spellings = (
@@ -180,6 +182,7 @@ def results_overview(
         ],
         "oak": _oak_results_for_child(db, child, parent_id),
         "tests": [_test_out(r) for r in own_tests],
+        "sheets": [_sheet_out(r) for r in finished_sheets(db, child, parent_id)],
     }
 
 

@@ -35,11 +35,24 @@ export type OwnTest = {
   notes: string | null;
 };
 
+/** A finished Bright Roots worksheet or comic quiz. The score is the child's best. */
+export type SheetResult = {
+  kind: "worksheet" | "comic";
+  slug: string;
+  title: string;
+  subject: string;
+  score: number;
+  total: number;
+  tries: number;
+  finished_at: string;
+};
+
 export type ResultsOverview = {
   child: { id: number; username: string };
   spelling: SpellingTest[];
   oak: OakQuiz[];
   tests: OwnTest[];
+  sheets?: SheetResult[];
 };
 
 type Props = {
@@ -101,6 +114,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
   const [showAllSpelling, setShowAllSpelling] = useState(false);
   const [openSubjects, setOpenSubjects] = useState<Set<string>>(new Set());
 
+  const sheets = data.sheets ?? [];
   const realSpelling = data.spelling.filter((t) => !t.is_practice_round);
   const spellingRows = showPractice ? data.spelling : realSpelling;
 
@@ -112,17 +126,19 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
   const termCount =
     realSpelling.filter((t) => inTerm(t.taken_at)).length +
     data.oak.filter((q) => inTerm(q.scheduled_date)).length +
-    data.tests.filter((t) => inTerm(t.taken_on)).length;
+    data.tests.filter((t) => inTerm(t.taken_on)).length +
+    sheets.filter((s) => inTerm(s.finished_at)).length;
 
   const latest = useMemo(() => {
     const all = [
       ...realSpelling.map((t) => ({ when: t.taken_at || t.week_start, label: "Spelling test", value: pct(t.score, t.total) })),
       ...data.oak.map((q) => ({ when: q.scheduled_date, label: q.lesson_title, value: pct(q.exit_score, q.exit_total) })),
       ...data.tests.map((t) => ({ when: t.taken_on, label: t.title, value: pct(t.score, t.total) })),
+      ...sheets.map((s) => ({ when: s.finished_at, label: s.title, value: pct(s.score, s.total) })),
     ].filter((r) => r.value != null);
     all.sort((a, b) => (a.when < b.when ? 1 : -1));
     return all[0] || null;
-  }, [data, realSpelling]);
+  }, [data, realSpelling, sheets]);
 
   const weakWords = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -146,7 +162,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
   }, [data.oak]);
 
   const trend = realSpelling.slice(0, 8).reverse();
-  const nothingYet = data.spelling.length === 0 && data.oak.length === 0 && data.tests.length === 0;
+  const nothingYet = data.spelling.length === 0 && data.oak.length === 0 && data.tests.length === 0 && sheets.length === 0;
 
   return (
     <div className="space-y-5">
@@ -167,8 +183,8 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
       {nothingYet && (
         <div className="brand-card p-6 text-center text-sm text-[#6E5A46]">
           {forChild
-            ? "No test results yet. Your spelling tests and quiz scores will show up here."
-            : "No results yet. Spelling tests and Oak quiz scores appear here automatically. Scores you give lessons in the planner show here too, and you can add any other test yourself."}
+            ? "No test results yet. Your spelling tests, worksheets and quiz scores will show up here."
+            : "No results yet. Spelling tests, Bright Roots worksheets, comic quizzes and Oak quiz scores appear here automatically. Scores you give lessons in the planner show here too, and you can add any other test yourself."}
         </div>
       )}
 
@@ -319,6 +335,33 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
               </div>
             </div>
           )}
+        </Card>
+      )}
+
+      {sheets.length > 0 && (
+        <Card title="Worksheets and comic quizzes">
+          <p className="-mt-2 mb-3 text-xs text-[#6E5A46]">
+            {forChild ? "Your best score on each one." : "Marked automatically. Each one shows their best score, however many times they tried."}
+          </p>
+          <div className="divide-y divide-brand-line">
+            {sheets.map((s) => (
+              <div key={`${s.kind}-${s.slug}`} className="flex flex-wrap items-center justify-between gap-3 py-3">
+                <div className="min-w-0">
+                  <p className="font-extrabold text-brand-charcoal">{s.title}</p>
+                  <p className="text-xs text-[#6E5A46]">
+                    {s.kind === "comic" ? "Comic quiz" : "Worksheet"} · {s.subject} · {format(parseISO(s.finished_at), "d MMM yyyy")}
+                    {s.tries > 1 ? ` · ${s.tries} tries` : ""}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-bold text-brand-charcoal">
+                    {s.score}/{s.total}
+                  </span>
+                  <ScoreBadge value={pct(s.score, s.total)} />
+                </div>
+              </div>
+            ))}
+          </div>
         </Card>
       )}
 

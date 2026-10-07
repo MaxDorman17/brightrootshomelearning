@@ -59,7 +59,7 @@ const KIND_OPTIONS: { kind: string; label: string; unit: string }[] = [
   { kind: "lessons", label: "Complete lessons", unit: "lessons" },
   { kind: "spelling", label: "Spelling tests at a score", unit: "tests" },
   { kind: "oak", label: "Oak quizzes at a score", unit: "quizzes" },
-  { kind: "score", label: "Lessons or tests you mark, at a score", unit: "scores" },
+  { kind: "score", label: "Worksheets, and lessons or tests you mark, at a score", unit: "scores" },
   { kind: "books", label: "Finish books", unit: "books" },
   { kind: "stars", label: "Earn stars", unit: "stars" },
   { kind: "custom", label: "Something else (you tick it off)", unit: "times" },

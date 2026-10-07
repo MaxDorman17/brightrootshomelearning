@@ -154,7 +154,7 @@ def _rule_label(rule: RewardRule) -> str:
     if rule.kind == "oak_starter":
         return f"Score {rule.threshold_pct or 0}% or more on an Oak starter quiz"
     if rule.kind == "score":
-        return f"Score {rule.threshold_pct or 0}% or more on a lesson or test you mark"
+        return f"Score {rule.threshold_pct or 0}% or more on a worksheet, comic quiz, or a lesson or test you mark"
     if rule.kind == "spelling":
         return f"Score {rule.threshold_pct or 0}% or more on a spelling test"
     if rule.kind == "game":
@@ -179,7 +179,10 @@ def _earned_events(db: Session, child: User, parent_id: int) -> list:
     lessons = activity.lesson_completions(db, child, parent_id) if "lesson" in kinds else []
     quizzes = activity.oak_scores(db, child, parent_id) if "oak" in kinds else []
     starters = activity.oak_starter_scores(db, child, parent_id) if "oak_starter" in kinds else []
-    marked = activity.test_scores(db, child, parent_id) if "score" in kinds else []
+    marked = (
+        activity.test_scores(db, child, parent_id) + activity.worksheet_scores(db, child, parent_id)
+        if "score" in kinds else []
+    )
     spellings = activity.spelling_scores(db, child, parent_id) if "spelling" in kinds else []
     books = activity.books_finished(db, child, parent_id) if "book" in kinds else []
     games = sorted(activity.games_played(db, child, parent_id)) if "game" in kinds else []

@@ -114,7 +114,7 @@ class _ActivityCache:
         if name == "oak":
             return activity.oak_scores(db, child, parent_id)
         if name == "score":
-            return activity.test_scores(db, child, parent_id)
+            return activity.test_scores(db, child, parent_id) + activity.worksheet_scores(db, child, parent_id)
         if name == "books":
             return activity.books_finished(db, child, parent_id)
         if name == "stars":

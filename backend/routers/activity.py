@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from models import GameScore, Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, TestResult, User
+from models import GameScore, Lesson, PlannerCompletion, PlannerEntry, ReadingLog, SpellingResult, TestResult, User, WorksheetScore
 from routers.test_results import _oak_results_for_child
 
 
@@ -101,6 +101,21 @@ def test_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime
         score = pct(t.score, t.total)
         if t.created_at and score is not None:
             out.append((naive(t.created_at), score, t.title))
+    return out
+
+
+def worksheet_scores(db: Session, child: User, parent_id: int) -> list[tuple[datetime, float, str]]:
+    """(best score reached at, %, title) for every Bright Roots worksheet and comic quiz this child has finished.
+    One per sheet, however many times they have done it."""
+    out = []
+    for w in (
+        db.query(WorksheetScore)
+        .filter(WorksheetScore.child_id == child.id, WorksheetScore.parent_id == parent_id)
+        .all()
+    ):
+        score = pct(w.score, w.total)
+        if w.finished_at and score is not None:
+            out.append((naive(w.finished_at), score, w.title))
     return out
 
 

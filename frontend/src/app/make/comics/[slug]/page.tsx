@@ -7,7 +7,8 @@ import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import ComicPicture from "@/components/comics/ComicPicture";
 import { COMICS, comicBySlug, type Comic } from "@/lib/comics";
-import { isAuthenticated } from "@/lib/auth";
+import { finishSheet } from "@/lib/api";
+import { getRole, isAuthenticated } from "@/lib/auth";
 import { comic as comicFont } from "@/lib/fonts";
 
 const frame = "rounded-2xl border-[3px] border-brand-charcoal bg-white shadow-[4px_4px_0_0_#2E342F]";
@@ -136,6 +137,12 @@ function Quiz({ comic }: { comic: Comic }) {
   useEffect(() => setPicked(comic.quiz.map(() => null)), [comic]);
   const done = picked.every((p) => p !== null);
   const score = picked.filter((p, i) => p === comic.quiz[i].answer).length;
+  // A child's finished quiz goes into their results, where it can earn stars. Grown-ups just read along.
+  useEffect(() => {
+    if (!done || getRole() !== "child") return;
+    finishSheet({ kind: "comic", slug: comic.slug, title: `${comic.hero.name}: ${comic.title}`, subject: comic.subject }, score, comic.quiz.length).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   return (
     <section className={`${frame} mt-6 p-5`}>

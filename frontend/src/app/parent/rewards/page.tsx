@@ -40,7 +40,7 @@ const KIND_LABELS: Record<string, string> = {
   lesson: "Complete a lesson",
   oak: "Oak exit quiz score",
   oak_starter: "Oak starter quiz score",
-  score: "A lesson or test score you mark",
+  score: "A worksheet score, or a lesson or test you mark",
   spelling: "Spelling test score",
   book: "Finish a book",
   game: "Play a learning game (up to 3 a day)",
