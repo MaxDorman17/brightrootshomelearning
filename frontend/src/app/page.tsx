@@ -145,6 +145,16 @@ const faqs = [
   ["Does it work on a phone or tablet?", "Yes. Bright Roots works on any phone, tablet or computer, and you can add it to your home screen like an app."],
 ];
 
+// The questions are shown a few at a time, by topic, so the list never runs down the whole page.
+// Every answer is still on the page for search engines; the other topics are just folded away.
+const FAQ_TOPICS: { id: string; label: string; starts: string[] }[] = [
+  { id: "starting", label: "Getting started", starts: ["I'm new to home education", "Do I have to follow", "We're child-led", "We use Twinkl"] },
+  { id: "children", label: "Your children", starts: ["How many children", "Do my children need", "Is there anything for my 3", "Is there anything for teenagers", "My teenager is working", "My child has additional"] },
+  { id: "practical", label: "Practical things", starts: ["Can both parents", "Can it help with my local", "We're in Scotland", "What happens when my free trial", "Is my family's information", "Does it work on a phone"] },
+];
+const faqsFor = (topic: (typeof FAQ_TOPICS)[number]) =>
+  topic.starts.map((start) => faqs.find(([q]) => q.startsWith(start))).filter((f): f is string[] => !!f);
+
 const week = [
   ["Mon", [["#FBE3DA", "Maths"], ["#E4ECF7", "English"], ["#FBF0D0", "Reading"]]],
   ["Tue", [["#EDE4F6", "Science"], ["#E3EFE3", "Art"]]],
@@ -211,6 +221,7 @@ export default function HomePage() {
   const [deleted, setDeleted] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
   const [age, setAge] = useState<AgeId>("ages-5-to-10");
+  const [faqTopic, setFaqTopic] = useState(FAQ_TOPICS[0].id);
 
   // Show one age group and bring the "pick an age" buttons into view.
   const showAge = (id: AgeId) => {
@@ -881,9 +892,10 @@ export default function HomePage() {
         <section id="faq" className="relative scroll-mt-16 overflow-hidden py-14">
           <Art src="/home/leaf-faq.png" className="absolute -bottom-2 left-2 hidden h-56 w-auto lg:block" fallback={<Sprig className="absolute -bottom-2 left-4 hidden h-48 w-auto lg:block" />} />
           <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <div className="lg:pl-16">
-              <H2>Questions, answered</H2>
-              <div id="talk" className="mt-6 scroll-mt-20 rounded-2xl border p-5" style={{ background: C.sand, borderColor: C.line }}>
+            {/* On a phone the questions come first and the "talk to Max" card follows them. */}
+            <div className="contents lg:block lg:pl-16">
+              <H2 className="order-1 -mb-4 lg:mb-0">Questions, answered</H2>
+              <div id="talk" className="order-3 scroll-mt-20 rounded-2xl border p-5 lg:mt-6" style={{ background: C.sand, borderColor: C.line }}>
                 <div className="flex items-center gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/hero/our-family.jpg" alt="" width={1200} height={900} loading="lazy" className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow" />
@@ -905,15 +917,37 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="space-y-2.5">
-              {faqs.map(([q, a]) => (
-                <details key={q} className="group rounded-xl border bg-white px-5 py-3.5" style={{ borderColor: C.line }}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold" style={{ color: C.ink }}>
-                    {q}
-                    <span className="text-xl transition-transform group-open:rotate-45" style={{ color: C.green }}>+</span>
-                  </summary>
-                  <p className="mt-2 text-sm leading-6" style={{ color: C.earth }}>{a}</p>
-                </details>
+            <div className="order-2 lg:order-none">
+              <div role="tablist" aria-label="Pick a topic" className="inline-flex flex-wrap gap-1.5 rounded-3xl border p-1.5" style={{ background: C.paper, borderColor: C.line }}>
+                {FAQ_TOPICS.map((topic) => {
+                  const on = faqTopic === topic.id;
+                  return (
+                    <button
+                      key={topic.id}
+                      role="tab"
+                      aria-selected={on}
+                      aria-controls={`faq-${topic.id}`}
+                      onClick={() => setFaqTopic(topic.id)}
+                      className="rounded-2xl px-4 py-2 text-sm font-bold transition-colors"
+                      style={on ? { background: C.green, color: "#fff" } : { color: C.earth }}
+                    >
+                      {topic.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {FAQ_TOPICS.map((topic) => (
+                <div key={topic.id} id={`faq-${topic.id}`} role="tabpanel" aria-label={topic.label} className={"mt-4 space-y-2.5" + (faqTopic === topic.id ? "" : " hidden")}>
+                  {faqsFor(topic).map(([q, a]) => (
+                    <details key={q} className="group rounded-xl border bg-white px-5 py-3.5" style={{ borderColor: C.line }}>
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold" style={{ color: C.ink }}>
+                        {q}
+                        <span className="text-xl transition-transform group-open:rotate-45" style={{ color: C.green }}>+</span>
+                      </summary>
+                      <p className="mt-2 text-sm leading-6" style={{ color: C.earth }}>{a}</p>
+                    </details>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
