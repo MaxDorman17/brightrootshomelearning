@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { isAuthenticated, getRole } from "@/lib/auth";
-import { getLessonScores, getTodayEntries, toggleComplete } from "@/lib/api";
+import { getLessonScores, getOakLesson, getTodayEntries, toggleComplete, type OakLessonPage } from "@/lib/api";
 import { LessonScore, PlannerEntry } from "@/types";
 import Navbar from "@/components/Navbar";
 import StudyTimer from "@/components/StudyTimer";
@@ -12,6 +12,9 @@ import LessonGuide from "@/components/LessonGuide";
 import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
 import { schemeOf } from "@/lib/schemes";
+import OakLesson from "@/components/OakLesson";
+
+const OAK_LESSON_RE = /^https:\/\/(?:www\.)?thenational\.academy\/(?:pupils|teachers)\/(?:[a-z0-9-]+\/)*lessons\/[a-z0-9-]+/;
 
 export default function LessonDetailPage() {
   const parentName = useParentName();
@@ -24,6 +27,8 @@ export default function LessonDetailPage() {
   const [loading, setLoading] = useState(true);
   const [completing, setCompleting] = useState(false);
   const [myScore, setMyScore] = useState<LessonScore | null>(null);
+  // An Oak lesson is done here on the page when Oak lets us show it; "checking" while we find out.
+  const [oak, setOak] = useState<OakLessonPage | "checking" | null>(null);
 
   useEffect(() => {
     getLessonScores()
@@ -39,11 +44,26 @@ export default function LessonDetailPage() {
         const found = res.data.find((e: PlannerEntry) => e.id === entryId);
         if (!found) { router.replace("/child"); return; }
         setEntry(found);
+        if (OAK_LESSON_RE.test(found.lesson.lesson_url || "")) {
+          setOak("checking");
+          getOakLesson(found.id).then(r => setOak(r.data)).catch(() => setOak(null));
+        }
       } finally {
         setLoading(false);
       }
     })();
   }, [entryId, router]);
+
+  /** The exit quiz finishes the lesson on the server; fetch it again so the page shows that. */
+  const refreshEntry = async () => {
+    try {
+      const res = await getTodayEntries();
+      const found = res.data.find((e: PlannerEntry) => e.id === entryId);
+      if (found) setEntry(found);
+    } catch {
+      // The tick will show next time the page loads.
+    }
+  };
 
   const handleToggle = async () => {
     if (!entry) return;
@@ -132,7 +152,11 @@ export default function LessonDetailPage() {
         </div>
 
         {/* The lesson itself, on whichever site it comes from */}
-        {lessonUrl ? (
+        {oak === "checking" ? (
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center text-gray-400">Getting your lesson ready…</div>
+        ) : oak && oak.available ? (
+          <OakLesson entryId={entry.id} lesson={oak} isChild onComplete={refreshEntry} />
+        ) : lessonUrl ? (
           <div className="space-y-4">
             <a
               href={lessonUrl}

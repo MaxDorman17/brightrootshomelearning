@@ -318,6 +318,38 @@ class OakQuizResult(Base):
     fetched_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class OakLesson(Base):
+    """A copy of one Oak National Academy lesson fetched through Oak's API: its quizzes and where its video is.
+    Shared by every family, and refreshed now and then, so pages don't call Oak each time they open."""
+    __tablename__ = "oak_lessons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(200), nullable=False, unique=True, index=True)
+    data = Column(Text, nullable=False)  # JSON
+    fetched_at = Column(DateTime(timezone=True), nullable=False)
+
+
+class OakLessonAttempt(Base):
+    """One child's quizzes for an Oak lesson done inside Bright Roots. Each quiz keeps the child's best score."""
+    __tablename__ = "oak_lesson_attempts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    entry_id = Column(Integer, ForeignKey("planner_entries.id", ondelete="CASCADE"), nullable=False, index=True)
+    child_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    lesson_slug = Column(String(200), nullable=False)
+    starter_score = Column(Integer, nullable=True)
+    starter_total = Column(Integer, nullable=True)
+    starter_answers = Column(Text, nullable=True)  # JSON, the answers behind the best score
+    starter_at = Column(DateTime(timezone=True), nullable=True)
+    exit_score = Column(Integer, nullable=True)
+    exit_total = Column(Integer, nullable=True)
+    exit_answers = Column(Text, nullable=True)
+    exit_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint("entry_id", "child_id", name="uq_oak_lesson_attempt"),)
+
+
 class SpellingResult(Base):
     __tablename__ = "spelling_results"
 

@@ -864,9 +864,10 @@ export default function ChildDashboard() {
             {/* Open lesson link */}
             {modal.entry.lesson.lesson_url && (
               <a
-                href={modal.entry.lesson.lesson_url}
-                target="_blank"
-                rel="noopener noreferrer"
+                // An Oak lesson opens on its own Bright Roots page, where the quizzes and video are; anything else opens where it lives.
+                {...(isOakLessonUrl(modal.entry.lesson.lesson_url)
+                  ? { href: `/child/lesson/${modal.entry.id}` }
+                  : { href: modal.entry.lesson.lesson_url, target: "_blank", rel: "noopener noreferrer" })}
                 className="flex items-center gap-3 bg-brand-deep hover:bg-brand-leaf text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
               >
                 <span className="text-lg">▶</span>

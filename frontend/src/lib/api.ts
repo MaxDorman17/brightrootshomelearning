@@ -226,6 +226,34 @@ export const finishSheet = (sheet: SheetRef, score: number, total: number) =>
 // A grown-up puts one sheet, or a topic set in order, into the planner. A set goes one sheet a day, skipping weekends.
 export const planSheets = (sheets: (SheetRef & { intro: string })[], scheduled_date: string, child_ids: number[]) =>
   api.post<{ planned: number; first_day: string; last_day: string }>("/api/worksheets/plan", { sheets, scheduled_date, child_ids });
+// Oak lessons done inside Bright Roots. Quizzes are marked on the server; only a child's quiz is saved.
+export type OakQuizScores = { starter_score: number | null; starter_total: number | null; exit_score: number | null; exit_total: number | null };
+export type OakLessonPage =
+  | { available: false }
+  | {
+      available: true;
+      title: string;
+      subject: string | null;
+      outcome: string | null;
+      keywords: { word: string; meaning: string }[];
+      guidance: unknown;
+      starter: import("@/lib/worksheets").Question[];
+      exit: import("@/lib/worksheets").Question[];
+      video_url: string | null;
+      has_captions: boolean;
+      has_worksheet: boolean;
+      oak_url: string;
+      licence_url: string;
+      attempt: OakQuizScores;
+    };
+export const getOakLesson = (entryId: number) => api.get<OakLessonPage>(`/api/oak-lessons/entry/${entryId}`);
+export const getOakCaptions = (entryId: number) => api.get<string>(`/api/oak-lessons/entry/${entryId}/captions`, { responseType: "text" });
+export const oakWorksheetUrl = (entryId: number) => `${API_URL}/api/oak-lessons/entry/${entryId}/worksheet`;
+export const submitOakQuiz = (entryId: number, which: "starter" | "exit", answers: Record<string, unknown>) =>
+  api.post<{ score: number; total: number; right: boolean[]; first_time: boolean; new_best: boolean; lesson_complete: boolean; attempt: OakQuizScores }>(
+    `/api/oak-lessons/entry/${entryId}/quiz/${which}`,
+    { answers }
+  );
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });

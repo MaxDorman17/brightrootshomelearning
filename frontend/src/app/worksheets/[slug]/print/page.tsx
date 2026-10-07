@@ -140,12 +140,13 @@ function paperWording(q: Question): string {
 function PaperAnswer({ q, seed }: { q: Question; seed: string }) {
   switch (q.type) {
     case "choice":
+    case "pick":
       return (
         <p className="flex flex-wrap gap-x-8 gap-y-2 text-base">
-          <span className="text-sm text-brand-earth">Circle one:</span>
+          <span className="text-sm text-brand-earth">{q.type === "pick" ? "Circle every right one:" : "Circle one:"}</span>
           {q.options.map((option, i) => (
             <span key={i} className="font-bold">
-              {option}
+              {typeof option === "string" ? option : `Picture ${i + 1}`}
             </span>
           ))}
         </p>

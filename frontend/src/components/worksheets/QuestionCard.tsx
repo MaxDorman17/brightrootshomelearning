@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import MathText from "@/components/worksheets/MathText";
 import Visual from "@/components/worksheets/Visual";
-import { answerText, isRight, shuffled, type Question } from "@/lib/worksheets";
+import { answerText, isRight, shuffled, type Option, type Question } from "@/lib/worksheets";
 
 type Props = {
   q: Question;
@@ -39,7 +40,7 @@ export default function QuestionCard({ q, number, seed, color, value, onChange, 
         </span>
         <p className="min-w-0 flex-1 text-lg font-bold leading-snug text-brand-charcoal">
           <span className="sr-only">Question {number}. </span>
-          {q.q}
+          <MathText text={q.q} />
         </p>
         {marked && (
           <span className={`shrink-0 text-sm font-extrabold ${right ? "text-green-700" : "text-amber-700"}`}>
@@ -58,8 +59,16 @@ export default function QuestionCard({ q, number, seed, color, value, onChange, 
         </div>
       )}
 
+      {q.image && (
+        <div className="mt-3 flex justify-center rounded-xl bg-[#FAF6EC] p-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={q.image.url} alt={q.image.alt} loading="lazy" className="max-h-64 max-w-full rounded-lg object-contain" />
+        </div>
+      )}
+
       <div className="mt-4">
         {q.type === "choice" && <Choice q={q} value={value} onChange={onChange} marked={marked} />}
+        {q.type === "pick" && <Pick q={q} value={value} onChange={onChange} marked={marked} />}
         {q.type === "type" && <Typed q={q} number={number} value={value} onChange={onChange} marked={marked} />}
         {q.type === "gap" && <Gap q={q} value={value} onChange={onChange} marked={marked} />}
         {q.type === "match" && <Match q={q} seed={seed} color={color} value={value} onChange={onChange} marked={marked} />}
@@ -68,7 +77,11 @@ export default function QuestionCard({ q, number, seed, color, value, onChange, 
 
       {marked && (!right || q.why) && (
         <p className={`mt-3 text-sm font-semibold ${right ? "text-green-800" : "text-amber-900"}`}>
-          {!right && <>The answer is {answerText(q)}. </>}
+          {!right && (
+            <>
+              The answer is <MathText text={answerText(q)} />.{" "}
+            </>
+          )}
           {q.why}
         </p>
       )}
@@ -99,10 +112,50 @@ function Choice({ q, value, onChange, marked }: Part<"choice">) {
               : "border-brand-charcoal/15 bg-white text-brand-charcoal/50";
         return (
           <button key={i} type="button" disabled={marked} aria-pressed={chosen} onClick={() => onChange(i)} className={`${chip} ${style}`}>
-            {option}
+            <Shown option={option} />
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/** An option's words, or its picture. */
+function Shown({ option }: { option: Option }) {
+  if (typeof option === "string") return <MathText text={option} />;
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={option.image.url} alt={option.image.alt} loading="lazy" className="max-h-36 max-w-[14rem] rounded-md object-contain" />;
+}
+
+/** Like Choice, but with more than one right answer: tap each one. */
+function Pick({ q, value, onChange, marked }: Part<"pick">) {
+  const chosen: number[] = Array.isArray(value) ? (value as number[]) : [];
+  const toggle = (i: number) => {
+    const next = chosen.includes(i) ? chosen.filter((c) => c !== i) : [...chosen, i];
+    onChange(next.length ? next : undefined);
+  };
+  return (
+    <div>
+      {!marked && <p className="mb-2 text-sm font-semibold text-brand-earth/80">Choose {q.answers.length}.</p>}
+      <div className="flex flex-wrap gap-2" role="group" aria-label={`Choose ${q.answers.length} answers`}>
+        {q.options.map((option, i) => {
+          const on = chosen.includes(i);
+          const style = !marked
+            ? on
+              ? picked
+              : idle
+            : q.answers.includes(i)
+              ? "border-green-700 bg-green-100 text-green-900"
+              : on
+                ? "border-amber-600 bg-amber-100 text-amber-900"
+                : "border-brand-charcoal/15 bg-white text-brand-charcoal/50";
+          return (
+            <button key={i} type="button" disabled={marked} aria-pressed={on} onClick={() => toggle(i)} className={`${chip} ${style}`}>
+              <Shown option={option} />
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -238,7 +291,7 @@ function Match({ q, seed, color, value, onChange, marked }: Part<"match"> & { se
     <div>
       {!marked && (
         <p className="mb-2 text-sm font-semibold text-brand-earth/80">
-          {holding ? `Now tap what goes with ${holding}.` : "Tap one on the left, then what goes with it on the right."}
+          {holding ? "Now tap what goes with it on the right." : "Tap one on the left, then what goes with it on the right."}
         </p>
       )}
       <div className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -261,7 +314,7 @@ function Match({ q, seed, color, value, onChange, marked }: Part<"match"> & { se
               }`}
             >
               {made[l] && tag(l)}
-              {l}
+              <MathText text={l} />
             </button>
           ))}
         </div>
@@ -280,7 +333,7 @@ function Match({ q, seed, color, value, onChange, marked }: Part<"match"> & { se
                 }`}
               >
                 {owner && tag(owner)}
-                {r}
+                <MathText text={r} />
               </button>
             );
           })}
@@ -316,7 +369,7 @@ function Order({ q, seed, value, onChange, marked }: Part<"order"> & { seed: str
                       : "border-brand-charcoal bg-white text-brand-charcoal"
                   }`}
                 >
-                  {item}
+                  <MathText text={item} />
                 </button>
               ) : (
                 <span className="min-h-[44px] flex-1 rounded-xl border-2 border-dashed border-brand-charcoal/30 bg-[#FAF6EC]" />
@@ -331,7 +384,7 @@ function Order({ q, seed, value, onChange, marked }: Part<"order"> & { seed: str
             .filter((item) => !chosen.includes(item))
             .map((item) => (
               <button key={item} type="button" onClick={() => save([...chosen, item])} className={`${chip} ${idle}`}>
-                {item}
+                <MathText text={item} />
               </button>
             ))}
         </div>

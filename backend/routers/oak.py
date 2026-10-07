@@ -17,7 +17,7 @@ from openpyxl.utils import get_column_letter
 from clock import uk_today
 from auth import get_current_user, require_parent
 from database import get_db, SessionLocal
-from models import User, OakQuizResult, PlannerEntry, PlannerCompletion, Lesson, TestResult
+from models import User, OakQuizResult, OakLessonAttempt, PlannerEntry, PlannerCompletion, Lesson, TestResult
 from config import settings
 
 router = APIRouter(prefix="/api/oak", tags=["oak"])
@@ -787,9 +787,18 @@ def get_today_quiz_results(
         ).all()
     } if canonical_urls else {}
 
+    # Quizzes done inside Bright Roots come first; a share link is only used where there are none.
+    here = {
+        (attempt.entry_id, attempt.child_id): attempt
+        for attempt in db.query(OakLessonAttempt).filter(
+            OakLessonAttempt.entry_id.in_({p["entry_id"] for p in pending})
+        ).all()
+        if attempt.starter_total or attempt.exit_total
+    } if pending else {}
+
     rows = []
     for item in pending:
-        result = cached.get(item["share_url"]) if item["share_url"] else None
+        result = here.get((item["entry_id"], item["child_id"])) or (cached.get(item["share_url"]) if item["share_url"] else None)
         rows.append({
             "entry_id": item["entry_id"],
             "child_id": item["child_id"],

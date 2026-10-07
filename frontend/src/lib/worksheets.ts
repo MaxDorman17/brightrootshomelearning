@@ -26,16 +26,24 @@ export type Visual =
   | { kind: "clock"; hour: number; minute: number }
   | { kind: "blocks"; tens: number; ones: number };
 
+/** A picture from somewhere else, used by Oak's quiz questions. */
+export type Picture = { url: string; alt: string; width?: number | null; height?: number | null };
+/** Something to choose: words, or a picture. */
+export type Option = string | { image: Picture };
+
 type Shared = {
   q: string;
   visual?: Visual;
+  image?: Picture;
   /** A short explanation shown once the sheet has been checked. */
   why?: string;
 };
 
 export type Question =
   /** Tap the right answer. */
-  | (Shared & { type: "choice"; options: string[]; answer: number })
+  | (Shared & { type: "choice"; options: Option[]; answer: number })
+  /** Tap every right answer: there is more than one. */
+  | (Shared & { type: "pick"; options: Option[]; answers: number[] })
   /** Type a number or a word. `after` is shown after the box, e.g. "p" or "o'clock". */
   | (Shared & { type: "type"; answer: string | string[]; after?: string })
   /** Fill each ___ in `text` from the word bank. */
@@ -87,6 +95,8 @@ export function isAnswered(q: Question, a: unknown): boolean {
   switch (q.type) {
     case "choice":
       return typeof a === "number";
+    case "pick":
+      return Array.isArray(a) && a.length > 0;
     case "type":
       return typeof a === "string" && a.trim() !== "";
     case "gap":
@@ -103,6 +113,8 @@ export function isRight(q: Question, a: unknown): boolean {
   switch (q.type) {
     case "choice":
       return a === q.answer;
+    case "pick":
+      return (a as number[]).length === q.answers.length && q.answers.every((i) => (a as number[]).includes(i));
     case "type":
       return ([] as string[]).concat(q.answer).some((wanted) => sameText(a as string, wanted));
     case "gap":
@@ -116,9 +128,12 @@ export function isRight(q: Question, a: unknown): boolean {
 
 /** The right answer in words, for the feedback line and the printed answer page. */
 export function answerText(q: Question): string {
+  const said = (option: Option, i: number) => (typeof option === "string" ? option : `picture ${i + 1}`);
   switch (q.type) {
     case "choice":
-      return q.options[q.answer];
+      return said(q.options[q.answer], q.answer);
+    case "pick":
+      return q.answers.map((i) => said(q.options[i], i)).join(" and ");
     case "type":
       return `${([] as string[]).concat(q.answer)[0]}${q.after ? (/^[a-z]$/i.test(q.after) ? q.after : ` ${q.after}`) : ""}`;
     case "gap":

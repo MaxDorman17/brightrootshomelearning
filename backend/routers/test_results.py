@@ -82,6 +82,18 @@ def _resolve_child(db: Session, current_user: User, child_id: Optional[int]) -> 
 
 
 def _oak_results_for_child(db: Session, child: User, parent_id: int) -> list:
+    """Every Oak lesson quiz score for this child: quizzes done inside Bright Roots, and older ones read
+    from an Oak results share link. A lesson with both shows the one done here."""
+    from routers.oak_lessons import attempts_for_child  # imported here to avoid a circular import
+
+    out = attempts_for_child(db, child, parent_id)
+    here = {r["entry_id"] for r in out}
+    out += [r for r in _oak_share_results_for_child(db, child, parent_id) if r["entry_id"] not in here]
+    out.sort(key=lambda r: r["scheduled_date"], reverse=True)
+    return out
+
+
+def _oak_share_results_for_child(db: Session, child: User, parent_id: int) -> list:
     """Every completed lesson for this child whose work link is an Oak results share link."""
     rows = []
 
