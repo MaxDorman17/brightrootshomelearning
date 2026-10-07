@@ -75,6 +75,23 @@ def _days_off(db: Session, parent: User) -> set:
     return {d.date for d in db.query(DayOff).filter(DayOff.parent_id == parent.id).all()}
 
 
+def teaching_days(db: Session, parent: User, start: date, count: int) -> list:
+    """The days for `count` lessons starting from `start`, one a day. A single lesson goes on the day
+    asked for. Several skip weekends and the family's days off, so nothing lands on a holiday."""
+    if count <= 1:
+        return [start]
+    days_off = _days_off(db, parent)
+    days, day = [], start
+    # A year of looking ahead is far more than any unit needs, and stops a calendar full of days off going on for ever.
+    for _ in range(366):
+        if day.weekday() < 5 and day not in days_off:
+            days.append(day)
+            if len(days) == count:
+                return days
+        day += timedelta(days=1)
+    raise HTTPException(status_code=400, detail="There are not enough free days in the next year to fit those in. Check your days off.")
+
+
 def _already_planned(db: Session, lesson_id: int, assigned_to: Optional[int], day: date) -> bool:
     return db.query(PlannerEntry.id).filter(
         PlannerEntry.lesson_id == lesson_id,

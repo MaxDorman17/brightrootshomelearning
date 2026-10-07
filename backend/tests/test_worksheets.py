@@ -117,3 +117,11 @@ def test_a_topic_set_is_spread_over_weekdays(family):
     kid = family.child_client(child)
     assert kid.post("/api/worksheets/plan", json={"sheets": [SHEET], "scheduled_date": friday.isoformat()}).status_code == 403
     assert family.parent.post("/api/worksheets/plan", json={"sheets": [], "scheduled_date": friday.isoformat()}).status_code == 422
+
+
+def test_a_topic_set_skips_days_off(family):
+    child = family.add_child()
+    assert family.parent.post("/api/days-off/", json={"date": "2026-10-12", "reason": "Holiday"}).status_code == 200
+    sheets = [{**SHEET, "slug": f"sheet-{n}", "title": f"Sheet {n}"} for n in range(2)]
+    planned = family.parent.post("/api/worksheets/plan", json={"sheets": sheets, "scheduled_date": "2026-10-09", "child_ids": [child["id"]]})
+    assert planned.json() == {"planned": 2, "first_day": "2026-10-09", "last_day": "2026-10-13"}

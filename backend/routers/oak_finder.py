@@ -21,6 +21,7 @@ from database import get_db
 from models import Lesson, OakLesson, PlannerEntry, User
 from routers.moments import _clean_child_ids
 from routers.oak_lessons import KEEP_FOR, _api_base, _headers
+from routers.planner import teaching_days
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/oak-finder", tags=["oak-finder"])
@@ -180,7 +181,7 @@ class PlanLesson(BaseModel):
 
 
 class PlanIn(BaseModel):
-    """One lesson, or a unit's lessons in order. Several go one a day from the starting day, skipping weekends."""
+    """One lesson, or a unit's lessons in order. Several go one a day from the starting day, skipping weekends and days off."""
     lessons: list[PlanLesson]
     subject: str
     unit_title: str = ""
@@ -208,11 +209,8 @@ def plan_lessons(body: PlanIn, db: Session = Depends(get_db), current_user: User
     """Put Oak lessons in the planner. They open inside Bright Roots where Oak's licence allows."""
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     unit = body.unit_title.strip()[:200]
-    day = body.scheduled_date
-    days = []
-    for item in body.lessons:
-        while len(body.lessons) > 1 and day.weekday() >= 5:
-            day += timedelta(days=1)
+    days = teaching_days(db, current_user, body.scheduled_date, len(body.lessons))
+    for item, day in zip(body.lessons, days):
         lesson = Lesson(
             title=item.title,
             subject=body.subject,
@@ -225,7 +223,5 @@ def plan_lessons(body: PlanIn, db: Session = Depends(get_db), current_user: User
         db.flush()
         for child_id in children or [None]:
             db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
-        days.append(day)
-        day += timedelta(days=1)
     db.commit()
     return {"planned": len(days), "first_day": days[0], "last_day": days[-1]}

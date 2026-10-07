@@ -129,7 +129,7 @@ export default function PlanSheets({
                 <input id="plan-sheets-day" type="date" required value={day} onChange={(e) => setDay(e.target.value)} className={input} autoFocus />
                 {howMany > 1 && (
                   <p className="mt-1.5 text-xs text-brand-earth/80">
-                    {howMany} {noun}, one each day in order, skipping weekends. You can move them in the planner afterwards.
+                    {howMany} {noun}, one each day in order, skipping weekends and your days off. You can move them in the planner afterwards.
                   </p>
                 )}
               </div>

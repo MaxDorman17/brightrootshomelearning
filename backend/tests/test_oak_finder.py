@@ -124,3 +124,21 @@ def test_adding_a_unit_to_the_planner(family, oak):
     bad = {"lessons": [{"slug": "../x", "title": "X"}], "subject": "Maths", "scheduled_date": friday.isoformat()}
     assert family.parent.post("/api/oak-finder/plan", json=bad).status_code == 422
     assert family.parent.post("/api/oak-finder/plan", json={**bad, "lessons": []}).status_code == 422
+
+
+def test_a_unit_skips_weekends_and_days_off(family, oak):
+    child = family.add_child()
+    # Friday 9 October, then a week off (Monday 12 to Friday 16), so the next free day is Monday 19.
+    for day in range(12, 17):
+        assert family.parent.post("/api/days-off/", json={"date": f"2026-10-{day}", "reason": "October holiday"}).status_code == 200
+    lessons = [{"slug": f"lesson-{n}", "title": f"Lesson {n}"} for n in range(3)]
+    made = family.parent.post("/api/oak-finder/plan", json={
+        "lessons": lessons, "subject": "Maths", "scheduled_date": "2026-10-09", "child_ids": [child["id"]],
+    }).json()
+    assert made == {"planned": 3, "first_day": "2026-10-09", "last_day": "2026-10-20"}
+
+    # Starting on a day off moves the start to the next free day. A single lesson goes exactly where it is put.
+    again = family.parent.post("/api/oak-finder/plan", json={"lessons": lessons[:2], "subject": "Maths", "scheduled_date": "2026-10-14"}).json()
+    assert (again["first_day"], again["last_day"]) == ("2026-10-19", "2026-10-20")
+    one = family.parent.post("/api/oak-finder/plan", json={"lessons": lessons[:1], "subject": "Maths", "scheduled_date": "2026-10-14"}).json()
+    assert one["first_day"] == "2026-10-14"

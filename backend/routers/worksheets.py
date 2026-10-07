@@ -17,6 +17,7 @@ from auth import get_current_user, require_child, require_parent
 from database import get_db
 from models import Lesson, PlannerCompletion, PlannerEntry, User, WorksheetScore
 from routers.moments import _clean_child_ids
+from routers.planner import teaching_days
 from routers.test_results import _resolve_child
 
 router = APIRouter(prefix="/api/worksheets", tags=["worksheets"])
@@ -84,7 +85,7 @@ class PlanSheet(SheetIn):
 
 
 class PlanIn(BaseModel):
-    """One sheet, or a topic set in teaching order. A set goes one sheet a day from the starting day, skipping weekends."""
+    """One sheet, or a topic set in teaching order. A set goes one sheet a day from the starting day, skipping weekends and days off."""
     sheets: list[PlanSheet]
     scheduled_date: date
     child_ids: list[int] = []
@@ -225,11 +226,8 @@ def finish_sheet(body: FinishIn, db: Session = Depends(get_db), current_user: Us
 def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     """Put worksheets in the planner, so they turn up in the child's Today list like any other lesson."""
     children = _clean_child_ids(db, current_user.id, body.child_ids)
-    day = body.scheduled_date
-    days = []
-    for sheet in body.sheets:
-        while len(body.sheets) > 1 and day.weekday() >= 5:
-            day += timedelta(days=1)
+    days = teaching_days(db, current_user, body.scheduled_date, len(body.sheets))
+    for sheet, day in zip(body.sheets, days):
         lesson = Lesson(
             title=sheet.title,
             subject=sheet.subject,
@@ -243,8 +241,6 @@ def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User 
         db.flush()
         for child_id in children or [None]:
             db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
-        days.append(day)
-        day += timedelta(days=1)
     db.commit()
     return {"planned": len(days), "first_day": days[0], "last_day": days[-1]}
 
