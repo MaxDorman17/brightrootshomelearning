@@ -9,7 +9,7 @@ import WorksheetPicture from "@/components/worksheets/WorksheetPicture";
 import { finishSheet, getMySheet, saveSheetProgress, type SheetRef } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { comicBySlug } from "@/lib/comics";
-import { isAnswered, isRight, worksheetBySlug, type Answers } from "@/lib/worksheets";
+import { isAnswered, isRight, nextSheet, setOfSheet, worksheetBySlug, type Answers } from "@/lib/worksheets";
 
 const btn = "rounded-xl px-5 py-3 text-base font-extrabold transition-colors";
 
@@ -83,6 +83,8 @@ export default function WorksheetPage() {
   const answered = sheet.questions.filter((q, i) => isAnswered(q, answers[i])).length;
   const score = sheet.questions.filter((q, i) => isRight(q, answers[i])).length;
   const comic = sheet.comic ? comicBySlug(sheet.comic) : undefined;
+  const set = setOfSheet(sheet.slug);
+  const following = nextSheet(sheet.slug);
 
   const setAnswer = (i: number, value: unknown) => {
     unsaved.current = true;
@@ -136,7 +138,8 @@ export default function WorksheetPage() {
           <WorksheetPicture sheet={sheet} className="h-36 w-full shrink-0 sm:h-auto sm:w-52" />
           <div className="min-w-0 p-5">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em]" style={{ color: sheet.color }}>
-              {sheet.subject} · ages {sheet.ages}
+              {sheet.subject}
+              {set && ` · ${set.title}`} · ages {sheet.ages}
             </p>
             <h1 className="mt-1 text-3xl font-extrabold leading-tight text-brand-charcoal">{sheet.title}</h1>
             <p className="mt-2 text-base text-brand-earth">{sheet.intro}</p>
@@ -229,11 +232,17 @@ export default function WorksheetPage() {
                   Try the ones I missed
                 </button>
               )}
+              {/* One clear thing to do next: fix the misses, or move on to the next sheet. */}
+              {score === total && following && (
+                <Link href={`/worksheets/${following.slug}`} className={`${btn} bg-brand-sage text-white hover:bg-brand-sagedark`}>
+                  Next: {following.title}
+                </Link>
+              )}
               <button type="button" onClick={() => retry(false)} className={`${btn} border-2 border-brand-line bg-white text-brand-sage hover:border-brand-softsage`}>
                 Start again
               </button>
               <Link href="/worksheets" className={`${btn} border-2 border-brand-line bg-white text-brand-sage hover:border-brand-softsage`}>
-                Choose another sheet
+                Back to worksheets
               </Link>
             </div>
           </div>
