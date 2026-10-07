@@ -1,8 +1,8 @@
 export const SITE_URL = "https://brightrootshomelearning.co.uk";
 export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "hello@brightrootshomelearning.co.uk";
 export const LEGAL_UPDATED = "29 September 2026";
-// The privacy and cookie policies were updated again for the newer features (extra grown-ups, notes, languages...).
-export const PRIVACY_UPDATED = "4 October 2026";
+// The privacy and cookie policies were updated again for worksheets and Oak lessons done inside Bright Roots.
+export const PRIVACY_UPDATED = "7 October 2026";
 // The terms changed when the free trial went from 7 to 14 days.
 export const TERMS_UPDATED = "3 October 2026";
 

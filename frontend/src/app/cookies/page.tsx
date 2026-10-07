@@ -99,7 +99,8 @@ const sections = [
     body: (
       <p>
         Lessons and resources link to other websites, such as Oak National Academy, BBC Bitesize and YouTube.
-        Once you visit them, their own cookie policies apply.
+        Once you visit them, their own cookie policies apply. Oak lesson videos shown inside Bright Roots are
+        played from Oak&apos;s video host. Bright Roots sets no extra cookies for this.
       </p>
     ),
   },

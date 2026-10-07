@@ -48,7 +48,8 @@ const sections = [
           </li>
           <li>
             <strong>Learning records:</strong> your timetable, plans and lessons, completed work, notes and
-            feedback, reading, spellings, language practice, test and quiz results, exam entries and results
+            feedback, reading, spellings, language practice, test and quiz results, answers and scores from Bright Roots
+            worksheets, comic quizzes and Oak lesson quizzes, exam entries and results
             (such as the exam centre, dates and fees you note down), trips and days out, game scores, study time,
             P.E., outdoor and club activities, stars, rewards and badges (including any you make yourself),
             reminders, journal entries, notes you leave for your children and their replies, and anything you
@@ -175,8 +176,20 @@ const sections = [
           working straight away.
         </p>
         <p>
-          When you add an Oak National Academy results link, Bright Roots fetches the quiz scores from Oak.
-          We don&apos;t send Oak any information about your family.
+          Oak National Academy lessons can be done inside Bright Roots. We fetch the lesson&apos;s quizzes, video
+          link and worksheet link from Oak, and we store your child&apos;s quiz answers and scores ourselves, as
+          part of their learning record. We don&apos;t send Oak your child&apos;s name, answers, scores or anything
+          else about your family.
+        </p>
+        <p>
+          The lesson video, the pictures in a quiz and the worksheet are delivered straight from Oak&apos;s own
+          servers and the companies that host files for Oak. As with any website, those servers see the internet
+          address of the device asking for them, but not who your child is. If a lesson can&apos;t be shown inside
+          Bright Roots, it opens on Oak&apos;s website, where Oak&apos;s own privacy policy applies.
+        </p>
+        <p>
+          If you added an Oak results link in the past, Bright Roots fetched the quiz scores from that link. Those
+          scores are kept.
         </p>
         <p>
           We will only share information in any other way if the law requires it, for example if we receive a
