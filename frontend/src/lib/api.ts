@@ -263,6 +263,9 @@ export const getOakUnits = (course: string, year: number) => api.get<{ groups: O
 export const getOakUnit = (slug: string) => api.get<OakUnit>(`/api/oak-finder/unit/${slug}`);
 export const planOakLessons = (body: { lessons: { slug: string; title: string }[]; subject: string; unit_title: string; scheduled_date: string; child_ids: number[] }) =>
   api.post<{ planned: number; first_day: string; last_day: string }>("/api/oak-finder/plan", body);
+// Lessons still to do that are sitting on a day off, and moving them (and what follows) to the next free days.
+export const getLessonsOnDaysOff = () => api.get<{ count: number }>("/api/planner/on-days-off");
+export const moveLessonsOffDaysOff = () => api.post<{ moved: number }>("/api/planner/move-off-days-off");
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });

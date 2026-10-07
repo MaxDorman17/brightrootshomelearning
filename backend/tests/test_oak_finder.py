@@ -138,7 +138,82 @@ def test_a_unit_skips_weekends_and_days_off(family, oak):
     assert made == {"planned": 3, "first_day": "2026-10-09", "last_day": "2026-10-20"}
 
     # Starting on a day off moves the start to the next free day. A single lesson goes exactly where it is put.
+    # (Monday 19 and Tuesday 20 already have Maths from the unit above, so these take the next two days.)
     again = family.parent.post("/api/oak-finder/plan", json={"lessons": lessons[:2], "subject": "Maths", "scheduled_date": "2026-10-14"}).json()
-    assert (again["first_day"], again["last_day"]) == ("2026-10-19", "2026-10-20")
+    assert (again["first_day"], again["last_day"]) == ("2026-10-21", "2026-10-22")
     one = family.parent.post("/api/oak-finder/plan", json={"lessons": lessons[:1], "subject": "Maths", "scheduled_date": "2026-10-14"}).json()
     assert one["first_day"] == "2026-10-14"
+
+
+WEEK = {"Monday": ["Maths", "History"], "Tuesday": ["English"], "Wednesday": ["Maths"], "Thursday": ["English"], "Friday": ["English"]}
+
+
+def _dates(family, child_id=None):
+    """Every planned lesson as (date, title, child), oldest first."""
+    from models import Lesson, PlannerEntry
+
+    with SessionLocal() as db:
+        rows = (
+            db.query(PlannerEntry.scheduled_date, Lesson.title, PlannerEntry.assigned_to)
+            .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+            .order_by(PlannerEntry.scheduled_date, PlannerEntry.id)
+            .all()
+        )
+    return [(d.isoformat(), title) for d, title, who in rows if child_id is None or who == child_id]
+
+
+def test_a_unit_follows_the_timetable(family, oak):
+    one, two = family.add_child("One"), family.add_child("Two")
+    assert family.parent.put("/api/timetable/", json={"config": WEEK}).status_code == 200
+    # Two has a week of their own, with Maths on Tuesdays and Thursdays.
+    own = {**WEEK, "Monday": [], "Tuesday": ["Maths"], "Wednesday": [], "Thursday": ["Maths"]}
+    assert family.parent.put("/api/timetable/", params={"child_id": two["id"]}, json={"config": own}).status_code == 200
+
+    lessons = [{"slug": f"lesson-{n}", "title": f"Lesson {n}"} for n in range(3)]
+    made = family.parent.post("/api/oak-finder/plan", json={
+        "lessons": lessons, "subject": "Maths", "scheduled_date": "2026-11-02", "child_ids": [one["id"], two["id"]],
+    }).json()
+    # Monday 2 November. One has Maths on Mondays and Wednesdays; Two on Tuesdays and Thursdays.
+    assert _dates(family, one["id"]) == [("2026-11-02", "Lesson 0"), ("2026-11-04", "Lesson 1"), ("2026-11-09", "Lesson 2")]
+    assert _dates(family, two["id"]) == [("2026-11-03", "Lesson 0"), ("2026-11-05", "Lesson 1"), ("2026-11-10", "Lesson 2")]
+    assert made == {"planned": 3, "first_day": "2026-11-02", "last_day": "2026-11-10"}
+
+    # A second unit of the same subject queues up behind the first instead of doubling up.
+    more = family.parent.post("/api/oak-finder/plan", json={
+        "lessons": [{"slug": "next-a", "title": "Next A"}, {"slug": "next-b", "title": "Next B"}], "subject": "Maths", "scheduled_date": "2026-11-02", "child_ids": [one["id"]],
+    }).json()
+    assert (more["first_day"], more["last_day"]) == ("2026-11-11", "2026-11-16")
+
+    # A subject that is not on the timetable at all goes on every free weekday.
+    odd = family.parent.post("/api/oak-finder/plan", json={
+        "lessons": lessons[:2], "subject": "Spanish", "scheduled_date": "2026-11-02", "child_ids": [one["id"]],
+    }).json()
+    assert (odd["first_day"], odd["last_day"]) == ("2026-11-02", "2026-11-03")
+
+
+def test_moving_lessons_off_days_off_keeps_them_in_order(family, oak):
+    from datetime import timedelta
+
+    child = family.add_child()
+    assert family.parent.put("/api/timetable/", json={"config": WEEK}).status_code == 200
+    # Start from the first Monday at least a week away, so every date is in the future whenever this runs.
+    monday = date.today() + timedelta(days=7 + (7 - date.today().weekday()) % 7)
+    lessons = [{"slug": f"lesson-{n}", "title": f"Lesson {n}"} for n in range(4)]
+    family.parent.post("/api/oak-finder/plan", json={"lessons": lessons, "subject": "Maths", "scheduled_date": monday.isoformat(), "child_ids": [child["id"]]})
+    family.parent.post("/api/oak-finder/plan", json={"lessons": [{"slug": "kings", "title": "Kings"}], "subject": "History", "scheduled_date": monday.isoformat(), "child_ids": [child["id"]]})
+    day = lambda n: (monday + timedelta(days=n)).isoformat()
+    assert _dates(family, child["id"]) == [(day(0), "Lesson 0"), (day(0), "Kings"), (day(2), "Lesson 1"), (day(7), "Lesson 2"), (day(9), "Lesson 3")]
+    assert family.parent.get("/api/planner/on-days-off").json() == {"count": 0}
+
+    # A holiday is added afterwards over the first Wednesday and the second Monday.
+    for n in (2, 7):
+        family.parent.post("/api/days-off/", json={"date": day(n), "reason": "Holiday"})
+    assert family.parent.get("/api/planner/on-days-off").json() == {"count": 2}
+
+    moved = family.parent.post("/api/planner/move-off-days-off")
+    assert moved.status_code == 200 and moved.json() == {"moved": 3}
+    # Maths runs on in the same order on the next free Maths days. History, and the first lesson, did not move.
+    assert _dates(family, child["id"]) == [(day(0), "Lesson 0"), (day(0), "Kings"), (day(9), "Lesson 1"), (day(14), "Lesson 2"), (day(16), "Lesson 3")]
+    assert family.parent.get("/api/planner/on-days-off").json() == {"count": 0}
+    assert family.parent.post("/api/planner/move-off-days-off").json() == {"moved": 0}
+    assert family.child_client(child).post("/api/planner/move-off-days-off").status_code == 403

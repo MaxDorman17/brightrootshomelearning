@@ -16,6 +16,7 @@ import UnitAdder, { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitA
 import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import { DayOff, PlannerEntry, Child, WeeklyGoal, OakQuizResult, WeekQuizScores, LessonScore } from "@/types";
 import Navbar from "@/components/Navbar";
+import DaysOffTidy from "@/components/DaysOffTidy";
 import StarterWeekCard from "@/components/StarterWeekCard";
 import HolidayImporter, { type HolidayRange } from "@/components/HolidayImporter";
 import { Sprig } from "@/components/Decor";
@@ -884,6 +885,8 @@ export default function ParentPlanner() {
         )}
 
         {/* Oak Unit import panel */}
+        <DaysOffTidy watch={`${daysOff.length}:${allEntries.length}`} onMoved={loadData} />
+
         {showOakImport && (
           <div className="mb-4 bg-white/90 rounded-2xl border border-brand-lime/40 shadow-sm p-5">
             <p className="text-sm font-extrabold text-gray-800 mb-1">

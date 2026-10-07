@@ -75,21 +75,118 @@ def _days_off(db: Session, parent: User) -> set:
     return {d.date for d in db.query(DayOff).filter(DayOff.parent_id == parent.id).all()}
 
 
-def teaching_days(db: Session, parent: User, start: date, count: int) -> list:
-    """The days for `count` lessons starting from `start`, one a day. A single lesson goes on the day
-    asked for. Several skip weekends and the family's days off, so nothing lands on a holiday."""
-    if count <= 1:
+WEEK_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+
+def _subject_days(db: Session, parent: User, subject: str, child_id: Optional[int]) -> set:
+    """Which weekdays (0 = Monday) this subject is on for a child, or for the family when it is for everyone.
+    Empty when the subject isn't on that timetable at all."""
+    from routers.timetable import timetable_for  # imported here to avoid a circular import
+
+    week = timetable_for(db, parent.id, child_id)
+    return {i for i, name in enumerate(WEEK_DAYS) if subject in (week.get(name) or [])}
+
+
+def _taken_days(db: Session, parent: User, subject: str, child_id: Optional[int], ignore: Optional[set] = None) -> set:
+    """Days that already have a lesson of this subject for this child (or for everyone)."""
+    query = (
+        db.query(PlannerEntry.id, PlannerEntry.scheduled_date)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(Lesson.created_by == parent.id, Lesson.subject == subject, PlannerEntry.is_extra.is_not(True))
+    )
+    if child_id is not None:
+        query = query.filter(or_(PlannerEntry.assigned_to == child_id, PlannerEntry.assigned_to.is_(None)))
+    return {day for entry_id, day in query.all() if not ignore or entry_id not in ignore}
+
+
+def teaching_days(
+    db: Session, parent: User, start: date, count: int,
+    subject: Optional[str] = None, child_id: Optional[int] = None, ignore: Optional[set] = None,
+) -> list:
+    """The days for `count` lessons from `start`, one a day, placed the way the planner's unit import does:
+    on the days the subject is on the child's timetable, skipping weekends, the family's days off and
+    days that already have a lesson of that subject. A subject that isn't on the timetable goes on
+    every free weekday. A single lesson goes on the day asked for.
+    `ignore` holds planner entries being moved, so their old days don't count as taken."""
+    if count <= 1 and ignore is None:
         return [start]
     days_off = _days_off(db, parent)
+    on_days = _subject_days(db, parent, subject, child_id) if subject else set()
+    taken = _taken_days(db, parent, subject, child_id, ignore) if subject and on_days else set()
     days, day = [], start
-    # A year of looking ahead is far more than any unit needs, and stops a calendar full of days off going on for ever.
-    for _ in range(366):
-        if day.weekday() < 5 and day not in days_off:
+    # Two years of looking ahead is far more than any unit needs, and stops a calendar full of days off going on for ever.
+    for _ in range(730):
+        if day.weekday() < 5 and day not in days_off and day not in taken and (not on_days or day.weekday() in on_days):
             days.append(day)
             if len(days) == count:
                 return days
         day += timedelta(days=1)
-    raise HTTPException(status_code=400, detail="There are not enough free days in the next year to fit those in. Check your days off.")
+    raise HTTPException(status_code=400, detail="There are not enough free days ahead to fit those in. Check your days off and timetable.")
+
+
+def _on_days_off(db: Session, parent: User) -> list:
+    """Lessons from today onwards that are sitting on one of the family's days off and haven't been done."""
+    days_off = _days_off(db, parent)
+    if not days_off:
+        return []
+    return (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .options(joinedload(PlannerEntry.lesson))
+        .filter(
+            Lesson.created_by == parent.id,
+            PlannerEntry.scheduled_date >= uk_today(),
+            PlannerEntry.scheduled_date.in_(days_off),
+            PlannerEntry.is_complete.is_not(True),
+            PlannerEntry.is_extra.is_not(True),
+        )
+        .order_by(PlannerEntry.scheduled_date, PlannerEntry.id)
+        .all()
+    )
+
+
+@router.get("/on-days-off")
+def lessons_on_days_off(db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """How many lessons still to do are sitting on a day off, so the planner can offer to move them."""
+    return {"count": len(_on_days_off(db, current_user))}
+
+
+@router.post("/move-off-days-off")
+def move_off_days_off(db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """Move lessons off days off. For each subject and child, the lessons from the first one on a day off
+    onwards are laid out again in the same order on the next free days for that subject, so a unit
+    stays in sequence. Lessons already done, and anything before the first day off, stay where they are."""
+    moved = 0
+    handled = set()
+    for first in _on_days_off(db, current_user):
+        key = (first.lesson.subject, first.assigned_to)
+        if key in handled:
+            continue
+        handled.add(key)
+        run = (
+            db.query(PlannerEntry)
+            .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+            .filter(
+                Lesson.created_by == current_user.id,
+                Lesson.subject == first.lesson.subject,
+                PlannerEntry.assigned_to == first.assigned_to if first.assigned_to is not None else PlannerEntry.assigned_to.is_(None),
+                PlannerEntry.scheduled_date >= first.scheduled_date,
+                PlannerEntry.is_complete.is_not(True),
+                PlannerEntry.is_extra.is_not(True),
+            )
+            .order_by(PlannerEntry.scheduled_date, PlannerEntry.id)
+            .all()
+        )
+        days = teaching_days(
+            db, current_user, first.scheduled_date, len(run),
+            subject=first.lesson.subject, child_id=first.assigned_to, ignore={e.id for e in run},
+        )
+        for entry, day in zip(run, days):
+            if entry.scheduled_date != day:
+                entry.scheduled_date = day
+                moved += 1
+    db.commit()
+    return {"moved": moved}
 
 
 def _already_planned(db: Session, lesson_id: int, assigned_to: Optional[int], day: date) -> bool:

@@ -148,7 +148,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         intro: "Short sheets of about ten questions that your child fills in on screen. They are marked automatically, and every one can be printed.",
         steps: [
           <>Open <L href="/worksheets">Saplings, then Worksheets</L>. Sheets are grouped by topic, in teaching order. Use the age buttons or the search box to narrow them down.</>,
-          <>Open a sheet and press <b>Add to planner</b>, then choose the day and who it&apos;s for. For a topic with several sheets, <b>Add this topic to the planner</b> puts in one sheet a day, skipping weekends and your days off.</>,
+          <>Open a sheet and press <b>Add to planner</b>, then choose the day and who it&apos;s for. For a topic with several sheets, <b>Add this topic to the planner</b> puts the sheets on the days that subject is on your timetable, skipping your days off.</>,
           "Your child opens the sheet from their Today page, or from Worksheets in their own menu, where they are shown one sheet to do next.",
           "They tap or type their answers. Answers save as they go, so they can stop and come back.",
           <>When they press <b>Check my answers</b>, the sheet is marked and shows what was right. They can try the ones they missed, and a planned sheet ticks itself off.</>,
@@ -168,7 +168,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           "For Years 10 and 11, also pick the exam board and the course, such as Biology Higher.",
           "Open a unit to read what it covers and see its lessons in order.",
           <>Press <b>Add</b> beside one lesson, or <b>Add the whole unit</b>. Choose the day to start and who it&apos;s for, then press <b>Add to planner</b>.</>,
-          <>A whole unit goes in one lesson a day, skipping weekends and your days off. You can move lessons afterwards in the <L href="/parent">Planner</L>.</>,
+          <>A whole unit goes on the days that subject is on your timetable, skipping your days off. You can choose which of your timetable subjects it belongs to. You can move lessons afterwards in the <L href="/parent">Planner</L>.</>,
         ],
         tip: "The page remembers the subject and year you last chose, so next time you can go straight to the units.",
       },

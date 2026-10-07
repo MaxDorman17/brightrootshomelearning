@@ -181,7 +181,7 @@ class PlanLesson(BaseModel):
 
 
 class PlanIn(BaseModel):
-    """One lesson, or a unit's lessons in order. Several go one a day from the starting day, skipping weekends and days off."""
+    """One lesson, or a unit's lessons in order. Several go on the days the subject is on the timetable, skipping days off."""
     lessons: list[PlanLesson]
     subject: str
     unit_title: str = ""
@@ -209,8 +209,12 @@ def plan_lessons(body: PlanIn, db: Session = Depends(get_db), current_user: User
     """Put Oak lessons in the planner. They open inside Bright Roots where Oak's licence allows."""
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     unit = body.unit_title.strip()[:200]
-    days = teaching_days(db, current_user, body.scheduled_date, len(body.lessons))
-    for item, day in zip(body.lessons, days):
+    # Each child follows their own timetable, so the same unit can fall on different days for each of them.
+    days_for = {
+        child_id: teaching_days(db, current_user, body.scheduled_date, len(body.lessons), subject=body.subject, child_id=child_id)
+        for child_id in children or [None]
+    }
+    for n, item in enumerate(body.lessons):
         lesson = Lesson(
             title=item.title,
             subject=body.subject,
@@ -221,7 +225,8 @@ def plan_lessons(body: PlanIn, db: Session = Depends(get_db), current_user: User
         )
         db.add(lesson)
         db.flush()
-        for child_id in children or [None]:
-            db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
+        for child_id, days in days_for.items():
+            db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=days[n]))
     db.commit()
-    return {"planned": len(days), "first_day": days[0], "last_day": days[-1]}
+    every = [day for days in days_for.values() for day in days]
+    return {"planned": len(body.lessons), "first_day": min(every), "last_day": max(every)}

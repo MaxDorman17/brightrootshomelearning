@@ -85,7 +85,7 @@ class PlanSheet(SheetIn):
 
 
 class PlanIn(BaseModel):
-    """One sheet, or a topic set in teaching order. A set goes one sheet a day from the starting day, skipping weekends and days off."""
+    """One sheet, or a topic set in teaching order. A set goes on the days the subject is on the timetable, skipping days off."""
     sheets: list[PlanSheet]
     scheduled_date: date
     child_ids: list[int] = []
@@ -226,8 +226,12 @@ def finish_sheet(body: FinishIn, db: Session = Depends(get_db), current_user: Us
 def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
     """Put worksheets in the planner, so they turn up in the child's Today list like any other lesson."""
     children = _clean_child_ids(db, current_user.id, body.child_ids)
-    days = teaching_days(db, current_user, body.scheduled_date, len(body.sheets))
-    for sheet, day in zip(body.sheets, days):
+    subject = body.sheets[0].subject
+    days_for = {
+        child_id: teaching_days(db, current_user, body.scheduled_date, len(body.sheets), subject=subject, child_id=child_id)
+        for child_id in children or [None]
+    }
+    for n, sheet in enumerate(body.sheets):
         lesson = Lesson(
             title=sheet.title,
             subject=sheet.subject,
@@ -239,10 +243,11 @@ def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User 
         )
         db.add(lesson)
         db.flush()
-        for child_id in children or [None]:
-            db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
+        for child_id, days in days_for.items():
+            db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=days[n]))
     db.commit()
-    return {"planned": len(days), "first_day": days[0], "last_day": days[-1]}
+    every = [day for days in days_for.values() for day in days]
+    return {"planned": len(body.sheets), "first_day": min(every), "last_day": max(every)}
 
 
 @router.get("/summary")

@@ -265,7 +265,7 @@ export default function OakFinderPage() {
               <Link href="/parent" className="font-bold text-brand-sage underline">
                 planner
               </Link>
-              .
+              . A whole unit goes on the days that subject is on your timetable, skipping days off.
             </p>
           </section>
         )}
@@ -275,8 +275,9 @@ export default function OakFinderPage() {
 }
 
 function UnitLessons({ unit, subject }: { unit: OakUnit; subject: string }) {
-  const plan = (lessons: OakUnit["lessons"]) => (day: string, childIds: number[]) =>
-    planOakLessons({ lessons, subject, unit_title: unit.title, scheduled_date: day, child_ids: childIds });
+  // The grown-up can file the lessons under their own name for the subject, so they follow that subject on the timetable.
+  const plan = (lessons: OakUnit["lessons"]) => (day: string, childIds: number[], filedUnder: string) =>
+    planOakLessons({ lessons, subject: filedUnder || subject, unit_title: unit.title, scheduled_date: day, child_ids: childIds });
 
   if (unit.lessons.length === 0) return <p className="text-sm text-brand-earth">Oak has no lessons ready in this unit yet.</p>;
   return (
@@ -286,6 +287,7 @@ function UnitLessons({ unit, subject }: { unit: OakUnit; subject: string }) {
         <PlanSheets
           plan={plan(unit.lessons)}
           count={unit.lessons.length}
+          subject={subject}
           noun="lessons"
           what={`${unit.title}: ${unit.lessons.length} lessons`}
           label={`Add the whole unit (${unit.lessons.length} lessons)`}
@@ -300,6 +302,7 @@ function UnitLessons({ unit, subject }: { unit: OakUnit; subject: string }) {
             <PlanSheets
               plan={plan([lesson])}
               count={1}
+              subject={subject}
               noun="lessons"
               what={lesson.title}
               label="Add"
