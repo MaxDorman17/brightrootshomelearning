@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import PlanSheets from "@/components/worksheets/PlanSheets";
 import WorksheetPicture from "@/components/worksheets/WorksheetPicture";
 import { NewBadge } from "@/components/NewEveryMonth";
 import { getMySheets, type SheetProgress } from "@/lib/api";
@@ -206,6 +207,17 @@ function ForGrownUp() {
               <span className="ml-2 text-xs font-bold uppercase tracking-widest text-brand-softsage">{set.subject}</span>
             </h2>
             <p className="text-sm text-brand-earth/80">{set.summary}</p>
+            {/* Only offered for the whole topic, so a narrowed list never plans half a set by surprise. */}
+            {sheets.length === set.sheets.length && set.sheets.length > 1 && (
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <PlanSheets
+                  sheets={set.sheets}
+                  what={`${set.title}: ${set.sheets.length} sheets`}
+                  label="Add this topic to the planner"
+                  className="text-sm font-bold text-brand-sage hover:underline"
+                />
+              </div>
+            )}
             <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sheets.map((sheet) => (
                 <SheetCard key={sheet.slug} sheet={sheet} showAges />

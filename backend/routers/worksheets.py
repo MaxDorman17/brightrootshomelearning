@@ -6,16 +6,17 @@ can raise their best score but never counts twice for stars.
 """
 import json
 import re
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, field_validator, model_validator
 from sqlalchemy.orm import Session
 
-from auth import get_current_user, require_child
+from auth import get_current_user, require_child, require_parent
 from database import get_db
-from models import User, WorksheetScore
+from models import Lesson, PlannerCompletion, PlannerEntry, User, WorksheetScore
+from routers.moments import _clean_child_ids
 from routers.test_results import _resolve_child
 
 router = APIRouter(prefix="/api/worksheets", tags=["worksheets"])
@@ -24,6 +25,7 @@ KINDS = {"worksheet", "comic"}
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 MAX_QUESTIONS = 50
 MAX_ANSWERS_CHARS = 20_000
+MAX_PLANNED_AT_ONCE = 10
 
 
 class SheetIn(BaseModel):
@@ -75,6 +77,60 @@ class FinishIn(SheetIn):
         if not 1 <= self.total <= MAX_QUESTIONS or not 0 <= self.score <= self.total:
             raise ValueError("Score out of range")
         return self
+
+
+class PlanSheet(SheetIn):
+    intro: str = ""
+
+
+class PlanIn(BaseModel):
+    """One sheet, or a topic set in teaching order. A set goes one sheet a day from the starting day, skipping weekends."""
+    sheets: list[PlanSheet]
+    scheduled_date: date
+    child_ids: list[int] = []
+
+    @field_validator("sheets")
+    @classmethod
+    def some_sheets(cls, value: list) -> list:
+        if not 1 <= len(value) <= MAX_PLANNED_AT_ONCE or any(s.kind != "worksheet" for s in value):
+            raise ValueError("Choose between 1 and 10 worksheets")
+        return value
+
+
+def _sheet_link(slug: str) -> str:
+    return f"/worksheets/{slug}"
+
+
+def _tick_off_in_planner(db: Session, child: User, slug: str) -> bool:
+    """If a grown-up planned this sheet for the child, mark the earliest one still to do as done."""
+    waiting = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(
+            Lesson.created_by == child.parent_id,
+            Lesson.lesson_url == _sheet_link(slug),
+            (PlannerEntry.assigned_to == child.id) | PlannerEntry.assigned_to.is_(None),
+        )
+        .order_by(PlannerEntry.scheduled_date, PlannerEntry.id)
+        .all()
+    )
+    now = datetime.utcnow()
+    for entry in waiting:
+        if entry.assigned_to == child.id:
+            if entry.is_complete:
+                continue
+            entry.is_complete, entry.completed_at = True, now
+            return True
+        # Planned for all the children: each one has their own tick.
+        mine = db.query(PlannerCompletion).filter(
+            PlannerCompletion.entry_id == entry.id, PlannerCompletion.user_id == child.id
+        ).first()
+        if mine:
+            continue
+        db.add(PlannerCompletion(entry_id=entry.id, user_id=child.id))
+        entry.is_complete, entry.completed_at = True, entry.completed_at or now
+        return True
+    return False
 
 
 def _out(row: WorksheetScore, with_answers: bool = False) -> dict:
@@ -160,8 +216,37 @@ def finish_sheet(body: FinishIn, db: Session = Depends(get_db), current_user: Us
         row.finished_at = datetime.utcnow()
     row.tries = (row.tries or 0) + 1
     row.answers = None
+    ticked_off = body.kind == "worksheet" and _tick_off_in_planner(db, current_user, body.slug)
     db.commit()
-    return {**_out(row), "first_time": first_time, "new_best": better and not first_time}
+    return {**_out(row), "first_time": first_time, "new_best": better and not first_time, "ticked_off": ticked_off}
+
+
+@router.post("/plan", status_code=201)
+def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
+    """Put worksheets in the planner, so they turn up in the child's Today list like any other lesson."""
+    children = _clean_child_ids(db, current_user.id, body.child_ids)
+    day = body.scheduled_date
+    days = []
+    for sheet in body.sheets:
+        while len(body.sheets) > 1 and day.weekday() >= 5:
+            day += timedelta(days=1)
+        lesson = Lesson(
+            title=sheet.title,
+            subject=sheet.subject,
+            description=sheet.intro.strip()[:500] or None,
+            lesson_url=_sheet_link(sheet.slug),
+            scheme="Bright Roots",
+            duration_minutes=15,
+            created_by=current_user.id,
+        )
+        db.add(lesson)
+        db.flush()
+        for child_id in children or [None]:
+            db.add(PlannerEntry(lesson_id=lesson.id, assigned_to=child_id, scheduled_date=day))
+        days.append(day)
+        day += timedelta(days=1)
+    db.commit()
+    return {"planned": len(days), "first_day": days[0], "last_day": days[-1]}
 
 
 @router.get("/summary")

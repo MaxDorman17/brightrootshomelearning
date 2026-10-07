@@ -1,4 +1,5 @@
 """Bright Roots worksheets and comic quizzes: saving a half-done sheet, best scores, results and stars."""
+from datetime import date
 
 SHEET = {"kind": "worksheet", "slug": "number-bonds-to-10", "title": "Number bonds to 10", "subject": "Maths"}
 
@@ -72,3 +73,47 @@ def test_nonsense_is_refused(family):
     assert kid.post("/api/worksheets/finish", json={**SHEET, "slug": "../etc", "score": 1, "total": 1}).status_code == 422
     assert kid.post("/api/worksheets/finish", json={**SHEET, "kind": "game", "score": 1, "total": 1}).status_code == 422
     assert kid.put("/api/worksheets/progress", json={**SHEET, "answers": {"q": "x" * 30_000}}).status_code == 422
+
+
+def test_a_planned_sheet_shows_in_today_and_ticks_itself_off(family):
+    child = family.add_child()
+    kid = family.child_client(child)
+    today = date.today().isoformat()
+    planned = family.parent.post(
+        "/api/worksheets/plan", json={"sheets": [{**SHEET, "intro": "Find the partner."}], "scheduled_date": today, "child_ids": [child["id"]]}
+    )
+    assert planned.status_code == 201, planned.text
+    assert planned.json() == {"planned": 1, "first_day": today, "last_day": today}
+    entry = kid.get("/api/planner/today").json()[0]
+    assert (entry["lesson"]["title"], entry["lesson"]["lesson_url"], entry["is_complete"]) == (
+        "Number bonds to 10", "/worksheets/number-bonds-to-10", False
+    )
+
+    done = kid.post("/api/worksheets/finish", json={**SHEET, "score": 8, "total": 10}).json()
+    assert done["ticked_off"] is True
+    assert kid.get("/api/planner/today").json()[0]["is_complete"] is True
+    # A second go has nothing left to tick off, and a sheet nobody planned never does.
+    assert kid.post("/api/worksheets/finish", json={**SHEET, "score": 9, "total": 10}).json()["ticked_off"] is False
+    other = {**SHEET, "slug": "tens-and-ones", "title": "Tens and ones"}
+    assert kid.post("/api/worksheets/finish", json={**other, "score": 9, "total": 10}).json()["ticked_off"] is False
+
+
+def test_a_sheet_planned_for_everyone_is_ticked_per_child(family):
+    one, two = family.add_child("One"), family.add_child("Two")
+    family.parent.post("/api/worksheets/plan", json={"sheets": [SHEET], "scheduled_date": date.today().isoformat(), "child_ids": []})
+    assert family.child_client(one).post("/api/worksheets/finish", json={**SHEET, "score": 8, "total": 10}).json()["ticked_off"] is True
+    kid_two = family.child_client(two)
+    assert kid_two.get("/api/planner/today").json()[0]["is_complete"] is False
+    assert kid_two.post("/api/worksheets/finish", json={**SHEET, "score": 8, "total": 10}).json()["ticked_off"] is True
+
+
+def test_a_topic_set_is_spread_over_weekdays(family):
+    child = family.add_child()
+    friday = date(2026, 10, 9)
+    sheets = [{**SHEET, "slug": f"sheet-{n}", "title": f"Sheet {n}"} for n in range(3)]
+    planned = family.parent.post("/api/worksheets/plan", json={"sheets": sheets, "scheduled_date": friday.isoformat(), "child_ids": [child["id"]]})
+    assert planned.json() == {"planned": 3, "first_day": "2026-10-09", "last_day": "2026-10-13"}
+    # Children cannot plan, and an empty list is refused.
+    kid = family.child_client(child)
+    assert kid.post("/api/worksheets/plan", json={"sheets": [SHEET], "scheduled_date": friday.isoformat()}).status_code == 403
+    assert family.parent.post("/api/worksheets/plan", json={"sheets": [], "scheduled_date": friday.isoformat()}).status_code == 422

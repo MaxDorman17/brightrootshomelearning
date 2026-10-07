@@ -222,7 +222,10 @@ export const getMySheet = (kind: SheetRef["kind"], slug: string) => api.get<Shee
 export const saveSheetProgress = (sheet: SheetRef, answers: Record<string, unknown>) =>
   api.put<SheetProgress>("/api/worksheets/progress", { ...sheet, answers });
 export const finishSheet = (sheet: SheetRef, score: number, total: number) =>
-  api.post<SheetProgress & { first_time: boolean; new_best: boolean }>("/api/worksheets/finish", { ...sheet, score, total });
+  api.post<SheetProgress & { first_time: boolean; new_best: boolean; ticked_off: boolean }>("/api/worksheets/finish", { ...sheet, score, total });
+// A grown-up puts one sheet, or a topic set in order, into the planner. A set goes one sheet a day, skipping weekends.
+export const planSheets = (sheets: (SheetRef & { intro: string })[], scheduled_date: string, child_ids: number[]) =>
+  api.post<{ planned: number; first_day: string; last_day: string }>("/api/worksheets/plan", { sheets, scheduled_date, child_ids });
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });

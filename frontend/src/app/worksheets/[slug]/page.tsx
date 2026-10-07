@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import PlanSheets from "@/components/worksheets/PlanSheets";
 import QuestionCard from "@/components/worksheets/QuestionCard";
 import WorksheetPicture from "@/components/worksheets/WorksheetPicture";
 import { finishSheet, getMySheet, saveSheetProgress, type SheetRef } from "@/lib/api";
@@ -23,7 +24,7 @@ export default function WorksheetPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [marked, setMarked] = useState(false);
   const [best, setBest] = useState<{ score: number; total: number } | null>(null);
-  const [result, setResult] = useState<{ firstTime: boolean; newBest: boolean; saved: boolean } | null>(null);
+  const [result, setResult] = useState<{ firstTime: boolean; newBest: boolean; saved: boolean; tickedOff?: boolean } | null>(null);
   const [notSaved, setNotSaved] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
   const unsaved = useRef(false);
@@ -105,7 +106,7 @@ export default function WorksheetPage() {
     }
     finishSheet(ref, score, total)
       .then((res) => {
-        setResult({ firstTime: res.data.first_time, newBest: res.data.new_best, saved: true });
+        setResult({ firstTime: res.data.first_time, newBest: res.data.new_best, saved: true, tickedOff: res.data.ticked_off });
         if (res.data.score != null && res.data.total != null) setBest({ score: res.data.score, total: res.data.total });
         setNotSaved(false);
       })
@@ -162,10 +163,15 @@ export default function WorksheetPage() {
         </header>
 
         {ready && !isChild && (
-          <p className="mt-4 rounded-2xl border border-brand-line bg-brand-cream px-4 py-3 text-sm text-brand-earth">
-            You&apos;re looking at this as a grown-up, so you can try it but nothing is saved. When your child does it from their own
-            login, their answers save as they go and the score appears in their Test Results.
-          </p>
+          <div className="mt-4 rounded-2xl border border-brand-line bg-brand-cream px-4 py-3 text-sm text-brand-earth">
+            <p>
+              You&apos;re looking at this as a grown-up, so you can try it but nothing is saved. When your child does it from their own
+              login, their answers save as they go and the score appears in their Test Results.
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <PlanSheets sheets={[sheet]} what={sheet.title} />
+            </div>
+          </div>
         )}
 
         <ol className="mt-6 space-y-4">
@@ -224,6 +230,7 @@ export default function WorksheetPage() {
                 : isChild
                   ? ""
                   : "Nothing was saved, because you're signed in as a grown-up."}
+              {result?.tickedOff && " It's ticked off in your Today list too."}
               {score < total && " Look at the ones marked “Not yet”, then have another go."}
             </p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
