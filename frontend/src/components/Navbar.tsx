@@ -60,6 +60,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent", label: "Planner" },
       { href: "/parent/timetable", label: "Timetable" },
       { href: "/parent/lessons", label: "My Lessons" },
+      { href: "/parent/oak", label: "Oak Lessons" },
       { href: "/units", label: "Units" },
       { href: "/parent/extra-work", label: "Extra Work" },
       { href: "/parent/resources", label: "Resources" },

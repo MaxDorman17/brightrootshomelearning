@@ -26,7 +26,7 @@ import Emoji from "@/components/Emoji";
 
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
-const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/programmes\/[^/?#]+\/units\/[^/?#]+\/lessons\/[^/?#]+$/;
+const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/(?:programmes\/[^/?#]+\/units\/[^/?#]+\/)?lessons\/[^/?#]+$/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {

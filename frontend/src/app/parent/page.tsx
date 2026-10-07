@@ -28,7 +28,7 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
-const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/programmes\/[^/?#]+\/units\/[^/?#]+\/lessons\/[^/?#]+$/;
+const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/(?:programmes\/[^/?#]+\/units\/[^/?#]+\/)?lessons\/[^/?#]+$/;
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
 // Starter and exit quiz boxes belong to Oak lessons. A lesson from another scheme only shows them if it has a score.

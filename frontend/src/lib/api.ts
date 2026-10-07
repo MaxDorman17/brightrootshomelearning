@@ -254,6 +254,15 @@ export const submitOakQuiz = (entryId: number, which: "starter" | "exit", answer
     `/api/oak-lessons/entry/${entryId}/quiz/${which}`,
     { answers }
   );
+// The Oak lesson finder, for grown-ups: Oak's subjects, units and lessons, and adding them to the planner.
+export type OakSubject = { slug: string; title: string; years: number[]; courses: { slug: string; years: number[]; label: string }[] };
+export type OakUnitGroup = { label: string; units: { slug: string; title: string }[] };
+export type OakUnit = { slug: string; title: string; description: string; year: number | null; lessons: { slug: string; title: string }[] };
+export const getOakSubjects = () => api.get<OakSubject[]>("/api/oak-finder/subjects");
+export const getOakUnits = (course: string, year: number) => api.get<{ groups: OakUnitGroup[] }>("/api/oak-finder/units", { params: { course, year } });
+export const getOakUnit = (slug: string) => api.get<OakUnit>(`/api/oak-finder/unit/${slug}`);
+export const planOakLessons = (body: { lessons: { slug: string; title: string }[]; subject: string; unit_title: string; scheduled_date: string; child_ids: number[] }) =>
+  api.post<{ planned: number; first_day: string; last_day: string }>("/api/oak-finder/plan", body);
 export const getPendingRewardCount = () => api.get("/api/rewards/pending-count");
 export const saveFamilyTheme = (theme: string) => api.put("/api/auth/theme", { theme });
 export const saveFamilySchemes = (schemes: string[]) => api.put<{ schemes: string[] }>("/api/auth/schemes", { schemes });

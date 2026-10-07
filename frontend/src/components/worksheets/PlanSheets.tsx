@@ -16,12 +16,21 @@ const nice = (iso: string) => format(new Date(`${iso}T12:00:00`), "EEEE d MMMM")
  * The sheets then turn up in the child's Today list and tick themselves off when finished.
  */
 export default function PlanSheets({
-  sheets,
+  sheets = [],
+  plan,
+  count,
+  noun = "sheets",
   what,
   label = "Add to planner",
   className = "",
 }: {
-  sheets: Worksheet[];
+  /** Worksheets to plan. Leave out when `plan` is given. */
+  sheets?: Worksheet[];
+  /** For anything that is not a worksheet (Oak lessons): does the planning itself. Needs `count`. */
+  plan?: (day: string, childIds: number[]) => Promise<{ data: { planned: number; first_day: string; last_day: string } }>;
+  count?: number;
+  /** What several of them are called: "sheets" or "lessons". */
+  noun?: string;
   /** What is being planned, for the heading: a sheet's title or a topic's name. */
   what: string;
   label?: string;
@@ -34,6 +43,7 @@ export default function PlanSheets({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState("");
+  const howMany = count ?? sheets.length;
 
   useEffect(() => {
     if (!open) return;
@@ -64,13 +74,15 @@ export default function PlanSheets({
     setSaving(true);
     setError("");
     try {
-      const res = await planSheets(
-        sheets.map((s) => ({ kind: "worksheet", slug: s.slug, title: s.title, subject: s.subject, intro: s.intro })),
-        day,
-        picked
-      );
+      const res = plan
+        ? await plan(day, picked)
+        : await planSheets(
+            sheets.map((s) => ({ kind: "worksheet", slug: s.slug, title: s.title, subject: s.subject, intro: s.intro })),
+            day,
+            picked
+          );
       const { planned, first_day, last_day } = res.data;
-      setDone(planned === 1 ? `Added for ${nice(first_day)}.` : `Added ${planned} sheets, one a day from ${nice(first_day)} to ${nice(last_day)}.`);
+      setDone(planned === 1 ? `Added for ${nice(first_day)}.` : `Added ${planned} ${noun}, one a day from ${nice(first_day)} to ${nice(last_day)}.`);
       setOpen(false);
     } catch {
       setError("We couldn't add that to the planner. Please try again.");
@@ -112,12 +124,12 @@ export default function PlanSheets({
             <form onSubmit={submit} className="space-y-4">
               <div>
                 <label htmlFor="plan-sheets-day" className="mb-1.5 block text-sm font-bold text-brand-charcoal">
-                  {sheets.length > 1 ? "Starting on" : "Day"}
+                  {howMany > 1 ? "Starting on" : "Day"}
                 </label>
                 <input id="plan-sheets-day" type="date" required value={day} onChange={(e) => setDay(e.target.value)} className={input} autoFocus />
-                {sheets.length > 1 && (
+                {howMany > 1 && (
                   <p className="mt-1.5 text-xs text-brand-earth/80">
-                    {sheets.length} sheets, one each day in order, skipping weekends. You can move them in the planner afterwards.
+                    {howMany} {noun}, one each day in order, skipping weekends. You can move them in the planner afterwards.
                   </p>
                 )}
               </div>

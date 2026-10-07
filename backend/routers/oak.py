@@ -687,7 +687,7 @@ async def export_oak_results(
 # not the share-results link pattern (OAK_SHARE_RE) — those are different URL
 # shapes, so this never collides with a submitted share link.
 OAK_LESSON_URL_RE = re.compile(
-    r"https?://(?:www\.)?thenational\.academy/pupils/programmes/[^/?#]+/units/[^/?#]+/lessons/[^/?#]+"
+    r"https?://(?:www\.)?thenational\.academy/pupils/(?:programmes/[^/?#]+/units/[^/?#]+/)?lessons/[^/?#]+/?(?:[?#]|$)"
 )
 
 
