@@ -142,6 +142,22 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         tip: "Only the titles and links you type are kept. The worksheets and videos stay on the scheme's own site, and your child opens them from the link.",
       },
       {
+        id: "worksheets",
+        emoji: "📝",
+        title: "Bright Roots worksheets",
+        intro: "Short sheets of about ten questions that your child fills in on screen. They are marked automatically, and every one can be printed.",
+        steps: [
+          <>Open <L href="/worksheets">Saplings, then Worksheets</L>. Sheets are grouped by topic, in teaching order. Use the age buttons or the search box to narrow them down.</>,
+          <>Open a sheet and press <b>Add to planner</b>, then choose the day and who it&apos;s for. For a topic with several sheets, <b>Add this topic to the planner</b> puts in one sheet a day, skipping weekends.</>,
+          "Your child opens the sheet from their Today page, or from Worksheets in their own menu, where they are shown one sheet to do next.",
+          "They tap or type their answers. Answers save as they go, so they can stop and come back.",
+          <>When they press <b>Check my answers</b>, the sheet is marked and shows what was right. They can try the ones they missed, and a planned sheet ticks itself off.</>,
+          <>Their best score appears in <L href="/parent/results">Progress, then Test Results</L>, and counts for stars under the rule for scores.</>,
+          <>To use paper instead, open a sheet and press <b>Print this sheet</b>. The answers print on a separate page for you.</>,
+        ],
+        tip: "You can open any sheet yourself to try it. Nothing is saved while you're signed in as a grown-up. A sheet only earns stars once, however many times it's done.",
+      },
+      {
         id: "oak-finder",
         emoji: "🌳",
         title: "Find and add Oak National Academy lessons",
