@@ -7,7 +7,7 @@ import {
   getWeekEntries, getAllEntries, createPlannerEntry, updatePlannerEntry, deletePlannerEntry,
   getDaysOff, addDayOff, removeDayOff,
   getChildren, getGoals, createGoal, toggleGoal, deleteGoal,
-  getTimetable, getChildTimetables, shiftDay, movePlannerEntry, importOakUnit, checkOakWorksheet,
+  getTimetable, getChildTimetables, shiftDay, movePlannerEntry, importOakUnit, getOakLesson, oakWorksheetUrl, getDayWorksheets, dayWorksheetsPdfUrl, type DayWorksheet,
   getOakQuizResults, getWeekQuizScores, getLessonScores, repeatPlannerEntry, copyPlannerWeek,
 } from "@/lib/api";
 import SchemeInput from "@/components/SchemeInput";
@@ -30,9 +30,8 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
 // Which child the planner last showed on this device ("all" for everyone), so it opens there next time.
 const PLANNER_VIEW_KEY = "brightroots-planner-view";
 
-interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
-
-const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/(?:programmes\/[^/?#]+\/units\/[^/?#]+\/)?lessons\/[^/?#]+$/;
+// Any Oak lesson link, pupil or teacher, the same ones the server recognises (routers/oak_lessons.py).
+const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/(?:pupils|teachers)\/(?:[a-z0-9-]+\/)*lessons\/[a-z0-9-]+(?:[/?#].*)?$/;
 const OAK_SHARE_RE = /https?:\/\/(?:www\.)?thenational\.academy\/pupils\/lessons\/[^/?#]+\/results\/[^/?#]+\/share/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
 // Starter and exit quiz boxes belong to Oak lessons. A lesson from another scheme only shows them if it has a score.
@@ -293,8 +292,11 @@ export default function ParentPlanner() {
   const [oakAssignedTo, setOakAssignedTo] = useState<number | null>(null);
   const [oakAdding, setOakAdding] = useState(false);
 
-  const [worksheetCache, setWorksheetCache] = useState<Record<string, WorksheetInfo>>({});
-  const worksheetRequested = useRef<Set<string>>(new Set());
+  // Whether the Oak lesson open in the lesson pop-up has a worksheet (null while checking, or not an Oak lesson).
+  const [modalWorksheet, setModalWorksheet] = useState<boolean | null>(null);
+  // A day's Oak worksheets, listed so they can be printed together.
+  const [printDay, setPrintDay] = useState<{ day: string; label: string } | null>(null);
+  const [printSheets, setPrintSheets] = useState<DayWorksheet[] | null>(null);
   const [quizResults, setQuizResults] = useState<Record<string, OakQuizResult>>({});
   const [weekQuizScores, setWeekQuizScores] = useState<WeekQuizScores | null>(null);
   const [quizLoading, setQuizLoading] = useState(true);
@@ -393,21 +395,28 @@ export default function ParentPlanner() {
       window.history.replaceState({}, "", "/parent");
     }
   }, [loadData, loadGoals, router]);
-  // Check worksheet availability once per distinct Oak lesson URL.
-  // tracks what's already been requested so re-renders (or a week reload
-  // returning the same URLs) never re-fire a check that's already in flight
-  // or cached.
+  // Opening an Oak lesson: ask Oak (through our server) whether it has a worksheet.
+  const modalEntryId = modal?.existingEntry && isOakLessonUrl(modal.existingEntry.lesson.lesson_url) ? modal.existingEntry.id : null;
   useEffect(() => {
-    entries.forEach(e => {
-      const url = e.lesson.lesson_url;
-      if (isOakLessonUrl(url) && !worksheetRequested.current.has(url)) {
-        worksheetRequested.current.add(url);
-        checkOakWorksheet(url)
-          .then(res => setWorksheetCache(prev => ({ ...prev, [url]: res.data })))
-          .catch(() => setWorksheetCache(prev => ({ ...prev, [url]: { has_worksheet: false, intro_url: null } })));
-      }
-    });
-  }, [entries]);
+    setModalWorksheet(null);
+    if (modalEntryId === null) return;
+    let current = true;
+    getOakLesson(modalEntryId)
+      .then(res => current && setModalWorksheet(res.data.available && res.data.has_worksheet))
+      .catch(() => current && setModalWorksheet(false));
+    return () => { current = false; };
+  }, [modalEntryId]);
+
+  // The day's worksheets, for the child being viewed (or everyone).
+  useEffect(() => {
+    setPrintSheets(null);
+    if (!printDay) return;
+    let current = true;
+    getDayWorksheets(printDay.day, selectedChildId ?? undefined)
+      .then(res => current && setPrintSheets(res.data))
+      .catch(() => current && setPrintSheets([]));
+    return () => { current = false; };
+  }, [printDay, selectedChildId]);
 
   const weekDates = DAYS.map((_, i) => addDays(weekStart, i));
 
@@ -1242,6 +1251,20 @@ export default function ParentPlanner() {
                         </button>
                       )}
 
+                      {!dayOff && entries.some(e => e.scheduled_date === format(dayDate, "yyyy-MM-dd") && isOakLessonUrl(e.lesson.lesson_url)) && (
+                        <button
+                          onClick={() => setPrintDay({ day: format(dayDate, "yyyy-MM-dd"), label: format(dayDate, "EEEE d MMMM") })}
+                          title="Print this day's Oak worksheets"
+                          className={`text-[11px] px-2.5 py-1.5 rounded-lg font-bold border transition-colors ${
+                            today
+                              ? "bg-white/15 text-white border-white/20 hover:bg-white/25"
+                              : "bg-brand-cream text-brand-charcoal border-brand-softsage/20 hover:border-brand-sage"
+                          }`}
+                        >
+                          Worksheets
+                        </button>
+                      )}
+
                       {!dayOff && (() => {
                         const dayStr = format(dayDate, "yyyy-MM-dd");
                         const toFwd = nextWeekday(dayStr);
@@ -1880,6 +1903,76 @@ export default function ParentPlanner() {
       )}
 
       {/* Shift schedule confirmation */}
+      {printDay && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Worksheets for ${printDay.label}`}
+          className="fixed inset-0 bg-brand-charcoal/45 flex items-center justify-center z-50 p-4"
+          onClick={e => e.target === e.currentTarget && setPrintDay(null)}
+        >
+          <div className="bg-brand-white rounded-2xl border border-brand-softsage/20 shadow-xl w-full max-w-md p-6">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-sage">
+              Oak worksheets
+            </p>
+            <h3 className="text-xl font-extrabold text-brand-charcoal mt-1 mb-3">
+              {printDay.label}
+              {selectedChildId !== null && ` · ${children.find(c => c.id === selectedChildId)?.username ?? ""}`}
+            </h3>
+
+            {printSheets === null ? (
+              <p className="text-sm text-brand-earth/70">Checking which lessons have a worksheet...</p>
+            ) : printSheets.length === 0 ? (
+              <p className="text-sm text-brand-earth/75 leading-relaxed">
+                None of this day&apos;s Oak lessons come with a worksheet.
+              </p>
+            ) : (
+              <>
+                <ul className="space-y-2">
+                  {printSheets.map(sheet => (
+                    <li key={sheet.entry_id} className="flex items-center gap-2 rounded-xl border border-brand-softsage/20 px-3 py-2">
+                      <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${subjectDot[sheet.subject] || "bg-gray-400"}`} />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-bold text-brand-charcoal">{sheet.title}</span>
+                        <span className="block text-xs text-brand-earth/60">
+                          {sheet.subject}{sheet.child ? ` · ${sheet.child}` : children.length > 1 ? " · Everyone" : ""}
+                        </span>
+                      </span>
+                      <a
+                        href={oakWorksheetUrl(sheet.entry_id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 text-xs font-bold text-brand-sage hover:underline"
+                      >
+                        Open
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={dayWorksheetsPdfUrl(printDay.day, selectedChildId ?? undefined)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="gradient-btn mt-5 block w-full py-2.5 text-center text-sm"
+                >
+                  Print all {printSheets.length} together
+                </a>
+                <p className="mt-2 text-xs text-brand-earth/60">
+                  Opens one file with every worksheet in it, ready to print. Worksheets are from Oak National Academy.
+                </p>
+              </>
+            )}
+
+            <button
+              onClick={() => setPrintDay(null)}
+              className="mt-4 w-full px-4 py-2.5 border border-brand-softsage/30 text-brand-earth rounded-xl font-bold text-sm hover:bg-brand-cream transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       {shiftConfirm && (
         <div
           className="fixed inset-0 bg-brand-charcoal/45 flex items-center justify-center z-50 p-4"
@@ -1985,17 +2078,15 @@ export default function ParentPlanner() {
                 />
 
                 {(() => {
-                  const url = modal.existingEntry?.lesson.lesson_url;
-                  const ws = url ? worksheetCache[url] : undefined;
-
-                  return ws?.has_worksheet && ws.intro_url ? (
+                  const entry = modal.existingEntry;
+                  return entry && modalWorksheet ? (
                     <a
-                      href={ws.intro_url}
+                      href={oakWorksheetUrl(entry.id)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center mt-2 text-xs font-bold text-brand-sage border border-brand-softsage/30 rounded-lg px-3 py-1.5 hover:bg-brand-softsage/10 transition-colors"
                     >
-                      Open Worksheet
+                      Open or print worksheet
                     </a>
                   ) : null;
                 })()}

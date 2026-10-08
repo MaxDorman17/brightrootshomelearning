@@ -5,23 +5,26 @@ other people's copyright material; whatever it won't hand over is simply left ou
 nothing to show falls back to the link to Oak's own website. Lesson content is under the Open
 Government Licence v3.0, so every page that shows it credits Oak and links to the licence.
 """
+import io
 import json
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import PlainTextResponse, RedirectResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse, Response
+from pypdf import PdfReader, PdfWriter
+from pypdf.errors import PdfReadError
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
-from auth import get_current_user, require_child
+from auth import get_current_user, require_child, require_parent
 from config import settings
 from database import get_db
 from models import Lesson, OakLesson, OakLessonAttempt, PlannerCompletion, PlannerEntry, User
-from routers.planner import _entry_for_user
+from routers.planner import _child_ids_for_parent, _entry_for_user
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/oak-lessons", tags=["oak-lessons"])
@@ -323,21 +326,125 @@ def oak_captions(entry_id: int, db: Session = Depends(get_db), current_user: Use
     return PlainTextResponse(data["captions"], media_type="text/vtt")
 
 
+def _worksheet_link(slug: str) -> Optional[str]:
+    """Oak's link to a lesson's worksheet, or None when it has none. The link only lasts a few minutes.
+    Raises httpx.HTTPError when Oak can't be reached."""
+    if not settings.OAK_API_KEY:
+        return None
+    with httpx.Client(timeout=15, headers=_headers()) as client:
+        r = client.get(f"{_api_base()}/lessons/{slug}/assets/worksheet", follow_redirects=False)
+    where = r.headers.get("location", "")
+    if r.status_code not in (301, 302, 303, 307) or not where.startswith("https://"):
+        return None
+    return where
+
+
 @router.get("/entry/{entry_id}/worksheet")
 def oak_worksheet(entry_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Send the browser to Oak's worksheet. Oak's link only lasts a few minutes, so a fresh one is asked for each time."""
     _, slug = _entry_and_slug(db, entry_id, current_user)
-    if not settings.OAK_API_KEY:
-        raise HTTPException(status_code=404, detail="The worksheet isn't available")
     try:
-        with httpx.Client(timeout=15, headers=_headers()) as client:
-            r = client.get(f"{_api_base()}/lessons/{slug}/assets/worksheet", follow_redirects=False)
+        where = _worksheet_link(slug)
     except httpx.HTTPError:
         raise HTTPException(status_code=502, detail="We couldn't reach Oak just now. Please try again.")
-    where = r.headers.get("location", "")
-    if r.status_code not in (301, 302, 303, 307) or not where.startswith("https://"):
+    if not where:
         raise HTTPException(status_code=404, detail="The worksheet isn't available")
     return RedirectResponse(where, status_code=302)
+
+
+# ---------- a day's worksheets, for printing ----------
+
+MAX_WORKSHEET_BYTES = 20 * 1024 * 1024
+
+
+def _day_worksheets(db: Session, parent: User, day: date, child_id: Optional[int]) -> list:
+    """The family's Oak lessons on a day that have a worksheet, as (entry, slug), in subject order.
+    With child_id, only that child's lessons and the ones for everyone."""
+    children = _child_ids_for_parent(db, parent)
+    query = (
+        db.query(PlannerEntry)
+        .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
+        .filter(Lesson.created_by == parent.id, PlannerEntry.scheduled_date == day)
+        .order_by(Lesson.subject, PlannerEntry.assigned_to, PlannerEntry.id)
+    )
+    if child_id is not None:
+        if child_id not in children:
+            raise HTTPException(status_code=404, detail="Child not found")
+        query = query.filter((PlannerEntry.assigned_to == child_id) | PlannerEntry.assigned_to.is_(None))
+    else:
+        query = query.filter((PlannerEntry.assigned_to.is_(None)) | PlannerEntry.assigned_to.in_(children))
+    found = []
+    for entry in query.all():
+        slug = lesson_slug(entry.lesson.lesson_url)
+        data = get_lesson(db, slug) if slug else None
+        if data and data.get("has_worksheet"):
+            found.append((entry, slug))
+    return found
+
+
+@router.get("/day-worksheets")
+def day_worksheets(
+    day: date, child_id: Optional[int] = None,
+    db: Session = Depends(get_db), current_user: User = Depends(require_parent),
+):
+    """The Oak worksheets for a day's lessons, so a grown-up can print them in one go."""
+    names = {c.id: c.username for c in db.query(User).filter(User.id.in_(_child_ids_for_parent(db, current_user))).all()}
+    return [
+        {
+            "entry_id": entry.id,
+            "subject": entry.lesson.subject,
+            "title": entry.lesson.title,
+            "child": names.get(entry.assigned_to) if entry.assigned_to else None,
+        }
+        for entry, _ in _day_worksheets(db, current_user, day, child_id)
+    ]
+
+
+def _download_pdf(url: str) -> Optional[bytes]:
+    """A worksheet file from Oak, or None when it isn't a PDF or is too big to print here."""
+    with httpx.Client(timeout=30, follow_redirects=True, max_redirects=3) as client:
+        with client.stream("GET", url) as r:
+            if r.status_code != 200:
+                return None
+            body = bytearray()
+            for chunk in r.iter_bytes():
+                body += chunk
+                if len(body) > MAX_WORKSHEET_BYTES:
+                    return None
+    return bytes(body) if body.startswith(b"%PDF") else None
+
+
+@router.get("/day-worksheets.pdf")
+def day_worksheets_pdf(
+    day: date, child_id: Optional[int] = None,
+    db: Session = Depends(get_db), current_user: User = Depends(require_parent),
+):
+    """A day's Oak worksheets joined into one PDF, ready to print. Nothing is kept: each is fetched from Oak as asked."""
+    sheets = _day_worksheets(db, current_user, day, child_id)
+    if not sheets:
+        raise HTTPException(status_code=404, detail="There are no Oak worksheets for this day")
+    writer = PdfWriter()
+    try:
+        for _, slug in sheets:
+            link = _worksheet_link(slug)
+            pdf = _download_pdf(link) if link else None
+            if not pdf:
+                continue
+            try:
+                writer.append(PdfReader(io.BytesIO(pdf)))
+            except PdfReadError:
+                logger.warning("Oak worksheet for %s couldn't be read", slug)
+    except httpx.HTTPError:
+        raise HTTPException(status_code=502, detail="We couldn't reach Oak just now. Please try again.")
+    if not writer.pages:
+        raise HTTPException(status_code=404, detail="Oak couldn't give us these worksheets just now")
+    out = io.BytesIO()
+    writer.write(out)
+    return Response(
+        out.getvalue(),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="worksheets-{day.isoformat()}.pdf"'},
+    )
 
 
 class QuizIn(BaseModel):
