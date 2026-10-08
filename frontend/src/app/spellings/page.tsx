@@ -14,6 +14,7 @@ import {
 } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import { speak } from "@/components/games/common";
 import { format, startOfWeek, addWeeks, subWeeks } from "date-fns";
 
 interface SpellingWord { id: number; word: string; position: number; week_start: string; }
@@ -68,15 +69,6 @@ export default function SpellingsPage() {
 
   useEffect(() => {
     setSpeechSupported(typeof window !== "undefined" && "speechSynthesis" in window);
-  }, []);
-
-  const speak = useCallback((text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window) || !text) return;
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-GB";
-    utter.rate = 0.9;
-    window.speechSynthesis.speak(utter);
   }, []);
 
   const loadData = useCallback(async () => {

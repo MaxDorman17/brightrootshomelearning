@@ -47,21 +47,51 @@ export function useCountdown(seconds: number, running: boolean, onDone: () => vo
   return left;
 }
 
+// Clear, natural-sounding voices, best first. Browsers often list a deep or robotic voice first.
+const CLEAR_VOICES = [
+  /Google UK English Female/i,
+  /Microsoft (Libby|Sonia|Maisie|Hazel)/i,
+  /\b(Serena|Kate|Martha|Stephanie|Fiona|Moira|Karen|Samantha)\b/i,
+  /Google US English/i,
+  /Microsoft (Aria|Jenny|Zira)/i,
+];
+
+function clearVoice(voices: SpeechSynthesisVoice[]) {
+  const english = voices.filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith("en"));
+  for (const pattern of CLEAR_VOICES) {
+    const match = english.find((v) => pattern.test(v.name));
+    if (match) return match;
+  }
+  return english.find((v) => /en-gb/i.test(v.lang.replace("_", "-")) && !/george|ryan|thomas|daniel|male/i.test(v.name))
+    ?? english.find((v) => /en-gb/i.test(v.lang.replace("_", "-")))
+    ?? english[0];
+}
+
 export function speak(text: string) {
   try {
     const synth = window.speechSynthesis;
-    if (!synth) return false;
+    if (!synth || !text) return false;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const voice = synth.getVoices().find((v) => v.lang === "en-GB") ?? synth.getVoices().find((v) => v.lang.startsWith("en"));
-    if (voice) utterance.voice = voice;
-    utterance.lang = "en-GB";
-    utterance.rate = 0.85;
+    const voice = clearVoice(synth.getVoices());
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+    } else {
+      utterance.lang = "en-GB";
+    }
+    utterance.rate = 0.9;
+    utterance.pitch = 1.1;
     synth.speak(utterance);
     return true;
   } catch {
     return false;
   }
+}
+
+// Some browsers load their voices a moment after the page, so ask early.
+if (typeof window !== "undefined" && window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
 }
 
 export function GameHeader({ title, onExit, right }: { title: string; onExit: () => void; right?: React.ReactNode }) {
