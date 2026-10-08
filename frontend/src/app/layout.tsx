@@ -13,6 +13,12 @@ import { DISPLAY_BOOT_SCRIPT } from "@/lib/display";
 import { easyRead, nunito } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/site";
 
+// What a shared link to the home page says (Facebook, WhatsApp, X and the like). Pages with their own
+// metadata set their own sharing text, so this is only used for the home page and any page without one.
+const SHARE_TITLE = "Bright Roots Home Learning | Plan less. Learn more. Grow together.";
+const SHARE_DESCRIPTION =
+  "A calm home learning planner for families. Plan the week, give each child their own space to learn, and keep a record of everything they achieve.";
+
 const DESCRIPTION =
   "A calm home education planner for UK families. Plan the week or simply log what you did, give each child their own space to learn, and keep a record of progress, reading, spellings and results in one place.";
 
@@ -48,13 +54,13 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: SITE_URL,
     siteName: "Bright Roots Home Learning",
-    title: "Bright Roots Home Learning",
-    description: DESCRIPTION,
+    title: SHARE_TITLE,
+    description: SHARE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bright Roots Home Learning",
-    description: DESCRIPTION,
+    title: SHARE_TITLE,
+    description: SHARE_DESCRIPTION,
   },
   applicationName: "Bright Roots",
   manifest: "/manifest.json",
