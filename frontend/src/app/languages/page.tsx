@@ -19,6 +19,7 @@ import {
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { Child } from "@/types";
 import { errorText } from "@/components/make/common";
+import StarterPacks from "@/components/languages/StarterPacks";
 
 const btn = "rounded-xl px-4 py-2.5 text-sm font-extrabold transition-colors disabled:opacity-60";
 const primary = `${btn} bg-brand-sage text-white hover:bg-brand-sagedark`;
@@ -267,7 +268,7 @@ export default function LanguagesPage() {
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Learning</p>
             <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Languages</h1>
             <p className="mt-2 max-w-2xl text-sm text-[#6E5A46] sm:text-base">
-              Log language practice in any language, keep a streak going and earn language badges. Everything shows in your reports.
+              Learn first words with the starter packs, log practice in any language, keep a streak going and earn language badges. Everything shows in your reports.
             </p>
           </PageHero>
           <div className="flex flex-wrap items-center gap-3">
@@ -302,6 +303,8 @@ export default function LanguagesPage() {
                 </div>
               ))}
             </div>
+
+            <StarterPacks log={log} isParent={isParent} kids={kids} who={who} onLogged={load} />
 
             {summary && summary.languages.length > 0 ? (
               <div className="mb-6 grid gap-4 sm:grid-cols-2">
