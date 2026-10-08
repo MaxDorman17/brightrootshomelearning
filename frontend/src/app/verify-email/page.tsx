@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { verifyEmail } from "@/lib/api";
+import AuthShell, { authButton, EARTH, GREEN } from "@/components/AuthShell";
 
 export default function VerifyEmailPage() {
   const [status, setStatus] = useState<"checking" | "success" | "error">("checking");
@@ -34,63 +34,36 @@ export default function VerifyEmailPage() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{
-        background:
-          "linear-gradient(135deg, #2F5D3A 0%, #6EA76E 55%, #A8C67A 100%)",
-      }}
-    >
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl mb-4 shadow-xl p-2">
-            <Image
-              src="/logo.png"
-              alt="Bright Roots"
-              width={64}
-              height={64}
-              className="rounded-2xl"
-            />
-          </div>
-          <h1 className="text-3xl font-extrabold text-white">
-            Email verification
-          </h1>
+    <AuthShell
+      title={status === "error" ? "Link not working" : status === "success" ? "You're all set" : "Checking your email"}>
+      <div className="text-center">
+        <div
+          className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full text-2xl font-extrabold ${
+            status === "success"
+              ? "bg-[#E3EFDD]"
+              : status === "error"
+              ? "bg-red-50 text-red-600"
+              : "bg-[#F3EDE2]"
+          }`}
+          style={status === "success" ? { color: GREEN } : status === "checking" ? { color: EARTH } : undefined}
+        >
+          {status === "success" ? "✓" : status === "error" ? "!" : "…"}
         </div>
 
-        <div className="rounded-3xl bg-white/95 p-8 text-center shadow-2xl">
-          <div
-            className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full text-2xl font-extrabold ${
-              status === "success"
-                ? "bg-green-100 text-green-700"
-                : status === "error"
-                ? "bg-red-100 text-red-600"
-                : "bg-brand-tint text-brand-sage"
-            }`}
-          >
-            {status === "success" ? "✓" : status === "error" ? "!" : "…"}
-          </div>
+        <p className="mt-5 font-semibold text-[#2E342F]">{message}</p>
 
-          <p className="mt-5 text-sm font-semibold text-gray-700">{message}</p>
+        {status === "success" && (
+          <Link href="/" className={`mt-6 ${authButton}`} style={{ background: GREEN }}>
+            Continue to Bright Roots →
+          </Link>
+        )}
 
-          {status === "success" && (
-            <Link
-              href="/"
-              className="mt-6 inline-block rounded-xl bg-brand-sage px-5 py-3 text-sm font-extrabold text-white"
-            >
-              Continue to Bright Roots
-            </Link>
-          )}
-
-          {status === "error" && (
-            <Link
-              href="/account"
-              className="mt-6 inline-block text-sm font-bold text-brand-sage hover:underline"
-            >
-              Return to account settings
-            </Link>
-          )}
-        </div>
+        {status === "error" && (
+          <Link href="/account" className="mt-6 inline-block text-sm font-bold hover:underline" style={{ color: GREEN }}>
+            Return to account settings
+          </Link>
+        )}
       </div>
-    </div>
+    </AuthShell>
   );
 }

@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { resetPassword } from "@/lib/api";
+import AuthShell, { AuthMessage, authButton, authInput, authLabel, GREEN } from "@/components/AuthShell";
 
 export default function ResetPasswordPage() {
   const [token, setToken] = useState("");
@@ -52,82 +52,58 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: "linear-gradient(135deg, #2F5D3A 0%, #6EA76E 55%, #A8C67A 100%)" }}
+    <AuthShell
+      title="Choose a new password"
+      subtitle="This link expires after 30 minutes and can only be used once."
+      footer={
+        <Link href="/login" className="font-bold underline underline-offset-2" style={{ color: GREEN }}>
+          Back to login
+        </Link>
+      }
     >
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl mb-4 shadow-xl p-2">
-            <Image src="/logo.png" alt="Bright Roots" width={64} height={64} className="rounded-2xl" />
-          </div>
-          <h1 className="text-3xl font-extrabold text-white">Choose a new password</h1>
-          <p className="mt-2 text-sm text-white/80">
-            This reset link expires after 30 minutes and can only be used once.
-          </p>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label htmlFor="new-password" className={authLabel}>New password</label>
+          <input
+            id="new-password"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
+            placeholder="At least 8 characters"
+            className={authInput}
+          />
         </div>
 
-        <div className="rounded-3xl bg-white/95 p-8 shadow-2xl">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="mb-1.5 block text-sm font-bold text-gray-700">
-                New password
-              </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={newPassword}
-                onChange={(event) => setNewPassword(event.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-brand-leaf"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-sm font-bold text-gray-700">
-                Confirm new password
-              </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 font-medium outline-none transition-colors focus:border-brand-leaf"
-              />
-            </div>
-
-            {message && (
-              <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700">
-                {message}
-              </div>
-            )}
-
-            {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading || !token || !!message}
-              className="w-full rounded-xl bg-brand-sage py-3 text-sm font-extrabold text-white disabled:opacity-60"
-            >
-              {loading ? "Resetting..." : "Reset password"}
-            </button>
-          </form>
-
-          <Link
-            href="/login"
-            className="mt-5 block text-center text-sm font-bold text-brand-sage hover:underline"
-          >
-            Back to login
-          </Link>
+        <div>
+          <label htmlFor="confirm-password" className={authLabel}>Confirm new password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            placeholder="Type it again"
+            className={authInput}
+          />
         </div>
-      </div>
-    </div>
+
+        {message && <AuthMessage kind="success">{message}</AuthMessage>}
+        {error && <AuthMessage kind="error">{error}</AuthMessage>}
+
+        <button
+          type="submit"
+          disabled={loading || !token || !!message}
+          className={authButton}
+          style={{ background: GREEN }}
+        >
+          {loading ? "Resetting…" : "Reset password"}
+        </button>
+      </form>
+    </AuthShell>
   );
 }
