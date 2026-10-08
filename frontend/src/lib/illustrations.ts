@@ -90,6 +90,23 @@ const ILLUSTRATIONS: Record<string, string> = {
   "👎": "thumbs-down",
   "❓": "question",
   "📛": "name-badge",
+  // Keycap numbers (written without the invisible emoji mark)
+  "1⃣": "number-1",
+  "2⃣": "number-2",
+  "3⃣": "number-3",
+  "4⃣": "number-4",
+  "5⃣": "number-5",
+  "6⃣": "number-6",
+  "7⃣": "number-7",
+  "8⃣": "number-8",
+  "9⃣": "number-9",
+  "🔟": "number-10",
+  "🔴": "colour-red",
+  "🔵": "colour-blue",
+  "🟢": "colour-green",
+  "🟡": "colour-yellow",
+  "🟠": "colour-orange",
+  "🟣": "colour-purple",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
@@ -119,7 +136,7 @@ export function illustrationFor(emoji: string | null | undefined): string | null
 /** Splits text into plain parts and emojis that have an illustration. */
 export function splitIllustrated(text: string): (string | { emoji: string; src: string })[] {
   const keys = Object.keys(ILLUSTRATIONS);
-  const pattern = new RegExp(`(${keys.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\uFE0F?`, "gu");
+  const pattern = new RegExp(`(${keys.map((k) => [...k].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\uFE0F?")).join("|")})\\uFE0F?`, "gu");
   const out: (string | { emoji: string; src: string })[] = [];
   let last = 0;
   for (const m of text.matchAll(pattern)) {
