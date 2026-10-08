@@ -249,7 +249,8 @@ export type OakLessonPage =
 export const getOakLesson = (entryId: number) => api.get<OakLessonPage>(`/api/oak-lessons/entry/${entryId}`);
 export const getOakCaptions = (entryId: number) => api.get<string>(`/api/oak-lessons/entry/${entryId}/captions`, { responseType: "text" });
 // A word read aloud in the site's own voice, the same on every device (404 when that isn't set up)
-export const spokenWordUrl = (text: string) => `${API_URL}/api/speech?text=${encodeURIComponent(text)}`;
+export const spokenWordUrl = (text: string, lang = "en-GB") =>
+  `${API_URL}/api/speech?text=${encodeURIComponent(text)}${lang === "en-GB" ? "" : `&lang=${encodeURIComponent(lang)}`}`;
 export const oakWorksheetUrl = (entryId: number) => `${API_URL}/api/oak-lessons/entry/${entryId}/worksheet`;
 export type DayWorksheet = { entry_id: number; subject: string; title: string; child: string | null };
 export const getDayWorksheets = (day: string, childId?: number) =>

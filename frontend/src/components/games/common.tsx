@@ -67,18 +67,22 @@ function clearVoice(voices: SpeechSynthesisVoice[]) {
     ?? english[0];
 }
 
-function speakWithDevice(text: string) {
+function speakWithDevice(text: string, lang: string) {
   try {
     const synth = window.speechSynthesis;
     if (!synth) return false;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const voice = clearVoice(synth.getVoices());
+    const prefix = lang.slice(0, 2).toLowerCase();
+    const voice = prefix === "en"
+      ? clearVoice(synth.getVoices())
+      : synth.getVoices().find((v) => v.lang.toLowerCase().replace("_", "-") === lang.toLowerCase())
+        ?? synth.getVoices().find((v) => v.lang.toLowerCase().startsWith(prefix));
     if (voice) {
       utterance.voice = voice;
       utterance.lang = voice.lang;
     } else {
-      utterance.lang = "en-GB";
+      utterance.lang = lang;
     }
     utterance.rate = 0.9;
     utterance.pitch = 1.1;
@@ -90,36 +94,36 @@ function speakWithDevice(text: string) {
 }
 
 // The site's own voice sounds the same on every device. If it isn't available, the device reads the word instead.
-let siteVoiceWorks = true;
+const siteVoiceFailed = new Set<string>();
 let playing: HTMLAudioElement | null = null;
 
-export function speak(text: string) {
+export function speak(text: string, lang = "en-GB") {
   const word = text.trim();
   if (!word || typeof window === "undefined") return false;
-  if (!siteVoiceWorks || typeof Audio === "undefined") return speakWithDevice(word);
+  if (siteVoiceFailed.has(lang) || typeof Audio === "undefined") return speakWithDevice(word, lang);
   try {
     playing?.pause();
     window.speechSynthesis?.cancel();
-    const audio = new Audio(spokenWordUrl(word));
+    const audio = new Audio(spokenWordUrl(word, lang));
     playing = audio;
     let fellBack = false;
     const fallBack = () => {
       if (fellBack || playing !== audio) return;
       fellBack = true;
-      speakWithDevice(word);
+      speakWithDevice(word, lang);
     };
     audio.onerror = () => {
-      siteVoiceWorks = false;
+      siteVoiceFailed.add(lang);
       fallBack();
     };
     audio.play().catch((error: unknown) => {
       // A blocked autoplay isn't the voice's fault, so only a real failure turns the site voice off.
-      if (!(error instanceof DOMException && error.name === "NotAllowedError")) siteVoiceWorks = false;
+      if (!(error instanceof DOMException && error.name === "NotAllowedError")) siteVoiceFailed.add(lang);
       fallBack();
     });
     return true;
   } catch {
-    return speakWithDevice(word);
+    return speakWithDevice(word, lang);
   }
 }
 

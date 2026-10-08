@@ -25,7 +25,16 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/speech", tags=["speech"])
 
 MAX_LENGTH = 80
-NEW_WORDS_PER_DAY = 300  # per person; words already made are free and don't count
+# Native voices for the languages page's starter packs. English uses AZURE_SPEECH_VOICE.
+VOICES = {
+    "fr-FR": "fr-FR-DeniseNeural",
+    "es-ES": "es-ES-ElviraNeural",
+    "de-DE": "de-DE-KatjaNeural",
+    "it-IT": "it-IT-ElsaNeural",
+    "pl-PL": "pl-PL-ZofiaNeural",
+    "cy-GB": "cy-GB-NiaNeural",
+}
+NEW_WORDS_PER_DAY = 600  # per person; words already made are free and don't count
 _made_today: dict[int, list[float]] = defaultdict(list)
 
 
@@ -33,8 +42,12 @@ def _tidy(text: str) -> str:
     return " ".join(text.split())
 
 
-def _path(text: str) -> str:
-    name = hashlib.sha256(f"{settings.AZURE_SPEECH_VOICE}|{text}".encode()).hexdigest()
+def _voice(lang: str) -> str:
+    return VOICES.get(lang) or settings.AZURE_SPEECH_VOICE
+
+
+def _path(text: str, voice: str) -> str:
+    name = hashlib.sha256(f"{voice}|{text}".encode()).hexdigest()
     return os.path.join(upload_dir("speech"), f"{name}.mp3")
 
 
@@ -48,11 +61,12 @@ def _allowed_new_word(user_id: int) -> bool:
     return True
 
 
-def _make(text: str) -> bytes | None:
+def _make(text: str, voice: str) -> bytes | None:
     """The word as an MP3 from Azure, or None if Azure couldn't make it."""
+    lang = "-".join(voice.split("-")[:2])
     ssml = (
-        "<speak version='1.0' xml:lang='en-GB'>"
-        f"<voice name='{escape(settings.AZURE_SPEECH_VOICE)}'><prosody rate='-10%'>{escape(text)}</prosody></voice>"
+        f"<speak version='1.0' xml:lang='{escape(lang)}'>"
+        f"<voice name='{escape(voice)}'><prosody rate='-10%'>{escape(text)}</prosody></voice>"
         "</speak>"
     )
     try:
@@ -77,15 +91,20 @@ def _make(text: str) -> bytes | None:
 
 
 @router.get("")
-def speak(text: str = Query(..., min_length=1, max_length=MAX_LENGTH), current_user: User = Depends(get_current_user)):
+def speak(
+    text: str = Query(..., min_length=1, max_length=MAX_LENGTH),
+    lang: str = Query("en-GB", max_length=10),
+    current_user: User = Depends(get_current_user),
+):
     text = _tidy(text)
-    if not text or not settings.AZURE_SPEECH_KEY:
+    if not text or not settings.AZURE_SPEECH_KEY or (lang != "en-GB" and lang not in VOICES):
         raise HTTPException(status_code=404, detail="Spoken words aren't available")
-    path = _path(text)
+    voice = _voice(lang)
+    path = _path(text, voice)
     if not os.path.exists(path):
         if not _allowed_new_word(current_user.id):
             raise HTTPException(status_code=429, detail="That's a lot of new words for one day")
-        audio = _make(text)
+        audio = _make(text, voice)
         if audio is None:
             raise HTTPException(status_code=503, detail="Spoken words aren't available right now")
         temporary = f"{path}.{os.getpid()}.part"
