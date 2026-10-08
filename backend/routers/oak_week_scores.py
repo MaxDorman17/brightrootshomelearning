@@ -8,7 +8,7 @@ from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, joinedload
 from clock import uk_today
 from database import get_db
-from models import PlannerEntry, Lesson, User, OakQuizResult, PlannerCompletion
+from models import PlannerEntry, Lesson, User, OakQuizResult, OakLessonAttempt, PlannerCompletion
 from auth import get_current_user, require_parent
 from routers.oak import OAK_SHARE_RE
 
@@ -72,6 +72,15 @@ def get_week_quiz_scores(
         ).all():
             comps_by_entry.setdefault(comp.entry_id, []).append(comp)
 
+    # Oak lessons done inside Bright Roots keep their scores here rather than behind a share link.
+    attempts = {
+        (a.entry_id, a.child_id): a
+        for a in db.query(OakLessonAttempt).filter(
+            OakLessonAttempt.entry_id.in_([e.id for e in entries]),
+            OakLessonAttempt.child_id.in_(target_child_ids),
+        ).all()
+    } if entries and target_child_ids else {}
+
     days = _build_day_buckets(start_date, end_date)
 
     grand = {"starter": 0, "starter_total": 0, "exit": 0, "exit_total": 0, "completed": 0, "total": 0}
@@ -96,10 +105,10 @@ def get_week_quiz_scores(
             children_for_entry = [e.assigned_to]
             direct_completed = e.is_complete and bool(direct_share_url)
         else:
-            children_for_entry = [
-                c.user_id for c in comps_by_entry.get(e.id, [])
-                if c.completed_work_url is not None
-            ] or target_child_ids
+            children_for_entry = sorted({
+                *(c.user_id for c in comps_by_entry.get(e.id, []) if c.completed_work_url is not None),
+                *(cid for (entry_id, cid) in attempts if entry_id == e.id),
+            }) or target_child_ids
             direct_completed = False
 
         for cid in children_for_entry:
@@ -114,6 +123,11 @@ def get_week_quiz_scores(
                 done = comp is not None
 
             result = quiz_result(url)
+            attempt = attempts.get((e.id, cid))
+            if result is None and attempt is not None:
+                # Done inside Bright Roots: finishing the exit quiz is what completes the lesson.
+                result = attempt
+                done = done or attempt.exit_score is not None
             ss = result.starter_score if result else None
             st = result.starter_total if result else None
             es = result.exit_score if result else None

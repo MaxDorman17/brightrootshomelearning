@@ -238,3 +238,23 @@ def test_day_worksheets_are_only_for_the_familys_grown_ups(family, oak, workshee
     oak["lesson"] = lesson(has_worksheet=False)
     _forget_lessons()
     assert family.parent.get("/api/oak-lessons/day-worksheets.pdf", params={"day": today}).status_code == 404
+
+
+def test_scores_from_lessons_done_here_show_in_the_planner(family, oak):
+    one, two = family.add_child("One"), family.add_child("Two")
+    own = planned(family, one["id"])
+    shared = planned(family, None)
+    family.child_client(one).post(f"/api/oak-lessons/entry/{own['id']}/quiz/starter", json={"answers": {"0": 1}})
+    family.child_client(one).post(f"/api/oak-lessons/entry/{own['id']}/quiz/exit", json={"answers": RIGHT})
+    family.child_client(two).post(f"/api/oak-lessons/entry/{shared['id']}/quiz/exit", json={"answers": RIGHT})
+    today = date.today().isoformat()
+
+    week = family.parent.get("/api/oak/week-scores", params={"start_date": today, "end_date": today}).json()
+    rows = {(r["entry_id"], r["child_id"]): r for r in week["days"][0]["entries"]}
+    mine = rows[(own["id"], one["id"])]
+    assert (mine["starter_score"], mine["starter_total"], mine["exit_score"], mine["exit_total"]) == (1, 5, 5, 5)
+    assert mine["is_complete"] is True
+    theirs = rows[(shared["id"], two["id"])]
+    assert (theirs["exit_score"], theirs["starter_score"], theirs["is_complete"]) == (5, None, True)
+    # Only the child who did the shared lesson is listed for it.
+    assert (shared["id"], one["id"]) not in rows
