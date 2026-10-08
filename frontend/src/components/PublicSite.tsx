@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { checkSession } from "@/lib/api";
 import { serif } from "@/lib/fonts";
+import { FACEBOOK_URL } from "@/lib/site";
 
 /** Where a signed-in visitor should go, or null if they aren't signed in. */
 export function useMemberHome() {
@@ -108,6 +109,14 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" className={className}>
+      <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07" />
+    </svg>
+  );
+}
+
 const LEGAL_LINKS: [string, string][] = [
   ["/privacy", "Privacy policy"],
   ["/privacy/children", "Privacy for children"],
@@ -139,6 +148,16 @@ export function PublicFooter() {
           <Link href="/contact" className="hover:text-[#2F5D3A]">Contact</Link>
           <Link href="/safeguarding" className="hover:text-[#2F5D3A]">Safeguarding</Link>
           <Link href="/login" className="hover:text-[#2F5D3A]">Login</Link>
+          <a
+            href={FACEBOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Bright Roots on Facebook (opens in a new tab)"
+            className="flex items-center gap-1.5 hover:text-[#2F5D3A]"
+          >
+            <FacebookIcon className="h-4 w-4" />
+            Facebook
+          </a>
         </div>
       </div>
       <nav
