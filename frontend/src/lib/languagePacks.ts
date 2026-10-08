@@ -25,7 +25,7 @@ const COLOUR_PICTURES = ["🔴", "🔵", "🟢", "🟡", "🟠", "🟣", "🩷",
 const colours = (words: string[]): PackWord[] => words.map((w, i) => [COLOURS[i], w, COLOUR_PICTURES[i]]);
 
 const ANIMALS = ["dog", "cat", "horse", "cow", "pig", "bird", "fish", "rabbit", "mouse", "sheep"];
-const ANIMAL_PICTURES = ["🐶", "🐱", "🐴", "🐮", "🐷", "🐦", "🐟", "🐰", "🐭", "🐑"];
+const ANIMAL_PICTURES = ["🐶", "🐈", "🐴", "🐮", "🐷", "🐦", "🐟", "🐰", "🐭", "🐑"];
 const animals = (words: string[]): PackWord[] => words.map((w, i) => [ANIMALS[i], w, ANIMAL_PICTURES[i]]);
 
 const FOOD = ["bread", "apple", "cheese", "milk", "water", "egg", "banana", "cake", "chicken", "juice"];

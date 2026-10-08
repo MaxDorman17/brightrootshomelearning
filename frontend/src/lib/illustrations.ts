@@ -143,6 +143,8 @@ const ILLUSTRATIONS: Record<string, string> = {
   "😎": "sunglasses",
   "⛈": "storm",
   "🌫": "fog",
+  "🐈": "kitten",
+  "👶": "baby",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
