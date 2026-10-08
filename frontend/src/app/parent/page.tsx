@@ -1955,7 +1955,7 @@ export default function ParentPlanner() {
                   rel="noopener noreferrer"
                   className="gradient-btn mt-5 block w-full py-2.5 text-center text-sm"
                 >
-                  Print all {printSheets.length} together
+                  {printSheets.length === 1 ? "Print the worksheet" : `Print all ${printSheets.length} together`}
                 </a>
                 <p className="mt-2 text-xs text-brand-earth/60">
                   Opens one file with every worksheet in it, ready to print. Worksheets are from Oak National Academy.
