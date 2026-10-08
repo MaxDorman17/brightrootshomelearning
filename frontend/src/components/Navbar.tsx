@@ -212,6 +212,7 @@ export default function Navbar() {
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isDemo, setIsDemo] = useState(false);
   const [myAvatar, setMyAvatar] = useState<{ id: number; avatar: AvatarChoice | null; has_photo: boolean } | null>(null);
   const [bell, setBell] = useState<BellItem[]>([]);
   const [bellSeen, setBellSeen] = useState<string[]>([]);
@@ -232,7 +233,10 @@ export default function Navbar() {
 
     const loadLevels = () =>
       checkSession()
-        .then((res) => setLevels(res.data.activity_levels?.length ? res.data.activity_levels : ["both"]))
+        .then((res) => {
+          setLevels(res.data.activity_levels?.length ? res.data.activity_levels : ["both"]);
+          setIsDemo(!!res.data.is_demo);
+        })
         .catch(() => {});
     loadLevels();
     window.addEventListener("activity-levels-changed", loadLevels);
@@ -386,6 +390,14 @@ export default function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-50 border-b border-brand-softsage/20 bg-brand-white/95 backdrop-blur-md">
+        {isDemo && (
+          <div className="bg-[#2F5D3A] px-4 py-2 text-center text-sm font-semibold text-white">
+            You&apos;re looking round the demo family. Anything you change is cleared overnight.{" "}
+            <Link href="/login" className="underline underline-offset-2">Try someone else</Link>
+            {" · "}
+            <Link href="/signup" className="underline underline-offset-2">Start your free trial</Link>
+          </div>
+        )}
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between">
 

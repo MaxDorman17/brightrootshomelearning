@@ -47,6 +47,8 @@ class User(Base):
     activity_level = Column(String(10), nullable=True)
     # Secret part of the family's private calendar feed address. Empty until they turn calendar sync on.
     calendar_token = Column(String(64), nullable=True, unique=True, index=True)
+    # The made-up family visitors can look round (see demo.py). Set on the grown-up and the children.
+    is_demo = Column(Boolean, nullable=False, default=False, server_default="0")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     lessons = relationship("Lesson", back_populates="creator")

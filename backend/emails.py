@@ -69,6 +69,8 @@ def plain_text(body_html: str) -> str:
 
 
 def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] = None, reply_to: Optional[str] = None) -> None:
+    if (to or "").strip().lower().endswith(".invalid"):
+        return  # a made-up address, such as the demo family's: there is nobody to send it to
     payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html, "text": plain_text(body_html)}
     if unsubscribe_url:
         payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}

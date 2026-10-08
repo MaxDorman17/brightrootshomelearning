@@ -59,6 +59,7 @@ class UserOut(BaseModel):
     login_name: Optional[str] = None  # what they type to log in
     # Which activity pages to show: a child's own choice, or every choice among a parent's children.
     activity_levels: list[str] = ["both"]
+    is_demo: bool = False  # the made-up family anyone can try (see demo.py)
 
     @field_validator("avatar", "subject_colors", mode="before")
     @classmethod

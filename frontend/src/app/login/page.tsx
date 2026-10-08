@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { checkSession, getMe, login } from "@/lib/api";
+import { checkSession, demoLogin, getDemoFamily, getMe, login, type DemoFamily } from "@/lib/api";
 import { setAuth } from "@/lib/auth";
 import { applyTheme } from "@/lib/theme";
 import { applyDisplay } from "@/lib/display";
@@ -39,26 +39,41 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [demo, setDemo] = useState<DemoFamily | null>(null);
 
   // A child who is already logged in and wanders onto a parent page gets sent here. Take them back to their
   // own Today page rather than asking them to log in again.
   useEffect(() => {
     checkSession()
       .then((res) => {
-        if (res.data.role === "child") {
+        // Someone trying the demo comes back here to try it as someone else.
+        if (res.data.role === "child" && !res.data.is_demo) {
           setAuth(res.data.role, res.data.username);
           router.replace("/child");
         }
       })
       .catch(() => {});
+    getDemoFamily()
+      .then((res) => {
+        setDemo(res.data.enabled ? res.data : null);
+        // A shared link to /login#demo goes straight to the demo buttons.
+        if (res.data.enabled && window.location.hash === "#demo") {
+          setTimeout(() => document.getElementById("demo")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        }
+      })
+      .catch(() => {});
   }, [router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    logIn(() => login(username, password));
+  };
+
+  const logIn = async (send: () => Promise<{ data: any }>) => {
     setError("");
     setLoading(true);
     try {
-      const res = await login(username, password);
+      const res = await send();
       setAuth(res.data.role, res.data.username);
       getMe()
         .then((me) => {
@@ -164,6 +179,25 @@ export default function LoginPage() {
             <Link href="/signup" className="font-bold underline underline-offset-2" style={{ color: GREEN }}>Create an account</Link>
           </div>
         </div>
+
+        {demo && (
+          <div id="demo" className="mt-5 rounded-[1.5rem] border border-white/70 bg-[#FDFAF3]/90 p-5 text-center shadow-xl shadow-[#6E5A46]/15 backdrop-blur-md [@media(max-height:820px)]:mt-3 [@media(max-height:820px)]:p-4">
+            <p className="font-bold text-[#1F3A26]">Just looking? Try our demo family</p>
+            <p className="mt-0.5 text-sm" style={{ color: EARTH }}>No sign-up needed. Have a click around; it&apos;s all made up.</p>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <button type="button" disabled={loading} onClick={() => logIn(() => demoLogin())}
+                className="rounded-full px-4 py-2 text-sm font-bold text-white disabled:opacity-60" style={{ background: GREEN }}>
+                As {demo.parent_name || "the grown-up"}, the grown-up
+              </button>
+              {demo.children.map((child) => (
+                <button key={child.id} type="button" disabled={loading} onClick={() => logIn(() => demoLogin(child.id))}
+                  className="rounded-full border-2 bg-white px-4 py-2 text-sm font-bold disabled:opacity-60" style={{ borderColor: GREEN, color: GREEN }}>
+                  As {child.name}{child.age ? `, ${child.age}` : ""}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <p className="mt-6 text-center [@media(max-height:820px)]:mt-3">
           <span className="inline-block rounded-full bg-[#FDFAF3]/85 px-3 py-1 text-xs font-semibold backdrop-blur-sm" style={{ color: EARTH }}>
