@@ -39,7 +39,15 @@ Optional settings (all in `backend/config.py`): `FRONTEND_URL`, `RESEND_API_KEY`
 The database tables and any schema updates are created automatically when the server starts.
 
 To create a first parent and child account, set the `BOOTSTRAP_*` environment variables described in
-`backend/add_users.py`, then run `python add_users.py`. There are no built-in demo logins.
+`backend/add_users.py`, then run `python add_users.py`. There are no built-in logins with known passwords.
+
+### Demo family
+
+Set `DEMO_ENABLED=true` on the backend to let anyone look round a made-up family without signing up.
+The login page then shows "Try our demo family" buttons (link straight to them with `/login#demo`).
+The family (a grown-up called Jo, and Ruby, 9, and Sam, 13) comes with a few weeks of lessons, scores,
+books and stars, and is wiped and rebuilt every night at 4am UK time. Demo visitors can't change
+passwords, add or remove people, pay, upload files or trigger any emails. See `backend/demo.py`.
 
 Start the API:
 

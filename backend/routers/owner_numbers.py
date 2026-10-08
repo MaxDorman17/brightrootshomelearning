@@ -28,7 +28,8 @@ def _require_key(authorization: str = Header(default="")) -> None:
 @router.get("/numbers")
 def numbers(db: Session = Depends(get_db), _: None = Depends(_require_key)):
     now = datetime.utcnow()
-    families = db.query(User).filter(User.role == "parent")
+    real = User.is_demo.is_not(True)  # the demo family isn't a real one
+    families = db.query(User).filter(User.role == "parent", real)
 
     def status(*names):
         return families.filter(User.subscription_status.in_(names))
@@ -43,7 +44,7 @@ def numbers(db: Session = Depends(get_db), _: None = Depends(_require_key)):
         "trial_ended": status("trialing").filter((User.trial_ends_at == None) | (User.trial_ends_at <= now)).count(),  # noqa: E711
         "cancelled": status("canceled").count(),
         "new_families_7_days": families.filter(User.created_at >= now - timedelta(days=7)).count(),
-        "children": db.query(User).filter(User.role == "child").count(),
+        "children": db.query(User).filter(User.role == "child", real).count(),
         "newsletter_subscribers": db.query(NewsletterSubscriber).filter(NewsletterSubscriber.status == "subscribed").count(),
         "as_of": now.isoformat(timespec="seconds") + "Z",
     }

@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     AZURE_SPEECH_KEY: str = ""
     AZURE_SPEECH_REGION: str = "uksouth"
     AZURE_SPEECH_VOICE: str = "en-GB-LibbyNeural"
+    # A made-up family anyone can try from the login page, rebuilt every night (see demo.py). Off unless true.
+    DEMO_ENABLED: bool = False
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_MONTHLY_PRICE_ID: str = "price_1UJb5zD6aHVbx1WGHlgqqk7o"

@@ -19,6 +19,7 @@ from models import User
 from schemas import Token, UserOut, _parse_avatar
 from auth import SESSION_COOKIE_NAME, verify_password, hash_password, create_access_token, get_authenticated_user, get_login_user, actor, is_family_owner, user_has_membership_access, COPARENT_ROLE, find_login, login_name_taken, CHILD_MIN_PASSWORD, PARENT_MIN_PASSWORD
 from config import settings
+import demo
 import emails
 from email_validator import EmailNotValidError, validate_email
 from newsletter_access import is_admin, subscribe_member
@@ -359,6 +360,11 @@ def login(
         )
 
     _clear_account_failures(client_ip, form_data.username)
+    return _log_in(response, request, user, db)
+
+
+def _log_in(response: Response, request: Request, user: User, db: Session) -> Token:
+    """Set the session cookie for this person and tell the page where they go next."""
     token = create_access_token({"sub": str(user.id), "ver": user.session_version})
     secure_cookie = request.url.hostname not in {"localhost", "127.0.0.1"}
     response.set_cookie(
@@ -383,6 +389,39 @@ def login(
         onboarding_completed=(account.onboarding_completed_at is not None),
         billing_required=not user_has_membership_access(account, db),
     )
+
+
+class DemoLoginRequest(BaseModel):
+    child_id: Optional[int] = None  # one of the demo children; left out for the demo grown-up
+
+
+@router.get("/demo")
+def demo_family(db: Session = Depends(get_db)):
+    """Whether the login page should offer the demo family, and who is in it."""
+    parent = demo.demo_parent(db) if demo.enabled() else None
+    if parent is None:
+        return {"enabled": False, "children": []}
+    ages = {c["name"]: c["age"] for c in demo.CHILDREN}
+    kids = db.query(User).filter(User.parent_id == parent.id, User.role == "child").order_by(User.id).all()
+    return {
+        "enabled": True,
+        "parent_name": parent.username,
+        "children": [{"id": k.id, "name": k.username, "age": ages.get(k.username)} for k in kids],
+    }
+
+
+@router.post("/demo", response_model=Token)
+def demo_login(body: DemoLoginRequest, response: Response, request: Request, db: Session = Depends(get_db)):
+    """Log in to the demo family with no password: as its grown-up, or as one of its children."""
+    parent = demo.ensure(db)
+    if parent is None:
+        raise HTTPException(status_code=404, detail="The demo isn't available right now")
+    user = parent
+    if body.child_id is not None:
+        user = db.query(User).filter(User.id == body.child_id, User.parent_id == parent.id, User.role == "child").first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="The demo family has changed. Please reload the page.")
+    return _log_in(response, request, user, db)
 
 
 @router.post("/logout", status_code=204)

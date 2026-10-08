@@ -2,11 +2,12 @@ import os
 import sqlite3
 from datetime import datetime
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text, inspect as sa_inspect
 from sqlalchemy.schema import CreateTable
 from config import settings
+import demo
 import error_reports
 import limits
 from database import engine, Base
@@ -89,6 +90,8 @@ def run_migrations():
             if "calendar_token" not in existing_cols:
                 conn.execute(text("ALTER TABLE users ADD COLUMN calendar_token VARCHAR(64)"))
                 conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS ix_users_calendar_token ON users (calendar_token)"))
+            if "is_demo" not in existing_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN is_demo BOOLEAN NOT NULL DEFAULT 0"))
             conn.commit()
     if "moments" in tables:
         existing_cols = [c["name"] for c in insp.get_columns("moments")]
@@ -503,6 +506,8 @@ app = FastAPI(
     docs_url="/docs" if _local else None,
     redoc_url="/redoc" if _local else None,
     openapi_url="/openapi.json" if _local else None,
+    # Stops visitors to the demo family doing the few things that would reach real people (see demo.py).
+    dependencies=[Depends(demo.guard)],
 )
 
 app.middleware("http")(limits.refuse_huge_requests)
@@ -592,6 +597,11 @@ def start_backups():
     import backups
 
     backups.start_scheduler()
+
+
+@app.on_event("startup")
+def start_demo_family():
+    demo.start_scheduler()
 
 
 @app.get("/health")

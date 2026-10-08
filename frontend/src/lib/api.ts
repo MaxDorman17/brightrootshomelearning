@@ -52,6 +52,10 @@ export const login = (username: string, password: string) => {
   });
 };
 export const logout = () => api.post("/api/auth/logout");
+// The made-up demo family (backend/demo.py): who is in it, and logging in as one of them with no password.
+export type DemoFamily = { enabled: boolean; parent_name?: string; children: { id: number; name: string; age: number | null }[] };
+export const getDemoFamily = () => api.get<DemoFamily>("/api/auth/demo", { skipAuthRedirect: true } as any);
+export const demoLogin = (childId?: number) => api.post("/api/auth/demo", childId ? { child_id: childId } : {});
 export const getMe = () => api.get("/api/auth/me");
 // Like getMe, but a signed-out visitor stays on the page instead of being sent to /login.
 export const checkSession = () => api.get("/api/auth/me", { skipAuthRedirect: true } as any);
