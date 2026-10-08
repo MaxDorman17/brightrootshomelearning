@@ -249,6 +249,11 @@ export type OakLessonPage =
 export const getOakLesson = (entryId: number) => api.get<OakLessonPage>(`/api/oak-lessons/entry/${entryId}`);
 export const getOakCaptions = (entryId: number) => api.get<string>(`/api/oak-lessons/entry/${entryId}/captions`, { responseType: "text" });
 export const oakWorksheetUrl = (entryId: number) => `${API_URL}/api/oak-lessons/entry/${entryId}/worksheet`;
+export type DayWorksheet = { entry_id: number; subject: string; title: string; child: string | null };
+export const getDayWorksheets = (day: string, childId?: number) =>
+  api.get<DayWorksheet[]>("/api/oak-lessons/day-worksheets", { params: { day, child_id: childId } });
+export const dayWorksheetsPdfUrl = (day: string, childId?: number) =>
+  `${API_URL}/api/oak-lessons/day-worksheets.pdf?day=${day}${childId ? `&child_id=${childId}` : ""}`;
 export const submitOakQuiz = (entryId: number, which: "starter" | "exit", answers: Record<string, unknown>) =>
   api.post<{ score: number; total: number; right: boolean[]; first_time: boolean; new_best: boolean; lesson_complete: boolean; attempt: OakQuizScores }>(
     `/api/oak-lessons/entry/${entryId}/quiz/${which}`,

@@ -184,3 +184,57 @@ def test_a_lesson_for_everyone_is_finished_per_child(family, oak):
     kid_two = family.child_client(two)
     assert kid_two.get("/api/planner/today").json()[0]["is_complete"] is False
     assert kid_two.get(f"/api/oak-lessons/entry/{entry['id']}").json()["attempt"]["exit_score"] is None
+
+
+def _pdf(pages):
+    from io import BytesIO
+    from pypdf import PdfWriter
+    writer, out = PdfWriter(), BytesIO()
+    for _ in range(pages):
+        writer.add_blank_page(width=200, height=200)
+    writer.write(out)
+    return out.getvalue()
+
+
+@pytest.fixture
+def worksheets(monkeypatch):
+    """Stands in for Oak's worksheet files: slug -> number of pages."""
+    files = {"ordering-numbers-to-10": 2, "another-lesson": 1}
+    monkeypatch.setattr(oak_lessons, "_worksheet_link", lambda slug: f"https://oak.test/{slug}.pdf" if slug in files else None)
+    monkeypatch.setattr(oak_lessons, "_download_pdf", lambda url: _pdf(files[url.rsplit("/", 1)[1][:-4]]))
+    return files
+
+
+def test_a_days_worksheets_print_in_one_go(family, oak, worksheets):
+    one, two = family.add_child("One"), family.add_child("Two")
+    first = planned(family, one["id"])
+    planned(family, two["id"], OAK_URL.replace("ordering-numbers-to-10", "another-lesson"), "Another lesson")
+    planned(family, one["id"], "https://example.com/lesson", "Not from Oak")
+    today = date.today().isoformat()
+
+    listed = family.parent.get("/api/oak-lessons/day-worksheets", params={"day": today}).json()
+    assert [(w["title"], w["child"]) for w in listed] == [("Ordering numbers to 10", "One"), ("Another lesson", "Two")]
+    assert listed[0]["entry_id"] == first["id"]
+    just_one = family.parent.get("/api/oak-lessons/day-worksheets", params={"day": today, "child_id": one["id"]}).json()
+    assert [w["child"] for w in just_one] == ["One"]
+
+    pdf = family.parent.get("/api/oak-lessons/day-worksheets.pdf", params={"day": today})
+    assert pdf.status_code == 200 and pdf.headers["content-type"] == "application/pdf"
+    from io import BytesIO
+    from pypdf import PdfReader
+    assert len(PdfReader(BytesIO(pdf.content)).pages) == 3
+
+
+def test_day_worksheets_are_only_for_the_familys_grown_ups(family, oak, worksheets):
+    child = family.add_child()
+    planned(family, child["id"])
+    today = date.today().isoformat()
+    assert family.child_client(child).get("/api/oak-lessons/day-worksheets", params={"day": today}).status_code == 403
+    stranger = sign_up("Other")
+    assert stranger.parent.get("/api/oak-lessons/day-worksheets", params={"day": today}).json() == []
+    assert stranger.parent.get("/api/oak-lessons/day-worksheets", params={"day": today, "child_id": child["id"]}).status_code == 404
+    assert stranger.parent.get("/api/oak-lessons/day-worksheets.pdf", params={"day": today}).status_code == 404
+    # A day with no Oak worksheets says so rather than sending an empty file.
+    oak["lesson"] = lesson(has_worksheet=False)
+    _forget_lessons()
+    assert family.parent.get("/api/oak-lessons/day-worksheets.pdf", params={"day": today}).status_code == 404

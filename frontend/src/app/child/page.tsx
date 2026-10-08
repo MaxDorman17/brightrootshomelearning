@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRole, getUsername } from "@/lib/auth";
 import {
   getWeekEntries, getAllMyEntries, toggleComplete,
   submitWorkUrl, submitNote, getFeedback, markFeedbackRead, getDaysOff,
-  getGoals, toggleGoal, getTimetable, getBooks, checkOakWorksheet, getLessonScores,
+  getGoals, toggleGoal, getTimetable, getBooks, getOakLesson, oakWorksheetUrl, getLessonScores,
 } from "@/lib/api";
 import { PlannerEntry, WorkFeedback, WeeklyGoal, ReadingLogBook, LessonScore } from "@/types";
 import IDidThisCard from "@/components/IDidThisCard";
@@ -24,9 +24,9 @@ import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
 import Emoji from "@/components/Emoji";
 
-interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
-const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/(?:programmes\/[^/?#]+\/units\/[^/?#]+\/)?lessons\/[^/?#]+$/;
+// Any Oak lesson link, pupil or teacher, the same ones the server recognises (routers/oak_lessons.py).
+const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/(?:pupils|teachers)\/(?:[a-z0-9-]+\/)*lessons\/[a-z0-9-]+(?:[/?#].*)?$/;
 const isOakLessonUrl = (url?: string | null): url is string => !!url && OAK_LESSON_URL_RE.test(url);
 
 const DEFAULT_TIMETABLE: Record<string, string[]> = {
@@ -141,7 +141,8 @@ export default function ChildDashboard() {
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
 
-  const [worksheetCache, setWorksheetCache] = useState<Record<string, WorksheetInfo>>({});
+  // Whether the Oak lesson open in the pop-up has a worksheet (null while checking, or not an Oak lesson).
+  const [modalWorksheet, setModalWorksheet] = useState<boolean | null>(null);
   // The marks a grown-up has given this child's lessons, keyed by lesson.
   const [myScores, setMyScores] = useState<Record<number, LessonScore>>({});
   useEffect(() => {
@@ -149,7 +150,6 @@ export default function ChildDashboard() {
       .then(res => setMyScores(Object.fromEntries((res.data as LessonScore[]).map(s => [s.entry_id, s]))))
       .catch(() => {});
   }, []);
-  const worksheetRequested = useRef<Set<string>>(new Set());
 
   const loadWeek = useCallback(async () => {
     setLoading(true);
@@ -196,21 +196,17 @@ export default function ChildDashboard() {
     setSelectedDayIndex(isCurrentWeek && day >= 1 && day <= 5 ? day - 1 : 0);
   }, [weekStart]);
 
-  // Check worksheet availability once per distinct Oak lesson URL — the ref
-  // tracks what's already been requested so re-renders (or a week reload
-  // returning the same URLs) never re-fire a check that's already in flight
-  // or cached.
+  // Opening an Oak lesson: ask Oak (through our server) whether it has a worksheet.
+  const modalEntryId = modal && isOakLessonUrl(modal.entry.lesson.lesson_url) ? modal.entry.id : null;
   useEffect(() => {
-    entries.forEach(e => {
-      const url = e.lesson.lesson_url;
-      if (isOakLessonUrl(url) && !worksheetRequested.current.has(url)) {
-        worksheetRequested.current.add(url);
-        checkOakWorksheet(url)
-          .then(res => setWorksheetCache(prev => ({ ...prev, [url]: res.data })))
-          .catch(() => setWorksheetCache(prev => ({ ...prev, [url]: { has_worksheet: false, intro_url: null } })));
-      }
-    });
-  }, [entries]);
+    setModalWorksheet(null);
+    if (modalEntryId === null) return;
+    let current = true;
+    getOakLesson(modalEntryId)
+      .then(res => current && setModalWorksheet(res.data.available && res.data.has_worksheet))
+      .catch(() => current && setModalWorksheet(false));
+    return () => { current = false; };
+  }, [modalEntryId]);
 
   const weekDates = DAYS.map((_, i) => addDays(weekStart, i));
 
@@ -876,22 +872,18 @@ export default function ChildDashboard() {
               </a>
             )}
 
-            {(() => {
-              const url = modal.entry.lesson.lesson_url;
-              const ws = url ? worksheetCache[url] : undefined;
-              return ws?.has_worksheet && ws.intro_url ? (
-                <a
-                  href={ws.intro_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 bg-white border-2 border-brand-lime/40 hover:bg-brand-lime/10 text-brand-deep rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
-                >
-                  <span className="text-lg">📄</span>
-                  Open Worksheet
-                  <span className="ml-auto opacity-70">→</span>
-                </a>
-              ) : null;
-            })()}
+            {modalWorksheet && (
+              <a
+                href={oakWorksheetUrl(modal.entry.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-white border-2 border-brand-lime/40 hover:bg-brand-lime/10 text-brand-deep rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"
+              >
+                <span className="text-lg">📄</span>
+                Open Worksheet
+                <span className="ml-auto opacity-70">→</span>
+              </a>
+            )}
 
             <a
               href={`/child/resources?folder=${encodeURIComponent(modal.entry.lesson.subject)}`}
