@@ -127,6 +127,24 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🍌": "banana",
   "🎂": "birthday-cake",
   "🍗": "chicken",
+  "🧃": "juice",
+  "👩": "woman",
+  "👨": "man",
+  "👦": "boy",
+  "👧": "girl",
+  "👵": "grandma",
+  "👴": "grandad",
+  "🌧": "rain",
+  "❄": "snow",
+  "💨": "wind",
+  "🥶": "cold",
+  "🥵": "hot",
+  "☁": "cloud",
+  "😎": "sunglasses",
+  "⛈": "storm",
+  "🌫": "fog",
+  "🐈": "kitten",
+  "👶": "baby",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
@@ -156,7 +174,8 @@ export function illustrationFor(emoji: string | null | undefined): string | null
 /** Splits text into plain parts and emojis that have an illustration. */
 export function splitIllustrated(text: string): (string | { emoji: string; src: string })[] {
   const keys = Object.keys(ILLUSTRATIONS);
-  const pattern = new RegExp(`(${keys.map((k) => [...k].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\uFE0F?")).join("|")})\\uFE0F?`, "gu");
+  // Skip emojis that are part of a joined emoji (👨‍🍳) or have a skin tone, so those stay whole.
+  const pattern = new RegExp(`(?<!\u200D)(${keys.map((k) => [...k].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\uFE0F?")).join("|")})\\uFE0F?(?![\\u200D\\u{1F3FB}-\\u{1F3FF}])`, "gu");
   const out: (string | { emoji: string; src: string })[] = [];
   let last = 0;
   for (const m of text.matchAll(pattern)) {
