@@ -18,6 +18,7 @@ from fastapi.responses import PlainTextResponse, RedirectResponse, Response
 from pypdf import PdfReader, PdfWriter
 from pypdf.errors import PdfReadError
 from pydantic import BaseModel, field_validator
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from auth import get_current_user, require_child, require_parent
@@ -233,7 +234,13 @@ def get_lesson(db: Session, slug: str) -> Optional[dict]:
         row.data, row.fetched_at = json.dumps(fresh), now
     else:
         db.add(OakLesson(slug=slug, data=json.dumps(fresh), fetched_at=now))
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # Another request saved this lesson first (a page often asks for it twice at once), so update theirs.
+        db.rollback()
+        db.query(OakLesson).filter(OakLesson.slug == slug).update({"data": json.dumps(fresh), "fetched_at": now})
+        db.commit()
     return fresh
 
 

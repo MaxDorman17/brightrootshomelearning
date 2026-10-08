@@ -258,3 +258,19 @@ def test_scores_from_lessons_done_here_show_in_the_planner(family, oak):
     assert (theirs["exit_score"], theirs["starter_score"], theirs["is_complete"]) == (5, None, True)
     # Only the child who did the shared lesson is listed for it.
     assert (shared["id"], one["id"]) not in rows
+
+
+def test_a_lesson_saved_by_another_request_at_the_same_time_is_not_an_error(family, oak, monkeypatch):
+    # Both requests find no kept copy and fetch from Oak; the other one saves first.
+    def fetch_while_another_request_saves(slug):
+        with SessionLocal() as other:
+            other.add(OakLesson(slug=slug, data='{"slug": "old"}', fetched_at=oak_lessons.datetime.utcnow()))
+            other.commit()
+        return lesson()
+
+    monkeypatch.setattr(oak_lessons, "_fetch", fetch_while_another_request_saves)
+    with SessionLocal() as db:
+        assert oak_lessons.get_lesson(db, "ordering-numbers-to-10")["title"] == "Ordering numbers to 10"
+    with SessionLocal() as db:
+        kept = db.query(OakLesson).filter(OakLesson.slug == "ordering-numbers-to-10").all()
+        assert len(kept) == 1 and '"Ordering numbers to 10"' in kept[0].data
