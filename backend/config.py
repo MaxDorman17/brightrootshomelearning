@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     RESEND_FROM_EMAIL: str = ""
     FRONTEND_URL: str = "http://localhost:3000"
     SUPPORT_EMAIL: str = "help@brightrootshomelearning.co.uk"  # where Help and feedback messages are sent
+    EMAIL_REPLY_TO: str = "help@brightrootshomelearning.co.uk"  # where replies to the site's emails go (the sending address has no inbox)
     ADMIN_EMAILS: str = ""
     # Nightly off-site backups, to any S3-compatible bucket (see backups.py). Off until these are filled in.
     BACKUP_S3_ENDPOINT: str = ""  # e.g. https://s3.fr-par.scw.cloud

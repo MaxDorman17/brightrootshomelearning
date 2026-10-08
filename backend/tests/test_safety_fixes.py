@@ -145,3 +145,23 @@ def test_login_does_not_hand_the_pass_to_the_page(family):
     assert "access_token" not in response.json() and "token" not in response.text.lower()
     assert "httponly" in response.headers["set-cookie"].lower()
     assert login(family.email).get("/api/auth/me").status_code == 200
+
+
+# ---------- replies to the site's emails ----------
+
+def test_emails_carry_a_reply_to_address(monkeypatch):
+    """The sending address has no inbox, so every email says where replies should go instead."""
+    import emails
+    from config import settings
+
+    sent = []
+
+    class Done:
+        def raise_for_status(self):
+            pass
+
+    monkeypatch.setattr(emails.httpx, "post", lambda url, headers, json, timeout: sent.append(json) or Done())
+    emails.send("parent@example.com", "Hello", "<p>Hi</p>")
+    emails.send("help@example.com", "Feedback", "<p>Hi</p>", reply_to="parent@example.com")
+    assert sent[0]["reply_to"] == settings.EMAIL_REPLY_TO == "help@brightrootshomelearning.co.uk"
+    assert sent[1]["reply_to"] == "parent@example.com"  # Help messages still reply straight to the parent

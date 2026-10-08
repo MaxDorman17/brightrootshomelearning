@@ -74,6 +74,7 @@ def send(to: str, subject: str, body_html: str, unsubscribe_url: Optional[str] =
     payload = {"from": settings.RESEND_FROM_EMAIL, "to": [to], "subject": subject, "html": body_html, "text": plain_text(body_html)}
     if unsubscribe_url:
         payload["headers"] = {"List-Unsubscribe": f"<{unsubscribe_url}>"}
+    reply_to = reply_to or settings.EMAIL_REPLY_TO  # the sending address has no inbox, so replies need somewhere to go
     if reply_to:
         payload["reply_to"] = reply_to
     if _LOGO_B64 and f"cid:{LOGO_CID}" in body_html:

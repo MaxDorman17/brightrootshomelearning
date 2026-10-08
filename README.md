@@ -32,7 +32,7 @@ DATABASE_URL=sqlite:///./homeschool.db
 SECRET_KEY=<a long random string>
 ```
 
-Optional settings (all in `backend/config.py`): `FRONTEND_URL`, `RESEND_API_KEY` and `RESEND_FROM_EMAIL` for email,
+Optional settings (all in `backend/config.py`): `FRONTEND_URL`, `RESEND_API_KEY` and `RESEND_FROM_EMAIL` for email, `EMAIL_REPLY_TO` for where replies to those emails go (default help@brightrootshomelearning.co.uk),
 `OAK_API_KEY` for Oak National Academy, `STRIPE_*` for billing, `ADMIN_EMAILS` for newsletter admins, and
 `UPLOAD_ROOT` for where uploaded files are kept.
 
