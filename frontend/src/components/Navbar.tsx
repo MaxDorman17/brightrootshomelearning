@@ -378,7 +378,7 @@ export default function Navbar() {
       if (!isGroup(entry)) return entry;
       let items = entry.items.filter(visible);
       // The site owner also gets the newsletter tools.
-      if (entry.label === "Family" && isAdmin) items = [...items, { href: "/admin/newsletter", label: "Newsletter (owner)" }, { href: "/admin/backups", label: "Backups (owner)" }];
+      if (entry.label === "Family" && isAdmin) items = [...items, { href: "/admin/newsletter", label: "Newsletter (owner)" }, { href: "/admin/backups", label: "Backups (owner)" }, { href: "/admin/free-accounts", label: "Free accounts (owner)" }];
       return { ...entry, items };
     })
     .filter((entry) => !isGroup(entry) || entry.items.length > 0);

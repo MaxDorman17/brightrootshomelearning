@@ -822,6 +822,10 @@ export const deleteSupportMessage = (id: number) => api.delete(`/api/support/mes
 // Owner only: off-site backups
 export type BackupRun = { id: number; kind: string; status: "running" | "ok" | "failed"; detail: string | null; started_at: string | null; finished_at: string | null };
 export type BackupStatus = { configured: boolean; bucket: string | null; endpoint: string | null; keep_days: number; hour: number; last_ok: BackupRun | null; runs: BackupRun[] };
+export type FreeFamily = { id: number; name: string; email: string | null; created_at: string | null };
+export const getFreeFamilies = () => api.get<FreeFamily[]>("/api/admin/free-accounts", { skipAuthRedirect: true } as any);
+export const giveFreeAccount = (email: string) => api.post<FreeFamily>("/api/admin/free-accounts", { email });
+export const takeAwayFreeAccount = (id: number) => api.delete(`/api/admin/free-accounts/${id}`);
 export const getBackupStatus = () => api.get<BackupStatus>("/api/backup/status", { skipAuthRedirect: true } as any);
 export const runBackupNow = () => api.post("/api/backup/run");
 // Owner only: data left behind by children removed before removing tidied up after itself.
