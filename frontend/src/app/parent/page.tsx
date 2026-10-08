@@ -27,6 +27,9 @@ const DEFAULT_TIMETABLE: Record<string, string[]> = {
   Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [],
 };
 
+// Which child the planner last showed on this device ("all" for everyone), so it opens there next time.
+const PLANNER_VIEW_KEY = "brightroots-planner-view";
+
 interface WorksheetInfo { has_worksheet: boolean; intro_url: string | null; }
 
 const OAK_LESSON_URL_RE = /^https:\/\/(?:www\.)?thenational\.academy\/pupils\/(?:programmes\/[^/?#]+\/units\/[^/?#]+\/)?lessons\/[^/?#]+$/;
@@ -226,6 +229,12 @@ export default function ParentPlanner() {
   const [daysOff, setDaysOff] = useState<DayOff[]>([]);
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
+  // With two or more children the planner opens on one child, so the week stays short. Picked once per visit.
+  const viewPicked = useRef(false);
+  const chooseView = (childId: number | null) => {
+    setSelectedChildId(childId);
+    try { localStorage.setItem(PLANNER_VIEW_KEY, childId === null ? "all" : String(childId)); } catch { /* not remembered */ }
+  };
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
   const [newGoal, setNewGoal] = useState("");
   const [goalAssignedTo, setGoalAssignedTo] = useState<number | null>(null);
@@ -345,6 +354,17 @@ export default function ParentPlanner() {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
     getChildren().then(res => {
       setChildren(res.data);
+      if (!viewPicked.current) {
+        viewPicked.current = true;
+        if (res.data.length > 1) {
+          let saved: string | null = null;
+          try { saved = localStorage.getItem(PLANNER_VIEW_KEY); } catch { /* use the first child */ }
+          if (saved !== "all") {
+            const child = res.data.find((c: Child) => String(c.id) === saved) ?? res.data[0];
+            setSelectedChildId(child.id);
+          }
+        }
+      }
     }).catch(() => {});
     getTimetable().then(res => setFamilyTimetable(res.data.config)).catch(() => {});
     getChildTimetables().then(res => setChildTimetables(res.data || {})).catch(() => {});
@@ -707,16 +727,37 @@ export default function ParentPlanner() {
                   <p className="text-[11px] font-bold uppercase tracking-wider text-brand-earth/60">
                     Viewing
                   </p>
-                  <select
-                    value={selectedChildId ?? ""}
-                    onChange={e => setSelectedChildId(e.target.value ? Number(e.target.value) : null)}
-                    className="text-sm font-bold text-brand-charcoal bg-transparent focus:outline-none cursor-pointer min-w-[130px]"
-                  >
-                    <option value="">All children</option>
-                    {children.map(c => (
-                      <option key={c.id} value={c.id}>{c.username}</option>
-                    ))}
-                  </select>
+                  {children.length > 1 ? (
+                    // One tap to switch between children, or see everyone at once.
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      {[...children.map(c => ({ id: c.id as number | null, label: c.username })), { id: null, label: "All children" }].map(option => (
+                        <button
+                          key={option.id ?? "all"}
+                          type="button"
+                          onClick={() => chooseView(option.id)}
+                          aria-pressed={selectedChildId === option.id}
+                          className={`rounded-full px-3 py-1 text-sm font-bold transition-colors ${
+                            selectedChildId === option.id
+                              ? "bg-brand-sage text-white"
+                              : "bg-brand-cream text-brand-charcoal hover:bg-brand-softsage/20"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <select
+                      value={selectedChildId ?? ""}
+                      onChange={e => chooseView(e.target.value ? Number(e.target.value) : null)}
+                      className="text-sm font-bold text-brand-charcoal bg-transparent focus:outline-none cursor-pointer min-w-[130px]"
+                    >
+                      <option value="">All children</option>
+                      {children.map(c => (
+                        <option key={c.id} value={c.id}>{c.username}</option>
+                      ))}
+                    </select>
+                  )}
                 </div>
               </div>
             )}
@@ -1361,7 +1402,8 @@ export default function ParentPlanner() {
                             </div>
                           </button>
 
-                          {hasLesson && (
+                          {/* Viewing everyone with several children, a move button would only move one child's lesson, so it waits for their own view. */}
+                          {hasLesson && !(selectedChildId === null && children.length > 1) && (
                             <div className="grid grid-cols-2 gap-1.5 px-1">
                               <button
                                 type="button"
@@ -1381,16 +1423,42 @@ export default function ParentPlanner() {
                               </button>
                             </div>
                           )}
+
+                          {/* Viewing everyone: the other children's lessons in this subject, one short line each. */}
+                          {selectedChildId === null && getEntries(dayDate, subject).slice(1).map(other => {
+                            const otherName = other.assigned_to
+                              ? children.find(c => c.id === other.assigned_to)?.username
+                              : "Everyone";
+                            return (
+                              <button
+                                key={other.id}
+                                type="button"
+                                onClick={() => openModal(dayIndex, subject, other)}
+                                className={`w-full flex items-center gap-2 rounded-xl border px-3 py-2 text-left transition-all hover:shadow-sm ${subjectTint(subject)} ${other.is_complete ? "ring-1 ring-brand-sage/40" : ""}`}
+                              >
+                                <span className="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-softsage/15 text-brand-sage">
+                                  {otherName}
+                                </span>
+                                <span className="min-w-0 flex-1 truncate text-xs font-bold text-brand-charcoal">
+                                  {other.lesson.title}
+                                </span>
+                                <span className={`shrink-0 text-[10px] font-extrabold ${other.is_complete ? "text-brand-sage" : "text-brand-earth/60"}`}>
+                                  {other.is_complete ? "✓" : "To do"}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       );
                     })}
 
                     {(() => {
                       const dayStr = format(dayDate, "yyyy-MM-dd");
+                      // Lessons already shown in a subject slot: the first one, or every one when viewing everyone.
                       const primaryEntryIds = new Set(
                         subjects
-                          .map(subject => getEntry(dayDate, subject)?.id)
-                          .filter((id): id is number => id !== undefined)
+                          .flatMap(subject => selectedChildId === null ? getEntries(dayDate, subject) : getEntry(dayDate, subject) ?? [])
+                          .map(e => e.id)
                       );
                       const movedEntries = entries.filter(e =>
                         e.scheduled_date === dayStr &&
