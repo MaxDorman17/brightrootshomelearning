@@ -126,6 +126,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🥚": "egg",
   "🍌": "banana",
   "🎂": "birthday-cake",
+  "🍗": "chicken",
   // Page banner pictures that also suit these emojis
   "🛒": "/home/icons/shopping.png?v=2",
   "🏠": "/home/icons/account.png?v=2",
