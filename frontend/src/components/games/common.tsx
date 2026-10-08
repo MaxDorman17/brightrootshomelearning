@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { saveGameScore } from "@/lib/api";
+import { saveGameScore, spokenWordUrl } from "@/lib/api";
 import Emoji, { EmojiText } from "@/components/Emoji";
 
 export type GameProps = { onExit: () => void; words: string[] };
@@ -67,10 +67,10 @@ function clearVoice(voices: SpeechSynthesisVoice[]) {
     ?? english[0];
 }
 
-export function speak(text: string) {
+function speakWithDevice(text: string) {
   try {
     const synth = window.speechSynthesis;
-    if (!synth || !text) return false;
+    if (!synth) return false;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     const voice = clearVoice(synth.getVoices());
@@ -86,6 +86,40 @@ export function speak(text: string) {
     return true;
   } catch {
     return false;
+  }
+}
+
+// The site's own voice sounds the same on every device. If it isn't available, the device reads the word instead.
+let siteVoiceWorks = true;
+let playing: HTMLAudioElement | null = null;
+
+export function speak(text: string) {
+  const word = text.trim();
+  if (!word || typeof window === "undefined") return false;
+  if (!siteVoiceWorks || typeof Audio === "undefined") return speakWithDevice(word);
+  try {
+    playing?.pause();
+    window.speechSynthesis?.cancel();
+    const audio = new Audio(spokenWordUrl(word));
+    playing = audio;
+    let fellBack = false;
+    const fallBack = () => {
+      if (fellBack || playing !== audio) return;
+      fellBack = true;
+      speakWithDevice(word);
+    };
+    audio.onerror = () => {
+      siteVoiceWorks = false;
+      fallBack();
+    };
+    audio.play().catch((error: unknown) => {
+      // A blocked autoplay isn't the voice's fault, so only a real failure turns the site voice off.
+      if (!(error instanceof DOMException && error.name === "NotAllowedError")) siteVoiceWorks = false;
+      fallBack();
+    });
+    return true;
+  } catch {
+    return speakWithDevice(word);
   }
 }
 
