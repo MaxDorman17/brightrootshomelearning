@@ -13,7 +13,7 @@ import limits
 from database import engine, Base
 from models import User
 from storage import move_legacy_uploads
-from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, worksheets, oak_lessons, oak_finder, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges, exams, starter_week, calendar_feed, support, backup, owner_numbers, speech
+from routers import auth, billing, lessons, planner, units, reading, feedback, coding_progress, days_off, journal, goals, children, timetable, polish, oak, spellings, oak_week_scores, test_results, worksheets, oak_lessons, oak_finder, council_report, rewards, challenges, study, profile, resources, lesson_plans, moments, reminders, newsletter, games, account, push, make, notifications, activities, languages, notes, family, badges, exams, starter_week, calendar_feed, support, backup, owner_numbers, speech, free_accounts
 
 # Auto-migrate: add new columns to existing tables without wiping data
 def run_migrations():
@@ -585,6 +585,7 @@ app.include_router(support.router)
 app.include_router(backup.router)
 app.include_router(owner_numbers.router)
 app.include_router(speech.router)
+app.include_router(free_accounts.router)
 
 
 @app.on_event("startup")
