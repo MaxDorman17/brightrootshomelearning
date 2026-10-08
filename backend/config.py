@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     BACKUP_HOUR: int = 3  # UK time; the nightly backup runs at or after this hour  # comma-separated; these parent accounts can send the newsletter
     OWNER_NUMBERS_KEY: str = ""  # secret key for the owner's own dashboard to read totals (routers/owner_numbers.py); off when empty
     GLITCHTIP_DSN: str = ""  # where unexpected server errors are reported (see error_reports.py); off when empty
+    # Spoken words for spelling games, made by Azure Speech so every device hears the same voice (routers/speech.py).
+    # Off when empty: devices then use their own built-in voice.
+    AZURE_SPEECH_KEY: str = ""
+    AZURE_SPEECH_REGION: str = "uksouth"
+    AZURE_SPEECH_VOICE: str = "en-GB-LibbyNeural"
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_MONTHLY_PRICE_ID: str = "price_1UJb5zD6aHVbx1WGHlgqqk7o"
