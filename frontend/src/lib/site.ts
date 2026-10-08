@@ -1,5 +1,7 @@
 export const SITE_URL = "https://brightrootshomelearning.co.uk";
 export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "hello@brightrootshomelearning.co.uk";
+// Our Facebook page. Linked from the public pages only, never from the children's area.
+export const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61595343686167";
 export const LEGAL_UPDATED = "29 September 2026";
 // The privacy and cookie policies were updated again for worksheets and Oak lessons done inside Bright Roots.
 export const PRIVACY_UPDATED = "7 October 2026";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PublicShell } from "@/components/PublicSite";
-import { SUPPORT_EMAIL } from "@/lib/site";
+import { FacebookIcon, PublicShell } from "@/components/PublicSite";
+import { FACEBOOK_URL, SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -28,6 +28,19 @@ export default function ContactPage() {
           >
             <span className="text-sm font-extrabold uppercase tracking-wider text-brand-softsage">Email us</span>
             <span className="break-all text-xl font-black text-brand-sage sm:text-2xl">{SUPPORT_EMAIL}</span>
+          </a>
+
+          <a
+            href={FACEBOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex items-center gap-4 rounded-3xl border border-brand-line bg-white p-6 hover:border-brand-mist sm:p-8"
+          >
+            <FacebookIcon className="h-10 w-10 shrink-0 text-[#1877F2]" />
+            <span className="flex flex-col gap-1">
+              <span className="text-sm font-extrabold uppercase tracking-wider text-brand-softsage">Follow us</span>
+              <span className="text-lg font-black text-brand-sage">Bright Roots on Facebook →</span>
+            </span>
           </a>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
