@@ -8,9 +8,9 @@ import PageHero from "@/components/PageHero";
 import { NewBadge } from "@/components/NewEveryMonth";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { isNew } from "@/lib/newContent";
-import { KIND_LABEL, kindOf, sheetPdf, sheetPicture, sheetsIn, THEMES, type SheetKind } from "@/lib/colouring";
+import { KIND_LABEL, kindOf, LEVEL_LABEL, sheetAnswers, sheetPdf, sheetPicture, sheetsIn, THEMES, type SheetKind } from "@/lib/colouring";
 
-/** One colouring theme's sheets: pick one, open the A4 PDF and print it. */
+/** One colouring theme's sheets and word searches: pick one, open the A4 PDF and print it. Grown-ups also get the answers. */
 export default function ColouringThemePage() {
   const router = useRouter();
   const { theme: slug } = useParams<{ theme: string }>();
@@ -39,7 +39,7 @@ export default function ColouringThemePage() {
           ← All colouring themes
         </Link>
         <PageHero art="colouring" tint={4}>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Colouring sheets</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{kinds.length > 1 ? "Colouring & word searches" : "Colouring sheets"}</p>
           <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{theme?.name || "Theme not found"}</h1>
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child" ? "Choose a picture you like and ask a grown-up to print it for you." : "Open a sheet, then print it on A4 from your browser."}
@@ -69,27 +69,42 @@ export default function ColouringThemePage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {shown.map((s) => (
-              <a key={s.slug} href={sheetPdf(s)} target="_blank" rel="noopener" className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
-                <div className="relative border-b border-brand-line bg-white p-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={sheetPicture(s)}
-                    alt={`${s.title} ${kindOf(s) === "word-search" ? "word search" : "colouring sheet"}`}
-                    loading="lazy"
-                    className="aspect-[210/297] w-full object-contain"
-                  />
-                  {isNew(s.slug) && <NewBadge className="absolute right-2 top-2" />}
-                </div>
-                <div className="p-3">
-                  {kinds.length > 1 && (
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">{kindOf(s) === "word-search" ? "Word search" : "Colouring"}</p>
+            {shown.map((s) => {
+              const isSearch = kindOf(s) === "word-search";
+              return (
+                <div key={s.slug} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
+                  <a href={sheetPdf(s)} target="_blank" rel="noopener" className="block">
+                    <div className="relative border-b border-brand-line bg-white p-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={sheetPicture(s)}
+                        alt={`${s.title} ${isSearch ? "word search" : "colouring sheet"}`}
+                        loading="lazy"
+                        className="aspect-[210/297] w-full object-contain"
+                      />
+                      {isNew(s.slug) && <NewBadge className="absolute right-2 top-2" />}
+                    </div>
+                    <div className="px-3 pt-3">
+                      {kinds.length > 1 && (
+                        <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">
+                          {isSearch ? `Word search${s.level ? ` · ${LEVEL_LABEL[s.level]}` : ""}` : "Colouring"}
+                        </p>
+                      )}
+                      <h2 className="mt-0.5 font-extrabold text-brand-charcoal group-hover:text-brand-sage">{s.title}</h2>
+                      <p className="mt-1 text-sm font-bold text-brand-sage">🖨️ Open to print</p>
+                    </div>
+                  </a>
+                  {/* Answers are for grown-ups, so children don't see the link. */}
+                  {isSearch && role && role !== "child" ? (
+                    <a href={sheetAnswers(s)} target="_blank" rel="noopener" className="mx-3 mb-3 mt-1 inline-block text-sm font-bold text-brand-earth/70 hover:text-brand-sage hover:underline">
+                      🔑 Answers
+                    </a>
+                  ) : (
+                    <div className="pb-3" />
                   )}
-                  <h2 className="mt-0.5 font-extrabold text-brand-charcoal group-hover:text-brand-sage">{s.title}</h2>
-                  <p className="mt-1 text-sm font-bold text-brand-sage">🖨️ Open to print</p>
                 </div>
-              </a>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

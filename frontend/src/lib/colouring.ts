@@ -5,7 +5,8 @@
  * one (cover: true), its tile shows the top of its first sheet instead.
  *
  * To add a sheet: drop the PDF and its picture into the theme's folder, add a line to SHEETS, and
- * add the slug and date to lib/newContent.ts so it shows "New" for a month.
+ * add the slug and date to lib/newContent.ts so it shows "New" for a month. Word searches are made by
+ * scripts/wordsearches/make_wordsearches.py (see the notes at the top of it).
  */
 export type Theme = { slug: string; name: string; cover?: boolean };
 
@@ -22,7 +23,9 @@ export const THEMES: Theme[] = [
 ];
 
 export type SheetKind = "colouring" | "word-search";
-export type Sheet = { slug: string; title: string; theme: string; kind?: SheetKind };
+/** Word searches only: easy (across and down, ages 5 to 7) or tricky (diagonals too, ages 8 to 10). */
+export type Level = "easy" | "tricky";
+export type Sheet = { slug: string; title: string; theme: string; kind?: SheetKind; level?: Level };
 
 export const KIND_LABEL: Record<SheetKind, string> = { colouring: "Colouring", "word-search": "Word searches" };
 
@@ -118,12 +121,37 @@ export const SHEETS: Sheet[] = [
   { slug: "farm-vehicles", title: "Farm Vehicles", theme: "vehicles-and-building" },
   { slug: "city-bus-adventure", title: "City Bus Adventure", theme: "vehicles-and-building" },
   { slug: "construction-celebration", title: "Construction Celebration", theme: "vehicles-and-building" },
+
+  // Word searches. Made by scripts/wordsearches/make_wordsearches.py, which also makes each one's answer sheet.
+  { slug: "woodland-animals-word-search", title: "Woodland Animals", theme: "woodland-friends", kind: "word-search", level: "easy" },
+  { slug: "into-the-forest-word-search", title: "Into the Forest", theme: "woodland-friends", kind: "word-search", level: "tricky" },
+  { slug: "farm-animals-word-search", title: "Farm Animals", theme: "farmyard-fun", kind: "word-search", level: "easy" },
+  { slug: "down-on-the-farm-word-search", title: "Down on the Farm", theme: "farmyard-fun", kind: "word-search", level: "tricky" },
+  { slug: "sea-creatures-word-search", title: "Sea Creatures", theme: "under-the-sea", kind: "word-search", level: "easy" },
+  { slug: "ocean-explorer-word-search", title: "Ocean Explorer", theme: "under-the-sea", kind: "word-search", level: "tricky" },
+  { slug: "dinosaurs-word-search", title: "Dinosaurs", theme: "dinosaur-world", kind: "word-search", level: "easy" },
+  { slug: "dino-discovery-word-search", title: "Dino Discovery", theme: "dinosaur-world", kind: "word-search", level: "tricky" },
+  { slug: "into-space-word-search", title: "Into Space", theme: "space-adventure", kind: "word-search", level: "easy" },
+  { slug: "space-explorers-word-search", title: "Space Explorers", theme: "space-adventure", kind: "word-search", level: "tricky" },
+  { slug: "in-the-garden-word-search", title: "In the Garden", theme: "garden-and-growing", kind: "word-search", level: "easy" },
+  { slug: "mini-beasts-word-search", title: "Mini Beasts", theme: "garden-and-growing", kind: "word-search", level: "tricky" },
+  { slug: "fruit-and-veg-word-search", title: "Fruit and Veg", theme: "garden-and-growing", kind: "word-search", level: "easy" },
+  { slug: "spring-and-summer-word-search", title: "Spring and Summer", theme: "seasonal-fun", kind: "word-search", level: "easy" },
+  { slug: "autumn-and-winter-word-search", title: "Autumn and Winter", theme: "seasonal-fun", kind: "word-search", level: "tricky" },
+  { slug: "fairy-tale-friends-word-search", title: "Fairy-Tale Friends", theme: "fairy-tale-adventures", kind: "word-search", level: "easy" },
+  { slug: "once-upon-a-time-word-search", title: "Once Upon a Time", theme: "fairy-tale-adventures", kind: "word-search", level: "tricky" },
+  { slug: "things-that-go-word-search", title: "Things That Go", theme: "vehicles-and-building", kind: "word-search", level: "easy" },
+  { slug: "building-site-word-search", title: "On the Building Site", theme: "vehicles-and-building", kind: "word-search", level: "tricky" },
+  { slug: "emergency-heroes-word-search", title: "Emergency Heroes", theme: "vehicles-and-building", kind: "word-search", level: "tricky" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
 export const sheetsIn = (theme: string) => SHEETS.filter((s) => s.theme === theme);
 export const sheetPdf = (s: Sheet) => `/colouring/${s.theme}/${s.slug}.pdf`;
 export const sheetPicture = (s: Sheet) => `/colouring/${s.theme}/${s.slug}.jpg`;
+/** A word search's answer sheet, for grown-ups. */
+export const sheetAnswers = (s: Sheet) => `/colouring/${s.theme}/${s.slug}-answers.pdf`;
+export const LEVEL_LABEL: Record<Level, string> = { easy: "Easy", tricky: "Tricky" };
 
 /** The theme's square cover, or the first sheet's picture until the cover art is in. */
 export function themeCover(t: Theme): string | null {
