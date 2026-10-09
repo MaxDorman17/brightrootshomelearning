@@ -8,7 +8,7 @@ import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSi
 import { HandNote, Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
 import { SUPPORT_EMAIL } from "@/lib/site";
-import { SHEETS, THEMES } from "@/lib/colouring";
+import { kindOf, SHEETS, THEMES } from "@/lib/colouring";
 
 // Fixed colours for the public pages, so they never pick up a family's theme.
 const C = {
@@ -543,9 +543,9 @@ export default function HomePage() {
                 <h3 className={`${serif.className} mt-1 text-2xl font-semibold`} style={{ color: C.deep }}>Our own pictures, ready to print</h3>
                 <ul className="mt-4 space-y-3">
                   {[
-                    `${SHEETS.length} A4 sheets, drawn in the Bright Roots style`,
+                    `${SHEETS.filter((s) => kindOf(s) === "colouring").length} A4 sheets, drawn in the Bright Roots style`,
                     `${THEMES.length} themes, from Woodland Friends to Space Adventure`,
-                    "Word searches too",
+                    `${SHEETS.filter((s) => kindOf(s) === "word-search").length} word searches too, with answer sheets`,
                     "Made for ages 3 to 10",
                     "Children can choose one themselves and ask a grown-up to print it",
                   ].map((t) => (

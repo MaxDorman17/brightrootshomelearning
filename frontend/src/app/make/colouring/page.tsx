@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { sheetsIn, themeCover, THEMES } from "@/lib/colouring";
+import { kindOf, sheetsIn, themeCover, THEMES } from "@/lib/colouring";
 
 /** The colouring themes as square tiles. Themes with no sheets yet show as "Coming soon". */
 export default function ColouringPage() {
@@ -27,17 +27,20 @@ export default function ColouringPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <PageHero art="colouring" tint={4}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Ages 3 to 10</p>
-          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Colouring sheets</h1>
+          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Colouring &amp; word searches</h1>
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child"
               ? "Pick a theme, choose a picture you like and ask a grown-up to print it for you."
-              : "Bright Roots colouring pictures to print on A4. Pick a theme, open a sheet, then print it from your browser."}
+              : "Bright Roots colouring pictures and word searches to print on A4. Pick a theme, open a sheet, then print it from your browser. Each word search has an answer sheet for grown-ups."}
           </p>
         </PageHero>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {THEMES.map((t) => {
-            const count = sheetsIn(t.slug).length;
+            const sheets = sheetsIn(t.slug);
+            const count = sheets.length;
+            const searches = sheets.filter((s) => kindOf(s) === "word-search").length;
+            const pictures = count - searches;
             const cover = themeCover(t);
             const tile = (
               <>
@@ -52,7 +55,11 @@ export default function ColouringPage() {
                 <div className="p-3">
                   <h2 className="font-extrabold text-brand-charcoal group-hover:text-brand-sage">{t.name}</h2>
                   <p className="mt-0.5 text-sm font-bold text-brand-earth/60">
-                    {count ? `${count} sheet${count === 1 ? "" : "s"}` : "Coming soon"}
+                    {count
+                      ? [pictures && `${pictures} sheet${pictures === 1 ? "" : "s"}`, searches && `${searches} word search${searches === 1 ? "" : "es"}`]
+                          .filter(Boolean)
+                          .join(" · ")
+                      : "Coming soon"}
                   </p>
                 </div>
               </>

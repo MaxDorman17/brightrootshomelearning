@@ -5,6 +5,26 @@
  */
 const ADDED: Record<string, string> = {
   // e.g. "snow-day-adventure": "2026-11-01",
+  "woodland-animals-word-search": "2026-10-09",
+  "into-the-forest-word-search": "2026-10-09",
+  "farm-animals-word-search": "2026-10-09",
+  "down-on-the-farm-word-search": "2026-10-09",
+  "sea-creatures-word-search": "2026-10-09",
+  "ocean-explorer-word-search": "2026-10-09",
+  "dinosaurs-word-search": "2026-10-09",
+  "dino-discovery-word-search": "2026-10-09",
+  "into-space-word-search": "2026-10-09",
+  "space-explorers-word-search": "2026-10-09",
+  "in-the-garden-word-search": "2026-10-09",
+  "mini-beasts-word-search": "2026-10-09",
+  "fruit-and-veg-word-search": "2026-10-09",
+  "spring-and-summer-word-search": "2026-10-09",
+  "autumn-and-winter-word-search": "2026-10-09",
+  "fairy-tale-friends-word-search": "2026-10-09",
+  "once-upon-a-time-word-search": "2026-10-09",
+  "things-that-go-word-search": "2026-10-09",
+  "building-site-word-search": "2026-10-09",
+  "emergency-heroes-word-search": "2026-10-09",
 };
 
 const NEW_FOR_DAYS = 31;
