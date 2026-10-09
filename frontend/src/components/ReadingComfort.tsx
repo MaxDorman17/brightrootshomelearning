@@ -8,10 +8,12 @@ type Props = {
   /** Set when a parent is choosing for one of their children. Left out, it is for whoever is logged in. */
   childId?: number;
   childName?: string;
+  /** "One thing at a time" only changes a child's Today page, so it's left off a grown-up's own settings. */
+  showFocus?: boolean;
 };
 
 /** Bigger text, an easy-read font, calm mode and one-at-a-time. Each choice is saved as soon as it is picked. */
-export default function ReadingComfort({ childId, childName }: Props) {
+export default function ReadingComfort({ childId, childName, showFocus = true }: Props) {
   const [prefs, setPrefs] = useState<DisplayPrefs>(DEFAULT_DISPLAY);
   const [message, setMessage] = useState("");
 
@@ -71,19 +73,12 @@ export default function ReadingComfort({ childId, childName }: Props) {
         />
         <span>
           <span className="block text-sm font-bold text-brand-charcoal">Easy-read letters</span>
-          <span className="block text-xs text-[#6E5A46]">
-            A clear font made so that letters like b, d, p and q are easier to tell apart.
-          </span>
+          <span className="block text-xs text-[#6E5A46]">A clear font made so that letters like b, d, p and q are easier to tell apart.</span>
         </span>
       </label>
 
       <label className="mt-4 flex cursor-pointer items-start gap-3">
-        <input
-          type="checkbox"
-          checked={prefs.calm}
-          onChange={(e) => change({ ...prefs, calm: e.target.checked })}
-          className="mt-1 h-4 w-4 accent-brand-sage"
-        />
+        <input type="checkbox" checked={prefs.calm} onChange={(e) => change({ ...prefs, calm: e.target.checked })} className="mt-1 h-4 w-4 accent-brand-sage" />
         <span>
           <span className="block text-sm font-bold text-brand-charcoal">Calm mode</span>
           <span className="block text-xs text-[#6E5A46]">
@@ -92,20 +87,22 @@ export default function ReadingComfort({ childId, childName }: Props) {
         </span>
       </label>
 
-      <label className="mt-4 flex cursor-pointer items-start gap-3">
-        <input
-          type="checkbox"
-          checked={prefs.focus}
-          onChange={(e) => change({ ...prefs, focus: e.target.checked })}
-          className="mt-1 h-4 w-4 accent-brand-sage"
-        />
-        <span>
-          <span className="block text-sm font-bold text-brand-charcoal">One thing at a time</span>
-          <span className="block text-xs text-[#6E5A46]">
-            The Today page shows just the lesson to do now and the one after it, instead of the whole day. Good for children who find a long list too much.
+      {showFocus && (
+        <label className="mt-4 flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            checked={prefs.focus}
+            onChange={(e) => change({ ...prefs, focus: e.target.checked })}
+            className="mt-1 h-4 w-4 accent-brand-sage"
+          />
+          <span>
+            <span className="block text-sm font-bold text-brand-charcoal">One thing at a time</span>
+            <span className="block text-xs text-[#6E5A46]">
+              The Today page shows just the lesson to do now and the one after it, instead of the whole day. Good for children who find a long list too much.
+            </span>
           </span>
-        </span>
-      </label>
+        </label>
+      )}
 
       {message && <p className="mt-3 text-sm font-semibold text-brand-sage">{message}</p>}
     </div>
