@@ -1,5 +1,5 @@
 /**
- * The SEN & Signing printables. Everything here is our own words and picture cards, so there is
+ * The SEN Support printables. Everything here is our own words and picture cards, so there is
  * nothing to licence. Pictures are emojis for now; when Bright Roots art exists for one, add it to
  * lib/illustrations.ts and it is used everywhere automatically.
  */
@@ -11,8 +11,7 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "now-next", name: "Now & Next", emoji: "➡️", blurb: "Two big cards: this, then that" },
   { slug: "feelings", name: "Feelings cards", emoji: "😊", blurb: "Name a feeling and pick what helps" },
   { slug: "breaks", name: "Movement breaks", emoji: "🤸", blurb: "Sensory and wriggle break cards" },
-  { slug: "stories", name: "Social stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
-  { slug: "signing", name: "Signing", emoji: "👋", blurb: "BSL and Makaton: where to learn" },
+  { slug: "stories", name: "Picture stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
 ];
 
 export type Card = { emoji: string; label: string };
@@ -102,7 +101,7 @@ export const BREAKS: BreakCard[] = [
 
 export type Story = { slug: string; title: string; emoji: string; pages: Card[] };
 
-/** Social stories: short, calm, in the first person, one idea per page. */
+/** Picture stories: short, calm, in the first person, one idea per page. */
 export const STORIES: Story[] = [
   {
     slug: "doctor",
@@ -184,55 +183,3 @@ export const STORIES: Story[] = [
     ],
   },
 ];
-
-export type Resource = { name: string; url: string; what: string };
-
-/** Trusted places to learn BSL and Makaton. Links only: their videos and pictures stay on their sites. */
-export const BSL_RESOURCES: Resource[] = [
-  {
-    name: "BSL SignBank (UCL)",
-    url: "https://bslsignbank.ucl.ac.uk/",
-    what: "A free BSL dictionary with videos of Deaf signers, from University College London.",
-  },
-  { name: "SignBSL", url: "https://www.signbsl.com/", what: "Search any word and see videos from several BSL sources side by side." },
-  {
-    name: "British Sign fingerspelling charts",
-    url: "https://www.british-sign.co.uk/fingerspelling-alphabet-charts/",
-    what: "Free printable two-handed alphabet charts, including left-handed versions.",
-  },
-  {
-    name: "National Deaf Children's Society",
-    url: "https://www.ndcs.org.uk/",
-    what: "Free family sign language videos and support for families with deaf children.",
-  },
-  { name: "Signature", url: "https://www.signature.org.uk/", what: "The UK body for BSL qualifications, if you want to take a proper course." },
-];
-
-export const MAKATON_RESOURCES: Resource[] = [
-  {
-    name: "The Makaton Charity",
-    url: "https://makaton.org/",
-    what: "The home of Makaton. Free Sign of the Week videos, a free resource library (sign-in needed) and a shop.",
-  },
-  {
-    name: "Find a Makaton workshop",
-    url: "https://makaton.org/TMC/Learn_Makaton/WorkshopSearch",
-    what: "Beginner workshops for parents and carers, online and in person.",
-  },
-  {
-    name: "Something Special on CBeebies",
-    url: "https://www.bbc.co.uk/cbeebies/shows/something-special",
-    what: "Mr Tumble signs and symbols along with every episode. Great for little ones.",
-  },
-];
-
-/** First signs worth learning together. Each opens the word on SignBSL. */
-export const FIRST_SIGNS: { group: string; words: string[] }[] = [
-  { group: "Everyday", words: ["hello", "goodbye", "please", "thank you", "yes", "no", "more", "finished", "help", "stop"] },
-  { group: "Feelings", words: ["happy", "sad", "angry", "tired", "scared", "poorly"] },
-  { group: "Family", words: ["mum", "dad", "brother", "sister", "grandma", "grandad", "baby", "friend"] },
-  { group: "Food & drink", words: ["eat", "drink", "water", "milk", "apple", "biscuit", "dinner"] },
-  { group: "Around the day", words: ["play", "toilet", "bath", "bed", "sleep", "book", "outside", "car"] },
-];
-
-export const signLink = (word: string) => `https://www.signbsl.com/sign/${encodeURIComponent(word.replace(/ /g, "-"))}`;

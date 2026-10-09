@@ -7,7 +7,7 @@ import Emoji from "@/components/Emoji";
 import { useSenRole } from "@/components/SenCards";
 import { SEN_TOOLS } from "@/lib/sen";
 
-/** SEN & Signing: visual supports to print, plus where to learn BSL and Makaton. */
+/** SEN Support: picture supports to use on screen or print. */
 export default function SenPage() {
   const role = useSenRole();
 
@@ -17,11 +17,11 @@ export default function SenPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <PageHero art="sen" tint={2}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">For every child</p>
-          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">SEN & Signing</h1>
+          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">SEN Support</h1>
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child"
               ? "Picture cards to help with your day. Pick one and ask a grown-up to print it."
-              : "Picture supports that help many children, including those with SEN: timetables, feelings cards, movement breaks and social stories to print. Plus the best places to learn BSL and Makaton together."}
+              : "Picture supports that help many children, including those with SEN: visual timetables, Now & Next, feelings cards, movement breaks and picture stories. Use them on screen or print them. For calmer screens, bigger text, an easy-read font and Calm mode, open Family, then Children, and pick a child's profile."}
           </p>
         </PageHero>
 

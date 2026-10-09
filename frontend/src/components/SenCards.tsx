@@ -24,11 +24,11 @@ export function useSenRole() {
 }
 
 /** The screen part of an SEN tool page: navbar, back link and banner. Hidden when printing. */
-export function SenPage({ eyebrow = "SEN & Signing", title, intro, children }: { eyebrow?: string; title: string; intro: string; children: React.ReactNode }) {
+export function SenPage({ eyebrow = "SEN Support", title, intro, children }: { eyebrow?: string; title: string; intro: string; children: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 print:hidden">
       <Link href="/make/sen" className="mb-4 inline-block text-sm font-bold text-brand-sage hover:underline">
-        ← SEN & Signing
+        ← SEN Support
       </Link>
       <PageHero art="sen" tint={2}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{eyebrow}</p>

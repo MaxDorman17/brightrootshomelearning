@@ -44,7 +44,7 @@ class UserOut(BaseModel):
     subscription_cancel_at: Optional[datetime] = None
     theme: Optional[str] = None
     family_theme: Optional[str] = None  # the parent's theme, shared by the whole family
-    display: dict = {"text_size": "normal", "easy_font": False}  # how this person likes their screens to read
+    display: dict = {"text_size": "normal", "easy_font": False, "calm": False}  # how this person likes their screens to read
     family_schemes: list[str] = []  # the schemes the family says it uses (Twinkl, White Rose Maths...)
     parent_name: Optional[str] = None  # for child accounts: what their parent is called
     avatar: Optional[dict] = None

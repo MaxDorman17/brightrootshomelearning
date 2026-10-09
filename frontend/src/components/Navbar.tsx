@@ -131,7 +131,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/children", label: "Children" },
       { href: "/parent/rewards", label: "Rewards & Badges" },
       { href: "/parent/reminders", label: "Reminders" },
-      { href: "/make/sen", label: "SEN & Signing" },
+      { href: "/make/sen", label: "SEN Support" },
       { href: "/make/shopping", label: "Shopping List" },
       { href: "/account", label: "Account" },
       { href: "/parent/help", label: "How-to guides" },

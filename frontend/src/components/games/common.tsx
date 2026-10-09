@@ -67,6 +67,11 @@ function clearVoice(voices: SpeechSynthesisVoice[]) {
     ?? english[0];
 }
 
+/** Reads a sentence or two aloud with the device's own voice (the site voice is for single words). */
+export function speakText(text: string, lang = "en-GB") {
+  return speakWithDevice(text, lang);
+}
+
 function speakWithDevice(text: string, lang: string) {
   try {
     const synth = window.speechSynthesis;

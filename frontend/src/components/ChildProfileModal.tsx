@@ -104,9 +104,9 @@ export default function ChildProfileModal({ child, onClose, onChanged }: Props) 
         </section>
 
         <section className="mt-6">
-          <h3 className="text-sm font-extrabold text-brand-charcoal">Easier to read</h3>
+          <h3 className="text-sm font-extrabold text-brand-charcoal">Easier to read and calmer</h3>
           <p className="mb-3 mt-1 text-xs text-[#6E5A46]">
-            Bigger text or an easy-read font on {child.username}&apos;s pages. They can change it themselves under My Look.
+            Bigger text, an easy-read font or Calm mode on {child.username}&apos;s pages. They can change it themselves under My Look.
           </p>
           <ReadingComfort childId={child.id} childName={child.username} />
         </section>
