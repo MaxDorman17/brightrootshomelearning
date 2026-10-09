@@ -66,7 +66,7 @@ export default function StoriesPage() {
               {story.title} · {page + 1} of {story.pages.length}
             </p>
             <div key={page} className="storybook-page storybook-next mt-4">
-              <Emoji e={story.pages[page].emoji} className="h-28 w-28 text-8xl" />
+              <Emoji e={story.pages[page].emoji} className="mx-auto h-28 w-28 text-8xl" />
               <p className="mt-4 text-2xl font-bold leading-snug text-brand-charcoal">{story.pages[page].label}</p>
             </div>
             <div className="mt-6 flex justify-center gap-2">
