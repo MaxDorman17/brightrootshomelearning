@@ -162,6 +162,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   "🛁": "bath",
   "🛏": "bed",
   "😌": "calm",
+  "🤩": "excited",
   "😴": "tired",
   "😢": "sad",
   "😟": "worried",
