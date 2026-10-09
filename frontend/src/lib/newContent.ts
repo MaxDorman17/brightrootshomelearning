@@ -1,6 +1,6 @@
 /**
- * "New every month": when each comic and Little Roots book was added, so the latest ones get a
- * "New" badge for a month. When you add a new comic or book, add its slug and the date here.
+ * "New every month": when each comic, Little Roots book and colouring sheet was added, so the latest ones get a
+ * "New" badge for a month. When you add a new comic, book or colouring sheet, add its slug and the date here.
  * Anything not listed counts as part of the original set and never shows the badge.
  */
 const ADDED: Record<string, string> = {
