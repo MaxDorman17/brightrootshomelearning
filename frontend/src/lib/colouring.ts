@@ -11,7 +11,7 @@ export type Theme = { slug: string; name: string; cover?: boolean };
 
 export const THEMES: Theme[] = [
   { slug: "woodland-friends", name: "Woodland Friends", cover: true },
-  { slug: "farmyard-fun", name: "Farmyard Fun" },
+  { slug: "farmyard-fun", name: "Farmyard Fun", cover: true },
   { slug: "under-the-sea", name: "Under the Sea" },
   { slug: "dinosaur-world", name: "Dinosaur World" },
   { slug: "space-adventure", name: "Space Adventure" },
