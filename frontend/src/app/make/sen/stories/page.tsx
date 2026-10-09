@@ -5,7 +5,7 @@ import { PrintButton, PrintTitle, SenFrame, SenPage, useSenRole } from "@/compon
 import Emoji from "@/components/Emoji";
 import { STORIES } from "@/lib/sen";
 
-/** Short social stories: pick one, read it a page at a time, or print it as a little book. */
+/** Short picture stories: pick one, read it a page at a time, or print it as a little book. */
 export default function StoriesPage() {
   useSenRole();
   const [slug, setSlug] = useState<string | null>(null);
@@ -41,7 +41,7 @@ export default function StoriesPage() {
       }
     >
       <SenPage
-        title="Social stories"
+        title="Picture stories"
         intro="Calm, simple stories that explain something new or tricky before it happens. Read one together a few times in the days before."
       >
         <div className="flex flex-wrap gap-2">

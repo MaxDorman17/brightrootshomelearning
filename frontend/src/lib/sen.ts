@@ -11,7 +11,7 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "now-next", name: "Now & Next", emoji: "➡️", blurb: "Two big cards: this, then that" },
   { slug: "feelings", name: "Feelings cards", emoji: "😊", blurb: "Name a feeling and pick what helps" },
   { slug: "breaks", name: "Movement breaks", emoji: "🤸", blurb: "Sensory and wriggle break cards" },
-  { slug: "stories", name: "Social stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
+  { slug: "stories", name: "Picture stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
   { slug: "signing", name: "Signing", emoji: "👋", blurb: "BSL and Makaton: where to learn" },
 ];
 
@@ -102,7 +102,7 @@ export const BREAKS: BreakCard[] = [
 
 export type Story = { slug: string; title: string; emoji: string; pages: Card[] };
 
-/** Social stories: short, calm, in the first person, one idea per page. */
+/** Picture stories: short, calm, in the first person, one idea per page. */
 export const STORIES: Story[] = [
   {
     slug: "doctor",

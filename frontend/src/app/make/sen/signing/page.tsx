@@ -98,8 +98,8 @@ export default function SigningPage() {
 
         {role !== "child" && (
           <p className="mt-8 max-w-2xl text-xs text-brand-earth/60">
-            These links go to other websites, which have their own rules about using their videos and pictures. Signs can vary by region, so if your child
-            already signs with a nursery, school or therapist, follow the signs they use.
+            These links go to other websites, which have their own rules about using their videos and pictures. Bright Roots isn't connected to or endorsed by
+            any of them. Signs can vary by region, so if your child already signs with a nursery, school or therapist, follow the signs they use.
           </p>
         )}
       </SenPage>

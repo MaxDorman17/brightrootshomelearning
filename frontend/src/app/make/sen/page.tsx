@@ -21,7 +21,7 @@ export default function SenPage() {
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child"
               ? "Picture cards to help with your day. Pick one and ask a grown-up to print it."
-              : "Picture supports that help many children, including those with SEN: timetables, feelings cards, movement breaks and social stories to print. Plus the best places to learn BSL and Makaton together."}
+              : "Picture supports that help many children, including those with SEN: timetables, feelings cards, movement breaks and picture stories to print. Plus the best places to learn BSL and Makaton together."}
           </p>
         </PageHero>
 
