@@ -8,6 +8,7 @@ import { PublicFooter, PublicHeader, useMemberHome } from "@/components/PublicSi
 import { HandNote, Sprig } from "@/components/Decor";
 import { hand, serif } from "@/lib/fonts";
 import { SUPPORT_EMAIL } from "@/lib/site";
+import { SHEETS, THEMES } from "@/lib/colouring";
 
 // Fixed colours for the public pages, so they never pick up a family's theme.
 const C = {
@@ -38,7 +39,7 @@ const featureGroups = [
     emoji: "📚",
     tint: "#F5EFE1",
     blurb: "Everything the children need, in their own space.",
-    items: ["Child dashboards", "Little Roots for ages 3 to 4", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "P.E., Outdoors & clubs", "Saplings for ages 5 to 10", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
+    items: ["Child dashboards", "Little Roots for ages 3 to 4", "Reading log & spellings", "Languages", "Learning games", "Cookbook, crafts & life skills", "Colouring sheets to print", "P.E., Outdoors & clubs", "Saplings for ages 5 to 10", "Teen Corner for ages 11 to 16", "GCSE exam planner"],
   },
   {
     name: "Progress",
@@ -54,7 +55,7 @@ const featureGroups = [
     emoji: "🏡",
     tint: "#F5EFE1",
     blurb: "Keep everyone motivated and on track.",
-    items: ["Stars & rewards", "Badges, plus your own", "Printable certificates", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes"],
+    items: ["Stars & rewards", "Badges, plus your own", "Printable certificates", "Notes from home", "Logins for both parents", "Reminders & phone notifications", "Avatars & colour themes", "SEN Support picture cards", "Calm mode & easy-read settings"],
   },
 ];
 
@@ -136,7 +137,7 @@ const faqs = [
   ["My teenager is working towards GCSEs. Can it help?", "Yes. The exam planner keeps each exam's centre, entry deadline, date and fee in one place, counts down the days, and adds revision sessions to the planner."],
   ["Do I have to follow a set curriculum?", "Not at all. You choose the subjects and plan the lessons. Oak National Academy lessons are there if you want them, but you can plan everything yourself."],
   ["We're child-led and don't plan lessons. Is it still for us?", "Yes. You don't have to plan anything. On your home page, type what you did today, pick the subject and who did it, and it is saved as learning done. Walks, books, baking, museum trips and long conversations all count, and they build into the same record and council report as planned lessons."],
-  ["My child has additional needs. Will it suit us?", "Many families home educate for exactly that reason. You choose the level for each subject rather than going by age, plan as little as suits the day, and move a day along when it isn't happening. Children see a short list for today rather than the whole week, and stars and rewards are yours to use or leave out. Our free guide has more ideas."],
+  ["My child has additional needs. Will it suit us?", "Many families home educate for exactly that reason. You choose the level for each subject rather than going by age, plan as little as suits the day, and move a day along when it isn't happening. Children see a short list for today rather than the whole week, or turn on One thing at a time to see just what is now and next. SEN Support has visual timetables, Now & Next cards, feelings cards, movement breaks and picture stories to use on screen or print. Each child can also have Calm mode, bigger text, an easy-read font and Read to me, set just for them. Stars and rewards are yours to use or leave out."],
   ["We're in Scotland, Wales or Northern Ireland. Does it fit?", "Yes. The planner, records and report work the same wherever you live, with whatever subjects and curriculum you follow. The exam planner covers National 5s and Highers as well as GCSEs. The built-in Oak lessons follow England's curriculum and year names, so go by your child's age and ability when you pick a level, or use your own materials instead."],
   ["We use Twinkl or White Rose Maths, not Oak. Will it work for us?", "Yes. Add any lesson with a link to where it lives and the name of the scheme, and it sits in your planner like any other. You can type in a score for a worksheet or test, and it all shows in your records and council report. Bright Roots keeps the link and your notes; the materials stay on the scheme's own site."],
   ["Can it help with my local authority?", "Yes. The council report pulls together the work, results, reading and notes you've already recorded, so you have a clear summary to share. There is a sample report on this site if you would like to see one first."],
@@ -492,6 +493,71 @@ export default function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/home/shots/report.jpg" alt="A home education report showing days of recorded learning, lessons completed and subjects covered" width={1600} height={935} loading="lazy" className="h-auto w-full" />
             </Link>
+          </div>
+        </section>
+
+        {/* SEN Support and colouring sheets */}
+        <section id="every-child" className="scroll-mt-16 py-14">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="text-center">
+              <H2>Made for every child</H2>
+              <p className="mx-auto mt-3 max-w-2xl" style={{ color: C.earth }}>
+                Many families home educate because school didn&apos;t suit their child. Bright Roots has gentle supports built in, and plenty to print for quieter moments.
+              </p>
+            </div>
+            <div className="mt-9 grid gap-5 lg:grid-cols-2">
+              <div className="rounded-3xl border p-6 sm:p-8" style={{ background: C.sage, borderColor: C.line }}>
+                <div className="flex gap-2" aria-hidden>
+                  {["now-next", "calm", "kangaroo", "doctor"].map((n) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={n} src={`/illustrations/${n}.png`} alt="" loading="lazy" className="h-14 w-14 rounded-2xl bg-white/70 object-contain p-1.5" />
+                  ))}
+                </div>
+                <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: "#6E8B62" }}>SEN Support</p>
+                <h3 className={`${serif.className} mt-1 text-2xl font-semibold`} style={{ color: C.deep }}>Picture supports and calmer screens</h3>
+                <ul className="mt-4 space-y-3">
+                  {[
+                    "Visual timetables and Now & Next cards",
+                    "Feelings cards, with a \u201cwhat helps me\u201d board",
+                    "Movement and sensory break cards",
+                    "Picture stories for new or tricky things, like the doctor or a haircut",
+                    "Calm mode, bigger text and an easy-read font, set for each child",
+                    "One thing at a time, and Read to me on lessons",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.ink }}>
+                      <Check />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-xs leading-5" style={{ color: C.earth }}>Use them on screen or print them. Everyday supports for home, not a diagnosis or therapy plan.</p>
+              </div>
+              <div className="rounded-3xl border p-6 sm:p-8" style={{ background: C.sand, borderColor: C.line }}>
+                <div className="flex gap-2" aria-hidden>
+                  {["woodland-friends", "under-the-sea", "dinosaur-world", "space-adventure"].map((t) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={t} src={`/colouring/covers/${t}.jpg`} alt="" loading="lazy" className="h-14 w-14 rounded-2xl bg-white object-cover" />
+                  ))}
+                </div>
+                <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: "#6E8B62" }}>Colouring sheets</p>
+                <h3 className={`${serif.className} mt-1 text-2xl font-semibold`} style={{ color: C.deep }}>Our own pictures, ready to print</h3>
+                <ul className="mt-4 space-y-3">
+                  {[
+                    `${SHEETS.length} A4 sheets, drawn in the Bright Roots style`,
+                    `${THEMES.length} themes, from Woodland Friends to Space Adventure`,
+                    "Word searches too",
+                    "Made for ages 3 to 10",
+                    "Children can choose one themselves and ask a grown-up to print it",
+                  ].map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-6" style={{ color: C.ink }}>
+                      <Check />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-xs leading-5" style={{ color: C.earth }}>Included in every membership, with new sheets added over time.</p>
+              </div>
+            </div>
           </div>
         </section>
 
