@@ -1,42 +1,54 @@
 /**
- * The printable sheets: colouring pictures and word searches. Each one is an A4 PDF in
- * public/colouring/<slug>.pdf with a small picture of it at public/colouring/<slug>.jpg for the card.
+ * The printable sheets, grouped into themes. Each sheet is an A4 PDF at
+ * public/colouring/<theme>/<slug>.pdf with a small picture of it at public/colouring/<theme>/<slug>.jpg.
+ * Each theme's square cover art lives at public/colouring/covers/<theme>.jpg; until a theme has
+ * one (cover: true), its tile shows the top of its first sheet instead.
  *
- * To add a sheet: drop the PDF and its picture into public/colouring, add a line here, and add
- * the slug and date to lib/newContent.ts so it shows "New" for a month.
+ * To add a sheet: drop the PDF and its picture into the theme's folder, add a line to SHEETS, and
+ * add the slug and date to lib/newContent.ts so it shows "New" for a month.
  */
-export const THEMES = [
-  "Woodland Friends",
-  "Farmyard Fun",
-  "Under the Sea",
-  "Dinosaur World",
-  "Space Adventure",
-  "Garden & Growing",
-  "Seasonal Fun",
-  "Fairy-Tale Adventures",
-  "Vehicles & Building",
-  "Creative Learning",
-] as const;
+export type Theme = { slug: string; name: string; cover?: boolean };
 
-export type Theme = (typeof THEMES)[number];
+export const THEMES: Theme[] = [
+  { slug: "woodland-friends", name: "Woodland Friends" },
+  { slug: "farmyard-fun", name: "Farmyard Fun" },
+  { slug: "under-the-sea", name: "Under the Sea" },
+  { slug: "dinosaur-world", name: "Dinosaur World" },
+  { slug: "space-adventure", name: "Space Adventure" },
+  { slug: "garden-and-growing", name: "Garden & Growing" },
+  { slug: "seasonal-fun", name: "Seasonal Fun" },
+  { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures" },
+  { slug: "vehicles-and-building", name: "Vehicles & Building" },
+  { slug: "creative-learning", name: "Creative Learning" },
+];
+
 export type SheetKind = "colouring" | "word-search";
-export type ColouringSheet = { slug: string; title: string; theme: Theme; kind?: SheetKind };
+export type Sheet = { slug: string; title: string; theme: string; kind?: SheetKind };
 
 export const KIND_LABEL: Record<SheetKind, string> = { colouring: "Colouring", "word-search": "Word searches" };
 
-export const COLOURING_SHEETS: ColouringSheet[] = [
-  { slug: "garden-adventure", title: "Garden Adventure", theme: "Garden & Growing" },
-  { slug: "pond-adventure", title: "Pond Adventure", theme: "Woodland Friends" },
-  { slug: "woodland-greenhouse", title: "Woodland Greenhouse", theme: "Garden & Growing" },
-  { slug: "scarecrow-garden", title: "Scarecrow Garden", theme: "Garden & Growing" },
-  { slug: "seaside-seal", title: "Seaside Seal", theme: "Under the Sea" },
-  { slug: "underwater-adventure", title: "Underwater Adventure", theme: "Under the Sea" },
-  { slug: "dinosaur-valley", title: "Dinosaur Valley", theme: "Dinosaur World" },
-  { slug: "space-adventure", title: "Space Adventure", theme: "Space Adventure" },
-  { slug: "friendly-farm", title: "Friendly Farm", theme: "Farmyard Fun" },
-  { slug: "woodland-picnic", title: "Woodland Picnic", theme: "Woodland Friends" },
+/** In the order they're shown within each theme. */
+export const SHEETS: Sheet[] = [
+  { slug: "forest-picnic", title: "Forest Picnic", theme: "woodland-friends" },
+  { slug: "pond-adventure", title: "Pond Adventure", theme: "woodland-friends" },
+  { slug: "woodland-greenhouse", title: "Woodland Greenhouse", theme: "woodland-friends" },
+  { slug: "woodland-picnic", title: "Woodland Picnic", theme: "woodland-friends" },
+  { slug: "stream-bridge", title: "Stream Bridge", theme: "woodland-friends" },
+  { slug: "treehouse-play", title: "Treehouse Play", theme: "woodland-friends" },
+  { slug: "autumn-gathering", title: "Autumn Gathering", theme: "woodland-friends" },
+  { slug: "rainy-day", title: "Rainy Day", theme: "woodland-friends" },
+  { slug: "moonlit-story", title: "Moonlit Story", theme: "woodland-friends" },
+  { slug: "woodland-celebration", title: "Woodland Celebration", theme: "woodland-friends" },
 ];
 
-export const kindOf = (s: ColouringSheet): SheetKind => s.kind ?? "colouring";
-export const sheetPdf = (s: ColouringSheet) => `/colouring/${s.slug}.pdf`;
-export const sheetPicture = (s: ColouringSheet) => `/colouring/${s.slug}.jpg`;
+export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
+export const sheetsIn = (theme: string) => SHEETS.filter((s) => s.theme === theme);
+export const sheetPdf = (s: Sheet) => `/colouring/${s.theme}/${s.slug}.pdf`;
+export const sheetPicture = (s: Sheet) => `/colouring/${s.theme}/${s.slug}.jpg`;
+
+/** The theme's square cover, or the first sheet's picture until the cover art is in. */
+export function themeCover(t: Theme): string | null {
+  if (t.cover) return `/colouring/covers/${t.slug}.jpg`;
+  const first = sheetsIn(t.slug)[0];
+  return first ? sheetPicture(first) : null;
+}
