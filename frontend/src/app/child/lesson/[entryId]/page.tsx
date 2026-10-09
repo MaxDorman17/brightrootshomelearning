@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
 import { schemeOf } from "@/lib/schemes";
 import OakLesson from "@/components/OakLesson";
+import ReadAloud from "@/components/ReadAloud";
 
 const OAK_LESSON_RE = /^https:\/\/(?:www\.)?thenational\.academy\/(?:pupils|teachers)\/(?:[a-z0-9-]+\/)*lessons\/[a-z0-9-]+/;
 
@@ -132,6 +133,11 @@ export default function LessonDetailPage() {
               {completing ? "…" : entry.is_complete ? "✓ Completed" : "Mark Done"}
             </button>
           </div>
+
+          <ReadAloud
+            className="mb-4 mt-3"
+            text={[`${entry.lesson.subject}.`, `${entry.lesson.title}.`, entry.lesson.description ? `${parentName} says: ${entry.lesson.description}` : ""].join(" ")}
+          />
 
           <LessonGuide entryId={entry.id} lesson={entry.lesson} />
 

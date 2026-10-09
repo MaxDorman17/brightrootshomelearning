@@ -16,6 +16,18 @@ html[data-font="easy"] body {
   word-spacing: 0.04em;
 }
 
+/* Calm mode (lib/display.ts): nothing moves, slides or pops, and celebrations stay off the screen. */
+html[data-calm="on"] *,
+html[data-calm="on"] *::before,
+html[data-calm="on"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-calm="on"] .confetti-particle {
+  display: none !important;
+}
+
 /* Family themes. Values are "R G B" so Tailwind opacity modifiers (e.g. /20) keep working.
    Sage is the original Bright Roots look and the default. */
 :root,

@@ -122,8 +122,8 @@ export const saveStudySession = (body: {
 export const getStudySummary = (child_id?: number) =>
   api.get("/api/study/summary", { params: child_id != null ? { child_id } : {} });
 export const getDisplayPrefs = (child_id?: number) =>
-  api.get<{ text_size: "normal" | "large" | "larger"; easy_font: boolean }>("/api/profile/display", { params: child_id != null ? { child_id } : {} });
-export const saveDisplayPrefs = (body: { text_size: string; easy_font: boolean }, child_id?: number) =>
+  api.get<{ text_size: "normal" | "large" | "larger"; easy_font: boolean; calm: boolean }>("/api/profile/display", { params: child_id != null ? { child_id } : {} });
+export const saveDisplayPrefs = (body: { text_size: string; easy_font: boolean; calm: boolean }, child_id?: number) =>
   api.put("/api/profile/display", body, { params: child_id != null ? { child_id } : {} });
 export const saveAvatar = (avatar: { emoji: string; bg: string; frame: string }, child_id?: number) =>
   api.put("/api/profile/avatar", avatar, { params: child_id != null ? { child_id } : {} });

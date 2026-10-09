@@ -45,6 +45,7 @@ function store(state: TimerState | null) {
 }
 
 function chime() {
+  if (document.documentElement.dataset.calm === "on") return; // calm mode: no sudden sounds
   try {
     const Ctx = window.AudioContext || (window as any).webkitAudioContext;
     const ctx = new Ctx();

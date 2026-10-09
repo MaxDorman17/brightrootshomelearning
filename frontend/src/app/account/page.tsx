@@ -275,9 +275,9 @@ export default function AccountPage() {
 
           {me && (
             <div className="mb-5 rounded-2xl border border-brand-softsage/20 bg-brand-cream/60 p-5">
-              <h2 className="text-lg font-extrabold text-brand-charcoal">Easier to read</h2>
+              <h2 className="text-lg font-extrabold text-brand-charcoal">Easier to read and calmer</h2>
               <p className="mb-3 mt-1 text-sm text-[#6E5A46]">
-                {role === "child" ? "Make the words bigger or clearer on your pages." : "Make the words bigger or clearer on your own screens. To set this for a child, open their profile under Family, then Children."}
+                {role === "child" ? "Make the words bigger or clearer, or turn on Calm mode." : "Make the words bigger or clearer, or turn on Calm mode, on your own screens. To set this for a child, open their profile under Family, then Children."}
               </p>
               <ReadingComfort />
             </div>
