@@ -1,8 +1,11 @@
-/** How a person likes their screens to read: bigger text, an easy-read font, and calm mode (nothing moving or popping up). */
+/**
+ * How a person likes their screens: bigger text, an easy-read font, calm mode (nothing moving or popping up)
+ * and focus (a child's day shown one lesson at a time).
+ */
 export type TextSize = "normal" | "large" | "larger";
-export type DisplayPrefs = { text_size: TextSize; easy_font: boolean; calm: boolean };
+export type DisplayPrefs = { text_size: TextSize; easy_font: boolean; calm: boolean; focus: boolean };
 
-export const DEFAULT_DISPLAY: DisplayPrefs = { text_size: "normal", easy_font: false, calm: false };
+export const DEFAULT_DISPLAY: DisplayPrefs = { text_size: "normal", easy_font: false, calm: false, focus: false };
 
 export const TEXT_SIZES: { id: TextSize; label: string }[] = [
   { id: "normal", label: "Normal" },
@@ -11,10 +14,11 @@ export const TEXT_SIZES: { id: TextSize; label: string }[] = [
 ];
 
 const STORAGE_KEY = "display_prefs";
+export const CHANGE_EVENT = "display-prefs-change";
 
 function clean(value: Partial<DisplayPrefs> | null | undefined): DisplayPrefs {
   const size = TEXT_SIZES.some((s) => s.id === value?.text_size) ? (value!.text_size as TextSize) : "normal";
-  return { text_size: size, easy_font: !!value?.easy_font, calm: !!value?.calm };
+  return { text_size: size, easy_font: !!value?.easy_font, calm: !!value?.calm, focus: !!value?.focus };
 }
 
 /** Apply the settings to the page and remember them, so the next visit paints the right way first time. */
@@ -31,6 +35,16 @@ export function applyDisplay(value: Partial<DisplayPrefs> | null | undefined) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
   } catch {}
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
+/** The settings saved on this device by applyDisplay, for pages that change their layout (not just their look). */
+export function savedDisplay(): DisplayPrefs {
+  try {
+    return clean(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"));
+  } catch {
+    return DEFAULT_DISPLAY;
+  }
 }
 
 export function clearDisplay() {
