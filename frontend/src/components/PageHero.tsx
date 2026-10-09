@@ -41,6 +41,7 @@ const FALLBACK: Record<string, string> = {
   newsletter: "/home/parents.png",
   comics: "/home/books.png",
   worksheets: "/home/learn.png",
+  colouring: "/home/icons/print.png?v=2",
 };
 
 // A soft background per page family, so pages feel related but not identical.
