@@ -15,7 +15,7 @@ export const THEMES: Theme[] = [
   { slug: "under-the-sea", name: "Under the Sea", cover: true },
   { slug: "dinosaur-world", name: "Dinosaur World", cover: true },
   { slug: "space-adventure", name: "Space Adventure", cover: true },
-  { slug: "garden-and-growing", name: "Garden & Growing" },
+  { slug: "garden-and-growing", name: "Garden & Growing", cover: true },
   { slug: "seasonal-fun", name: "Seasonal Fun" },
   { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures" },
   { slug: "vehicles-and-building", name: "Vehicles & Building" },
@@ -79,6 +79,16 @@ export const SHEETS: Sheet[] = [
   { slug: "satellite-repair", title: "Satellite Repair", theme: "space-adventure" },
   { slug: "cosmic-race", title: "Cosmic Race", theme: "space-adventure" },
   { slug: "galaxy-celebration", title: "Galaxy Celebration", theme: "space-adventure" },
+  { slug: "garden-adventure", title: "Garden Adventure", theme: "garden-and-growing" },
+  { slug: "scarecrow-garden", title: "Scarecrow Garden", theme: "garden-and-growing" },
+  { slug: "vegetable-harvest", title: "Vegetable Harvest", theme: "garden-and-growing" },
+  { slug: "garden-critters", title: "Garden Critters", theme: "garden-and-growing" },
+  { slug: "planting-seeds", title: "Planting Seeds", theme: "garden-and-growing" },
+  { slug: "greenhouse-care", title: "Greenhouse Care", theme: "garden-and-growing" },
+  { slug: "garden-picnic", title: "Garden Picnic", theme: "garden-and-growing" },
+  { slug: "rainy-day-garden", title: "Rainy Day Garden", theme: "garden-and-growing" },
+  { slug: "orchard-picking", title: "Orchard Picking", theme: "garden-and-growing" },
+  { slug: "garden-celebration", title: "Garden Celebration", theme: "garden-and-growing" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
