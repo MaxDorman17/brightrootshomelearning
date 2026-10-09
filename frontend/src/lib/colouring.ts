@@ -16,6 +16,8 @@ export const COLOURING_SHEETS: ColouringSheet[] = [
   { slug: "underwater-adventure", title: "Underwater Adventure", theme: "Sea & seaside" },
   { slug: "dinosaur-valley", title: "Dinosaur Valley", theme: "Dinosaurs" },
   { slug: "space-adventure", title: "Space Adventure", theme: "Space" },
+  { slug: "friendly-farm", title: "Friendly Farm", theme: "Farm" },
+  { slug: "woodland-picnic", title: "Woodland Picnic", theme: "Gardens & nature" },
 ];
 
 export const sheetPdf = (s: ColouringSheet) => `/colouring/${s.slug}.pdf`;
