@@ -83,6 +83,8 @@ export default function SensoryPage() {
             : "Simple sensory play using things you already have at home. Each card says what you need, how to play, how to wind down and how to keep it safe. Tap one to open it."
         }
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/sensory/sensory-header.png" alt="" className="mx-auto mb-6 w-full max-w-3xl" />
         <div className="flex flex-wrap gap-2">
           {(["", ...SENSES] as const).map((s) => (
             <button

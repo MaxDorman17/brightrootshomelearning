@@ -12,7 +12,7 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "feelings", name: "Feelings cards", emoji: "😊", blurb: "Name a feeling and pick what helps" },
   { slug: "breaks", name: "Movement breaks", emoji: "🤸", blurb: "Sensory and wriggle break cards" },
   { slug: "stories", name: "Picture stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
-  { slug: "sensory", name: "Sensory activities", emoji: "🫗", art: "/sensory/sensory-tray.png", blurb: "Touch, sound, sight, smell and movement play" },
+  { slug: "sensory", name: "Sensory activities", emoji: "🫗", art: "/sensory/sensory-pack.png", blurb: "Touch, sound, sight, smell and movement play" },
 ];
 
 export type Card = { emoji: string; label: string };
