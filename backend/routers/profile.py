@@ -69,6 +69,7 @@ class DisplayIn(BaseModel):
     text_size: str = "normal"
     easy_font: bool = False
     calm: bool = False  # no moving pictures, confetti or sounds
+    focus: bool = False  # a child's day shown one lesson at a time
 
     @field_validator("text_size")
     @classmethod
@@ -89,6 +90,7 @@ def display_prefs(user: Optional[User]) -> dict:
         "text_size": size if size in TEXT_SIZES else "normal",
         "easy_font": bool(saved.get("easy_font")) if isinstance(saved, dict) else False,
         "calm": bool(saved.get("calm")) if isinstance(saved, dict) else False,
+        "focus": bool(saved.get("focus")) if isinstance(saved, dict) else False,
     }
 
 
@@ -186,10 +188,10 @@ def save_display(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Bigger text, an easy-read font and calm mode. Children set their own; a parent can set their own or a child's."""
+    """Bigger text, an easy-read font, calm mode and one-at-a-time. Children set their own; a parent can set their own or a child's."""
     person = _target(db, current_user, child_id)
-    prefs = {"text_size": body.text_size, "easy_font": body.easy_font, "calm": body.calm}
-    person.display_prefs = None if prefs == {"text_size": "normal", "easy_font": False, "calm": False} else json.dumps(prefs)
+    prefs = {"text_size": body.text_size, "easy_font": body.easy_font, "calm": body.calm, "focus": body.focus}
+    person.display_prefs = None if not any([body.text_size != "normal", body.easy_font, body.calm, body.focus]) else json.dumps(prefs)
     db.commit()
     return display_prefs(person)
 
