@@ -89,6 +89,16 @@ export const SHEETS: Sheet[] = [
   { slug: "rainy-day-garden", title: "Rainy Day Garden", theme: "garden-and-growing" },
   { slug: "orchard-picking", title: "Orchard Picking", theme: "garden-and-growing" },
   { slug: "garden-celebration", title: "Garden Celebration", theme: "garden-and-growing" },
+  { slug: "spring-garden", title: "Spring Garden", theme: "seasonal-fun" },
+  { slug: "summer-beach", title: "Summer Beach", theme: "seasonal-fun" },
+  { slug: "autumn-leaves", title: "Autumn Leaves", theme: "seasonal-fun" },
+  { slug: "winter-snowman", title: "Winter Snowman", theme: "seasonal-fun" },
+  { slug: "rainy-day", title: "Rainy Day", theme: "seasonal-fun" },
+  { slug: "summer-picnic", title: "Summer Picnic", theme: "seasonal-fun" },
+  { slug: "autumn-harvest", title: "Autumn Harvest", theme: "seasonal-fun" },
+  { slug: "winter-sledding", title: "Winter Sledding", theme: "seasonal-fun" },
+  { slug: "spring-baby-animals", title: "Spring Baby Animals", theme: "seasonal-fun" },
+  { slug: "four-seasons-celebration", title: "Four Seasons Celebration", theme: "seasonal-fun" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
