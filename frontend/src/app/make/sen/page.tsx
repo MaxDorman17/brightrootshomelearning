@@ -21,7 +21,7 @@ export default function SenPage() {
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child"
               ? "Picture cards to help with your day. Pick one and ask a grown-up to print it."
-              : "Picture supports that help many children, including those with SEN: visual timetables, Now & Next, feelings cards, movement breaks and picture stories. Use them on screen or print them. For calmer screens, bigger text, an easy-read font and Calm mode, open Family, then Children, and pick a child's profile."}
+              : "Picture supports that help many children, including those with SEN: visual timetables, Now & Next, feelings cards, movement breaks, picture stories and sensory activities. Use them on screen or print them. For calmer screens, bigger text, an easy-read font and Calm mode, open Family, then Children, and pick a child's profile."}
           </p>
         </PageHero>
 
@@ -29,7 +29,12 @@ export default function SenPage() {
           {SEN_TOOLS.map((t) => (
             <Link key={t.slug} href={`/make/sen/${t.slug}`} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
               <div className="flex aspect-square items-center justify-center border-b border-brand-line bg-brand-cream">
-                <Emoji e={t.emoji} className="h-1/2 w-1/2 text-7xl" />
+                {t.art ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={t.art} alt="" className="h-3/4 w-3/4 object-contain" />
+                ) : (
+                  <Emoji e={t.emoji} className="h-1/2 w-1/2 text-7xl" />
+                )}
               </div>
               <div className="p-3">
                 <h2 className="font-extrabold text-brand-charcoal group-hover:text-brand-sage">{t.name}</h2>
