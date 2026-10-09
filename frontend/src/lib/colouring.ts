@@ -17,7 +17,7 @@ export const THEMES: Theme[] = [
   { slug: "space-adventure", name: "Space Adventure", cover: true },
   { slug: "garden-and-growing", name: "Garden & Growing", cover: true },
   { slug: "seasonal-fun", name: "Seasonal Fun", cover: true },
-  { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures" },
+  { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures", cover: true },
   { slug: "vehicles-and-building", name: "Vehicles & Building" },
   { slug: "creative-learning", name: "Creative Learning" },
 ];
@@ -99,6 +99,16 @@ export const SHEETS: Sheet[] = [
   { slug: "winter-sledding", title: "Winter Sledding", theme: "seasonal-fun" },
   { slug: "spring-baby-animals", title: "Spring Baby Animals", theme: "seasonal-fun" },
   { slug: "four-seasons-celebration", title: "Four Seasons Celebration", theme: "seasonal-fun" },
+  { slug: "castle-friends", title: "Castle Friends", theme: "fairy-tale-adventures" },
+  { slug: "enchanted-forest", title: "Enchanted Forest", theme: "fairy-tale-adventures" },
+  { slug: "mermaid-treasure", title: "Mermaid Treasure", theme: "fairy-tale-adventures" },
+  { slug: "baby-dragon", title: "Baby Dragon", theme: "fairy-tale-adventures" },
+  { slug: "unicorn-garden", title: "Unicorn Garden", theme: "fairy-tale-adventures" },
+  { slug: "beanstalk-adventure", title: "Beanstalk Adventure", theme: "fairy-tale-adventures" },
+  { slug: "magical-carriage", title: "Magical Carriage", theme: "fairy-tale-adventures" },
+  { slug: "wizard-potion-garden", title: "Wizard Potion Garden", theme: "fairy-tale-adventures" },
+  { slug: "castle-lake-picnic", title: "Castle Lake Picnic", theme: "fairy-tale-adventures" },
+  { slug: "castle-celebration", title: "Castle Celebration", theme: "fairy-tale-adventures" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
