@@ -14,7 +14,7 @@ export const THEMES: Theme[] = [
   { slug: "farmyard-fun", name: "Farmyard Fun", cover: true },
   { slug: "under-the-sea", name: "Under the Sea", cover: true },
   { slug: "dinosaur-world", name: "Dinosaur World", cover: true },
-  { slug: "space-adventure", name: "Space Adventure" },
+  { slug: "space-adventure", name: "Space Adventure", cover: true },
   { slug: "garden-and-growing", name: "Garden & Growing" },
   { slug: "seasonal-fun", name: "Seasonal Fun" },
   { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures" },
@@ -69,6 +69,16 @@ export const SHEETS: Sheet[] = [
   { slug: "leaf-gathering", title: "Leaf Gathering", theme: "dinosaur-world" },
   { slug: "stargazing", title: "Stargazing", theme: "dinosaur-world" },
   { slug: "prehistoric-celebration", title: "Prehistoric Celebration", theme: "dinosaur-world" },
+  { slug: "space-adventure", title: "Space Adventure", theme: "space-adventure" },
+  { slug: "moon-rocket", title: "Moon Rocket", theme: "space-adventure" },
+  { slug: "planet-rover", title: "Planet Rover", theme: "space-adventure" },
+  { slug: "space-station", title: "Space Station", theme: "space-adventure" },
+  { slug: "asteroid-garden", title: "Asteroid Garden", theme: "space-adventure" },
+  { slug: "alien-picnic", title: "Alien Picnic", theme: "space-adventure" },
+  { slug: "star-map", title: "Star Map", theme: "space-adventure" },
+  { slug: "satellite-repair", title: "Satellite Repair", theme: "space-adventure" },
+  { slug: "cosmic-race", title: "Cosmic Race", theme: "space-adventure" },
+  { slug: "galaxy-celebration", title: "Galaxy Celebration", theme: "space-adventure" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
