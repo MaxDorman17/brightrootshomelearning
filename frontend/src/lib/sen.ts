@@ -4,7 +4,7 @@
  * lib/illustrations.ts and it is used everywhere automatically.
  */
 
-export type SenTool = { slug: string; name: string; emoji: string; blurb: string };
+export type SenTool = { slug: string; name: string; emoji: string; blurb: string; art?: string };
 
 export const SEN_TOOLS: SenTool[] = [
   { slug: "timetable", name: "Visual timetable", emoji: "🗓️", blurb: "Picture cards for the day, in order" },
@@ -12,6 +12,7 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "feelings", name: "Feelings cards", emoji: "😊", blurb: "Name a feeling and pick what helps" },
   { slug: "breaks", name: "Movement breaks", emoji: "🤸", blurb: "Sensory and wriggle break cards" },
   { slug: "stories", name: "Picture stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
+  { slug: "sensory", name: "Sensory activities", emoji: "🫗", art: "/sensory/sensory-tray.png", blurb: "Touch, sound, sight, smell and movement play" },
 ];
 
 export type Card = { emoji: string; label: string };
