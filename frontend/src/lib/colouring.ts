@@ -39,6 +39,16 @@ export const SHEETS: Sheet[] = [
   { slug: "rainy-day", title: "Rainy Day", theme: "woodland-friends" },
   { slug: "moonlit-story", title: "Moonlit Story", theme: "woodland-friends" },
   { slug: "woodland-celebration", title: "Woodland Celebration", theme: "woodland-friends" },
+  { slug: "friendly-farm", title: "Friendly Farm", theme: "farmyard-fun" },
+  { slug: "tractor-harvest", title: "Tractor Harvest", theme: "farmyard-fun" },
+  { slug: "morning-feeding", title: "Morning Feeding", theme: "farmyard-fun" },
+  { slug: "egg-collecting", title: "Egg Collecting", theme: "farmyard-fun" },
+  { slug: "pony-paddock", title: "Pony Paddock", theme: "farmyard-fun" },
+  { slug: "apple-picking", title: "Apple Picking", theme: "farmyard-fun" },
+  { slug: "duck-pond", title: "Duck Pond", theme: "farmyard-fun" },
+  { slug: "sheep-care", title: "Sheep Care", theme: "farmyard-fun" },
+  { slug: "dairy-morning", title: "Dairy Morning", theme: "farmyard-fun" },
+  { slug: "farmyard-celebration", title: "Farmyard Celebration", theme: "farmyard-fun" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
