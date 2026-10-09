@@ -13,7 +13,7 @@ export const THEMES: Theme[] = [
   { slug: "woodland-friends", name: "Woodland Friends", cover: true },
   { slug: "farmyard-fun", name: "Farmyard Fun", cover: true },
   { slug: "under-the-sea", name: "Under the Sea", cover: true },
-  { slug: "dinosaur-world", name: "Dinosaur World" },
+  { slug: "dinosaur-world", name: "Dinosaur World", cover: true },
   { slug: "space-adventure", name: "Space Adventure" },
   { slug: "garden-and-growing", name: "Garden & Growing" },
   { slug: "seasonal-fun", name: "Seasonal Fun" },
@@ -59,6 +59,16 @@ export const SHEETS: Sheet[] = [
   { slug: "mermaid-treasure", title: "Mermaid Treasure", theme: "under-the-sea" },
   { slug: "penguin-sea-lion", title: "Penguin & Sea Lion", theme: "under-the-sea" },
   { slug: "ocean-celebration", title: "Ocean Celebration", theme: "under-the-sea" },
+  { slug: "dinosaur-valley", title: "Dinosaur Valley", theme: "dinosaur-world" },
+  { slug: "dinosaur-nest", title: "Dinosaur Nest", theme: "dinosaur-world" },
+  { slug: "stegosaurus-garden", title: "Stegosaurus Garden", theme: "dinosaur-world" },
+  { slug: "lakeside-fliers", title: "Lakeside Fliers", theme: "dinosaur-world" },
+  { slug: "dinosaur-picnic", title: "Dinosaur Picnic", theme: "dinosaur-world" },
+  { slug: "fossil-dig", title: "Fossil Dig", theme: "dinosaur-world" },
+  { slug: "river-crossing", title: "River Crossing", theme: "dinosaur-world" },
+  { slug: "leaf-gathering", title: "Leaf Gathering", theme: "dinosaur-world" },
+  { slug: "stargazing", title: "Stargazing", theme: "dinosaur-world" },
+  { slug: "prehistoric-celebration", title: "Prehistoric Celebration", theme: "dinosaur-world" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";
