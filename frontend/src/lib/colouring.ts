@@ -16,7 +16,7 @@ export const THEMES: Theme[] = [
   { slug: "dinosaur-world", name: "Dinosaur World", cover: true },
   { slug: "space-adventure", name: "Space Adventure", cover: true },
   { slug: "garden-and-growing", name: "Garden & Growing", cover: true },
-  { slug: "seasonal-fun", name: "Seasonal Fun" },
+  { slug: "seasonal-fun", name: "Seasonal Fun", cover: true },
   { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures" },
   { slug: "vehicles-and-building", name: "Vehicles & Building" },
   { slug: "creative-learning", name: "Creative Learning" },
