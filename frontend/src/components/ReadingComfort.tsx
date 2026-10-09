@@ -10,7 +10,7 @@ type Props = {
   childName?: string;
 };
 
-/** Bigger text, an easy-read font and calm mode. Each choice is saved as soon as it is picked. */
+/** Bigger text, an easy-read font, calm mode and one-at-a-time. Each choice is saved as soon as it is picked. */
 export default function ReadingComfort({ childId, childName }: Props) {
   const [prefs, setPrefs] = useState<DisplayPrefs>(DEFAULT_DISPLAY);
   const [message, setMessage] = useState("");
@@ -88,6 +88,21 @@ export default function ReadingComfort({ childId, childName }: Props) {
           <span className="block text-sm font-bold text-brand-charcoal">Calm mode</span>
           <span className="block text-xs text-[#6E5A46]">
             Turns off moving pictures, confetti and timer sounds. Helpful for children who find busy screens or sudden noises hard.
+          </span>
+        </span>
+      </label>
+
+      <label className="mt-4 flex cursor-pointer items-start gap-3">
+        <input
+          type="checkbox"
+          checked={prefs.focus}
+          onChange={(e) => change({ ...prefs, focus: e.target.checked })}
+          className="mt-1 h-4 w-4 accent-brand-sage"
+        />
+        <span>
+          <span className="block text-sm font-bold text-brand-charcoal">One thing at a time</span>
+          <span className="block text-xs text-[#6E5A46]">
+            The Today page shows just the lesson to do now and the one after it, instead of the whole day. Good for children who find a long list too much.
           </span>
         </span>
       </label>

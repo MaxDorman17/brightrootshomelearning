@@ -23,6 +23,8 @@ import { SUBJECT_COLOUR_OPTIONS } from "@/lib/avatar";
 import { checkSession } from "@/lib/api";
 import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "date-fns";
 import Emoji from "@/components/Emoji";
+import FocusDay from "@/components/FocusDay";
+import { useDisplay } from "@/lib/useDisplay";
 
 
 // Any Oak lesson link, pupil or teacher, the same ones the server recognises (routers/oak_lessons.py).
@@ -136,6 +138,10 @@ export default function ChildDashboard() {
   const [modal, setModal] = useState<SlotModal | null>(null);
   const [toggling, setToggling] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
+  // "One thing at a time": the day as Now and Next. The child can still open the whole day for this visit.
+  const display = useDisplay();
+  const [showWholeDay, setShowWholeDay] = useState(false);
+  const focusing = display.focus && !showWholeDay;
   const [workUrl, setWorkUrl] = useState("");
   const [submittingUrl, setSubmittingUrl] = useState(false);
   const [note, setNote] = useState("");
@@ -385,8 +391,8 @@ export default function ChildDashboard() {
 
         <ChildNotesCard />
 
-        {/* Up next card */}
-        {nextLesson && (
+        {/* Up next card (the one-at-a-time view below already shows it) */}
+        {nextLesson && !focusing && (
           <div className="mb-4 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl px-4 py-3 flex items-center gap-4 shadow-sm">
             <span className="text-2xl shrink-0">▶️</span>
             <div className="flex-1 min-w-0">
@@ -462,7 +468,8 @@ export default function ChildDashboard() {
           </div>
         )}
 
-        {/* Week calendar */}
+        {/* Week calendar (hidden in the one-at-a-time view, so the day isn't a long list) */}
+        {!focusing && (
         <div className="brand-card p-4 mb-5">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
             <div className="flex items-center gap-2">
@@ -612,6 +619,7 @@ export default function ChildDashboard() {
             })}
           </div>
         </div>
+        )}
 
             <div className="brand-card p-5">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
@@ -627,6 +635,11 @@ export default function ChildDashboard() {
                       ? "No lessons are planned for this day."
                       : `${selectedDoneCount} of ${selectedDayEntries.length} lessons complete`}
                   </p>
+                  {display.focus && showWholeDay && (
+                    <button onClick={() => setShowWholeDay(false)} className="mt-2 text-sm font-bold text-brand-sage hover:underline">
+                      Back to one thing at a time
+                    </button>
+                  )}
                 </div>
 
                 {!selectedDayOff && selectedDayEntries.length > 0 && (
@@ -647,6 +660,8 @@ export default function ChildDashboard() {
                 <div className="rounded-2xl border border-dashed border-[#DDD3C4] bg-[#FBF8F1] p-8 text-center">
                   <p className="text-sm font-semibold text-[#6E5A46]">Nothing planned for this day.</p>
                 </div>
+              ) : focusing ? (
+                <FocusDay entries={selectedDayEntries} onOpen={openModal} onShowAll={() => setShowWholeDay(true)} />
               ) : (
                 <div className="grid md:grid-cols-2 gap-3">
                   {selectedDayEntries.map(entry => {
@@ -714,7 +729,7 @@ export default function ChildDashboard() {
             </div>
 
         {/* Legend */}
-        <div className="mt-5 flex flex-wrap gap-3 text-xs text-gray-500">
+        <div className={`mt-5 flex-wrap gap-3 text-xs text-gray-500 ${focusing ? "hidden" : "flex"}`}>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" /> Completed</span>
           <span className="flex items-center gap-1">🔗 Has lesson link</span>
           <span className="flex items-center gap-1"><Emoji e="📎" /> Work submitted</span>
