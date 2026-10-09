@@ -19,7 +19,6 @@ export const THEMES: Theme[] = [
   { slug: "seasonal-fun", name: "Seasonal Fun", cover: true },
   { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures", cover: true },
   { slug: "vehicles-and-building", name: "Vehicles & Building", cover: true },
-  { slug: "creative-learning", name: "Creative Learning" },
 ];
 
 export type SheetKind = "colouring" | "word-search";
