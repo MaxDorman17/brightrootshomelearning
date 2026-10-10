@@ -6,6 +6,12 @@
 const ADDED: Record<string, string> = {
   // e.g. "snow-day-adventure": "2026-11-01",
   romans: "2026-10-10",
+  "roman-soldier": "2026-10-10",
+  "roman-villa": "2026-10-10",
+  "hadrians-wall": "2026-10-10",
+  "roman-baths": "2026-10-10",
+  "romans-word-search": "2026-10-10",
+  "roman-britain-word-search": "2026-10-10",
   "woodland-animals-word-search": "2026-10-09",
   "into-the-forest-word-search": "2026-10-09",
   "farm-animals-word-search": "2026-10-09",

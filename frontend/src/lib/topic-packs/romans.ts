@@ -10,6 +10,8 @@ export const romans: TopicPack = {
   length: "6 lessons, about an hour each",
   color: "#B5523B",
   emoji: "🏛️",
+  cover: true,
+  colouring: "romans",
   summary: "Rome, the invasion of Britain, Boudica, the walls and Roman life",
   intro:
     "Who the Romans were, how they came to Britain, who fought back, why they built walls across the country, and what they left behind. Six ready-to-teach lessons with everything you need to know first, so you don't have to research anything yourself.",
@@ -124,6 +126,7 @@ export const romans: TopicPack = {
     {
       title: "Who were the Romans?",
       emoji: "🗺️",
+      art: true,
       minutes: 60,
       aim: "Know that the Romans came from Rome in Italy, built a huge empire, and where they fit on a timeline.",
       need: ["A map of Europe or a globe", "String and pegs, or a long strip of paper", "Some cards or paper and pens"],
@@ -145,6 +148,7 @@ export const romans: TopicPack = {
     {
       title: "The Romans come to Britain",
       emoji: "⛵",
+      art: true,
       minutes: 60,
       aim: "Know what Britain was like before the Romans, and how and why the Romans invaded in AD 43.",
       need: ["Paper folded into two columns", "For the model: a paper cup or card tube, card, glue, and straw, wool or brown tissue paper"],
@@ -166,6 +170,7 @@ export const romans: TopicPack = {
     {
       title: "The Roman army",
       emoji: "🛡️",
+      art: true,
       minutes: 60,
       aim: "Know how the Roman army was organised and equipped, and why it was so hard to beat.",
       need: ["A big piece of cardboard", "Paint or felt pens in red and yellow", "Somewhere to march, inside or out"],
@@ -188,6 +193,7 @@ export const romans: TopicPack = {
     {
       title: "Boudica fights back",
       emoji: "⚔️",
+      art: true,
       minutes: 60,
       aim: "Know the story of Boudica's revolt, and think about who tells the story and why that matters.",
       need: ["Paper and pens for a newspaper front page", "A scarf or cloak for dressing up (optional)"],
@@ -209,6 +215,7 @@ export const romans: TopicPack = {
     {
       title: "Walls at the edge of the empire",
       emoji: "🧱",
+      art: true,
       minutes: 60,
       aim: "Know why Hadrian's Wall and the Antonine Wall were built, and what life was like at a fort.",
       need: ["Building blocks, Lego or small boxes", "A map of Britain", "A strip of card and a pen for the letter"],
@@ -231,6 +238,7 @@ export const romans: TopicPack = {
     {
       title: "Roman life and what they left behind",
       emoji: "🏛️",
+      art: true,
       minutes: 60,
       aim: "Know about Roman towns, homes, baths and gods, and spot things from Roman times that are still around today.",
       need: ["Coloured paper cut into small squares", "Glue and a sheet of card", "A pencil"],

@@ -8,6 +8,7 @@ import Emoji from "@/components/Emoji";
 import TopicQuiz from "@/components/TopicQuiz";
 import { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitAdder";
 import { getRole, isAuthenticated } from "@/lib/auth";
+import { kindOf, LEVEL_LABEL, sheetAnswers, sheetPdf, sheetPicture, sheetsIn } from "@/lib/colouring";
 import { lessonAnchor, lessonArt, packBySlug, packCover, type TopicLesson, type TopicLink, type TopicPack } from "@/lib/topics";
 
 const h2 = "text-2xl font-extrabold text-brand-charcoal";
@@ -54,6 +55,7 @@ export default function TopicPackPage() {
 
   const isChild = role === "child";
   const cover = packCover(pack);
+  const printables = pack.colouring ? sheetsIn(pack.colouring) : [];
 
   // Hands the lessons to the planner's Add a Unit box, each linking back to its part of this page.
   const planLessons = () => {
@@ -82,8 +84,8 @@ export default function TopicPackPage() {
     });
 
   const jump = isChild
-    ? [["facts", "Key facts"], ["timeline", "Timeline"], ["words", "Words"], ["activities", "Things to do"], ["quizzes", "Quizzes"], ["books", "Books"]]
-    : [["start", "Before you start"], ["facts", "Key facts"], ["timeline", "Timeline"], ["words", "Words"], ["lessons", "Lessons"], ["activities", "Activities"], ["quizzes", "Quizzes"], ["books", "Books & visits"]];
+    ? [["facts", "Key facts"], ["timeline", "Timeline"], ["words", "Words"], ["activities", "Things to do"], ...(printables.length ? [["colouring", "Colouring"]] : []), ["quizzes", "Quizzes"], ["books", "Books"]]
+    : [["start", "Before you start"], ["facts", "Key facts"], ["timeline", "Timeline"], ["words", "Words"], ["lessons", "Lessons"], ["activities", "Activities"], ...(printables.length ? [["colouring", "Colouring & word searches"]] : []), ["quizzes", "Quizzes"], ["books", "Books & visits"]];
 
   return (
     <div className="min-h-screen">
@@ -231,6 +233,44 @@ export default function TopicPackPage() {
           </div>
         </section>
 
+        {printables.length > 0 && (
+          <section id="colouring" className="mt-10 scroll-mt-24">
+            <h2 className={h2}>Colouring &amp; word searches</h2>
+            <p className="mt-1 text-sm text-brand-earth/80">
+              {isChild ? "Pick one and ask a grown-up to print it." : "Open a sheet, then print it on A4. Each word search has an answer sheet for you."}
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {printables.map((s) => {
+                const isSearch = kindOf(s) === "word-search";
+                return (
+                  <div key={s.slug} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
+                    <a href={sheetPdf(s)} target="_blank" rel="noopener" className="block">
+                      <div className="border-b border-brand-line bg-white p-3">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={sheetPicture(s)} alt={`${s.title} ${isSearch ? "word search" : "colouring sheet"}`} loading="lazy" className="aspect-[210/297] w-full object-contain" />
+                      </div>
+                      <div className="px-3 pt-3">
+                        <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">
+                          {isSearch ? `Word search${s.level ? ` · ${LEVEL_LABEL[s.level]}` : ""}` : "Colouring"}
+                        </p>
+                        <h3 className="mt-0.5 font-extrabold text-brand-charcoal group-hover:text-brand-sage">{s.title}</h3>
+                        <p className="mt-1 text-sm font-bold text-brand-sage">🖨️ Open to print</p>
+                      </div>
+                    </a>
+                    {isSearch && role && !isChild ? (
+                      <a href={sheetAnswers(s)} target="_blank" rel="noopener" className="mx-3 mb-3 mt-1 inline-block text-sm font-bold text-brand-earth/70 hover:text-brand-sage hover:underline">
+                        🔑 Answers
+                      </a>
+                    ) : (
+                      <div className="pb-3" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         <section id="quizzes" className="mt-10 scroll-mt-24">
           <h2 className={h2}>Quizzes</h2>
           <p className="mt-1 text-sm text-brand-earth/80">
@@ -342,7 +382,7 @@ function Lesson({ pack, lesson, n, open, onToggle }: { pack: TopicPack; lesson: 
           )}
           <div className="rounded-2xl bg-brand-cream px-4 py-3">
             <p className={small + " text-brand-softsage"}>By the end, your child should</p>
-            <p className="mt-0.5 font-bold text-brand-charcoal">{lesson.aim}</p>
+            <p className="mt-0.5 font-bold text-brand-charcoal">{lesson.aim.charAt(0).toLowerCase() + lesson.aim.slice(1)}</p>
           </div>
           <h4 className="mt-5 font-extrabold text-brand-charcoal">You&apos;ll need</h4>
           <ul className={list}>

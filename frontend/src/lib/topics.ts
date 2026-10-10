@@ -10,6 +10,8 @@ import { romans } from "@/lib/topic-packs/romans";
  * The packs live in src/lib/topic-packs, one file per topic. To add one, copy romans.ts, then add it to PACKS below
  * and add its slug and date to lib/newContent.ts so it shows "New" for a month. Pictures go in
  * public/topics/<slug>/: cover.jpg for the tile (set cover: true), and lesson-<n>.jpg for each lesson (set art: true).
+ * Colouring sheets and word searches for a topic go on the Colouring page as their own theme (see lib/colouring.ts);
+ * set colouring to that theme's slug and they show in the pack too.
  */
 
 export type TopicLesson = {
@@ -67,6 +69,8 @@ export type TopicPack = {
   online: TopicLink[];
   visits: TopicLink[];
   sheets: TopicSheet[];
+  /** The Colouring page theme holding this topic's colouring sheets and word searches, if it has one. */
+  colouring?: string;
 };
 
 /** A topic that's planned but not written yet. It shows as a "Coming soon" tile. */
