@@ -74,6 +74,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/spellings", label: "Spellings" },
       { href: "/coding", label: "Coding" },
       { href: "/languages", label: "Languages" },
+      { href: "/make/topics", label: "Topic Packs" },
     ],
   },
   {
@@ -152,6 +153,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/child/resources", label: "Resources" },
       { href: "/coding", label: "Coding" },
       { href: "/languages", label: "Languages" },
+      { href: "/make/topics", label: "Topic Packs" },
     ],
   },
   {

@@ -83,6 +83,10 @@ PUZZLES = [
      ["DIGGER", "CRANE", "BRICKS", "CEMENT", "HELMET", "BUILDER", "DUMPER", "LADDER", "HAMMER", "TOOLBOX", "SCAFFOLD", "BULLDOZER"]),
     ("w20", "emergency-heroes-word-search", "Emergency Heroes", "vehicles-and-building", "tricky",
      ["AMBULANCE", "POLICE", "FIRE ENGINE", "SIREN", "HOSE", "LADDER", "RESCUE", "HELICOPTER", "DOCTOR", "NURSE", "LIFEBOAT", "HELPER"]),
+    ("w21", "romans-word-search", "The Romans", "romans", "easy",
+     ["ROME", "ROAD", "WALL", "FORT", "VILLA", "SHIELD", "HELMET", "COIN"]),
+    ("w22", "roman-britain-word-search", "Roman Britain", "romans", "tricky",
+     ["EMPEROR", "LEGION", "CENTURION", "BOUDICA", "HADRIAN", "BRITANNIA", "MOSAIC", "CHARIOT", "GLADIATOR", "LATIN", "TOGA", "AMPHITHEATRE"]),
 ]
 
 # Filler letters never spell these in any direction, so a random grid can't hide anything unkind.

@@ -8,8 +8,15 @@ import SchemeInput from "@/components/SchemeInput";
 export type UnitLesson = { title: string; url: string };
 export type PlannedUnitLesson = { lesson: UnitLesson; date: string; dayName: string };
 
-/** A unit handed over from the Units page, to save typing its details again. */
-export type UnitToPlan = { title: string; subject: string; scheme?: string | null; url?: string | null };
+/** A unit handed over from the Units page or a topic pack, to save typing its details again. */
+export type UnitToPlan = {
+  title: string;
+  subject: string;
+  scheme?: string | null;
+  url?: string | null;
+  /** Lessons already written out, one per line, each with its own link if it has one. */
+  lessons?: string[];
+};
 export const UNIT_TO_PLAN_KEY = "unit-to-plan";
 
 type Props = {
@@ -51,7 +58,7 @@ function readLessons(text: string, unitUrl: string): UnitLesson[] {
 export default function UnitAdder({ subjects, children, defaultChildId, unit, plan, explain, onAdded, onClose }: Props) {
   const [scheme, setScheme] = useState(unit?.scheme ?? "");
   const [unitUrl, setUnitUrl] = useState(unit?.url ?? "");
-  const [titles, setTitles] = useState("");
+  const [titles, setTitles] = useState(unit?.lessons?.join("\n") ?? "");
   const [subject, setSubject] = useState(unit?.subject ?? "");
   const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [assignedTo, setAssignedTo] = useState<number | null>(defaultChildId);

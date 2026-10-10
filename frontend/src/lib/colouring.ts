@@ -20,6 +20,7 @@ export const THEMES: Theme[] = [
   { slug: "seasonal-fun", name: "Seasonal Fun", cover: true },
   { slug: "fairy-tale-adventures", name: "Fairy-Tale Adventures", cover: true },
   { slug: "vehicles-and-building", name: "Vehicles & Building", cover: true },
+  { slug: "romans", name: "The Romans", cover: true },
 ];
 
 export type SheetKind = "colouring" | "word-search";
@@ -121,6 +122,11 @@ export const SHEETS: Sheet[] = [
   { slug: "farm-vehicles", title: "Farm Vehicles", theme: "vehicles-and-building" },
   { slug: "city-bus-adventure", title: "City Bus Adventure", theme: "vehicles-and-building" },
   { slug: "construction-celebration", title: "Construction Celebration", theme: "vehicles-and-building" },
+  // The Romans: also shown in the Romans topic pack.
+  { slug: "roman-soldier", title: "Roman Soldier", theme: "romans" },
+  { slug: "roman-villa", title: "Roman Villa", theme: "romans" },
+  { slug: "hadrians-wall", title: "Hadrian's Wall", theme: "romans" },
+  { slug: "roman-baths", title: "Roman Baths", theme: "romans" },
 
   // Word searches. Made by scripts/wordsearches/make_wordsearches.py, which also makes each one's answer sheet.
   { slug: "woodland-animals-word-search", title: "Woodland Animals", theme: "woodland-friends", kind: "word-search", level: "easy" },
@@ -143,6 +149,8 @@ export const SHEETS: Sheet[] = [
   { slug: "things-that-go-word-search", title: "Things That Go", theme: "vehicles-and-building", kind: "word-search", level: "easy" },
   { slug: "building-site-word-search", title: "On the Building Site", theme: "vehicles-and-building", kind: "word-search", level: "tricky" },
   { slug: "emergency-heroes-word-search", title: "Emergency Heroes", theme: "vehicles-and-building", kind: "word-search", level: "tricky" },
+  { slug: "romans-word-search", title: "The Romans", theme: "romans", kind: "word-search", level: "easy" },
+  { slug: "roman-britain-word-search", title: "Roman Britain", theme: "romans", kind: "word-search", level: "tricky" },
 ];
 
 export const kindOf = (s: Sheet): SheetKind => s.kind ?? "colouring";

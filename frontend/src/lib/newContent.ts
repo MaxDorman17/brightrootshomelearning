@@ -1,10 +1,17 @@
 /**
- * "New every month": when each comic, Little Roots book and colouring sheet was added, so the latest ones get a
+ * "New every month": when each comic, Little Roots book, colouring sheet and topic pack was added, so the latest ones get a
  * "New" badge for a month. When you add a new comic, book or colouring sheet, add its slug and the date here.
  * Anything not listed counts as part of the original set and never shows the badge.
  */
 const ADDED: Record<string, string> = {
   // e.g. "snow-day-adventure": "2026-11-01",
+  romans: "2026-10-10",
+  "roman-soldier": "2026-10-10",
+  "roman-villa": "2026-10-10",
+  "hadrians-wall": "2026-10-10",
+  "roman-baths": "2026-10-10",
+  "romans-word-search": "2026-10-10",
+  "roman-britain-word-search": "2026-10-10",
   "woodland-animals-word-search": "2026-10-09",
   "into-the-forest-word-search": "2026-10-09",
   "farm-animals-word-search": "2026-10-09",
