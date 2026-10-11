@@ -10,6 +10,7 @@ export const lightAndShadows: LessonUnit = {
   emoji: "🔦",
   color: "#C9A227",
   summary: "Six lessons of experiments with a torch and things from around the house: light sources, reflections, shadows, the sun, and how we see.",
+  cover: "/lessons/units/light-and-shadows.jpg",
   lessons: [
     {
       slug: "light-and-shadows-1",

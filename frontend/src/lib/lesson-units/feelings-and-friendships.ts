@@ -10,6 +10,7 @@ export const feelingsAndFriendships: LessonUnit = {
   emoji: "💛",
   color: "#C7892B",
   summary: "Six lessons: naming feelings, calming big ones, being a good friend, falling out and making up, families, and staying safe online.",
+  cover: "/lessons/units/feelings-and-friendships.jpg",
   lessons: [
     {
       slug: "feelings-and-friendships-1",

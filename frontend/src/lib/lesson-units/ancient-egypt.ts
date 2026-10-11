@@ -10,6 +10,7 @@ export const ancientEgypt: LessonUnit = {
   emoji: "🏺",
   color: "#B8862B",
   summary: "Six lessons: the River Nile, pharaohs, pyramids, mummies, hieroglyphs, and gods and everyday life.",
+  cover: "/lessons/units/ancient-egypt.jpg",
   lessons: [
     {
       slug: "ancient-egypt-1",

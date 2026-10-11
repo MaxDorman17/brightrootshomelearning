@@ -10,6 +10,7 @@ export const colourAndArtists: LessonUnit = {
   emoji: "🎨",
   color: "#B0457B",
   summary: "Six lessons: mixing colours, warm and cool colours, then Van Gogh, Kandinsky and Matisse, and finally your own gallery.",
+  cover: "/lessons/units/colour-and-artists.jpg",
   lessons: [
     {
       slug: "colour-and-artists-1",

@@ -10,6 +10,7 @@ export const festivalsOfLight: LessonUnit = {
   emoji: "🪔",
   color: "#7B4FA3",
   summary: "Six lessons on why light matters in so many faiths: Diwali, Hanukkah, Advent and Christmas, St Lucia's Day, and comparing them.",
+  cover: "/lessons/covers/re.jpg",
   lessons: [
     {
       slug: "festivals-of-light-1",

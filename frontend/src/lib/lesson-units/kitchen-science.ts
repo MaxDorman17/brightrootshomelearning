@@ -10,6 +10,7 @@ export const kitchenScience: LessonUnit = {
   emoji: "🧪",
   color: "#2F7A8C",
   summary: "Six lessons of experiments with things from the kitchen: properties, waterproofing, floating, dissolving, melting and changes you can't undo.",
+  cover: "/lessons/units/kitchen-science.jpg",
   lessons: [
     {
       slug: "kitchen-science-1",

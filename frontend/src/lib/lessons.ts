@@ -66,6 +66,8 @@ export type LessonUnit = {
   emoji: string;
   color: string;
   summary: string;
+  /** The unit's square cover picture. Without one, the topic pack's cover or the emoji is shown. */
+  cover?: string;
   /** The topic pack that goes with this unit, if there is one. */
   topicPack?: string;
   lessons: BrLesson[];
@@ -102,7 +104,7 @@ export const LESSON_SUBJECTS: LessonSubject[] = [
   { slug: "geography", name: "Geography", emoji: "🌍", color: "#2C6FA6", blurb: "Rivers, maps, weather and places near and far.", cover: "/lessons/covers/geography.jpg" },
   { slug: "art", name: "Art & Design", emoji: "🎨", color: "#B0457B", blurb: "Colour, drawing, making, and great artists.", cover: "/lessons/covers/art.jpg" },
   { slug: "rshe", name: "RSHE (PSHE)", emoji: "💛", color: "#C7892B", blurb: "Feelings, friendships, keeping healthy and staying safe.", cover: "/lessons/covers/rshe.jpg" },
-  { slug: "re", name: "Religious Education", emoji: "🪔", color: "#7B4FA3", blurb: "Festivals, beliefs and stories from many faiths." },
+  { slug: "re", name: "Religious Education", emoji: "🪔", color: "#7B4FA3", blurb: "Festivals, beliefs and stories from many faiths.", cover: "/lessons/covers/re.jpg" },
 ];
 
 export const subjectBySlug = (slug: string) => LESSON_SUBJECTS.find((s) => s.slug === slug);
