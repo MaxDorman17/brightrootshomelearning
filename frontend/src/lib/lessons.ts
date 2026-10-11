@@ -3,6 +3,9 @@ import { planSheets } from "@/lib/api";
 import { romansLessons } from "@/lib/lesson-units/romans";
 import { kitchenScience } from "@/lib/lesson-units/kitchen-science";
 import { rivers } from "@/lib/lesson-units/rivers";
+import { colourAndArtists } from "@/lib/lesson-units/colour-and-artists";
+import { feelingsAndFriendships } from "@/lib/lesson-units/feelings-and-friendships";
+import { festivalsOfLight } from "@/lib/lesson-units/festivals-of-light";
 
 /**
  * Bright Roots lessons: lessons a child does on screen, step by step, in the same way as an Oak lesson. Written for
@@ -69,12 +72,21 @@ export type LessonUnit = {
 /** A unit that's planned but not written yet. It shows as "Coming soon". */
 export type ComingUnit = { title: string; subject: string; emoji: string };
 
-export const UNITS: LessonUnit[] = [romansLessons, kitchenScience, rivers];
+export const UNITS: LessonUnit[] = [
+  romansLessons,
+  kitchenScience,
+  rivers,
+  colourAndArtists,
+  feelingsAndFriendships,
+  festivalsOfLight,
+];
 
 export const COMING_UNITS: ComingUnit[] = [
   { title: "Ancient Egypt", subject: "History", emoji: "🏺" },
   { title: "Light and shadows", subject: "Science", emoji: "🔦" },
   { title: "The UK and our local area", subject: "Geography", emoji: "🗺️" },
+  { title: "Drawing and sketching", subject: "Art & Design", emoji: "✏️" },
+  { title: "Keeping healthy", subject: "RSHE (PSHE)", emoji: "🍎" },
 ];
 
 /** Where a lesson opens, and what the planner stores as its link. */
