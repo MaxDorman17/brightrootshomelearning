@@ -1,6 +1,8 @@
 import type { Question } from "@/lib/worksheets";
 import { planSheets } from "@/lib/api";
 import { romansLessons } from "@/lib/lesson-units/romans";
+import { kitchenScience } from "@/lib/lesson-units/kitchen-science";
+import { rivers } from "@/lib/lesson-units/rivers";
 
 /**
  * Bright Roots lessons: lessons a child does on screen, step by step, in the same way as an Oak lesson. Written for
@@ -67,14 +69,12 @@ export type LessonUnit = {
 /** A unit that's planned but not written yet. It shows as "Coming soon". */
 export type ComingUnit = { title: string; subject: string; emoji: string };
 
-export const UNITS: LessonUnit[] = [romansLessons];
+export const UNITS: LessonUnit[] = [romansLessons, kitchenScience, rivers];
 
 export const COMING_UNITS: ComingUnit[] = [
   { title: "Ancient Egypt", subject: "History", emoji: "🏺" },
-  { title: "Rivers and the water cycle", subject: "Geography", emoji: "🌊" },
-  { title: "Money and shopping", subject: "Life Skills", emoji: "🪙" },
-  { title: "First cooking skills", subject: "Cooking", emoji: "🍳" },
-  { title: "Kitchen science: materials", subject: "Science", emoji: "🧪" },
+  { title: "Light and shadows", subject: "Science", emoji: "🔦" },
+  { title: "The UK and our local area", subject: "Geography", emoji: "🗺️" },
 ];
 
 /** Where a lesson opens, and what the planner stores as its link. */
