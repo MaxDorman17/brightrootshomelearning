@@ -35,7 +35,8 @@ interface BellItem {
 const BELL_ICON: Record<BellItem["kind"], string> = { review: "📎", lesson: "✅", reading: "📖", spelling: "🔤" };
 const BELL_SEEN_KEY = "bell_seen";
 
-type NavLink = { href: string; label: string };
+// `short` is shown instead of `label` on the desktop bar below xl, where space is tight.
+type NavLink = { href: string; label: string; short?: string };
 type NavGroup = { label: string; items: NavLink[] };
 type NavEntry = NavLink | NavGroup;
 
@@ -127,13 +128,14 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/teens/exams", label: "Exams" },
     ],
   },
+  // Its own tab so families who need it don't have to hunt for it.
+  { href: "/make/sen", label: "SEN Support", short: "SEN" },
   {
     label: "Family",
     items: [
       { href: "/parent/children", label: "Children" },
       { href: "/parent/rewards", label: "Rewards & Badges" },
       { href: "/parent/reminders", label: "Reminders" },
-      { href: "/make/sen", label: "SEN Support" },
       { href: "/make/shopping", label: "Shopping List" },
       { href: "/account", label: "Account" },
       { href: "/parent/help", label: "How-to guides" },
@@ -365,6 +367,7 @@ export default function Navbar() {
     (href === "/make/comics" && pathname.startsWith("/make/comics/")) ||
     (href === "/worksheets" && pathname.startsWith("/worksheets/")) ||
     (href === "/lessons" && pathname.startsWith("/lessons/")) ||
+    (href === "/make/sen" && pathname.startsWith("/make/sen/")) ||
     // A single recipe or craft, or the add/edit form, lights up the Saplings menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
@@ -427,7 +430,7 @@ export default function Navbar() {
                       <button
                         onClick={() => setOpenMenu((value) => (value === entry.label ? null : entry.label))}
                         aria-expanded={openMenu === entry.label}
-                        className={`flex items-center gap-1 rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
+                        className={`flex items-center gap-1 whitespace-nowrap rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
                           groupActive(entry) || openMenu === entry.label
                             ? "bg-brand-sage text-white"
                             : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
@@ -458,13 +461,20 @@ export default function Navbar() {
                     <Link
                       key={entry.href}
                       href={entry.href}
-                      className={`relative rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
+                      className={`relative whitespace-nowrap rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
                         isActive(entry.href)
                           ? "bg-brand-sage text-white"
                           : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
                       }`}
                     >
-                      {entry.label}
+                      {entry.short ? (
+                        <>
+                          <span className="xl:hidden">{entry.short}</span>
+                          <span className="hidden xl:inline">{entry.label}</span>
+                        </>
+                      ) : (
+                        entry.label
+                      )}
                       {entry.href === "/child" && unreadCount > 0 && (
                         <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-terracotta px-1 text-[9px] font-extrabold text-white">
                           {unreadCount > 9 ? "9+" : unreadCount}
