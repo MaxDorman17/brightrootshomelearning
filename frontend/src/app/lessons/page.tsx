@@ -7,9 +7,8 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Emoji from "@/components/Emoji";
 import PlanSheets from "@/components/worksheets/PlanSheets";
-import { planSheets } from "@/lib/api";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { COMING_UNITS, UNITS, lessonLink, plannerTitle, type LessonUnit } from "@/lib/lessons";
+import { COMING_UNITS, UNITS, lessonLink, planUnit, type LessonUnit } from "@/lib/lessons";
 import { packBySlug, packCover } from "@/lib/topics";
 
 /** Bright Roots' own lessons, in units. A grown-up puts a whole unit into the planner; a child does each lesson on screen. */
@@ -68,20 +67,6 @@ function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild: boolean }) {
   const cover = pack ? packCover(pack) : null;
   const minutes = Math.round(unit.lessons.reduce((sum, l) => sum + l.minutes, 0) / unit.lessons.length);
 
-  const plan = (day: string, childIds: number[], subject: string) =>
-    planSheets(
-      unit.lessons.map((l, i) => ({
-        kind: "lesson" as const,
-        slug: l.slug,
-        title: plannerTitle(unit, i + 1),
-        subject,
-        intro: "",
-        minutes: l.minutes,
-      })),
-      day,
-      childIds
-    );
-
   return (
     <section id={unit.slug} className="brand-card scroll-mt-20 overflow-hidden">
       <div className="flex flex-col sm:flex-row">
@@ -120,7 +105,7 @@ function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild: boolean }) {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {!isChild && (
               <PlanSheets
-                plan={plan}
+                plan={planUnit(unit)}
                 count={unit.lessons.length}
                 subject={unit.subject}
                 noun="lessons"

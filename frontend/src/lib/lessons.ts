@@ -1,4 +1,5 @@
 import type { Question } from "@/lib/worksheets";
+import { planSheets } from "@/lib/api";
 import { romansLessons } from "@/lib/lesson-units/romans";
 
 /**
@@ -97,3 +98,11 @@ export function lessonBySlug(slug: string): { unit: LessonUnit; lesson: BrLesson
 
 /** The name a lesson has in the planner and in results, e.g. "Romans 2: The Romans come to Britain". */
 export const plannerTitle = (unit: LessonUnit, number: number) => `${unit.short} ${number}: ${unit.lessons[number - 1].title}`;
+
+/** Puts a whole unit into the planner, in order, on the days `subject` is on the timetable. For PlanSheets' `plan`. */
+export const planUnit = (unit: LessonUnit) => (day: string, childIds: number[], subject: string) =>
+  planSheets(
+    unit.lessons.map((l, i) => ({ kind: "lesson" as const, slug: l.slug, title: plannerTitle(unit, i + 1), subject, intro: "", minutes: l.minutes })),
+    day,
+    childIds
+  );
