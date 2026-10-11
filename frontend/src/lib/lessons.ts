@@ -125,6 +125,32 @@ const YEARS: Record<string, string> = {
   "7 to 11": "Years 3 to 6",
   "11 to 14": "Years 7 to 9",
 };
+/** Lower-case words of a search box, ignoring very short ones. */
+const searchWords = (q: string) => q.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
+
+const lessonText = (l: BrLesson) => [l.title, l.goal, ...(l.learn.words ?? []).map((w) => w.word)].join(" ").toLowerCase();
+
+/**
+ * Units matching a search. A unit whose title or summary matches shows all its lessons;
+ * otherwise it shows only the lessons that match (`lessons`), and units with none are left out.
+ */
+export function searchUnits(units: LessonUnit[], q: string): { unit: LessonUnit; lessons?: Set<string> }[] {
+  const words = searchWords(q);
+  if (words.length === 0) return units.map((unit) => ({ unit }));
+  const has = (text: string) => words.every((w) => text.includes(w));
+  const out: { unit: LessonUnit; lessons?: Set<string> }[] = [];
+  for (const unit of units) {
+    const unitText = [unit.title, unit.short, unit.summary, unit.subject].join(" ").toLowerCase();
+    if (has(unitText)) {
+      out.push({ unit });
+      continue;
+    }
+    const lessons = unit.lessons.filter((l) => has(`${unitText} ${lessonText(l)}`));
+    if (lessons.length > 0) out.push({ unit, lessons: new Set(lessons.map((l) => l.slug)) });
+  }
+  return out;
+}
+
 export const yearsFor = (ages: string) => YEARS[ages];
 
 /** Where a lesson opens, and what the planner stores as its link. */

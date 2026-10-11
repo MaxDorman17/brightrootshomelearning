@@ -6,8 +6,11 @@ import PlanSheets from "@/components/worksheets/PlanSheets";
 import { lessonLink, planUnit, type LessonUnit } from "@/lib/lessons";
 import { packBySlug, packCover } from "@/lib/topics";
 
-/** One unit: its lessons, "Add unit to planner", and the topic pack if there is one. */
-export default function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild: boolean }) {
+/**
+ * One unit: its lessons, "Add unit to planner", and the topic pack if there is one.
+ * `only` limits the list to those lessons (from a search), keeping their numbers.
+ */
+export default function UnitCard({ unit, isChild, only }: { unit: LessonUnit; isChild: boolean; only?: Set<string> }) {
   const pack = unit.topicPack ? packBySlug(unit.topicPack) : undefined;
   const cover = unit.cover ?? (pack ? packCover(pack) : null);
   const minutes = Math.round(unit.lessons.reduce((sum, l) => sum + l.minutes, 0) / unit.lessons.length);
@@ -31,7 +34,7 @@ export default function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild:
           <p className="mt-1 text-sm text-brand-earth">{unit.summary}</p>
 
           <ol className="mt-4 space-y-1.5">
-            {unit.lessons.map((l, i) => (
+            {unit.lessons.map((l, i) => only && !only.has(l.slug) ? null : (
               <li key={l.slug}>
                 <Link href={lessonLink(l.slug)} className="group flex items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-brand-cream">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold text-white" style={{ background: unit.color }}>
@@ -46,6 +49,11 @@ export default function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild:
               </li>
             ))}
           </ol>
+          {only && (
+            <p className="mt-2 px-2 text-xs font-bold text-brand-earth/70">
+              Showing {only.size} of {unit.lessons.length} lessons that match your search
+            </p>
+          )}
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {!isChild && (
