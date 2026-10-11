@@ -27,6 +27,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "What is a festival?",
+            picture: "/lessons/festivals-of-light/lesson-1.jpg",
+            alt: "A girl at a window holding a battery candle on a snowy winter evening, looking up at the stars",
             text: [
               "A festival is a special day or time of celebration. Many festivals belong to a religion, and remember an important story or belief.",
               "Festivals often have special food, decorations, music, prayers and time with family.",
@@ -108,6 +110,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "The festival of lights",
+            picture: "/lessons/festivals-of-light/lesson-2.jpg",
+            alt: "A family celebrating Diwali with diya lamps, a colourful rangoli, sparklers and fireworks",
             text: [
               "Diwali is the Hindu festival of lights. It's celebrated by millions of people around the world, usually in October or November.",
               "The name comes from 'deepavali', which means 'a row of lights'. Families light small clay lamps called diyas, wear new clothes, share sweets and watch fireworks.",
@@ -190,6 +194,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "The Jewish festival of lights",
+            picture: "/lessons/festivals-of-light/lesson-3.jpg",
+            alt: "A Jewish family lighting the hanukkiah, with latkes, doughnuts and a dreidel on the table",
             text: [
               "Hanukkah is the Jewish festival of lights. It lasts for eight days and nights, usually in December.",
               "Jews follow Judaism, one of the oldest religions in the world. Their holy book is the Torah.",
@@ -270,6 +276,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "Christmas",
+            picture: "/lessons/festivals-of-light/lesson-4.jpg",
+            alt: "Children in a church holding Christingles beside an Advent wreath",
             text: [
               "Christians follow Jesus. At Christmas, on 25 December, they celebrate his birth in Bethlehem.",
               "In the Bible, Jesus says 'I am the light of the world'. Christians believe he brings hope and shows people the way to God, like a light in the dark.",
@@ -350,6 +358,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "Who was St Lucia?",
+            picture: "/lessons/festivals-of-light/lesson-5.jpg",
+            alt: "A St Lucia's Day procession in a snowy Swedish village, led by a girl with a crown of candles",
             text: [
               "Lucia was a young Christian woman who lived in Sicily, in Italy, about 1,700 years ago.",
               "Stories say she brought food to Christians hiding in dark tunnels. To keep her hands free, she wore a crown of candles on her head to light the way.",
@@ -427,6 +437,8 @@ export const festivalsOfLight: LessonUnit = {
         cards: [
           {
             heading: "What's the same?",
+            picture: "/lessons/festivals-of-light/lesson-6.jpg",
+            alt: "Children sharing festival foods and crafts: a diya, a paper hanukkiah, a Christingle and a candle crown",
             text: [
               "All the festivals in this unit use light to stand for something good: goodness winning over evil, a miracle, hope, or God's love.",
               "They all bring families and communities together, with special food, songs, stories and decorations.",

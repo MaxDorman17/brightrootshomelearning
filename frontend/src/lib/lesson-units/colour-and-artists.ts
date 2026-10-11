@@ -207,6 +207,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Van Gogh?",
+            picture: "/lessons/colour-and-artists/lesson-3.jpg",
+            alt: "A girl painting a swirly starry night sky, with a vase of sunflowers beside her",
             text: [
               "Vincent van Gogh was a painter from the Netherlands. He lived from 1853 to 1890.",
               "He painted for only about ten years but made over 800 paintings. He sold very few while he was alive. Today his paintings are some of the most famous in the world.",
@@ -283,6 +285,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Kandinsky?",
+            picture: "/lessons/colour-and-artists/lesson-4.jpg",
+            alt: "A girl wearing headphones painting bright circles inside coloured squares, with musical notes floating around her",
             text: [
               "Wassily Kandinsky was a Russian artist who lived from 1866 to 1944.",
               "He was one of the first artists to make abstract art: pictures that don't show real things, just colours, lines and shapes.",
@@ -359,6 +363,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Matisse?",
+            picture: "/lessons/colour-and-artists/lesson-5.jpg",
+            alt: "A girl cutting out paper leaves and arranging bright shapes, spirals and stars on a big sheet",
             text: [
               "Henri Matisse was a French artist who lived from 1869 to 1954. He was famous for paintings full of bright, bold colour.",
             ],
