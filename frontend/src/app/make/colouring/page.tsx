@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import { NewBadge } from "@/components/NewEveryMonth";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { kindOf, sheetsIn, themeCover, THEMES } from "@/lib/colouring";
+import { useColouring } from "@/lib/useColouring";
 
-/** The colouring themes as square tiles. Themes with no sheets yet show as "Coming soon". */
+/** The colouring themes as square tiles, with anything added in the last week along the top.
+ * Themes with no sheets yet show as "Coming soon". */
 export default function ColouringPage() {
   const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
+  const { themes, sheetsIn, newThisWeek, loaded } = useColouring();
+  const row = useRef<HTMLDivElement>(null);
+  const scrollRow = (direction: number) => row.current?.scrollBy({ left: direction * row.current.clientWidth * 0.8, behavior: "smooth" });
+  const themeName = (slug: string) => themes.find((t) => t.slug === slug)?.name ?? "";
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -35,13 +41,68 @@ export default function ColouringPage() {
           </p>
         </PageHero>
 
+        {/* Drawn once the uploaded sheets are in, so the newest aren't added in front of the row after it shows. */}
+        {loaded && newThisWeek.length > 0 && (
+          <section className="mb-8" aria-labelledby="new-this-week">
+            <div className="mb-3 flex items-baseline justify-between gap-3">
+              <h2 id="new-this-week" className="text-xl font-extrabold text-brand-charcoal">
+                New this week
+              </h2>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-bold text-brand-earth/60">
+                  {newThisWeek.length} new sheet{newThisWeek.length === 1 ? "" : "s"}
+                </p>
+                {newThisWeek.length > 4 && (
+                  <span className="hidden gap-1 sm:flex">
+                    <button onClick={() => scrollRow(-1)} aria-label="Scroll back" className="h-8 w-8 rounded-full border border-brand-line bg-white font-extrabold text-brand-earth hover:bg-brand-cream">
+                      ‹
+                    </button>
+                    <button onClick={() => scrollRow(1)} aria-label="Scroll for more" className="h-8 w-8 rounded-full border border-brand-line bg-white font-extrabold text-brand-earth hover:bg-brand-cream">
+                      ›
+                    </button>
+                  </span>
+                )}
+              </div>
+            </div>
+            <div ref={row} className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-3 sm:-mx-6 sm:px-6">
+              {newThisWeek.map((s) => (
+                <a
+                  key={s.key}
+                  href={s.pdf}
+                  target="_blank"
+                  rel="noopener"
+                  className="brand-card group w-36 shrink-0 overflow-hidden transition-shadow hover:shadow-md sm:w-40"
+                >
+                  <div className="relative border-b border-brand-line bg-white p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.picture}
+                      alt={`${s.title} ${s.kind === "word-search" ? "word search" : "colouring sheet"}`}
+                      loading="lazy"
+                      className="aspect-[210/297] w-full object-contain"
+                    />
+                    <NewBadge className="absolute right-1.5 top-1.5" />
+                  </div>
+                  <div className="p-2.5">
+                    <h3 className="text-sm font-extrabold leading-snug text-brand-charcoal group-hover:text-brand-sage">{s.title}</h3>
+                    <p className="mt-0.5 text-xs font-bold text-brand-earth/60">
+                      {themeName(s.theme)}
+                      {s.kind === "word-search" ? " · Word search" : ""}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {THEMES.map((t) => {
+          {themes.map((t) => {
             const sheets = sheetsIn(t.slug);
             const count = sheets.length;
-            const searches = sheets.filter((s) => kindOf(s) === "word-search").length;
+            const searches = sheets.filter((s) => s.kind === "word-search").length;
             const pictures = count - searches;
-            const cover = themeCover(t);
+            const cover = t.cover;
             const tile = (
               <>
                 <div className="relative aspect-square overflow-hidden border-b border-brand-line bg-white">

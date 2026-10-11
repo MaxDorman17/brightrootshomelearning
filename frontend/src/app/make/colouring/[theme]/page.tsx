@@ -7,15 +7,18 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { NewBadge } from "@/components/NewEveryMonth";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { isNew } from "@/lib/newContent";
-import { KIND_LABEL, kindOf, LEVEL_LABEL, sheetAnswers, sheetPdf, sheetPicture, sheetsIn, THEMES, type SheetKind } from "@/lib/colouring";
+import { KIND_LABEL, LEVEL_LABEL, THEMES, type SheetKind } from "@/lib/colouring";
+import { useColouring } from "@/lib/useColouring";
 
 /** One colouring theme's sheets and word searches: pick one, open the A4 PDF and print it. Grown-ups also get the answers. */
 export default function ColouringThemePage() {
   const router = useRouter();
   const { theme: slug } = useParams<{ theme: string }>();
-  const theme = THEMES.find((t) => t.slug === slug);
+  const { themes, sheetsIn, loaded } = useColouring();
+  const theme = themes.find((t) => t.slug === slug);
   const sheets = sheetsIn(slug);
+  // A theme made on /admin/colouring is only known once the uploaded sheets have loaded.
+  const waiting = !theme && !loaded && !THEMES.some((t) => t.slug === slug);
   const [role, setRole] = useState<string | null>(null);
   const [kind, setKind] = useState<SheetKind | "">("");
 
@@ -28,8 +31,8 @@ export default function ColouringThemePage() {
   }, [router]);
 
   // Colouring / Word searches buttons only once a theme has both.
-  const kinds = (Object.keys(KIND_LABEL) as SheetKind[]).filter((k) => sheets.some((s) => kindOf(s) === k));
-  const shown = sheets.filter((s) => !kind || kindOf(s) === kind);
+  const kinds = (Object.keys(KIND_LABEL) as SheetKind[]).filter((k) => sheets.some((s) => s.kind === k));
+  const shown = sheets.filter((s) => !kind || s.kind === kind);
 
   return (
     <div className="min-h-screen">
@@ -40,7 +43,7 @@ export default function ColouringThemePage() {
         </Link>
         <PageHero art="colouring" tint={4}>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{kinds.length > 1 ? "Colouring & word searches" : "Colouring sheets"}</p>
-          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{theme?.name || "Theme not found"}</h1>
+          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{theme?.name || (waiting ? "Loading..." : "Theme not found")}</h1>
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child" ? "Choose a picture you like and ask a grown-up to print it for you." : "Open a sheet, then print it on A4 from your browser."}
           </p>
@@ -63,26 +66,26 @@ export default function ColouringThemePage() {
           </div>
         )}
 
-        {!theme || shown.length === 0 ? (
+        {waiting ? null : !theme || shown.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-brand-line p-8 text-center text-sm text-brand-earth/70">
             {theme ? "No sheets here yet. They're coming soon!" : "We couldn't find that theme."}
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {shown.map((s) => {
-              const isSearch = kindOf(s) === "word-search";
+              const isSearch = s.kind === "word-search";
               return (
-                <div key={s.slug} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
-                  <a href={sheetPdf(s)} target="_blank" rel="noopener" className="block">
+                <div key={s.key} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
+                  <a href={s.pdf} target="_blank" rel="noopener" className="block">
                     <div className="relative border-b border-brand-line bg-white p-3">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={sheetPicture(s)}
+                        src={s.picture}
                         alt={`${s.title} ${isSearch ? "word search" : "colouring sheet"}`}
                         loading="lazy"
                         className="aspect-[210/297] w-full object-contain"
                       />
-                      {isNew(s.slug) && <NewBadge className="absolute right-2 top-2" />}
+                      {s.isNew && <NewBadge className="absolute right-2 top-2" />}
                     </div>
                     <div className="px-3 pt-3">
                       {kinds.length > 1 && (
@@ -95,8 +98,8 @@ export default function ColouringThemePage() {
                     </div>
                   </a>
                   {/* Answers are for grown-ups, so children don't see the link. */}
-                  {isSearch && role && role !== "child" ? (
-                    <a href={sheetAnswers(s)} target="_blank" rel="noopener" className="mx-3 mb-3 mt-1 inline-block text-sm font-bold text-brand-earth/70 hover:text-brand-sage hover:underline">
+                  {s.answers && role && role !== "child" ? (
+                    <a href={s.answers} target="_blank" rel="noopener" className="mx-3 mb-3 mt-1 inline-block text-sm font-bold text-brand-earth/70 hover:text-brand-sage hover:underline">
                       🔑 Answers
                     </a>
                   ) : (

@@ -1,6 +1,7 @@
 /**
  * "New every month": when each comic, Little Roots book, colouring sheet and topic pack was added, so the latest ones get a
- * "New" badge for a month. When you add a new comic, book or colouring sheet, add its slug and the date here.
+ * "New" badge for a month. When you add a new comic, book or static colouring sheet, add its slug and the date here.
+ * Colouring sheets uploaded on /admin/colouring don't need listing: they use the date they were uploaded.
  * Anything not listed counts as part of the original set and never shows the badge.
  */
 const ADDED: Record<string, string> = {
@@ -36,12 +37,27 @@ const ADDED: Record<string, string> = {
 
 const NEW_FOR_DAYS = 31;
 
+/** When this slug was added, or null for the original set. */
+export function addedOn(slug: string | null | undefined): Date | null {
+  const added = slug ? ADDED[slug] : undefined;
+  return added ? new Date(`${added}T00:00:00`) : null;
+}
+
+/** True if the date is within the last `days` days (and not in the future). */
+export function addedWithin(added: Date | null, days: number, today = new Date()): boolean {
+  if (!added || Number.isNaN(added.getTime())) return false;
+  const ago = (today.getTime() - added.getTime()) / 86_400_000;
+  return ago >= 0 && ago < days;
+}
+
 /** True for a month after the slug's added date. */
 export function isNew(slug: string | null | undefined, today = new Date()): boolean {
-  const added = slug ? ADDED[slug] : undefined;
-  if (!added) return false;
-  const days = (today.getTime() - new Date(`${added}T00:00:00`).getTime()) / 86_400_000;
-  return days >= 0 && days < NEW_FOR_DAYS;
+  return addedWithin(addedOn(slug), NEW_FOR_DAYS, today);
+}
+
+/** The same "New for a month" rule for something uploaded on the site (an ISO date from the API). */
+export function isNewSince(createdAt: string | null | undefined, today = new Date()): boolean {
+  return addedWithin(createdAt ? new Date(createdAt) : null, NEW_FOR_DAYS, today);
 }
 
 /** The name of next month, for "next one coming in November". */

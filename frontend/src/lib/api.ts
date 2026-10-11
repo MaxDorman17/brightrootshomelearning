@@ -834,3 +834,40 @@ export const getLeftovers = () => api.get<Leftovers>("/api/backup/leftovers", { 
 export const removeLeftovers = () => api.post<Leftovers>("/api/backup/leftovers/remove");
 // Fails on purpose, so the owner can check that error reports reach GlitchTip.
 export const sendTestErrorReport = () => api.post("/api/backup/test-error-report");
+
+// Colouring sheets uploaded on /admin/colouring (backend/routers/colouring.py). Their pictures and PDFs come from the API.
+export const apiFileUrl = (path: string) => `${API_URL.replace(/\/$/, "")}${path}`;
+export type UploadedColouringTheme = { slug: string; name: string; cover_url: string | null; created_at: string | null };
+export type UploadedColouringSheet = {
+  id: number;
+  theme: string;
+  title: string;
+  slug: string;
+  position: number;
+  created_at: string;
+  pdf_url: string;
+  preview_url: string;
+  theme_name?: string;
+};
+export const getUploadedColouring = () =>
+  api.get<{ themes: UploadedColouringTheme[]; sheets: UploadedColouringSheet[] }>("/api/colouring", { skipAuthRedirect: true } as any);
+export const getColouringAdminSheets = () => api.get<UploadedColouringSheet[]>("/api/colouring/admin/sheets", { skipAuthRedirect: true } as any);
+export const uploadColouringSheet = (theme: string, file: File, title: string, onProgress?: (fraction: number) => void) => {
+  const form = new FormData();
+  form.append("theme", theme);
+  form.append("files", file);
+  form.append("titles", title);
+  return api.post<UploadedColouringSheet[]>("/api/colouring/admin/sheets", form, {
+    onUploadProgress: (e) => onProgress?.(e.total ? e.loaded / e.total : 0),
+  });
+};
+export const changeColouringSheet = (id: number, body: { title?: string; theme?: string }) =>
+  api.patch<UploadedColouringSheet>(`/api/colouring/admin/sheets/${id}`, body);
+export const deleteColouringSheet = (id: number) => api.delete(`/api/colouring/admin/sheets/${id}`);
+export const createColouringTheme = (name: string) => api.post<UploadedColouringTheme>("/api/colouring/admin/themes", { name });
+export const uploadColouringCover = (slug: string, file: File) => {
+  const form = new FormData();
+  form.append("file", file);
+  return api.post<UploadedColouringTheme>(`/api/colouring/admin/themes/${slug}/cover`, form);
+};
+export const deleteColouringTheme = (slug: string) => api.delete(`/api/colouring/admin/themes/${slug}`);
