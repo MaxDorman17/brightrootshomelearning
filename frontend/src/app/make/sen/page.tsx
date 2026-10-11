@@ -21,7 +21,7 @@ export default function SenPage() {
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             {role === "child"
               ? "Picture cards to help with your day. Pick one and ask a grown-up to print it."
-              : "Picture supports that help many children, including those with SEN: visual timetables, Now & Next, feelings cards, movement breaks, picture stories and sensory activities. Use them on screen or print them. For calmer screens, bigger text, an easy-read font and Calm mode, open Family, then Children, and pick a child's profile."}
+              : "Picture supports that help many children, including those with SEN: visual timetables, Now & Next, feelings cards, movement breaks, picture stories, communication and choice boards, step-by-step task cards, learning-style cards and sensory activities. Use them on screen or print them. For calmer screens, bigger text, an easy-read font and Calm mode, open Family, then Children, and pick a child's profile."}
           </p>
         </PageHero>
 
