@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BrightRootsLesson from "@/components/BrightRootsLesson";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { lessonBySlug, plannerTitle } from "@/lib/lessons";
+import { lessonBySlug, plannerTitle, unitLink } from "@/lib/lessons";
 
 /** One Bright Roots lesson. A grown-up opens it from the planner or the lessons page to look through it; a child can do it here too. */
 export default function LessonPage() {
@@ -42,7 +42,7 @@ export default function LessonPage() {
     <div className="min-h-screen">
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <Link href={role === "child" ? "/child" : `/lessons#${unit.slug}`} className="mb-6 inline-block text-sm text-brand-earth hover:text-brand-sage">
+        <Link href={role === "child" ? "/child" : unitLink(unit)} className="mb-6 inline-block text-sm text-brand-earth hover:text-brand-sage">
           ← {role === "child" ? "Back to today's lessons" : `Back to ${unit.title}`}
         </Link>
         <div className="mb-6 rounded-2xl border border-brand-line bg-white p-6 shadow-sm">
