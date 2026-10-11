@@ -6,6 +6,8 @@ import { rivers } from "@/lib/lesson-units/rivers";
 import { colourAndArtists } from "@/lib/lesson-units/colour-and-artists";
 import { feelingsAndFriendships } from "@/lib/lesson-units/feelings-and-friendships";
 import { festivalsOfLight } from "@/lib/lesson-units/festivals-of-light";
+import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
+import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
 
 /**
  * Bright Roots lessons: lessons a child does on screen, step by step, in the same way as an Oak lesson. Written for
@@ -74,19 +76,21 @@ export type ComingUnit = { title: string; subject: string; emoji: string };
 
 export const UNITS: LessonUnit[] = [
   romansLessons,
+  ancientEgypt,
   kitchenScience,
+  lightAndShadows,
   rivers,
   colourAndArtists,
   feelingsAndFriendships,
   festivalsOfLight,
 ];
 
-export const COMING_UNITS: ComingUnit[] = [
-  { title: "Ancient Egypt", subject: "History", emoji: "🏺" },
-  { title: "Light and shadows", subject: "Science", emoji: "🔦" },
+export const COMING_UNITS = [
   { title: "The UK and our local area", subject: "Geography", emoji: "🗺️" },
   { title: "Drawing and sketching", subject: "Art & Design", emoji: "✏️" },
   { title: "Keeping healthy", subject: "RSHE (PSHE)", emoji: "🍎" },
+  { title: "Special places of worship", subject: "Religious Education", emoji: "🕌" },
+  { title: "The Vikings", subject: "History", emoji: "⛵" },
 ];
 
 /** Where a lesson opens, and what the planner stores as its link. */
