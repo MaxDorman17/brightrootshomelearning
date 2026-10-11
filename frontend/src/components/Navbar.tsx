@@ -75,6 +75,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/coding", label: "Coding" },
       { href: "/languages", label: "Languages" },
       { href: "/make/topics", label: "Topic Packs" },
+      { href: "/make/colouring", label: "Colouring" },
     ],
   },
   {
@@ -107,7 +108,6 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/comics", label: "Comics" },
       { href: "/make/cookbook", label: "Cookbook" },
       { href: "/make/crafts", label: "Craft Corner" },
-      { href: "/make/colouring", label: "Colouring" },
       { href: "/make/life-skills", label: "Life Skills" },
       { href: "/make/pe", label: "P.E." },
       { href: "/make/outdoors", label: "Outdoors" },
