@@ -27,6 +27,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "A long time ago",
+            picture: "/lessons/ancient-egypt/lesson-1.jpg",
+            alt: "The River Nile winding through the desert, with farmers in green fields and sailing boats on the water",
             text: [
               "Ancient Egypt began about 5,000 years ago, and lasted for around 3,000 years. That's far longer than the Romans ruled Britain.",
               "Egypt is in the north-east of Africa. Most of it is hot, dry desert.",
@@ -110,6 +112,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "The pharaoh",
+            picture: "/lessons/ancient-egypt/lesson-2.jpg",
+            alt: "A young pharaoh on a golden throne holding a crook and flail, with servants and a scribe",
             text: [
               "The ruler of Ancient Egypt was called the pharaoh. The pharaoh made the laws, led the army and owned all the land.",
               "Egyptians believed the pharaoh was part god, and spoke to the gods for everyone.",
@@ -193,6 +197,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "Tombs for pharaohs",
+            picture: "/lessons/ancient-egypt/lesson-3.jpg",
+            alt: "Workers dragging a huge stone block on a sledge towards a half-built pyramid, one pouring water on the sand",
             text: [
               "The pyramids were huge tombs for pharaohs. Egyptians believed the pharaoh would need a safe resting place for their journey to the afterlife.",
               "Their shape may have stood for the rays of the sun, or a staircase to the sky.",
@@ -271,6 +277,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "Why make a mummy?",
+            picture: "/lessons/ancient-egypt/lesson-4.jpg",
+            alt: "A tomb with a golden sarcophagus, canopic jars and a statue of Anubis",
             text: [
               "Egyptians believed that after death you went on a journey to the afterlife, and you'd need your body there.",
               "So they preserved bodies to stop them rotting. A preserved body is called a mummy.",
@@ -357,6 +365,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "Picture writing",
+            picture: "/lessons/ancient-egypt/lesson-5.jpg",
+            alt: "A scribe writing hieroglyphs on papyrus beside a stone carved with three kinds of writing",
             text: [
               "The Ancient Egyptians wrote using hieroglyphs: more than 700 little pictures and symbols.",
               "Some hieroglyphs stood for sounds, like our letters. Others stood for whole words or ideas.",
@@ -442,6 +452,8 @@ export const ancientEgypt: LessonUnit = {
         cards: [
           {
             heading: "Many gods",
+            picture: "/lessons/ancient-egypt/lesson-6.jpg",
+            alt: "An Egyptian family on their roof at sunset, the children playing Senet with a cat beside them",
             text: [
               "The Egyptians believed in hundreds of gods and goddesses, who looked after different parts of life. Many had animal heads.",
               "Ra was the sun god, who sailed across the sky in a boat each day. Anubis, with a jackal's head, looked after the dead. Isis was a mother goddess. Horus, with a falcon's head, protected the pharaoh.",

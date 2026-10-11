@@ -27,6 +27,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Objects and materials",
+            picture: "/lessons/kitchen-science/lesson-1.jpg",
+            alt: "A girl looking through a magnifying glass at a spoon, fork, sock, jar, cup and paper bag",
             text: [
               "An object is a thing, like a spoon, a cup or a jumper.",
               "A material is what the object is made of, like metal, plastic, wood, glass, fabric or paper.",
@@ -118,6 +120,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Waterproof",
+            picture: "/lessons/kitchen-science/lesson-2.jpg",
+            alt: "A girl pouring water over umbrellas made of foil, paper, cloth and plastic, with a teddy underneath",
             text: [
               "A waterproof material doesn't let water through. Raincoats, umbrellas and wellies are made of waterproof materials.",
               "Materials that soak water up, like kitchen roll, are absorbent.",
@@ -210,6 +214,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Float or sink?",
+            picture: "/lessons/kitchen-science/lesson-3.jpg",
+            alt: "A girl watching an orange, an apple, a cork and a toy boat in a bowl of water, with a coin at the bottom",
             text: [
               "When you put something in water, it either floats on top or sinks to the bottom.",
               "Lots of people think heavy things sink and light things float. But a huge ship floats, and a tiny coin sinks!",
@@ -287,6 +293,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Where did it go?",
+            picture: "/lessons/kitchen-science/lesson-4.jpg",
+            alt: "A girl stirring sugar, salt and sand into glasses of water",
             text: [
               "Stir a spoonful of sugar into warm water and it seems to disappear. But it's still there: taste the water and it's sweet!",
               "The sugar has dissolved. It has broken up into pieces far too tiny to see, mixed all through the water.",
@@ -374,6 +382,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Solids and liquids",
+            picture: "/lessons/kitchen-science/lesson-5.jpg",
+            alt: "A girl with a kitchen timer watching ice cubes melt on a windowsill, a shelf and in the fridge",
             text: [
               "A solid keeps its own shape, like an ice cube, a spoon or a block of cheese.",
               "A liquid flows and takes the shape of whatever it's in, like water, milk or juice.",
@@ -459,6 +469,8 @@ export const kitchenScience: LessonUnit = {
         cards: [
           {
             heading: "Reversible changes",
+            picture: "/lessons/kitchen-science/lesson-6.jpg",
+            alt: "A girl cracking an egg into a bowl with her dad, with a cake in the oven and toast in the toaster",
             text: [
               "So far, every change we've looked at can be undone. Ice melts, and you can freeze it again. Salt dissolves, and you can get it back by evaporating the water.",
               "These are reversible changes.",
