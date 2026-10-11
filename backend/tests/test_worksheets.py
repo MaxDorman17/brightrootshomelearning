@@ -125,3 +125,41 @@ def test_a_topic_set_skips_days_off(family):
     sheets = [{**SHEET, "slug": f"sheet-{n}", "title": f"Sheet {n}"} for n in range(2)]
     planned = family.parent.post("/api/worksheets/plan", json={"sheets": sheets, "scheduled_date": "2026-10-09", "child_ids": [child["id"]]})
     assert planned.json() == {"planned": 2, "first_day": "2026-10-09", "last_day": "2026-10-13"}
+
+
+LESSON = {"kind": "lesson", "slug": "romans-2", "title": "Romans 2: The Romans come to Britain", "subject": "History"}
+
+
+def test_a_lesson_unit_goes_in_the_planner_and_the_exit_quiz_ticks_it_off(family):
+    child = family.add_child()
+    kid = family.child_client(child)
+    friday = date(2026, 10, 9)
+    unit = [{**LESSON, "slug": f"romans-{n}", "title": f"Romans {n}", "minutes": 45} for n in (1, 2)]
+    planned = family.parent.post("/api/worksheets/plan", json={"sheets": unit, "scheduled_date": friday.isoformat(), "child_ids": [child["id"]]})
+    assert planned.status_code == 201, planned.text
+    # On the days History is on the timetable, one lesson a day.
+    assert planned.json()["planned"] == 2
+    assert friday.isoformat() <= planned.json()["first_day"] < planned.json()["last_day"]
+    entries = family.parent.get("/api/planner/all").json()
+    assert sorted((e["lesson"]["lesson_url"], e["lesson"]["duration_minutes"], e["lesson"]["scheme"]) for e in entries) == [
+        ("/lessons/romans-1", 45, "Bright Roots"),
+        ("/lessons/romans-2", 45, "Bright Roots"),
+    ]
+
+    done = kid.post("/api/worksheets/finish", json={**LESSON, "score": 4, "total": 5}).json()
+    assert done["ticked_off"] is True
+    assert {e["lesson"]["lesson_url"]: e["is_complete"] for e in family.parent.get("/api/planner/all").json()} == {
+        "/lessons/romans-1": False,
+        "/lessons/romans-2": True,
+    }
+    # The score shows in results with the worksheets.
+    overview = family.parent.get("/api/test-results/overview", params={"child_id": child["id"]}).json()
+    assert [(s["kind"], s["score"], s["total"]) for s in overview["sheets"]] == [("lesson", 4, 5)]
+
+
+def test_worksheets_and_lessons_are_planned_separately(family):
+    today = date.today().isoformat()
+    mixed = family.parent.post("/api/worksheets/plan", json={"sheets": [SHEET, LESSON], "scheduled_date": today})
+    assert mixed.status_code == 422
+    comic = {"kind": "comic", "slug": "captain-ten", "title": "Captain Ten", "subject": "Maths"}
+    assert family.parent.post("/api/worksheets/plan", json={"sheets": [comic], "scheduled_date": today}).status_code == 422

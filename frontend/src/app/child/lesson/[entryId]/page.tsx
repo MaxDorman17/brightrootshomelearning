@@ -13,6 +13,8 @@ import { format } from "date-fns";
 import Emoji from "@/components/Emoji";
 import { schemeOf } from "@/lib/schemes";
 import OakLesson from "@/components/OakLesson";
+import BrightRootsLesson from "@/components/BrightRootsLesson";
+import { lessonForLink } from "@/lib/lessons";
 import ReadAloud from "@/components/ReadAloud";
 
 const OAK_LESSON_RE = /^https:\/\/(?:www\.)?thenational\.academy\/(?:pupils|teachers)\/(?:[a-z0-9-]+\/)*lessons\/[a-z0-9-]+/;
@@ -87,6 +89,7 @@ export default function LessonDetailPage() {
 
   const lessonUrl = entry.lesson.lesson_url;
   const scheme = schemeOf(entry.lesson.scheme, lessonUrl);
+  const brLesson = lessonForLink(lessonUrl);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,7 +114,7 @@ export default function LessonDetailPage() {
                     {scheme}
                   </span>
                 )}
-                {lessonUrl && (
+                {lessonUrl && !brLesson && (
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
                     🔗 Has Link
                   </span>
@@ -158,7 +161,9 @@ export default function LessonDetailPage() {
         </div>
 
         {/* The lesson itself, on whichever site it comes from */}
-        {oak === "checking" ? (
+        {brLesson ? (
+          <BrightRootsLesson unit={brLesson.unit} lesson={brLesson.lesson} number={brLesson.number} isChild onComplete={refreshEntry} />
+        ) : oak === "checking" ? (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center text-gray-400">Getting your lesson ready…</div>
         ) : oak && oak.available ? (
           <OakLesson entryId={entry.id} lesson={oak} isChild onComplete={refreshEntry} />

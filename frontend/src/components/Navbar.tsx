@@ -62,6 +62,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/parent/timetable", label: "Timetable" },
       { href: "/parent/lessons", label: "My Lessons" },
       { href: "/parent/oak", label: "Oak Lessons" },
+      { href: "/lessons", label: "Bright Roots Lessons" },
       { href: "/units", label: "Units" },
       { href: "/parent/extra-work", label: "Extra Work" },
       { href: "/parent/resources", label: "Resources" },
@@ -152,6 +153,7 @@ const CHILD_NAV: NavEntry[] = [
       { href: "/spellings", label: "Spellings" },
       { href: "/child/extra-work", label: "Extra Work" },
       { href: "/worksheets", label: "Worksheets" },
+      { href: "/lessons", label: "Bright Roots Lessons" },
       { href: "/child/resources", label: "Resources" },
       { href: "/coding", label: "Coding" },
       { href: "/languages", label: "Languages" },
@@ -364,6 +366,7 @@ export default function Navbar() {
     (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
     (href === "/make/comics" && pathname.startsWith("/make/comics/")) ||
     (href === "/worksheets" && pathname.startsWith("/worksheets/")) ||
+    (href === "/lessons" && pathname.startsWith("/lessons/")) ||
     (href === "/make/sen" && pathname.startsWith("/make/sen/")) ||
     // A single recipe or craft, or the add/edit form, lights up the Saplings menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
