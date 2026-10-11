@@ -85,13 +85,45 @@ export const UNITS: LessonUnit[] = [
   festivalsOfLight,
 ];
 
-export const COMING_UNITS = [
+export const COMING_UNITS: ComingUnit[] = [
   { title: "The UK and our local area", subject: "Geography", emoji: "🗺️" },
   { title: "Drawing and sketching", subject: "Art & Design", emoji: "✏️" },
   { title: "Keeping healthy", subject: "RSHE (PSHE)", emoji: "🍎" },
   { title: "Special places of worship", subject: "Religious Education", emoji: "🕌" },
   { title: "The Vikings", subject: "History", emoji: "⛵" },
 ];
+
+/** The subjects on the Bright Roots Lessons page, in order. `name` matches each unit's `subject`. */
+export type LessonSubject = { slug: string; name: string; emoji: string; color: string; blurb: string; cover?: string };
+
+export const LESSON_SUBJECTS: LessonSubject[] = [
+  { slug: "history", name: "History", emoji: "🏛️", color: "#B5523B", blurb: "Romans, Egyptians, Vikings and more, told as stories.", cover: "/lessons/covers/history.jpg" },
+  { slug: "science", name: "Science", emoji: "🔬", color: "#2F7A8C", blurb: "Experiments with things you already have at home.", cover: "/lessons/covers/science.jpg" },
+  { slug: "geography", name: "Geography", emoji: "🌍", color: "#2C6FA6", blurb: "Rivers, maps, weather and places near and far.", cover: "/lessons/covers/geography.jpg" },
+  { slug: "art", name: "Art & Design", emoji: "🎨", color: "#B0457B", blurb: "Colour, drawing, making, and great artists.", cover: "/lessons/covers/art.jpg" },
+  { slug: "rshe", name: "RSHE (PSHE)", emoji: "💛", color: "#C7892B", blurb: "Feelings, friendships, keeping healthy and staying safe.", cover: "/lessons/covers/rshe.jpg" },
+  { slug: "re", name: "Religious Education", emoji: "🪔", color: "#7B4FA3", blurb: "Festivals, beliefs and stories from many faiths." },
+];
+
+export const subjectBySlug = (slug: string) => LESSON_SUBJECTS.find((s) => s.slug === slug);
+export const subjectOf = (unit: LessonUnit) => LESSON_SUBJECTS.find((s) => s.name === unit.subject);
+export const unitsIn = (subject: LessonSubject) => UNITS.filter((u) => u.subject === subject.name);
+export const comingIn = (subject: LessonSubject) => COMING_UNITS.filter((c) => c.subject === subject.name);
+
+/** Where a unit is listed: its subject's page, scrolled to the unit. */
+export const unitLink = (unit: LessonUnit) => {
+  const subject = subjectOf(unit);
+  return subject ? `/lessons/subject/${subject.slug}#${unit.slug}` : `/lessons#${unit.slug}`;
+};
+
+/** The school years an age range roughly matches, for families who think in years. */
+const YEARS: Record<string, string> = {
+  "4 to 5": "Reception",
+  "5 to 7": "Years 1 and 2",
+  "7 to 11": "Years 3 to 6",
+  "11 to 14": "Years 7 to 9",
+};
+export const yearsFor = (ages: string) => YEARS[ages];
 
 /** Where a lesson opens, and what the planner stores as its link. */
 export const lessonLink = (slug: string) => `/lessons/${slug}`;

@@ -10,7 +10,7 @@ import { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitAdder";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { kindOf, LEVEL_LABEL, sheetAnswers, sheetPdf, sheetPicture, sheetsIn } from "@/lib/colouring";
 import { lessonAnchor, lessonArt, packBySlug, packCover, type TopicLesson, type TopicLink, type TopicPack } from "@/lib/topics";
-import { UNITS, planUnit } from "@/lib/lessons";
+import { UNITS, planUnit, unitLink } from "@/lib/lessons";
 import PlanSheets from "@/components/worksheets/PlanSheets";
 
 const h2 = "text-2xl font-extrabold text-brand-charcoal";
@@ -142,7 +142,7 @@ export default function TopicPackPage() {
               )}
               {onScreen && (
                 <Link
-                  href={`/lessons#${onScreen.slug}`}
+                  href={unitLink(onScreen)}
                   className="rounded-xl border-2 border-brand-line bg-white px-4 py-2 text-sm font-extrabold text-brand-sage hover:border-brand-softsage"
                 >
                   💻 {isChild ? "Do the lessons on screen" : "On-screen lessons for your child"}
