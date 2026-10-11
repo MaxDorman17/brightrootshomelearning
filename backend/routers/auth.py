@@ -460,7 +460,6 @@ def me(
         out.username = me_user.username
         out.email = me_user.email
         out.avatar = _parse_avatar(me_user.avatar)
-        out.is_admin = False
     from routers.profile import display_prefs
 
     out.display = display_prefs(me_user)
