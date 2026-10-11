@@ -211,8 +211,8 @@ export const saveGameScore = (game: string, score: number, detail?: string) =>
   api.post("/api/games/scores", { game, score, detail });
 export const getGamesSummary = (child_id?: number) =>
   api.get("/api/games/summary", { params: child_id != null ? { child_id } : {} });
-// Bright Roots worksheets and comic quizzes. Only children save answers and scores.
-export type SheetRef = { kind: "worksheet" | "comic"; slug: string; title: string; subject: string };
+// Bright Roots worksheets, comic quizzes and lessons (a lesson's score is its exit quiz). Only children save answers and scores.
+export type SheetRef = { kind: "worksheet" | "comic" | "lesson"; slug: string; title: string; subject: string };
 export type SheetProgress = SheetRef & {
   score: number | null;
   total: number | null;
@@ -227,8 +227,8 @@ export const saveSheetProgress = (sheet: SheetRef, answers: Record<string, unkno
   api.put<SheetProgress>("/api/worksheets/progress", { ...sheet, answers });
 export const finishSheet = (sheet: SheetRef, score: number, total: number) =>
   api.post<SheetProgress & { first_time: boolean; new_best: boolean; ticked_off: boolean }>("/api/worksheets/finish", { ...sheet, score, total });
-// A grown-up puts one sheet, or a topic set in order, into the planner. A set goes one sheet a day, skipping weekends.
-export const planSheets = (sheets: (SheetRef & { intro: string })[], scheduled_date: string, child_ids: number[]) =>
+// A grown-up puts one sheet or lesson, or a topic set or unit in order, into the planner, one a day on the subject's timetable days.
+export const planSheets = (sheets: (SheetRef & { intro: string; minutes?: number })[], scheduled_date: string, child_ids: number[]) =>
   api.post<{ planned: number; first_day: string; last_day: string }>("/api/worksheets/plan", { sheets, scheduled_date, child_ids });
 // Oak lessons done inside Bright Roots. Quizzes are marked on the server; only a child's quiz is saved.
 export type OakQuizScores = { starter_score: number | null; starter_total: number | null; exit_score: number | null; exit_total: number | null };

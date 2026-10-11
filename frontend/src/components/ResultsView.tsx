@@ -37,7 +37,7 @@ export type OwnTest = {
 
 /** A finished Bright Roots worksheet or comic quiz. The score is the child's best. */
 export type SheetResult = {
-  kind: "worksheet" | "comic";
+  kind: "worksheet" | "comic" | "lesson";
   slug: string;
   title: string;
   subject: string;
@@ -339,7 +339,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
       )}
 
       {sheets.length > 0 && (
-        <Card title="Worksheets and comic quizzes">
+        <Card title="Worksheets, comic quizzes and lessons">
           <p className="-mt-2 mb-3 text-xs text-[#6E5A46]">
             {forChild ? "Your best score on each one." : "Marked automatically. Each one shows their best score, however many times they tried."}
           </p>
@@ -349,7 +349,7 @@ export default function ResultsView({ data, onEditTest, onDeleteTest, forChild }
                 <div className="min-w-0">
                   <p className="font-extrabold text-brand-charcoal">{s.title}</p>
                   <p className="text-xs text-[#6E5A46]">
-                    {s.kind === "comic" ? "Comic quiz" : "Worksheet"} · {s.subject} · {format(parseISO(s.finished_at), "d MMM yyyy")}
+                    {s.kind === "comic" ? "Comic quiz" : s.kind === "lesson" ? "Bright Roots lesson" : "Worksheet"} · {s.subject} · {format(parseISO(s.finished_at), "d MMM yyyy")}
                     {s.tries > 1 ? ` · ${s.tries} tries` : ""}
                   </p>
                 </div>

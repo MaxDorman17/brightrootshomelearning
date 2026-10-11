@@ -25,6 +25,7 @@ import { format, addDays, startOfWeek, isToday, parseISO, startOfDay } from "dat
 import Emoji from "@/components/Emoji";
 import FocusDay from "@/components/FocusDay";
 import { useDisplay } from "@/lib/useDisplay";
+import { lessonForLink } from "@/lib/lessons";
 
 
 // Any Oak lesson link, pupil or teacher, the same ones the server recognises (routers/oak_lessons.py).
@@ -875,8 +876,8 @@ export default function ChildDashboard() {
             {/* Open lesson link */}
             {modal.entry.lesson.lesson_url && (
               <a
-                // An Oak lesson opens on its own Bright Roots page, where the quizzes and video are; anything else opens where it lives.
-                {...(isOakLessonUrl(modal.entry.lesson.lesson_url)
+                // An Oak or Bright Roots lesson opens on its own lesson page, where the quizzes are; anything else opens where it lives.
+                {...(isOakLessonUrl(modal.entry.lesson.lesson_url) || lessonForLink(modal.entry.lesson.lesson_url)
                   ? { href: `/child/lesson/${modal.entry.id}` }
                   : { href: modal.entry.lesson.lesson_url, target: "_blank", rel: "noopener noreferrer" })}
                 className="flex items-center gap-3 bg-brand-deep hover:bg-brand-leaf text-white rounded-xl px-4 py-3 mb-4 transition-colors font-semibold text-sm"

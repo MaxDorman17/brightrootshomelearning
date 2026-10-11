@@ -10,6 +10,7 @@ import { UNIT_TO_PLAN_KEY, type UnitToPlan } from "@/components/UnitAdder";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { kindOf, LEVEL_LABEL, sheetAnswers, sheetPdf, sheetPicture, sheetsIn } from "@/lib/colouring";
 import { lessonAnchor, lessonArt, packBySlug, packCover, type TopicLesson, type TopicLink, type TopicPack } from "@/lib/topics";
+import { UNITS } from "@/lib/lessons";
 
 const h2 = "text-2xl font-extrabold text-brand-charcoal";
 const card = "rounded-3xl border border-brand-line bg-white p-5 shadow-sm sm:p-6";
@@ -55,6 +56,7 @@ export default function TopicPackPage() {
 
   const isChild = role === "child";
   const cover = packCover(pack);
+  const onScreen = UNITS.find((u) => u.topicPack === pack.slug);
   const printables = pack.colouring ? sheetsIn(pack.colouring) : [];
 
   // Hands the lessons to the planner's Add a Unit box, each linking back to its part of this page.
@@ -124,6 +126,14 @@ export default function TopicPackPage() {
                 >
                   📅 Put the lessons in my planner
                 </button>
+              )}
+              {onScreen && (
+                <Link
+                  href={`/lessons#${onScreen.slug}`}
+                  className="rounded-xl border-2 border-brand-line bg-white px-4 py-2 text-sm font-extrabold text-brand-sage hover:border-brand-softsage"
+                >
+                  💻 {isChild ? "Do the lessons on screen" : "On-screen lessons for your child"}
+                </Link>
               )}
               {!isChild && <span className="text-sm font-bold text-brand-earth/70">{pack.length}</span>}
             </div>

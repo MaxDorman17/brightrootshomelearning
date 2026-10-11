@@ -1,7 +1,7 @@
-"""Bright Roots' own worksheets and comic quizzes: saving a half-done sheet, and keeping each child's best score.
+"""Bright Roots' own worksheets, comic quizzes and lessons: saving a half-done sheet, and keeping each child's best score.
 
-The sheets themselves live in the frontend (src/lib/worksheets.ts and src/lib/comics.ts) and are marked
-there, the same way the learning games are. Each child has one row per sheet, so doing a sheet again
+The sheets themselves live in the frontend (src/lib/worksheets.ts, src/lib/comics.ts and src/lib/lessons.ts) and are
+marked there, the same way the learning games are. A lesson's score is its exit quiz. Each child has one row per sheet, so doing a sheet again
 can raise their best score but never counts twice for stars.
 """
 import json
@@ -22,7 +22,9 @@ from routers.test_results import _resolve_child
 
 router = APIRouter(prefix="/api/worksheets", tags=["worksheets"])
 
-KINDS = {"worksheet", "comic"}
+KINDS = {"worksheet", "comic", "lesson"}
+# What can go in the planner, and where each one opens.
+PLANNABLE = {"worksheet": "/worksheets", "lesson": "/lessons"}
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 MAX_QUESTIONS = 50
 MAX_ANSWERS_CHARS = 20_000
@@ -82,10 +84,16 @@ class FinishIn(SheetIn):
 
 class PlanSheet(SheetIn):
     intro: str = ""
+    minutes: Optional[int] = None
+
+    @field_validator("minutes")
+    @classmethod
+    def sensible_minutes(cls, value: Optional[int]) -> Optional[int]:
+        return None if value is None else max(5, min(value, 180))
 
 
 class PlanIn(BaseModel):
-    """One sheet, or a topic set in teaching order. A set goes on the days the subject is on the timetable, skipping days off."""
+    """One sheet or lesson, or a topic set or unit in teaching order. A set goes on the days the subject is on the timetable, skipping days off."""
     sheets: list[PlanSheet]
     scheduled_date: date
     child_ids: list[int] = []
@@ -93,23 +101,24 @@ class PlanIn(BaseModel):
     @field_validator("sheets")
     @classmethod
     def some_sheets(cls, value: list) -> list:
-        if not 1 <= len(value) <= MAX_PLANNED_AT_ONCE or any(s.kind != "worksheet" for s in value):
-            raise ValueError("Choose between 1 and 10 worksheets")
+        kinds = {s.kind for s in value}
+        if not 1 <= len(value) <= MAX_PLANNED_AT_ONCE or len(kinds) != 1 or not kinds <= PLANNABLE.keys():
+            raise ValueError("Choose between 1 and 10 worksheets or lessons")
         return value
 
 
-def _sheet_link(slug: str) -> str:
-    return f"/worksheets/{slug}"
+def _sheet_link(slug: str, kind: str = "worksheet") -> str:
+    return f"{PLANNABLE[kind]}/{slug}"
 
 
-def _tick_off_in_planner(db: Session, child: User, slug: str) -> bool:
-    """If a grown-up planned this sheet for the child, mark the earliest one still to do as done."""
+def _tick_off_in_planner(db: Session, child: User, slug: str, kind: str = "worksheet") -> bool:
+    """If a grown-up planned this sheet or lesson for the child, mark the earliest one still to do as done."""
     waiting = (
         db.query(PlannerEntry)
         .join(Lesson, PlannerEntry.lesson_id == Lesson.id)
         .filter(
             Lesson.created_by == child.parent_id,
-            Lesson.lesson_url == _sheet_link(slug),
+            Lesson.lesson_url == _sheet_link(slug, kind),
             (PlannerEntry.assigned_to == child.id) | PlannerEntry.assigned_to.is_(None),
         )
         .order_by(PlannerEntry.scheduled_date, PlannerEntry.id)
@@ -217,14 +226,14 @@ def finish_sheet(body: FinishIn, db: Session = Depends(get_db), current_user: Us
         row.finished_at = datetime.utcnow()
     row.tries = (row.tries or 0) + 1
     row.answers = None
-    ticked_off = body.kind == "worksheet" and _tick_off_in_planner(db, current_user, body.slug)
+    ticked_off = body.kind in PLANNABLE and _tick_off_in_planner(db, current_user, body.slug, body.kind)
     db.commit()
     return {**_out(row), "first_time": first_time, "new_best": better and not first_time, "ticked_off": ticked_off}
 
 
 @router.post("/plan", status_code=201)
 def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User = Depends(require_parent)):
-    """Put worksheets in the planner, so they turn up in the child's Today list like any other lesson."""
+    """Put worksheets or Bright Roots lessons in the planner, so they turn up in the child's Today list like any other lesson."""
     children = _clean_child_ids(db, current_user.id, body.child_ids)
     subject = body.sheets[0].subject
     days_for = {
@@ -236,9 +245,9 @@ def plan_sheets(body: PlanIn, db: Session = Depends(get_db), current_user: User 
             title=sheet.title,
             subject=sheet.subject,
             description=sheet.intro.strip()[:500] or None,
-            lesson_url=_sheet_link(sheet.slug),
+            lesson_url=_sheet_link(sheet.slug, sheet.kind),
             scheme="Bright Roots",
-            duration_minutes=15,
+            duration_minutes=sheet.minutes or 15,
             created_by=current_user.id,
         )
         db.add(lesson)
