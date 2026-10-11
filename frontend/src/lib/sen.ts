@@ -12,6 +12,10 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "feelings", name: "Feelings cards", emoji: "😊", blurb: "Name a feeling and pick what helps" },
   { slug: "breaks", name: "Movement breaks", emoji: "🤸", blurb: "Sensory and wriggle break cards" },
   { slug: "stories", name: "Picture stories", emoji: "📖", blurb: "Short stories for new or tricky things" },
+  { slug: "talk", name: "Communication board", emoji: "💬", art: "/sen/communication-board.webp", blurb: "Point to say what you need" },
+  { slug: "choice", name: "Choice board", emoji: "🧩", art: "/sen/choice-board.webp", blurb: "Offer two or three things to choose from" },
+  { slug: "steps", name: "Step by step", emoji: "✅", art: "/sen/step-by-step.webp", blurb: "Everyday tasks in small picture steps" },
+  { slug: "learning", name: "Learning your way", emoji: "🧠", art: "/sen/learning/work-together.webp", blurb: "The ways your child learns best" },
   { slug: "sensory", name: "Sensory activities", emoji: "🫗", art: "/sensory/sensory-pack.png", blurb: "Touch, sound, sight, smell and movement play" },
 ];
 

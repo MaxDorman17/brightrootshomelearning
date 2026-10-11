@@ -103,3 +103,36 @@ export function PrintTitle({ title }: { title: string }) {
     </div>
   );
 }
+
+/** One of Max's illustrated board cards on screen. The word is part of the picture. Pass onClick to make it a toggle. */
+export function BoardCardTile({ src, label, picked, onClick, badge }: { src: string; label: string; picked?: boolean; onClick?: () => void; badge?: React.ReactNode }) {
+  const cls =
+    "relative block overflow-hidden rounded-2xl border-2 bg-white transition-shadow " +
+    (picked ? "border-brand-sage ring-4 ring-brand-sage/40" : "border-brand-line") +
+    (onClick ? " hover:shadow-md" : "");
+  const body = (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={label} className="aspect-square w-full object-contain p-1" draggable={false} />
+      {badge}
+    </>
+  );
+  return onClick ? (
+    <button type="button" onClick={onClick} aria-pressed={picked} className={cls}>
+      {body}
+    </button>
+  ) : (
+    <div className={cls}>{body}</div>
+  );
+}
+
+/** A board card for printing: the picture already carries its word, so it just needs a cut line. */
+export function PrintBoardCard({ src, label, note }: { src: string; label: string; note?: string }) {
+  return (
+    <div className="flex break-inside-avoid flex-col items-center justify-center rounded-xl border-2 border-dashed border-black p-2">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={label} className="w-full object-contain" />
+      {note && <p className="mt-1 text-sm font-bold">{note}</p>}
+    </div>
+  );
+}
