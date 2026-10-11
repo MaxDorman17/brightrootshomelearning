@@ -58,7 +58,7 @@ def linked_rows(db: Session, start: dict[str, set]) -> dict[str, list[dict]]:
 
 
 # Never touched by the left-over clean-up: these belong to the owner, not to a family.
-_OWNERS_TABLES = {"users", "newsletter_subscribers", "support_messages", "backup_runs"}
+_OWNERS_TABLES = {"users", "newsletter_subscribers", "support_messages", "backup_runs", "colouring_themes", "colouring_sheets"}
 
 
 def leftover_rows(db: Session) -> dict[str, list[dict]]:

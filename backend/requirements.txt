@@ -12,3 +12,5 @@ tzdata==2026.4
 pywebpush==2.5.0
 boto3>=1.36,<2
 pypdf==6.18.1
+pypdfium2==5.13.0
+pillow==12.3.0

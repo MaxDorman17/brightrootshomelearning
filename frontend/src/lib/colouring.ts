@@ -1,11 +1,19 @@
 /**
- * The printable sheets, grouped into themes. Each sheet is an A4 PDF at
+ * The original printable sheets, grouped into themes.
+ *
+ * New sheets are normally added through /admin/colouring: the team uploads the PDFs there, the server
+ * keeps them (with a picture of page 1) in its uploads folder, and lib/useColouring.ts shows them after
+ * these ones. Uploaded sheets get the "New" badge for a month on their own. New themes can be made there too.
+ *
+ * The static files below are for the original sets. Each sheet is an A4 PDF at
  * public/colouring/<theme>/<slug>.pdf with a small picture of it at public/colouring/<theme>/<slug>.jpg.
  * Each theme's square cover art lives at public/colouring/covers/<theme>.jpg; until a theme has
- * one (cover: true), its tile shows the top of its first sheet instead.
+ * one (cover: true), its tile shows the top of its first sheet instead. If you add a theme here, add it to
+ * BUILT_IN_THEMES in backend/routers/colouring.py too, so sheets can be uploaded into it.
  *
- * To add a sheet: drop the PDF and its picture into the theme's folder, add a line to SHEETS, and
- * add the slug and date to lib/newContent.ts so it shows "New" for a month. Word searches are made by
+ * To add a static sheet (only for something the upload page can't do, like a word search with an answer
+ * sheet): drop the PDF and its picture into the theme's folder, add a line to SHEETS, and add the slug and
+ * date to lib/newContent.ts so it shows "New" for a month. Word searches are made by
  * scripts/wordsearches/make_wordsearches.py (see the notes at the top of it).
  */
 export type Theme = { slug: string; name: string; cover?: boolean };

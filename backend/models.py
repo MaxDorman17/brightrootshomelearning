@@ -906,3 +906,31 @@ class BackupRun(Base):
     detail = Column(Text, nullable=True)
     started_at = Column(DateTime, nullable=False)
     finished_at = Column(DateTime, nullable=True)
+
+
+class ColouringTheme(Base):
+    """A colouring theme made on /admin/colouring. The original themes live in the frontend (lib/colouring.ts)."""
+    __tablename__ = "colouring_themes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(80), nullable=False, unique=True, index=True)
+    name = Column(String(100), nullable=False)
+    cover_file = Column(String(64), nullable=True)  # in uploads/colouring
+    created_at = Column(DateTime, nullable=False)
+
+
+class ColouringSheet(Base):
+    """A printable sheet uploaded on /admin/colouring: the PDF and a picture of its first page, in uploads/colouring."""
+    __tablename__ = "colouring_sheets"
+    __table_args__ = (UniqueConstraint("theme", "slug", name="uq_colouring_sheet_theme_slug"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    theme = Column(String(80), nullable=False, index=True)  # an original theme's slug or a ColouringTheme slug
+    title = Column(String(120), nullable=False)
+    slug = Column(String(140), nullable=False)
+    pdf_file = Column(String(64), nullable=False)
+    preview_file = Column(String(64), nullable=False)
+    position = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime, nullable=False, index=True)
+    # The sheet belongs to the site, not to whoever uploaded it, so it stays if their account goes.
+    uploaded_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
