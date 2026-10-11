@@ -48,19 +48,19 @@ def test_wrong_guesses_at_one_login_are_stopped_wherever_they_come_from(family):
 def test_a_child_sets_how_their_screens_read(family):
     child = family.add_child()
     kid = family.child_client(child)
-    assert kid.get("/api/auth/me").json()["display"] == {"text_size": "normal", "easy_font": False}
+    assert kid.get("/api/auth/me").json()["display"] == {"text_size": "normal", "easy_font": False, "calm": False, "focus": False}
     saved = kid.put("/api/profile/display", json={"text_size": "large", "easy_font": True})
     assert saved.status_code == 200, saved.text
-    assert kid.get("/api/auth/me").json()["display"] == {"text_size": "large", "easy_font": True}
+    assert kid.get("/api/auth/me").json()["display"] == {"text_size": "large", "easy_font": True, "calm": False, "focus": False}
     # It is theirs alone: the parent's own screens are unchanged.
-    assert family.parent.get("/api/auth/me").json()["display"] == {"text_size": "normal", "easy_font": False}
+    assert family.parent.get("/api/auth/me").json()["display"] == {"text_size": "normal", "easy_font": False, "calm": False, "focus": False}
     assert kid.put("/api/profile/display", json={"text_size": "enormous"}).status_code == 422
 
 
 def test_a_parent_sets_it_for_a_child_but_not_for_another_familys(family):
     child = family.add_child()
     assert family.parent.put("/api/profile/display", params={"child_id": child["id"]}, json={"text_size": "larger", "easy_font": False}).status_code == 200
-    assert family.parent.get("/api/profile/display", params={"child_id": child["id"]}).json() == {"text_size": "larger", "easy_font": False}
+    assert family.parent.get("/api/profile/display", params={"child_id": child["id"]}).json() == {"text_size": "larger", "easy_font": False, "calm": False, "focus": False}
     assert family.child_client(child).get("/api/auth/me").json()["display"]["text_size"] == "larger"
     other = sign_up("Other")
     assert other.parent.put("/api/profile/display", params={"child_id": child["id"]}, json={"text_size": "large"}).status_code == 404
