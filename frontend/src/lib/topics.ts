@@ -12,6 +12,9 @@ import { romans } from "@/lib/topic-packs/romans";
  * public/topics/<slug>/: cover.jpg for the tile (set cover: true), and lesson-<n>.jpg for each lesson (set art: true).
  * Colouring sheets and word searches for a topic go on the Colouring page as their own theme (see lib/colouring.ts);
  * set colouring to that theme's slug and they show in the pack too.
+ *
+ * Packs for a holiday or celebration (Bonfire Night, Christmas and so on) set `holiday` to when it falls, e.g.
+ * "5 November". They show in their own "Holidays & celebrations" section on the Topic Packs page.
  */
 
 export type TopicLesson = {
@@ -71,10 +74,12 @@ export type TopicPack = {
   sheets: TopicSheet[];
   /** The Colouring page theme holding this topic's colouring sheets and word searches, if it has one. */
   colouring?: string;
+  /** For a holiday or celebration: when it falls, e.g. "5 November". Puts the pack in the Holidays section. */
+  holiday?: string;
 };
 
 /** A topic that's planned but not written yet. It shows as a "Coming soon" tile. */
-export type ComingTopic = { title: string; subject: string; emoji: string };
+export type ComingTopic = { title: string; subject: string; emoji: string; holiday?: string };
 
 export const PACKS: TopicPack[] = [romans];
 
@@ -82,6 +87,10 @@ export const COMING: ComingTopic[] = [
   { title: "Ancient Egypt", subject: "History", emoji: "🏺" },
   { title: "The Vikings", subject: "History", emoji: "⛵" },
   { title: "Stone Age to Iron Age", subject: "History", emoji: "🪨" },
+  { title: "Bonfire Night", subject: "Holiday", emoji: "🎆", holiday: "5 November" },
+  { title: "Remembrance Day", subject: "Holiday", emoji: "🕊", holiday: "11 November" },
+  { title: "St Andrew's Day", subject: "Holiday", emoji: "🦄", holiday: "30 November" },
+  { title: "Christmas Around the World", subject: "Holiday", emoji: "🎄", holiday: "25 December" },
 ];
 
 export const packBySlug = (slug: string) => PACKS.find((p) => p.slug === slug);
