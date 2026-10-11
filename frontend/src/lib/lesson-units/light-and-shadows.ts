@@ -22,6 +22,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "Can you see in a completely dark room?", options: ["No", "Yes"], answer: 0 },
         { type: "choice", q: "What gives us light in the day?", options: ["The sun", "The moon"], answer: 0 },
         { type: "choice", q: "Which of these is shiny?", options: ["A spoon", "A sock"], answer: 0 },
+        { type: "pick", q: "Which of these give out light? There is more than one.", options: ["A lamp", "A book", "A candle flame", "A cup"], answers: [0, 2] },
+        { type: "choice", q: "When is it usually dark outside?", options: ["In the morning", "At night"], answer: 1 },
+        { type: "choice", q: "What do you switch on to see in a dark room?", options: ["A tap", "A light", "The kettle"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -84,6 +87,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "What is darkness?", options: ["When there is no light", "A kind of shadow"], answer: 0 },
         { type: "choice", q: "Can you see anything in total darkness?", options: ["No", "Yes, if you try hard"], answer: 0 },
         { type: "choice", q: "Should you ever look straight at the sun?", options: ["No, never", "Yes, for a short time"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "The moon ___ light from the sun. Darkness is when there is no ___.", bank: ["reflects", "light", "makes", "shadow"], answers: ["reflects", "light"] },
       ],
       grownUp: {
         need: ["A big box or blanket", "A torch", "A few household objects"],
@@ -105,6 +109,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "What is a light source?", options: ["Something that makes its own light", "A mirror"], answer: 0 },
         { type: "choice", q: "Why does the moon look bright?", options: ["It reflects sunlight", "It makes light"], answer: 0 },
         { type: "choice", q: "What do you see when you look in a mirror?", options: ["Your reflection", "A shadow"], answer: 0 },
+        { type: "pick", q: "Which are light sources? There is more than one.", options: ["A torch", "A mirror", "The sun", "Foil"], answers: [0, 2] },
+        { type: "choice", q: "What is darkness?", options: ["A kind of light", "When there is no light"], answer: 1 },
+        { type: "type", q: "Can anybody see in total darkness? Type yes or no.", answer: ["no", "No"] },
       ],
       learn: {
         cards: [
@@ -162,6 +169,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "Why do coats have reflective strips?", options: ["So drivers can see you in the dark", "To keep you warm"], answer: 0 },
         { type: "choice", q: "Light travels...", options: ["in straight lines", "slowly", "in circles"], answer: 0 },
         { type: "choice", q: "What do cat's eyes on roads do?", options: ["Reflect headlights to show the lanes", "Make their own light"], answer: 0 },
+        { type: "match", q: "Match each thing to what it does with light.", pairs: [["A mirror", "Gives a clear reflection"], ["Paper", "Scatters light everywhere"], ["A reflective strip", "Bounces headlights back"]] },
       ],
       grownUp: {
         need: ["Torch, mirror", "Foil, spoon, paper, fabric", "Paper and pencil"],
@@ -183,6 +191,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "How does light travel?", options: ["In straight lines", "Around corners"], answer: 0 },
         { type: "choice", q: "What is a reflection?", options: ["Light bouncing off a surface", "A light source"], answer: 0 },
         { type: "choice", q: "Can you see through a window?", options: ["Yes", "No"], answer: 0 },
+        { type: "choice", q: "Which surface gives the clearest reflection?", options: ["Fabric", "A mirror"], answer: 1 },
+        { type: "type", q: "What do we call the picture you see in a mirror?", answer: ["reflection", "a reflection", "your reflection"] },
+        { type: "choice", q: "Why do coats have reflective strips?", options: ["To look pretty", "So drivers can see you in the dark"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -246,6 +257,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "Tissue paper is...", options: ["translucent", "opaque", "transparent"], answer: 0 },
         { type: "choice", q: "What does a transparent material do?", options: ["Lets almost all light through", "Blocks all light"], answer: 0 },
         { type: "choice", q: "Does a shadow show the colours of the object?", options: ["No, just its outline", "Yes"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "A shadow forms where an object ___ the light. Opaque materials make ___ shadows.", bank: ["blocks", "dark", "reflects", "pale"], answers: ["blocks", "dark"] },
       ],
       grownUp: {
         need: ["Torch, a pale wall or sheet", "Card, scissors, tape, straws", "Cling film, tissue paper, plastic bag, foil"],
@@ -267,6 +279,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "What is an opaque material?", options: ["One that lets no light through", "One you can see through"], answer: 0 },
         { type: "choice", q: "How is a shadow made?", options: ["An object blocks light", "Light bends"], answer: 0 },
         { type: "choice", q: "What do we measure length with?", options: ["A ruler", "A clock"], answer: 0 },
+        { type: "match", q: "Match each material to the right word.", pairs: [["Clear glass", "Transparent"], ["Tissue paper", "Translucent"], ["Wood", "Opaque"]] },
+        { type: "choice", q: "Which makes the darker shadow?", options: ["Tissue paper", "Cardboard"], answer: 1 },
+        { type: "type", q: "What is the word for a dark area where an object blocks the light?", answer: ["shadow", "a shadow"] },
       ],
       learn: {
         cards: [
@@ -331,6 +346,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "What is a prediction?", options: ["What you think will happen", "What did happen"], answer: 0 },
         { type: "choice", q: "To test distance fairly, you should keep...", options: ["the same torch and object", "changing the torch"], answer: 0 },
         { type: "choice", q: "Moving the object closer to the wall makes its shadow...", options: ["smaller", "bigger"], answer: 0 },
+        { type: "order", q: "Put the steps of an investigation in order.", items: ["Make a prediction", "Do the test", "Record your results in a table", "Look for a pattern"] },
       ],
       grownUp: {
         need: ["Torch, a small toy", "Paper on a wall, a ruler or tape measure"],
@@ -352,6 +368,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "Closer to the light makes a shadow...", options: ["bigger", "smaller"], answer: 0 },
         { type: "choice", q: "Is the sun a light source?", options: ["Yes", "No"], answer: 0 },
         { type: "choice", q: "Where does the sun rise?", options: ["In the east", "In the north"], answer: 0 },
+        { type: "choice", q: "Moving an object closer to the wall makes its shadow...", options: ["bigger", "smaller"], answer: 1 },
+        { type: "type", q: "In a fair test, how many things do you change? Type the number.", answer: ["1", "one", "One"] },
+        { type: "choice", q: "Should you ever look straight at the sun?", options: ["Yes, for a short time", "No, never"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -410,6 +429,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "When are shadows longest?", options: ["Morning and evening", "Midday"], answer: 0 },
         { type: "choice", q: "What is a sundial?", options: ["A clock that uses shadows", "A kind of torch"], answer: 0 },
         { type: "choice", q: "A shadow is always...", options: ["on the opposite side from the sun", "on the same side as the sun"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "When the sun is low, shadows are ___. When the sun is high at midday, shadows are ___.", bank: ["long", "short", "blue", "round"], answers: ["long", "short"] },
       ],
       grownUp: {
         need: ["A sunny day", "Chalk, or a stick and stones", "A watch or clock"],
@@ -431,6 +451,9 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "When are shadows shortest?", options: ["Midday", "Evening"], answer: 0 },
         { type: "choice", q: "How does light travel?", options: ["In straight lines", "In circles"], answer: 0 },
         { type: "choice", q: "What do we see with?", options: ["Our eyes", "Our ears"], answer: 0 },
+        { type: "choice", q: "When are shadows longest?", options: ["Midday", "Morning and evening"], answer: 1 },
+        { type: "type", q: "The sun rises in the...", answer: ["east", "the east", "East"] },
+        { type: "choice", q: "What is a sundial?", options: ["A kind of torch", "A clock that uses shadows"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -488,6 +511,7 @@ export const lightAndShadows: LessonUnit = {
         { type: "choice", q: "What happens to the pupil in bright light?", options: ["It gets smaller", "It gets bigger"], answer: 0 },
         { type: "choice", q: "What is the iris?", options: ["The coloured part of the eye", "A light source"], answer: 0 },
         { type: "choice", q: "Should you look straight at the sun?", options: ["Never", "Only with your eyes half shut"], answer: 0 },
+        { type: "match", q: "Match each word to its meaning.", pairs: [["Pupil", "Lets light into the eye"], ["Iris", "The coloured part of the eye"], ["UV", "Light from the sun that can harm eyes"]] },
       ],
       grownUp: {
         need: ["A mirror", "A room you can make dim", "Paper and pens"],

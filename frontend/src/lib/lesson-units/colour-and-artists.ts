@@ -22,6 +22,14 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What colour is the sky on a sunny day?", options: ["Blue", "Green", "Orange"], answer: 0 },
         { type: "choice", q: "What do artists use to paint with?", options: ["A brush", "A fork", "A spoon"], answer: 0 },
         { type: "choice", q: "Which colour is a banana?", options: ["Yellow", "Purple", "Red"], answer: 0 },
+        { type: "choice", q: "What colour is grass?", options: ["Pink", "Green", "Blue"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which of these could you use to make a picture? There is more than one.",
+          options: ["Crayons", "Paints", "A pillow", "Felt pens"],
+          answers: [0, 1, 3],
+        },
+        { type: "choice", q: "What colour is a ripe strawberry?", options: ["Blue", "White", "Red"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -90,6 +98,13 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What do red and blue make?", options: ["Orange", "Purple", "Brown"], answer: 1 },
         { type: "choice", q: "Secondary colours are made by...", options: ["mixing two primary colours", "adding water"], answer: 0 },
         { type: "choice", q: "Which colour is opposite red on the colour wheel?", options: ["Green", "Orange", "Yellow"], answer: 0 },
+        {
+          type: "gap",
+          q: "Fill the gap.",
+          text: "Red and ___ make orange.",
+          bank: ["yellow", "blue", "green"],
+          answers: ["yellow"],
+        },
       ],
       grownUp: {
         need: ["Red, yellow and blue paint (poster or ready-mix paint is fine)", "Brush, water pot, paper, a plate"],
@@ -111,6 +126,13 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What do red and yellow make?", options: ["Orange", "Green"], answer: 0 },
         { type: "choice", q: "Which is a primary colour?", options: ["Blue", "Purple"], answer: 0 },
         { type: "choice", q: "What are colours opposite each other on the wheel called?", options: ["Complementary", "Primary"], answer: 0 },
+        { type: "choice", q: "What do blue and red make?", options: ["Green", "Purple", "Orange"], answer: 1 },
+        {
+          type: "match",
+          q: "Match each mix to the colour it makes.",
+          pairs: [["Yellow + blue", "Green"], ["Red + yellow", "Orange"]],
+        },
+        { type: "choice", q: "What do artists call the circle that shows how colours are related?", options: ["A colour clock", "A paint plate", "A colour wheel"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -181,6 +203,11 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What is a tint?", options: ["A colour with white added", "A colour with black added"], answer: 0 },
         { type: "choice", q: "What is a shade?", options: ["A colour with white added", "A colour with black added"], answer: 1 },
         { type: "choice", q: "Pink is a tint of...", options: ["red", "green", "blue"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each colour to what it reminds us of.",
+          pairs: [["Red", "Fire"], ["Blue", "Water"], ["Yellow", "Sunshine"]],
+        },
       ],
       grownUp: {
         need: ["Paints including white and black", "Two sheets of paper"],
@@ -202,6 +229,14 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "Which are cool colours?", options: ["Blue, green and purple", "Red, orange and yellow"], answer: 0 },
         { type: "choice", q: "Adding black to a colour makes a...", options: ["shade", "tint"], answer: 0 },
         { type: "choice", q: "Warm colours remind us of...", options: ["fire and sunshine", "ice and water"], answer: 0 },
+        { type: "choice", q: "Adding white to a colour makes a...", options: ["shade", "tint"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which are warm colours? There is more than one.",
+          options: ["Purple", "Red", "Yellow", "Green", "Orange"],
+          answers: [1, 2, 4],
+        },
+        { type: "choice", q: "What do we call the feeling a picture gives you?", options: ["Its size", "Its frame", "Its mood"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -259,6 +294,11 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "Van Gogh's paint was usually...", options: ["thick, with bold colours", "thin and pale"], answer: 0 },
         { type: "choice", q: "Did Van Gogh sell lots of paintings while he was alive?", options: ["Yes, hundreds", "No, very few"], answer: 1 },
         { type: "choice", q: "What is a brushstroke?", options: ["A mark made by one movement of a brush", "A kind of paint"], answer: 0 },
+        {
+          type: "type",
+          q: "Which gallery in London has one of Van Gogh's Sunflowers? The National...",
+          answer: ["Gallery", "National Gallery"],
+        },
       ],
       grownUp: {
         need: ["Paints, a thick brush or cotton buds", "Paper or card"],
@@ -280,6 +320,15 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "Which country was Van Gogh from?", options: ["The Netherlands", "Russia"], answer: 0 },
         { type: "choice", q: "What did Van Gogh paint in a vase?", options: ["Sunflowers", "Apples"], answer: 0 },
         { type: "choice", q: "Complementary colours are...", options: ["opposite each other on the colour wheel", "the same colour"], answer: 0 },
+        { type: "choice", q: "Van Gogh's brushstrokes were...", options: ["smooth and invisible", "dashes and swirls you can see"], answer: 1 },
+        { type: "choice", q: "Which painting by Van Gogh has a swirling sky full of stars?", options: ["Sunflowers", "The Snail", "The Starry Night"], answer: 2 },
+        {
+          type: "gap",
+          q: "Fill the gap.",
+          text: "Van Gogh used bright, bold colours and ___ paint.",
+          bank: ["thick", "thin", "invisible"],
+          answers: ["thick"],
+        },
       ],
       learn: {
         cards: [
@@ -337,6 +386,11 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What are concentric circles?", options: ["Circles inside each other", "Squares in a row"], answer: 0 },
         { type: "choice", q: "What else did Kandinsky love?", options: ["Music", "Football", "Cooking"], answer: 0 },
         { type: "choice", q: "Kandinsky was one of the first artists to make...", options: ["abstract art", "photographs", "films"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each word to its meaning.",
+          pairs: [["Abstract", "Colours, lines and shapes, not real things"], ["Concentric circles", "Circles inside each other"], ["Composition", "How the parts of a picture are arranged"]],
+        },
       ],
       grownUp: {
         need: ["Paper or card", "Felt pens, crayons, paints or pastels", "Music to play"],
@@ -358,6 +412,13 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What is abstract art?", options: ["Colours, lines and shapes, not real things", "A painting of a bowl of fruit"], answer: 0 },
         { type: "choice", q: "Which country was Kandinsky from?", options: ["Russia", "Spain"], answer: 0 },
         { type: "choice", q: "Which artist painted swirling stars?", options: ["Van Gogh", "Kandinsky"], answer: 0 },
+        { type: "choice", q: "What are concentric circles?", options: ["Squares in a row", "Circles inside each other", "Wavy lines"], answer: 1 },
+        { type: "choice", q: "What else did Kandinsky love, as well as colour?", options: ["Football", "Cooking", "Music"], answer: 2 },
+        {
+          type: "match",
+          q: "Match each artist to their country.",
+          pairs: [["Van Gogh", "The Netherlands"], ["Kandinsky", "Russia"]],
+        },
       ],
       learn: {
         cards: [
@@ -419,6 +480,12 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What is a collage?", options: ["A picture made by sticking pieces onto a background", "A type of brush"], answer: 0 },
         { type: "choice", q: "What is The Snail made of?", options: ["Paper shapes", "Clay", "Metal"], answer: 0 },
         { type: "choice", q: "Where can you see The Snail?", options: ["Tate Modern in London", "The Eiffel Tower"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which are organic shapes? There is more than one.",
+          options: ["A leaf", "A square", "A wave", "A triangle"],
+          answers: [0, 2],
+        },
       ],
       grownUp: {
         need: ["Paper or magazines, paints or felt pens", "Child's scissors, glue, a big backing sheet"],
@@ -440,6 +507,13 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "Who called his art 'drawing with scissors'?", options: ["Matisse", "Van Gogh"], answer: 0 },
         { type: "choice", q: "Who loved music and made abstract art?", options: ["Kandinsky", "Matisse"], answer: 0 },
         { type: "choice", q: "Who painted The Starry Night?", options: ["Van Gogh", "Kandinsky"], answer: 0 },
+        { type: "choice", q: "Which country was Matisse from?", options: ["Italy", "France", "Russia"], answer: 1 },
+        { type: "choice", q: "What is a collage?", options: ["A type of brush", "A colour with black added", "A picture made by sticking pieces onto a background"], answer: 2 },
+        {
+          type: "match",
+          q: "Match each artist to their country.",
+          pairs: [["Van Gogh", "The Netherlands"], ["Kandinsky", "Russia"], ["Matisse", "France"]],
+        },
       ],
       learn: {
         cards: [
@@ -505,6 +579,11 @@ export const colourAndArtists: LessonUnit = {
         { type: "choice", q: "What goes on a gallery label?", options: ["The title, artist and year", "The price of a ticket"], answer: 0 },
         { type: "choice", q: "Which are the secondary colours?", options: ["Orange, green and purple", "Red, yellow and blue"], answer: 0 },
         { type: "choice", q: "To evaluate your work means to...", options: ["think about what went well and what you'd change", "throw it away"], answer: 0 },
+        {
+          type: "order",
+          q: "Put the three questions for looking at art in order.",
+          items: ["What can I see?", "How does it make me feel?", "What do I think the artist was trying to do?"],
+        },
       ],
       grownUp: {
         need: ["Your child's artwork from the unit", "Small cards, Blu Tack or tape"],

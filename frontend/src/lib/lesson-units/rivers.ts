@@ -22,6 +22,9 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "Where does rain come from?", options: ["Clouds", "Trees", "The ground"], answer: 0 },
         { type: "choice", q: "What happens to a puddle on a sunny day?", options: ["It gets bigger", "It dries up", "It turns to ice"], answer: 1 },
         { type: "choice", q: "Is seawater salty or fresh?", options: ["Salty", "Fresh"], answer: 0 },
+        { type: "pick", q: "Which of these are made of water? There is more than one.", options: ["Rain", "Snow", "Sand", "Ice"], answers: [0, 1, 3] },
+        { type: "choice", q: "What does water turn into when it freezes?", options: ["Steam", "Ice", "Mud"], answer: 1 },
+        { type: "type", q: "What is the big area of salty water that rivers flow into called?", answer: ["sea", "the sea", "ocean", "the ocean"] },
       ],
       learn: {
         cards: [
@@ -90,6 +93,13 @@ export const rivers: LessonUnit = {
         },
         { type: "choice", q: "What warms the water to start the cycle?", options: ["The moon", "The sun", "The wind"], answer: 1 },
         { type: "choice", q: "Does the water on Earth get used up?", options: ["Yes, it runs out", "No, it goes round and round"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "High up, water vapour cools and makes ___. This is called ___.",
+          bank: ["clouds", "condensation", "evaporation", "rain"],
+          answers: ["clouds", "condensation"],
+        },
       ],
       grownUp: {
         need: ["A clear sealable sandwich bag", "Water, food colouring (optional)", "A permanent pen and tape"],
@@ -111,6 +121,9 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "What is precipitation?", options: ["Rain, snow, sleet or hail falling", "Water turning to gas"], answer: 0 },
         { type: "choice", q: "Where do rivers carry water to?", options: ["The sea", "The clouds"], answer: 0 },
         { type: "choice", q: "What makes clouds?", options: ["Condensation", "Collection"], answer: 0 },
+        { type: "order", q: "Put the water cycle in order, starting with the sun warming the sea.", items: ["Evaporation", "Condensation", "Precipitation", "Collection"] },
+        { type: "type", q: "When water evaporates, what invisible gas does it turn into?", answer: ["water vapour", "vapour", "water vapor", "vapor"] },
+        { type: "choice", q: "Which of these is NOT precipitation?", options: ["Snow", "Hail", "A cloud"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -173,6 +186,11 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "What is the mouth of a river?", options: ["Where it flows into the sea or a lake", "Where it starts"], answer: 0 },
         { type: "choice", q: "In an estuary, river water mixes with...", options: ["seawater", "rain"], answer: 0 },
         { type: "choice", q: "Near its source, a river is usually...", options: ["small and fast", "wide and slow"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each word to its meaning.",
+          pairs: [["Source", "Where a river starts"], ["Confluence", "Where two rivers meet"], ["Mouth", "Where a river flows into the sea"]],
+        },
       ],
       grownUp: {
         need: ["A big sheet of paper and pens", "A map, atlas or online map"],
@@ -194,6 +212,9 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "Where does a river start?", options: ["Its source", "Its mouth"], answer: 0 },
         { type: "choice", q: "What is a tributary?", options: ["A stream that joins a bigger river", "The sea"], answer: 0 },
         { type: "choice", q: "Near the sea, rivers often...", options: ["wind from side to side", "go uphill"], answer: 0 },
+        { type: "type", q: "What is the place where two rivers meet called?", answer: ["confluence", "a confluence"] },
+        { type: "choice", q: "In an estuary, fresh river water mixes with...", options: ["rain", "seawater", "oil"], answer: 1 },
+        { type: "order", q: "Put a river's journey in order, from start to end.", items: ["Source", "Tributaries join", "Mouth"] },
       ],
       learn: {
         cards: [
@@ -258,6 +279,13 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "What is a meander?", options: ["A big bend in a river", "A waterfall", "A river's source"], answer: 0 },
         { type: "choice", q: "A waterfall forms where hard rock sits on top of...", options: ["softer rock", "ice"], answer: 0 },
         { type: "choice", q: "What does transportation mean for a river?", options: ["Carrying mud, sand and stones", "Flowing uphill"], answer: 0 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "On a meander, the water flows faster on the ___ of the bend and slower on the ___.",
+          bank: ["outside", "inside", "top", "bottom"],
+          answers: ["outside", "inside"],
+        },
       ],
       grownUp: {
         need: ["A baking tray or tub", "Sand or soil", "A jug of water", "A book or block"],
@@ -279,6 +307,13 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "What is erosion?", options: ["Water wearing away the land", "Water freezing"], answer: 0 },
         { type: "choice", q: "What is a meander?", options: ["A big bend in a river", "A lake"], answer: 0 },
         { type: "choice", q: "Where does a river end?", options: ["Its mouth", "Its source"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each word to what the river does.",
+          pairs: [["Erosion", "Wears away"], ["Transportation", "Carries"], ["Deposition", "Drops"]],
+        },
+        { type: "choice", q: "A river drops sand and mud when it...", options: ["speeds up", "slows down", "freezes"], answer: 1 },
+        { type: "pick", q: "Which of these can a river carry along? There is more than one.", options: ["Mud", "Pebbles", "Sand", "Clouds"], answers: [0, 1, 2] },
       ],
       learn: {
         cards: [
@@ -346,6 +381,11 @@ export const rivers: LessonUnit = {
           answers: [0, 1, 3],
         },
         { type: "choice", q: "What is a port?", options: ["A town where ships load and unload", "A river's source"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each river to its fact.",
+          pairs: [["Severn", "Longest river in the UK"], ["Tay", "Longest river in Scotland"], ["Bann", "Flows through Lough Neagh"]],
+        },
       ],
       grownUp: {
         need: ["A UK outline map", "An atlas or online map"],
@@ -367,6 +407,13 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "Which is the longest river in the UK?", options: ["The Severn", "The Thames"], answer: 0 },
         { type: "choice", q: "Which river flows through Glasgow?", options: ["The Clyde", "The Tyne"], answer: 0 },
         { type: "choice", q: "Why did towns grow by rivers?", options: ["Fresh water and transport", "Rivers are quiet"], answer: 0 },
+        { type: "type", q: "Which river flows through London? The River...", answer: ["Thames", "the Thames", "River Thames", "the River Thames"] },
+        { type: "choice", q: "What is a settlement?", options: ["A kind of boat", "A waterfall", "A place where people live"], answer: 2 },
+        {
+          type: "match",
+          q: "Match each river to a city it flows through.",
+          pairs: [["Thames", "London"], ["Clyde", "Glasgow"], ["Tyne", "Newcastle"]],
+        },
       ],
       learn: {
         cards: [
@@ -433,6 +480,13 @@ export const rivers: LessonUnit = {
           answers: [0, 1, 2],
         },
         { type: "choice", q: "Which is the longest river in Asia?", options: ["The Yangtze", "The Danube", "The Mississippi"], answer: 0 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "The Mississippi flows through the ___, and the Danube flows through ten countries in ___.",
+          bank: ["USA", "Europe", "Africa", "China"],
+          answers: ["USA", "Europe"],
+        },
       ],
       grownUp: {
         need: ["A world map, atlas or online map", "Paper and pens"],
@@ -454,6 +508,13 @@ export const rivers: LessonUnit = {
         { type: "choice", q: "Which river carries the most water?", options: ["The Amazon", "The Severn"], answer: 0 },
         { type: "choice", q: "What is evaporation?", options: ["Water turning into a gas", "A river's mouth"], answer: 0 },
         { type: "choice", q: "Where does a river start?", options: ["Its source", "Its estuary"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each river to its continent.",
+          pairs: [["Nile", "Africa"], ["Amazon", "South America"], ["Yangtze", "Asia"]],
+        },
+        { type: "choice", q: "Every year the Nile flooded and left rich mud for...", options: ["building boats", "farming", "making pots"], answer: 1 },
+        { type: "type", q: "Which river is usually called the longest in the world? The...", answer: ["Nile", "the Nile", "River Nile", "the River Nile"] },
       ],
       learn: {
         cards: [
@@ -524,6 +585,7 @@ export const rivers: LessonUnit = {
         },
         { type: "choice", q: "Why does saving water help the planet?", options: ["Cleaning and pumping water uses energy", "It doesn't"], answer: 0 },
         { type: "choice", q: "Most tap water starts as...", options: ["rain", "seawater", "melted ice cream"], answer: 0 },
+        { type: "order", q: "Put waste water's journey in order, after we use it.", items: ["Goes down the drain", "Cleaned at a sewage works", "Goes back into a river"] },
       ],
       grownUp: {
         need: ["Paper and a pencil", "A measuring jug", "A timer"],
