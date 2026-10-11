@@ -27,6 +27,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Primary colours",
+            picture: "/lessons/colour-and-artists/lesson-1.jpg",
+            alt: "A girl mixing red, yellow and blue paint on a palette, with a colour wheel on an easel",
             text: [
               "Red, yellow and blue are the primary colours.",
               "You can't make them by mixing other paints together. But you can mix them to make lots of other colours.",
@@ -114,6 +116,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Warm colours",
+            picture: "/lessons/colour-and-artists/lesson-2.jpg",
+            alt: "A girl painting a picture that is a warm sunset on one side and a cool blue sea on the other",
             text: [
               "Red, orange and yellow are warm colours. They remind us of fire and sunshine.",
               "Warm colours can make a picture feel happy, exciting or even angry.",
@@ -435,6 +439,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Talking about art",
+            picture: "/lessons/colour-and-artists/lesson-6.jpg",
+            alt: "A family in their hallway looking at children's paintings on the wall, a girl pointing at hers",
             text: [
               "When you look at a piece of art, try three questions: What can I see? How does it make me feel? What do I think the artist was trying to do?",
               "Use the words you've learned: primary, secondary, warm, cool, tint, shade, brushstroke, abstract, collage.",

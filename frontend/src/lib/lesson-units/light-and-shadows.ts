@@ -27,6 +27,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "Light sources",
+            picture: "/lessons/light-and-shadows/lesson-1.jpg",
+            alt: "Two children in a blanket den shining a torch on a spoon, foil and a white sock",
             text: [
               "A light source is something that makes its own light. The sun, a torch, a candle flame, a lamp, a screen and fire are all light sources.",
               "The sun is our most important light source. It's a star, and it's so bright you must never look straight at it.",
@@ -108,6 +110,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "Light travels in straight lines",
+            picture: "/lessons/light-and-shadows/lesson-2.jpg",
+            alt: "A girl smiling at her upside-down reflection in a spoon, with a torch beam bouncing off a mirror onto the wall",
             text: [
               "Light travels out from a light source in straight lines, very fast. It's the fastest thing in the universe!",
               "When light hits something, it bounces off. That's reflection.",
@@ -184,6 +188,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "Blocking the light",
+            picture: "/lessons/light-and-shadows/lesson-3.jpg",
+            alt: "Children behind a white sheet making dragon and castle shadow puppets with a torch",
             text: [
               "Light travels in straight lines and can't bend around things. When an object blocks light, it leaves a dark area behind it with no light. That's a shadow.",
               "A shadow is the same shape as the outline of the object, but it has no colours or details.",
@@ -266,6 +272,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "Closer means bigger",
+            picture: "/lessons/light-and-shadows/lesson-4.jpg",
+            alt: "A boy measuring a toy dinosaur's shadow on the wall with a ruler, with a torch propped on books",
             text: [
               "If you move an object closer to the light, it blocks more light, so its shadow gets bigger.",
               "If you move the object further from the light, closer to the wall, its shadow gets smaller and sharper.",
@@ -349,6 +357,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "The sun seems to move",
+            picture: "/lessons/light-and-shadows/lesson-5.jpg",
+            alt: "Children drawing round shadows in chalk in a sunny garden, with shadows of different lengths",
             text: [
               "The sun rises in the east in the morning, is highest in the sky around midday, and sets in the west in the evening.",
               "The sun isn't really moving across the sky. The Earth is spinning, which makes the sun look like it moves.",
@@ -426,6 +436,8 @@ export const lightAndShadows: LessonUnit = {
         cards: [
           {
             heading: "Light into our eyes",
+            picture: "/lessons/light-and-shadows/lesson-6.jpg",
+            alt: "A girl looking at her eye up close in a hand mirror, with a lamp behind her",
             text: [
               "We see things because light travels into our eyes.",
               "Light comes from a light source, bounces off objects, and travels in straight lines into our eyes. Our brain turns it into a picture.",

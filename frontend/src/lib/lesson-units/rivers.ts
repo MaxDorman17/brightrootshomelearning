@@ -27,6 +27,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "The same water, again and again",
+            picture: "/lessons/rivers/lesson-1.jpg",
+            alt: "The water cycle over a coast: the sun warms the sea, water rises, clouds rain on mountains, and a river flows back",
             text: [
               "The water on Earth is very, very old. The water in your glass today might once have been drunk by a dinosaur!",
               "That's because water doesn't get used up. It goes round and round in a never-ending loop called the water cycle.",
@@ -114,6 +116,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "Where a river starts",
+            picture: "/lessons/rivers/lesson-2.jpg",
+            alt: "A river starting as a mountain stream, winding past farms and a village and reaching the sea",
             text: [
               "The start of a river is called its source. It's usually high up in hills or mountains, where lots of rain falls.",
               "A source might be a spring bubbling out of the ground, a boggy patch, or melting snow.",
@@ -195,6 +199,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "Erosion",
+            picture: "/lessons/rivers/lesson-3.jpg",
+            alt: "Two children on a footpath watching a waterfall, with the river meandering across a green valley",
             text: [
               "Moving water is powerful. Over many years, a river wears away the rock and soil of its banks and bed. This is called erosion.",
               "Stones carried by the water bash against the riverbed and wear it down even faster.",
@@ -278,6 +284,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "The longest rivers",
+            picture: "/lessons/rivers/lesson-4.jpg",
+            alt: "Children feeding swans by a stone bridge in a riverside town, with narrowboats and a water mill",
             text: [
               "The River Severn is the longest river in the UK, about 220 miles long. It starts in the mountains of Wales and flows into the sea near Bristol.",
               "The River Thames is the second longest, about 215 miles. It flows through London.",
@@ -364,6 +372,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "The Nile",
+            picture: "/lessons/rivers/lesson-5.jpg",
+            alt: "Children in a canoe on the Amazon, with parrots in the trees and pink river dolphins",
             text: [
               "The Nile flows north through Africa into the Mediterranean Sea. It's about 4,100 miles long, and is usually called the longest river in the world.",
               "Ancient Egypt grew up along the Nile. Every year it flooded and left rich mud for farming, in the middle of the desert.",
@@ -449,6 +459,8 @@ export const rivers: LessonUnit = {
         cards: [
           {
             heading: "From river to tap",
+            picture: "/lessons/rivers/lesson-6.jpg",
+            alt: "A girl turning off the tap while brushing her teeth, with a reservoir outside and a water butt",
             text: [
               "Most of the water from our taps starts as rain. It's collected in reservoirs (big man-made lakes), rivers and underground rocks.",
               "Before it reaches us, it's cleaned at a water treatment works to make it safe to drink.",
