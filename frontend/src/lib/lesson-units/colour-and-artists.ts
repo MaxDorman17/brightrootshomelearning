@@ -10,6 +10,7 @@ export const colourAndArtists: LessonUnit = {
   emoji: "🎨",
   color: "#B0457B",
   summary: "Six lessons: mixing colours, warm and cool colours, then Van Gogh, Kandinsky and Matisse, and finally your own gallery.",
+  cover: "/lessons/units/colour-and-artists.jpg",
   lessons: [
     {
       slug: "colour-and-artists-1",
@@ -26,6 +27,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Primary colours",
+            picture: "/lessons/colour-and-artists/lesson-1.jpg",
+            alt: "A girl mixing red, yellow and blue paint on a palette, with a colour wheel on an easel",
             text: [
               "Red, yellow and blue are the primary colours.",
               "You can't make them by mixing other paints together. But you can mix them to make lots of other colours.",
@@ -113,6 +116,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Warm colours",
+            picture: "/lessons/colour-and-artists/lesson-2.jpg",
+            alt: "A girl painting a picture that is a warm sunset on one side and a cool blue sea on the other",
             text: [
               "Red, orange and yellow are warm colours. They remind us of fire and sunshine.",
               "Warm colours can make a picture feel happy, exciting or even angry.",
@@ -202,6 +207,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Van Gogh?",
+            picture: "/lessons/colour-and-artists/lesson-3.jpg",
+            alt: "A girl painting a swirly starry night sky, with a vase of sunflowers beside her",
             text: [
               "Vincent van Gogh was a painter from the Netherlands. He lived from 1853 to 1890.",
               "He painted for only about ten years but made over 800 paintings. He sold very few while he was alive. Today his paintings are some of the most famous in the world.",
@@ -278,6 +285,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Kandinsky?",
+            picture: "/lessons/colour-and-artists/lesson-4.jpg",
+            alt: "A girl wearing headphones painting bright circles inside coloured squares, with musical notes floating around her",
             text: [
               "Wassily Kandinsky was a Russian artist who lived from 1866 to 1944.",
               "He was one of the first artists to make abstract art: pictures that don't show real things, just colours, lines and shapes.",
@@ -354,6 +363,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Who was Matisse?",
+            picture: "/lessons/colour-and-artists/lesson-5.jpg",
+            alt: "A girl cutting out paper leaves and arranging bright shapes, spirals and stars on a big sheet",
             text: [
               "Henri Matisse was a French artist who lived from 1869 to 1954. He was famous for paintings full of bright, bold colour.",
             ],
@@ -434,6 +445,8 @@ export const colourAndArtists: LessonUnit = {
         cards: [
           {
             heading: "Talking about art",
+            picture: "/lessons/colour-and-artists/lesson-6.jpg",
+            alt: "A family in their hallway looking at children's paintings on the wall, a girl pointing at hers",
             text: [
               "When you look at a piece of art, try three questions: What can I see? How does it make me feel? What do I think the artist was trying to do?",
               "Use the words you've learned: primary, secondary, warm, cool, tint, shade, brushstroke, abstract, collage.",

@@ -10,6 +10,7 @@ export const feelingsAndFriendships: LessonUnit = {
   emoji: "💛",
   color: "#C7892B",
   summary: "Six lessons: naming feelings, calming big ones, being a good friend, falling out and making up, families, and staying safe online.",
+  cover: "/lessons/units/feelings-and-friendships.jpg",
   lessons: [
     {
       slug: "feelings-and-friendships-1",
@@ -26,6 +27,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "Every feeling is OK",
+            picture: "/lessons/feelings-and-friendships/lesson-1.jpg",
+            alt: "Six children holding coloured cards showing happy, sad, cross, worried, excited and calm faces",
             text: [
               "Everyone has feelings: happy, sad, angry, scared, excited, worried, proud, jealous and lots more.",
               "There are no bad feelings. All feelings are OK. What matters is what we do with them.",
@@ -107,6 +110,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "When feelings get big",
+            picture: "/lessons/feelings-and-friendships/lesson-2.jpg",
+            alt: "A girl doing belly breathing on a cushion with her eyes closed, beside a grown-up and a calm box",
             text: [
               "Sometimes a feeling gets so big it's hard to think. You might want to shout, cry, or run away.",
               "That happens to everyone, grown-ups too. The good news is there are things that help a big feeling get smaller.",
@@ -193,6 +198,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "What makes a good friend?",
+            picture: "/lessons/feelings-and-friendships/lesson-3.jpg",
+            alt: "A boy helping a girl up after she fell off her scooter in the park",
             text: [
               "Good friends are kind. They listen, they share, they take turns, and they make you feel good about yourself.",
               "They're honest with you, and they stick up for you.",
@@ -274,6 +281,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "Everyone falls out sometimes",
+            picture: "/lessons/feelings-and-friendships/lesson-4.jpg",
+            alt: "Two friends making up on the grass, one holding out a hand, with a football between them",
             text: [
               "Even the best of friends disagree. You might both want the same toy, or want to play different games.",
               "Falling out doesn't mean you're not friends any more. It's part of being friends.",
@@ -356,6 +365,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "Every family is different",
+            picture: "/lessons/feelings-and-friendships/lesson-5.jpg",
+            alt: "Lots of different families: parents and children, a grandmother and grandchild, a dad, two mums, and a big family meal",
             text: [
               "Some children live with a mum and a dad. Some live with one parent, two mums, two dads, grandparents, foster carers, or step-parents.",
               "Some have lots of brothers and sisters, and some have none. Some families live in more than one home.",
@@ -437,6 +448,8 @@ export const feelingsAndFriendships: LessonUnit = {
         cards: [
           {
             heading: "The internet is brilliant",
+            picture: "/lessons/feelings-and-friendships/lesson-6.jpg",
+            alt: "A girl using a tablet on the sofa next to her dad, with a friendly shield and padlock above it",
             text: [
               "You can learn, play, watch and talk to family far away online.",
               "But just like crossing the road, there are some rules that keep us safe.",

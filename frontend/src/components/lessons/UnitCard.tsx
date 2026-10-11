@@ -9,16 +9,16 @@ import { packBySlug, packCover } from "@/lib/topics";
 /** One unit: its lessons, "Add unit to planner", and the topic pack if there is one. */
 export default function UnitCard({ unit, isChild }: { unit: LessonUnit; isChild: boolean }) {
   const pack = unit.topicPack ? packBySlug(unit.topicPack) : undefined;
-  const cover = pack ? packCover(pack) : null;
+  const cover = unit.cover ?? (pack ? packCover(pack) : null);
   const minutes = Math.round(unit.lessons.reduce((sum, l) => sum + l.minutes, 0) / unit.lessons.length);
 
   return (
     <section id={unit.slug} className="brand-card scroll-mt-20 overflow-hidden">
       <div className="flex flex-col sm:flex-row">
-        <div className="flex shrink-0 items-center justify-center sm:w-56" style={{ background: `${unit.color}1A` }}>
+        <div className={`flex shrink-0 justify-center sm:w-56 ${cover ? "items-start bg-brand-cream" : "items-center"}`} style={cover ? undefined : { background: `${unit.color}1A` }}>
           {cover ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={cover} alt="" className="aspect-[3/2] h-full w-full object-cover sm:aspect-square" />
+            <img src={cover} alt="" className="aspect-[3/2] w-full object-cover sm:aspect-square" />
           ) : (
             <Emoji e={unit.emoji} className="h-24 w-24 py-6 text-7xl" />
           )}
