@@ -171,3 +171,34 @@ def test_title_from_filename():
 
     assert title_from_filename("woodland_owl-NIGHT.pdf") == "Woodland Owl Night"
     assert title_from_filename(".pdf") == "Colouring Sheet"
+
+
+def _add_grown_up(family, email):
+    from conftest import PASSWORD
+    response = family.parent.post("/api/family/adults", json={"name": "Charlotte", "email": email, "password": PASSWORD})
+    assert response.status_code == 201, response.text
+
+
+def test_a_second_grown_up_on_the_owners_family_can_upload_when_listed(owner, monkeypatch):
+    from conftest import login
+    email = "charlotte." + owner.email
+    _add_grown_up(owner, email)
+    charlotte = login(email)
+    # Not listed yet: no owner pages.
+    assert charlotte.get("/api/auth/me").json()["is_admin"] is False
+    assert _upload(charlotte).status_code == 403
+    monkeypatch.setattr(settings, "ADMIN_EMAILS", f"{owner.email},{email}")
+    assert charlotte.get("/api/auth/me").json()["is_admin"] is True
+    assert _upload(charlotte).status_code == 201
+    assert charlotte.get("/api/colouring/admin/sheets").status_code == 200
+
+
+def test_a_listed_email_added_to_someone_elses_family_gets_nothing(owner, monkeypatch):
+    from conftest import login
+    stranger = sign_up("Stranger")
+    email = "charlotte." + owner.email
+    _add_grown_up(stranger, email)
+    monkeypatch.setattr(settings, "ADMIN_EMAILS", f"{owner.email},{email}")
+    impostor = login(email)
+    assert impostor.get("/api/auth/me").json()["is_admin"] is False
+    assert _upload(impostor).status_code == 403
