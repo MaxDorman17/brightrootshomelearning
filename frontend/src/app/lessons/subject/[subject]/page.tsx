@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import UnitCard from "@/components/lessons/UnitCard";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { comingIn, subjectBySlug, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
+import { comingIn, searchUnits, subjectBySlug, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
 
 /** One subject's Bright Roots lessons, grouped by age range. */
 export default function LessonSubjectPage() {
@@ -15,6 +15,7 @@ export default function LessonSubjectPage() {
   const params = useParams<{ subject: string }>();
   const subject = subjectBySlug(params.subject);
   const [role, setRole] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -40,8 +41,11 @@ export default function LessonSubjectPage() {
 
   const isChild = role === "child";
   const units = unitsIn(subject);
-  const byAge = new Map<string, LessonUnit[]>();
-  for (const u of units) byAge.set(u.ages, [...(byAge.get(u.ages) ?? []), u]);
+  const allAges = Array.from(new Set(units.map((u) => u.ages)));
+  const found = searchUnits(units, query);
+  const byAge = new Map<string, { unit: LessonUnit; lessons?: Set<string> }[]>();
+  for (const f of found) byAge.set(f.unit.ages, [...(byAge.get(f.unit.ages) ?? []), f]);
+  const searching = query.trim().length > 0;
   const coming = comingIn(subject);
 
   return (
@@ -69,9 +73,9 @@ export default function LessonSubjectPage() {
             </p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{subject.name}</h1>
             <p className="mt-2 text-brand-earth">{subject.blurb}</p>
-            {byAge.size > 1 && (
+            {allAges.length > 1 && (
               <nav className="mt-4 flex flex-wrap gap-2" aria-label="Age ranges">
-                {Array.from(byAge.keys()).map((a) => (
+                {allAges.map((a) => (
                   <a key={a} href={`#ages-${a.replace(/\s+/g, "-")}`} className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-earth hover:text-brand-sage">
                     Ages {a}
                   </a>
@@ -81,6 +85,37 @@ export default function LessonSubjectPage() {
           </div>
         </header>
 
+        {units.length > 0 && (
+          <div className="mb-8">
+            <label htmlFor="lesson-search" className="sr-only">
+              Search {subject.name} lessons
+            </label>
+            <div className="relative">
+              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-earth/60" aria-hidden>
+                🔍
+              </span>
+              <input
+                id="lesson-search"
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={`Search ${subject.name} lessons, e.g. "${units[0].short.toLowerCase()}"`}
+                className="w-full rounded-2xl border-2 border-brand-cream bg-white py-3 pl-11 pr-4 text-brand-charcoal shadow-sm outline-none focus:border-brand-sage"
+              />
+            </div>
+            {searching && (
+              <p className="mt-2 text-sm text-brand-earth" aria-live="polite">
+                {found.length === 0
+                  ? `No ${subject.name} lessons match "${query.trim()}". Try another word.`
+                  : `${found.length} ${found.length === 1 ? "unit matches" : "units match"} "${query.trim()}".`}{" "}
+                <button type="button" onClick={() => setQuery("")} className="font-bold text-brand-sage underline">
+                  Clear search
+                </button>
+              </p>
+            )}
+          </div>
+        )}
+
         {Array.from(byAge.entries()).map(([ages, list]) => (
           <section key={ages} id={`ages-${ages.replace(/\s+/g, "-")}`} className="mb-10 scroll-mt-20">
             <h2 className="mb-4 text-2xl font-extrabold text-brand-charcoal">
@@ -88,8 +123,8 @@ export default function LessonSubjectPage() {
               {yearsFor(ages) && <span className="ml-2 text-base font-bold text-brand-earth/70">{yearsFor(ages)}</span>}
             </h2>
             <div className="space-y-6">
-              {list.map((unit) => (
-                <UnitCard key={unit.slug} unit={unit} isChild={isChild} />
+              {list.map(({ unit, lessons }) => (
+                <UnitCard key={unit.slug} unit={unit} isChild={isChild} only={lessons} />
               ))}
             </div>
           </section>
@@ -97,7 +132,7 @@ export default function LessonSubjectPage() {
 
         {units.length === 0 && <p className="mb-10 text-brand-earth">The first {subject.name} lessons are on their way.</p>}
 
-        {coming.length > 0 && (
+        {coming.length > 0 && !searching && (
           <section>
             <h2 className="text-2xl font-extrabold text-brand-charcoal">Coming soon</h2>
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
