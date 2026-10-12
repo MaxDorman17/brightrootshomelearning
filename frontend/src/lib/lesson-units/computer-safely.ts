@@ -38,6 +38,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "Computers are everywhere",
+            picture: "/lessons/computer-safely/lesson-1-1.jpg",
+            alt: "A house with a laptop, tablet, games console, smart TV, microwave and washing machine in different rooms",
             text: [
               "A computer is a machine that follows instructions. You probably know laptops and desktop computers.",
               "Tablets, phones, games consoles and smart TVs are computers too. Even microwaves, washing machines and cars have small computers hidden inside them.",
@@ -45,6 +47,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "In, think, out",
+            picture: "/lessons/computer-safely/lesson-1-2.jpg",
+            alt: "A girl pressing a key, with arrows showing input going into a computer and output coming out as a picture and sound",
             text: [
               "Every computer does three jobs. First, information goes in. This is called input. Pressing a key, tapping a screen or speaking are all input.",
               "Next, the computer works on the information. This is called processing.",
@@ -53,6 +57,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Instructions, not ideas",
+            picture: "/lessons/computer-safely/lesson-1-3.jpg",
+            alt: "A boy pressing the buttons on a microwave as soup heats up inside, with his dad beside him",
             text: [
               "Computers are very, very fast, but they can only do what their instructions tell them. A set of instructions for a computer is called a program. People called programmers write them.",
               "Think about a microwave. You press the buttons for one minute (input). It counts down and switches on the heat (processing). It warms your food and beeps when it's done (output).",
@@ -153,6 +159,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "Parts you can see",
+            picture: "/lessons/computer-safely/lesson-2-1.jpg",
+            alt: "A monitor, keyboard, mouse, speakers, microphone and webcam on a desk, with a child's hand on the mouse",
             text: [
               "The screen, or monitor, shows pictures and words. It's an output. Speakers are outputs too: they play sounds.",
               "The keyboard is for typing, and the mouse or trackpad moves the pointer around the screen. A microphone hears your voice and a camera sees pictures. These are all inputs.",
@@ -161,6 +169,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Parts inside",
+            picture: "/lessons/computer-safely/lesson-2-2.jpg",
+            alt: "An expert showing a girl the circuit board and processor inside an opened computer",
             text: [
               "Inside is the processor. It's like the computer's brain: it follows the instructions very, very fast.",
               "Memory is like the computer's desk. It holds what the computer is busy with right now. Storage is like a cupboard. It keeps your photos, stories and games saved, even when the computer is switched off.",
@@ -169,6 +179,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Hardware and software",
+            picture: "/lessons/computer-safely/lesson-2-3.jpg",
+            alt: "A boy carrying a tablet carefully with two hands, his drink left far away on a shelf",
             text: [
               "The parts of a computer you can touch are called hardware. The programs and apps are called software. You can't touch software, but the computer can't do anything useful without it.",
               "Look after hardware: clean, dry hands, no drinks nearby, and carry it carefully with two hands.",
@@ -270,6 +282,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "Online is part of real life",
+            picture: "/lessons/computer-safely/lesson-3-1.jpg",
+            alt: "A girl video-calling her grandparents on a tablet, with her mum next to her",
             text: [
               "Going online means using the internet. You can watch, play, learn and video-call family far away.",
               "Most of the time it's fun and friendly. Just like crossing the road, a few simple rules keep you safe, and your grown-up is there to help.",
@@ -277,6 +291,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Keep personal information private",
+            picture: "/lessons/computer-safely/lesson-3-2.jpg",
+            alt: "A boy at a laptop calling his grown-up over, with a padlock and shield above a house and a birthday cake",
             text: [
               "Personal information is anything that could tell someone who you are or where to find you. That's your full name, address, school or club, phone number, birthday, passwords, and photos of you.",
               "Keep it private online. If a game or website asks for it, stop and ask your grown-up first. Things like your favourite colour are fine to chat about.",
@@ -285,6 +301,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Tell someone, and be kind",
+            picture: "/lessons/computer-safely/lesson-3-3.jpg",
+            alt: "A girl with her tablet turned face down, talking to her dad who listens kindly",
             text: [
               "If anything online makes you feel worried, upset or confused, stop. Turn the screen face down or close the lid, and tell a trusted adult. That could be a message, a picture, a pop-up, or someone asking you to keep a secret.",
               "You will not be in trouble for telling. Telling is always the right thing to do.",
@@ -389,6 +407,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "What is a password?",
+            picture: "/lessons/computer-safely/lesson-4-1.jpg",
+            alt: "A golden key unlocking a padlock on a tablet screen while two children watch",
             text: [
               "A password is a secret word or phrase that unlocks something, just like a key unlocks a door.",
               "It stops other people getting into your games, apps or accounts and pretending to be you. Some devices use a PIN, which is a secret number, or your face or fingerprint instead.",
@@ -396,6 +416,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Make it strong",
+            picture: "/lessons/computer-safely/lesson-4-2.jpg",
+            alt: "A girl drawing a giraffe holding a kettle in the rain, beside a bowl of paper slips and a dice",
             text: [
               "A weak password is easy to guess, like your name, your pet's name, 'password' or '12345'.",
               "A strong password is long and hard to guess. A great trick is to pick three random words that don't go together and stick them together. Adding a number or a symbol makes it even stronger.",
@@ -404,6 +426,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Keep it secret",
+            picture: "/lessons/computer-safely/lesson-4-3.jpg",
+            alt: "A boy whispering to his mum while his friend plays with blocks nearby",
             text: [
               "Only share your password with your grown-up. Not your best friend, not anyone online, and not anyone who asks nicely.",
               "Don't leave it written where others can see it. If you think someone knows your password, tell your grown-up so they can help you change it.",
@@ -502,6 +526,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "A giant web of computers",
+            picture: "/lessons/computer-safely/lesson-5-1.jpg",
+            alt: "A globe with computers and homes joined by lines, cables under the sea and wireless signals over towns",
             text: [
               "The internet is millions of computers all around the world, joined together. They're linked by cables, some running under the sea, and by signals through the air, like Wi-Fi.",
               "It lets computers send messages, pictures and videos to each other in moments. Websites are pages of information kept on special computers, and you visit them using an app called a web browser.",
@@ -509,6 +535,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Searching sensibly",
+            picture: "/lessons/computer-safely/lesson-5-2.jpg",
+            alt: "A girl and her grandad looking at search results on a laptop together",
             text: [
               "A search engine helps you find websites. You type in a few key words, not a whole sentence. For 'How big is a blue whale?' you could type 'blue whale size'.",
               "You get a list of results. Read the short description under each one before you click. Results marked 'Ad' or 'Sponsored' are adverts trying to sell you things.",
@@ -517,6 +545,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Is it true?",
+            picture: "/lessons/computer-safely/lesson-5-3.jpg",
+            alt: "A boy checking a fact on a tablet against an animal book, holding a magnifying glass",
             text: [
               "Anyone can put things on the internet, so not everything you read is true.",
               "Check it: is it a website you can trust, like a museum, a library or a well-known science or news site? Do two or three websites say the same thing? Ask your grown-up what they think.",
@@ -630,6 +660,8 @@ export const computerSafely: LessonUnit = {
         cards: [
           {
             heading: "Screens can be great",
+            picture: "/lessons/computer-safely/lesson-6-1.jpg",
+            alt: "A girl playing on a tablet on one side, and climbing, reading and playing football outside on the other",
             text: [
               "Screens let you learn, make things, play and chat to family far away. Screen time isn't bad.",
               "But time on a screen is time not spent on other things your body and brain need: moving, playing outside, talking with people, reading and sleeping. The trick is balance.",
@@ -637,6 +669,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Listen to your body",
+            picture: "/lessons/computer-safely/lesson-6-2.jpg",
+            alt: "A boy resting his eyes by looking out of the window at faraway hills and stretching",
             text: [
               "Your body tells you when you need a break. Tired or sore eyes, a stiff neck, a headache, or feeling grumpy and wound up are all signs.",
               "Every 20 minutes, look at something far away for about 20 seconds to rest your eyes. Sit up comfortably, hold the screen not too close, and get up for a stretch.",
@@ -644,6 +678,8 @@ export const computerSafely: LessonUnit = {
           },
           {
             heading: "Balance and bedtime",
+            picture: "/lessons/computer-safely/lesson-6-3.jpg",
+            alt: "A girl reading in bed by lamplight while a tablet charges outside her bedroom",
             text: [
               "Bright screens and exciting games keep your brain awake. Switching off about an hour before bed helps you fall asleep. Children your age need lots of sleep, around ten hours a night.",
               "Devices sleep best outside your bedroom. Stopping can be hard, so use a timer, finish the bit you're on, and have something fun planned for next.",
