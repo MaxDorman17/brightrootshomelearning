@@ -12,6 +12,22 @@ import { ukAndLocalArea } from "@/lib/lesson-units/uk-and-local-area";
 import { drawingAndSketching } from "@/lib/lesson-units/drawing-and-sketching";
 import { computerSafely } from "@/lib/lesson-units/computer-safely";
 import { algorithms } from "@/lib/lesson-units/algorithms";
+import { earthAndSpace } from "@/lib/lesson-units/earth-and-space";
+import { forcesGravityFriction } from "@/lib/lesson-units/forces-gravity-friction";
+import { changingMaterials } from "@/lib/lesson-units/changing-materials";
+import { separatingMixtures } from "@/lib/lesson-units/separating-mixtures";
+import { lifeCycles } from "@/lib/lesson-units/life-cycles";
+import { humanGrowth } from "@/lib/lesson-units/human-growth";
+import { vikings } from "@/lib/lesson-units/vikings";
+import { angloSaxonsAndScots } from "@/lib/lesson-units/anglo-saxons-and-scots";
+import { rainforests } from "@/lib/lesson-units/rainforests";
+import { mapSkills } from "@/lib/lesson-units/map-skills";
+import { portraits } from "@/lib/lesson-units/portraits";
+import { perspectiveDrawing } from "@/lib/lesson-units/perspective-drawing";
+import { stayingSafeOnline } from "@/lib/lesson-units/staying-safe-online";
+import { codingLoops } from "@/lib/lesson-units/coding-loops";
+import { friendshipsAndPeerPressure } from "@/lib/lesson-units/friendships-and-peer-pressure";
+import { judaism } from "@/lib/lesson-units/judaism";
 import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
 import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
 
@@ -97,6 +113,22 @@ export const UNITS: LessonUnit[] = [
   drawingAndSketching,
   computerSafely,
   algorithms,
+  earthAndSpace,
+  forcesGravityFriction,
+  changingMaterials,
+  separatingMixtures,
+  lifeCycles,
+  humanGrowth,
+  vikings,
+  angloSaxonsAndScots,
+  rainforests,
+  mapSkills,
+  portraits,
+  perspectiveDrawing,
+  stayingSafeOnline,
+  codingLoops,
+  friendshipsAndPeerPressure,
+  judaism,
 ];
 
 export const COMING_UNITS: ComingUnit[] = [
