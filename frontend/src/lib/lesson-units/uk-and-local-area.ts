@@ -30,6 +30,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "One country made of four",
+            picture: "/lessons/uk-and-local-area/lesson-1-1.jpg",
+            alt: "Four children holding hands in front of landscapes from England, Scotland, Wales and Northern Ireland",
             text: [
               "The United Kingdom, or UK for short, is a country made of four countries joined together.",
               "They are England, Scotland, Wales and Northern Ireland.",
@@ -38,6 +40,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Four capital cities",
+            picture: "/lessons/uk-and-local-area/lesson-1-2.jpg",
+            alt: "A clock tower, a castle on a rock, a rugby stadium and a domed city hall, one for each capital city",
             text: [
               "A capital city is a country's main city. It is where the country is run from.",
               "The capital of England is London. The capital of Scotland is Edinburgh. The capital of Wales is Cardiff. The capital of Northern Ireland is Belfast.",
@@ -46,6 +50,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Where they are",
+            picture: "/lessons/uk-and-local-area/lesson-1-3.jpg",
+            alt: "A child pointing at a map of Great Britain, Ireland and many small islands in the sea",
             text: [
               "England, Scotland and Wales are on one big island called Great Britain. Scotland is in the north, England is in the south and east, and Wales is in the west.",
               "Northern Ireland is on a different island, called Ireland. It shares that island with another country, the Republic of Ireland, which is not part of the UK.",
@@ -122,6 +128,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "Our place in the world",
+            picture: "/lessons/uk-and-local-area/lesson-2-1.jpg",
+            alt: "A girl looking through a magnifying glass at the UK on a globe",
             text: [
               "The world has seven huge areas of land called continents, and five oceans.",
               "The UK is part of the continent of Europe. It sits in the north-west of Europe, off the coast of the mainland.",
@@ -130,6 +138,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Seas all around",
+            picture: "/lessons/uk-and-local-area/lesson-2-2.jpg",
+            alt: "A family on a headland watching ocean waves roll in, with a lighthouse on the cliffs",
             text: [
               "The UK is surrounded by water.",
               "The North Sea is to the east. The English Channel is to the south, between England and France. The Irish Sea is to the west, between Great Britain and Ireland.",
@@ -138,6 +148,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Our neighbours",
+            picture: "/lessons/uk-and-local-area/lesson-2-3.jpg",
+            alt: "Two children with binoculars on white cliffs looking across a narrow sea at a faraway coast",
             text: [
               "The UK's closest neighbours are the Republic of Ireland and France.",
               "Northern Ireland shares a land border with the Republic of Ireland. You can walk from one country to the other.",
@@ -220,6 +232,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "Smaller areas",
+            picture: "/lessons/uk-and-local-area/lesson-3-1.jpg",
+            alt: "A patchwork of fields, woods and small towns seen from a hill, with a family having a picnic",
             text: [
               "Each country in the UK is split into smaller areas, so that it is easier to look after.",
               "In England these are often called counties, like Kent, Cornwall or Yorkshire. Wales has counties too, like Pembrokeshire and Gwynedd. Scotland has council areas, like Fife and Highland. Northern Ireland has six counties, including Antrim and Down.",
@@ -228,6 +242,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "City, town or village?",
+            picture: "/lessons/uk-and-local-area/lesson-3-2.jpg",
+            alt: "A small village, a market town and a big city side by side",
             text: [
               "A village is a small place, with a few streets, perhaps a church, a shop and a school.",
               "A town is bigger, with lots of streets, shops, schools and a high street.",
@@ -236,6 +252,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Cities across the UK",
+            picture: "/lessons/uk-and-local-area/lesson-3-3.jpg",
+            alt: "A busy city square with tall buildings, a tram and people walking",
             text: [
               "London is the biggest city in the UK. Millions of people live there.",
               "Other big cities include Birmingham and Manchester in England, Glasgow and Aberdeen in Scotland, Swansea in Wales, and Derry~Londonderry in Northern Ireland.",
@@ -318,6 +336,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "Physical features",
+            picture: "/lessons/uk-and-local-area/lesson-4-1.jpg",
+            alt: "Mountains, a valley, a river, a lake, a forest and a beach, with two children on a hill path",
             text: [
               "Physical features are parts of the land that nature made. People didn't build them.",
               "Mountains, hills, rivers, lakes, beaches, cliffs, forests, valleys and the sea are all physical features.",
@@ -326,6 +346,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Human features",
+            picture: "/lessons/uk-and-local-area/lesson-4-2.jpg",
+            alt: "A town with houses, a school, shops, roads, a railway, a bridge and a park",
             text: [
               "Human features are things that people have made or built.",
               "Houses, roads, bridges, schools, shops, farms, factories, railways, parks and churches are all human features.",
@@ -334,6 +356,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Famous features of the UK",
+            picture: "/lessons/uk-and-local-area/lesson-4-3.jpg",
+            alt: "A family walking beside hundreds of six-sided rock columns by the sea",
             text: [
               "The UK's highest mountain is Ben Nevis in Scotland. Wales's highest is Yr Wyddfa, also called Snowdon.",
               "The longest river is the River Severn, which flows through Wales and England. The biggest lake is Lough Neagh in Northern Ireland.",
@@ -415,6 +439,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "What is land used for?",
+            picture: "/lessons/uk-and-local-area/lesson-5-1.jpg",
+            alt: "A valley with houses, farmland, a factory, roads, a park and a wood side by side",
             text: [
               "Land use means what people do with a piece of land.",
               "Some land is used for homes. Some is used for farming. Some is used for shops and offices, or for factories where things are made.",
@@ -423,6 +449,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Land use across the UK",
+            picture: "/lessons/uk-and-local-area/lesson-5-2.jpg",
+            alt: "Sheep on green hills with stone walls, a farmer and a sheepdog, and wheat fields below",
             text: [
               "Most of the land in the UK is farmland. Farmers grow crops like wheat and potatoes, and keep animals like sheep and cows.",
               "In hilly and mountain areas, such as the Scottish Highlands, the Welsh hills and the Mourne Mountains, there are lots of sheep and fewer people.",
@@ -431,6 +459,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Your local area",
+            picture: "/lessons/uk-and-local-area/lesson-5-3.jpg",
+            alt: "A child and grown-up exploring their street, with houses, a shop, a postbox and a bus stop",
             text: [
               "Your local area is the place around your home: your street and the streets, shops, parks and fields nearby.",
               "Every local area is different. A city street might have flats, shops and buses. A village might have a farm, a church and a post office. A seaside town might have a harbour and a beach.",
@@ -507,6 +537,8 @@ export const ukAndLocalArea: LessonUnit = {
         cards: [
           {
             heading: "A bird's-eye view",
+            picture: "/lessons/uk-and-local-area/lesson-6-1.jpg",
+            alt: "A bird looking straight down on rooftops, gardens, roads and a pond",
             text: [
               "A map shows a place as if you were a bird looking straight down from the sky. This is called a bird's-eye view, or a plan view.",
               "From above, a round table looks like a circle and a house looks like a rectangle, its roof.",
@@ -515,6 +547,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Symbols and keys",
+            picture: "/lessons/uk-and-local-area/lesson-6-2.jpg",
+            alt: "Children drawing a map with small symbols, a key and a compass rose",
             text: [
               "Maps use small pictures or shapes called symbols to show where things are, like a cross for a church, a blue line for a river, or a tree shape for a wood.",
               "A key is a box on the map that tells you what every symbol means.",
@@ -523,6 +557,8 @@ export const ukAndLocalArea: LessonUnit = {
           },
           {
             heading: "Fieldwork",
+            picture: "/lessons/uk-and-local-area/lesson-6-3.jpg",
+            alt: "A girl making tally marks on a clipboard on the pavement with her grown-up as traffic passes",
             text: [
               "Fieldwork means going outside to find things out for yourself, like a real geographer.",
               "On your street you could count cars and bikes with a tally chart, note the human and physical features, or draw a sketch map.",
