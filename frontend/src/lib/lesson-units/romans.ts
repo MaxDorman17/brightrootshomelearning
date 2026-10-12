@@ -22,6 +22,9 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "Which country is Rome in?", options: ["France", "Italy", "Egypt"], answer: 1 },
         { type: "choice", q: "History is about...", options: ["the past", "the future", "outer space"], answer: 0 },
         { type: "choice", q: "Which is bigger, a town or a country?", options: ["A town", "A country"], answer: 1 },
+        { type: "pick", q: "Which of these do you think the Romans had? There is more than one.", options: ["Roads", "Soldiers", "Mobile phones", "Coins"], answers: [0, 1, 3] },
+        { type: "choice", q: "Who was born longest ago?", options: ["You", "Your grown-up", "Your grandparent"], answer: 2 },
+        { type: "choice", q: "Is Britain an island, with sea all around it?", options: ["Yes", "No"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -88,6 +91,13 @@ export const romansLessons: LessonUnit = {
         { type: "type", q: "In which year AD did the Romans invade Britain? AD...", answer: "43" },
         { type: "choice", q: "Which year is the oldest?", options: ["AD 122", "55 BC", "AD 43"], answer: 1 },
         { type: "choice", q: "About how long did the Romans stay in Britain?", options: ["40 years", "400 years", "4,000 years"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "An ___ is lots of lands and peoples ruled by one ruler. The Roman ruler was called the ___.",
+          bank: ["empire", "emperor", "town", "king"],
+          answers: ["empire", "emperor"],
+        },
       ],
       grownUp: {
         need: ["A map of Europe or a globe", "String and pegs, or a long strip of paper", "Cards and pens"],
@@ -109,6 +119,9 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "Where did the Romans come from?", options: ["Rome, in Italy", "Spain", "Scotland"], answer: 0 },
         { type: "choice", q: "What is an empire?", options: ["A type of boat", "Lots of lands ruled by one ruler or country", "A Roman food"], answer: 1 },
         { type: "choice", q: "Which was longer ago?", options: ["55 BC", "AD 43"], answer: 0 },
+        { type: "choice", q: "What was the ruler of the Roman Empire called?", options: ["The captain", "The king", "The emperor"], answer: 2 },
+        { type: "order", q: "Put these in order. Tap the oldest first.", items: ["753 BC", "55 BC", "AD 43"] },
+        { type: "type", q: "Which city did the Romans come from?", answer: ["Rome"] },
       ],
       learn: {
         cards: [
@@ -188,6 +201,7 @@ export const romansLessons: LessonUnit = {
           options: ["Metals and farmland", "To see the seaside", "To make the emperor look powerful"],
           answers: [0, 2],
         },
+        { type: "type", q: "What do we call Camulodunum today?", answer: ["Colchester"] },
       ],
       grownUp: {
         need: ["Paper folded into two columns", "A paper cup or card tube, card, glue", "Straw, wool or brown tissue paper"],
@@ -209,6 +223,14 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "In which year did Claudius invade Britain?", options: ["AD 43", "AD 410", "55 BC"], answer: 0 },
         { type: "choice", q: "About how many soldiers did Claudius send?", options: ["400", "4,000", "40,000"], answer: 2 },
         { type: "choice", q: "What is a tribe?", options: ["A group of families with the same leader", "A Roman soldier", "A kind of boat"], answer: 0 },
+        { type: "type", q: "Which emperor invaded Britain in AD 43?", answer: ["Claudius"] },
+        {
+          type: "pick",
+          q: "Why did the Romans want Britain? There is more than one.",
+          options: ["Metals like tin and silver", "Good farmland", "The sunny weather"],
+          answers: [0, 1],
+        },
+        { type: "choice", q: "What did Iron Age Britons live in?", options: ["Villas", "Roundhouses", "Tents"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -285,6 +307,13 @@ export const romansLessons: LessonUnit = {
           options: ["Build roads", "Build forts", "Build bridges", "Fly planes"],
           answers: [0, 1, 2],
         },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "A ___ was a short sword, and a ___ was a throwing spear.",
+          bank: ["gladius", "pilum", "scutum", "testudo"],
+          answers: ["gladius", "pilum"],
+        },
       ],
       grownUp: {
         need: ["A big piece of cardboard", "Red and yellow paint or felt pens"],
@@ -306,6 +335,13 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "What was a centurion?", options: ["An officer in charge of about 80 soldiers", "An emperor", "A Roman road"], answer: 0 },
         { type: "choice", q: "What does invade mean?", options: ["To go into a country with an army to take it over", "To go on holiday", "To trade"], answer: 0 },
         { type: "choice", q: "Some tribes made friends with the Romans. True or false?", options: ["True", "False"], answer: 0 },
+        { type: "choice", q: "About how many soldiers were in a legion?", options: ["50", "5,000", "500"], answer: 1 },
+        {
+          type: "match",
+          q: "Match each Latin name to what it is.",
+          pairs: [["scutum", "shield"], ["gladius", "short sword"], ["testudo", "tortoise"]],
+        },
+        { type: "choice", q: "Why did Roman soldiers build long straight roads?", options: ["To play games on", "So the army could move quickly", "To keep the rain off"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -386,6 +422,13 @@ export const romansLessons: LessonUnit = {
           options: ["It was all written by Romans, not by the Iceni", "It happened yesterday", "Boudica wrote it herself"],
           answer: 0,
         },
+        {
+          type: "choice",
+          q: "Which of these is a source that tells us about the past?",
+          options: ["A story you made up", "A Roman coin found in a field", "A dream"],
+          answer: 1,
+          why: "A source is anything that tells us about the past, like a letter, a coin or a ruin.",
+        },
       ],
       grownUp: {
         need: ["Paper and pens", "A scarf or cloak (optional)"],
@@ -407,6 +450,13 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "Who was Boudica?", options: ["Queen of the Iceni", "A Roman governor", "An emperor"], answer: 0 },
         { type: "choice", q: "What is a fort?", options: ["A strong, walled camp for soldiers", "A market", "A Roman bath"], answer: 0 },
         { type: "choice", q: "What did the Romans call Britain?", options: ["Britannia", "Italy", "Gaul"], answer: 0 },
+        {
+          type: "match",
+          q: "Match the Roman town to its name today.",
+          pairs: [["Camulodunum", "Colchester"], ["Londinium", "London"], ["Verulamium", "St Albans"]],
+        },
+        { type: "choice", q: "What is a revolt?", options: ["A Roman road", "When people fight back against the people ruling them", "A party"], answer: 1 },
+        { type: "choice", q: "Who won the big battle at the end of Boudica's revolt?", options: ["Boudica", "The Romans"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -480,6 +530,7 @@ export const romansLessons: LessonUnit = {
         },
         { type: "choice", q: "Where is the Antonine Wall?", options: ["Across central Scotland", "In London", "In Italy"], answer: 0 },
         { type: "choice", q: "What were the Vindolanda tablets?", options: ["Medicine", "Letters written on thin pieces of wood", "Stone statues"], answer: 1 },
+        { type: "type", q: "What did the Romans call Scotland?", answer: ["Caledonia"] },
       ],
       grownUp: {
         need: ["Building blocks, Lego or small boxes", "A map of Britain", "A strip of card"],
@@ -501,6 +552,14 @@ export const romansLessons: LessonUnit = {
         { type: "choice", q: "Which emperor built a wall across northern England?", options: ["Hadrian", "Claudius", "Boudica"], answer: 0 },
         { type: "choice", q: "What language did the Romans speak?", options: ["French", "Latin", "English"], answer: 1 },
         { type: "choice", q: "What was a villa?", options: ["A large Roman house in the countryside", "A soldier", "A boat"], answer: 0 },
+        { type: "type", q: "What did the Romans call Scotland?", answer: ["Caledonia"] },
+        { type: "choice", q: "What was a milecastle?", options: ["A Roman road", "A castle a mile high", "A small fort every Roman mile"], answer: 2 },
+        {
+          type: "pick",
+          q: "What did people at Vindolanda ask for in their letters? There is more than one.",
+          options: ["Socks", "Video games", "Underpants"],
+          answers: [0, 2],
+        },
       ],
       learn: {
         cards: [
@@ -584,6 +643,13 @@ export const romansLessons: LessonUnit = {
           q: "Which Roman things are still around today? There is more than one.",
           options: ["Latin words in English", "Roman numerals on clocks", "Roads that follow Roman ones", "Roman emperors"],
           answers: [0, 1, 2],
+        },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "The ___ was the market square in a Roman town, and a ___ was a picture made from tiny squares of stone.",
+          bank: ["forum", "mosaic", "strigil", "villa"],
+          answers: ["forum", "mosaic"],
         },
       ],
       grownUp: {

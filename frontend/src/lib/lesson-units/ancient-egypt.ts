@@ -22,6 +22,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What is a desert?", options: ["A very dry place with little rain", "A thick forest"], answer: 0 },
         { type: "choice", q: "Which continent is Egypt in?", options: ["Africa", "Europe", "South America"], answer: 0 },
         { type: "choice", q: "What do plants need to grow?", options: ["Water and light", "Only sand"], answer: 0 },
+        { type: "choice", q: "Which of these was built in Ancient Egypt?", options: ["The Eiffel Tower", "The pyramids", "Big Ben"], answer: 1 },
+        { type: "pick", q: "What might you find in Egypt? There is more than one.", options: ["Desert", "Pyramids", "Penguins", "Camels"], answers: [0, 1, 3] },
+        { type: "choice", q: "What is the weather usually like in Egypt?", options: ["Cold and snowy", "Hot and sunny"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -86,6 +89,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What did the Nile flood leave behind?", options: ["Rich mud called silt", "Sand", "Gold"], answer: 0 },
         { type: "choice", q: "What was papyrus used for?", options: ["Making paper and boats", "Building pyramids"], answer: 0 },
         { type: "choice", q: "About how long ago did Ancient Egypt begin?", options: ["5,000 years ago", "500 years ago", "50 years ago"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "Every summer the Nile ___. When the water went down, it left rich mud called ___.", bank: ["flooded", "froze", "silt", "sand"], answers: ["flooded", "silt"] },
       ],
       grownUp: {
         need: ["Paper and coloured pencils", "An atlas or online map"],
@@ -107,6 +111,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What did the Nile flood leave behind?", options: ["Silt", "Ice"], answer: 0 },
         { type: "choice", q: "What is papyrus?", options: ["A reed used to make paper", "A kind of fish"], answer: 0 },
         { type: "choice", q: "Who rules a kingdom?", options: ["A king or queen", "A farmer"], answer: 0 },
+        { type: "choice", q: "Which way does the Nile flow through Egypt?", options: ["South", "North"], answer: 1 },
+        { type: "type", q: "What did the Egyptians call their land, meaning 'the black land'?", answer: ["Kemet"] },
+        { type: "pick", q: "What did farmers grow in the silt? There is more than one.", options: ["Wheat", "Barley", "Bananas", "Flax"], answers: [0, 1, 3] },
       ],
       learn: {
         cards: [
@@ -171,6 +178,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "Why is Tutankhamun so famous today?", options: ["His tomb was found full of treasure", "He ruled for 66 years"], answer: 0 },
         { type: "choice", q: "Who was the last pharaoh?", options: ["Cleopatra VII", "Tutankhamun", "Ramesses II"], answer: 0 },
         { type: "choice", q: "What is an archaeologist?", options: ["Someone who digs up and studies the past", "A kind of pharaoh"], answer: 0 },
+        { type: "type", q: "Who found Tutankhamun's tomb in 1922?", answer: ["Howard Carter", "Carter"] },
       ],
       grownUp: {
         need: ["Paper and pens", "A book or website about one pharaoh"],
@@ -192,6 +200,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "Who was the pharaoh?", options: ["The ruler of Egypt", "A farmer"], answer: 0 },
         { type: "choice", q: "What is a tomb?", options: ["A place where someone is buried", "A kind of boat"], answer: 0 },
         { type: "choice", q: "How many sides does a triangle have?", options: ["Three", "Four"], answer: 0 },
+        { type: "type", q: "About how old was Tutankhamun when he became pharaoh?", answer: ["9", "nine"], after: "years old" },
+        { type: "choice", q: "What did pharaohs hold as symbols of power?", options: ["A sword and shield", "A crook and flail", "A pen and paper"], answer: 1 },
+        { type: "choice", q: "Which pharaoh ruled for 66 years?", options: ["Tutankhamun", "Cleopatra VII", "Ramesses II"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -251,6 +262,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "Who built the pyramids?", options: ["Thousands of paid workers", "Robots", "The Romans"], answer: 0 },
         { type: "choice", q: "What is the Sphinx?", options: ["A statue with a lion's body and human head", "A pyramid"], answer: 0 },
         { type: "choice", q: "Why did workers pour water on the sand?", options: ["To help the sledges slide", "To cool their feet"], answer: 0 },
+        { type: "pick", q: "How were the stone blocks moved? There is more than one.", options: ["Floated down the Nile on boats", "Dragged on sledges", "Carried by elephants", "Pulled up ramps"], answers: [0, 1, 3] },
       ],
       grownUp: {
         need: ["Card, ruler, scissors, tape", "A book and a tray of sand or soil (optional)"],
@@ -272,6 +284,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What is the afterlife?", options: ["Life after death", "The afternoon"], answer: 0 },
         { type: "choice", q: "Who were the pyramids built for?", options: ["Pharaohs", "Cats"], answer: 0 },
         { type: "choice", q: "What does salt do to food?", options: ["Helps it keep for longer", "Makes it go mouldy"], answer: 0 },
+        { type: "type", q: "Which pharaoh was the Great Pyramid built for?", answer: ["Khufu"] },
+        { type: "choice", q: "What tools did workers use to cut the stone blocks?", options: ["Plastic tools", "Copper tools", "Steel saws"], answer: 1 },
+        { type: "gap", q: "Fill in the gaps.", text: "The Great ___ has a lion's body and a human ___.", bank: ["Sphinx", "Pyramid", "head", "tail"], answers: ["Sphinx", "head"] },
       ],
       learn: {
         cards: [
@@ -339,6 +354,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What was natron used for?", options: ["Drying out the body", "Painting tombs"], answer: 0 },
         { type: "choice", q: "Which organ was left in the body?", options: ["The heart", "The brain", "The lungs"], answer: 0 },
         { type: "choice", q: "In the afterlife, the heart was weighed against...", options: ["a feather", "a stone", "gold"], answer: 0 },
+        { type: "match", q: "Match each word to what it means.", pairs: [["Canopic jar", "Held the organs"], ["Natron", "Salt that dried the body"], ["Amulet", "A lucky charm"], ["Shabti", "A little model servant"]] },
       ],
       grownUp: {
         need: ["An apple, salt, two pots", "Bicarbonate of soda (optional)"],
@@ -360,6 +376,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What is papyrus?", options: ["A reed used to make paper", "A kind of salt"], answer: 0 },
         { type: "choice", q: "What were canopic jars for?", options: ["Holding organs", "Holding paint"], answer: 0 },
         { type: "choice", q: "What is an alphabet?", options: ["The set of letters used to write a language", "A kind of book"], answer: 0 },
+        { type: "type", q: "What is a preserved body called?", answer: ["mummy", "a mummy"] },
+        { type: "choice", q: "What is a sarcophagus?", options: ["A lucky charm", "A stone coffin", "A kind of salt"], answer: 1 },
+        { type: "pick", q: "What did Egyptians put in tombs for the afterlife? There is more than one.", options: ["Food", "Games", "Shabtis", "Bicycles"], answers: [0, 1, 2] },
       ],
       learn: {
         cards: [
@@ -426,6 +445,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What is a cartouche?", options: ["An oval with a pharaoh's name inside", "A coffin"], answer: 0 },
         { type: "choice", q: "What helped people read hieroglyphs again?", options: ["The Rosetta Stone", "The Great Pyramid", "The Sphinx"], answer: 0 },
         { type: "choice", q: "Who cracked the code in 1822?", options: ["Jean-François Champollion", "Howard Carter", "Ramesses II"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "The Rosetta Stone was found in ___. It had the same message in hieroglyphs, another Egyptian script and Ancient ___.", bank: ["1799", "1922", "Greek", "English"], answers: ["1799", "Greek"] },
       ],
       grownUp: {
         need: ["Paper or card, pens", "A hieroglyph alphabet chart (easy to find online)"],
@@ -447,6 +467,9 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What is a cartouche?", options: ["An oval with a pharaoh's name", "A boat"], answer: 0 },
         { type: "choice", q: "Who weighed hearts in the afterlife?", options: ["Anubis", "Cleopatra"], answer: 0 },
         { type: "choice", q: "What did farmers grow in the silt?", options: ["Wheat and barley", "Bananas"], answer: 0 },
+        { type: "choice", q: "Where is the Rosetta Stone now?", options: ["Inside a pyramid", "In the British Museum", "At the bottom of the Nile"], answer: 1 },
+        { type: "type", q: "What were the people who could read and write called?", answer: ["scribes", "scribe", "a scribe"] },
+        { type: "choice", q: "About how many hieroglyphs were there?", options: ["About 26", "More than 700", "Exactly 10"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -511,6 +534,7 @@ export const ancientEgypt: LessonUnit = {
         { type: "choice", q: "What were most Egyptian houses made of?", options: ["Mud bricks", "Stone blocks", "Wood"], answer: 0 },
         { type: "choice", q: "What was most people's job?", options: ["Farmer", "Pharaoh", "Scribe"], answer: 0 },
         { type: "choice", q: "What was Senet?", options: ["A board game", "A god", "A kind of bread"], answer: 0 },
+        { type: "pick", q: "What did Egyptian children play with? There is more than one.", options: ["Balls", "Spinning tops", "Video games", "Wooden toys"], answers: [0, 1, 3] },
       ],
       grownUp: {
         need: ["Card, ruler, pen", "10 counters in two colours", "4 lolly sticks or a dice"],

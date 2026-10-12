@@ -41,7 +41,7 @@ export type BrLesson = {
   minutes: number;
   /** What the child can do by the end, starting "I can". */
   goal: string;
-  /** Three or four warm-up questions, often about the last lesson. Not saved. */
+  /** Six warm-up questions, often about the last lesson. Not saved. */
   starter?: Question[];
   learn: { cards: LessonCard[]; words?: LessonWord[] };
   /** A few practice questions on screen. Not saved. */
@@ -50,7 +50,7 @@ export type BrLesson = {
   worksheet?: string;
   /** The hands-on part, away from the screen. */
   task?: { title: string; intro: string; need?: string[]; steps: string[] };
-  /** Four to six questions. Finishing it saves the score and finishes the lesson. */
+  /** Six questions. Finishing it saves the score and finishes the lesson. */
   exit: Question[];
   /** For the grown-up only. */
   grownUp: { need?: string[]; tips: string[]; younger?: string; older?: string };

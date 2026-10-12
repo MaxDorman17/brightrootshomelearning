@@ -22,6 +22,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What do we put on a birthday cake?", options: ["Candles", "Stones", "Leaves"], answer: 0 },
         { type: "choice", q: "When are the darkest days of the year in the UK?", options: ["In winter", "In summer"], answer: 0 },
         { type: "choice", q: "What is a celebration?", options: ["A special happy time to mark something", "A kind of food"], answer: 0 },
+        { type: "pick", q: "Which of these give us light? There is more than one.", options: ["A candle", "A torch", "A pillow", "The Sun"], answers: [0, 1, 3] },
+        { type: "choice", q: "How do you feel in a dark room when someone switches on a light?", options: ["Scared", "Safer and happier", "Hungry"], answer: 1 },
+        { type: "type", q: "What season comes after autumn? Type one word.", answer: ["winter", "Winter"] },
       ],
       learn: {
         cards: [
@@ -84,6 +87,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What is worship?", options: ["Showing love and respect to God or gods", "Playing football"], answer: 0 },
         { type: "choice", q: "A symbol is...", options: ["something that stands for an idea", "a type of candle"], answer: 0 },
         { type: "choice", q: "Light is often a symbol of...", options: ["hope and goodness", "sadness and anger"], answer: 0 },
+        { type: "gap", q: "Fill the gaps.", text: "Many festivals happen in autumn and ___, when the nights are long and ___.", bank: ["winter", "summer", "dark", "sunny"], answers: ["winter", "dark"] },
       ],
       grownUp: {
         need: ["Paper and pens", "A torch or battery tea light"],
@@ -105,6 +109,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What is a festival?", options: ["A special time of celebration", "A shop"], answer: 0 },
         { type: "choice", q: "What can light be a symbol of?", options: ["Hope and goodness", "Being cross"], answer: 0 },
         { type: "choice", q: "What is a symbol?", options: ["Something that stands for an idea", "A drum"], answer: 0 },
+        { type: "choice", q: "Why do many festivals of light happen in winter?", options: ["It's hot", "The nights are long and dark", "The shops are open"], answer: 1 },
+        { type: "pick", q: "Which groups use light in their festivals? There is more than one.", options: ["Hindus", "Jews", "Christians", "Sikhs"], answers: [0, 1, 2, 3], why: "All four! You'll learn about each one in this unit." },
+        { type: "choice", q: "What is worship?", options: ["A type of game", "A kind of lamp", "Showing love and respect to God or gods"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -168,6 +175,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "Who rescued Sita?", options: ["Rama, with Hanuman's help", "Ravana", "Lakshmi"], answer: 0 },
         { type: "choice", q: "What does the Diwali story show?", options: ["Good wins over evil", "Fireworks are loud"], answer: 0 },
         { type: "choice", q: "Which festival do Sikhs celebrate at the same time?", options: ["Bandi Chhor Divas", "Hanukkah", "Easter"], answer: 0 },
+        { type: "gap", q: "Fill the gaps.", text: "Many Hindus welcome ___, the goddess of good fortune, and make colourful ___ patterns at their doors.", bank: ["Lakshmi", "Sita", "rangoli", "diya"], answers: ["Lakshmi", "rangoli"] },
       ],
       grownUp: {
         need: ["Paper and coloured pens", "Coloured rice or chalk (optional)"],
@@ -189,6 +197,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What is a diya?", options: ["A small clay lamp", "A drum"], answer: 0 },
         { type: "choice", q: "Who is Diwali celebrated by?", options: ["Hindus and Sikhs", "Nobody"], answer: 0 },
         { type: "choice", q: "What did people light to welcome Rama and Sita?", options: ["Lamps", "Bonfires"], answer: 0 },
+        { type: "choice", q: "Who helped Rama rescue Sita?", options: ["Ravana", "Hanuman, the monkey god", "Lakshmi"], answer: 1 },
+        { type: "choice", q: "What is a rangoli?", options: ["A sweet", "A song", "A colourful pattern at the door"], answer: 2 },
+        { type: "choice", q: "What does the Diwali story show?", options: ["Good wins over evil", "Fireworks are loud"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -250,6 +261,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "Who won the Temple back?", options: ["The Maccabees", "The Romans", "Antiochus"], answer: 0 },
         { type: "choice", q: "How many branches does a hanukkiah have?", options: ["Seven", "Eight", "Nine"], answer: 2, why: "Eight candles, plus the shamash." },
         { type: "choice", q: "Why do people eat foods fried in oil at Hanukkah?", options: ["To remember the oil that lasted eight days", "Because they're cheap"], answer: 0 },
+        { type: "order", q: "Put the Hanukkah story in order.", items: ["Antiochus takes over the Temple", "The Maccabees fight back and win", "They find only enough oil for one day", "The oil burns for eight days"] },
       ],
       grownUp: {
         need: ["Card, scissors, glue", "Yellow and orange paper"],
@@ -271,6 +283,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "How many nights does Hanukkah last?", options: ["Eight", "Two"], answer: 0 },
         { type: "choice", q: "What is the shamash?", options: ["The helper candle", "A song"], answer: 0 },
         { type: "choice", q: "Diwali is celebrated by...", options: ["Hindus and Sikhs", "Only Christians"], answer: 0 },
+        { type: "choice", q: "Who won the Temple back in the Hanukkah story?", options: ["Antiochus", "The Maccabees", "Ravana"], answer: 1 },
+        { type: "pick", q: "Which foods are eaten at Hanukkah? There is more than one.", options: ["Potato latkes", "Jam doughnuts", "Hot cross buns"], answers: [0, 1] },
+        { type: "choice", q: "What is a dreidel?", options: ["A candle", "A prayer", "A spinning top"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -332,6 +347,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What is Advent?", options: ["The four weeks of getting ready for Christmas", "A kind of cake"], answer: 0 },
         { type: "choice", q: "How many candles are around the Advent wreath?", options: ["Four", "Eight", "Ten"], answer: 0 },
         { type: "choice", q: "In a Christingle, the orange stands for...", options: ["the world", "the sun", "a fruit bowl"], answer: 0 },
+        { type: "gap", q: "Fill the gaps.", text: "Christmas is on ___ December. Christians celebrate the birth of Jesus in ___.", bank: ["25", "13", "Bethlehem", "Jerusalem"], answers: ["25", "Bethlehem"] },
       ],
       grownUp: {
         need: ["An orange, red ribbon, cocktail sticks, sweets", "A battery tea light, or a candle you light"],
@@ -353,6 +369,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What do Christians call Jesus?", options: ["The light of the world", "The king of the sea"], answer: 0 },
         { type: "choice", q: "In a Christingle, what does the orange stand for?", options: ["The world", "The moon"], answer: 0 },
         { type: "choice", q: "Advent is...", options: ["the time of getting ready for Christmas", "a summer holiday"], answer: 0 },
+        { type: "choice", q: "When is Christmas Day?", options: ["13 December", "25 December", "1 January"], answer: 1 },
+        { type: "choice", q: "How many candles are around the Advent wreath?", options: ["Two", "Six", "Four"], answer: 2 },
+        { type: "choice", q: "In a Christingle, what does the red ribbon stand for?", options: ["Jesus's love", "The sun"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -411,6 +430,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "Where is St Lucia's Day especially loved?", options: ["Sweden, Norway and Finland", "Egypt"], answer: 0 },
         { type: "choice", q: "What are lussekatter?", options: ["Saffron buns", "Candles", "Songs"], answer: 0 },
         { type: "choice", q: "What is a saint?", options: ["A person Christians remember for being very good and holy", "A kind of king"], answer: 0 },
+        { type: "match", q: "Match each word to its meaning.", pairs: [["Procession", "People walking together in a line"], ["Lussekatter", "S-shaped saffron buns"], ["Scandinavia", "Countries of northern Europe, like Sweden and Norway"]] },
       ],
       grownUp: {
         need: ["Card strip, green, white and yellow paper", "Glue, tape, scissors", "A battery tea light"],
@@ -432,6 +452,9 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "When is St Lucia's Day?", options: ["13 December", "5 November"], answer: 0 },
         { type: "choice", q: "What is a hanukkiah?", options: ["The candlestick lit at Hanukkah", "A lamp lit at Diwali"], answer: 0 },
         { type: "choice", q: "What is a diya?", options: ["A clay lamp lit at Diwali", "An Advent candle"], answer: 0 },
+        { type: "choice", q: "What did Lucia wear on her head in the story?", options: ["A helmet", "A crown of candles", "A hat"], answer: 1 },
+        { type: "choice", q: "Where is St Lucia's Day especially loved?", options: ["Egypt", "Australia", "Sweden, Norway and Finland"], answer: 2 },
+        { type: "choice", q: "What are lussekatter?", options: ["Saffron buns", "Candles"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -497,6 +520,7 @@ export const festivalsOfLight: LessonUnit = {
         { type: "choice", q: "What do all these festivals use light to stand for?", options: ["Something good, like hope", "Being scared"], answer: 0 },
         { type: "choice", q: "Christmas is a festival for...", options: ["Christians", "Hindus", "Jews"], answer: 0 },
         { type: "choice", q: "Why is it good to learn about other people's festivals?", options: ["It helps us understand and respect each other", "It isn't"], answer: 0 },
+        { type: "match", q: "Match each festival to the story it remembers.", pairs: [["Diwali", "Rama and Sita"], ["Hanukkah", "The oil in the Temple"], ["Christmas", "The birth of Jesus"], ["St Lucia's Day", "Lucia's kindness"]] },
       ],
       grownUp: {
         need: ["Paper and pens", "Crafts from the unit"],

@@ -22,6 +22,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "Which of these is made of glass?", options: ["A window", "A jumper", "A wooden spoon"], answer: 0 },
         { type: "choice", q: "Which word means you can see through something?", options: ["Bendy", "Transparent", "Heavy"], answer: 1 },
         { type: "choice", q: "What is a scientist?", options: ["Someone who finds things out by testing and looking closely", "Someone who sells things", "Someone who writes stories"], answer: 0 },
+        { type: "pick", q: "Which of these feel hard? There is more than one.", options: ["A metal spoon", "A pillow", "A glass jar", "A sock"], answers: [0, 2] },
+        { type: "match", q: "Match each object to what it is usually made of.", pairs: [["Spoon", "Metal"], ["Paper bag", "Paper"], ["Chopping board", "Wood"]] },
+        { type: "choice", q: "Which would be best for mopping up spilled water?", options: ["A plastic plate", "A metal tray", "A cloth"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -94,6 +97,7 @@ export const kitchenScience: LessonUnit = {
           why: "A spoon and a cup are objects. They are made of materials.",
         },
         { type: "choice", q: "What does absorbent mean?", options: ["It soaks up water", "It keeps water out", "It is very heavy"], answer: 0 },
+        { type: "gap", q: "Fill the gap.", text: "A saucepan is made of ___ because it is strong and doesn't melt on the cooker.", bank: ["metal", "paper", "fabric"], answers: ["metal"] },
       ],
       grownUp: {
         need: ["Paper and a pencil", "Access to a few kitchen cupboards"],
@@ -115,6 +119,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What is a property?", options: ["A word that describes what a material is like", "An object", "A type of food"], answer: 0 },
         { type: "choice", q: "Which is absorbent?", options: ["A sponge", "A metal spoon", "A glass"], answer: 0 },
         { type: "choice", q: "Transparent means...", options: ["you can see through it", "it is waterproof", "it is soft"], answer: 0 },
+        { type: "choice", q: "What is a material?", options: ["A kind of object", "What an object is made of", "A colour"], answer: 1 },
+        { type: "match", q: "Match each word to what it means.", pairs: [["Opaque", "You can't see through it"], ["Absorbent", "It soaks up water"], ["Transparent", "You can see through it"]] },
+        { type: "choice", q: "Why is a window made of glass?", options: ["It's soft", "It's absorbent", "It's transparent"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -188,6 +195,7 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What is a prediction?", options: ["What you think will happen", "What did happen", "A kind of material"], answer: 0 },
         { type: "choice", q: "Which is most likely to be waterproof?", options: ["Kitchen roll", "Cling film", "Paper"], answer: 1 },
         { type: "choice", q: "If your prediction was wrong, that means...", options: ["you did it badly", "you learned something new", "you must start again"], answer: 1 },
+        { type: "order", q: "Put the steps of the waterproof test in order.", items: ["Make a prediction", "Do the test", "Record the results"] },
       ],
       grownUp: {
         need: ["A jar, an elastic band, a teaspoon and water", "Squares of kitchen roll, cling film, foil, cotton, a plastic bag and paper"],
@@ -209,6 +217,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "In a fair test you change...", options: ["only one thing", "everything"], answer: 0 },
         { type: "choice", q: "What is a prediction?", options: ["What you think will happen", "Your results"], answer: 0 },
         { type: "choice", q: "Which is waterproof?", options: ["A plastic bag", "A paper towel"], answer: 0 },
+        { type: "choice", q: "What does waterproof mean?", options: ["It soaks up water", "It doesn't let water through", "It is see-through"], answer: 1 },
+        { type: "pick", q: "Which would make a good raincoat? There is more than one.", options: ["A plastic bag", "Kitchen roll", "Paper", "Cling film"], answers: [0, 3] },
+        { type: "choice", q: "What do you write down after a test?", options: ["Your prediction", "Your results", "A story"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -267,6 +278,7 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "Which shape of foil floats best?", options: ["A tight ball", "A boat shape"], answer: 1 },
         { type: "choice", q: "Things with lots of air inside are good at...", options: ["sinking", "floating"], answer: 1 },
         { type: "choice", q: "What happens to a peeled orange in water?", options: ["It floats", "It sinks"], answer: 1 },
+        { type: "gap", q: "Fill the gaps.", text: "An object that stays on top of the water will ___. An object that goes down to the bottom will ___.", bank: ["float", "sink", "melt"], answers: ["float", "sink"] },
       ],
       grownUp: {
         need: ["A washing-up bowl of water", "Small objects", "Foil", "Coins or marbles"],
@@ -288,6 +300,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What helps things float?", options: ["Lots of air inside", "Being made of metal"], answer: 0 },
         { type: "choice", q: "What is a fair test?", options: ["Change one thing, keep the rest the same", "Change everything"], answer: 0 },
         { type: "choice", q: "What is a material?", options: ["What an object is made of", "A colour"], answer: 0 },
+        { type: "choice", q: "What is upthrust?", options: ["How heavy something is", "A kind of boat", "The water pushing up on an object"], answer: 2 },
+        { type: "pick", q: "Which of these float? There is more than one.", options: ["A cork", "A coin", "An empty bottle", "A peeled orange"], answers: [0, 2] },
+        { type: "choice", q: "Which foil shape floats best?", options: ["A boat shape", "A tight ball"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -356,6 +371,7 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What is a solution?", options: ["A liquid with something dissolved in it", "A kind of rock", "A hard material"], answer: 0 },
         { type: "choice", q: "How can you get salt back from salty water?", options: ["Let the water evaporate", "Freeze it", "Stir it more"], answer: 0 },
         { type: "choice", q: "Dissolving is...", options: ["a change you can undo", "a change you can never undo"], answer: 0, why: "It's a reversible change." },
+        { type: "pick", q: "Which of these are insoluble? There is more than one.", options: ["Sugar", "Sand", "Rice", "Salt"], answers: [1, 2], why: "Sand and rice don't dissolve. They just sink to the bottom." },
       ],
       grownUp: {
         need: ["Four clear glasses", "Sugar, salt, sand or soil, rice", "A dark saucer"],
@@ -377,6 +393,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What does dissolve mean?", options: ["Mix into a liquid and break up too small to see", "Turn into ice"], answer: 0 },
         { type: "choice", q: "Which is soluble?", options: ["Sugar", "Sand"], answer: 0 },
         { type: "choice", q: "Evaporate means...", options: ["a liquid turns into a gas", "a liquid turns into ice"], answer: 0 },
+        { type: "choice", q: "Is sand soluble?", options: ["Yes", "No"], answer: 1 },
+        { type: "match", q: "Match each word to what it means.", pairs: [["Soluble", "It can dissolve"], ["Insoluble", "It can't dissolve"], ["Solution", "A liquid with something dissolved in it"]] },
+        { type: "choice", q: "What helps sugar dissolve faster?", options: ["Cold water", "Warm water and stirring", "Leaving it alone"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -443,6 +462,7 @@ export const kitchenScience: LessonUnit = {
         { type: "type", q: "Water freezes at how many degrees Celsius?", answer: "0", after: "°C" },
         { type: "choice", q: "Is melting a reversible change?", options: ["Yes, you can freeze it again", "No, it can never be undone"], answer: 0 },
         { type: "choice", q: "Where would an ice cube melt fastest?", options: ["In the fridge", "On a sunny windowsill"], answer: 1 },
+        { type: "pick", q: "Which of these are liquids? There is more than one.", options: ["Milk", "A spoon", "Orange juice", "An ice cube"], answers: [0, 2], why: "Liquids flow and take the shape of their container." },
       ],
       grownUp: {
         need: ["Four ice cubes the same size", "Saucers", "A timer"],
@@ -464,6 +484,9 @@ export const kitchenScience: LessonUnit = {
         { type: "choice", q: "What happens when water gets cold enough?", options: ["It freezes", "It evaporates"], answer: 0 },
         { type: "choice", q: "A reversible change is...", options: ["a change you can undo", "a change you can't undo"], answer: 0 },
         { type: "choice", q: "Is melting chocolate reversible?", options: ["Yes", "No"], answer: 0 },
+        { type: "choice", q: "What happens when ice gets warm?", options: ["It melts", "It freezes", "It fizzes"], answer: 0 },
+        { type: "type", q: "At what temperature does water freeze? Type the number.", answer: "0", after: "°C" },
+        { type: "choice", q: "How can you get salt back from salty water?", options: ["Stir it more", "Freeze it", "Let the water evaporate"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -530,6 +553,7 @@ export const kitchenScience: LessonUnit = {
           answers: [0, 1, 3],
         },
         { type: "choice", q: "What are the bubbles when bicarbonate of soda and vinegar mix?", options: ["Air from the cupboard", "Carbon dioxide gas", "Steam"], answer: 1 },
+        { type: "match", q: "Match each change to reversible or irreversible.", pairs: [["Toasting bread", "Irreversible"], ["Melting chocolate", "Reversible"]] },
       ],
       grownUp: {
         need: ["A tray", "A small glass", "Bicarbonate of soda", "Vinegar"],

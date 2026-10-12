@@ -22,6 +22,14 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "How might you feel on your birthday?", options: ["Excited", "Bored", "Sleepy"], answer: 0 },
         { type: "choice", q: "Is it OK to feel sad sometimes?", options: ["Yes", "No"], answer: 0 },
         { type: "choice", q: "Who can you talk to about your feelings?", options: ["A grown-up you trust", "Nobody"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which of these are feelings? There is more than one.",
+          options: ["Happy", "Table", "Worried", "Excited"],
+          answers: [0, 2, 3],
+        },
+        { type: "match", q: "Match each face to a feeling.", pairs: [["A big smile", "Happy"], ["Tears", "Sad"], ["Frowning and stamping", "Angry"]] },
+        { type: "choice", q: "How might you feel before a big swimming race?", options: ["Bored", "Sleepy", "Nervous"], answer: 2 },
       ],
       learn: {
         cards: [
@@ -84,6 +92,7 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "Where can you feel feelings?", options: ["Only in your head", "In your body too"], answer: 1 },
         { type: "choice", q: "Butterflies in your tummy often mean you feel...", options: ["nervous", "sleepy"], answer: 0 },
         { type: "choice", q: "Why does finding the right feeling word help?", options: ["It helps others and you understand how you feel", "It doesn't help"], answer: 0 },
+        { type: "gap", q: "Fill the gaps.", text: "When you're angry, your face might go ___ and your fists might ___.", bank: ["hot", "cold", "clench", "wave"], answers: ["hot", "clench"] },
       ],
       grownUp: {
         need: ["A big sheet of paper and pens"],
@@ -105,6 +114,9 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "Are all feelings OK?", options: ["Yes", "No"], answer: 0 },
         { type: "choice", q: "What does frustrated mean?", options: ["Cross because something isn't working", "Very calm"], answer: 0 },
         { type: "choice", q: "Can you feel feelings in your body?", options: ["Yes", "No"], answer: 0 },
+        { type: "type", q: "What is another word for a feeling? It starts with e.", answer: ["emotion", "an emotion", "emotions"] },
+        { type: "match", q: "Match each body clue to a feeling.", pairs: [["Butterflies in your tummy", "Nervous"], ["A hot face and clenched fists", "Angry"], ["Light and bouncy", "Happy"]] },
+        { type: "choice", q: "What does proud mean?", options: ["Very tired", "Pleased about something you have done", "Scared of the dark"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -172,6 +184,13 @@ export const feelingsAndFriendships: LessonUnit = {
           answers: [0, 1, 3],
         },
         { type: "choice", q: "Does the same strategy work for everyone?", options: ["Yes, always", "No, different things work for different people"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "Smell the flower: breathe in slowly through your ___. Blow out the candle: breathe out slowly through your ___.",
+          bank: ["nose", "mouth", "ears"],
+          answers: ["nose", "mouth"],
+        },
       ],
       grownUp: {
         need: ["A shoebox or card", "A few calming objects"],
@@ -193,6 +212,14 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "Which can help calm a big feeling?", options: ["Slow breathing", "Shouting louder"], answer: 0 },
         { type: "choice", q: "What is a trusted adult?", options: ["A grown-up who will listen and help", "A stranger"], answer: 0 },
         { type: "choice", q: "Are all feelings OK?", options: ["Yes", "No"], answer: 0 },
+        { type: "gap", q: "Fill the gaps.", text: "Slow ___ tells your body it's ___.", bank: ["breathing", "shouting", "safe", "late"], answers: ["breathing", "safe"] },
+        { type: "type", q: "How many times do you do 'smell the flower, blow out the candle'?", answer: ["5", "five"] },
+        {
+          type: "pick",
+          q: "Which of these could go in a calm toolkit? There is more than one.",
+          options: ["Counting slowly to ten", "Moving your body", "Slamming a door", "Having a drink of water"],
+          answers: [0, 1, 3],
+        },
       ],
       learn: {
         cards: [
@@ -255,6 +282,11 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "A good friend makes you feel...", options: ["good about yourself", "left out"], answer: 0 },
         { type: "choice", q: "Can friends be different ages?", options: ["Yes", "No"], answer: 0 },
         { type: "choice", q: "What does respect mean?", options: ["Treating someone's feelings as important", "Doing whatever they say"], answer: 0 },
+        {
+          type: "match",
+          q: "Match each word to what it means.",
+          pairs: [["Kind", "Caring about others and treating them well"], ["Loyal", "Sticking by someone"], ["Respect", "Treating someone's feelings as important"]],
+        },
       ],
       grownUp: {
         need: ["Paper and pens"],
@@ -276,6 +308,14 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "What does a good friend do?", options: ["Takes turns and listens", "Leaves you out"], answer: 0 },
         { type: "choice", q: "What does loyal mean?", options: ["Sticking by someone", "Being bossy"], answer: 0 },
         { type: "choice", q: "Can friends be different from each other?", options: ["Yes", "No"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which are good ways to start making a friend? There is more than one.",
+          options: ["Smile", "Say hello", "Turn your back", "Ask their name"],
+          answers: [0, 1, 3],
+        },
+        { type: "choice", q: "Can some friends live far away?", options: ["No, never", "Yes, you can talk to them on the phone"], answer: 1 },
+        { type: "gap", q: "Fill the gaps.", text: "Good friends are ___. They listen, they ___ and they take turns.", bank: ["kind", "mean", "share", "shout"], answers: ["kind", "share"] },
       ],
       learn: {
         cards: [
@@ -339,6 +379,7 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "Bullying is when someone...", options: ["hurts or upsets someone on purpose, again and again", "disagrees with you once"], answer: 0 },
         { type: "choice", q: "If someone is being bullied, what should you do?", options: ["Keep it secret", "Tell a trusted adult"], answer: 1 },
         { type: "choice", q: "Is bullying ever the fault of the person being bullied?", options: ["Yes", "No, never"], answer: 1 },
+        { type: "gap", q: "Fill the gaps.", text: "When making up, start with 'I ___...' and take turns to ___ properly.", bank: ["feel", "win", "listen", "shout"], answers: ["feel", "listen"] },
       ],
       grownUp: {
         need: ["Two soft toys or puppets"],
@@ -360,6 +401,9 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "What is a compromise?", options: ["Each person gives a bit", "One person wins"], answer: 0 },
         { type: "choice", q: "If someone is bullied, they should...", options: ["tell a trusted adult", "keep it secret"], answer: 0 },
         { type: "choice", q: "Is it OK to fall out sometimes?", options: ["Yes, it happens to everyone", "No, never"], answer: 0 },
+        { type: "order", q: "Put the steps for making up in order.", items: ["Calm down", "Say 'I feel...'", "Listen properly", "Find a fair answer together"] },
+        { type: "type", q: "What is the word for hurting or upsetting someone on purpose, again and again?", answer: ["bullying"] },
+        { type: "choice", q: "What helps a lot when making up?", options: ["Walking off", "Saying sorry and meaning it", "Shouting"], answer: 1 },
       ],
       learn: {
         cards: [
@@ -422,6 +466,12 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "Do all families deserve respect?", options: ["Yes", "Only ones like mine"], answer: 0 },
         { type: "choice", q: "Can a family live in more than one home?", options: ["Yes", "No"], answer: 0 },
         { type: "choice", q: "What is a relative?", options: ["Someone in your family", "A neighbour"], answer: 0 },
+        {
+          type: "pick",
+          q: "What do families do for each other? There is more than one.",
+          options: ["Love each other", "Look after each other", "Never get cross", "Help each other"],
+          answers: [0, 1, 3],
+        },
       ],
       grownUp: {
         need: ["Paper and pens", "Family photos (optional)"],
@@ -443,6 +493,14 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "What makes a family?", options: ["How they care for each other", "Where they live"], answer: 0 },
         { type: "choice", q: "Who should you tell if something is wrong?", options: ["A trusted adult", "Nobody"], answer: 0 },
         { type: "choice", q: "Bullying is...", options: ["never OK", "fine sometimes"], answer: 0 },
+        { type: "type", q: "What is the word for something a family does again and again, often at special times?", answer: ["tradition", "a tradition"] },
+        {
+          type: "pick",
+          q: "Which of these could be someone's relative? There is more than one.",
+          options: ["A cousin", "An aunt", "The postman", "A grandparent"],
+          answers: [0, 1, 3],
+        },
+        { type: "gap", q: "Fill the gaps.", text: "What makes a family is how they ___ for each other. All families deserve ___.", bank: ["care", "race", "respect", "sweets"], answers: ["care", "respect"] },
       ],
       learn: {
         cards: [
@@ -506,6 +564,7 @@ export const feelingsAndFriendships: LessonUnit = {
         { type: "choice", q: "If something online upsets you, you should...", options: ["tell a trusted adult", "hide it"], answer: 0 },
         { type: "choice", q: "Will you be in trouble for telling?", options: ["Yes", "No, telling is always right"], answer: 1 },
         { type: "choice", q: "Being kind online means...", options: ["only writing what you'd say to someone's face", "saying anything you like"], answer: 0 },
+        { type: "type", q: "What is the secret word that keeps your account safe?", answer: ["password", "a password"] },
       ],
       grownUp: {
         need: ["Paper and pens"],
