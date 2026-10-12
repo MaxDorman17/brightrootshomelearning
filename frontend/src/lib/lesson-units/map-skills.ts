@@ -34,6 +34,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "Eight points, not four",
+            picture: "/lessons/map-skills/lesson-1-1.jpg",
+            alt: "A hand-drawn eight-point compass rose",
             text: [
               "You probably already know the four main points of the compass: north, east, south and west. These are called the cardinal points. Going clockwise from north, you can remember them with a silly sentence such as 'Naughty Elephants Squirt Water'.",
               "Halfway between each pair of cardinal points is another direction. Between north and east is north-east. Between south and east is south-east. Then come south-west and north-west. These four are called the intercardinal points, so a full compass rose has eight points.",
@@ -43,6 +45,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Finding north in real life",
+            picture: "/lessons/map-skills/lesson-1-2.jpg",
+            alt: "A child holding a compass, their midday shadow on the grass",
             text: [
               "A magnetic compass has a tiny magnetised needle that swings round until it points to magnetic north, a place in the Arctic, near the North Pole, that slowly drifts over the years. Magnetic north is not quite the same as the north on a map, but in the UK today the difference is very small, so for everyday use you can treat them as the same.",
               "Because the needle is a magnet, other magnets and lumps of metal can pull it the wrong way. Hold your compass flat and keep it away from fridges, speakers, phones and metal railings, or it may give you a false reading.",
@@ -52,6 +56,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Giving directions on a map",
+            picture: "/lessons/map-skills/lesson-1-3.jpg",
+            alt: "A parent and child turning a map to line it up with the land",
             text: [
               "Before you use a map outdoors, set it, or orient it. This means turning the map round until north on the map points towards north in real life. Now the road on your left on the map is also the road on your left in front of you, which makes the map much easier to follow.",
               "Geographers describe where places are using compass directions. 'The farm is north-east of the church' means that if you stood at the church, you would walk north-east to reach the farm. The word 'of' tells you where you start from.",
@@ -162,6 +168,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "Why maps have grids",
+            picture: "/lessons/map-skills/lesson-2-1.jpg",
+            alt: "A countryside map covered with a blue grid",
             text: [
               "Saying 'the castle is somewhere near the top of the map' isn't much help to anyone. To point to a place exactly, maps are covered with a grid: two sets of straight, evenly spaced lines that cross each other to make squares.",
               "Each line has a number. That means every square can be given its own name made of numbers, called a grid reference. If you have used coordinates in maths, or played a game where you call out squares on a board, you already know the idea.",
@@ -171,6 +179,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Along the corridor, then up the stairs",
+            picture: "/lessons/map-skills/lesson-2-2.jpg",
+            alt: "A finger tracing along and then up a gridded map",
             text: [
               "The lines that run up and down the map are called eastings. Their numbers are printed along the bottom and top edges, and they get bigger as you move east, which is how they got their name.",
               "The lines that run across the map are called northings. Their numbers are printed up the sides, and they get bigger as you move north.",
@@ -179,6 +189,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Writing a four-figure grid reference",
+            picture: "/lessons/map-skills/lesson-2-3.jpg",
+            alt: "A child drawing a gridded plan of a bedroom",
             text: [
               "A square is named after the two lines that meet at its bottom-left corner. Find the easting line on the left-hand side of the square, then the northing line along its bottom edge.",
               "Say a pond sits in a square whose left-hand line is easting 24 and whose bottom line is northing 36. Put the two numbers together, easting first, and the pond is in square 2436. Write the four digits together, with no comma or space.",
@@ -275,6 +287,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "When a square is not enough",
+            picture: "/lessons/map-skills/lesson-3-1.jpg",
+            alt: "A bird's-eye view of a village, fields and a river",
             text: [
               "A four-figure grid reference tells you which square something is in. But on an Ordnance Survey map each square is a whole square kilometre of land. That is an area big enough to hold a village, several farms, a wood and a stretch of river.",
               "If you told a friend to meet you 'in square 2436', they might spend an hour looking for you. You need a way to point to an exact spot inside the square.",
@@ -283,6 +297,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Making a six-figure reference",
+            picture: "/lessons/map-skills/lesson-3-2.jpg",
+            alt: "A magnifying glass over one grid square showing a footbridge",
             text: [
               "You still go along the corridor first, then up the stairs. The only difference is that you add one extra digit to each number, to say how many tenths across or up the square you have gone.",
               "Imagine a footbridge in square 2436. First, find the easting line on its left: 24. Then estimate how many tenths east of that line the footbridge is. If it is seven tenths of the way across, the easting part is 247.",
@@ -292,6 +308,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Getting it accurate",
+            picture: "/lessons/map-skills/lesson-3-3.jpg",
+            alt: "A mountain rescue team walking up a mountainside",
             text: [
               "Estimating tenths takes practice. A good starting point is halfway, which is five tenths. Then ask yourself: is it a little less than halfway, or a lot more?",
               "Many walkers' compasses have a romer printed on them: a tiny ruler marked in tenths, sized to fit a grid square on a particular map scale. You line it up with the bottom-left corner of the square to read the tenths exactly.",
@@ -397,6 +415,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "Ordnance Survey and OSNI",
+            picture: "/lessons/map-skills/lesson-4-1.jpg",
+            alt: "Children walking up to a trig pillar on a hilltop",
             text: [
               "Ordnance Survey, often shortened to OS, is the national mapping agency for Great Britain: England, Scotland and Wales. It began in 1791, when the government needed accurate maps to help defend the country. 'Ordnance' is an old word for military weapons and supplies.",
               "Early surveyors measured the land with a method called triangulation, working out distances from carefully measured angles between high points. From 1936, thousands of concrete pillars called trig points were built on hilltops to help with this. Many are still there, and walkers love reaching them.",
@@ -406,6 +426,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "The maps walkers use",
+            picture: "/lessons/map-skills/lesson-4-2.jpg",
+            alt: "An orange-covered map and a pink-covered map beside walking boots",
             text: [
               "In Great Britain, the two best-known OS paper maps are OS Explorer and OS Landranger. OS Explorer maps have orange covers and a scale of 1:25,000. They show lots of detail, even the walls and fences between fields.",
               "OS Landranger maps have pink covers and a scale of 1:50,000. They cover a bigger area on each sheet but show less detail, which makes them handy for planning longer journeys.",
@@ -415,6 +437,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Reading the symbols",
+            picture: "/lessons/map-skills/lesson-4-3.jpg",
+            alt: "A close-up of map symbols for lakes, woods and paths",
             text: [
               "Colours tell you a lot. Water, such as rivers, lakes and the sea, is blue. Woods are green, with small tree shapes: pointed trees mean coniferous trees, like pines, and round, bushy trees mean broadleaved trees, like oaks. Motorways are blue, main A roads are green or red, and B roads are yellow or orange.",
               "Some symbols are shapes. A place of worship with a tower is a small black square with a cross on top. One with a spire, minaret or dome is a small black circle with a cross on top. A small triangle with a dot in its middle marks a trig point.",
@@ -511,6 +535,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "What scale means",
+            picture: "/lessons/map-skills/lesson-5-1.jpg",
+            alt: "A ruler on a map beside a toy house, with a real house outside",
             text: [
               "A map is much smaller than the real place it shows. The scale tells you exactly how much smaller. It is often written as a ratio, such as 1:25,000, which you say as 'one to twenty-five thousand'.",
               "1:25,000 means that 1 centimetre on the map stands for 25,000 centimetres on the ground. That is 250 metres, which is about the length of two and a half football pitches. On a 1:50,000 map, 1 centimetre stands for 50,000 centimetres, which is 500 metres.",
@@ -520,6 +546,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Measuring in a straight line",
+            picture: "/lessons/map-skills/lesson-5-2.jpg",
+            alt: "A crow flying straight over fields and a winding lane",
             text: [
               "To find a straight-line distance, measure between the two places with a ruler, then use the scale. On a 1:25,000 map, every 4 centimetres is 1 kilometre. On a 1:50,000 map, every 2 centimetres is 1 kilometre.",
               "There is a handy shortcut on OS and OSNI maps: each grid square is 1 kilometre across, whatever the scale of the map. If a village is three squares east of you, it is about 3 kilometres away.",
@@ -529,6 +557,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Measuring a winding route",
+            picture: "/lessons/map-skills/lesson-5-3.jpg",
+            alt: "A child measuring a winding path on a map with string",
             text: [
               "People can't fly like crows. Real paths and roads bend around fields, hills and rivers, so the distance you actually walk is always longer than the straight-line distance.",
               "To measure a winding route, lay a piece of thin string along it on the map, carefully following every bend. Pinch the string where the route ends, then straighten it out against a ruler or the scale bar.",
@@ -621,6 +651,8 @@ export const mapSkills: LessonUnit = {
         cards: [
           {
             heading: "Showing height on a flat map",
+            picture: "/lessons/map-skills/lesson-6-1.jpg",
+            alt: "A green hill with rings around it at different heights",
             text: [
               "A map is flat, but the land isn't. Mapmakers show hills and valleys using contour lines: thin lines that join up places which are the same height above sea level. On OS maps they are printed in orange-brown.",
               "If you walked exactly along a contour line on a real hillside, you would never go up or down. It's a bit like the tidemark the water would leave if the sea rose up the hill to that height.",
@@ -630,6 +662,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Reading the shape of the land",
+            picture: "/lessons/map-skills/lesson-6-2.jpg",
+            alt: "A mountain with a steep cliff on one side and a gentle slope on the other",
             text: [
               "The spacing of contour lines tells you how steep the land is. When the lines are close together, the height changes quickly over a short distance, so the slope is steep. When they are far apart, the slope is gentle. Where there are hardly any lines, the land is almost flat.",
               "A set of rings getting smaller towards the middle, with the numbers getting bigger, shows a hill or mountain top. When contour lines make V shapes with a stream running through them, and the point of each V aims uphill, you are looking at a valley.",
@@ -638,6 +672,8 @@ export const mapSkills: LessonUnit = {
           },
           {
             heading: "Planning a route",
+            picture: "/lessons/map-skills/lesson-6-3.jpg",
+            alt: "A family walking a footpath, a child holding the map",
             text: [
               "Now you can put all your skills together. Choose a start and finish, perhaps at a car park or bus stop, and give each a six-figure grid reference. Follow public paths on the map, and split the route into short legs between landmarks such as a bridge, a church or a path junction.",
               "For each leg, a route card records the direction, using compass points, and the distance, measured with string and the scale. Then use the contours to see how much you will climb: count the lines you cross going uphill and multiply by the contour interval.",

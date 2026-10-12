@@ -44,6 +44,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "Same size, different look",
+            picture: "/lessons/perspective-drawing/lesson-1-1.jpg",
+            alt: "Two identical oak trees, one near and big, one far away and tiny",
             text: [
               "Imagine two identical oak trees: one at the end of your garden and one on a hill a mile away. You know they are the same size, but the far one looks no bigger than your thumb. Your eyes are telling you something different from what your brain knows.",
               "When we draw, we have a choice. We can draw what we know (two trees the same size) or what we see (a big tree and a tiny one). Drawing what we see is what makes a picture feel deep, as if you could walk into it.",
@@ -53,6 +55,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Why far things look small",
+            picture: "/lessons/perspective-drawing/lesson-1-2.jpg",
+            alt: "A boy covering a whole house with his thumb held at arm's length",
             text: [
               "You see an object because light bounces off it and travels in straight lines into your eye, through the pupil. At the back of your eye, on the retina, it makes a tiny upside-down picture, which your brain turns the right way up.",
               "Light from the top and bottom of a nearby object comes into your eye at a wide angle, so its picture on the retina is big. Light from the same object far away comes in at a much narrower angle, so its picture is small.",
@@ -62,6 +66,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Measuring what you see",
+            picture: "/lessons/perspective-drawing/lesson-1-3.jpg",
+            alt: "A girl sighting with a pencil at a friend far away, with pale hills behind",
             text: [
               "Artists check sizes by sighting with a pencil. Stretch your arm out straight and lock your elbow, so the pencil is always the same distance from your eye. Close one eye, line the tip of the pencil up with the top of the object, and slide your thumb down to its bottom.",
               "The bit of pencil above your thumb is the object's apparent size: how big it looks from where you are standing. Keep your thumb still and you can lay the pencil on your paper and mark that size.",
@@ -182,6 +188,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "Overlap",
+            picture: "/lessons/perspective-drawing/lesson-2-1.jpg",
+            alt: "Overlapping hills and a tree hiding part of a cottage",
             text: [
               "If one object hides part of another, the hidden one must be behind it. This is called overlap, and it is the strongest and simplest clue to depth there is. Your brain reads it instantly.",
               "When you draw overlapping things, draw the nearest object first and complete it. Then draw the one behind, stopping each line where it meets the edge of the front object.",
@@ -190,6 +198,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Size and placement",
+            picture: "/lessons/perspective-drawing/lesson-2-2.jpg",
+            alt: "Sheep getting smaller and higher up the view as they get further away",
             text: [
               "From Lesson 1 you know that further things look smaller. So if you draw three sheep and make one much smaller, the viewer will read it as further away.",
               "Placement matters just as much. When things stand on flat ground, the further they are, the higher up the picture they sit, closer to where land meets sky. Look out of a window: the feet of a far-off person are higher in your view than the feet of someone nearby.",
@@ -199,6 +209,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Foreground, middle ground and background",
+            picture: "/lessons/perspective-drawing/lesson-2-3.jpg",
+            alt: "A landscape with foreground, middle ground and background",
             text: [
               "Landscape artists often plan a picture in three layers. The foreground is nearest the viewer, the middle ground is in between, and the background is furthest away.",
               "Give each layer its own treatment. Foreground: large, dark, sharp and full of detail, like every leaf on a branch. Middle ground: medium in size and tone. Background: small, pale and simple, like the outline of hills with no details at all. This uses the atmospheric perspective you met in Lesson 1.",
@@ -328,6 +340,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "The horizon line is your eye level",
+            picture: "/lessons/perspective-drawing/lesson-3-1.jpg",
+            alt: "Two children on a beach with the horizon at their eye level",
             text: [
               "Stand on a beach and look out to sea. Where the sea meets the sky there is a flat line: the horizon. In perspective drawing, the horizon line is always at the level of the viewer's eyes, so it is also called the eye level.",
               "Indoors you can't see the real horizon, but your eye level is still there. It moves with you: crouch down and it drops; stand on a step and it rises. That's why the world looks so different to a toddler and to a tall adult.",
@@ -337,6 +351,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "The vanishing point",
+            picture: "/lessons/perspective-drawing/lesson-3-2.jpg",
+            alt: "Railway rails meeting at a vanishing point on the horizon",
             text: [
               "Look down a long, straight railway. The rails are parallel, always the same distance apart, yet they seem to come closer and closer until they meet in a single point. This point is on the horizon line, and it is called the vanishing point.",
               "It happens for the same reason as Lesson 1: the gap between the rails is further away, so it looks smaller and smaller until it seems to disappear.",
@@ -346,6 +362,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Brunelleschi's experiment",
+            picture: "/lessons/perspective-drawing/lesson-3-3.jpg",
+            alt: "Brunelleschi testing his painting with a mirror in front of the Florence Baptistery",
             text: [
               "In about 1415 in Florence, Italy, the architect Filippo Brunelleschi carried out a famous experiment. He later designed the enormous dome of Florence Cathedral, which still stands today.",
               "He painted the Baptistery, an eight-sided building opposite the cathedral, on a small panel, carefully making all the lines meet at a vanishing point. Then he drilled a small hole through the panel at that point. A viewer stood where he had painted from, looked through the hole from the back, and held up a mirror to see the painting reflected.",
@@ -474,6 +492,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "How one-point perspective works",
+            picture: "/lessons/perspective-drawing/lesson-4-1.jpg",
+            alt: "A girl using a ruler to draw guide lines to a vanishing point",
             text: [
               "One-point perspective uses a single vanishing point. It works when you are facing something straight on, such as looking straight down a road or into a room from the doorway.",
               "In one-point perspective there are only three kinds of line. Horizontal lines run straight across. Vertical lines run straight up and down. Lines that go away from you all go to the vanishing point. These are called orthogonal lines, or orthogonals.",
@@ -483,6 +503,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "A road, a hallway and a room",
+            picture: "/lessons/perspective-drawing/lesson-4-2.jpg",
+            alt: "A long hallway in one-point perspective",
             text: [
               "A road: draw its two edges from the bottom of the page to the vanishing point. For a row of lamp posts, draw the first one tall. Then draw guide lines from its top and its bottom to the vanishing point. Every other lamp post fits exactly between those two guide lines, getting shorter and closer together.",
               "A hallway: draw a small rectangle around the vanishing point for the far wall. Then draw lines from the vanishing point, through each corner of the rectangle, out to the edges of the page. Now you have a floor, a ceiling and two side walls.",
@@ -492,6 +514,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Canaletto's Venice",
+            picture: "/lessons/perspective-drawing/lesson-4-3.jpg",
+            alt: "The Grand Canal in Venice with palaces receding into the distance",
             text: [
               "Giovanni Antonio Canal, known as Canaletto, was born in Venice in 1697 and died there in 1768. His father painted scenery for the theatre, and Canaletto started out doing the same, painting stage sets that had to look deep.",
               "He became famous for detailed views of Venice: the Grand Canal lined with palaces, and the wide St Mark's Square. In many of them the lines of the buildings and the paving lead the eye towards a vanishing point far away along the canal or across the square.",
@@ -622,6 +646,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "A box in one-point perspective",
+            picture: "/lessons/perspective-drawing/lesson-5-1.jpg",
+            alt: "A drawing of a box in one-point perspective next to a real box",
             text: [
               "A box, or cuboid, is the most useful shape in perspective drawing. Houses, books, beds, cars and tables are all boxes with a few extras.",
               "To draw one: draw the horizon line and vanishing point. Draw a square or rectangle for the front face, which faces you flat-on. Then draw light lines from its corners to the vanishing point.",
@@ -631,6 +657,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Above, on or below the horizon",
+            picture: "/lessons/perspective-drawing/lesson-5-2.jpg",
+            alt: "Floating boxes above, across and below a horizon line",
             text: [
               "Where the box sits compared with the horizon line changes what you see. A box below the horizon line is below your eye level, so you can see its top, like a parcel on the floor.",
               "A box above the horizon line is above your eye level, so you see its underneath, like a box on a high shelf. A box that crosses the horizon line shows no top or bottom at all, just its front and perhaps one side.",
@@ -640,6 +668,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Cylinders, and turning boxes into things",
+            picture: "/lessons/perspective-drawing/lesson-5-3.jpg",
+            alt: "A boy drawing a mug and a tin from a low viewpoint",
             text: [
               "A circle seen at an angle becomes an ellipse, a squashed circle. Look down at the top of a mug: below your eye level it is a fairly round ellipse. Raise the mug towards your eye level and the ellipse gets thinner, until at eye level it looks like a straight line.",
               "To draw a cylinder, like a tin or a mug, draw an ellipse for the top, then two vertical lines down from its widest points, and a curve for the bottom. The bottom curve is a little rounder than the top ellipse, because it is further below your eye level.",
@@ -765,6 +795,8 @@ export const perspectiveDrawing: LessonUnit = {
         cards: [
           {
             heading: "Two vanishing points",
+            picture: "/lessons/perspective-drawing/lesson-6-1.jpg",
+            alt: "A child pointing at the corner of a brick building",
             text: [
               "One-point perspective works when you face something straight on. But stand on a pavement and look at the corner of a building, and no wall faces you flat-on. Both walls are going away from you, in different directions.",
               "So two-point perspective uses two vanishing points, both on the horizon line: one on the left and one on the right. The lines of the left-hand wall go to the left vanishing point, and the lines of the right-hand wall go to the right vanishing point.",
@@ -774,6 +806,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "Drawing a building corner",
+            picture: "/lessons/perspective-drawing/lesson-6-2.jpg",
+            alt: "A two-point perspective drawing of a building corner with two vanishing points",
             text: [
               "Start with a long horizon line and a vanishing point near each end. Between them, draw one vertical line: the nearest corner of the building, called the leading edge. Draw it crossing the horizon line if you are standing on the ground looking at a tall building.",
               "Draw light guide lines from the top and the bottom of that corner to both vanishing points. Then draw two more vertical lines, one on each side, to show where each wall ends. Rub out the guide lines beyond them.",
@@ -783,6 +817,8 @@ export const perspectiveDrawing: LessonUnit = {
           },
           {
             heading: "M.C. Escher's impossible worlds",
+            picture: "/lessons/perspective-drawing/lesson-6-3.jpg",
+            alt: "An impossible building with staircases going in every direction",
             text: [
               "Maurits Cornelis Escher (1898 to 1972) was a Dutch artist who made prints, such as woodcuts and lithographs. He understood perspective so well that he could break its rules on purpose to create worlds that could never exist.",
               "In his print Relativity (1953), staircases go in every direction, and people walk up, down and sideways along them, each following their own direction of gravity. In Ascending and Descending (1960), people climb a staircase that goes round and round a building and never gets any higher. It is based on the 'impossible staircase' worked out by Lionel and Roger Penrose.",

@@ -30,6 +30,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "Three spheres",
+            picture: "/lessons/earth-and-space/lesson-1-1.jpg",
+            alt: "The Sun, Earth and Moon as three spheres in space",
             text: [
               "A sphere is a perfectly round 3D shape, like a ball. The Sun, the Earth and the Moon are all roughly spherical. Scientists say 'roughly' because the Earth bulges very slightly around its middle, but from space it looks like a beautiful round ball.",
               "Big objects in space become spheres because of gravity. Gravity pulls every part of an object towards its centre, from every direction at once. Over millions of years, this squeezes a huge lump of rock or gas into a ball shape.",
@@ -38,6 +40,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "How big are they?",
+            picture: "/lessons/earth-and-space/lesson-1-2.jpg",
+            alt: "A child comparing a pea with a long string on the floor",
             text: [
               "The Sun is a star: an enormous ball of hot, glowing gas. It is about 1.4 million kilometres across, roughly 109 times wider than the Earth. More than a million Earths could fit inside it.",
               "The Earth is about 12,700 kilometres across. It is a planet, made mostly of rock and metal, with oceans of water and a thin layer of air called the atmosphere.",
@@ -47,6 +51,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "How do we know the Earth is round?",
+            picture: "/lessons/earth-and-space/lesson-1-3.jpg",
+            alt: "A sailing ship's hull hidden below the curved horizon",
             text: [
               "Over two thousand years ago, ancient Greek thinkers such as Aristotle already had evidence that the Earth was round. During an eclipse of the Moon, the Earth's shadow falls on the Moon, and its edge is always curved. Only a sphere casts a round shadow from every direction.",
               "Sailors noticed that when a ship sails away, the bottom of the ship disappears over the horizon first and the top of the mast disappears last. That only happens if the sea curves away from you.",
@@ -160,6 +166,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "The solar system",
+            picture: "/lessons/earth-and-space/lesson-2-1.jpg",
+            alt: "The eight planets in a line beside the Sun",
             text: [
               "The solar system is the Sun and everything that travels around it: eight planets, their moons, dwarf planets such as Pluto, and millions of asteroids and comets. 'Solar' comes from 'sol', the Latin word for the Sun.",
               "In order from the Sun, the eight planets are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. A sentence can help you remember the order: 'My Very Easy Method Just Speeds Up Naming.'",
@@ -168,6 +176,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "Rocky planets and giant planets",
+            picture: "/lessons/earth-and-space/lesson-2-2.jpg",
+            alt: "Jupiter looming over Mars and some asteroids",
             text: [
               "The four inner planets, Mercury, Venus, Earth and Mars, are small and rocky, with solid surfaces you could stand on. Mercury is the smallest and closest to the Sun. Venus is the hottest, because its thick clouds trap heat. Mars is red because its rocks and dust contain rusty iron.",
               "Jupiter and Saturn are gas giants: enormous planets made mostly of hydrogen and helium gas. Jupiter is the largest planet of all; more than 1,300 Earths could fit inside it. Saturn has the most famous rings, made of billions of chunks of ice and rock.",
@@ -177,6 +187,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "Thinking about scale",
+            picture: "/lessons/earth-and-space/lesson-2-3.jpg",
+            alt: "Children taping paper planets along a string in a hallway",
             text: [
               "Pictures of the solar system in books are almost never to scale. To fit on a page, they squash the planets close together and make them look similar in size. The real solar system is mostly empty space.",
               "Scientists measure distances in the solar system using the astronomical unit (AU): the distance from the Earth to the Sun, about 150 million kilometres. Mars is about 1.5 AU from the Sun, Jupiter about 5 AU, and Neptune about 30 AU.",
@@ -283,6 +295,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "What is an orbit?",
+            picture: "/lessons/earth-and-space/lesson-3-1.jpg",
+            alt: "The Earth following its curved path around the Sun",
             text: [
               "An orbit is the curved path an object takes as it travels around another object in space. The Earth orbits the Sun, and so do all the other planets. Their orbits are nearly circles, though they are very slightly oval-shaped.",
               "What keeps a planet in its orbit? The Sun's gravity pulls the planet towards it all the time. But the planet is also moving forwards very fast. The pull and the forward movement together bend its path into a loop around the Sun.",
@@ -292,6 +306,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "A year on each planet",
+            picture: "/lessons/earth-and-space/lesson-3-2.jpg",
+            alt: "Planets on nested orbits around the Sun",
             text: [
               "A year is the time a planet takes to orbit the Sun once. The Earth takes about 365¼ days. We can't have a quarter of a day on the calendar, so every four years we add an extra day, 29 February, to make a leap year.",
               "Planets closer to the Sun have a shorter path to travel and move faster, so their years are shorter. A year on Mercury lasts only 88 Earth days.",
@@ -300,6 +316,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "Sun-centred or Earth-centred?",
+            picture: "/lessons/earth-and-space/lesson-3-3.jpg",
+            alt: "Galileo looking through his telescope at night",
             text: [
               "For a very long time, most people believed the Earth stood still at the centre of everything, with the Sun, Moon, planets and stars all going round it. This is called a geocentric model. The Greek-Egyptian astronomer Ptolemy described it in detail nearly 1,900 years ago.",
               "In 1543, the Polish astronomer Nicolaus Copernicus published a book arguing that the Sun is at the centre and the Earth is a planet travelling around it. This is called a heliocentric model, from 'helios', the Greek word for the Sun.",
@@ -407,6 +425,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "Our natural satellite",
+            picture: "/lessons/earth-and-space/lesson-4-1.jpg",
+            alt: "The Moon orbiting the Earth",
             text: [
               "A satellite is anything that orbits a planet. The Moon is the Earth's only natural satellite. (Satellites that people build and launch, like weather satellites, are called artificial satellites.)",
               "Just as the Sun's gravity keeps the Earth in orbit, the Earth's gravity keeps the Moon in orbit around us. The Moon takes about 27 days to travel once around the Earth.",
@@ -415,6 +435,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "The side we always see",
+            picture: "/lessons/earth-and-space/lesson-4-2.jpg",
+            alt: "The full Moon with its craters and dark seas",
             text: [
               "The Moon spins as it orbits, but very slowly: it turns once in exactly the time it takes to go once around the Earth. This means the same side of the Moon always faces us.",
               "People sometimes call the other side 'the dark side of the Moon', but that is a mistake. It gets just as much sunlight as the side we see. A better name is 'the far side'. Nobody saw it until 1959, when a Soviet space probe took the first photographs.",
@@ -423,6 +445,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "The Moon up close",
+            picture: "/lessons/earth-and-space/lesson-4-3.jpg",
+            alt: "An astronaut on the Moon with the Earth above",
             text: [
               "The Moon has no air, no liquid water, no weather and no life. Without air to spread heat around, the sunny side becomes hotter than boiling water while the shady side is far colder than any freezer.",
               "Its surface is covered in craters, made when rocks from space crashed into it. With no wind or rain to wear them away, craters billions of years old are still there. The dark patches we can see from Earth are huge plains of old, cooled lava called maria, Latin for 'seas'.",
@@ -528,6 +552,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "The spinning Earth",
+            picture: "/lessons/earth-and-space/lesson-5-1.jpg",
+            alt: "The Earth half in daylight and half in night",
             text: [
               "As well as orbiting the Sun, the Earth spins. It turns around an imaginary line called its axis, which runs through the North and South Poles. One complete turn takes about 24 hours: one day.",
               "At any moment, half of the Earth faces the Sun and is lit up: it is daytime there. The other half faces away from the Sun, into darkness: it is night-time there.",
@@ -537,6 +563,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "The Sun's journey across the sky",
+            picture: "/lessons/earth-and-space/lesson-5-2.jpg",
+            alt: "The Sun's path across the sky from sunrise to sunset",
             text: [
               "From the ground, it looks as if the Sun moves across the sky. It rises in the east in the morning, climbs highest around the middle of the day, and sets in the west in the evening. In the UK, the Sun is in the south at its highest point.",
               "This is called the Sun's apparent movement. 'Apparent' means it seems to happen, but it isn't really what's going on. The Sun stays still; it is the Earth turning that makes it appear to move, because the Earth spins from west to east.",
@@ -545,6 +573,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "Shadows, clocks and time zones",
+            picture: "/lessons/earth-and-space/lesson-5-3.jpg",
+            alt: "A child studying a sundial's shadow",
             text: [
               "As the Sun appears to move, shadows change. In the morning and evening the Sun is low, so shadows are long. Around midday it is highest, so shadows are shortest. Shadows also swing round from pointing west in the morning to pointing east in the evening.",
               "For thousands of years, people used this to tell the time with sundials: a stick or blade casts a shadow onto marks that show the hours.",
@@ -645,6 +675,8 @@ export const earthAndSpace: LessonUnit = {
         cards: [
           {
             heading: "Half lit, all the time",
+            picture: "/lessons/earth-and-space/lesson-6-1.jpg",
+            alt: "The Moon half lit by the Sun",
             text: [
               "The Moon is always half lit by the Sun, just like the Earth. The half facing the Sun is bright; the half facing away is dark.",
               "As the Moon orbits the Earth, we see different amounts of its sunlit half. Sometimes we see all of the lit half, sometimes none of it, and usually some of it. These changing shapes are called the phases of the Moon.",
@@ -653,6 +685,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "The phases in order",
+            picture: "/lessons/earth-and-space/lesson-6-2.jpg",
+            alt: "The phases of the Moon in a row",
             text: [
               "At new moon, the Moon is between the Earth and the Sun. Its lit half faces away from us, so we can hardly see it at all.",
               "Over the next days, a thin sliver of light appears: a waxing crescent. 'Waxing' means growing. About a week after new moon, we see half of the Moon's face lit up. This is called the first quarter, because the Moon is a quarter of the way through its cycle.",
@@ -662,6 +696,8 @@ export const earthAndSpace: LessonUnit = {
           },
           {
             heading: "A month of moons",
+            picture: "/lessons/earth-and-space/lesson-6-3.jpg",
+            alt: "A child making Moon phases with a ball and a lamp",
             text: [
               "The whole cycle, from one new moon to the next, takes about 29½ days. That is a little longer than the 27 days the Moon takes to orbit the Earth, because the Earth has moved along its own orbit in that time, so the Moon needs a couple of extra days to line up with the Sun again.",
               "Our word 'month' comes from the word 'moon'. Many calendars around the world, including the Islamic and Jewish calendars, are based on the Moon's cycle, and some festivals, such as Eid and Diwali, are linked to the Moon.",

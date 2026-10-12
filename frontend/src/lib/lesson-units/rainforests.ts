@@ -30,6 +30,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "A green belt around the Earth",
+            picture: "/lessons/rainforests/lesson-1-1.jpg",
+            alt: "A globe with a belt of green rainforest around its middle",
             text: [
               "If you look at a map of the world's tropical rainforests, you'll notice something striking: almost all of them sit in a belt around the middle of the Earth. That middle line is the Equator, an imaginary line at 0° of latitude, exactly halfway between the North Pole and the South Pole.",
               "Two more imaginary lines help us describe this belt. The Tropic of Cancer runs about 23½° north of the Equator, and the Tropic of Capricorn runs about 23½° south of it. The area between them is called the tropics.",
@@ -39,6 +41,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "The three great rainforests",
+            picture: "/lessons/rainforests/lesson-1-2.jpg",
+            alt: "Rainforests of South America, Africa and South-East Asia with a jaguar, gorillas and an orangutan",
             text: [
               "The biggest tropical rainforest on Earth is the Amazon rainforest in South America. It surrounds the Amazon River and its many tributaries, and it stretches across nine countries and territories. About 60% of it is in Brazil, with large parts in Peru and Colombia too.",
               "The second largest is the Congo rainforest in Central Africa, around the Congo River. Much of it lies in the Democratic Republic of the Congo, with more in countries such as Cameroon, Gabon and the Republic of the Congo. It is home to gorillas, chimpanzees, forest elephants and the shy okapi.",
@@ -48,6 +52,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "A rainforest closer to home",
+            picture: "/lessons/rainforests/lesson-1-3.jpg",
+            alt: "Children exploring a mossy oak wood, part of the UK's temperate rainforest",
             text: [
               "Here's a surprising fact: the UK has rainforest too! It isn't a tropical rainforest, though. It's a temperate rainforest, sometimes called Atlantic or Celtic rainforest.",
               "Temperate means mild, not hot. Along the western edges of Britain, winds from the Atlantic Ocean bring lots of rain and keep the air damp and mild all year. Here, old woods of oak, birch and hazel are covered in mosses, lichens and ferns, which grow on the trunks and branches as well as the ground.",
@@ -143,6 +149,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "Weather and climate",
+            picture: "/lessons/rainforests/lesson-2-1.jpg",
+            alt: "Heavy rain falling through a steamy rainforest",
             text: [
               "Weather is what's happening in the sky today: sunny, rainy, windy. Climate is the usual pattern of weather in a place over many years. You might have one rainy day in a desert, but its climate is still dry.",
               "The climate of a tropical rainforest is hot and wet all year round. The temperature is usually between about 25°C and 30°C, day after day, month after month. There's no cold winter at all, so there are no real seasons like ours.",
@@ -152,6 +160,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "A day in the rainforest",
+            picture: "/lessons/rainforests/lesson-2-2.jpg",
+            alt: "A rainforest day: clear morning, building clouds, then an afternoon thunderstorm",
             text: [
               "Many rainforest days follow the same pattern. In the morning the sky is clear and the strong sun heats the ground, the plants and all the puddles from yesterday's rain.",
               "As the morning goes on, huge amounts of water evaporate from the warm ground and from the leaves of the trees. The warm, damp air rises. High up, it cools and the water vapour condenses into towering clouds.",
@@ -161,6 +171,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "Reading a climate graph",
+            picture: "/lessons/rainforests/lesson-2-3.jpg",
+            alt: "A child drawing a climate graph with blue bars and a red line",
             text: [
               "Geographers show climate on a climate graph. It has the twelve months along the bottom. Rainfall is shown as bars, read against the axis on one side, in millimetres. Temperature is shown as a line, read against the axis on the other side, in °C.",
               "Picture the climate graph for Manaus, a city in the middle of the Amazon. The temperature line is almost flat and high, at about 27°C in every month. The rainfall bars are tall for most of the year, reaching around 300 millimetres in the wettest months, March and April. They shrink in the drier months, July to September, but some rain still falls.",
@@ -252,6 +264,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "A forest built in storeys",
+            picture: "/lessons/rainforests/lesson-3-1.jpg",
+            alt: "A cutaway rainforest showing four layers from bright top to dark floor",
             text: [
               "A tropical rainforest is a bit like a tall block of flats. Different plants and animals live on different floors, or layers, and each layer has its own conditions of light, warmth and dampness.",
               "Geographers usually describe four layers. From the top down, they are the emergent layer, the canopy, the understorey and the forest floor.",
@@ -260,6 +274,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "The emergent layer and the canopy",
+            picture: "/lessons/rainforests/lesson-3-2.jpg",
+            alt: "A harpy eagle on an emergent tree above a busy canopy",
             text: [
               "The emergent layer is made of the very tallest trees, which poke up above everything else, sometimes over 60 metres high. Up here it is bright, hot and windy. Birds of prey such as the harpy eagle nest in the emergents, watching for monkeys and sloths below.",
               "Just beneath is the canopy, roughly 30 to 45 metres up. The crowns of the trees grow so closely together that they form a thick, leafy roof. The canopy catches most of the sunlight and most of the rain.",
@@ -268,6 +284,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "The understorey and the forest floor",
+            picture: "/lessons/rainforests/lesson-3-3.jpg",
+            alt: "The dark forest floor with leaf litter, fungi, ants and a tapir",
             text: [
               "Below the canopy is the understorey, a dim, still, humid layer of young trees, shrubs and palms waiting for their chance to reach the light. Many plants here have very large leaves, to catch as much of the weak light as possible. Jaguars, snakes, frogs and many insects live here.",
               "At the bottom is the forest floor. It is dark, damp and surprisingly open, because few plants can grow without light. It's covered in a layer of fallen leaves, called leaf litter.",
@@ -368,6 +386,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "What is an adaptation?",
+            picture: "/lessons/rainforests/lesson-4-1.jpg",
+            alt: "A sloth, a bright frog and a toucan, each adapted to the rainforest",
             text: [
               "An adaptation is a feature of a living thing that helps it survive in its habitat. It might be a body part, such as a long tail, or a way of behaving, such as moving very slowly.",
               "Adaptations don't appear because an animal wants them. They develop over a very long time, over many, many generations. Living things with features that suit their surroundings are more likely to survive and have young, which pass those features on.",
@@ -376,6 +396,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "Plant adaptations",
+            picture: "/lessons/rainforests/lesson-4-2.jpg",
+            alt: "Drip tips, buttress roots, climbing vines and orchids on a branch",
             text: [
               "Drip tips: many rainforest leaves are waxy and end in a long point. Rain runs off them quickly, so water doesn't sit on the leaf, where it could encourage mould or algae and make the leaf heavy.",
               "Buttress roots: huge trees grow giant, wall-like roots that spread out from the base of the trunk. The soil is thin, so the roots stay shallow, and the buttresses help hold the tall tree steady.",
@@ -385,6 +407,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "Animal adaptations",
+            picture: "/lessons/rainforests/lesson-4-3.jpg",
+            alt: "A spider monkey, a sloth and a jaguar showing their adaptations",
             text: [
               "The three-toed sloth hangs from branches with long, hooked claws. It moves very slowly, which saves energy on its diet of leaves and helps it go unnoticed by predators. Green algae grow in its fur, helping it blend in with the leaves.",
               "The toucan's enormous, light beak lets it reach fruit on thin branches that couldn't take its weight. The beak also helps it lose heat in the hot climate.",
@@ -482,6 +506,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "The first people of the forest",
+            picture: "/lessons/rainforests/lesson-5-1.jpg",
+            alt: "A riverside village in the Amazon rainforest with canoes and children",
             text: [
               "People have lived in rainforests for thousands of years. The people whose families and cultures belong to a place from long before others arrived are called Indigenous peoples.",
               "In the Amazon alone there are hundreds of different Indigenous peoples, each with its own language, beliefs, traditions and way of life. Examples include the Yanomami, who live in the rainforest on the border of Brazil and Venezuela, and the Kayapó in Brazil. In the Congo rainforest, the Baka people have lived in the forests of Cameroon and neighbouring countries for many generations.",
@@ -490,6 +516,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "Living with the forest",
+            picture: "/lessons/rainforests/lesson-5-2.jpg",
+            alt: "An adult and child tending cassava and bananas in a small forest garden",
             text: [
               "Many Indigenous communities get much of what they need from the forest around them. They hunt, fish and gather fruit, nuts, honey and medicinal plants, taking what they need without destroying what is left.",
               "Some grow crops such as cassava, bananas and sweet potatoes in small garden plots. A family may clear a small patch, farm it for a few years, then let the forest grow back while they plant somewhere else. This is called shifting cultivation, and when it's done on a small scale the forest can recover.",
@@ -498,6 +526,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "Guardians of the forest",
+            picture: "/lessons/rainforests/lesson-5-3.jpg",
+            alt: "An Indigenous adult and young person looking out over the rainforest",
             text: [
               "Studies have found that, in many places, land looked after by Indigenous peoples has less deforestation than other land nearby. Their way of life depends on the forest staying healthy, so they protect it.",
               "But many Indigenous communities face serious challenges. Their land can be taken or damaged by illegal logging, mining and farming, and outsiders have sometimes brought diseases that people had no protection against.",
@@ -584,6 +614,8 @@ export const rainforests: LessonUnit = {
         cards: [
           {
             heading: "Why forests are cut down",
+            picture: "/lessons/rainforests/lesson-6-1.jpg",
+            alt: "Rainforest edge cleared for cattle, a road and oil palm plantations",
             text: [
               "Deforestation means cutting down or burning forests on a large scale and using the land for something else. Huge areas of tropical rainforest are lost every year.",
               "In the Amazon, the biggest cause is clearing land for cattle ranching, to raise cows for beef and leather. Large areas are also cleared to grow soya, much of which is used to feed farm animals around the world.",
@@ -593,6 +625,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "The effects of deforestation",
+            picture: "/lessons/rainforests/lesson-6-2.jpg",
+            alt: "A muddy cleared hillside with soil washing into a river and an orangutan watching",
             text: [
               "For wildlife, deforestation means losing habitat. Animals such as orangutans, which need large areas of forest, are now critically endangered. Some species may become extinct before scientists have even discovered them.",
               "For the climate, trees take in carbon dioxide from the air as they grow and store the carbon in their wood. When forests are burned or left to rot, that carbon goes back into the air as carbon dioxide, adding to climate change.",
@@ -602,6 +636,8 @@ export const rainforests: LessonUnit = {
           },
           {
             heading: "What can be done?",
+            picture: "/lessons/rainforests/lesson-6-3.jpg",
+            alt: "Volunteers and children planting young trees beside a forest",
             text: [
               "Sustainability means meeting our needs today without spoiling things for people in the future. A sustainable rainforest is one that can keep providing food, wood, medicines and homes for a very long time.",
               "Governments can create protected areas such as national parks, and recognise Indigenous land rights. Scientists and local people replant trees and restore damaged forest. Ecotourism, where visitors pay to see the forest carefully, can make a living forest worth more than a cleared one.",

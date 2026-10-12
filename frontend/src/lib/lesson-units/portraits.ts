@@ -30,6 +30,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "Portraits and sitters",
+            picture: "/lessons/portraits/lesson-1-1.jpg",
+            alt: "A girl sketching her brother's head and shoulders while he sits still on a stool",
             text: [
               "A portrait is a picture of a particular person, made so that we can recognise them. It might be a painting, a drawing, a photograph, a sculpture or even a collage. The person in a portrait is called the sitter, because for hundreds of years people had to sit still, sometimes for many hours, while an artist worked.",
               "A self-portrait is a portrait an artist makes of themselves. To see their own face, artists usually work from a mirror, or today from a photograph.",
@@ -38,6 +40,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Why people had portraits made",
+            picture: "/lessons/portraits/lesson-1-2.jpg",
+            alt: "Two children looking up at old gold-framed portraits in a grand hall",
             text: [
               "The first practical cameras appeared around 1839. Before that, the only way to keep a picture of someone's face was to have an artist make one. Painted portraits were slow and expensive, so for centuries they were mostly made for kings, queens and wealthy families.",
               "A portrait was a way to be remembered after you died, to show people far away what you looked like, and to show off. Rulers had portraits painted to look powerful, and rich families hung portraits of their ancestors on their walls to show how important and long-standing their family was.",
@@ -46,6 +50,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Being a portrait detective",
+            picture: "/lessons/portraits/lesson-1-3.jpg",
+            alt: "A girl with a magnifying glass studying an old portrait of a woman with her hand on a globe",
             text: [
               "A portrait is never just a face. Artists and sitters choose every part of it carefully, so it is full of clues. A good way to read a portrait is to look at five things: the face and expression, the pose, the clothes, the background, and any objects.",
               "The expression and pose can suggest personality: a straight back and a steady stare can look confident or proud; a relaxed, slumped pose can look friendly or tired. Clothes tell us about the time and the person's wealth, job or culture.",
@@ -135,6 +141,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "Proportion",
+            picture: "/lessons/portraits/lesson-2-1.jpg",
+            alt: "A lightly drawn egg-shaped head on paper with a pencil, rubber and ruler",
             text: [
               "Proportion means how big the parts of something are compared with each other and with the whole. When the proportions of a face are right, a drawing looks like a real person, even if it is simple.",
               "Everybody's face is different, but almost all faces follow the same rough plan. Artists have studied this plan for hundreds of years. Learning it gives you a framework to build on, and then you look carefully at your sitter to see how their face is special.",
@@ -143,6 +151,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Eyes halfway down",
+            picture: "/lessons/portraits/lesson-2-2.jpg",
+            alt: "A girl measuring her dad's face with her fingers to find where his eyes are",
             text: [
               "Here is the surprise that changes most people's drawings: the eyes are about halfway down the head. Draw a light line across the middle of your egg, from side to side. The eyes sit on this line.",
               "Most people draw the eyes much too high, because we think of the forehead as small. In fact the top half of the head holds the forehead, the hair and the skull, which keeps our brain safe.",
@@ -152,6 +162,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Nose, mouth and ears",
+            picture: "/lessons/portraits/lesson-2-3.jpg",
+            alt: "A pencil drawing of a face with faint guidelines showing where the features go",
             text: [
               "The bottom of the nose is roughly halfway between the eye line and the chin. The line where the lips meet is about a third of the way down from the nose to the chin.",
               "If you draw straight lines down from the centres of the eyes (the pupils), they usually land near the corners of the mouth. The nostrils line up with the inside corners of the eyes.",
@@ -232,6 +244,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "Draw what you see, not what you know",
+            picture: "/lessons/portraits/lesson-3-1.jpg",
+            alt: "A simple symbol face beside a careful shaded drawing of a real face",
             text: [
               "When we are little, we learn to draw faces with symbols: a circle with a dot for an eye, a triangle or an 'L' for a nose, a curved line for a smile. Symbols are quick, but they don't look like anybody in particular.",
               "To draw a real face, you need to look as if you have never seen a face before. Spend more time looking than drawing. Look, draw a little, look again.",
@@ -240,6 +254,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Eyes",
+            picture: "/lessons/portraits/lesson-3-2.jpg",
+            alt: "A detailed pencil study of an eye with a white highlight",
             text: [
               "An eye is not a circle. It is shaped more like an almond or a lemon on its side, often slightly pointier at the inner corner, where there is a small pink tear duct.",
               "The coloured part, the iris, is a circle, but the top lid almost always covers a little of it, and the bottom lid often just touches it. If you draw the whole iris as a full circle, the eye looks startled. In the middle is the dark pupil.",
@@ -249,6 +265,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Noses, mouths, ears and hair",
+            picture: "/lessons/portraits/lesson-3-3.jpg",
+            alt: "A sketchbook page of shaded pencil studies of noses, mouths and an ear",
             text: [
               "A nose has almost no outline from the front. Draw the nostrils, which are dark curved shapes, and the round tip between them. Then shade softly down one side of the nose and under the tip, where shadow falls. The tone does the work, not a line.",
               "For the mouth, the darkest line is where the lips meet, and it is wavy, not straight. The top lip faces downwards, so it is usually in shadow and looks darker. The bottom lip faces up and catches the light, so show it mainly with a small shadow underneath.",
@@ -329,6 +347,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "Rembrandt: a life in self-portraits",
+            picture: "/lessons/portraits/lesson-4-1.jpg",
+            alt: "An artist in a dim old studio studying his face in a mirror by candlelight",
             text: [
               "Rembrandt van Rijn (1606 to 1669) was a Dutch painter, born in Leiden, who spent most of his working life in Amsterdam. He is one of the most famous artists who ever lived, and he made about 80 self-portraits in paintings, drawings and etchings: more than almost any artist before him.",
               "As a young man he used a mirror to study his own face pulling expressions, such as surprise or a frown, to practise for his story paintings. Later his self-portraits became a record of his whole life, from a confident young man in fancy clothes to an old man with a lined face and a tired, thoughtful look.",
@@ -337,6 +357,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Van Gogh and his mirror",
+            picture: "/lessons/portraits/lesson-4-2.jpg",
+            alt: "A sunny painter's room with a mirror and a bright, swirling self-portrait on an easel",
             text: [
               "Vincent van Gogh (1853 to 1890) was also Dutch. He painted more than 35 self-portraits, most of them between 1886 and 1889, while he lived in Paris and then in the south of France.",
               "One reason was money. Van Gogh was poor and could rarely afford to pay a model to sit for him. In a letter to his brother Theo, he wrote that he had bought a good mirror on purpose, so he could paint himself when he had no model.",
@@ -345,6 +367,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "How to draw yourself",
+            picture: "/lessons/portraits/lesson-4-3.jpg",
+            alt: "A boy drawing himself from a mirror, lit from one side by a window",
             text: [
               "Prop a mirror up on a table so you can see your whole face without moving your head, about an arm's length away. Sit by a window or a lamp, with the light coming from one side. Side light makes shadows that show the shape of your face, just as Rembrandt liked.",
               "A mirror flips you left to right. If your hair is parted on your left, the mirror shows it on the right. A self-portrait drawn from a mirror shows you as the mirror sees you, which is why some people's self-portraits look slightly 'wrong' to their friends.",
@@ -425,6 +449,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "How faces show feelings",
+            picture: "/lessons/portraits/lesson-5-1.jpg",
+            alt: "Four children pulling happy, surprised, cross and worried faces in a mirror",
             text: [
               "Our faces have over 40 small muscles that pull the skin into different shapes. Tiny changes around the eyebrows, eyes and mouth show other people how we feel, often before we say a word.",
               "Eyebrows are very expressive. Raised high, they show surprise. Pulled down and together, they show anger or concentration. When the inner ends lift up, a face looks sad or worried.",
@@ -433,6 +459,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Frida Kahlo",
+            picture: "/lessons/portraits/lesson-5-2.jpg",
+            alt: "A young woman painting in bed with a mirror fixed above her",
             text: [
               "Frida Kahlo (1907 to 1954) was a Mexican painter, born in Coyoacán, which is now part of Mexico City. When she was 18, she was very badly hurt in an accident when the bus she was riding in crashed into a tram. She had to spend months lying in bed to recover.",
               "To help, her mother had a special easel made that she could use lying down, and a mirror fixed above her bed. Frida began to paint, and the face she saw most was her own. Of her roughly 140 paintings, about 55 are self-portraits. She once said that she painted herself because she was so often alone, and because she was the subject she knew best.",
@@ -441,6 +469,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Feelings through symbols",
+            picture: "/lessons/portraits/lesson-5-3.jpg",
+            alt: "A girl's self-portrait with a calm face surrounded by leaves, a parrot, a monkey and butterflies",
             text: [
               "Here is something surprising about Frida Kahlo's self-portraits: her face is nearly always calm and serious, looking straight at us. She rarely smiles or frowns. Instead, she shows her feelings through what she puts around herself.",
               "She filled her pictures with symbols: monkeys, parrots, her dogs, a deer, hummingbirds, butterflies, thorns, leaves and tropical plants. Some stand for her love of Mexico and nature, and some show pain or sadness, like a necklace of thorns. Sometimes she painted small tears on her steady face.",
@@ -520,6 +550,8 @@ export const portraits: LessonUnit = {
         cards: [
           {
             heading: "Chila Kumari Singh Burman",
+            picture: "/lessons/portraits/lesson-6-1.jpg",
+            alt: "A family looking up at a gallery covered in glowing neon lights at night",
             text: [
               "Chila Kumari Singh Burman is a British artist, born in 1957 in Bootle, near Liverpool, to a Punjabi Indian family. Her dad sold ice cream from a van, and memories of her childhood and family often appear in her art.",
               "She is famous for being bold, bright and playful. She mixes drawing, printmaking, painting, photographs, collage, glitter, sequins, jewels and bindis, and even neon lights. In 2020 she covered the front of Tate Britain, a large art gallery in London, in glowing neon lights and pictures for winter and Diwali.",
@@ -528,6 +560,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "What is mixed media?",
+            picture: "/lessons/portraits/lesson-6-2.jpg",
+            alt: "Magazine scraps sorted by colour with scissors, glue, buttons and sequins",
             text: [
               "Media are the materials an artist uses: pencil, paint, pastel, paper and so on. Mixed media means using more than one in the same artwork. Collage is a technique where you cut or tear paper and other flat things and stick them down to build a picture.",
               "A collage portrait can be made from cut-up magazine pages chosen for their colours and textures, rather than for what they show. A patch of blue sky might become a shirt; a page of brown text might become hair. From a distance the shapes join up into a face.",
@@ -536,6 +570,8 @@ export const portraits: LessonUnit = {
           },
           {
             heading: "Planning, making and evaluating",
+            picture: "/lessons/portraits/lesson-6-3.jpg",
+            alt: "A girl holding up her finished collage self-portrait",
             text: [
               "Artists rarely jump straight into a final piece. Start with a plan: a quick sketch of your layout and a list of the materials and symbols you will use. Decide whether your face will be drawn, collaged, or a mix of both. Many artists draw the face in pencil and use collage for the background, hair and clothes.",
               "Work from big to small. Lay down the background first, then the large shapes of the head, hair and shoulders, then the features, and finally the small details and sparkly bits. Arrange your cut pieces before you glue them, so you can change your mind.",

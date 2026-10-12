@@ -33,6 +33,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Properties of materials",
+            picture: "/lessons/changing-materials/lesson-1-1.jpg",
+            alt: "A girl comparing objects made of steel, wood, glass, plastic, stone and wax at a kitchen table",
             text: [
               "A material is what an object is made from. A spoon might be made of steel, wood or plastic, but it is still a spoon. The material is what we test and compare.",
               "A property is a way of describing how a material looks or behaves. Is it hard or soft? Can you see through it? Does a magnet attract it? Does heat travel through it quickly? Does it dissolve in water?",
@@ -42,6 +44,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Hardness and transparency",
+            picture: "/lessons/changing-materials/lesson-1-2.jpg",
+            alt: "A boy shining a torch through clear glass, tissue paper and wood to compare how much light gets through",
             text: [
               "Hardness is how well a material stands up to being scratched or dented. In a scratch test, a harder material will scratch a softer one, but not the other way round.",
               "Diamond is the hardest natural material on Earth. Tiny diamonds are fixed to the tips of some drills and saws so that they can cut through stone and concrete.",
@@ -50,6 +54,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Magnetism, and choosing the right material",
+            picture: "/lessons/changing-materials/lesson-1-3.jpg",
+            alt: "Two children finding that a magnet attracts a steel paperclip but not foil or a copper pipe",
             text: [
               "Only a few metals are magnetic: iron, nickel and cobalt. Steel is made mostly from iron, so most steel is magnetic too. Aluminium, copper, gold and silver are metals, but magnets don't attract them.",
               "Designers and engineers choose a material because its properties suit the job. A car windscreen must be transparent and strong. A saucepan must not melt on the hob. A drinks can should be light and not rust.",
@@ -158,6 +164,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Thermal conductors",
+            picture: "/lessons/changing-materials/lesson-2-1.jpg",
+            alt: "A girl holding the cool plastic handle of a saucepan heating on a hob",
             text: [
               "Heat always moves from warmer things to cooler things. Some materials let heat pass through them quickly. These are called thermal conductors.",
               "Metals are good thermal conductors. That's why saucepans and baking trays are made of metal: heat from the hob or oven passes quickly through the metal to cook the food.",
@@ -166,6 +174,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Thermal insulators",
+            picture: "/lessons/changing-materials/lesson-2-2.jpg",
+            alt: "A boy in a woolly jumper with a flask, a cool bag and a polystyrene cup",
             text: [
               "Materials that heat passes through only slowly are thermal insulators. Wood, plastic, cork, fabric and wool are good thermal insulators.",
               "Air is a very good insulator too, as long as it is trapped and can't move about. A woolly jumper, a duvet and a polystyrene cup all work by trapping lots of tiny pockets of air.",
@@ -175,6 +185,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Electrical conductors and insulators",
+            picture: "/lessons/changing-materials/lesson-2-3.jpg",
+            alt: "Copper wires inside a plastic-coated cable next to a pencil's graphite tip",
             text: [
               "Electricity can flow through some materials but not others. Materials that let electricity flow are electrical conductors. Metals, especially copper, are excellent electrical conductors, so the wires inside cables are made of metal.",
               "Graphite, the grey material in a pencil 'lead', is unusual: it isn't a metal, but it does conduct electricity.",
@@ -293,6 +305,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Where does the sugar go?",
+            picture: "/lessons/changing-materials/lesson-3-1.jpg",
+            alt: "A girl stirring sugar into water until it dissolves",
             text: [
               "Stir a spoonful of sugar into a glass of water and it seems to vanish. But it hasn't gone: taste the water and it's sweet. The sugar has dissolved.",
               "When a solid dissolves, it breaks up into particles far too tiny to see. They spread out evenly through the liquid, so the mixture looks clear.",
@@ -302,6 +316,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Soluble and insoluble",
+            picture: "/lessons/changing-materials/lesson-3-2.jpg",
+            alt: "Dissolved salt in one glass and sand settled at the bottom of another",
             text: [
               "A material that dissolves in a liquid is soluble. Salt, sugar and instant coffee are all soluble in water.",
               "A material that will not dissolve is insoluble. Sand, chalk, rice and ground pepper are insoluble in water: however much you stir, the bits are still there, and they sink or float.",
@@ -311,6 +327,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Speeding up dissolving",
+            picture: "/lessons/changing-materials/lesson-3-3.jpg",
+            alt: "A sugar cube dissolving fast in warm water and slowly in cold water",
             text: [
               "Three things usually make a solid dissolve faster: using warmer water, stirring, and using smaller pieces.",
               "Warm water helps because its particles move faster and bump into the solid more. Stirring brings fresh water to the solid. Small pieces have more surface touching the water, so caster sugar dissolves faster than a sugar cube.",
@@ -431,6 +449,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Melting and freezing",
+            picture: "/lessons/changing-materials/lesson-4-1.jpg",
+            alt: "Chocolate and an ice cube melting, with a set chocolate bar behind",
             text: [
               "Materials can be solids, liquids or gases. These are called states of matter. When a material changes from one state to another, it's still the same material.",
               "Melting is when a solid turns into a liquid as it warms up. Freezing is the opposite: a liquid turning into a solid as it cools.",
@@ -440,6 +460,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Evaporating and condensing",
+            picture: "/lessons/changing-materials/lesson-4-2.jpg",
+            alt: "Water condensing on a steamy mirror, and washing drying on a line outside",
             text: [
               "Evaporation is when a liquid turns into a gas. Puddles dry up and washing dries on the line because water evaporates into water vapour, an invisible gas in the air.",
               "Evaporation happens from the surface of a liquid, even when it isn't hot. It is faster when it is warm, when it is windy, and when the liquid is spread out with a large surface. When water is heated to 100°C, it boils and evaporates very quickly.",
@@ -449,6 +471,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Getting materials back",
+            picture: "/lessons/changing-materials/lesson-4-3.jpg",
+            alt: "A boy filtering sandy salty water, with salt crystals drying on a windowsill",
             text: [
               "Dissolving is a reversible change too. If you leave salty water in a warm place, the water evaporates and the salt is left behind as crystals.",
               "Mixtures can often be separated using the materials' properties. Sieving separates solids with pieces of different sizes, like rice from flour: the fine flour falls through the holes and the rice stays in the sieve.",
@@ -568,6 +592,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Changes you can't undo",
+            picture: "/lessons/changing-materials/lesson-5-1.jpg",
+            alt: "A girl and her mum watching a candle burn safely from a distance",
             text: [
               "Some changes can't be undone. When a material changes and makes something completely new, with new properties, we call it an irreversible change.",
               "Scientists also call this a chemical change or a chemical reaction. The particles of the starting materials rearrange to make new materials.",
@@ -576,6 +602,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Burning",
+            picture: "/lessons/changing-materials/lesson-5-2.jpg",
+            alt: "Logs burning in a wood stove with ash in the tray below",
             text: [
               "Burning needs three things: a fuel, such as wood, coal, gas or wax; oxygen from the air; and heat to get it started. Firefighters call this the fire triangle. Take away any one of the three and the fire goes out.",
               "When wood burns, it gives out heat and light and makes new materials: ash, smoke, carbon dioxide and water vapour. The wood can never be turned back again.",
@@ -584,6 +612,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Rusting",
+            picture: "/lessons/changing-materials/lesson-5-3.jpg",
+            alt: "A rusty bike chain and frame next to a freshly painted gate",
             text: [
               "Leave a steel bike out in the rain and orange-brown flakes begin to appear. This is rust. Rusting is an irreversible change that only happens to iron and steel.",
               "Rust forms when iron reacts with oxygen and water together. It makes a new material called iron oxide, which is crumbly and weak. Without both water and air, iron doesn't rust.",
@@ -703,6 +733,8 @@ export const changingMaterials: LessonUnit = {
         cards: [
           {
             heading: "Bicarbonate of soda and vinegar",
+            picture: "/lessons/changing-materials/lesson-6-1.jpg",
+            alt: "Bicarbonate of soda falling into vinegar and blowing up a balloon",
             text: [
               "Pour vinegar onto bicarbonate of soda and it instantly fizzes and froths. The bubbles are a gas called carbon dioxide, which wasn't there before.",
               "Carbon dioxide is a new material, made because the bicarbonate of soda and the vinegar react together. They also make water and a new kind of salt, which stays dissolved in the liquid.",
@@ -712,6 +744,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Baking and cooking",
+            picture: "/lessons/changing-materials/lesson-6-2.jpg",
+            alt: "A boy and his grandad taking a risen cake out of the oven",
             text: [
               "Baking a cake is a whole set of irreversible changes. Heat changes the eggs and flour so that runny cake mixture becomes a soft, springy solid. No amount of cooling turns a cake back into eggs, flour, sugar and butter.",
               "Baking powder contains bicarbonate of soda mixed with a dry acid. When it gets wet and warm, it makes carbon dioxide bubbles that get trapped in the mixture and make the cake rise.",
@@ -721,6 +755,8 @@ export const changingMaterials: LessonUnit = {
           },
           {
             heading: "Looking for the evidence",
+            picture: "/lessons/changing-materials/lesson-6-3.jpg",
+            alt: "A child studying burnt toast, a rusty nail, a melting ice cube and a fizzing glass",
             text: [
               "How can you tell if a new material has been made? Scientists look for evidence. Clues include: a gas being given off as bubbles; a change of colour; a new smell; heat or light being given out; and a new solid appearing.",
               "One clue on its own isn't always enough. Boiling water makes bubbles, but they're just water vapour, so that's a change of state. Mixing paints changes colour, but no new material is made.",

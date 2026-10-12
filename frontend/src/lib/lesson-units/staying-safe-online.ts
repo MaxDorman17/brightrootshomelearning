@@ -42,6 +42,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "The trail you leave behind",
+            picture: "/lessons/staying-safe-online/lesson-1-1.jpg",
+            alt: "Footprints in the sand turning into little photo and message icons",
             text: [
               "When you walk across a sandy beach, you leave footprints. When you use the internet, you leave a trail too. It is called your digital footprint.",
               "Your digital footprint is made of everything you post, share, like, comment on, upload and search for. It also includes things other people post about you, such as a photo a friend shares or a comment that mentions your name.",
@@ -51,6 +53,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Why it lasts",
+            picture: "/lessons/staying-safe-online/lesson-1-2.jpg",
+            alt: "One photo being copied into many floating copies",
             text: [
               "Footprints in sand wash away with the tide. Digital footprints are much harder to rub out.",
               "Anything you share can be copied, saved as a screenshot or forwarded in a second, and you cannot always see who has done it. Even messages that say they 'disappear' can be captured before they go.",
@@ -59,6 +63,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Think before you post",
+            picture: "/lessons/staying-safe-online/lesson-1-3.jpg",
+            alt: "A girl pausing to think before she posts",
             text: [
               "A helpful habit is to ask yourself a few quick questions first. Is it true? Is it kind? Would I be happy for my teacher, my grandparent or a future friend to see it? Does it give away personal information, like my school uniform, my street sign or my house number?",
               "Remember other people's footprints too. Ask before you share a photo of a friend, and respect it if they say no.",
@@ -184,6 +190,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "Who can see what?",
+            picture: "/lessons/staying-safe-online/lesson-2-1.jpg",
+            alt: "A padlock beside a phone showing privacy switches",
             text: [
               "Most apps, games and websites have privacy settings. These are choices that control who can see your posts, who can send you messages, and what information about you is shown.",
               "A public account can be seen by anyone in the world. A private account can only be seen by people you have accepted. Some apps also let you turn off location sharing, hide your online status, or stop strangers from messaging you.",
@@ -192,6 +200,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Why apps have age limits",
+            picture: "/lessons/staying-safe-online/lesson-2-2.jpg",
+            alt: "A child waiting by a height chart and a closed gate",
             text: [
               "Most social media apps say you must be at least 13 to have an account, and some set their limit higher. This is written in their rules, called terms of service, which you agree to when you sign up.",
               "The limit of 13 comes mainly from laws about how companies are allowed to collect and use children's personal information. Apps for older users also contain content and features, like chatting with strangers, that are designed for teenagers and adults.",
@@ -200,6 +210,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Apps made for your age",
+            picture: "/lessons/staying-safe-online/lesson-2-3.jpg",
+            alt: "A parent and child setting up a tablet's settings together",
             text: [
               "Lots of games and apps are made for children, with extra protections such as no chat with strangers, or chat that grown-ups can manage. Your grown-up can also set up parental controls, which can limit content, spending and screen time.",
               "Games and films have age ratings too. In the UK and Europe, games carry a PEGI rating, such as PEGI 3, 7, 12, 16 or 18. These tell you what age the content is suitable for, not how difficult the game is.",
@@ -315,6 +327,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "Not everything is what it seems",
+            picture: "/lessons/staying-safe-online/lesson-3-1.jpg",
+            alt: "Headlines blowing in the wind, some neat and some crumpled",
             text: [
               "Fake news is false or misleading information made to look like real news. Some is made up to trick people, some to make money from clicks, and some is a mistake that gets shared again and again.",
               "Misinformation is false information shared by someone who believes it is true. Disinformation is false information shared on purpose to mislead.",
@@ -323,6 +337,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Check the source",
+            picture: "/lessons/staying-safe-online/lesson-3-2.jpg",
+            alt: "A child detective checking a laptop with a magnifying glass",
             text: [
               "The source is where the information comes from. Ask: who made this, and do they know what they are talking about? A well-known news organisation, a museum or a government website is usually more reliable than an anonymous post.",
               "Look for clues. Is there a date? Is the web address odd, or a copy of a famous one with a small change? Is the headline in capital letters with lots of exclamation marks? Does it try to make you feel angry or panicky?",
@@ -331,6 +347,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Pictures and adverts can mislead",
+            picture: "/lessons/staying-safe-online/lesson-3-3.jpg",
+            alt: "A photo cropped with scissors and another with a tree pasted in",
             text: [
               "Photos can be edited to change colours, remove things or add things that were never there. Filters can make faces and bodies look different from real life. Some pictures and videos are now made entirely by computers using AI, and can look very real.",
               "A real photo can mislead too, if it is cropped to hide part of the scene or shared with the wrong caption, such as an old picture claimed to show something that happened today.",
@@ -458,6 +476,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "Friends you know, and people you don't",
+            picture: "/lessons/staying-safe-online/lesson-4-1.jpg",
+            alt: "A boy playing an online game with avatar faces on screen",
             text: [
               "Lots of people your age play games and chat online. Most of the time that means messaging friends and family they already know in real life, and that can be a lovely way to stay in touch.",
               "Online, though, you can't see who you are really talking to. A username and a profile picture can be anything. Someone who says they are 10 and loves the same game as you could be telling the truth, or not.",
@@ -466,6 +486,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Spotting when something isn't right",
+            picture: "/lessons/staying-safe-online/lesson-4-2.jpg",
+            alt: "A child looking unsure at a glowing chat message",
             text: [
               "Healthy online contact feels relaxed. You can say no, log off, or tell your grown-up about it, and nobody minds.",
               "Some things are signs that a conversation is not OK, even if the person seems nice. Someone you don't know well might ask lots of personal questions, offer gifts or game credits, ask for photos, ask to move to a private chat or a different app, ask to meet up, or tell you to keep your chats a secret.",
@@ -474,6 +496,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "How to get help",
+            picture: "/lessons/staying-safe-online/lesson-4-3.jpg",
+            alt: "A child showing a tablet to a grown-up who is listening",
             text: [
               "If anything worries you, stop replying and tell a trusted adult as soon as you can. You won't be in trouble, even if you've already replied or shared something. Adults would much rather know.",
               "Most apps and games have tools to block someone, so they can't contact you, and to report them, so the company can check and take action. A grown-up can help you use these. It's a good idea to save a screenshot first, in case it's needed.",
@@ -598,6 +622,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "Why words online can hurt more",
+            picture: "/lessons/staying-safe-online/lesson-5-1.jpg",
+            alt: "Two children messaging, one smiling and one looking sad",
             text: [
               "Online, you can't see someone's face or hear their voice. A joke that would be obviously friendly in person can read as mean on a screen, and you might not notice that someone is upset.",
               "Because people can't see each other, some say things online they would never say face to face. Messages can also be shared with lots of people very quickly, and they can follow someone home, onto their phone or tablet, at any time.",
@@ -606,6 +632,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "What online bullying looks like",
+            picture: "/lessons/staying-safe-online/lesson-5-2.jpg",
+            alt: "A child standing apart from a group in the playground",
             text: [
               "Online bullying, sometimes called cyberbullying, is when someone uses technology to hurt, embarrass or upset another person on purpose, usually again and again.",
               "It can include sending nasty messages, posting unkind comments or embarrassing photos, spreading rumours, pretending to be someone else, or deliberately leaving someone out of a group chat or game.",
@@ -614,6 +642,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "What you can do",
+            picture: "/lessons/staying-safe-online/lesson-5-3.jpg",
+            alt: "Children comforting a friend, with a heart on a tablet",
             text: [
               "If it happens to you: don't reply, because that's often what the person wants. Save screenshots as evidence, block the person, use the report tool, and tell a trusted adult. Look after yourself: take a break from the screen and do something you enjoy.",
               "If you see it happening to someone else, you can be an upstander rather than a bystander. That might mean sending the person a kind private message, not liking or sharing the unkind post, reporting it, and telling a grown-up.",
@@ -743,6 +773,8 @@ export const stayingSafeOnline: LessonUnit = {
         cards: [
           {
             heading: "What is a scam?",
+            picture: "/lessons/staying-safe-online/lesson-6-1.jpg",
+            alt: "A gift box hiding a fishing hook next to a game controller",
             text: [
               "A scam is a trick to get something from you, such as money, your password, your personal information, or control of your game account.",
               "Scammers are often very good at looking genuine. They might pretend to be a bank, a delivery company, a famous game, a well-known shop, or even a friend whose account has been taken over.",
@@ -751,6 +783,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Phishing: don't take the bait",
+            picture: "/lessons/staying-safe-online/lesson-6-2.jpg",
+            alt: "A fish swimming away from an envelope on a fishing line",
             text: [
               "Phishing (said like 'fishing') is a kind of scam where a message tries to get you to click a link, open an attachment or type in your details. Like a fisherman with bait, the scammer hopes you'll bite.",
               "Phishing messages can arrive by email, text, in a game chat or on social media. Warning signs include: it's urgent ('Act now or lose your account!'), it's too good to be true ('You've won a free tablet!'), it asks for a password or code, the sender's address looks slightly wrong, or there are odd spelling mistakes.",
@@ -759,6 +793,8 @@ export const stayingSafeOnline: LessonUnit = {
           },
           {
             heading: "Protecting your information",
+            picture: "/lessons/staying-safe-online/lesson-6-3.jpg",
+            alt: "A child holding a phone and a big golden key beside a padlock",
             text: [
               "Keep your personal information and passwords to yourself, and use a different, strong password for each account. Many accounts also offer two-step verification, where you need a code from another device as well as your password. A grown-up can help set this up.",
               "Never share a code that is sent to you by text or email, even with someone who says they are a friend or from the company. Those codes are how accounts get taken over.",

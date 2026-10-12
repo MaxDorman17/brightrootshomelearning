@@ -30,6 +30,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "The circle of life",
+            picture: "/lessons/life-cycles/lesson-1-1.jpg",
+            alt: "A circle of pictures showing a plant's life cycle from seed to flower and back to seed",
             text: [
               "Every living thing goes through a series of changes from the start of its life to the end. This series of changes is called its life cycle.",
               "Life cycles are different for different living things, but they share some big stages: a living thing begins life, grows and develops, becomes an adult that can reproduce, and eventually dies.",
@@ -39,6 +41,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "What makes a mammal a mammal?",
+            picture: "/lessons/life-cycles/lesson-1-2.jpg",
+            alt: "A cat feeding kittens, a dolphin and calf, a bat and a platypus",
             text: [
               "Mammals are a group of animals that includes humans, dogs, whales, bats, elephants and mice. They share some important features.",
               "Mammals have hair or fur (even whales and dolphins have a few bristles when they are born). They are warm-blooded, which means their bodies keep the same warm temperature whatever the weather.",
@@ -48,6 +52,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "A mammal's life cycle",
+            picture: "/lessons/life-cycles/lesson-1-3.jpg",
+            alt: "A mother elephant walking with her calf on the savannah",
             text: [
               "A mammal's life begins when a male sex cell (sperm) joins with a female sex cell (an egg) inside the mother's body. This is called fertilisation. The baby then grows inside its mother. The time it spends growing there is called the gestation period.",
               "Gestation periods vary hugely. A mouse is pregnant for about three weeks, a human for about nine months, and an African elephant for about 22 months, the longest of any land animal.",
@@ -133,6 +139,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "Living a double life",
+            picture: "/lessons/life-cycles/lesson-2-1.jpg",
+            alt: "A common frog on a mossy stone at the edge of a pond",
             text: [
               "Amphibians are a group of animals that includes frogs, toads, newts and salamanders. The word amphibian comes from Greek words meaning 'both lives', because most amphibians spend part of their life in water and part on land.",
               "Amphibians are cold-blooded: their body temperature changes with their surroundings, which is why British frogs hide away and rest through the coldest months.",
@@ -142,6 +150,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "From frogspawn to tadpole",
+            picture: "/lessons/life-cycles/lesson-2-2.jpg",
+            alt: "Tadpoles hatching from a clump of frogspawn underwater",
             text: [
               "In early spring, common frogs gather in ponds. The female lays a large clump of eggs, often well over a thousand, called frogspawn. The male fertilises the eggs as they are laid, outside the female's body. This is called external fertilisation.",
               "Each egg is a black dot surrounded by a ball of clear jelly. The jelly protects the egg and helps keep it warm in the sunlight.",
@@ -151,6 +161,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Metamorphosis: a complete change",
+            picture: "/lessons/life-cycles/lesson-2-3.jpg",
+            alt: "Tadpoles growing legs and a froglet climbing onto a lily pad",
             text: [
               "Over the next weeks, the tadpole's body changes dramatically. This change in body shape is called metamorphosis.",
               "First the back legs grow, then the front legs. The tadpole grows lungs and starts swimming up to gulp air at the surface. Its tail gets shorter as its body absorbs it, using it for energy.",
@@ -228,6 +240,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "Four stages: egg, larva, pupa, adult",
+            picture: "/lessons/life-cycles/lesson-3-1.jpg",
+            alt: "A ladybird's eggs, larva, pupa and adult on a leaf",
             text: [
               "Most insects go through metamorphosis too. Butterflies, moths, beetles, ladybirds, bees, ants and flies all go through four very different stages. This is called complete metamorphosis.",
               "The stages are egg, larva, pupa and adult. The young stage, the larva, looks nothing like the adult. A caterpillar is a butterfly larva, a maggot is a fly larva, and a ladybird larva looks like a tiny, spiky crocodile.",
@@ -237,6 +251,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "The butterfly's story",
+            picture: "/lessons/life-cycles/lesson-3-2.jpg",
+            alt: "A butterfly emerging from its chrysalis under a nettle leaf",
             text: [
               "A female butterfly lays her eggs on a plant that her caterpillars will be able to eat. A cabbage white chooses cabbages; a peacock butterfly chooses stinging nettles.",
               "The caterpillar hatches and often eats its own eggshell first. Then it eats and eats. Its skin cannot stretch very far, so as it grows it sheds its skin several times. This is called moulting.",
@@ -246,6 +262,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Incomplete metamorphosis",
+            picture: "/lessons/life-cycles/lesson-3-3.jpg",
+            alt: "A dragonfly climbing out of its nymph skin on a reed",
             text: [
               "Not all insects have a pupa stage. Grasshoppers, dragonflies, earwigs and aphids go through three stages instead: egg, nymph and adult. This is called incomplete metamorphosis.",
               "A nymph looks like a small adult without fully grown wings. It grows by moulting again and again, getting a little more like the adult each time.",
@@ -327,6 +345,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "Eggs with shells",
+            picture: "/lessons/life-cycles/lesson-4-1.jpg",
+            alt: "A robin sitting on a nest of blue speckled eggs",
             text: [
               "All birds lay eggs. A bird's egg is fertilised inside the female's body (internal fertilisation), and then a hard shell forms around it before it is laid.",
               "The shell is a brilliant invention. It stops the egg drying out, so unlike frogs, birds can lay their eggs on land, in nests on the ground, in trees or even on bare cliff ledges.",
@@ -336,6 +356,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "From hatchling to adult",
+            picture: "/lessons/life-cycles/lesson-4-2.jpg",
+            alt: "A blackbird feeding nestlings while ducklings follow their mother",
             text: [
               "When it is ready, the chick chips its way out of the shell, using a small, hard point on its beak called an egg tooth. The newly hatched bird is called a hatchling.",
               "Some hatchlings, like baby robins and blackbirds, are born blind and almost naked and depend completely on their parents, who make hundreds of trips a day to bring them food. Others, like ducklings and chicken chicks, hatch covered in fluffy down and can walk and feed themselves within hours.",
@@ -345,6 +367,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Comparing four life cycles",
+            picture: "/lessons/life-cycles/lesson-4-3.jpg",
+            alt: "A child comparing picture cards of four animals' young",
             text: [
               "Scientists compare life cycles to spot patterns. Every life cycle includes birth or hatching, growth, reproduction and death, but the details differ.",
               "Fertilisation: in mammals, birds and insects it happens inside the female's body; in frogs it usually happens outside, in the water. Eggs or live young: most mammals give birth to live young, while birds, most amphibians and insects lay eggs.",
@@ -429,6 +453,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "Two ways to make new plants",
+            picture: "/lessons/life-cycles/lesson-5-1.jpg",
+            alt: "A strawberry plant sending out runners with new baby plants",
             text: [
               "Plants have life cycles too, and like animals they need to reproduce. But plants have a trick most animals don't: many can reproduce in two different ways.",
               "Sexual reproduction needs two parents (or at least a male and a female sex cell). The offspring get a mixture of features from both, so each one is a little different from its parents and from each other.",
@@ -438,6 +464,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Flowers, pollen and seeds",
+            picture: "/lessons/life-cycles/lesson-5-2.jpg",
+            alt: "A bumblebee covered in pollen visiting a flower",
             text: [
               "Flowers are where sexual reproduction happens in flowering plants. The male parts, the stamens, make pollen, which contains the male sex cells. The female part in the middle, the carpel, has a sticky top called the stigma, and contains ovules, which hold the female sex cells.",
               "Pollination is when pollen is carried from a stamen to a stigma, usually of another flower of the same kind. Bees, butterflies and other insects carry it while feeding on nectar; grasses and many trees use the wind instead.",
@@ -447,6 +475,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Cuttings, runners and bulbs",
+            picture: "/lessons/life-cycles/lesson-5-3.jpg",
+            alt: "Mint cuttings with roots, a sprouting garlic clove and a spider plant on a windowsill",
             text: [
               "Runners are long stems that grow sideways along the ground. Where they touch the soil, they grow roots and a new plant forms. Strawberries and spider plants reproduce this way.",
               "Bulbs, like those of daffodils, tulips, onions and garlic, are underground food stores made of swollen leaves. As well as flowering, a bulb can grow small new bulbs at its side, which become new plants. Each clove in a bulb of garlic can grow into a whole new plant. Potatoes do something similar with swollen underground stems called tubers.",
@@ -533,6 +563,8 @@ export const lifeCycles: LessonUnit = {
         cards: [
           {
             heading: "What is a naturalist?",
+            picture: "/lessons/life-cycles/lesson-6-1.jpg",
+            alt: "A child with binoculars sketching a blackbird in a garden",
             text: [
               "A naturalist is someone who studies living things, especially by watching them carefully in their natural surroundings rather than only in a laboratory.",
               "Much of what we know about life cycles came from naturalists' patient observations. Over 300 years ago, the German artist and naturalist Maria Sibylla Merian raised caterpillars and painted every stage of their metamorphosis. At the time, many people still believed insects simply appeared out of mud.",
@@ -542,6 +574,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "Jane Goodall and the chimpanzees",
+            picture: "/lessons/life-cycles/lesson-6-2.jpg",
+            alt: "A naturalist watching a chimpanzee use a twig to fish for termites",
             text: [
               "Jane Goodall was born in London in 1934. As a child she loved animals and dreamed of going to Africa. In 1960, aged 26, she began studying wild chimpanzees at Gombe, in what is now Tanzania, with the support of the scientist Louis Leakey.",
               "At first the chimpanzees ran away from her. She was patient, returning day after day until they accepted her. She gave them names, such as David Greybeard, and noticed that each had its own personality.",
@@ -551,6 +585,8 @@ export const lifeCycles: LessonUnit = {
           },
           {
             heading: "David Attenborough and the living planet",
+            picture: "/lessons/life-cycles/lesson-6-3.jpg",
+            alt: "An elderly naturalist talking to a camera near resting gorillas",
             text: [
               "David Attenborough was born in 1926 and grew up in Leicester, where as a boy he collected fossils, stones and birds' eggs. He studied natural sciences at the University of Cambridge and joined the BBC in 1952.",
               "In 1954 he began presenting Zoo Quest, filming animals in their habitats around the world. In 1979, his series Life on Earth told the story of the evolution of life, and it was watched by millions. Many more series followed, including The Blue Planet and Planet Earth.",
