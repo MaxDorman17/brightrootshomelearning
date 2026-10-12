@@ -7,7 +7,7 @@ export const mapsAndDirections: LessonUnit = {
   short: "Maps",
   subject: "Geography",
   ages: "5 to 7",
-  emoji: "🗺️",
+  emoji: "📍",
   color: "#8FAF9A",
   summary: "Six playful lessons on what maps are, bird's-eye views, symbols and keys, position words, giving directions, the four compass points and treasure maps.",
   cover: "/lessons/units/maps-and-directions.jpg",
@@ -19,8 +19,8 @@ export const mapsAndDirections: LessonUnit = {
       minutes: 30,
       goal: "I can say what a map is and what a bird's-eye view is.",
       starter: [
-        { type: "choice", q: "Have you seen a map before? Which of these is a map?", options: ["A picture of a place from above", "A shopping list", "A birthday card"], answer: 0 },
-        { type: "choice", q: "What can a map help you do?", options: ["Find your way", "Brush your teeth", "Bake a cake"], answer: 0 },
+        { type: "choice", q: "Have you seen a map before? Which of these is a map?", options: ["A shopping list", "A picture of a place from above", "A birthday card"], answer: 1 },
+        { type: "choice", q: "What can a map help you do?", options: ["Brush your teeth", "Bake a cake", "Find your way"], answer: 2 },
         { type: "choice", q: "Which animal flies high up in the sky?", options: ["A cat", "A fish", "A bird"], answer: 2 },
         { type: "pick", q: "Where might you see a map? There is more than one.", options: ["At a zoo", "In a bath", "In a park", "On a phone"], answers: [0, 2, 3] },
         { type: "choice", q: "If you stand on a chair and look down at a table, what do you see most?", options: ["The legs of the table", "The top of the table"], answer: 1 },
@@ -80,7 +80,7 @@ export const mapsAndDirections: LessonUnit = {
         ],
       },
       exit: [
-        { type: "choice", q: "What is a map?", options: ["A picture of a place that shows where things are", "A kind of song", "A toy"], answer: 0 },
+        { type: "choice", q: "What is a map?", options: ["A kind of song", "A picture of a place that shows where things are", "A toy"], answer: 1 },
         { type: "choice", q: "A bird's-eye view means looking...", options: ["from the side", "straight down from above", "from underneath"], answer: 1 },
         { type: "choice", q: "On a map, what shape is a table usually?", options: ["A circle", "A rectangle"], answer: 1 },
         { type: "choice", q: "From above, a house looks like...", options: ["its roof", "its front door"], answer: 0 },
@@ -164,7 +164,7 @@ export const mapsAndDirections: LessonUnit = {
         ],
       },
       exit: [
-        { type: "choice", q: "What is a symbol?", options: ["A little picture that stands for something", "A very big map", "A kind of pencil"], answer: 0 },
+        { type: "choice", q: "What is a symbol?", options: ["A very big map", "A kind of pencil", "A little picture that stands for something"], answer: 2 },
         { type: "choice", q: "What does the key on a map tell you?", options: ["How to open a door", "What each symbol means", "What time it is"], answer: 1 },
         { type: "choice", q: "On a map, a blue blob is most likely...", options: ["a pond", "a car", "a house"], answer: 0 },
         { type: "choice", q: "A little tree symbol could mean...", options: ["a school", "a wood", "a shop"], answer: 1 },
@@ -215,7 +215,7 @@ export const mapsAndDirections: LessonUnit = {
           {
             heading: "Left and right",
             text: [
-              "Hold up both hands with your fingers up and your thumbs out. Your left hand makes the shape of an L.",
+              "Hold up both hands with the backs of your hands facing you. Point one finger up and stick your thumb out to the side. Your left hand makes the letter L.",
               "Left and right can be tricky. Even grown-ups mix them up sometimes!",
               "Practise a lot: wave your right hand, stamp your left foot.",
             ],
@@ -316,7 +316,7 @@ export const mapsAndDirections: LessonUnit = {
       practice: {
         intro: "Be a direction detective.",
         questions: [
-          { type: "choice", q: "What do directions tell you?", options: ["How to get somewhere", "What to eat", "What time it is"], answer: 0 },
+          { type: "choice", q: "What do directions tell you?", options: ["What to eat", "How to get somewhere", "What time it is"], answer: 1 },
           { type: "order", q: "Put these directions to the door in order.", items: ["Stand up", "Walk forwards 3 steps", "Turn left", "Stop at the door"] },
           { type: "choice", q: "Which direction is clearer?", options: ["Go over there", "Walk 4 steps forwards to the sofa"], answer: 1 },
           { type: "choice", q: "Forwards means...", options: ["the way you are facing", "the way behind you"], answer: 0 },
@@ -335,7 +335,7 @@ export const mapsAndDirections: LessonUnit = {
         ],
       },
       exit: [
-        { type: "choice", q: "What are directions?", options: ["Steps that tell you how to get somewhere", "A kind of map symbol", "A song"], answer: 0 },
+        { type: "choice", q: "What are directions?", options: ["A kind of map symbol", "A song", "Steps that tell you how to get somewhere"], answer: 2 },
         { type: "choice", q: "Forwards means go...", options: ["the way you are facing", "up into the sky"], answer: 0 },
         { type: "choice", q: "Which is the best direction?", options: ["Go somewhere", "Walk 2 steps forwards, then turn right", "Just walk"], answer: 1 },
         { type: "choice", q: "What does stop mean?", options: ["Run fast", "Stand still", "Turn round"], answer: 1 },
@@ -507,7 +507,7 @@ export const mapsAndDirections: LessonUnit = {
       exit: [
         { type: "choice", q: "What does a treasure map show?", options: ["Where something is hidden", "What to have for tea"], answer: 0 },
         { type: "choice", q: "On a treasure map, the treasure is usually marked with...", options: ["a star", "a smiley face", "an X"], answer: 2 },
-        { type: "choice", q: "What is a route?", options: ["The way you go to get somewhere", "A kind of treasure"], answer: 0 },
+        { type: "choice", q: "What is a route?", options: ["A kind of treasure", "The way you go to get somewhere"], answer: 1 },
         { type: "order", q: "Put the steps for following a treasure map in order.", items: ["Find where you are", "Find the X", "Walk there", "Dig up the treasure"] },
         { type: "choice", q: "A story map shows...", options: ["the journey in a story", "the colours in a story", "how long a story is"], answer: 0 },
         { type: "order", q: "Put Little Red Riding Hood's journey in order.", items: ["Her home", "The woods", "Grandma's cottage"] },

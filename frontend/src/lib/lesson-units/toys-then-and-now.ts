@@ -231,7 +231,7 @@ export const toysThenAndNow: LessonUnit = {
       practice: {
         intro: "Get ready to be an interviewer.",
         questions: [
-          { type: "pick", q: "Which are good questions to ask about toys? There is more than one.", options: ["What was your favourite toy?", "What is your favourite colour of car?", "Where did you play?"], answers: [0, 2] },
+          { type: "pick", q: "Which are good questions to ask about toys? There is more than one.", options: ["What was your favourite toy?", "What did you have for breakfast today?", "Where did you play?"], answers: [0, 2] },
           { type: "choice", q: "Which toy did your grandparents NOT have when they were small?", options: ["A skipping rope", "A tablet", "Marbles"], answer: 1 },
           { type: "choice", q: "When someone answers your question, you should...", options: ["listen carefully", "talk over them"], answer: 0 },
           { type: "match", q: "Match the word to what it means.", pairs: [["Interview", "Asking questions"], ["Grandparent", "Your grown-up's mum or dad"], ["History", "Finding out about the past"]] },
