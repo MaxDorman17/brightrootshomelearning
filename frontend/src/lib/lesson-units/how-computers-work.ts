@@ -11,7 +11,7 @@ export const howComputersWork: LessonUnit = {
   short: "Computers",
   subject: "Computing",
   ages: "11 to 14",
-  emoji: "💻",
+  emoji: "🖥️",
   color: "#45606B",
   summary: "Six lessons on what really happens inside a computer: input, process, output and storage, the CPU and the fetch-decode-execute cycle, memory and data units, hardware, software and operating systems, AND, OR and NOT logic gates, and the people who invented computing.",
   cover: "/lessons/units/how-computers-work.jpg",

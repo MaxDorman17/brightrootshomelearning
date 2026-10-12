@@ -38,7 +38,7 @@ export default function QuestionCard({ q, number, seed, color, value, onChange, 
         >
           {number}
         </span>
-        <p className="min-w-0 flex-1 text-lg font-bold leading-snug text-brand-charcoal">
+        <p className="min-w-0 flex-1 whitespace-pre-wrap text-lg font-bold leading-snug text-brand-charcoal">
           <span className="sr-only">Question {number}. </span>
           <MathText text={q.q} />
         </p>

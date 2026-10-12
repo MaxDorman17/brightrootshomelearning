@@ -89,11 +89,11 @@ export const ukLandscapes: LessonUnit = {
             q: "Which best explains why western Britain is generally wetter than eastern Britain?",
             options: [
               "The west is closer to the North Pole",
-              "Moist south-westerly winds from the Atlantic are forced to rise over western uplands, cool and release rain",
               "The east has more cities, which stop clouds forming",
+              "Moist south-westerly winds from the Atlantic are forced to rise over western uplands, cool and release rain",
               "Rivers in the west evaporate more water",
             ],
-            answer: 1,
+            answer: 2,
             why: "Relief rainfall: the prevailing wind brings moist Atlantic air, which rises over the hills in the west, cools and condenses. The east lies in a rain shadow.",
           },
           {
@@ -224,11 +224,11 @@ export const ukLandscapes: LessonUnit = {
             q: "Granite has large crystals but basalt has tiny ones. Which best explains why?",
             options: [
               "Basalt is younger, so its crystals have not grown yet",
-              "Granite cooled slowly underground, giving crystals time to grow; basalt cooled quickly at the surface",
               "Granite was squeezed by pressure, which made its crystals bigger",
               "Basalt was eroded by the sea, which wore its crystals down",
+              "Granite cooled slowly underground, giving crystals time to grow; basalt cooled quickly at the surface",
             ],
-            answer: 1,
+            answer: 3,
             why: "Cooling rate controls crystal size: slow cooling underground gives large crystals, quick cooling at the surface gives small ones.",
           },
           {
@@ -378,12 +378,12 @@ export const ukLandscapes: LessonUnit = {
             type: "choice",
             q: "Why do chalk hills such as the South Downs have very few surface streams?",
             options: [
-              "It almost never rains there",
               "Chalk is permeable, so rain soaks into the rock instead of running over the surface",
+              "It almost never rains there",
               "Farmers have filled in all the streams",
               "Chalk is impermeable, so water evaporates quickly",
             ],
-            answer: 1,
+            answer: 0,
             why: "Chalk is porous and permeable. Water soaks in and comes out lower down as springs, often along a spring line at the foot of the hills.",
           },
         ],
@@ -646,11 +646,11 @@ export const ukLandscapes: LessonUnit = {
             q: "On a discordant coast, why do headlands form where the rock is hard?",
             options: [
               "Hard rock attracts more sand",
-              "Hard rock resists erosion, so it is left sticking out while softer rock is worn back into bays",
               "Waves never reach hard rock",
+              "Hard rock resists erosion, so it is left sticking out while softer rock is worn back into bays",
               "Hard rock is pushed upwards by the sea",
             ],
-            answer: 1,
+            answer: 2,
           },
           {
             type: "gap",
@@ -784,11 +784,11 @@ export const ukLandscapes: LessonUnit = {
             q: "A plan to build a large car park would bring more visitors but damage a wildflower meadow in a national park in England. Using the Sandford Principle, what should happen?",
             options: [
               "The car park should be built, because recreation comes first",
-              "Conservation should take priority, so the meadow should be protected",
               "The decision should be made by the visitors who want to park",
               "Both purposes are ignored",
+              "Conservation should take priority, so the meadow should be protected",
             ],
-            answer: 1,
+            answer: 3,
           },
           {
             type: "pick",

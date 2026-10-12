@@ -11,7 +11,7 @@ export const observationalDrawing: LessonUnit = {
   short: "Observational drawing",
   subject: "Art & Design",
   ages: "11 to 14",
-  emoji: "✏️",
+  emoji: "👁️",
   color: "#6B6A5E",
   summary: "Six lessons on drawing what you really see: looking versus knowing, blind and continuous line, measuring proportion by sighting, tone with a range of pencils, texture and mark-making, and composing a still life, with lessons from Albrecht Dürer and Leonardo da Vinci.",
   cover: "/lessons/units/observational-drawing.jpg",

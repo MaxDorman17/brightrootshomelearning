@@ -40,6 +40,30 @@ import { colourMixing } from "@/lib/lesson-units/colour-mixing";
 import { linesAndShapes } from "@/lib/lesson-units/lines-and-shapes";
 import { allAboutMe } from "@/lib/lesson-units/all-about-me";
 import { christmasAndSpecialTimes } from "@/lib/lesson-units/christmas-and-special-times";
+import { cellsAndOrganisms } from "@/lib/lesson-units/cells-and-organisms";
+import { particlesAndStates } from "@/lib/lesson-units/particles-and-states";
+import { energyStores } from "@/lib/lesson-units/energy-stores";
+import { forcesAndMotion } from "@/lib/lesson-units/forces-and-motion";
+import { elementsAndPeriodicTable } from "@/lib/lesson-units/elements-and-periodic-table";
+import { bodySystems } from "@/lib/lesson-units/body-systems";
+import { lightAndWaves } from "@/lib/lesson-units/light-and-waves";
+import { acidsAndAlkalis } from "@/lib/lesson-units/acids-and-alkalis";
+import { normanConquest } from "@/lib/lesson-units/norman-conquest";
+import { medievalLife } from "@/lib/lesson-units/medieval-life";
+import { theCrusades } from "@/lib/lesson-units/the-crusades";
+import { scottishIndependenceWars } from "@/lib/lesson-units/scottish-independence-wars";
+import { tectonicHazards } from "@/lib/lesson-units/tectonic-hazards";
+import { populationAndCities } from "@/lib/lesson-units/population-and-cities";
+import { fieldworkAndMaps } from "@/lib/lesson-units/fieldwork-and-maps";
+import { ukLandscapes } from "@/lib/lesson-units/uk-landscapes";
+import { observationalDrawing } from "@/lib/lesson-units/observational-drawing";
+import { popArt } from "@/lib/lesson-units/pop-art";
+import { digitalFootprint } from "@/lib/lesson-units/digital-footprint";
+import { howComputersWork } from "@/lib/lesson-units/how-computers-work";
+import { algorithmsAndFlowcharts } from "@/lib/lesson-units/algorithms-and-flowcharts";
+import { pythonFirstPrograms } from "@/lib/lesson-units/python-first-programs";
+import { identityAndMentalHealth } from "@/lib/lesson-units/identity-and-mental-health";
+import { religionInTheUk } from "@/lib/lesson-units/religion-in-the-uk";
 import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
 import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
 
@@ -153,6 +177,30 @@ export const UNITS: LessonUnit[] = [
   linesAndShapes,
   allAboutMe,
   christmasAndSpecialTimes,
+  cellsAndOrganisms,
+  particlesAndStates,
+  energyStores,
+  forcesAndMotion,
+  elementsAndPeriodicTable,
+  bodySystems,
+  lightAndWaves,
+  acidsAndAlkalis,
+  normanConquest,
+  medievalLife,
+  theCrusades,
+  scottishIndependenceWars,
+  tectonicHazards,
+  populationAndCities,
+  fieldworkAndMaps,
+  ukLandscapes,
+  observationalDrawing,
+  popArt,
+  digitalFootprint,
+  howComputersWork,
+  algorithmsAndFlowcharts,
+  pythonFirstPrograms,
+  identityAndMentalHealth,
+  religionInTheUk,
 ];
 
 export const COMING_UNITS: ComingUnit[] = [

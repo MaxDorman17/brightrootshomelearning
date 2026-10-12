@@ -11,7 +11,7 @@ export const medievalLife: LessonUnit = {
   short: "Medieval life",
   subject: "History",
   ages: "11 to 14",
-  emoji: "🏰",
+  emoji: "🌾",
   color: "#6B5B45",
   summary: "Six lessons on life in medieval England: villages and towns, the power of the Church, medieval medicine, the Black Death of 1348 to 1350, the changes that followed, and the Peasants' Revolt of 1381, all through sources and historians' interpretations.",
   cover: "/lessons/units/medieval-life.jpg",

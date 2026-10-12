@@ -11,7 +11,7 @@ export const particlesAndStates: LessonUnit = {
   short: "Particles",
   subject: "Science",
   ages: "11 to 14",
-  emoji: "🧊",
+  emoji: "💨",
   color: "#4F6D7A",
   summary: "Six lessons on the particle model: how particles are arranged and move in solids, liquids and gases, changes of state, melting and boiling points and heating curves, diffusion, gas pressure and expansion, density and the conservation of mass.",
   cover: "/lessons/units/particles-and-states.jpg",

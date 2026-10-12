@@ -1,0 +1,573 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Religion in the UK today, for ages 11 to 14 (KS3 RE). Census figures are rounded and dated (England and Wales 2021,
+ * Scotland 2022). Every worldview is described in a respectful "many X believe" voice, without ranking beliefs or
+ * asking learners to adopt or reject any of them. Visits to places of worship always go with a grown-up and permission.
+ */
+export const religionInTheUk: LessonUnit = {
+  slug: "religion-in-the-uk",
+  title: "Religion in the UK today",
+  short: "Religion in the UK",
+  subject: "Religious Education",
+  ages: "11 to 14",
+  emoji: "🕊️",
+  color: "#6A5F7E",
+  summary: "Six lessons on what the census tells us about belief in the UK, Christianity and its churches, Muslim, Hindu and Sikh communities in Britain, Humanism and non-religious worldviews, and how people of many beliefs live side by side.",
+  cover: "/lessons/units/religion-in-the-uk.jpg",
+  lessons: [
+    {
+      slug: "religion-in-the-uk-1",
+      title: "What does the census tell us?",
+      emoji: "📊",
+      minutes: 60,
+      goal: "I can read census data about religion and belief in the UK, describe how it has changed, and explain what the figures can and cannot tell us.",
+      starter: [
+        { type: "pick", q: "Which of these are religions you may have learned about at primary school? There is more than one.", options: ["Christianity", "Islam", "Humanism", "Sikhism", "Judaism"], answers: [0, 1, 3, 4], why: "Humanism is a non-religious worldview: a set of beliefs about life that does not involve a god." },
+        { type: "match", q: "Match each religion to the name of its place of worship.", pairs: [["Christianity", "Church"], ["Islam", "Mosque"], ["Judaism", "Synagogue"], ["Sikhism", "Gurdwara"]] },
+        { type: "choice", q: "Which religion has the most followers in the UK?", options: ["Hinduism", "Islam", "Christianity", "Buddhism"], answer: 2 },
+        { type: "match", q: "Match each religion to a festival that many of its followers celebrate.", pairs: [["Hinduism", "Diwali"], ["Christianity", "Easter"], ["Islam", "Eid al-Fitr"], ["Sikhism", "Vaisakhi"]] },
+        { type: "choice", q: "What is a census?", options: ["A survey of every household in a country, usually every ten years", "A vote to choose the government", "A list of everyone who goes to a place of worship"], answer: 0 },
+        { type: "type", q: "What is the name of the Jewish holy day of rest, from Friday evening to Saturday evening?", answer: ["Shabbat", "shabbat", "Sabbath", "sabbath", "the Sabbath", "Shabbos"] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Counting belief",
+            text: [
+              "Every ten years the UK holds a census, a survey that every household must fill in. It asks about age, work, housing, language and health. Since 2001 it has also asked about religion. The census in England and Wales took place in March 2021; Scotland's was delayed by the pandemic and took place in 2022. Northern Ireland also held a census in 2021.",
+              "The religion question is voluntary, so people can leave it blank. It was the first voluntary question ever added to the census in England and Wales, and in 2021 new voluntary questions on sexual orientation and gender identity joined it. About 6% of people chose not to answer the religion question in 2021. The question in England and Wales simply asks 'What is your religion?', and people tick a box or write in an answer.",
+              "Because almost every household takes part, the census is much more reliable than a small opinion poll. It is the best evidence we have about how many people in the UK identify with each religion or with none, and it lets us compare places and see change over time.",
+            ],
+          },
+          {
+            heading: "The 2021 picture",
+            text: [
+              "In England and Wales in 2021, about 46% of people described themselves as Christian. About 37% said they had no religion. The next largest groups were Muslims (about 6.5%), Hindus (about 1.7%), Sikhs (about 0.9%), Buddhists (about 0.5%) and Jews (about 0.5%). Smaller numbers wrote in other religions, such as Pagan, Jain or Bahá'í.",
+              "The numbers have changed fast. In 2011, about 59% of people in England and Wales said they were Christian and about 25% said they had no religion. 2021 was the first census in which fewer than half the population of England and Wales described themselves as Christian. Over the same decade, the number of Muslims, Hindus and Sikhs grew.",
+              "In Scotland's 2022 census, just over half of people (about 51%) said they had no religion, a bigger share than in England and Wales. The largest religious groups in Scotland were the Church of Scotland and the Roman Catholic Church.",
+              "Belief also varies from place to place. Cities such as London, Birmingham, Leicester and Bradford are among the most religiously diverse places in Britain, while many rural areas are less diverse. Younger people are more likely than older people to say they have no religion.",
+            ],
+          },
+          {
+            heading: "What the numbers cannot tell us",
+            text: [
+              "A census measures religious identity: what people say they are. It does not measure how often people pray, attend worship or what they actually believe. Someone may tick 'Christian' because of their family or culture without going to church, while someone who ticks 'no religion' may still pray, feel spiritual or follow some traditions.",
+              "The wording of a question can also change the answer. Surveys that ask 'Do you belong to a religion?' tend to find more people with no religion than surveys that ask 'What is your religion?', because the second question can suggest that everyone has one.",
+              "So when we use data about religion, we should ask the same questions a historian asks of a source: who collected it, how, and what exactly did they ask? Good RE uses numbers alongside people's own voices, so we understand both the big picture and what belief means in someone's life.",
+            ],
+          },
+        ],
+        words: [
+          { word: "census", meaning: "an official count and survey of every household in a country, held every ten years in the UK" },
+          { word: "religious identity", meaning: "the religion, or none, that a person says they belong to" },
+          { word: "worldview", meaning: "a person's overall set of beliefs about life, meaning and how to live, religious or non-religious" },
+          { word: "non-religious", meaning: "not belonging to a religion; includes atheists, agnostics, humanists and many others" },
+          { word: "diversity", meaning: "a range of different people, beliefs and cultures living in one place" },
+          { word: "secularisation", meaning: "the process by which religion becomes less influential in a society's public life" },
+        ],
+      },
+      practice: {
+        intro: "Practise reading and questioning census data about belief.",
+        questions: [
+          { type: "order", q: "Put these groups in order by their share of the population of England and Wales in 2021, largest first.", items: ["Christian", "No religion", "Muslim", "Hindu", "Sikh"] },
+          { type: "choice", q: "In 2021, about what fraction of people in England and Wales described themselves as Christian?", options: ["About three quarters", "Just under half", "About a tenth"], answer: 1, why: "46% is just under half." },
+          { type: "gap", q: "Fill in the gaps.", text: "In 2011 about ___ of people in England and Wales said they were Christian. By 2021 this had fallen to about ___, while 'no religion' rose to about 37%.", bank: ["59%", "46%", "25%", "90%"], answers: ["59%", "46%"] },
+          { type: "choice", q: "Which statement best explains why the census does not show how religious people are?", options: ["It only asks about religious identity, not practice or belief", "Most people refuse to fill it in", "It is only held every hundred years"], answer: 0 },
+          { type: "pick", q: "Which of these could a person who ticked 'no religion' still do? There is more than one.", options: ["Feel spiritual", "Celebrate Christmas with family", "Have strong moral values", "Believe in nothing at all about how to live"], answers: [0, 1, 2], why: "Having no religion does not mean having no beliefs or values." },
+        ],
+      },
+      task: {
+        title: "Analyse the census",
+        intro: "Turn the 2021 census figures into a chart, then write a short analysis of what they show and what they do not show.",
+        need: ["Squared or graph paper, a ruler, a pencil and colours", "A calculator (optional)", "An internet-connected device, with a grown-up's permission (optional, for the extension)"],
+        steps: [
+          "Draw a bar chart of these figures for England and Wales in 2021: Christian 46%, no religion 37%, Muslim 6.5%, Hindu 1.7%, Sikh 0.9%, Buddhist 0.5%, Jewish 0.5%, other 0.6%, not answered 6%. Use a sensible scale on the vertical axis and label both axes.",
+          "Next to it, draw two bars for 2011: Christian 59% and no religion 25%. Use a different shade so the change stands out.",
+          "The population of England and Wales in 2021 was about 59.6 million. Work out roughly how many people that means for Christian, no religion and Muslim (multiply 59.6 million by the percentage, then divide by 100).",
+          "Write three sentences describing the main patterns. Use precise language such as 'the largest group', 'fell by', 'rose by' and 'roughly'.",
+          "Write a paragraph called 'Limits of the data' explaining at least two things the census cannot tell us about belief in the UK.",
+          "Extension: with a grown-up's permission, look up the census figures for your own local authority on the Office for National Statistics website, and compare them with the national picture.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which group was the second largest in the 2021 census for England and Wales?", options: ["Muslim", "No religion", "Hindu", "Christian"], answer: 1 },
+        { type: "type", q: "To the nearest whole number, what percentage of people in England and Wales described themselves as Christian in 2021?", answer: ["46", "46%"] },
+        { type: "choice", q: "Which of these census questions can people choose not to answer?", options: ["Age", "Religion", "Address"], answer: 1 },
+        { type: "choice", q: "What does the census measure about religion?", options: ["How often people pray", "What people say their religion is", "How strongly people believe"], answer: 1 },
+        { type: "pick", q: "Which of these statements are supported by the census data in this lesson? There is more than one.", options: ["The share of Christians in England and Wales fell between 2011 and 2021", "In Scotland's 2022 census, just over half said they had no religion", "Most people in England and Wales are Muslim", "The share saying 'no religion' in England and Wales rose between 2011 and 2021"], answers: [0, 1, 3] },
+        { type: "choice", q: "Why might two surveys about religion give different results?", options: ["Because the wording of the question can change people's answers", "Because religion cannot be studied at all", "Because only one of them is written down"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Graph paper, ruler and colours", "A calculator (optional)"],
+        tips: [
+          "Figures are rounded. The precise 2021 England and Wales results were Christian 46.2%, no religion 37.2%, Muslim 6.5%, Hindu 1.7%, Sikh 0.9%, Buddhist 0.5%, Jewish 0.5%, other 0.6%, not stated 6.0%.",
+          "Your teenager may want to talk about your family's own beliefs or lack of them. RE is about understanding, not persuasion; it's fine to share your view and to encourage them to form their own.",
+          "The rough calculations give about 27 million Christians, 22 million people with no religion and 3.9 million Muslims in England and Wales.",
+        ],
+        younger: "Focus on the bar chart and three sentences. Ask: which bar is tallest, which changed most since 2011, and what surprised you?",
+        older: "Research Grace Davie's idea of 'believing without belonging' and write a paragraph on whether the census supports it. This kind of evaluation is central to GCSE and National 5 RE.",
+      },
+    },
+    {
+      slug: "religion-in-the-uk-2",
+      title: "Christianity in the UK",
+      emoji: "⛪",
+      minutes: 60,
+      goal: "I can describe the main Christian denominations in the UK and explain what it means for the Church of England to be the established church.",
+      starter: [
+        { type: "choice", q: "About what percentage of people in England and Wales said they had no religion in 2021?", options: ["About 10%", "About 37%", "About 70%"], answer: 1 },
+        { type: "choice", q: "In which year did Scotland hold its most recent census?", options: ["2021", "2022", "2011"], answer: 1 },
+        { type: "choice", q: "What does a census measure about religion?", options: ["Religious identity", "How often people attend worship", "What people pray for"], answer: 0 },
+        { type: "type", q: "What word means a person's overall set of beliefs about life and how to live, whether religious or not?", answer: ["worldview", "Worldview", "world view", "a worldview"] },
+        { type: "choice", q: "Which group was third largest in England and Wales in 2021, at about 6.5%?", options: ["Hindu", "Sikh", "Muslim"], answer: 2 },
+        { type: "pick", q: "Which were limits of the census data? There is more than one.", options: ["It does not show how often people worship", "About 6% left the religion question blank", "It counts almost every household", "The wording of the question may affect answers"], answers: [0, 1, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "One faith, many churches",
+            text: [
+              "Christians follow the teachings of Jesus, whom most Christians believe to be the Son of God, and many believe that through his death and resurrection people can be forgiven and have a restored relationship with God. Christianity reached Britain in Roman times and has shaped its laws, calendar, art, language and landscape for well over a thousand years.",
+              "Christianity is divided into denominations, groups with their own organisation and traditions. The three main branches worldwide are Roman Catholic, Orthodox and Protestant. In the 1500s, during the Reformation, the churches of England and Scotland broke away from the authority of the Pope in Rome.",
+              "In the UK today you will find the Church of England, the Church of Scotland, the Church in Wales, the Roman Catholic Church, Methodists, Baptists, the United Reformed Church, Quakers, Orthodox churches and many independent and Pentecostal churches. Each has its own style of worship, from silent Quaker meetings to sung Catholic Masses and lively Pentecostal services with modern music.",
+            ],
+          },
+          {
+            heading: "The established Church of England",
+            text: [
+              "The Church of England is the established church of England. This means it has a special, official link with the state. It began when Henry VIII broke with the Pope in the 1530s, and over the following decades it developed as a Protestant church that kept some Catholic traditions.",
+              "Being established has real effects. The monarch is the Church's Supreme Governor and promises at their coronation to maintain it. Twenty-six bishops, known as the Lords Spiritual, sit in the House of Lords. Senior bishops are appointed by the monarch on the advice of the Prime Minister, after the Church has chosen its candidates. Parliament must approve major changes to Church law.",
+              "The Church of England has a parish system that covers the whole of England, so everyone lives in a parish and can ask their parish church for a baptism, wedding or funeral. Its spiritual leader is the Archbishop of Canterbury. It is also part of the worldwide Anglican Communion, a family of churches in more than 160 countries.",
+              "Some people argue the Church should be disestablished, because most people in England are no longer Anglican. Others argue that establishment gives a place for faith in public life that benefits all communities. The Church in Wales was disestablished in 1920 and the Church of Ireland in 1871.",
+            ],
+          },
+          {
+            heading: "Scotland and a changing picture",
+            text: [
+              "The Church of Scotland, often called the Kirk, is Scotland's national church, but it is not established in the same way. Since the Church of Scotland Act 1921, it governs itself, free from control by the state. It is Presbyterian: it has no bishops, and it is run by elected elders and ministers meeting in courts, up to the yearly General Assembly in Edinburgh, which is chaired by a Moderator chosen for one year.",
+              "The Roman Catholic Church has a strong presence across the UK, especially in parts of Scotland, north-west England and Northern Ireland, and among people with Irish, Polish and other European family roots. Catholics recognise the Pope as the leader of the Church.",
+              "While attendance at many traditional churches has fallen, some churches are growing. Black-majority and Pentecostal churches, many founded by people who came from the Caribbean and Africa from the 1940s onwards, now draw large congregations, especially in London. Many Christians from Eastern Europe, Asia and Africa have also brought new life to Catholic and Orthodox churches.",
+              "So Christianity in the UK is both declining and changing: fewer people identify as Christian than a generation ago, but the Christians who remain are more ethnically diverse than ever before.",
+            ],
+          },
+        ],
+        words: [
+          { word: "denomination", meaning: "a branch of a religion with its own organisation, leaders and traditions" },
+          { word: "established church", meaning: "a church that has an official, legal link with the state" },
+          { word: "Anglican", meaning: "belonging to the Church of England or the worldwide churches linked to it" },
+          { word: "Presbyterian", meaning: "a Protestant way of organising a church through elected elders and ministers, with no bishops" },
+          { word: "Reformation", meaning: "the 16th-century movement that split Western Christianity into Catholic and Protestant churches" },
+          { word: "disestablishment", meaning: "ending the official link between a church and the state" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of Christianity in the UK.",
+        questions: [
+          { type: "match", q: "Match each church to a fact about it.", pairs: [["Church of England", "The monarch is its Supreme Governor"], ["Church of Scotland", "Run by elders and ministers, with no bishops"], ["Roman Catholic Church", "Recognises the Pope as its leader"], ["Quakers", "Often worship in shared silence"]] },
+          { type: "pick", q: "Which of these show that the Church of England is established? There is more than one.", options: ["26 bishops sit in the House of Lords", "Parliament must approve major changes to Church law", "Everyone in England must attend church", "The monarch promises at the coronation to maintain it"], answers: [0, 1, 3] },
+          { type: "choice", q: "Why is the Church of Scotland described as a national church but not established in the same way?", options: ["It is banned by law", "Since 1921 it has governed itself, free from state control", "It is led by the Archbishop of Canterbury"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "The Church of England began when Henry ___ broke with the Pope in the 1530s. Its spiritual leader is the Archbishop of ___.", bank: ["VIII", "Canterbury", "York", "II", "Edinburgh"], answers: ["VIII", "Canterbury"] },
+          { type: "choice", q: "Which evidence best supports the claim that Christianity in the UK is changing, not just declining?", options: ["Some churches, such as Pentecostal and Black-majority churches, are growing", "Fewer people identified as Christian in 2021", "Churches are very old buildings"], answer: 0 },
+        ],
+      },
+      task: {
+        title: "Should the Church of England stay established?",
+        intro: "Write a balanced piece of extended writing on a real debate about religion and the state in the UK.",
+        need: ["Paper or a computer for writing", "A highlighter or two colours"],
+        steps: [
+          "Draw a table with two columns: 'For keeping establishment' and 'For disestablishment'. Use this lesson to add at least three points to each column.",
+          "Think about different groups: Anglicans, other Christians, people of other religions, and non-religious people. How might each see the question? Add their views to your table.",
+          "Write an introduction explaining what 'established church' means, using two specific examples of what establishment involves.",
+          "Write one paragraph for each side. Use connectives such as 'however', 'on the other hand' and 'some people argue'.",
+          "Write a conclusion giving your own reasoned judgement. Explain why you find one side more convincing, while showing you understand the other.",
+          "Highlight every key word from the lesson you have used correctly.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a denomination?", options: ["A branch of a religion with its own organisation and traditions", "A type of church building", "A holy book"], answer: 0 },
+        { type: "type", q: "Who is the Supreme Governor of the Church of England?", answer: ["the monarch", "monarch", "the King", "King", "the king", "the Queen", "the sovereign", "the King or Queen"] },
+        { type: "choice", q: "What are the 26 bishops in the House of Lords called?", options: ["The Moderators", "The Lords Spiritual", "The Elders"], answer: 1 },
+        { type: "choice", q: "How is the Church of Scotland organised?", options: ["By bishops appointed by the Prime Minister", "By the Pope", "By elected elders and ministers, with a yearly General Assembly"], answer: 2 },
+        { type: "order", q: "Put these events in order, earliest first.", items: ["Christianity reaches Roman Britain", "Henry VIII breaks with the Pope", "The Church in Wales is disestablished", "The 2021 census"] },
+        { type: "choice", q: "Which best explains why some people argue for disestablishment?", options: ["Because the Church of England has no bishops", "Because most people in England are no longer Anglican, so the official link may seem unfair", "Because the Church of England is a Catholic church"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper or a computer"],
+        tips: [
+          "The established-church debate is a genuine, live one, and people of faith and no faith are on both sides. Encourage your teenager to represent each side fairly before giving their own view.",
+          "If your family belongs to a particular church, invite your teenager to compare it with what the lesson says. Different traditions explain things in different ways.",
+          "Northern Ireland has no established church; the largest Christian groups there are Catholic, Presbyterian and Church of Ireland.",
+        ],
+        younger: "Use the two-column table and write one paragraph for each side, plus one sentence saying what you think.",
+        older: "Read about how the coronation service reflected other faiths and denominations, and evaluate whether establishment can work in a diverse society.",
+      },
+    },
+    {
+      slug: "religion-in-the-uk-3",
+      title: "Islam in Britain",
+      emoji: "🕌",
+      minutes: 60,
+      goal: "I can explain some key Muslim beliefs and practices and describe how Muslim communities have grown and contributed to life in Britain.",
+      starter: [
+        { type: "choice", q: "What does it mean for a church to be 'established'?", options: ["It is very old", "It has an official link with the state", "It is the biggest church"], answer: 1 },
+        { type: "choice", q: "Which church is Presbyterian?", options: ["Church of Scotland", "Roman Catholic Church", "Church of England"], answer: 0 },
+        { type: "type", q: "What is the name of the 16th-century movement that split Western Christianity into Catholic and Protestant churches?", answer: ["Reformation", "the Reformation", "reformation"] },
+        { type: "choice", q: "Which king broke the Church in England away from the Pope?", options: ["Henry VIII", "Alfred the Great", "Charles I"], answer: 0 },
+        { type: "pick", q: "Which of these are Christian denominations in the UK? There is more than one.", options: ["Methodist", "Baptist", "Sunni", "Quaker"], answers: [0, 1, 3] },
+        { type: "choice", q: "Which church was disestablished in 1920?", options: ["The Church of Scotland", "The Church in Wales", "The Church of England"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Core beliefs and practices",
+            text: [
+              "Islam is a monotheistic religion: Muslims believe in one God, called Allah in Arabic. Muslims believe that God revealed the Qur'an to the Prophet Muhammad in Arabia in the 7th century CE, and that Muhammad was the last in a line of prophets that includes Ibrahim (Abraham), Musa (Moses) and Isa (Jesus).",
+              "The word 'Islam' is linked to the Arabic words for submission and peace: Muslims try to live in submission to God's will. Many Muslims organise their lives around the Five Pillars: the Shahadah (the declaration of faith), Salah (prayer five times a day), Zakah (giving a share of savings to those in need), Sawm (fasting from dawn to sunset in Ramadan) and Hajj (pilgrimage to Makkah, for those able to go).",
+              "There are two main branches of Islam. Most Muslims worldwide, and in the UK, are Sunni; a smaller number are Shi'a. They share the Qur'an and the Five Pillars but differ over who should have led the Muslim community after Muhammad and over some practices. Many Muslims also follow guidelines about food (halal), modesty and family life.",
+            ],
+          },
+          {
+            heading: "Muslim communities in Britain",
+            text: [
+              "Muslims have lived in Britain for centuries. In the 1800s, Muslim sailors from Yemen, Somalia and India settled in ports such as Cardiff, Liverpool and South Shields. In 1889 two early mosques opened: the Liverpool Muslim Institute, founded by the convert Abdullah Quilliam, and the Shah Jahan Mosque in Woking, one of the first purpose-built mosques in Britain.",
+              "Hundreds of thousands of Muslim soldiers from undivided India served with British forces in both World Wars. After 1945, Britain invited workers from the Commonwealth to help rebuild the country, and many came from Pakistan, Bangladesh and India to work in textile mills, factories, transport and the health service. Later, Muslims also arrived from places such as Somalia, Turkey, Bosnia, Iraq and Syria, many fleeing conflict.",
+              "In 2021 there were about 3.9 million Muslims in England and Wales, around 6.5% of the population. The Muslim population is relatively young, and Muslims live in every region, with large communities in London, Birmingham, Bradford, Manchester and Leicester. Muslims in Britain have a wide range of backgrounds, languages and views, and many were born and brought up in the UK.",
+            ],
+          },
+          {
+            heading: "The mosque at the heart of the community",
+            text: [
+              "There are well over a thousand mosques in the UK, from converted terraced houses to large purpose-built buildings such as the East London Mosque and the Central Mosque in Regent's Park. A mosque, or masjid, means 'place of prostration'. Worshippers remove their shoes and perform wudu, a ritual washing, before prayer, and face the qiblah, the direction of the Ka'bah in Makkah.",
+              "The most important weekly prayer is Jumu'ah, held at midday on Friday, when an imam gives a sermon. Many mosques also run classes in Arabic and the Qur'an, youth clubs, food banks, advice sessions and open days for visitors of all faiths and none.",
+              "Muslim festivals have become part of British life. Eid al-Fitr marks the end of Ramadan, and Eid al-Adha remembers Ibrahim's willingness to obey God. In many towns, people of all backgrounds are invited to open iftars, the meal that breaks the daily fast during Ramadan.",
+              "British Muslims, like members of every community, contribute in every walk of life, including medicine, sport, business, politics, the arts and the armed forces. Sadly, some face prejudice; anti-Muslim hatred is a form of religious hatred that the law and many organisations work to challenge.",
+            ],
+          },
+        ],
+        words: [
+          { word: "monotheism", meaning: "the belief that there is only one God" },
+          { word: "Qur'an", meaning: "the holy book of Islam, which Muslims believe was revealed by God to the Prophet Muhammad" },
+          { word: "Five Pillars", meaning: "five key duties that shape a Muslim's life: Shahadah, Salah, Zakah, Sawm and Hajj" },
+          { word: "Sunni and Shi'a", meaning: "the two main branches of Islam" },
+          { word: "imam", meaning: "a person who leads prayers in a mosque and often gives guidance to the community" },
+          { word: "Ummah", meaning: "the worldwide community of Muslims" },
+        ],
+      },
+      practice: {
+        intro: "Practise what you have learned about Islam in Britain.",
+        questions: [
+          { type: "match", q: "Match each pillar to its meaning.", pairs: [["Shahadah", "Declaration of faith"], ["Salah", "Prayer five times a day"], ["Zakah", "Giving to those in need"], ["Sawm", "Fasting in Ramadan"], ["Hajj", "Pilgrimage to Makkah"]] },
+          { type: "choice", q: "Why did many Muslims come to Britain from Pakistan, Bangladesh and India after 1945?", options: ["Britain invited Commonwealth workers to help rebuild the country", "They were all students", "Britain was part of their country"], answer: 0 },
+          { type: "gap", q: "Fill in the gaps.", text: "Before prayer, Muslims perform a ritual washing called ___. The main weekly prayer, held on Friday, is called ___.", bank: ["wudu", "Jumu'ah", "Hajj", "Eid", "iftar"], answers: ["wudu", "Jumu'ah"] },
+          { type: "choice", q: "Which branch of Islam do most British Muslims belong to?", options: ["Shi'a", "Sunni", "Neither"], answer: 1 },
+          { type: "pick", q: "Which of these might a mosque in Britain offer? There is more than one.", options: ["Friday prayers", "Qur'an classes", "Open days for visitors", "Food banks"], answers: [0, 1, 2, 3], why: "Mosques are often community centres as well as places of prayer." },
+        ],
+      },
+      task: {
+        title: "A profile of British Muslim life",
+        intro: "Create a two-page profile, like a magazine feature, about Muslim life in Britain, using this lesson and careful research.",
+        need: ["Paper or a computer", "An internet-connected device, with a grown-up's permission (optional)"],
+        steps: [
+          "Page one, 'Belief and practice': explain the Five Pillars in your own words, and choose one pillar to explain in more depth, saying why it matters to many Muslims.",
+          "Page two, 'Community and history': create a timeline of Muslims in Britain with at least five dated events from this lesson.",
+          "Add a short section about a mosque. If possible, with a grown-up's permission, look at the website of a mosque near you or a well-known one such as the East London Mosque, and note three things it offers its community.",
+          "Add a quote box with a short statement of a Muslim belief from a reliable source, such as a mosque website, a Muslim organisation or an RE textbook. Say where it came from.",
+          "Check your profile uses the respectful voice of good RE: 'many Muslims believe...' rather than 'all Muslims...' or 'they think...'.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What do Muslims believe about the Qur'an?", options: ["It was revealed by God to the Prophet Muhammad", "It was written by Abdullah Quilliam", "It is a history of Britain"], answer: 0 },
+        { type: "type", q: "In which month do many Muslims fast from dawn to sunset?", answer: ["Ramadan", "ramadan", "Ramadhan"] },
+        { type: "choice", q: "Roughly how many Muslims lived in England and Wales in 2021?", options: ["About 390,000", "About 3.9 million", "About 39 million"], answer: 1 },
+        { type: "choice", q: "In which year did the Shah Jahan Mosque in Woking and the Liverpool Muslim Institute open?", options: ["1889", "1066", "1997"], answer: 0 },
+        { type: "choice", q: "What is an imam?", options: ["A type of prayer mat", "A person who leads prayers in a mosque", "The direction of prayer"], answer: 1 },
+        { type: "choice", q: "Which statement best reflects the variety of British Muslims?", options: ["They all have the same background and views", "They have many backgrounds, languages and views, and many were born in the UK", "They all arrived in Britain after 2000"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper or a computer", "Supervised internet access (optional)"],
+        tips: [
+          "Muslim spellings vary when Arabic is written in English (Makkah or Mecca, Zakah or Zakat, Sawm or Siyam). Any common spelling is fine.",
+          "Many mosques welcome visitors and some take part in Visit My Mosque open days. If you visit, dress modestly, remove shoes, and girls and women may be asked to cover their hair. Contact the mosque first.",
+          "If your teenager has met negative stereotypes online, this is a good moment to talk calmly about where information comes from and about challenging prejudice.",
+        ],
+        younger: "Make a one-page poster of the Five Pillars with a small drawing or symbol for each.",
+        older: "Research the differences between Sunni and Shi'a Islam and explain, in a paragraph, how two Muslims might share core beliefs but practise differently.",
+      },
+    },
+    {
+      slug: "religion-in-the-uk-4",
+      title: "Hindu and Sikh communities",
+      emoji: "🪔",
+      minutes: 60,
+      goal: "I can explain key beliefs and practices of Hindus and Sikhs and describe the history and life of Hindu and Sikh communities in Britain.",
+      starter: [
+        { type: "choice", q: "What does 'monotheism' mean?", options: ["Belief in many gods", "Belief in one God", "Belief in no god"], answer: 1 },
+        { type: "type", q: "What is the name of the Muslim holy book?", answer: ["Qur'an", "Quran", "Koran", "the Qur'an", "the Quran", "qur'an", "quran"] },
+        { type: "choice", q: "What is Jumu'ah?", options: ["A festival at the end of Ramadan", "The main Friday midday prayer", "Pilgrimage to Makkah"], answer: 1 },
+        { type: "choice", q: "Which festival marks the end of Ramadan?", options: ["Eid al-Fitr", "Eid al-Adha", "Diwali"], answer: 0 },
+        { type: "pick", q: "Which are among the Five Pillars of Islam? There is more than one.", options: ["Salah", "Zakah", "Baptism", "Hajj"], answers: [0, 1, 3] },
+        { type: "choice", q: "Where were two of the earliest mosques in Britain opened in 1889?", options: ["Woking and Liverpool", "Edinburgh and Belfast", "Oxford and Cambridge"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Hindu beliefs and practice",
+            text: [
+              "Hinduism is one of the world's oldest religions, with roots in the Indian subcontinent going back thousands of years. Many Hindus call it Sanatana Dharma, the 'eternal way'. It has no single founder or single holy book; important texts include the Vedas, the Upanishads and the Bhagavad Gita.",
+              "Many Hindus believe in Brahman, one supreme reality, which can be worshipped in many forms, such as Vishnu, Shiva, Lakshmi and Ganesh. Many believe in samsara, the cycle of birth, death and rebirth; in karma, the idea that actions have consequences in this life and the next; and in moksha, release from the cycle. Living according to dharma, one's duty and right conduct, is central.",
+              "Worship (puja) often takes place at a home shrine as well as in a mandir (temple). In arti, a lamp is waved before the murti, a sacred image of a deity, while worshippers sing. Diwali, the festival of lights, and Holi, the spring festival of colours, are celebrated across Britain.",
+            ],
+          },
+          {
+            heading: "Sikh beliefs and practice",
+            text: [
+              "Sikhism began in the Punjab region of South Asia with Guru Nanak, born in 1469, and was shaped by ten human Gurus. Sikhs believe in one God, who is beyond human form. The holy scripture, the Guru Granth Sahib, is treated with the respect given to a living Guru and is seen as the final, eternal Guru.",
+              "Many Sikhs try to live by three principles taught by Guru Nanak: remembering God (Nam Japna), earning an honest living (Kirat Karni) and sharing with others (Vand Chhakna). Sikhs believe all people are equal, whatever their gender, caste or religion, and sewa, selfless service, is very important.",
+              "Sikhs who are initiated into the Khalsa wear the Five Ks: kesh (uncut hair, usually under a turban), kara (a steel bracelet), kanga (a wooden comb), kachera (cotton undershorts) and kirpan (a small sword, a symbol of the duty to protect the weak). In the UK, the law allows Sikhs to carry a kirpan for religious reasons and exempts turban-wearing Sikhs from wearing motorcycle helmets.",
+              "Every gurdwara has a langar, a free kitchen where anyone, of any faith or none, can sit together and share a vegetarian meal. Vaisakhi, which remembers the founding of the Khalsa in 1699, is marked with colourful processions in cities such as Birmingham, Leicester and Southall.",
+            ],
+          },
+          {
+            heading: "British Hindu and Sikh communities",
+            text: [
+              "Sikh soldiers served in large numbers with the British Indian Army in both World Wars. After 1945, many Sikhs and Hindus came to Britain from India, especially from Punjab and Gujarat, to work in factories, foundries and transport. In the late 1960s and early 1970s, many Hindus and Sikhs of Indian heritage arrived from East Africa, including those expelled from Uganda in 1972.",
+              "In 2021 there were about 1 million Hindus (about 1.7%) and about 520,000 Sikhs (about 0.9%) in England and Wales. Leicester and parts of London have large Hindu communities, and Leicester's Diwali celebrations are among the biggest outside India. Large Sikh communities live in places such as Southall, Wolverhampton, Birmingham and Gravesend.",
+              "Notable buildings include the BAPS Shri Swaminarayan Mandir in Neasden, London, built of carved stone and opened in 1995, and the Gurdwara Sri Guru Singh Sabha in Southall, one of the largest gurdwaras outside India. Like mosques and churches, mandirs and gurdwaras run classes, care for elderly people and welcome visitors. Some gurdwaras have fed thousands of people through their langar during emergencies such as floods and the pandemic.",
+            ],
+          },
+        ],
+        words: [
+          { word: "karma", meaning: "the Hindu (and Sikh) idea that actions have consequences, now and in future lives" },
+          { word: "samsara", meaning: "the cycle of birth, death and rebirth" },
+          { word: "mandir", meaning: "a Hindu temple" },
+          { word: "Guru Granth Sahib", meaning: "the Sikh holy scripture, treated as a living Guru" },
+          { word: "sewa", meaning: "selfless service to others, a key Sikh value" },
+          { word: "langar", meaning: "the free community kitchen found in every gurdwara" },
+        ],
+      },
+      practice: {
+        intro: "Compare what you have learned about Hindus and Sikhs.",
+        questions: [
+          { type: "match", q: "Match each word to its meaning.", pairs: [["Dharma", "Duty and right conduct"], ["Moksha", "Release from the cycle of rebirth"], ["Kara", "A steel bracelet worn by many Sikhs"], ["Langar", "A free community kitchen"]] },
+          { type: "pick", q: "Which of these are Hindu? There is more than one.", options: ["Bhagavad Gita", "Puja", "Guru Granth Sahib", "Holi", "Vaisakhi"], answers: [0, 1, 3] },
+          { type: "gap", q: "Fill in the gaps.", text: "Sikhism was founded by Guru ___, born in 1469. Vaisakhi remembers the founding of the ___ in 1699.", bank: ["Nanak", "Khalsa", "Gita", "Gobind", "mandir"], answers: ["Nanak", "Khalsa"] },
+          { type: "choice", q: "Which best explains why the langar is important to Sikhs?", options: ["It shows the belief that all people are equal and the value of sewa", "It is where the Gurus are buried", "It raises money for the gurdwara"], answer: 0 },
+          { type: "choice", q: "Why did many Hindus and Sikhs arrive in Britain from East Africa around 1972?", options: ["They came for a festival", "Many Asians were expelled from Uganda", "They were on holiday"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Compare two places of worship",
+        intro: "Produce a detailed comparison of a mandir and a gurdwara, showing how buildings express beliefs.",
+        need: ["Paper, a ruler and colours, or a computer", "An internet-connected device, with a grown-up's permission (optional)"],
+        steps: [
+          "Draw a large Venn diagram with one circle labelled 'Mandir' and one labelled 'Gurdwara'.",
+          "Add at least five features to each side, such as the murti, the shrine, the langar, the Guru Granth Sahib and the Nishan Sahib (the Sikh flag outside every gurdwara). Put shared features, such as removing shoes, in the middle.",
+          "For each feature, add a short note explaining which belief it expresses. For example, 'langar: equality and sewa'.",
+          "With a grown-up's permission, look at a virtual tour or photographs on the official website of the Neasden Mandir or a gurdwara near you, and add two more details you notice.",
+          "Write a paragraph of about 150 words answering: 'How do the buildings of a mandir and a gurdwara reflect what Hindus and Sikhs believe?'",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What do many Hindus call Brahman?", options: ["One supreme reality, worshipped in many forms", "A festival", "The first Guru"], answer: 0 },
+        { type: "type", q: "What is the name of a Hindu temple?", answer: ["mandir", "Mandir", "a mandir"] },
+        { type: "choice", q: "What is the Guru Granth Sahib?", options: ["A Hindu god", "The Sikh holy scripture", "A Sikh festival"], answer: 1 },
+        { type: "pick", q: "Which are among the Five Ks? There is more than one.", options: ["Kesh", "Kara", "Karma", "Kirpan"], answers: [0, 1, 3] },
+        { type: "choice", q: "Roughly how many Sikhs lived in England and Wales in 2021?", options: ["About 52,000", "About 520,000", "About 5.2 million"], answer: 1 },
+        { type: "choice", q: "Which statement about British Hindu and Sikh communities is accurate?", options: ["Leicester's Diwali celebrations are among the largest outside India", "There are no gurdwaras in Britain", "All British Hindus arrived after 2010"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Paper and colours, or a computer", "Supervised internet access (optional)"],
+        tips: [
+          "Hinduism is very varied, and many Hindus would describe their beliefs differently. The lesson keeps to 'many Hindus believe' for that reason.",
+          "Gurdwaras welcome visitors; everyone covers their head and removes their shoes, and a langar meal is usually offered. Mandirs also ask visitors to remove shoes. Phone ahead if you would like to visit.",
+          "The Ugandan expulsion of 1972 was traumatic for many families. If your teenager is interested, there are many first-hand accounts from British families who came then.",
+        ],
+        younger: "Make two small fact files, one for Hinduism and one for Sikhism, each with five facts and one symbol.",
+        older: "Compare Hindu and Sikh ideas of karma and rebirth, and explain one similarity and one difference.",
+      },
+    },
+    {
+      slug: "religion-in-the-uk-5",
+      title: "Humanism and non-religious beliefs",
+      emoji: "🧭",
+      minutes: 60,
+      goal: "I can explain what humanists and other non-religious people believe and why a growing number of people in the UK say they have no religion.",
+      starter: [
+        { type: "choice", q: "What is a gurdwara?", options: ["A Sikh place of worship", "A Hindu festival", "A holy book"], answer: 0 },
+        { type: "type", q: "What is the name of the free kitchen found in every gurdwara?", answer: ["langar", "Langar", "the langar"] },
+        { type: "choice", q: "What does 'karma' mean?", options: ["A Sikh steel bracelet", "The idea that actions have consequences", "A Hindu temple"], answer: 1 },
+        { type: "choice", q: "Who founded Sikhism?", options: ["Guru Nanak", "The Prophet Muhammad", "Henry VIII"], answer: 0 },
+        { type: "pick", q: "Which are Hindu festivals? There is more than one.", options: ["Diwali", "Holi", "Vaisakhi", "Eid al-Adha"], answers: [0, 1] },
+        { type: "choice", q: "What is sewa?", options: ["Selfless service", "A prayer mat", "A Hindu god"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Many ways of having no religion",
+            text: [
+              "In England and Wales, 37% of people ticked 'no religion' in 2021, and in Scotland in 2022 it was just over half. 'No religion' is not one single belief. It includes atheists, who believe there is no god; agnostics, who think we cannot know whether a god exists; humanists; people who describe themselves as 'spiritual but not religious'; and many people who simply do not think about religion much.",
+              "Some people with no religion still celebrate Christmas or Diwali with family, visit places of worship for weddings and funerals, or pray occasionally. Others have never had any connection with religion. Researchers sometimes call people with no religion 'nones', and they are now the largest single group among young adults in Britain.",
+              "Sociologists suggest several reasons for the growth in non-religious identity, including higher levels of education, more personal choice in how to live, the influence of science, less pressure to attend worship, and parents choosing not to pass on a religion. People disagree about which reasons matter most, and many religious people would argue that faith and science can fit together.",
+            ],
+          },
+          {
+            heading: "What humanists believe",
+            text: [
+              "Humanism is a non-religious worldview. Humanists UK, the main humanist organisation in Britain, traces its roots back to 1896. Humanists usually describe three core ideas. First, they think about the world using reason, evidence and science, and do not believe in a god or the supernatural. Second, they believe this is the only life we have. Third, they believe people can make their own meaning and purpose in life.",
+              "Because they do not look to a holy book or a god for moral rules, humanists decide how to behave by thinking about the likely consequences of their actions for others, using empathy and reason. Many humanists point to the Golden Rule, 'treat others as you would like them to treat you', which appears in different forms in many religions as well.",
+              "Many humanists care strongly about human rights, equality, free speech and the separation of religion from the state. Humanists campaign on issues such as the place of religion in schools and assisted dying, often taking positions that some religious groups oppose.",
+            ],
+          },
+          {
+            heading: "Marking life's big moments",
+            text: [
+              "Non-religious people mark birth, marriage and death too. Trained humanist celebrants lead naming ceremonies to welcome a baby, weddings and funerals. These ceremonies are personal and focus on the life and values of the people involved, with readings, music and poems chosen by the family.",
+              "Humanist weddings have been legally recognised in Scotland since 2005, where they have become one of the most popular kinds of wedding. Humanist weddings are also legally recognised in Northern Ireland. In England and Wales, couples having a humanist ceremony have usually also needed a separate civil ceremony to be legally married, and the law has long been under review.",
+              "Many people with no religion also take part in shared traditions, such as Remembrance Sunday, and choose to volunteer, give to charity or join community groups. Non-religious worldviews are now included in Religious Education in many parts of the UK, because understanding them is part of understanding modern Britain.",
+            ],
+          },
+        ],
+        words: [
+          { word: "atheist", meaning: "a person who believes there is no god" },
+          { word: "agnostic", meaning: "a person who thinks it is not possible to know whether a god exists" },
+          { word: "humanist", meaning: "a person who lives by reason, empathy and evidence, without belief in a god, believing this is our only life" },
+          { word: "Golden Rule", meaning: "the principle of treating others as you would like them to treat you" },
+          { word: "celebrant", meaning: "a person who leads a ceremony such as a naming, wedding or funeral" },
+          { word: "secular", meaning: "not connected with religion" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of non-religious worldviews.",
+        questions: [
+          { type: "match", q: "Match each word to the view it describes.", pairs: [["Atheist", "There is no god"], ["Agnostic", "We cannot know whether a god exists"], ["Humanist", "Reason, empathy and evidence guide how we live"]] },
+          { type: "choice", q: "How do humanists usually decide what is right and wrong?", options: ["By following a holy book", "By thinking about the consequences of their actions for others, using reason and empathy", "By doing whatever they want"], answer: 1 },
+          { type: "pick", q: "Which are possible reasons sociologists give for the growth of 'no religion'? There is more than one.", options: ["More personal choice about how to live", "Parents choosing not to pass on a religion", "Religion being banned in the UK", "The influence of science and education"], answers: [0, 1, 3] },
+          { type: "gap", q: "Fill in the gaps.", text: "Humanist weddings have been legally recognised in ___ since 2005. A person who leads a humanist ceremony is called a ___.", bank: ["Scotland", "celebrant", "England", "bishop", "imam"], answers: ["Scotland", "celebrant"] },
+          { type: "choice", q: "Which statement is most accurate?", options: ["Everyone with no religion is an atheist", "'No religion' includes atheists, agnostics, humanists and many others", "People with no religion never celebrate festivals"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Where do your values come from?",
+        intro: "Write a reflective and analytical piece comparing how a humanist and a religious believer might answer one of life's big questions.",
+        need: ["Paper or a computer for writing"],
+        steps: [
+          "Choose one big question: 'What makes life meaningful?', 'How should I decide what is right?' or 'What happens when we die?'",
+          "Write how a humanist might answer it, using at least two ideas from this lesson.",
+          "Write how a member of one religion you have studied in this unit might answer it, using at least two of that religion's beliefs.",
+          "Write a paragraph comparing the two answers. Where do they agree (for example on the Golden Rule)? Where do they differ, and why?",
+          "Finally, write a short, private reflection on your own answer to the question and where your values come from. You do not have to share this part with anyone.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does an agnostic believe?", options: ["There is definitely a god", "It is not possible to know whether a god exists", "There are many gods"], answer: 1 },
+        { type: "pick", q: "Which are core humanist beliefs? There is more than one.", options: ["Use reason and evidence to understand the world", "This is the only life we have", "Moral rules come from a holy book", "People can make their own meaning in life"], answers: [0, 1, 3] },
+        { type: "type", q: "What is the name of the principle 'treat others as you would like them to treat you'? (The ... Rule)", answer: ["Golden", "golden", "Golden Rule", "the Golden Rule", "golden rule"] },
+        { type: "choice", q: "Since when have humanist weddings been legally recognised in Scotland?", options: ["1896", "2005", "2021"], answer: 1 },
+        { type: "choice", q: "What is a humanist naming ceremony for?", options: ["Welcoming a new baby", "Joining a church", "Leaving school"], answer: 0 },
+        { type: "choice", q: "Which best explains why non-religious worldviews are now studied in RE?", options: ["Because religions are no longer taught", "Because a large share of people in the UK are non-religious, so understanding their views is part of understanding modern Britain", "Because humanism is a religion"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper or a computer"],
+        tips: [
+          "Some families may feel strongly about this topic in either direction. The lesson presents humanism respectfully as one worldview among many, just as it does each religion.",
+          "The law on humanist weddings in England and Wales has been under review for some years; check current guidance if your teenager wants to know the latest position.",
+          "The final reflection in the task is private. Let your teenager decide whether to share it.",
+        ],
+        younger: "Make a table with three columns, atheist, agnostic and humanist, and write a one-line definition and an example of each.",
+        older: "Read about the debate over whether morality needs religion, then write a balanced argument considering a humanist view and a religious view. This mirrors GCSE and National 5 evaluation questions.",
+      },
+    },
+    {
+      slug: "religion-in-the-uk-6",
+      title: "Living together in a diverse society",
+      emoji: "🤝",
+      minutes: 60,
+      goal: "I can describe the places of worship in a local area, explain how UK law protects religion and belief, and evaluate ways people of different worldviews live well together.",
+      starter: [
+        { type: "choice", q: "What is a humanist?", options: ["A person who lives by reason, empathy and evidence, without belief in a god", "A leader in the Church of England", "A Sikh who has joined the Khalsa"], answer: 0 },
+        { type: "type", q: "What word describes a person who believes there is no god?", answer: ["atheist", "Atheist", "an atheist"] },
+        { type: "choice", q: "What is a celebrant?", options: ["A person who leads a ceremony", "A festival", "A type of census question"], answer: 0 },
+        { type: "choice", q: "In Scotland's 2022 census, about what share of people said they had no religion?", options: ["About a tenth", "About a quarter", "Just over half"], answer: 2 },
+        { type: "pick", q: "Which of these can be part of 'no religion'? There is more than one.", options: ["Atheists", "Agnostics", "Humanists", "People who are spiritual but not religious"], answers: [0, 1, 2, 3] },
+        { type: "choice", q: "What is the Golden Rule?", options: ["Always tell the truth", "Treat others as you would like them to treat you", "Give a tenth of your money away"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Places of worship near you",
+            text: [
+              "Look around almost any town in the UK and you will see the story of its beliefs in its buildings. An ancient parish church may stand near a Victorian Methodist chapel, a Catholic church built for Irish workers, a mosque in a former warehouse and a gurdwara in an old cinema. Buildings change use as communities change.",
+              "A place of worship is more than a building for prayer. Most are also community hubs, with toddler groups, food banks, lunch clubs for older people, language classes, youth groups and help for refugees. Many are listed buildings that tell us about local history, architecture and migration.",
+              "Researching local places of worship is a kind of fieldwork. You can map them, find out when they were built, which communities use them and what they offer. Religious buildings also follow rules of respect for visitors: removing shoes in a mosque, mandir or gurdwara, covering the head in a gurdwara and, for men, often in a synagogue, and dressing modestly in many places.",
+            ],
+          },
+          {
+            heading: "Rights, law and responsibilities",
+            text: [
+              "In the UK, freedom of thought, conscience and religion is protected by law. The Human Rights Act 1998 brings the European Convention on Human Rights into UK law, and Article 9 protects everyone's right to hold a religion or belief, to change it, or to have none, and to practise it, as long as this does not harm the rights and freedoms of others.",
+              "The Equality Act 2010 makes it unlawful to discriminate against people because of their religion or belief, or lack of belief, in areas such as work, education and services. Religion or belief is one of nine protected characteristics under the Act, which applies in England, Scotland and Wales; Northern Ireland has its own similar laws.",
+              "Hatred and prejudice still happen. Antisemitism is hostility or prejudice towards Jewish people, and anti-Muslim hatred targets Muslims; people of other faiths and none can also face abuse. Stirring up religious hatred is a crime, and police record religious hate crimes. Many organisations and ordinary people work to challenge prejudice and support those affected.",
+            ],
+          },
+          {
+            heading: "Building understanding",
+            text: [
+              "Interfaith dialogue means people of different religions and worldviews meeting to learn about each other, share concerns and work together. It does not mean everyone has to agree; it means listening with respect and disagreeing well.",
+              "Every November, Inter Faith Week takes place in England, Wales and Northern Ireland, with Scotland holding its own Interfaith Week. Local interfaith groups run joint events, shared meals, walks between places of worship and volunteering projects. During the pandemic, churches, mosques, gurdwaras, mandirs, synagogues and secular charities worked side by side on food deliveries and vaccine campaigns.",
+              "Living together in a diverse society raises real questions that people still debate. Should faith schools receive state funding? How should schools handle religious dress or prayer? How far should freedom of speech protect criticism of religion? Thinking about these questions carefully, using evidence and understanding different viewpoints, is one of the most important skills RE can give you.",
+            ],
+          },
+        ],
+        words: [
+          { word: "interfaith dialogue", meaning: "people of different religions and worldviews meeting to understand each other and work together" },
+          { word: "freedom of religion or belief", meaning: "the right to hold, change, practise or have no religion or belief" },
+          { word: "protected characteristic", meaning: "a feature, such as religion or belief, that the Equality Act 2010 protects from discrimination" },
+          { word: "discrimination", meaning: "treating someone unfairly because of who they are or what they believe" },
+          { word: "antisemitism", meaning: "hostility or prejudice towards Jewish people" },
+          { word: "tolerance", meaning: "accepting that others have the right to beliefs and practices different from your own" },
+        ],
+      },
+      practice: {
+        intro: "Apply what you know about living together.",
+        questions: [
+          { type: "match", q: "Match each law to what it does.", pairs: [["Human Rights Act 1998", "Protects freedom of thought, conscience and religion"], ["Equality Act 2010", "Makes discrimination because of religion or belief unlawful"]] },
+          { type: "choice", q: "Which best explains why a place of worship is described as a community hub?", options: ["It is usually in the middle of town", "It often runs services such as food banks, clubs and classes for local people", "Everyone has to visit it"], answer: 1 },
+          { type: "pick", q: "Which would be respectful when visiting a gurdwara? There is more than one.", options: ["Covering your head", "Removing your shoes", "Taking photos during prayers without asking", "Accepting food from the langar"], answers: [0, 1, 3] },
+          { type: "gap", q: "Fill in the gaps.", text: "Religion or belief is one of nine ___ characteristics under the Equality Act 2010. Meeting to learn from people of other worldviews is called interfaith ___.", bank: ["protected", "dialogue", "secret", "census", "worship"], answers: ["protected", "dialogue"] },
+          { type: "choice", q: "Does interfaith dialogue require people to agree with each other's beliefs?", options: ["Yes, they must all agree", "No, it means listening with respect and disagreeing well", "Yes, they must all join one religion"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Map the beliefs of your area",
+        intro: "Carry out a small fieldwork investigation into the places of worship and belief groups in your local area, then evaluate how well people of different worldviews live together there.",
+        need: ["A local map, printed or on a device", "A notebook and pencil", "An internet-connected device, with a grown-up's permission", "A grown-up to go with you on any walk or visit"],
+        steps: [
+          "With a grown-up's permission, use an online map to find the places of worship within about two miles of your home. Include churches of different denominations, mosques, gurdwaras, mandirs, synagogues, Buddhist centres and others, and also any humanist or interfaith groups.",
+          "Mark each one on your map with a symbol and a key. Note the religion or denomination, roughly when the building was built and anything it offers the community, using its website or noticeboard.",
+          "If possible, with a grown-up, walk past two or three of them. Sketch or note features of the building and how they reflect beliefs. Only go inside if you have arranged a visit and been welcomed.",
+          "Compare your findings with the census data from lesson 1. Does the range of buildings match the national picture? Can you explain any differences?",
+          "Write a 300-word report titled 'How do people of different worldviews live together in my area?' Include evidence from your map, at least one example of community work or interfaith activity, and one challenge or question that still needs thought.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which article of the European Convention on Human Rights protects freedom of thought, conscience and religion?", options: ["Article 1", "Article 9", "Article 50"], answer: 1 },
+        { type: "type", q: "In which year was the Equality Act passed?", answer: ["2010"] },
+        { type: "choice", q: "What does the Equality Act 2010 protect people from?", options: ["Paying tax", "Discrimination because of their religion or belief", "Having to vote"], answer: 1 },
+        { type: "choice", q: "What is antisemitism?", options: ["Hostility or prejudice towards Jewish people", "A Jewish festival", "A type of interfaith group"], answer: 0 },
+        { type: "pick", q: "Which are examples of interfaith activity? There is more than one.", options: ["Shared meals between faith communities", "A walk visiting different places of worship", "Joint volunteering on a food bank", "Refusing to talk to anyone of another faith"], answers: [0, 1, 2] },
+        { type: "choice", q: "Which evidence would best support the claim that a town's communities work well together?", options: ["It has an old church", "Different faith and non-religious groups regularly run joint events and projects", "Most people there ticked the same census box"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A local map or device", "Notebook and pencil", "Your time for a short accompanied walk (optional)"],
+        tips: [
+          "Please supervise the internet search and go with your teenager on any walk. Most places of worship are happy to welcome visitors by arrangement; contact them first rather than turning up during services.",
+          "Hate crime and prejudice can be upsetting, especially if your family has experienced it. The lesson treats it briefly and factually. Let your teenager lead any further conversation.",
+          "If you live somewhere with few places of worship, widen the search to your nearest town, or compare your area with a city using census data and online maps.",
+        ],
+        younger: "Find and map five places of worship or belief groups, and write one sentence about each.",
+        older: "Choose one of the debates in card 3, such as state-funded faith schools, and write a balanced essay with a reasoned conclusion, using the Equality Act and Article 9 as evidence.",
+      },
+    },
+  ],
+};

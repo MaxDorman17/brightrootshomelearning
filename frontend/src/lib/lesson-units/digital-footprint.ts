@@ -13,7 +13,7 @@ export const digitalFootprint: LessonUnit = {
   subject: "Computing",
   ages: "11 to 14",
   emoji: "👣",
-  color: "#4F6D7A",
+  color: "#5B6B8A",
   summary: "Six lessons: your digital footprint and who can see it, privacy and personal data, strong passwords and two-factor authentication, phishing and scams, misinformation and checking sources, and online wellbeing and where to get help.",
   cover: "/lessons/units/digital-footprint.jpg",
   lessons: [

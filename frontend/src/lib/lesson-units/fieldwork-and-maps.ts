@@ -11,7 +11,7 @@ export const fieldworkAndMaps: LessonUnit = {
   short: "Fieldwork",
   subject: "Geography",
   ages: "11 to 14",
-  emoji: "🧭",
+  emoji: "📏",
   color: "#5A6B4E",
   summary: "Six lessons that take map skills to secondary level: the National Grid, eight-figure references and scale calculations, contours, cross-sections and gradient, latitude and longitude, GIS and digital maps, and a complete fieldwork enquiry in your local area, from hypothesis to graphs and evaluation.",
   cover: "/lessons/units/fieldwork-and-maps.jpg",

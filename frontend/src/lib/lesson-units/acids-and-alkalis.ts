@@ -11,7 +11,7 @@ export const acidsAndAlkalis: LessonUnit = {
   short: "Acids",
   subject: "Science",
   ages: "11 to 14",
-  emoji: "🧪",
+  emoji: "🍋",
   color: "#6B5A86",
   summary: "Six lessons on acids and alkalis in everyday life, hazard symbols and working safely, the pH scale, indicators including home-made red cabbage indicator, neutralisation and its uses, and the fizzing reaction between acids and carbonates, with word equations throughout.",
   cover: "/lessons/units/acids-and-alkalis.jpg",

@@ -25,10 +25,10 @@ export const energyStores: LessonUnit = {
       starter: [
         { type: "choice", q: "What does a battery need to be connected into to make a bulb light up?", options: ["A complete circuit", "A magnet", "A glass of water"], answer: 0 },
         { type: "pick", q: "Which of these give out light? There is more than one.", options: ["The Sun", "A lit candle", "The Moon", "A torch that is switched on"], answers: [0, 1, 3], why: "The Moon does not give out its own light: it reflects light from the Sun." },
-        { type: "choice", q: "Why do we need to eat food?", options: ["Only to keep our teeth strong", "To give us energy and materials to grow and repair", "To keep our blood cold"], answer: 1 },
+        { type: "choice", q: "Why do we need to eat food?", options: ["Only to keep our teeth strong", "To keep our blood cold", "To give us energy and materials to grow and repair"], answer: 2 },
         { type: "choice", q: "When you rub your hands together quickly, they get warmer. Which force is acting between them?", options: ["Magnetism", "Upthrust", "Friction"], answer: 2 },
         { type: "type", q: "What is the name of the force that pulls objects down towards the Earth?", answer: ["gravity", "weight", "gravitational force"] },
-        { type: "choice", q: "Which of these makes electricity using the wind?", options: ["A solar panel", "A wind turbine", "A battery"], answer: 1 },
+        { type: "choice", q: "Which of these makes electricity using the wind?", options: ["A wind turbine", "A solar panel", "A battery"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -124,7 +124,7 @@ export const energyStores: LessonUnit = {
         ],
       },
       exit: [
-        { type: "choice", q: "What is the unit of energy?", options: ["Newton", "Joule", "Watt", "Metre"], answer: 1 },
+        { type: "choice", q: "What is the unit of energy?", options: ["Newton", "Watt", "Metre", "Joule"], answer: 3 },
         { type: "choice", q: "A roller coaster car is pulled slowly to the top of the first hill. Which store is filling up?", options: ["Elastic potential", "Chemical", "Gravitational potential", "Nuclear"], answer: 2 },
         { type: "pick", q: "Which of these are energy stores? There is more than one.", options: ["Thermal", "Sound", "Chemical", "Light", "Kinetic"], answers: [0, 2, 4] },
         {
@@ -168,10 +168,10 @@ export const energyStores: LessonUnit = {
       minutes: 60,
       goal: "I can state the law of conservation of energy, use it to explain energy changes, and explain why moving objects slow down and stop.",
       starter: [
-        { type: "choice", q: "What is the unit of energy?", options: ["Watt", "Joule", "Kilogram"], answer: 1 },
+        { type: "choice", q: "What is the unit of energy?", options: ["Watt", "Kilogram", "Joule"], answer: 2 },
         { type: "choice", q: "Which store holds the energy of a moving object?", options: ["Kinetic", "Thermal", "Elastic potential"], answer: 0 },
         { type: "pick", q: "Which of these are energy stores? There is more than one.", options: ["Gravitational potential", "Electrical", "Chemical", "Light"], answers: [0, 2], why: "Electricity and light are ways of transferring energy, not stores." },
-        { type: "choice", q: "Food, fuels and batteries all hold energy in which store?", options: ["Thermal", "Chemical", "Kinetic"], answer: 1 },
+        { type: "choice", q: "Food, fuels and batteries all hold energy in which store?", options: ["Chemical", "Thermal", "Kinetic"], answer: 0 },
         {
           type: "match",
           q: "Match each pathway to an example.",
@@ -337,12 +337,12 @@ export const energyStores: LessonUnit = {
       minutes: 60,
       goal: "I can identify useful and wasted energy transfers, draw a Sankey diagram, and calculate efficiency as a percentage.",
       starter: [
-        { type: "choice", q: "What does the law of conservation of energy say?", options: ["Energy is used up over time", "Energy cannot be created or destroyed", "Energy always ends up in the kinetic store"], answer: 1 },
-        { type: "choice", q: "A toy car rolls down a ramp. Which store empties as it rolls?", options: ["Kinetic", "Gravitational potential", "Elastic potential"], answer: 1 },
+        { type: "choice", q: "What does the law of conservation of energy say?", options: ["Energy is used up over time", "Energy always ends up in the kinetic store", "Energy cannot be created or destroyed"], answer: 2 },
+        { type: "choice", q: "A toy car rolls down a ramp. Which store empties as it rolls?", options: ["Gravitational potential", "Kinetic", "Elastic potential"], answer: 0 },
         { type: "type", q: "A motor is given 500 J and transfers 400 J to its kinetic store. How many joules go to other stores?", answer: ["100"], after: "J" },
-        { type: "choice", q: "Why does a bouncing ball bounce lower each time?", options: ["Energy is destroyed at each bounce", "Some energy is dissipated to thermal stores and by sound", "Gravity gets weaker"], answer: 1 },
+        { type: "choice", q: "Why does a bouncing ball bounce lower each time?", options: ["Energy is destroyed at each bounce", "Gravity gets weaker", "Some energy is dissipated to thermal stores and by sound"], answer: 2 },
         { type: "type", q: "Which force between surfaces transfers energy to thermal stores when things rub?", answer: ["friction"] },
-        { type: "choice", q: "Where does dissipated energy usually end up?", options: ["In the chemical store of the object", "In the thermal store of the surroundings", "Back in the battery"], answer: 1 },
+        { type: "choice", q: "Where does dissipated energy usually end up?", options: ["In the thermal store of the surroundings", "In the chemical store of the object", "Back in the battery"], answer: 0 },
       ],
       learn: {
         cards: [
@@ -442,7 +442,7 @@ export const energyStores: LessonUnit = {
         ],
       },
       exit: [
-        { type: "choice", q: "What is the useful energy transfer in a toaster?", options: ["Kinetic store of the toaster", "Thermal store of the bread", "Sound from the pop-up spring", "Light from the glowing wires"], answer: 1 },
+        { type: "choice", q: "What is the useful energy transfer in a toaster?", options: ["Kinetic store of the toaster", "Sound from the pop-up spring", "Light from the glowing wires", "Thermal store of the bread"], answer: 3 },
         { type: "type", q: "A lamp is supplied with 100 J and gives out 15 J as light. What is its efficiency?", answer: ["15", "15%"], after: "%" },
         { type: "type", q: "A heater is supplied with 2,000 J and is 90% efficient. How many joules are transferred usefully?", answer: ["1800", "1,800"], after: "J" },
         {
@@ -473,6 +473,451 @@ export const energyStores: LessonUnit = {
         ],
         younger: "Give the equation with the numbers already in place for the first example, and use drop heights of 100 cm so the bounce height in cm is the efficiency in percent.",
         older: "Ask them to drop the ball from several heights (50, 100, 150 cm) and check whether the efficiency stays the same. Then calculate the energy in the ball's gravitational potential store before and after the bounce using GPE = m × g × h, with the ball's mass from kitchen scales.",
+      },
+    },
+    {
+      slug: "energy-stores-4",
+      title: "Power and paying for energy",
+      emoji: "🔌",
+      minutes: 60,
+      goal: "I can explain what power means, calculate energy transferred in kilowatt-hours, and work out the cost of using an electrical appliance.",
+      starter: [
+        { type: "type", q: "A motor is supplied with 200 J and transfers 150 J usefully. What is its efficiency?", answer: ["75", "75%"], after: "%" },
+        { type: "choice", q: "Where does most wasted energy end up?", options: ["In the thermal store of the surroundings", "Back in the plug socket", "In the kinetic store of the device"], answer: 0 },
+        { type: "choice", q: "On a Sankey diagram, what does a wider arrow show?", options: ["Energy moving faster", "A hotter device", "More energy"], answer: 2 },
+        { type: "choice", q: "Why can no device be more than 100% efficient?", options: ["Energy cannot be created", "Devices are too small", "Electricity is too expensive"], answer: 0 },
+        { type: "pick", q: "Which reduce wasted energy? There is more than one.", options: ["Insulation", "Lubrication", "Extra friction", "Streamlining"], answers: [0, 1, 3] },
+        { type: "choice", q: "What is the useful energy transfer in an electric fan?", options: ["Kinetic store of the blades and air", "Thermal store of the motor", "Sound from the motor"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is power?",
+            text: [
+              "Power is the rate at which energy is transferred: in other words, how much energy is transferred every second. It is measured in watts (W), named after the Scottish engineer James Watt, who greatly improved the steam engine in the 1760s and 1770s. One watt means one joule of energy transferred every second.",
+              "The equation is: power = energy transferred ÷ time, or P = E ÷ t, with energy in joules and time in seconds. If a lamp transfers 600 J in 60 seconds, its power is 600 ÷ 60 = 10 W. Rearranged, energy transferred = power × time.",
+              "Many appliances have powers of thousands of watts, so we often use kilowatts (kW): 1 kW = 1,000 W. A typical LED bulb is around 5 to 10 W, a laptop about 50 W, a television around 100 W, a microwave about 800 W to 1 kW, and a kettle about 3 kW. Appliances that heat things, such as kettles, ovens, electric showers and tumble dryers, usually have the highest powers.",
+              "A higher power does not always mean a bigger energy bill. A kettle is very powerful but is only on for a few minutes, while a low-power device left on all day and night can add up to more. To compare them, we need to think about both power and time.",
+            ],
+          },
+          {
+            heading: "Kilowatt-hours",
+            text: [
+              "Joules are far too small for measuring household energy use: a kettle transfers hundreds of thousands of joules each time it boils. So electricity companies use a much bigger unit called the kilowatt-hour (kWh).",
+              "One kilowatt-hour is the energy transferred by a 1 kW appliance running for one hour. To calculate it, use: energy transferred (kWh) = power (kW) × time (hours). A 2 kW heater on for 3 hours transfers 2 × 3 = 6 kWh. Remember to change watts into kilowatts and minutes into hours first: a 500 W appliance is 0.5 kW, and 30 minutes is 0.5 hours.",
+              "Because 1 kW is 1,000 J every second and one hour is 3,600 seconds, one kilowatt-hour is 1,000 × 3,600 = 3,600,000 J, or 3.6 megajoules.",
+              "Your home's electricity meter counts the kilowatt-hours transferred from the mains. Many homes in the UK now have a smart meter, with a display showing how much electricity is being used right now and what it is costing.",
+            ],
+          },
+          {
+            heading: "Working out the cost",
+            text: [
+              "Electricity companies charge a price for each kilowatt-hour, often called a 'unit'. The equation is: cost = energy transferred (kWh) × price per kWh. In recent years, UK household electricity has cost very roughly 25p to 30p per kWh, though the exact price depends on the supplier, the tariff and the time. Your home's bill shows the real figure.",
+              "For example, a 3 kW kettle boiling for 4 minutes (which is 4 ÷ 60 of an hour) transfers 3 × 0.067 = about 0.2 kWh. At 25p per kWh, that costs about 5p. A 2 kW tumble dryer running for 1.5 hours transfers 3 kWh, costing 75p at the same price.",
+              "Every electrical appliance has a rating plate or label, usually on the back or underneath. It shows the power in watts or kilowatts and the voltage it is designed for, which in the UK is 230 V. New appliances such as fridges and washing machines also come with an energy label, graded from A (most efficient) to G, showing how many kWh they are expected to use in a year.",
+              "Small savings add up over a year and across millions of homes. Switching devices off rather than leaving them on standby, boiling only the water you need, and choosing efficient appliances all reduce the energy transferred, the cost, and the amount of fuel that power stations need to burn.",
+            ],
+          },
+        ],
+        words: [
+          { word: "power", meaning: "the rate of energy transfer: the energy transferred every second" },
+          { word: "watt (W)", meaning: "the unit of power; 1 watt is 1 joule transferred per second" },
+          { word: "kilowatt (kW)", meaning: "1,000 watts" },
+          { word: "kilowatt-hour (kWh)", meaning: "the energy transferred by a 1 kW appliance in one hour; equal to 3.6 million joules" },
+          { word: "rating plate", meaning: "the label on an appliance that shows its power and voltage" },
+          { word: "standby", meaning: "a low-power mode where a device is not fully switched off and still transfers some energy" },
+        ],
+      },
+      practice: {
+        intro: "Power, kilowatt-hours and cost.",
+        questions: [
+          { type: "type", q: "A lamp transfers 1,200 J of energy in 60 seconds. What is its power?", answer: ["20"], after: "W" },
+          { type: "type", q: "How many kilowatts is 2,500 W?", answer: ["2.5"], after: "kW" },
+          {
+            type: "choice",
+            q: "A 2 kW heater is on for 3 hours. How much energy does it transfer?",
+            options: ["5 kWh", "6 kWh", "1.5 kWh", "6,000 kWh"],
+            answer: 1,
+          },
+          {
+            type: "order",
+            q: "Put these appliances in order of typical power, from lowest to highest.",
+            items: ["LED bulb", "Laptop", "Television", "Microwave", "Kettle"],
+          },
+          {
+            type: "choice",
+            q: "A games console uses 10 W on standby and is left on standby for 20 hours a day. A 3 kW kettle is used for 6 minutes a day. Which transfers more energy in a day?",
+            options: ["The console, because it is on for much longer", "The kettle: 0.3 kWh compared with 0.2 kWh", "They are exactly the same", "You cannot compare them"],
+            answer: 1,
+            why: "Console: 0.01 kW × 20 h = 0.2 kWh. Kettle: 3 kW × 0.1 h = 0.3 kWh. Close, though: standby really does add up.",
+          },
+        ],
+      },
+      task: {
+        title: "Appliance audit",
+        intro: "Read the rating plates on appliances around your home, estimate how long each is used, and work out what each one costs to run in a week. Then make a recommendation for saving energy.",
+        need: [
+          "Permission from a grown-up and their help to look at labels on larger appliances",
+          "A torch or phone light for reading labels in dark places",
+          "A recent electricity bill, or a grown-up who can tell you the price per kWh",
+          "Paper, a pen and a calculator",
+        ],
+        steps: [
+          "Safety first: only look at labels. Never open an appliance, never touch plugs or sockets with wet hands, and do not move heavy appliances such as fridges or washing machines. Ask a grown-up to switch off and unplug anything before you look at its underside.",
+          "Find the rating plate on at least eight appliances, such as the kettle, toaster, microwave, television, laptop charger, hairdryer, vacuum cleaner and a lamp. Record the power of each in watts. If it shows a range, use the larger number.",
+          "Estimate how many hours each appliance is used in a typical week. Ask people in your household to help you make sensible estimates.",
+          "For each appliance, calculate: power in kW × hours per week = kWh per week. Then: kWh per week × price per kWh = cost per week. Put everything in a table.",
+          "Draw a bar chart of weekly cost for each appliance. Which costs the most? Is it the most powerful appliance, or one used for a long time?",
+          "Write a short report (about 200 words) for your household recommending three realistic ways to save energy, with the yearly saving for each worked out (weekly saving × 52).",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is power?", options: ["The total energy an appliance holds", "The voltage of the mains supply", "The rate at which energy is transferred", "The force an appliance exerts"], answer: 2 },
+        { type: "type", q: "An appliance transfers 3,000 J in 10 seconds. What is its power?", answer: ["300"], after: "W" },
+        { type: "type", q: "A 0.5 kW fan runs for 4 hours. How many kilowatt-hours does it transfer?", answer: ["2"], after: "kWh" },
+        { type: "type", q: "A hairdryer transfers 0.5 kWh. Electricity costs 30p per kWh. What does it cost?", answer: ["15", "15p"], after: "p" },
+        {
+          type: "gap",
+          q: "Fill in the gaps.",
+          text: "Power is measured in ___. Household energy is measured in ___. One watt is one ___ per second.",
+          bank: ["watts", "kilowatt-hours", "joule", "newtons", "metre"],
+          answers: ["watts", "kilowatt-hours", "joule"],
+        },
+        {
+          type: "choice",
+          q: "Which best explains why a low-power device can cost more to run than a high-power one?",
+          options: [
+            "Low-power devices waste more energy as sound",
+            "Energy transferred depends on power and time, so a device left on for much longer can transfer more energy",
+            "Electricity is cheaper for high-power devices",
+            "High-power devices create their own energy",
+          ],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["A recent electricity bill or your price per kWh", "A calculator", "A torch for reading rating plates"],
+        tips: [
+          "Please supervise the appliance audit. Labels on the underside of kettles, toasters and similar appliances should only be read once they are switched off, unplugged and cool. Larger appliances such as fridges and washing machines usually have their rating information inside the door or in the manual, so there is no need to move them.",
+          "Your bill or app shows your actual unit rate in pence per kWh, and also a daily standing charge. The standing charge is paid regardless of use, so it isn't part of the appliance calculations.",
+          "Converting minutes to hours is the most common stumbling block. Practise a few together: 30 minutes is 0.5 h, 15 minutes is 0.25 h, 6 minutes is 0.1 h.",
+        ],
+        younger: "Do the audit on four appliances only and give the hours of use. Use a simple price such as 25p per kWh so the multiplication is manageable.",
+        older: "Ask them to read the household meter (or smart meter display) at the start and end of a day and compare the measured kWh with their estimates. They could also research what share of a typical UK household's electricity is used by standby devices.",
+      },
+    },
+    {
+      slug: "energy-stores-5",
+      title: "Energy in food",
+      emoji: "🍎",
+      minutes: 60,
+      goal: "I can explain how our bodies get energy from food, read the energy information on a food label, and compare foods using kilojoules.",
+      starter: [
+        { type: "type", q: "What is the unit of power?", answer: ["watt", "watts", "W"] },
+        { type: "type", q: "A 2 kW heater is on for 2 hours. How many kWh does it transfer?", answer: ["4"], after: "kWh" },
+        { type: "choice", q: "How many watts are in 1 kilowatt?", options: ["10", "100", "1,000"], answer: 2 },
+        { type: "choice", q: "What does a rating plate on an appliance show?", options: ["Its price", "How old it is", "Its power and voltage"], answer: 2 },
+        { type: "choice", q: "Which equation gives the cost of using an appliance?", options: ["kWh × price per kWh", "Power × price", "Time ÷ power"], answer: 0 },
+        { type: "choice", q: "One watt means...", options: ["one joule transferred per second", "one joule transferred per hour", "one kilowatt transferred per day"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Food as a chemical store",
+            text: [
+              "Food is a chemical store of energy. Almost all of that energy came originally from the Sun: plants use light to make glucose by photosynthesis, storing energy in its chemical bonds. When we eat plants, or animals that ate plants, we take in that stored energy.",
+              "Our cells release energy from food by respiration. In aerobic respiration, glucose reacts with oxygen to produce carbon dioxide and water: glucose + oxygen → carbon dioxide + water. This reaction happens in tiny structures inside cells called mitochondria, and it goes on all the time, even while you sleep.",
+              "The body uses this energy in many ways: to contract muscles so you can move and breathe, to keep your heart beating, to power your brain and nerves, to build new cells for growth and repair, and to keep your body at a steady temperature of about 37 °C. Much of the energy ends up in the thermal store of your body and is then transferred to your surroundings by heating.",
+              "An average adult transfers about 8,400 kJ of energy a day. Spread over the 86,400 seconds in a day, that is roughly 100 joules every second, which means your body works at a power of about 100 W: similar to an old-fashioned light bulb.",
+            ],
+          },
+          {
+            heading: "Reading a food label",
+            text: [
+              "In the UK, packaged foods must show their energy content on the nutrition label, usually per 100 g (or 100 ml) and often per portion as well. The energy is given in two units: kilojoules (kJ), the scientific unit, and kilocalories (kcal), an older unit that is still widely used.",
+              "One kilocalorie is about 4.2 kilojoules. So a snack with 250 kcal contains about 250 × 4.2 = 1,050 kJ. When people talk about 'Calories' with a capital C, or 'calories' in everyday speech, they almost always mean kilocalories.",
+              "The 'per 100 g' column lets you compare foods fairly, because every food is measured against the same amount. The 'per portion' column tells you how much energy is in the amount you are likely to eat. To work out the energy in any amount, scale it: if a cereal contains 1,600 kJ per 100 g, a 30 g bowl contains 1,600 × 30 ÷ 100 = 480 kJ.",
+              "Labels also show a reference intake, based on an average adult: 8,400 kJ (2,000 kcal) a day. This is a guide, not a target. The energy a person needs depends on their age, size and how active they are, and growing teenagers often need as much as an adult, or more.",
+            ],
+          },
+          {
+            heading: "Different nutrients, different amounts of energy",
+            text: [
+              "The three main energy-providing nutrients in food are carbohydrates, fats and proteins. Gram for gram, they do not hold the same amount of energy. Carbohydrates and proteins each provide about 17 kJ per gram, while fats provide about 37 kJ per gram, more than twice as much.",
+              "This explains why foods high in fat, such as butter, oils, nuts and cheese, have a high energy content per 100 g, while foods with lots of water and fibre, such as fruit and vegetables, have a much lower one. Cucumber, which is about 95% water, contains only around 50 to 70 kJ per 100 g.",
+              "Energy content is only one part of the picture. A healthy, balanced diet also needs vitamins, minerals, fibre and water, and a variety of foods. A food with a high energy content is not 'bad': nuts, for example, are full of useful nutrients. And a low-energy food is not automatically healthy.",
+              "Scientists first measured the energy in food by burning it inside a sealed container surrounded by water, and measuring how much the water warmed up. This device is called a calorimeter. The law of conservation of energy means the energy released by burning the food is the same as the energy our bodies can release from it by respiration, although our bodies cannot release all of it in practice.",
+            ],
+          },
+        ],
+        words: [
+          { word: "respiration", meaning: "the chemical reaction in cells that releases energy from glucose; aerobic respiration uses oxygen" },
+          { word: "kilojoule (kJ)", meaning: "1,000 joules; the scientific unit used on food labels" },
+          { word: "kilocalorie (kcal)", meaning: "an older unit of energy used on food labels; 1 kcal is about 4.2 kJ" },
+          { word: "reference intake", meaning: "a guide to the energy and nutrients an average adult needs each day, used on food labels" },
+          { word: "nutrient", meaning: "a substance in food that the body needs, such as carbohydrate, fat, protein, vitamins and minerals" },
+        ],
+      },
+      practice: {
+        intro: "Food, energy and labels.",
+        questions: [
+          {
+            type: "gap",
+            q: "Complete the word equation for aerobic respiration.",
+            text: "glucose + ___ → ___ + water",
+            bank: ["oxygen", "carbon dioxide", "nitrogen", "light"],
+            answers: ["oxygen", "carbon dioxide"],
+          },
+          { type: "type", q: "A cereal bar contains 100 kcal. About how many kilojoules is that? (Use 1 kcal = 4.2 kJ.)", answer: ["420"], after: "kJ" },
+          {
+            type: "choice",
+            q: "Which nutrient provides the most energy per gram?",
+            options: ["Carbohydrate", "Protein", "Fat", "Water"],
+            answer: 2,
+          },
+          {
+            type: "choice",
+            q: "Why is it fairer to compare two foods using the 'per 100 g' column rather than the 'per portion' column?",
+            options: [
+              "Portions are always the same size",
+              "Every food is measured against the same mass, so the comparison is fair",
+              "The per 100 g column is always lower",
+              "Per portion values are not allowed on UK labels",
+            ],
+            answer: 1,
+          },
+          {
+            type: "pick",
+            q: "Which are ways the body uses energy from food? There is more than one.",
+            options: ["Contracting muscles", "Keeping body temperature at about 37 °C", "Making sunlight", "Growth and repair of cells"],
+            answers: [0, 1, 3],
+          },
+        ],
+      },
+      task: {
+        title: "Food label investigation",
+        intro: "Collect food labels from your kitchen cupboards and use them to compare the energy content of different foods, then explain the pattern using what you know about nutrients.",
+        need: [
+          "At least eight packaged foods or their packaging, such as cereal, bread, crisps, yoghurt, pasta, nuts, a biscuit and a tin of fruit (ask before opening anything)",
+          "Paper, a pen, a ruler and a calculator",
+          "Kitchen scales (optional)",
+        ],
+        steps: [
+          "For each food, record in a table: the name, energy in kJ per 100 g, fat per 100 g, carbohydrate per 100 g, protein per 100 g, and the energy per portion with the portion size.",
+          "Draw a bar chart of energy per 100 g for all your foods, in order from lowest to highest.",
+          "Look for a pattern. Do the foods with the most energy per 100 g also have the most fat? Use the energy values of 37 kJ per gram for fat and 17 kJ per gram for carbohydrate and protein to explain what you find.",
+          "Check one label: multiply the fat, carbohydrate and protein masses by their energy values and add them up. How close is your total to the energy shown on the label? Suggest why it might not match exactly (think about fibre and rounding).",
+          "Choose one food and weigh out what you think is a typical portion (optional, using kitchen scales). Calculate the energy in your portion and compare it with the portion size on the label.",
+          "Write a paragraph explaining why a food's energy content alone does not tell you whether it is part of a healthy, balanced diet.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "In which store is energy held in food?", options: ["Kinetic", "Thermal", "Chemical", "Elastic potential"], answer: 2 },
+        { type: "type", q: "A food contains 2,000 kJ per 100 g. How much energy is in a 50 g portion?", answer: ["1000", "1,000"], after: "kJ" },
+        { type: "type", q: "What is the name of the process in cells that releases energy from glucose?", answer: ["respiration", "aerobic respiration"] },
+        {
+          type: "match",
+          q: "Match each nutrient to its approximate energy per gram.",
+          pairs: [
+            ["Fat", "About 37 kJ per gram"],
+            ["Carbohydrate and protein", "About 17 kJ per gram"],
+            ["Water", "0 kJ per gram"],
+          ],
+        },
+        {
+          type: "choice",
+          q: "Which best explains why cucumber has much less energy per 100 g than peanuts?",
+          options: [
+            "Cucumber is mostly water and has very little fat, while peanuts are high in fat",
+            "Cucumber is green",
+            "Peanuts have been cooked",
+            "Cucumber contains more protein than peanuts",
+          ],
+          answer: 0,
+        },
+        {
+          type: "choice",
+          q: "An average adult transfers about 8,400 kJ a day. About what power is that?",
+          options: ["About 1 W", "About 100 W", "About 8,400 W", "About 1 kW"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["A selection of packaged foods or packaging from the cupboard", "A calculator", "Kitchen scales (optional)"],
+        tips: [
+          "This lesson treats food energy as physics: a chemical store and a rate of energy transfer. Please keep the conversation away from dieting, 'good' and 'bad' foods, or 'burning off' food. Teenagers are growing fast and often need a lot of energy.",
+          "If your learner has, or has had, a difficult relationship with food, you may want to skip the task or swap it for comparing the energy content of fuels (such as kJ per gram of wood, coal and petrol from a textbook or website) instead. Their wellbeing matters more than this lesson.",
+          "The fat × 37 + carbohydrate × 17 + protein × 17 check will usually come close to the label value. Differences come from fibre (about 8 kJ per gram), sugar alcohols and rounding.",
+        ],
+        younger: "Use four labels only and focus on reading the kJ per 100 g value and putting the foods in order. Do the kcal to kJ conversion together with a calculator.",
+        older: "Research how a simple calorimeter works and why burning a crisp or nut under a test tube of water gives an energy value far lower than the label (energy dissipated to the surroundings). Write up the method and its sources of error without carrying it out, as it involves an open flame.",
+      },
+    },
+    {
+      slug: "energy-stores-6",
+      title: "Energy resources",
+      emoji: "🌬️",
+      minutes: 60,
+      goal: "I can describe how electricity is generated from renewable and non-renewable resources, and weigh up their advantages and disadvantages.",
+      starter: [
+        { type: "type", q: "What process in cells releases energy from glucose?", answer: ["respiration", "aerobic respiration"] },
+        { type: "choice", q: "On a UK food label, energy is given in kJ and which other unit?", options: ["kcal", "kWh", "watts"], answer: 0 },
+        { type: "type", q: "About how many kJ are there in 1 kcal? Give your answer to one decimal place.", answer: ["4.2"], after: "kJ" },
+        { type: "choice", q: "Which nutrient has the most energy per gram?", options: ["Protein", "Carbohydrate", "Fat"], answer: 2 },
+        { type: "choice", q: "Where did almost all of the energy in our food come from originally?", options: ["The Sun", "The soil", "The Moon"], answer: 0 },
+        { type: "type", q: "A food has 1,500 kJ per 100 g. How much energy is in 20 g?", answer: ["300"], after: "kJ" },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "How electricity is generated",
+            text: [
+              "Most electricity is produced by a generator: a coil of wire that spins near magnets. Spinning the coil transfers energy electrically to the wires of the National Grid. What differs between power stations is how they make the generator spin.",
+              "In a thermal power station, a fuel is used to heat water into high-pressure steam. The steam pushes on the blades of a turbine, a bit like wind turning a windmill, and the turbine spins the generator. Coal, oil, gas, biomass and nuclear power stations all work this way, though nuclear stations heat the water using the energy released when uranium atoms split, rather than by burning anything.",
+              "Other resources turn the turbine directly, without steam. In a wind turbine, moving air spins the blades. In hydroelectric, tidal and wave power, moving water does the job. Solar cells are different again: they transfer energy from light electrically, with no moving parts at all.",
+              "Thermal power stations are often only about 35 to 50% efficient, because a large amount of energy is dissipated to the surroundings as the steam is cooled back into water. The clouds rising from the huge cooling towers of a power station are water vapour condensing, not smoke.",
+            ],
+          },
+          {
+            heading: "Non-renewable resources",
+            text: [
+              "A non-renewable resource is one that will run out, because it is being used much faster than it can be replaced. The fossil fuels (coal, oil and natural gas) formed over millions of years from the remains of ancient plants and sea organisms, buried and squeezed under layers of rock. Once we burn them, they are gone for any human timescale.",
+              "Fossil fuel power stations have important advantages. They can produce large amounts of electricity reliably, day and night, whatever the weather, and gas power stations can be switched on quickly when demand rises, for example when millions of people boil a kettle at half-time in a big football match.",
+              "Their biggest disadvantage is that burning fossil fuels releases carbon dioxide, a greenhouse gas that is the main cause of climate change. Burning coal and oil can also release sulfur dioxide, which causes acid rain, and fine particles that harm health. On 30 September 2024, the UK closed its last coal-fired power station, Ratcliffe-on-Soar in Nottinghamshire, ending over 140 years of coal-powered electricity in Britain.",
+              "Nuclear power uses uranium, which is also non-renewable. It releases no carbon dioxide while operating and provides a steady supply, but nuclear power stations are very expensive to build and to close down safely, and they produce radioactive waste that must be stored securely for thousands of years.",
+            ],
+          },
+          {
+            heading: "Renewable resources",
+            text: [
+              "A renewable resource is one that is naturally replaced and will not run out. Renewable resources for electricity include wind, solar, hydroelectric (water flowing from a reservoir behind a dam), tidal, wave, geothermal (heat from hot rocks underground) and biomass (burning plant material such as wood pellets, which is replaced as new plants grow).",
+              "Most renewables release no carbon dioxide while generating electricity, and their 'fuel' is free. The UK is one of the best places in Europe for wind power, and offshore wind farms in the North Sea now generate a large share of the country's electricity.",
+              "Renewables have disadvantages too. Wind and solar are intermittent: wind turbines produce nothing on a still day and solar panels produce nothing at night, so the electricity supply must be balanced with other sources or with storage, such as large batteries. Some people object to the appearance or noise of wind farms; hydroelectric dams flood valleys and affect wildlife; and tidal schemes are only possible at a few suitable sites. All of them cost a lot to build.",
+              "No single resource is perfect, so a country uses a mix, called its energy mix. Deciding on the mix means weighing up cost, reliability, how quickly supply can be changed, the effect on the climate, the effect on local people and wildlife, and how long the resource will last. There is no single 'right answer', which is why these decisions are often debated in politics.",
+            ],
+          },
+        ],
+        words: [
+          { word: "generator", meaning: "a device that transfers energy from a kinetic store electrically, using a coil spinning near magnets" },
+          { word: "turbine", meaning: "a set of blades turned by steam, wind or water, used to spin a generator" },
+          { word: "non-renewable", meaning: "a resource that will run out because it is used faster than it is replaced, such as coal, oil, gas and uranium" },
+          { word: "renewable", meaning: "a resource that is naturally replaced and will not run out, such as wind, solar and tidal power" },
+          { word: "fossil fuel", meaning: "a fuel formed over millions of years from the remains of ancient living things: coal, oil and natural gas" },
+          { word: "intermittent", meaning: "not available all the time, such as wind on a still day or sunlight at night" },
+        ],
+      },
+      practice: {
+        intro: "Sort, sequence and weigh up the resources.",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are renewable resources? There is more than one.",
+            options: ["Wind", "Natural gas", "Tidal", "Uranium", "Solar", "Coal"],
+            answers: [0, 2, 4],
+          },
+          {
+            type: "order",
+            q: "Put the stages of a gas-fired power station in order.",
+            items: ["Gas is burned", "Water is heated into steam", "Steam turns a turbine", "The turbine spins a generator", "Electricity flows into the National Grid"],
+          },
+          {
+            type: "match",
+            q: "Match each resource to one of its disadvantages.",
+            pairs: [
+              ["Coal", "Releases a lot of carbon dioxide"],
+              ["Nuclear", "Produces radioactive waste"],
+              ["Wind", "Produces nothing on a still day"],
+              ["Hydroelectric", "A dam floods a valley"],
+            ],
+          },
+          {
+            type: "choice",
+            q: "Which resource does not use a turbine at all?",
+            options: ["Wind", "Solar cells", "Nuclear", "Hydroelectric"],
+            answer: 1,
+          },
+          {
+            type: "choice",
+            q: "Why do gas power stations still play an important part in the UK's energy mix?",
+            options: [
+              "Gas will never run out",
+              "They release no carbon dioxide",
+              "They can be switched on quickly to meet changes in demand, whatever the weather",
+              "They are the only type of power station that uses a generator",
+            ],
+            answer: 2,
+          },
+        ],
+      },
+      task: {
+        title: "Plan an island's energy mix",
+        intro: "A Scottish island with 2,000 residents is replacing its old diesel generators. You are the energy adviser. Research the options and write a recommendation to the island council.",
+        need: [
+          "Internet access, with a grown-up's permission, for research",
+          "Paper, a pen, coloured pencils and a ruler, or a free online spreadsheet or document tool",
+        ],
+        steps: [
+          "The island is windy and surrounded by strong tidal currents, has a few hills with streams, gets little sunshine in winter, and has a forestry plantation. Its electricity cable to the mainland is old and often breaks in storms.",
+          "Make a table of at least six resources (for example wind, solar, tidal, wave, small-scale hydroelectric, biomass and diesel) with two advantages and two disadvantages of each for this island.",
+          "With permission, research the UK's current energy mix using a reliable source such as the National Energy System Operator, the UK government or the BBC. Draw a pie chart or bar chart of the share of electricity from each source and note the date of the data.",
+          "Real islands have tackled this problem. With permission, research one real example, such as Eigg or Orkney in Scotland. What resources did they choose, and how do they cope when the wind drops?",
+          "Write a recommendation of about 400 words to the island council. Propose an energy mix, explain how it keeps the lights on when the weather changes, and explain the trade-offs. Use the words renewable, non-renewable, intermittent and efficiency.",
+          "Finish with a short paragraph answering the strongest argument against your plan.",
+        ],
+      },
+      exit: [
+        {
+          type: "choice",
+          q: "What is a non-renewable resource?",
+          options: [
+            "One that is free to use",
+            "One that will run out because it is used faster than it is replaced",
+            "One that never releases carbon dioxide",
+            "One that only works during the day",
+          ],
+          answer: 1,
+        },
+        { type: "pick", q: "Which are fossil fuels? There is more than one.", options: ["Coal", "Uranium", "Natural gas", "Biomass", "Oil"], answers: [0, 2, 4] },
+        { type: "type", q: "In a power station, what spins near magnets to generate electricity?", answer: ["generator", "a generator", "coil", "a coil", "coil of wire"] },
+        {
+          type: "gap",
+          q: "Fill in the gaps.",
+          text: "Burning fossil fuels releases ___, which causes climate change. Wind and solar power are ___, because they are not available all the time.",
+          bank: ["carbon dioxide", "intermittent", "oxygen", "reliable", "nitrogen"],
+          answers: ["carbon dioxide", "intermittent"],
+        },
+        {
+          type: "choice",
+          q: "Which is the best explanation for why countries use a mix of energy resources?",
+          options: [
+            "Every resource has advantages and disadvantages, so a mix balances reliability, cost and environmental effects",
+            "Renewables are always more expensive than fossil fuels",
+            "There is a law that says every country must use every resource",
+            "Power stations can only use one type of fuel each year",
+          ],
+          answer: 0,
+        },
+        {
+          type: "choice",
+          q: "Which statement about nuclear power is correct?",
+          options: [
+            "It burns uranium and releases lots of carbon dioxide",
+            "It is renewable",
+            "It releases no carbon dioxide while operating, but produces radioactive waste",
+            "It only works when the wind blows",
+          ],
+          answer: 2,
+        },
+      ],
+      grownUp: {
+        need: ["Internet access for research (supervised)", "Paper and coloured pencils, or a free online spreadsheet"],
+        tips: [
+          "Please agree with your learner which websites they will use for research. Official sources (the UK government, the National Energy System Operator, the Met Office, the BBC) give reliable, dated figures.",
+          "Energy policy and climate change can be emotive. Encourage your learner to separate evidence (what each resource does, its costs and emissions) from opinion, and to show they understand the other side of the argument.",
+          "Figures for the UK's energy mix change quickly from year to year. Ask your learner always to note the date of any data they use: it is a good scientific habit.",
+        ],
+        younger: "Skip the island research and give them a list of four resources with prompts for advantages and disadvantages. A shorter recommendation of 150 to 200 words is fine.",
+        older: "Research why the UK electricity supply needs to balance supply and demand second by second, and how pumped storage hydroelectricity (such as Dinorwig in Wales or Cruachan in Scotland) and large batteries help to cover the gaps left by intermittent renewables.",
       },
     },
   ],

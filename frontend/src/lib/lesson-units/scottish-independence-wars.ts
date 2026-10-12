@@ -11,7 +11,7 @@ export const scottishIndependenceWars: LessonUnit = {
   short: "Wars of independence",
   subject: "History",
   ages: "11 to 14",
-  emoji: "⚔️",
+  emoji: "🗡️",
   color: "#4A5D78",
   summary: "Six lessons on the succession crisis after Alexander III, Edward I and the Great Cause, William Wallace and Stirling Bridge, Robert the Bruce and Bannockburn, the Declaration of Arbroath as a source, and the Treaty of Edinburgh–Northampton, with a close look at myth versus history.",
   cover: "/lessons/units/scottish-independence-wars.jpg",
