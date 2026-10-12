@@ -122,6 +122,8 @@ export const unitLink = (unit: LessonUnit) => {
 const YEARS: Record<string, string> = {
   "4 to 5": "Reception",
   "5 to 7": "Years 1 and 2",
+  "7 to 9": "Years 3 and 4",
+  "9 to 11": "Years 5 and 6",
   "7 to 11": "Years 3 to 6",
   "11 to 14": "Years 7 to 9",
 };

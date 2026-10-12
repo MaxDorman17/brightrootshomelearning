@@ -6,7 +6,7 @@ export const ancientEgypt: LessonUnit = {
   title: "Ancient Egypt",
   short: "Ancient Egypt",
   subject: "History",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🏺",
   color: "#B8862B",
   summary: "Six lessons: the River Nile, pharaohs, pyramids, mummies, hieroglyphs, and gods and everyday life.",

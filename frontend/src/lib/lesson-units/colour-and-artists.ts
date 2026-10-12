@@ -6,7 +6,7 @@ export const colourAndArtists: LessonUnit = {
   title: "Colour and great artists",
   short: "Colour and artists",
   subject: "Art & Design",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🎨",
   color: "#B0457B",
   summary: "Six lessons: mixing colours, warm and cool colours, then Van Gogh, Kandinsky and Matisse, and finally your own gallery.",

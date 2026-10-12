@@ -6,7 +6,7 @@ export const feelingsAndFriendships: LessonUnit = {
   title: "Feelings and friendships",
   short: "Feelings",
   subject: "RSHE (PSHE)",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "💛",
   color: "#C7892B",
   summary: "Six lessons: naming feelings, calming big ones, being a good friend, falling out and making up, families, and staying safe online.",

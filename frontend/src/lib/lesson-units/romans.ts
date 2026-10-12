@@ -6,7 +6,7 @@ export const romansLessons: LessonUnit = {
   title: "All about the Romans",
   short: "Romans",
   subject: "History",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🏛️",
   color: "#B5523B",
   summary: "Six lessons: who the Romans were, the invasion, the army, Boudica, the walls and Roman life.",
