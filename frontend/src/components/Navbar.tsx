@@ -22,6 +22,7 @@ import Avatar from "@/components/Avatar";
 import Emoji from "@/components/Emoji";
 import TimerBadge from "@/components/TimerBadge";
 import { AvatarChoice } from "@/lib/avatar";
+import { SEN_SECTIONS } from "@/lib/senSections";
 
 interface BellItem {
   key: string;
@@ -35,9 +36,9 @@ interface BellItem {
 const BELL_ICON: Record<BellItem["kind"], string> = { review: "📎", lesson: "✅", reading: "📖", spelling: "🔤" };
 const BELL_SEEN_KEY = "bell_seen";
 
-// `short` is shown instead of `label` on the desktop bar below xl, where space is tight.
+// `short` is shown instead of `label` on the desktop bar below 2xl, where space is tight.
 type NavLink = { href: string; label: string; short?: string };
-type NavGroup = { label: string; items: NavLink[] };
+type NavGroup = { label: string; short?: string; items: NavLink[] };
 type NavEntry = NavLink | NavGroup;
 
 const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
@@ -128,8 +129,12 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/teens/exams", label: "Exams" },
     ],
   },
-  // Its own tab so families who need it don't have to hunt for it.
-  { href: "/make/sen", label: "SEN Support", short: "SEN" },
+  // Its own menu so families who need it don't have to hunt for it. The sections live in lib/sen.ts.
+  {
+    label: "SEN Support",
+    short: "SEN",
+    items: [{ href: "/make/sen", label: "All SEN support" }, ...SEN_SECTIONS.map((s) => ({ href: `/make/sen/${s.slug}`, label: s.name }))],
+  },
   {
     label: "Family",
     items: [
@@ -367,7 +372,8 @@ export default function Navbar() {
     (href === "/make/comics" && pathname.startsWith("/make/comics/")) ||
     (href === "/worksheets" && pathname.startsWith("/worksheets/")) ||
     (href === "/lessons" && pathname.startsWith("/lessons/")) ||
-    (href === "/make/sen" && pathname.startsWith("/make/sen/")) ||
+    // A single SEN tool lights up "All SEN support"; a section page lights up its own item instead.
+    (href === "/make/sen" && pathname.startsWith("/make/sen/") && !SEN_SECTIONS.some((s) => pathname === `/make/sen/${s.slug}`)) ||
     // A single recipe or craft, or the add/edit form, lights up the Saplings menu.
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
@@ -436,7 +442,14 @@ export default function Navbar() {
                             : "text-brand-charcoal/70 hover:bg-brand-softsage/15 hover:text-brand-sage"
                         }`}
                       >
-                        {entry.label}
+                        {entry.short ? (
+                          <>
+                            <span className="2xl:hidden">{entry.short}</span>
+                            <span className="hidden 2xl:inline">{entry.label}</span>
+                          </>
+                        ) : (
+                          entry.label
+                        )}
                         <span aria-hidden="true" className="text-[10px]">▾</span>
                       </button>
 
@@ -469,8 +482,8 @@ export default function Navbar() {
                     >
                       {entry.short ? (
                         <>
-                          <span className="xl:hidden">{entry.short}</span>
-                          <span className="hidden xl:inline">{entry.label}</span>
+                          <span className="2xl:hidden">{entry.short}</span>
+                          <span className="hidden 2xl:inline">{entry.label}</span>
                         </>
                       ) : (
                         entry.label

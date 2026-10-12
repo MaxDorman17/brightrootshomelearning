@@ -4,6 +4,8 @@
  * lib/illustrations.ts and it is used everywhere automatically.
  */
 
+import type { SenSection } from "@/lib/senSections";
+
 export type SenTool = { slug: string; name: string; emoji: string; blurb: string; art?: string };
 
 export const SEN_TOOLS: SenTool[] = [
@@ -18,6 +20,10 @@ export const SEN_TOOLS: SenTool[] = [
   { slug: "learning", name: "Learning your way", emoji: "🧠", art: "/sen/learning/work-together.webp", blurb: "The ways your child learns best" },
   { slug: "sensory", name: "Sensory activities", emoji: "🫗", art: "/sensory/sensory-pack.png", blurb: "Touch, sound, sight, smell and movement play" },
 ];
+
+/** The tools in one SEN Support section (lib/senSections.ts), in the section's order. */
+export const senToolsIn = (section: SenSection) =>
+  section.tools.map((slug) => SEN_TOOLS.find((t) => t.slug === slug)).filter((t): t is SenTool => !!t);
 
 export type Card = { emoji: string; label: string };
 
