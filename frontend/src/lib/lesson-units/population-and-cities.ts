@@ -1,0 +1,737 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Population and cities, for ages 11 to 14 (KS3 geography). Figures are approximate and dated, because population data
+ * changes every year and different organisations measure it in different ways. Migration is handled factually and
+ * respectfully; comparisons of London and Lagos avoid a "single story" of either city.
+ */
+export const populationAndCities: LessonUnit = {
+  slug: "population-and-cities",
+  title: "Population and cities",
+  short: "Population",
+  subject: "Geography",
+  ages: "11 to 14",
+  emoji: "🏙️",
+  color: "#5B6B7A",
+  summary: "Six lessons on how the world reached 8 billion people, reading population pyramids and the demographic transition model, why people migrate, the rise of urbanisation and megacities, comparing London with Lagos, and what makes a city sustainable.",
+  cover: "/lessons/units/population-and-cities.jpg",
+  lessons: [
+    {
+      slug: "population-and-cities-1",
+      title: "A world of 8 billion",
+      emoji: "🌍",
+      minutes: 60,
+      goal: "I can describe and explain how the world's population has grown, use birth and death rates to explain change, and describe where people live using population density.",
+      starter: [
+        { type: "pick", q: "Which of these are continents? There is more than one.", options: ["Asia", "Africa", "Europe", "Atlantic", "Amazon"], answers: [0, 1, 2] },
+        { type: "choice", q: "What does the word 'population' mean in geography?", options: ["The number of people living in a place", "The size of a country in square kilometres", "The number of cities in a country"], answer: 0 },
+        { type: "choice", q: "Roughly how many people live in the UK today?", options: ["About 6 million", "About 69 million", "About 690 million"], answer: 1 },
+        { type: "choice", q: "Which of these places would you expect to have very few people living in it?", options: ["The centre of a large city", "A fertile river valley near the coast", "A hot, dry desert"], answer: 2 },
+        { type: "type", q: "What is the capital city of the United Kingdom?", answer: ["London", "london"] },
+        { type: "choice", q: "Which of these is the best reason why many towns grew up beside rivers?", options: ["Rivers provided water, food, transport and flat land", "Rivers kept the air warm in winter", "People were not allowed to build anywhere else"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "From one billion to eight",
+            text: [
+              "For most of human history the world's population grew very slowly. Disease, famine and war kept death rates high, and although families had many children, a large share of them died young. It took until roughly 1800 (most estimates say around 1804) for the population to reach 1 billion.",
+              "After that, growth sped up dramatically. The population reached about 2 billion by 1927, 3 billion by around 1960, 4 billion by 1974, 5 billion by 1987, 6 billion by 1999 and 7 billion by 2011. The United Nations marked 15 November 2022 as the day the world passed 8 billion. Notice how the gap between each billion shrank from more than a century to about 12 years or less.",
+              "When a quantity grows by a percentage of itself each year, the line on a graph curves upwards more and more steeply. Geographers call this exponential growth. The world's growth rate actually peaked in the 1960s at a little over 2% a year, and has since fallen to under 1% a year (approximate figure for the early 2020s). The population is still rising, but more slowly.",
+              "United Nations projections made in 2024 suggest the world population will peak at roughly 10.3 billion in the mid-2080s and then begin to fall slightly. Projections are not predictions: they depend on assumptions about future birth and death rates, and they are revised every few years.",
+            ],
+          },
+          {
+            heading: "Births, deaths and natural increase",
+            text: [
+              "Two key measures explain population change. The birth rate is the number of live births per 1,000 people in a year. The death rate is the number of deaths per 1,000 people in a year. If the birth rate is higher than the death rate, the population grows; the difference between them is the natural increase. For example, a birth rate of 30 and a death rate of 10 gives a natural increase of 20 per 1,000, or 2% a year.",
+              "The rapid growth of the last two centuries happened mainly because death rates fell before birth rates did. Clean water supplies, sewers, better food production, vaccinations and antibiotics meant far more babies survived childhood and adults lived longer. Birth rates stayed high for a while, so the gap between births and deaths widened.",
+              "Birth rates tend to fall later, as countries develop. When more children survive, families no longer need to have as many. Education for girls and women, access to contraception, the cost of raising children in towns and cities, and changing ideas about family size all lower the birth rate.",
+              "Geographers also use the total fertility rate: the average number of children a woman would have in her lifetime. A rate of about 2.1 is called replacement level, because it keeps a population roughly steady without migration. In the early 2020s the global figure was around 2.3, but it varied hugely, from about 6 in Niger to below 1 in South Korea, with the UK at under 1.5 (all approximate).",
+            ],
+          },
+          {
+            heading: "Where in the world are people?",
+            text: [
+              "The world's population is very unevenly spread. Population distribution describes how people are spread across an area. Roughly 6 in every 10 people on Earth live in Asia. India and China each have more than 1.4 billion people, and United Nations estimates suggest India overtook China as the most populous country in 2023.",
+              "Population density measures how crowded a place is: the number of people divided by the land area, usually given as people per square kilometre (km²). Bangladesh has roughly 1,300 people per km², the UK about 280, and Canada only about 4 (approximate figures for the early 2020s). A country can have a large population but a low density if it is very big, like Canada or Australia.",
+              "Physical factors help explain the pattern. Places that are densely populated often have flat land, fertile soils, a reliable water supply and a moderate climate, such as the river valleys and deltas of South and East Asia. Places that are sparsely populated are often too dry (the Sahara), too cold (northern Canada and Siberia), too high and steep (the Himalayas) or covered in dense forest (parts of the Amazon).",
+              "Human factors matter too. Jobs, industry, good transport links, ports, government decisions and history all draw people together. Many of the world's most crowded places are cities that grew because of trade or industry, not because the land around them is especially fertile.",
+            ],
+          },
+        ],
+        words: [
+          { word: "birth rate", meaning: "the number of live births per 1,000 people in a year" },
+          { word: "death rate", meaning: "the number of deaths per 1,000 people in a year" },
+          { word: "natural increase", meaning: "the birth rate minus the death rate, showing how fast a population grows without migration" },
+          { word: "total fertility rate", meaning: "the average number of children a woman would have in her lifetime; about 2.1 is replacement level" },
+          { word: "population density", meaning: "the number of people per square kilometre: population divided by land area" },
+          { word: "exponential growth", meaning: "growth by a percentage of the total each time, making a curve that gets steeper and steeper" },
+        ],
+      },
+      practice: {
+        intro: "Use the figures and ideas from the cards to answer these.",
+        questions: [
+          { type: "order", q: "Put these world population milestones in order, starting with the earliest.", items: ["1 billion", "3 billion", "6 billion", "8 billion"] },
+          { type: "type", q: "A country has a birth rate of 25 per 1,000 and a death rate of 8 per 1,000. What is its natural increase per 1,000?", answer: ["17", "17 per 1,000", "17 per 1000"] },
+          {
+            type: "choice",
+            q: "Which best explains why the world's population grew so fast after about 1900?",
+            options: ["Birth rates rose sharply everywhere", "Death rates fell while birth rates stayed high for a time", "Migration added extra people to the world"],
+            answer: 1,
+            why: "Migration moves people around the world but cannot add to the world's total. The gap between falling death rates and still-high birth rates drove the growth.",
+          },
+          {
+            type: "match",
+            q: "Match each place to the main physical reason it is sparsely populated.",
+            pairs: [
+              ["The Sahara", "Too dry"],
+              ["Northern Siberia", "Too cold"],
+              ["The Himalayas", "Too high and steep"],
+              ["Parts of the Amazon", "Dense forest"],
+            ],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Population density is the number of people divided by the land ___. Bangladesh is very ___ populated, while Canada is ___ populated.", bank: ["area", "densely", "sparsely", "height", "rarely"], answers: ["area", "densely", "sparsely"] },
+        ],
+      },
+      task: {
+        title: "Graph the growth",
+        intro: "Turn the population milestones into a line graph, then use it to describe and explain the pattern in a short piece of writing.",
+        need: ["Graph paper or squared paper", "A ruler and a sharp pencil", "Coloured pens"],
+        steps: [
+          "Draw axes. Put years along the bottom from 1800 to 2100 and population (billions) up the side from 0 to 11. Choose an even scale for each axis, for example 1 cm for every 20 years and 1 cm for every billion.",
+          "Plot these approximate points: 1804, 1 billion; 1927, 2; 1960, 3; 1974, 4; 1987, 5; 1999, 6; 2011, 7; 2022, 8. Join them with a smooth curve.",
+          "Draw a dashed line from 2022 to show the 2024 United Nations projection: a peak of about 10.3 billion in the mid-2080s, then a slight fall by 2100. Label it clearly as a projection.",
+          "Work out how many years it took to add each billion and write the answers beside the curve. When was the gap shortest?",
+          "Annotate (add explanatory notes to) your graph with at least three reasons for the change, such as clean water, vaccines, or education for girls.",
+          "Write a paragraph of about 150 words that describes the trend using figures from your graph, then explains it using the words birth rate, death rate and natural increase.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "In which year did the world population pass 8 billion, according to the United Nations?", options: ["2011", "2019", "2022"], answer: 2 },
+        { type: "type", q: "How many years did it take the world to go from 7 billion (2011) to 8 billion (2022)?", answer: ["11", "11 years", "eleven"] },
+        { type: "choice", q: "What does 'birth rate' measure?", options: ["The average number of children per woman", "Live births per 1,000 people per year", "The total number of babies born in a country"], answer: 1 },
+        { type: "choice", q: "A total fertility rate of about 2.1 is called...", options: ["exponential growth", "natural decrease", "replacement level"], answer: 2 },
+        {
+          type: "pick",
+          q: "Which factors usually help to lower the birth rate? There is more than one.",
+          options: ["More girls and women in education", "Access to contraception", "More children dying young", "Higher costs of raising children in cities"],
+          answers: [0, 1, 3],
+        },
+        { type: "choice", q: "Which continent is home to roughly 6 in every 10 people on Earth?", options: ["Asia", "Africa", "Europe"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Graph or squared paper", "A ruler, pencil and coloured pens", "An atlas or world map, if you have one"],
+        tips: [
+          "Population figures are always approximate and change as new censuses and estimates are published. Encourage your learner to quote figures with a year and words such as 'about' or 'roughly'.",
+          "A common mistake is to think migration explains world population growth. It moves people between countries but does not change the global total.",
+          "If graph scales cause trouble, check that each axis goes up in equal steps. Uneven scales are the most common graphing error at this age.",
+        ],
+        younger: "Plot only the points from 1927 onwards, and give the axis scales ready-drawn. Talk through what a steeper line means before writing.",
+        older: "Read about Thomas Malthus (1798) and Ester Boserup (1965), who had opposite views about whether food supply could keep up with population growth. Write a paragraph comparing their ideas and say which the evidence since 1960 supports better.",
+      },
+    },
+    {
+      slug: "population-and-cities-2",
+      title: "Population pyramids and change",
+      emoji: "📊",
+      minutes: 60,
+      goal: "I can read and interpret population pyramids, explain what their shapes show, and use the demographic transition model to describe how populations change.",
+      starter: [
+        { type: "choice", q: "Roughly when did the world population pass 1 billion?", options: ["Around 1500", "Around 1804", "Around 1927"], answer: 1 },
+        { type: "type", q: "A country has a birth rate of 40 per 1,000 and a death rate of 15 per 1,000. What is its natural increase per 1,000?", answer: ["25", "25 per 1,000", "25 per 1000"] },
+        { type: "choice", q: "How is population density calculated?", options: ["Births minus deaths", "Population divided by land area", "Population divided by the number of cities"], answer: 1 },
+        { type: "choice", q: "Which is the main reason death rates fell around the world in the 1900s?", options: ["Clean water, sanitation, vaccines and better food supply", "Families having fewer children", "People moving to other countries"], answer: 0 },
+        { type: "pick", q: "Which places are sparsely populated? There is more than one.", options: ["Northern Canada", "Bangladesh", "The Sahara", "The Himalayas"], answers: [0, 2, 3] },
+        { type: "choice", q: "What does 'exponential growth' look like on a line graph?", options: ["A straight diagonal line", "A flat line", "A curve that gets steeper and steeper"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Reading a population pyramid",
+            text: [
+              "A population pyramid is a special kind of bar chart that shows the structure of a population: how many people there are of each age and sex. Each horizontal bar stands for an age group, usually five years wide (0 to 4, 5 to 9, 10 to 14 and so on), with the youngest at the bottom and the oldest at the top.",
+              "Males are shown on the left of the central line and females on the right. The horizontal axis shows either the number of people or, more often, the percentage of the total population, which makes it easier to compare countries of different sizes.",
+              "To read a pyramid, look first at the overall shape, then at the width of the base (the young), the middle (working-age adults) and the top (older people). Look for bulges or 'notches' in particular age groups: these often record events from the past, such as a baby boom, a war, a famine or a change in government policy.",
+              "Geographers often divide a population into three broad groups: young dependents (aged 0 to 14), the economically active or working-age population (15 to 64) and elderly dependents (65 and over). These groups are a convenient simplification: many people work beyond 64, and many 15 to 18 year olds are still in education.",
+            ],
+          },
+          {
+            heading: "Shapes tell stories",
+            text: [
+              "A pyramid with a wide base and narrow top shows a youthful population: high birth rates, and a relatively short life expectancy. Niger, in West Africa, is an example. In the early 2020s its median age (the age of the person exactly in the middle) was only about 15, and nearly half of the population was under 15 (approximate figures).",
+              "A pyramid with straighter sides, more like a column or beehive, shows lower birth rates and longer lives. The UK has this shape. Its median age is about 40, and roughly 1 in 5 people are 65 or over (approximate, early 2020s). There is a noticeable bulge of people born in the baby booms after the Second World War and in the 1960s.",
+              "A pyramid that is narrower at the bottom than in the middle shows an ageing population with a low birth rate. Japan is the classic example: its median age is close to 49 and about 29% of people are 65 or over (approximate, early 2020s). Without migration, a population like this begins to shrink.",
+              "The dependency ratio compares the number of dependents with the number of working-age people: (people aged 0 to 14 + people aged 65 and over) ÷ people aged 15 to 64 × 100. A high ratio means each worker supports more people, whether through caring for children, paying for schools, or paying taxes that fund pensions and healthcare.",
+            ],
+          },
+          {
+            heading: "The demographic transition model",
+            text: [
+              "The demographic transition model (DTM) is a theory that describes how birth rates, death rates and total population change as a country develops. It was based mainly on what happened in Europe and North America over the last 250 years, and it has five stages.",
+              "Stage 1: birth and death rates are both high and fluctuating, so the population stays low and steady. No country is in this stage today. Stage 2: death rates fall quickly thanks to better food, water and healthcare, while birth rates stay high, so the population grows rapidly. Stage 3: birth rates fall as well, so growth slows. Stage 4: birth and death rates are both low and the population is roughly stable; the UK is usually placed here. Stage 5: the birth rate falls below the death rate and the population begins to decline, as in Japan and Italy.",
+              "Each stage has a typical pyramid shape: wide-based in stages 2 and 3, more column-like in stage 4, and narrowing at the base in stage 5. Putting a country's pyramid beside the model is a good way to work out which stage it has reached.",
+              "Like all models, the DTM has limitations. It does not include migration. It assumes all countries will follow the European path, yet many countries have moved through the stages much faster, and government policies, such as China's one-child policy (roughly 1980 to 2015), can change the pattern sharply.",
+            ],
+          },
+        ],
+        words: [
+          { word: "population pyramid", meaning: "a bar chart showing the age and sex structure of a population" },
+          { word: "median age", meaning: "the age of the person exactly in the middle when everyone is lined up from youngest to oldest" },
+          { word: "youthful population", meaning: "a population with a large share of young people, shown by a wide-based pyramid" },
+          { word: "ageing population", meaning: "a population in which the share of older people is rising" },
+          { word: "dependency ratio", meaning: "the number of dependents (0 to 14 and 65+) for every 100 people of working age (15 to 64)" },
+          { word: "demographic transition model", meaning: "a model showing how birth rates, death rates and population change in five stages as a country develops" },
+        ],
+      },
+      practice: {
+        intro: "Interpret pyramids and use the demographic transition model.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each pyramid shape to what it shows.",
+            pairs: [
+              ["Wide base, narrow top", "High birth rate and youthful population"],
+              ["Straight sides, like a column", "Low birth and death rates, fairly stable"],
+              ["Narrower at the base than the middle", "Ageing population that may shrink"],
+            ],
+          },
+          { type: "order", q: "Put the stages of the demographic transition model in order, starting with stage 1.", items: ["High birth and death rates, low steady population", "Death rate falls fast, population grows rapidly", "Birth rate falls, growth slows", "Low birth and death rates, stable population", "Birth rate below death rate, population declines"] },
+          { type: "type", q: "A country has 30 million young dependents, 10 million elderly dependents and 80 million people aged 15 to 64. What is its dependency ratio?", answer: ["50"], why: "(30 + 10) ÷ 80 × 100 = 50, so there are 50 dependents for every 100 people of working age." },
+          {
+            type: "choice",
+            q: "A pyramid has a noticeable 'notch' (a narrower bar) for people now aged around 80. Which explanation is most likely?",
+            options: ["A baby boom about 80 years ago", "Fewer births during a war about 80 years ago", "Many young people arriving as migrants recently"],
+            answer: 1,
+            why: "Fewer babies are usually born during wars, leaving a narrower bar that moves up the pyramid over time.",
+          },
+          {
+            type: "choice",
+            q: "Which is a limitation of the demographic transition model?",
+            options: ["It shows birth rates and death rates", "It does not take migration into account", "It has five stages"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "Draw and compare two pyramids",
+        intro: "Draw population pyramids for two made-up countries based on real patterns, then write a comparison and place each country in the demographic transition model.",
+        need: ["Graph or squared paper", "A ruler, pencil and two colours", "The data in the steps below"],
+        steps: [
+          "Draw a central vertical line and an age axis with five bands: 0 to 14, 15 to 29, 30 to 44, 45 to 64 and 65+. Put a percentage scale along the bottom on both sides of the line, from 0 to 25%.",
+          "Country A (males / females, % of total population): 0 to 14: 23 / 22; 15 to 29: 11 / 11; 30 to 44: 7 / 7; 45 to 64: 6 / 6; 65+: 3 / 4. Draw its pyramid.",
+          "Country B (males / females, %): 0 to 14: 6 / 6; 15 to 29: 7 / 7; 30 to 44: 8 / 8; 45 to 64: 14 / 15; 65+: 13 / 16. Draw its pyramid on a separate set of axes.",
+          "Work out each country's dependency ratio. (Add the young and elderly percentages, divide by the working-age total, then multiply by 100.)",
+          "Write a comparison of about 200 words. Describe each shape using figures, explain what it suggests about birth rates, death rates and life expectancy, and say which stage of the DTM each country is probably in.",
+          "Finish with one challenge each country is likely to face in the next 20 years, such as providing enough school places or paying for pensions and care.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "On a population pyramid, which side usually shows males?", options: ["The right", "The left", "The top"], answer: 1 },
+        { type: "choice", q: "What does a wide base on a population pyramid show?", options: ["A high birth rate", "A long life expectancy", "An ageing population"], answer: 0 },
+        { type: "pick", q: "Which age groups count as dependents in the dependency ratio? There is more than one.", options: ["0 to 14", "15 to 64", "65 and over"], answers: [0, 2] },
+        { type: "choice", q: "Which country is the classic example of an ageing population in stage 5 of the DTM?", options: ["Niger", "Japan", "Bangladesh"], answer: 1 },
+        { type: "choice", q: "In which stage of the DTM does the population grow fastest?", options: ["Stage 1", "Stage 4", "Stage 2"], answer: 2 },
+        { type: "gap", q: "Fill in the gaps.", text: "In stage 2 the ___ rate falls quickly, but the ___ rate stays high.", bank: ["death", "birth", "migration", "growth"], answers: ["death", "birth"] },
+      ],
+      grownUp: {
+        need: ["Graph paper", "A ruler, pencil and two colours"],
+        tips: [
+          "The made-up data in the task is based on real patterns: Country A resembles a youthful country such as Niger; Country B resembles an ageing one such as Japan or Italy. The dependency ratios work out at about 108 for A (more dependents than working-age people) and about 69 for B.",
+          "Remind your learner that pyramid bars are horizontal and the age groups go up the middle. Drawing the age labels first in the centre helps.",
+          "If a pyramid looks odd, check the percentage scale is the same on both sides of the line.",
+        ],
+        younger: "Draw just one pyramid and describe its shape in three sentences. Give the sentence starters 'The base is...', 'The top is...', 'This suggests...'.",
+        older: "Find the real pyramid for the UK on the ONS website or the free PopulationPyramid.net (with permission). Identify the baby-boom bulges and explain why the UK's dependency ratio is expected to rise.",
+      },
+    },
+    {
+      slug: "population-and-cities-3",
+      title: "Why people move",
+      emoji: "🧳",
+      minutes: 60,
+      goal: "I can classify types of migration, explain push and pull factors, and evaluate the effects of migration on the places people leave and the places they move to.",
+      starter: [
+        { type: "choice", q: "What does a population pyramid show?", options: ["How crowded a country is", "The age and sex structure of a population", "How fast a city is growing"], answer: 1 },
+        { type: "choice", q: "A pyramid that is narrower at the bottom than in the middle shows...", options: ["an ageing population with a low birth rate", "a youthful population", "a fast-growing population"], answer: 0 },
+        { type: "type", q: "What is the abbreviation for the demographic transition model?", answer: ["DTM", "dtm"] },
+        { type: "choice", q: "Which stage of the DTM is the UK usually placed in?", options: ["Stage 2", "Stage 4", "Stage 1"], answer: 1 },
+        { type: "choice", q: "Which is a limitation of the demographic transition model?", options: ["It ignores migration", "It only covers Asia", "It has no stages"], answer: 0 },
+        { type: "pick", q: "Which age groups are counted as dependents? There is more than one.", options: ["0 to 14", "65 and over", "30 to 44"], answers: [0, 1] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Types of migration",
+            text: [
+              "Migration is the movement of people from one place to another to live, either for a period of time or permanently. People have always migrated, and almost every family in Britain has a migration story somewhere in its history.",
+              "Internal migration happens within a country, such as moving from a village to a city. International migration crosses a national border. From the point of view of the country being left, a person is an emigrant; from the point of view of the country they arrive in, the same person is an immigrant. Net migration is the number of immigrants minus the number of emigrants.",
+              "Migration can be voluntary, when people choose to move, often for work, study or family. It can also be forced, when people have to move because of conflict, persecution or disaster. A refugee is someone who has fled their country because of a well-founded fear of persecution or conflict, as defined in the 1951 Refugee Convention. An asylum seeker is someone who has applied for protection as a refugee and is waiting for a decision.",
+              "The United Nations refugee agency, UNHCR, estimated that more than 120 million people around the world had been forcibly displaced by 2024 (approximate). Most of them were displaced within their own country or had moved to a neighbouring country, rather than to high-income countries far away.",
+            ],
+          },
+          {
+            heading: "Push and pull factors",
+            text: [
+              "Geographers explain migration using push factors and pull factors. Push factors are the things that make people want to leave a place, such as a lack of jobs, poverty, conflict, persecution, natural hazards, drought or poor services. Pull factors are the things that attract people to a new place, such as jobs, higher wages, safety, education, healthcare, or family members who already live there.",
+              "Push and pull factors can be grouped as economic (jobs and wages), social (family, education, healthcare), political (war, freedom, government policy) and environmental (climate, hazards, the quality of farmland).",
+              "In 1966 the geographer Everett Lee added intervening obstacles to the model: the things that make a move difficult, such as distance, cost, borders, visas, language and the emotional difficulty of leaving home. Not everyone who wants to move is able to.",
+              "A real decision usually involves a combination of factors, and it is rarely as simple as one push and one pull. A young adult moving from rural Nigeria to Lagos might be pushed by falling farm incomes and pulled by the chance of work, while relying on a cousin already in the city to make the move possible.",
+            ],
+          },
+          {
+            heading: "The effects of migration",
+            text: [
+              "Migration affects both the place people leave (the origin) and the place they move to (the destination). In origin areas, money sent home by migrants, called remittances, can pay for food, housing and schooling. The World Bank estimated that remittances to low- and middle-income countries were over 600 billion US dollars in 2023 (approximate), more than these countries received in foreign aid.",
+              "Origin areas can also lose out. When young, skilled people leave, this 'brain drain' can leave shortages of doctors, nurses or teachers, and villages can be left with an older population.",
+              "Destination areas gain workers, skills, taxes and cultural variety. The UK's NHS, for example, has long relied on staff trained overseas. Rapid population growth in one area can also increase demand for housing, school places and healthcare, which needs planning and investment.",
+              "Migration has shaped the UK for centuries. The arrival of the Empire Windrush at Tilbury in 1948 is often used to mark the start of large-scale migration from the Caribbean after the Second World War. Freedom of movement brought many people from EU countries, especially after new countries joined in 2004, until it ended in 2020. Net migration to the UK reached a record of roughly 900,000 in the year to mid-2023, then fell sharply (approximate, revised official estimates). Migration is often debated strongly, so geographers look closely at the evidence and who is presenting it.",
+            ],
+          },
+        ],
+        words: [
+          { word: "migration", meaning: "the movement of people from one place to another to live" },
+          { word: "emigrant", meaning: "a person who leaves their country to live in another" },
+          { word: "immigrant", meaning: "a person who arrives in a country to live there" },
+          { word: "refugee", meaning: "a person forced to flee their country because of persecution or conflict" },
+          { word: "asylum seeker", meaning: "a person who has applied for protection as a refugee and is waiting for a decision" },
+          { word: "remittance", meaning: "money sent home by migrants to family in their country of origin" },
+        ],
+      },
+      practice: {
+        intro: "Sort, classify and explain migration.",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are pull factors? There is more than one.",
+            options: ["Well-paid jobs", "Drought destroying crops", "Family already living there", "War in the home region", "Good universities"],
+            answers: [0, 2, 4],
+          },
+          {
+            type: "match",
+            q: "Match each factor to its category.",
+            pairs: [
+              ["Higher wages", "Economic"],
+              ["Fleeing persecution", "Political"],
+              ["Repeated flooding", "Environmental"],
+              ["Joining a husband or wife", "Social"],
+            ],
+          },
+          { type: "type", q: "In one year, 500,000 people move to a country and 200,000 leave it. What is the net migration?", answer: ["300000", "300,000", "+300,000", "+300000"] },
+          {
+            type: "choice",
+            q: "What is the difference between a refugee and an asylum seeker?",
+            options: ["There is no difference", "A refugee has been recognised as needing protection; an asylum seeker is waiting for a decision", "An asylum seeker is moving for work"],
+            answer: 1,
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Things that make a move difficult, such as cost and borders, are called intervening ___. Money sent home by migrants is called a ___.", bank: ["obstacles", "remittance", "factors", "pension", "visa"], answers: ["obstacles", "remittance"] },
+        ],
+      },
+      task: {
+        title: "A migration story",
+        intro: "Interview someone about a move they have made (to another town, region or country), analyse it using push and pull factors, then write it up.",
+        need: ["A willing family member, family friend or neighbour, with your grown-up's agreement", "A notebook and pen, or a phone to record (with the person's permission)", "Paper for a diagram"],
+        steps: [
+          "Ask someone you know and trust if they would be happy to talk about a move they made. It can be across the street, across the country or across the world. Respect their privacy: they can skip any question.",
+          "Prepare five or six open questions, such as: Where did you move from and to? Why did you decide to move? What attracted you to the new place? What made the move difficult? How did it change your life?",
+          "Carry out the interview and make notes. Thank the person afterwards.",
+          "Draw a push-pull diagram: the origin on the left, the destination on the right, push factors as arrows leaving the origin, pull factors as arrows towards the destination, and intervening obstacles as barriers in the middle. Colour-code each factor as economic, social, political or environmental.",
+          "Write about 250 words explaining the move. Which factor was most important, and why? Was the migration voluntary or forced, internal or international? Finish with one way the move affected the origin and one way it affected the destination.",
+          "If an interview is not possible, research one migration from a reliable source, such as a museum website, with permission to go online.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "A family moves from Manchester to Glasgow. What type of migration is this?", options: ["International", "Internal", "Forced"], answer: 1 },
+        { type: "choice", q: "Which of these is a push factor?", options: ["Better healthcare in the new place", "Lack of jobs at home", "Relatives living in the new city"], answer: 1 },
+        { type: "type", q: "What word describes money migrants send home to their families?", answer: ["remittance", "remittances", "Remittance", "Remittances"] },
+        { type: "choice", q: "What is 'brain drain'?", options: ["When skilled people leave a country, causing shortages", "When migrants forget their home language", "When too many students go to university"], answer: 0 },
+        {
+          type: "choice",
+          q: "According to UNHCR, where do most forcibly displaced people live?",
+          options: ["In high-income countries far away", "Within their own country or in a neighbouring country", "On ships at sea"],
+          answer: 1,
+        },
+        { type: "choice", q: "Which year did the Empire Windrush arrive at Tilbury?", options: ["1948", "1966", "2004"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Someone willing to be interviewed, if possible", "Paper and coloured pens"],
+        tips: [
+          "Migration can be personal and sometimes painful. If the person interviewed experienced conflict or loss, it is fine to keep the conversation light and skip difficult questions.",
+          "Your learner may hear strong views about migration in the news or online. Encourage them to ask: what is the evidence, who collected it, and what might be left out? Geography deals in evidence, not opinion alone.",
+          "UK migration figures are revised regularly by the Office for National Statistics, so newer figures may differ from those on the card.",
+        ],
+        younger: "Focus on sorting push and pull factors for the interview. Give a table with two columns to fill in before writing.",
+        older: "Research one example of forced migration in the news (with permission to go online) using UNHCR or BBC sources. Write a balanced account of its causes and its impacts on the host country, using at least three statistics with their dates and sources.",
+      },
+    },
+    {
+      slug: "population-and-cities-4",
+      title: "Urbanisation and megacities",
+      emoji: "🌆",
+      minutes: 60,
+      goal: "I can explain the causes of urbanisation, describe the growth and distribution of megacities, and explain the opportunities and challenges of rapid urban growth.",
+      starter: [
+        { type: "choice", q: "What is net migration?", options: ["Immigrants minus emigrants", "Births minus deaths", "People moving within a country"], answer: 0 },
+        { type: "pick", q: "Which of these are push factors? There is more than one.", options: ["Conflict", "Lack of jobs", "Higher wages elsewhere", "Repeated drought"], answers: [0, 1, 3] },
+        { type: "choice", q: "What did Everett Lee add to the push-pull model?", options: ["Remittances", "Intervening obstacles", "Brain drain"], answer: 1 },
+        { type: "type", q: "What do we call a person who has applied for protection as a refugee and is waiting for a decision?", answer: ["asylum seeker", "an asylum seeker", "Asylum seeker", "asylum-seeker"] },
+        { type: "choice", q: "Which is a possible benefit of migration for the origin country?", options: ["Brain drain", "Remittances", "An older population"], answer: 1 },
+        { type: "choice", q: "A young person moves from a village to a city in the same country. This is...", options: ["international migration", "forced migration", "internal migration"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "An urban world",
+            text: [
+              "Urbanisation is the increase in the proportion of a country's people who live in towns and cities (urban areas) rather than the countryside (rural areas). It is about the share of people, not just the number: a city can grow while the country becomes no more urban, if the countryside grows just as fast.",
+              "Britain was one of the first countries to urbanise. During the Industrial Revolution, people moved from farms to work in factories, mills and mines, and by the 1851 census more than half the people of England and Wales lived in towns. Most high-income countries are now around 80% urban or more.",
+              "Globally, the United Nations estimated that more people lived in urban areas than rural areas for the first time in about 2007. By the early 2020s the figure was around 57%, and UN projections suggest it could reach about 68% by 2050 (all approximate). Almost all of this growth is expected in Asia and Africa.",
+              "Two processes drive urbanisation. The first is rural-urban migration: people move to cities, pushed by poverty, lack of land or services and environmental pressures in rural areas, and pulled by jobs, education, healthcare and the hope of a better life. The second is natural increase: migrants are often young adults, so cities have many births and relatively few deaths.",
+            ],
+          },
+          {
+            heading: "Megacities",
+            text: [
+              "A megacity is an urban area with a population of over 10 million people. In 1950 there were only two: New York and Tokyo. By 2018 the United Nations counted 33, and more are expected. Most megacities today are in Asia, with others in Africa (such as Lagos, Cairo and Kinshasa) and Latin America (such as São Paulo and Mexico City).",
+              "Tokyo has long been counted as the largest megacity, with around 37 million people in its wider urban area. However, newer UN estimates that use a different way of drawing city boundaries rank Jakarta and Dhaka ahead of it. City populations depend heavily on where the boundary is drawn, so always check what area a figure refers to.",
+              "Megacities in high-income countries, such as Tokyo, generally grew earlier and are now growing slowly or not at all. Many in lower- and middle-income countries, such as Lagos, Kinshasa and Dhaka, are growing very quickly, sometimes adding hundreds of thousands of people a year.",
+              "In some high-income countries, people have moved in other directions. Suburbanisation is the movement of people from city centres to the edges of cities. Counter-urbanisation is the movement from cities to smaller towns and the countryside. Since the 1980s, many British cities, including London and Manchester, have also seen re-urbanisation: people moving back into regenerated city centres.",
+            ],
+          },
+          {
+            heading: "Opportunities and challenges",
+            text: [
+              "Cities bring opportunities. They concentrate jobs, businesses, universities, hospitals and culture, and people in cities usually have better access to electricity, clean water and education than people in rural areas. Cities generate a large share of most countries' wealth.",
+              "Very rapid growth can outpace a city's ability to provide housing, water, sanitation, transport and jobs. Many new arrivals build homes themselves on land they do not legally own, creating informal settlements (sometimes called slums or shanty towns). UN-Habitat estimates that roughly 1 billion people live in informal settlements or slums worldwide (approximate, early 2020s).",
+              "Many city residents work in the informal economy: jobs that are not officially registered or taxed, such as street trading, small repairs or casual labour. These jobs keep cities running and give people income, but they usually offer no sick pay, pension or protection.",
+              "Rapid growth can also bring traffic congestion, air pollution, waste that is not collected, and urban sprawl into surrounding farmland. However, informal settlements are also places of energy and enterprise, where residents often organise to improve their own neighbourhoods. Geographers try to show both sides.",
+            ],
+          },
+        ],
+        words: [
+          { word: "urbanisation", meaning: "an increase in the proportion of people living in towns and cities" },
+          { word: "rural-urban migration", meaning: "the movement of people from the countryside to towns and cities" },
+          { word: "megacity", meaning: "an urban area with a population of over 10 million" },
+          { word: "informal settlement", meaning: "an area of housing built without legal permission, often lacking services such as water and sanitation" },
+          { word: "informal economy", meaning: "work that is not officially registered, taxed or protected" },
+          { word: "counter-urbanisation", meaning: "the movement of people from cities to smaller towns and the countryside" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of urban growth.",
+        questions: [
+          { type: "type", q: "What is the minimum population of a megacity, in millions?", answer: ["10", "10 million", "ten"], after: "million" },
+          {
+            type: "choice",
+            q: "Which statement best describes urbanisation?",
+            options: ["Cities getting bigger in area", "An increase in the proportion of people living in urban areas", "People moving from cities to the countryside"],
+            answer: 1,
+          },
+          {
+            type: "match",
+            q: "Match each process to its description.",
+            pairs: [
+              ["Suburbanisation", "Moving from the city centre to its outskirts"],
+              ["Counter-urbanisation", "Moving from cities to small towns and the countryside"],
+              ["Re-urbanisation", "Moving back into a regenerated city centre"],
+              ["Rural-urban migration", "Moving from the countryside into a city"],
+            ],
+          },
+          {
+            type: "choice",
+            q: "Why do cities with many young migrants also have high natural increase?",
+            options: ["Young adults are more likely to have children, and relatively few die", "Cities have lower death rates for older people only", "Migrants bring their grandparents with them"],
+            answer: 0,
+          },
+          {
+            type: "pick",
+            q: "Which of these are challenges often caused by very rapid urban growth? There is more than one.",
+            options: ["Informal settlements", "Traffic congestion", "More universities", "Air pollution"],
+            answers: [0, 1, 3],
+          },
+        ],
+      },
+      task: {
+        title: "Mapping the megacities",
+        intro: "Map the world's megacities and analyse the pattern, then explain what it tells you about where urban growth is happening.",
+        need: ["A blank outline map of the world (print one or trace from an atlas)", "An atlas, or a free online map such as Google Maps or OpenStreetMap (with permission)", "Coloured pens"],
+        steps: [
+          "Mark and name these approximate megacities on your outline map: Tokyo, Delhi, Shanghai, Dhaka, Jakarta, Mumbai, Beijing, Manila, Karachi, Guangzhou, Cairo, Lagos, Kinshasa, São Paulo, Mexico City, New York, Buenos Aires, Istanbul, Moscow, Paris.",
+          "Use one colour for cities in high-income countries and another for cities in lower- and middle-income countries. Add a key.",
+          "Count how many are in each continent. Draw a bar chart of the results.",
+          "Describe the pattern in 3 or 4 sentences. Use the format: General pattern, Example with evidence, Anomaly (anything that does not fit).",
+          "Explain the pattern in a paragraph of about 150 words. Use the terms rural-urban migration and natural increase, and suggest why so few megacities are in high-income countries compared with lower- and middle-income ones.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "In roughly which year did more than half the world's people first live in urban areas?", options: ["1851", "2007", "2050"], answer: 1 },
+        { type: "choice", q: "How many megacities were there in 1950?", options: ["Two", "Twelve", "Thirty-three"], answer: 0 },
+        { type: "pick", q: "Which two processes cause urbanisation? There is more than one.", options: ["Rural-urban migration", "Counter-urbanisation", "Natural increase in cities"], answers: [0, 2] },
+        { type: "choice", q: "On which continent are most of today's megacities?", options: ["Europe", "North America", "Asia"], answer: 2 },
+        { type: "type", q: "What term describes work that is not officially registered, taxed or protected? (the informal ...)", answer: ["economy", "informal economy", "sector", "informal sector"] },
+        {
+          type: "choice",
+          q: "Why do different sources give very different populations for the same megacity?",
+          options: ["They draw the city's boundary in different places", "Some sources only count adults", "Cities change size every week"],
+          answer: 0,
+        },
+      ],
+      grownUp: {
+        need: ["A blank world outline map (free to print from many education sites)", "An atlas or online map, with permission", "Coloured pens"],
+        tips: [
+          "Megacity rankings vary between sources and change as estimates are revised. The point of the task is the pattern, not exact positions.",
+          "Words like 'slum' can sound negative. 'Informal settlement' is the more neutral term, and it is worth discussing why word choice matters.",
+          "The GEA structure (General pattern, Example, Anomaly) is widely used in KS3 and GCSE geography for describing maps and graphs.",
+        ],
+        younger: "Map ten megacities instead of twenty, and describe the pattern in two sentences using a continent name and one example.",
+        older: "Research the UN's 'World Urbanization Prospects' (with permission to go online) and find how the definition of a city affects the rankings. Write a short evaluation of why reliable urban data is hard to collect.",
+      },
+    },
+    {
+      slug: "population-and-cities-5",
+      title: "London and Lagos",
+      emoji: "🌉",
+      minutes: 60,
+      goal: "I can compare London and Lagos using evidence, explain the opportunities and challenges in each, and evaluate how fairly cities are compared.",
+      starter: [
+        { type: "choice", q: "What is a megacity?", options: ["Any capital city", "An urban area with over 10 million people", "A city with a famous building"], answer: 1 },
+        { type: "choice", q: "What is urbanisation?", options: ["An increase in the proportion of people living in urban areas", "Building more roads", "People moving to the countryside"], answer: 0 },
+        { type: "type", q: "What term describes housing built without legal permission, often lacking water and sanitation? (informal ...)", answer: ["settlement", "settlements", "informal settlement", "informal settlements"] },
+        { type: "pick", q: "Which two processes drive urbanisation? There is more than one.", options: ["Natural increase", "Suburbanisation", "Rural-urban migration"], answers: [0, 2] },
+        { type: "choice", q: "What is re-urbanisation?", options: ["People moving back into regenerated city centres", "Demolishing a city", "People moving from cities to villages"], answer: 0 },
+        { type: "choice", q: "Where are most megacities growing fastest today?", options: ["Western Europe", "Lower- and middle-income countries in Asia and Africa", "North America"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "London: a global city",
+            text: [
+              "London is the UK's capital and largest city, with a population of about 8.8 million at the 2021 census. It was founded by the Romans as Londinium almost 2,000 years ago. Its population peaked at about 8.6 million in 1939, fell to under 7 million by the 1980s as people moved to the suburbs and beyond, and has grown again since, a clear example of re-urbanisation.",
+              "London is a global city: a place with worldwide influence in finance, business, government, culture and education. Its location on the River Thames, its history as a port and trading centre, and its excellent transport links, including Heathrow, one of the world's busiest airports, helped it grow.",
+              "London is one of the most diverse cities in the world. At the 2021 census, roughly 4 in 10 Londoners had been born outside the UK, and hundreds of languages are spoken in its schools. Migration, both from other parts of the UK and from overseas, has shaped its food, music, culture and economy.",
+              "London also faces serious challenges. Housing is very expensive: average house prices were over half a million pounds in the mid-2020s (approximate). There is a large gap between rich and poor, and some boroughs have high rates of child poverty only a short distance from some of the wealthiest areas in Europe. Air pollution from traffic is another concern. Regeneration schemes, such as Canary Wharf in the Docklands and the Olympic Park at Stratford built for 2012, have transformed former industrial areas, though not everyone agrees that local people benefited equally.",
+            ],
+          },
+          {
+            heading: "Lagos: a fast-growing megacity",
+            text: [
+              "Lagos is Nigeria's largest city and one of the fastest-growing cities in the world. It sits on the coast of West Africa, spread around a large lagoon, islands and creeks. Estimates of its population vary widely, from around 15 million to over 20 million, partly because Nigeria has not held a full census since 2006 and partly because sources draw the city's boundary differently.",
+              "Lagos was Nigeria's capital until 1991, when the government moved to Abuja, but it remains the country's commercial heart. It has major ports, including the Lekki Deep Sea Port opened in 2023, a booming technology scene and a huge film industry, often called Nollywood. Nigeria, with roughly 230 million people (approximate, mid-2020s), has the largest population in Africa, and many young Nigerians move to Lagos for work and opportunity.",
+              "Rapid growth has brought challenges. Many residents live in informal settlements. Makoko, built on stilts over the lagoon, is one of the best known, home to a large fishing community. Traffic jams, called 'go-slows', can make journeys take hours. Electricity supply is unreliable, so many homes and businesses run their own generators. Low-lying areas flood regularly, and waste collection struggles to keep up.",
+              "The city has responded. Lagos opened one of Africa's first bus rapid transit (BRT) systems in 2008, and the first phase of its Blue Line light railway opened in 2023, followed by the Red Line. Most workers in Lagos are thought to earn their living in the informal economy, which provides income for millions. Eko Atlantic, a new district built on land reclaimed from the sea, shows the city's ambition, although critics argue it mainly serves the wealthy.",
+            ],
+          },
+          {
+            heading: "Comparing cities fairly",
+            text: [
+              "When geographers compare cities, they use the same indicators for each, such as population, growth rate, income, access to services and transport. The UK is classed by the World Bank as a high-income country and Nigeria as a lower-middle-income country, so average incomes are very different. But averages hide variation within each city.",
+              "Both cities contain great wealth and serious poverty. Lagos has luxury apartments, international businesses and wealthy suburbs such as Ikoyi and Victoria Island. London has people sleeping rough and families in overcrowded temporary housing. Both cities attract migrants because of the opportunities they offer, and both struggle to provide enough affordable homes.",
+              "Data reliability matters. London's figures come from a regular census, while Lagos's population has to be estimated. When figures disagree, a good geographer reports the range and explains why it exists, rather than picking the most dramatic number.",
+              "The Nigerian writer Chimamanda Ngozi Adichie has warned of 'the danger of a single story': describing a place only by its problems, or only by its successes, gives a false picture. A fair comparison shows opportunities and challenges in both cities, and recognises the people who live there as active problem-solvers, not just victims of change.",
+            ],
+          },
+        ],
+        words: [
+          { word: "global city", meaning: "a city with worldwide influence in finance, business, culture and government" },
+          { word: "census", meaning: "an official count of everyone living in a country, usually every 10 years" },
+          { word: "regeneration", meaning: "improving a run-down area with new investment, buildings and jobs" },
+          { word: "inequality", meaning: "large differences in wealth, income or opportunity between groups of people" },
+          { word: "indicator", meaning: "a measure used to compare places, such as income, life expectancy or access to clean water" },
+        ],
+      },
+      practice: {
+        intro: "Compare the two cities using the evidence.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each place to its description.",
+            pairs: [
+              ["Canary Wharf", "Regeneration of London's former docks"],
+              ["Makoko", "A fishing community on stilts in the Lagos lagoon"],
+              ["Eko Atlantic", "A new Lagos district on land reclaimed from the sea"],
+              ["Olympic Park", "Regeneration in Stratford, East London, for 2012"],
+            ],
+          },
+          {
+            type: "choice",
+            q: "Why do population estimates for Lagos vary so much?",
+            options: ["The city keeps changing its name", "There has been no full census since 2006, and boundaries differ", "Nobody has ever tried to count it"],
+            answer: 1,
+          },
+          {
+            type: "pick",
+            q: "Which challenges do both London and Lagos share? There is more than one.",
+            options: ["Shortage of affordable housing", "Traffic and air pollution", "No public transport at all", "Inequality between rich and poor"],
+            answers: [0, 1, 3],
+          },
+          { type: "type", q: "What nickname is given to Nigeria's huge film industry?", answer: ["Nollywood", "nollywood"] },
+          {
+            type: "choice",
+            q: "Which statement best avoids a 'single story' of Lagos?",
+            options: ["Lagos is a city of slums and traffic", "Lagos is a city of luxury and wealth", "Lagos combines fast growth, enterprise and wealth with serious challenges for many residents"],
+            answer: 2,
+          },
+        ],
+      },
+      task: {
+        title: "Two cities: a comparison",
+        intro: "Build a comparison table for London and Lagos, then write an extended answer to an exam-style question.",
+        need: ["Paper and a ruler", "The cards from this lesson", "Optional: an atlas or free online map, and permission to research online"],
+        steps: [
+          "Draw a table with three columns: Indicator, London, Lagos. Use at least eight rows, such as location, population (with date), growth, role in the country, economy, housing, transport, environment, inequality and one recent improvement.",
+          "Fill it in from the cards. If you have permission to go online, add one extra fact for each city from a reliable source (for example the BBC, the Office for National Statistics or the United Nations), writing the source and year beside it.",
+          "On a map, find both cities. Note what their locations have in common (rivers, coasts, ports) and how they differ.",
+          "Highlight similarities in one colour and differences in another.",
+          "Write an extended answer of about 300 words to this question: 'To what extent are London and Lagos facing similar challenges?' Use paragraphs for similarities and differences, include figures with dates, and end with a judgement that weighs up the evidence.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What was London's population at the 2021 census, approximately?", options: ["About 3 million", "About 8.8 million", "About 20 million"], answer: 1 },
+        { type: "choice", q: "Which city replaced Lagos as Nigeria's capital in 1991?", options: ["Abuja", "Kano", "Accra"], answer: 0 },
+        { type: "type", q: "What are traffic jams in Lagos often called?", answer: ["go-slows", "go-slow", "go slows", "go slow"] },
+        { type: "choice", q: "How does the World Bank classify Nigeria?", options: ["High-income", "Lower-middle-income", "Upper-middle-income"], answer: 1 },
+        { type: "pick", q: "Which are examples of responses or improvements in Lagos? There is more than one.", options: ["Bus rapid transit (2008)", "Blue Line railway (2023)", "The Olympic Park", "Lekki Deep Sea Port"], answers: [0, 1, 3] },
+        {
+          type: "choice",
+          q: "Which is the best reason why comparing city averages alone can be misleading?",
+          options: ["Averages are always wrong", "Averages hide large differences between rich and poor within each city", "Averages only work for small towns"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["Paper and a ruler", "An atlas or online map, with permission for any research"],
+        tips: [
+          "Population figures for Lagos are genuinely uncertain. A learner who writes 'estimates range from about 15 to over 20 million' is being more accurate than one who gives a single number.",
+          "Encourage balance. It is easy to describe London through its landmarks and Lagos through its problems. Ask: what would a teenager living in Lagos want people to know about their city?",
+          "If your learner lives in or near London, they can add local knowledge, such as the transport they use or changes they have seen in their area.",
+        ],
+        younger: "Use a table with five rows instead of eight, and give the extended question as two shorter ones: 'How are they similar?' and 'How are they different?'",
+        older: "Research Mumbai's Dharavi, one of Asia's largest informal settlements, and compare its challenges and enterprise with Makoko in Lagos. Consider why plans to redevelop both areas have been controversial.",
+      },
+    },
+    {
+      slug: "population-and-cities-6",
+      title: "Sustainable cities",
+      emoji: "🌱",
+      minutes: 60,
+      goal: "I can explain what makes a city sustainable, evaluate real examples of sustainable urban strategies, and design improvements for a local area.",
+      starter: [
+        { type: "choice", q: "What is a global city?", options: ["Any city with an airport", "A city with worldwide influence in finance, business and culture", "A city in more than one country"], answer: 1 },
+        { type: "choice", q: "Why are population estimates for Lagos uncertain?", options: ["Nigeria has not held a full census since 2006", "Lagos refuses to be counted", "The city is too small to count"], answer: 0 },
+        { type: "type", q: "What is the name of the informal settlement built on stilts over the lagoon in Lagos?", answer: ["Makoko", "makoko"] },
+        { type: "pick", q: "Which challenges do London and Lagos share? There is more than one.", options: ["Expensive or scarce housing", "Inequality", "Traffic", "No ports"], answers: [0, 1, 2] },
+        { type: "choice", q: "What is 'regeneration'?", options: ["Improving a run-down area with new investment", "Building on farmland", "Moving people out of a city"], answer: 0 },
+        { type: "choice", q: "What did Chimamanda Ngozi Adichie warn about?", options: ["The danger of a single story", "The danger of megacities", "The danger of public transport"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is a sustainable city?",
+            text: [
+              "Sustainable development was defined in the 1987 Brundtland Report as development that 'meets the needs of the present without compromising the ability of future generations to meet their own needs'. A sustainable city is one that gives its people a good quality of life now while using resources carefully and protecting the environment for the future.",
+              "Sustainability is often described as having three parts. Environmental sustainability means reducing pollution, waste and carbon emissions and protecting green space. Social sustainability means good housing, healthcare, education and safety for everyone, and involving residents in decisions. Economic sustainability means providing jobs and a strong economy that can last.",
+              "Cities matter enormously for sustainability. They take up only a small fraction of the world's land, yet UN-Habitat estimates they produce around 70% of global carbon dioxide emissions (approximate). Because so many people live close together, cities can also be very efficient: public transport, district heating and recycling all work better when people live densely.",
+              "In 2015 the United Nations agreed 17 Sustainable Development Goals. Goal 11 aims to 'make cities and human settlements inclusive, safe, resilient and sustainable' by 2030.",
+            ],
+          },
+          {
+            heading: "Strategies that work",
+            text: [
+              "Transport is often the biggest target. Curitiba in Brazil built one of the world's first bus rapid transit systems in the 1970s, with dedicated bus lanes and tube-shaped stations where passengers pay before boarding, making buses almost as quick as a metro at a fraction of the cost. London introduced a congestion charge in 2003 and an Ultra Low Emission Zone (ULEZ) in 2019, expanded to cover all London boroughs in 2023. Copenhagen is famous for cycling, with a very large share of journeys to work and school made by bike.",
+              "Green space and urban greening help cool cities, absorb rainwater, support wildlife and improve people's health. Singapore requires new developments to replace greenery lost on the ground with green roofs, walls and sky gardens. Many UK cities now plant street trees and create pocket parks.",
+              "Buildings and energy matter too. BedZED in south London, completed in 2002, was the UK's first large eco-village, designed with thick insulation, solar panels, rainwater collection and fewer car parking spaces. Building on brownfield sites (land that has been used before) rather than greenfield sites protects countryside around cities.",
+              "Water and waste can be managed sustainably with recycling, composting, reducing leaks, and sustainable drainage systems (SuDS) such as rain gardens and permeable paving that let rainwater soak away instead of rushing into drains and causing floods.",
+            ],
+          },
+          {
+            heading: "Better cities for everyone",
+            text: [
+              "A city cannot be truly sustainable if many of its people are left behind. In rapidly growing cities, one approach is in-situ upgrading: improving informal settlements where they are, with clean water, drains, paved paths, electricity and secure ownership of homes, rather than demolishing them and moving residents far away.",
+              "Medellín in Colombia is often cited as an example. From 2004, it built cable cars (the Metrocable) linking poor hillside neighbourhoods to the city's metro, along with libraries, parks and outdoor escalators. Journeys to work that once took hours became much shorter, although researchers debate how much the schemes reduced poverty overall.",
+              "Every strategy involves trade-offs. London's ULEZ improved air quality, but some people argued the daily charge hit lower-income drivers and small businesses hardest. Eco-housing can be expensive to build. A good evaluation asks: who benefits, who pays, what is the evidence it works, and could it work elsewhere?",
+              "Involving residents makes schemes more likely to succeed. People who live in a neighbourhood know its problems best, and plans made with them, rather than for them, tend to last longer. Young people's views count too: many councils now consult schools and youth groups about local plans.",
+            ],
+          },
+        ],
+        words: [
+          { word: "sustainable development", meaning: "development that meets present needs without harming the ability of future generations to meet theirs" },
+          { word: "bus rapid transit", meaning: "a bus system with its own lanes and fast boarding, designed to work almost like a metro" },
+          { word: "brownfield site", meaning: "land that has been built on or used before and can be redeveloped" },
+          { word: "urban greening", meaning: "adding trees, parks, green roofs and other plants to built-up areas" },
+          { word: "in-situ upgrading", meaning: "improving an informal settlement where it is, rather than demolishing it" },
+          { word: "trade-off", meaning: "a situation where gaining one benefit means accepting a cost or losing something else" },
+        ],
+      },
+      practice: {
+        intro: "Apply and evaluate sustainability ideas.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each city to its sustainable strategy.",
+            pairs: [
+              ["Curitiba", "Early bus rapid transit system"],
+              ["London", "Ultra Low Emission Zone"],
+              ["Medellín", "Cable cars linking hillside neighbourhoods"],
+              ["Singapore", "Replacing lost greenery with green roofs and walls"],
+            ],
+          },
+          {
+            type: "pick",
+            q: "Which strategies mainly improve social sustainability? There is more than one.",
+            options: ["Affordable housing for local people", "Recycling food waste", "Consulting residents about plans", "Upgrading water and drains in informal settlements"],
+            answers: [0, 2, 3],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Building on ___ sites protects the countryside. Rain gardens and permeable paving are examples of sustainable ___ systems.", bank: ["brownfield", "drainage", "greenfield", "heating", "farm"], answers: ["brownfield", "drainage"] },
+          {
+            type: "choice",
+            q: "Why can cities be more efficient than spread-out settlements?",
+            options: ["Dense populations make public transport, heating networks and recycling more efficient", "Cities have no traffic", "Cities use no energy"],
+            answer: 0,
+          },
+          {
+            type: "choice",
+            q: "Which question is most useful when evaluating a sustainability scheme?",
+            options: ["Does it look modern?", "Who benefits, who pays and what is the evidence it works?", "Is it the most expensive option?"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "Plan a more sustainable neighbourhood",
+        intro: "Survey part of your local area, then design and justify improvements that would make it more sustainable, presented as a proposal to your local council.",
+        need: ["A notebook, pencil and clipboard", "A local map: print one from a free online map such as OpenStreetMap, with permission, or draw a sketch map", "Coloured pens and A3 paper if you have it", "A grown-up to come with you on the walk"],
+        steps: [
+          "With a grown-up, walk around a small area near your home, such as a high street, a park and the streets around it. Stay together and take care near roads.",
+          "Score the area from 1 (poor) to 5 (excellent) for: public transport, safe walking and cycling, green space, litter and recycling, traffic and noise, and places for young people. Note evidence for each score.",
+          "Back home, mark your findings on a map using symbols and a key.",
+          "Design at least four improvements, covering environmental, social and economic sustainability. Draw them on an annotated plan. You could borrow ideas from Curitiba, London, Singapore, BedZED or Medellín.",
+          "For each improvement, write one benefit, one trade-off or cost, and who would benefit most.",
+          "Write a proposal of about 300 words to your council arguing for your two best ideas. Use evidence from your survey and at least one real example from another city, and end with a clear recommendation.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which report gave the well-known definition of sustainable development in 1987?", options: ["The Brundtland Report", "The Census Report", "The Windrush Report"], answer: 0 },
+        { type: "choice", q: "Which UN Sustainable Development Goal is about cities?", options: ["Goal 1", "Goal 11", "Goal 17"], answer: 1 },
+        { type: "type", q: "Which South American city built one of the world's first bus rapid transit systems in the 1970s?", answer: ["Curitiba", "curitiba"] },
+        { type: "choice", q: "What is a brownfield site?", options: ["Countryside that has never been built on", "Land that has been used before and can be redeveloped", "A field of wheat"], answer: 1 },
+        { type: "pick", q: "Which are the three parts of sustainability? There is more than one.", options: ["Environmental", "Social", "Economic", "Military"], answers: [0, 1, 2] },
+        {
+          type: "choice",
+          q: "Which is the best example of a trade-off in London's ULEZ?",
+          options: ["Cleaner air, but a daily charge that hit some lower-income drivers hardest", "More trees, but fewer birds", "Faster trains, but shorter platforms"],
+          answer: 0,
+        },
+      ],
+      grownUp: {
+        need: ["Time for a short local walk together", "A printed or sketch map", "Paper and coloured pens"],
+        tips: [
+          "Please go with your learner on the survey walk and agree a route in advance. Stick to pavements and safe crossings.",
+          "Councils genuinely publish local plans and consultations. If your learner wants to, they could send their proposal to a local councillor; many reply to young people.",
+          "Encourage evaluation, not just description. A strong answer weighs benefits against costs and asks who gains and who loses.",
+        ],
+        younger: "Survey three things instead of six, and design two improvements with one benefit each. A labelled drawing is fine instead of a long proposal.",
+        older: "Choose one strategy, such as London's ULEZ, and research evidence on its impact (with permission to go online), for example air-quality data from the Mayor of London. Write a balanced evaluation of whether it has been a success, as you would for a GCSE 9-mark question.",
+      },
+    },
+  ],
+};

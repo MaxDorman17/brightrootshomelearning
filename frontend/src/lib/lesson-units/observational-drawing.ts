@@ -1,0 +1,589 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Observational drawing, for ages 11 to 14 (KS3). Builds on the 7 to 9 "Drawing and sketching" unit with looking versus
+ * knowing, blind and continuous line, sighting for proportion, tone with a range of pencils, texture and mark-making,
+ * and still life composition, with Albrecht Dürer and Leonardo da Vinci as models. Pencils, paper and household objects only.
+ */
+export const observationalDrawing: LessonUnit = {
+  slug: "observational-drawing",
+  title: "Observational drawing",
+  short: "Observational drawing",
+  subject: "Art & Design",
+  ages: "11 to 14",
+  emoji: "✏️",
+  color: "#6B6A5E",
+  summary: "Six lessons on drawing what you really see: looking versus knowing, blind and continuous line, measuring proportion by sighting, tone with a range of pencils, texture and mark-making, and composing a still life, with lessons from Albrecht Dürer and Leonardo da Vinci.",
+  cover: "/lessons/units/observational-drawing.jpg",
+  lessons: [
+    {
+      slug: "observational-drawing-1",
+      title: "Looking versus knowing",
+      emoji: "👁️",
+      minutes: 60,
+      goal: "I can explain the difference between drawing what I know and drawing what I see, and use close looking to draw an everyday object more accurately.",
+      starter: [
+        { type: "choice", q: "What does a sketch usually mean?", options: ["A finished, coloured painting", "A quick, loose drawing to explore an idea or record what you see", "A tracing of a photograph"], answer: 1 },
+        { type: "pick", q: "Which of these can you use to make a drawing look 3D? There is more than one.", options: ["Shading from light to dark", "Drawing only outlines", "Showing a shadow underneath", "Overlapping objects"], answers: [0, 2, 3] },
+        { type: "choice", q: "On a pencil marked 'HB', what does the code tell you?", options: ["The colour of the pencil", "How hard or soft the pencil core is", "Who made the pencil"], answer: 1 },
+        { type: "type", q: "What word describes how light or dark something is in a drawing?", answer: ["tone", "Tone", "value", "Value"] },
+        { type: "choice", q: "What does 'texture' mean in art?", options: ["How big something is", "The colour of an object", "How a surface feels, or looks as if it would feel"], answer: 2 },
+        { type: "choice", q: "Why do artists often draw from real objects rather than from memory?", options: ["Because memory is always wrong about everything", "Because looking carefully shows details, shapes and shadows that memory leaves out", "Because it is faster"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Drawing symbols",
+            text: [
+              "Ask most people to draw an eye, a house or a tree from memory and they will draw almost exactly the same thing: an almond shape with a circle in the middle, a square with a triangle on top, a lollipop on a stick. These are symbols. They are quick, shared shorthand for an idea, and they work well for signs and diagrams.",
+              "Young children draw almost entirely in symbols, and that is normal. As we get older we build up a store of these shortcuts, and we keep using them without noticing. The trouble is that symbols are what we know about an object, not what it actually looks like from where we are sitting.",
+              "Observational drawing means drawing from direct observation: looking at a real object, person or place in front of you and recording what you see. It is a skill, not a gift. Like learning an instrument, it improves with practice, and most of that practice is practice in looking.",
+              "Throughout this unit you will be trying to swap knowing for seeing. That means looking at the object far more than you look at your paper, and questioning every line you are about to draw: is it really that shape, that size, that angle?",
+            ],
+          },
+          {
+            heading: "When knowing gets in the way",
+            text: [
+              "Think about the top of a mug. You know it is a circle. But unless you look straight down into it, you do not see a circle. From the side you see an ellipse, a flattened oval, and the lower your eye level, the flatter it becomes. Drawing a circle because you know it is round makes the mug look wrong.",
+              "The same thing happens with lengths. You know a table top is a rectangle with four right angles, but from a seat at one end the far edge looks shorter than the near edge and the corners are not right angles at all. This shortening of things that point towards or away from you is called foreshortening.",
+              "Our brains also 'correct' tone. You know a white mug is white all over, so you might leave it blank. Yet the side away from the window can be quite a dark grey, darker than a black cup's highlight. Accurate drawing records the tone you actually see, not the colour you know the object is.",
+              "A useful trick is to turn something upside down. If you copy an upside-down photograph or drawing, your brain stops recognising faces, hands and objects and starts seeing lines, angles and shapes instead. Many people find their upside-down copies are more accurate than their right-way-up ones.",
+            ],
+          },
+          {
+            heading: "Dürer's rhinoceros",
+            text: [
+              "Albrecht Dürer (1471 to 1528) was a German artist from Nuremberg, famous across Europe for his drawings, woodcuts and engravings. He was a superb observer. His Young Hare of 1502, painted in watercolour and gouache, shows individual hairs and even the reflection of a window in the hare's eye. It is kept at the Albertina museum in Vienna.",
+              "In 1515 an Indian rhinoceros was shipped to Lisbon in Portugal, the first living one seen in Europe for well over a thousand years. Dürer never saw it. He made his famous Rhinoceros woodcut from a written description and a sketch sent by someone else.",
+              "The result is striking but inaccurate. Dürer's animal looks as if it is wearing plates of armour with rivets, has scaly legs and has a small extra horn on its shoulders, none of which a real rhinoceros has. He filled the gaps in his information with what he imagined and what he already knew about armour.",
+              "For about two centuries Dürer's print was copied in books as if it were the true appearance of a rhinoceros. It is a powerful reminder of why direct observation matters: a drawing made from knowledge and guesswork can be beautiful, but it is not a record of what is really there.",
+            ],
+          },
+        ],
+        words: [
+          { word: "observational drawing", meaning: "drawing made by looking directly at a real subject in front of you" },
+          { word: "symbol", meaning: "a simplified, shared sign for an idea, such as a lollipop shape for a tree" },
+          { word: "ellipse", meaning: "a flattened circle; how a circle looks when seen at an angle" },
+          { word: "foreshortening", meaning: "the way an object or length pointing towards or away from you looks shorter than it really is" },
+          { word: "woodcut", meaning: "a print made by carving an image into a block of wood, inking the raised surface and pressing it onto paper" },
+        ],
+      },
+      practice: {
+        intro: "Check you can tell knowing from seeing.",
+        questions: [
+          { type: "choice", q: "You draw the rim of a glass on the table in front of you as a perfect circle. What has gone wrong?", options: ["You have drawn what you know, not what you see: from the side the rim appears as an ellipse", "Nothing: rims are always circles in drawings", "You should have used a ruler"], answer: 0 },
+          { type: "pick", q: "Which of these are signs of drawing from symbols rather than observation? There is more than one.", options: ["Every leaf on a plant drawn the same shape", "Measuring the height of a bottle against its width", "An eye drawn as an almond with a circle in it", "Noticing that the far edge of a book looks shorter"], answers: [0, 2] },
+          { type: "match", q: "Match each word to its meaning.", pairs: [["Symbol", "A shorthand sign for an idea"], ["Ellipse", "A circle seen at an angle"], ["Foreshortening", "Lengths pointing towards you look shorter"], ["Woodcut", "A print from a carved wooden block"]] },
+          { type: "choice", q: "Which best explains why Dürer's Rhinoceros is inaccurate?", options: ["Woodcuts cannot show animals", "He drew it too quickly while the animal was moving", "He worked from a description and someone else's sketch, so he filled the gaps with guesswork"], answer: 2, why: "Dürer never saw the animal, so knowledge and imagination replaced observation." },
+          { type: "gap", q: "Fill in the gaps.", text: "Copying a picture ___ down helps you see lines and ___ instead of recognising objects.", bank: ["upside", "inside", "shapes", "colours"], answers: ["upside", "shapes"] },
+        ],
+      },
+      task: {
+        title: "Memory versus observation",
+        intro: "Run a small experiment on yourself to see how much close looking changes your drawing.",
+        need: ["Paper and an HB pencil", "A mug or cup", "A timer", "A drawing or photo you can turn upside down (a page from a magazine works)"],
+        steps: [
+          "Without looking at it, draw a mug from memory in two minutes. Label this drawing A.",
+          "Now place a real mug on a table about an arm's length away, slightly below your eye level. Spend one full minute just looking at it. Notice the shape of the rim, the handle and the base.",
+          "Draw the real mug for ten minutes. Look at the mug at least as often as you look at your paper. Label this drawing B.",
+          "Turn the magazine picture upside down and copy it for ten minutes without turning it the right way up. Label this drawing C.",
+          "Lay A, B and C side by side. Write a short paragraph comparing them: list at least three differences between A and B (for example the rim, the base or the handle) and say whether C surprised you.",
+          "Finish with one sentence: 'The biggest thing my memory got wrong was...'",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is observational drawing?", options: ["Drawing from imagination", "Drawing by looking directly at a real subject", "Drawing using only symbols"], answer: 1 },
+        { type: "choice", q: "How does the circular top of a cup usually appear when seen from the side?", options: ["As a square", "As a perfect circle", "As an ellipse"], answer: 2 },
+        { type: "type", q: "What word means the way a length pointing towards you appears shorter than it really is?", answer: ["foreshortening", "Foreshortening"] },
+        { type: "pick", q: "Which statements about Dürer's Rhinoceros are true? There is more than one.", options: ["It is a woodcut made in 1515", "Dürer drew it from life in Lisbon", "It shows features a real rhinoceros does not have", "It was based on a description and another person's sketch"], answers: [0, 2, 3] },
+        { type: "choice", q: "Why might your upside-down copy be more accurate than a right-way-up one?", options: ["Because the paper is easier to reach", "Because you stop recognising objects and look at lines, angles and shapes instead", "Because pencils work better upside down"], answer: 1 },
+        { type: "choice", q: "A white mug sits by a window. Which is the most accurate way to draw it?", options: ["Leave it completely white because it is a white mug", "Colour it black to make it stand out", "Record the greys you can actually see on the side away from the light"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["Paper and an HB pencil", "A mug or cup", "A magazine picture or printed drawing", "A timer"],
+        tips: [
+          "The point of drawing A is to be honest, not good. Reassure them that a weak memory drawing is the experiment working.",
+          "Ask open questions rather than correcting: 'Is the rim really that round?', 'Where is the base widest?' This builds the habit of checking against the object.",
+          "The upside-down copying exercise was popularised by Betty Edwards in her 1979 book Drawing on the Right Side of the Brain. The exercise is very useful, though the 'left brain, right brain' explanation in the title is now seen as an oversimplification.",
+        ],
+        younger: "Skip the upside-down drawing and spend the extra time on the real mug. Trace the rim's shape in the air with a finger before drawing it.",
+        older: "Draw the mug three times: from above, at eye level and from low down. Annotate how the ellipse changes, and research how GCSE Art assessment rewards 'recording observations' as one of its four objectives.",
+      },
+    },
+    {
+      slug: "observational-drawing-2",
+      title: "Blind and continuous line",
+      emoji: "〰️",
+      minutes: 60,
+      goal: "I can use blind contour and continuous line drawing to train my eye, and vary line weight to show form and space.",
+      starter: [
+        { type: "choice", q: "What is the main idea of observational drawing?", options: ["Drawing what you see, not what you know", "Drawing as fast as possible", "Copying other artists"], answer: 0 },
+        { type: "choice", q: "How does a circle look when you see it at an angle?", options: ["As an ellipse", "As a triangle", "Exactly the same"], answer: 0 },
+        { type: "type", q: "What do we call a simple, shared shorthand sign for an idea, like a lollipop shape for a tree?", answer: ["symbol", "a symbol", "Symbol"] },
+        { type: "choice", q: "Why did Dürer's Rhinoceros contain mistakes?", options: ["He had poor eyesight", "The wood block cracked", "He never saw the animal and worked from a description and a sketch"], answer: 2 },
+        { type: "gap", q: "Fill in the gap.", text: "The way lengths pointing towards you look shorter is called ___.", bank: ["foreshortening", "hatching", "blending"], answers: ["foreshortening"] },
+        { type: "pick", q: "Which habits help you draw what you see? There is more than one.", options: ["Looking at the object more than at the paper", "Drawing every leaf the same shape", "Checking each line against the object", "Turning a picture upside down to copy it"], answers: [0, 2, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Blind contour drawing",
+            text: [
+              "A contour is the edge of a form, including the edges inside it, such as the fold of a sleeve or the line where a thumb meets the palm. An outline only traces the outside silhouette; a contour line travels across the form too.",
+              "In a blind contour drawing you look only at the subject, never at your paper, while your pencil slowly follows the edges your eye is tracing. Imagine your pencil point is touching the object itself and moving at exactly the same speed as your eye.",
+              "The results are usually wobbly and out of proportion, and that is fine. The aim is not a good-looking picture but the training of a connection between eye and hand, and a habit of slow, careful looking. Blind drawings often have a lively, sensitive quality that careful drawings lose.",
+              "The American art teacher Kimon Nicolaïdes made contour drawing the starting point of his famous book The Natural Way to Draw, published in 1941. He argued that drawing is really about the sense of touch as much as sight: you should feel as if you are running your finger along the edge.",
+            ],
+          },
+          {
+            heading: "Continuous line drawing",
+            text: [
+              "In a continuous line drawing the pencil does not leave the paper from start to finish. You may look at your paper this time, but you cannot lift the pencil to start a new line, so you have to travel across the form, doubling back over lines you have already drawn.",
+              "This forces you to think about how parts connect: how the handle joins the mug, how the stem joins the leaf. It also stops the habit of drawing lots of short, hairy, uncertain marks, which can make a drawing look nervous.",
+              "Continuous line can be slow and careful or fast and energetic. A quick version, lasting perhaps 30 seconds, is close to gesture drawing, where you capture the overall movement and balance of a subject rather than its details.",
+              "A modified version, sometimes called semi-blind drawing, lets you glance at the paper only to place your pencil, then look back at the subject while you draw. It combines the looking of blind drawing with more control over proportion.",
+            ],
+          },
+          {
+            heading: "Line weight",
+            text: [
+              "Line weight means how thick, thin, dark or light a line is. A single line can change weight along its length simply by changing how hard you press, how much you tilt the pencil, or which grade of pencil you use.",
+              "Line weight can describe form and space without any shading. A common convention is to use heavier lines where an edge is in shadow, where one object overlaps another, or where something is close to you, and lighter lines where an edge catches the light or is further away.",
+              "A drawing done in a single, even line weight often looks flat, like a diagram. Varying the weight makes the eye read depth and makes certain areas stand out. Artists sometimes call a sensitive, varied line 'expressive'.",
+              "Try holding the pencil further back from the tip, with your hand on top of it rather than in a writing grip. This loosens your arm, lets you draw from the elbow and shoulder, and makes it easier to swing between delicate and bold marks.",
+            ],
+          },
+        ],
+        words: [
+          { word: "contour", meaning: "a line showing the edges of a form, both outside and inside it" },
+          { word: "blind contour drawing", meaning: "drawing the edges of a subject while looking only at the subject, never at the paper" },
+          { word: "continuous line drawing", meaning: "a drawing made without lifting the pencil from the paper" },
+          { word: "gesture drawing", meaning: "a quick drawing that captures the movement and overall pose of a subject" },
+          { word: "line weight", meaning: "how thick, thin, dark or light a line is" },
+        ],
+      },
+      practice: {
+        intro: "Check you understand how these line exercises work and why.",
+        questions: [
+          { type: "match", q: "Match each exercise to its rule.", pairs: [["Blind contour", "Never look at the paper"], ["Continuous line", "Never lift the pencil"], ["Semi-blind", "Glance at the paper only to place the pencil"], ["Gesture drawing", "Capture the movement in seconds"]] },
+          { type: "choice", q: "What is the main purpose of blind contour drawing?", options: ["To make a perfect finished drawing", "To train the link between eye and hand and slow your looking down", "To practise shading"], answer: 1 },
+          { type: "pick", q: "Where would you normally use a heavier line weight? There is more than one.", options: ["Where an edge is in shadow", "Where an edge catches bright light", "Where one object overlaps another", "On parts closest to you"], answers: [0, 2, 3] },
+          { type: "choice", q: "What is the difference between an outline and a contour?", options: ["There is none", "An outline traces only the outside edge; a contour can also show edges inside the form", "A contour is always shaded"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "Nicolaïdes wrote The Natural Way to ___ in ___.", bank: ["Draw", "Paint", "1941", "1515"], answers: ["Draw", "1941"] },
+        ],
+      },
+      task: {
+        title: "Your hand, three ways",
+        intro: "Your own non-drawing hand is the perfect subject: it is always available and full of complicated contours.",
+        need: ["Several sheets of paper", "HB and 2B pencils", "A timer", "Masking tape (optional, to hold paper still)"],
+        steps: [
+          "Tape your paper down if you can. Hold your non-drawing hand in an interesting pose, with the fingers bent or overlapping.",
+          "Blind contour, 5 minutes: look only at your hand and draw its edges very slowly. Do not peek. Draw the creases and folds inside the hand as well as the outside.",
+          "Continuous line, 5 minutes: draw your hand again without lifting the pencil. You may look at the paper this time.",
+          "Semi-blind with line weight, 15 minutes: glance at the paper only to place your pencil. Press harder on edges in shadow and where fingers overlap, and lighter on edges facing the light. Use the 2B for the heaviest lines.",
+          "Do three 30-second gesture drawings of your hand in different poses.",
+          "Annotate your sheet: next to each drawing write one strength and one thing the exercise taught you about looking.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "In a blind contour drawing, you...", options: ["look only at the paper, not the subject", "close both eyes", "look only at the subject, not the paper"], answer: 2 },
+        { type: "choice", q: "In a continuous line drawing, you...", options: ["use only straight lines", "do not lift the pencil from the paper", "draw only the outline"], answer: 1 },
+        { type: "type", q: "What term describes how thick, thin, dark or light a line is?", answer: ["line weight", "Line weight", "weight"] },
+        { type: "choice", q: "Which best explains why a drawing in one even line weight can look flat?", options: ["Because the eye uses changes in line weight to read depth, overlap and light", "Because the lines are too long", "Because it was drawn too slowly"], answer: 0 },
+        { type: "pick", q: "Which are features of a contour line? There is more than one.", options: ["It can show edges inside a form", "It must be shaded in", "It can follow folds and creases", "It can only be straight"], answers: [0, 2] },
+        { type: "choice", q: "A quick drawing that captures the movement and pose of a subject is called...", options: ["a still life", "a tonal study", "a gesture drawing"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["Several sheets of paper", "HB and 2B pencils", "A timer"],
+        tips: [
+          "Blind drawings look odd, and teenagers can feel embarrassed by them. It helps to do one yourself alongside them and laugh about the results together.",
+          "Keep an eye out for peeking during the blind drawing. Holding a paper plate with a hole punched through it over the pencil hides the drawing hand.",
+          "Slower is better in blind contour. If they finish in under a minute, they are moving too fast to be really looking.",
+        ],
+        younger: "Start with a simpler subject, such as a leaf, a key or a pair of scissors (closed), before the hand.",
+        older: "Make a continuous line drawing of a crumpled shoe or a houseplant using a fine pen so there is no rubbing out, then research how the artist Henri Matisse used continuous line in his portrait drawings.",
+      },
+    },
+    {
+      slug: "observational-drawing-3",
+      title: "Measuring proportion",
+      emoji: "📏",
+      minutes: 60,
+      goal: "I can use sighting with a pencil to measure proportions and angles, and use negative space to check that my drawing is accurate.",
+      starter: [
+        { type: "choice", q: "In a continuous line drawing, what must you not do?", options: ["Look at the subject", "Lift the pencil from the paper", "Use a soft pencil"], answer: 1 },
+        { type: "choice", q: "What is the main purpose of blind contour drawing?", options: ["To train your eye and hand to work together", "To produce a finished piece", "To practise colour mixing"], answer: 0 },
+        { type: "type", q: "What term means how thick, thin, dark or light a line is? (line ...)", answer: ["weight", "line weight", "Line weight"] },
+        { type: "pick", q: "Where is a heavier line weight usually used? There is more than one.", options: ["Edges in shadow", "Where objects overlap", "Edges in bright light"], answers: [0, 1] },
+        { type: "choice", q: "What is the difference between a contour and an outline?", options: ["An outline is always darker", "There is no difference", "A contour can show edges inside a form; an outline only traces the outside"], answer: 2 },
+        { type: "choice", q: "A drawing that captures movement in a few seconds is a...", options: ["tonal drawing", "gesture drawing", "technical drawing"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What proportion means",
+            text: [
+              "Proportion is the size of one part compared with another, or with the whole. A wine bottle might be four times as tall as it is wide; its neck might be one third of its total height. Get these relationships right and a drawing looks convincing at any size. Get them wrong and it looks odd, even if every detail is beautifully drawn.",
+              "Proportion in a drawing is relative, not absolute. You do not need to draw an object at its real size; you need its parts to be in the right ratio to each other. This is why measuring with a ruler held against the real object does not help you, but comparing lengths by eye does.",
+              "Our eyes are easily fooled. We tend to draw things we find interesting or important, such as faces, hands and labels, too big, and we underestimate things that are foreshortened. Measuring is a way of checking our judgement against what is really there.",
+              "A good habit is to choose one part of the subject as your unit of measurement, for example the height of a mug, and then compare everything else to it: 'the jug is two mugs tall', 'the bowl is one and a half mugs wide'.",
+            ],
+          },
+          {
+            heading: "Sighting with a pencil",
+            text: [
+              "Sighting is a way of measuring by eye using a pencil held at arm's length. Hold the pencil upright, straighten your arm fully and lock your elbow, and close one eye. Keeping your arm straight matters because it keeps the pencil the same distance from your eye for every measurement.",
+              "Line the tip of the pencil up with the top of your unit, then slide your thumbnail down the pencil until it lines up with the bottom. Keeping your thumb in place, turn the pencil, or move it to another part of the subject, and see how many times that length fits. You are comparing, not measuring in centimetres.",
+              "Sighting also measures angles. Hold the pencil perfectly upright or level, then compare the slope of an edge, such as the side of a book or the edge of a table, against it. Is the edge leaning a little or a lot? Try to hold that angle in your mind, or tilt the pencil to match it and carefully bring it down to your paper.",
+              "Stay in the same place and keep your head still. If you move even a little, everything changes. Many artists mark where their chair or feet are so they can return to exactly the same viewpoint.",
+            ],
+          },
+          {
+            heading: "Negative space, Leonardo and Dürer",
+            text: [
+              "Negative space is the space around and between objects, such as the gap between a mug's handle and its body. The object itself is the positive shape. Because we have no symbols for gaps, we tend to draw negative shapes accurately, so checking them is an excellent way to spot mistakes in proportion.",
+              "Artists have studied proportion for centuries. Leonardo da Vinci (1452 to 1519) made his famous drawing known as Vitruvian Man around 1490. It shows a man inside a circle and a square, and is based on the writings of the Roman architect Vitruvius, who described the ideal proportions of the human body, such as the arm span being equal to the height.",
+              "Leonardo measured real bodies too and filled notebooks with careful studies. He was left-handed and wrote his notes in mirror writing, from right to left. Vitruvian Man is in the Gallery of the Academy (Gallerie dell'Accademia) in Venice and is so fragile that it is only rarely put on display.",
+              "Albrecht Dürer was equally fascinated. His Four Books on Human Proportion were published in 1528, the year he died, and in an earlier book on measurement, published in 1525, he showed drawing aids such as a frame strung with a grid of threads. Looking through the grid at the subject, an artist could copy what appeared in each square onto a matching grid on paper.",
+            ],
+          },
+        ],
+        words: [
+          { word: "proportion", meaning: "the size of one part compared with another part or with the whole" },
+          { word: "sighting", meaning: "measuring proportions and angles by eye using a pencil held at arm's length" },
+          { word: "unit of measurement", meaning: "one part of the subject chosen to compare all other lengths against" },
+          { word: "negative space", meaning: "the shapes of the spaces around and between objects" },
+          { word: "positive shape", meaning: "the shape of the object itself" },
+          { word: "viewpoint", meaning: "the fixed position from which you look at and draw your subject" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of proportion and sighting.",
+        questions: [
+          { type: "order", q: "Put the steps for sighting a length in order.", items: ["Choose a unit of measurement on the subject", "Hold the pencil upright and lock your elbow, one eye closed", "Line the pencil tip up with the top of the unit", "Slide your thumb to line up with the bottom", "Compare that length with another part of the subject"] },
+          { type: "choice", q: "Why must you keep your arm completely straight when sighting?", options: ["So the pencil stays the same distance from your eye for every measurement", "So your arm does not get tired", "So the pencil looks longer"], answer: 0 },
+          { type: "choice", q: "A vase measures 3 thumb-lengths tall and 1 thumb-length wide by sighting. In your drawing it is 12 cm tall. How wide should it be?", options: ["3 cm", "6 cm", "4 cm"], answer: 2, why: "The vase is three times as tall as it is wide, so 12 ÷ 3 = 4 cm." },
+          { type: "pick", q: "Why is checking negative space useful? There is more than one.", options: ["We have no symbols for gaps, so we see their shapes more accurately", "It is a quick way to spot errors in proportion", "It means you never need to look at the objects", "It shows where objects are too far apart or too close"], answers: [0, 1, 3] },
+          { type: "gap", q: "Fill in the gaps.", text: "Leonardo's Vitruvian Man shows a figure inside a circle and a ___. It is based on the ideas of a Roman ___.", bank: ["square", "triangle", "architect", "emperor"], answers: ["square", "architect"] },
+        ],
+      },
+      task: {
+        title: "Measured bottle group",
+        intro: "Draw a group of three objects of different heights using sighting, then check it with negative space.",
+        need: ["A sheet of A4 or larger paper", "HB pencil and a rubber", "Three household objects of different heights, such as a bottle, a mug and a jar", "A table and a chair you can keep in one place"],
+        steps: [
+          "Set the three objects on a table about two metres away, slightly overlapping. Sit down and mark your chair position so you can return to it.",
+          "Choose the mug (or smallest object) as your unit. Sight its height and compare: how many mugs tall is the bottle? How many mugs wide is the whole group?",
+          "Lightly mark the top, bottom and sides of the whole group on your paper first, so the drawing fills the page. Then mark the height and width of each object using your measurements.",
+          "Sight the angles of any sloping edges, such as a bottle's shoulders, and check the ellipses on the tops and bases.",
+          "Now look only at the negative spaces: the gaps between the objects and inside handles. Compare these shapes with your drawing and correct anything that is wrong.",
+          "Firm up your final lines with varied line weight. Leave your light measuring marks visible: they show your process. Write down your measurements beside the drawing.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is proportion?", options: ["The colour of an object", "The size of one part compared with another or with the whole", "How dark a shadow is"], answer: 1 },
+        { type: "pick", q: "Which are correct parts of sighting technique? There is more than one.", options: ["Lock your elbow with your arm straight", "Close one eye", "Hold the pencil against the object", "Keep your head in the same place"], answers: [0, 1, 3] },
+        { type: "type", q: "What do we call the shapes of the spaces around and between objects? (... space)", answer: ["negative", "negative space", "Negative space", "Negative"] },
+        { type: "choice", q: "A jug sights as 2 mugs tall. You drew the mug 5 cm tall. How tall should the jug be?", options: ["7 cm", "10 cm", "2.5 cm"], answer: 1 },
+        { type: "choice", q: "Who made the drawing known as Vitruvian Man?", options: ["Albrecht Dürer", "Vitruvius", "Leonardo da Vinci"], answer: 2 },
+        { type: "choice", q: "Which best explains why sighting is more useful than a ruler held against the real object?", options: ["Rulers are not accurate", "A drawing needs the right ratios between parts, not the object's real size, and sighting compares parts by eye", "Sighting is always faster"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper, an HB pencil and a rubber", "Three household objects of different heights", "A table and chair that can stay in one place for the lesson"],
+        tips: [
+          "The most common sighting mistake is a bent elbow. Gently check their arm is fully straight each time they measure.",
+          "If the objects are too close, sighting measurements become tiny and hard to read. Two to three metres works well.",
+          "Visible construction lines are a positive sign of a measured process. Discourage rubbing everything out at the end.",
+        ],
+        younger: "Use just two objects and one comparison ('the bottle is how many mugs tall?'), and draw the negative space between them in a different colour.",
+        older: "Use sighting to draw a seated person or a room corner, and research how Dürer's grid device relates to the camera obscura and later drawing aids.",
+      },
+    },
+    {
+      slug: "observational-drawing-4",
+      title: "Tone with a range of pencils",
+      emoji: "🌗",
+      minutes: 60,
+      goal: "I can choose pencil grades and use hatching, cross-hatching and blending to build a full tonal range that shows light falling on a form.",
+      starter: [
+        { type: "choice", q: "What is proportion?", options: ["The size of one part compared with another", "The darkness of a line", "The texture of a surface"], answer: 0 },
+        { type: "choice", q: "When sighting, why do you lock your elbow?", options: ["To press harder", "To see more colours", "To keep the pencil the same distance from your eye"], answer: 2 },
+        { type: "type", q: "What do we call the shapes of the gaps around and between objects? (... space)", answer: ["negative", "negative space", "Negative space", "Negative"] },
+        { type: "choice", q: "A bottle sights as 3 mugs tall. The mug is drawn 4 cm tall. How tall should the bottle be?", options: ["7 cm", "12 cm", "16 cm"], answer: 1 },
+        { type: "choice", q: "Leonardo's Vitruvian Man was based on the writings of...", options: ["a Roman architect called Vitruvius", "Albrecht Dürer", "a Greek doctor"], answer: 0 },
+        { type: "pick", q: "Which help you check proportions? There is more than one.", options: ["Choosing a unit of measurement", "Looking at negative shapes", "Moving your chair between measurements", "Sighting angles against an upright pencil"], answers: [0, 1, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Pencil grades",
+            text: [
+              "A pencil 'lead' contains no lead at all. It is graphite, a soft form of carbon, mixed with clay and baked. The more clay, the harder the core and the lighter and finer the mark. The more graphite, the softer the core and the darker and smoother the mark.",
+              "Pencils are graded with letters and numbers. H stands for hard and B for black. A 4H is harder and lighter than a 2H; a 6B is softer and darker than a 2B. HB sits in the middle, and many ranges also include F (for fine) between HB and H. Art ranges commonly run from about 9H to 9B.",
+              "For observational drawing, a small set such as 2H, HB, 2B, 4B and 6B covers most needs. Hard pencils are useful for light construction lines that are easy to erase. Soft pencils give rich darks but smudge easily and wear down fast.",
+              "Tone, also called value, is how light or dark something is. A tonal scale is a strip of boxes running smoothly from white to the darkest dark. Being able to make a smooth scale with even steps is one of the most useful drawing skills of all.",
+            ],
+          },
+          {
+            heading: "How light falls on a form",
+            text: [
+              "To draw tone accurately, first identify the light source: where is the light coming from? Using one strong light, such as a desk lamp or a window, gives clear tones that are easier to see.",
+              "On a rounded object such as an egg or an orange, the highlight is the brightest spot, where light hits the surface most directly. Moving away from it, the surface turns through the mid-tones into the core shadow, the darkest band on the object itself, where the surface turns away from the light.",
+              "Just beyond the core shadow, the object is often slightly lighter again. This is reflected light, bounced back onto the object from the table or nearby surfaces. It is subtle, and it should never be as light as the mid-tones.",
+              "The cast shadow is the shadow the object throws onto the surface it sits on. It is usually darkest and sharpest right next to the object, where the object touches the table, and becomes lighter and softer-edged further away. Getting this contact shadow right is what makes an object look as if it is sitting on the surface rather than floating.",
+            ],
+          },
+          {
+            heading: "Hatching, cross-hatching and blending",
+            text: [
+              "Hatching is tone built from parallel lines. The closer together and heavier the lines, the darker the area appears. Cross-hatching adds further layers of lines at different angles over the first, building darker tones step by step. Contour hatching curves the lines around the form, like lines of latitude on a globe, which helps describe its shape.",
+              "Blending creates smooth, gradual tone. You lay down graphite with even pressure, often with the side of the pencil, then soften it with a tissue, a cotton bud or a paper blending stump (also called a tortillon). A rubber can then lift out highlights. Blending is excellent for smooth surfaces but can look muddy if overdone.",
+              "Stippling builds tone from many small dots: more dots close together read as darker. It is slow but gives a fine, even texture.",
+              "Leonardo da Vinci used hatching brilliantly in his pen and chalk drawings. Because he was left-handed, his hatching lines usually run from upper left to lower right, the natural direction for a left hand; experts use this as one clue when deciding whether a drawing is really his. Albrecht Dürer, working as an engraver, developed hatching and cross-hatching so precisely in prints such as Melencolia I (1514) that he could suggest metal, stone, fur and skin using only black lines on white paper.",
+            ],
+          },
+        ],
+        words: [
+          { word: "tone (value)", meaning: "how light or dark an area is" },
+          { word: "tonal scale", meaning: "a strip of tones running in even steps from white to the darkest dark" },
+          { word: "highlight", meaning: "the brightest area on an object, where light hits most directly" },
+          { word: "core shadow", meaning: "the darkest band of tone on the object itself, where the surface turns away from the light" },
+          { word: "cast shadow", meaning: "the shadow an object throws onto another surface" },
+          { word: "cross-hatching", meaning: "layers of parallel lines crossing at different angles to build darker tones" },
+        ],
+      },
+      practice: {
+        intro: "Check your knowledge of pencils and tone.",
+        questions: [
+          { type: "order", q: "Put these pencils in order from hardest and lightest to softest and darkest.", items: ["4H", "2H", "HB", "2B", "6B"] },
+          { type: "order", q: "Put these areas of a lit ball in order from lightest to darkest.", items: ["Highlight", "Mid-tone", "Reflected light", "Core shadow"] },
+          { type: "match", q: "Match each technique to its description.", pairs: [["Hatching", "Parallel lines close together"], ["Cross-hatching", "Layers of lines at different angles"], ["Blending", "Smoothed, gradual tone"], ["Stippling", "Many small dots"]] },
+          { type: "choice", q: "Which best explains why a drawn apple can look as if it is floating above the table?", options: ["The highlight is too bright", "It was drawn with an H pencil", "There is no dark contact shadow where the apple touches the table"], answer: 2 },
+          { type: "gap", q: "Fill in the gaps.", text: "A pencil core is made of ___ mixed with clay. More clay makes it ___ and lighter.", bank: ["graphite", "lead", "harder", "softer"], answers: ["graphite", "harder"] },
+        ],
+      },
+      task: {
+        title: "Tonal scales and a lit egg",
+        intro: "Make tonal scales with three techniques, then use them to draw an egg lit by a single lamp.",
+        need: ["Paper", "A range of pencils, ideally 2H, HB, 2B, 4B and 6B (or as many grades as you have)", "A rubber, tissue or cotton buds", "An egg (or a smooth ball or an orange)", "A desk lamp or a bright window"],
+        steps: [
+          "Draw three strips of seven boxes, each box about 2 cm square.",
+          "Strip 1, blending: fill the boxes from white to the darkest dark, changing pencil grade and pressure. Soften each with a tissue. Aim for even steps.",
+          "Strip 2, hatching and cross-hatching: build the same scale using only lines, adding more layers of cross-hatching for darker boxes.",
+          "Strip 3: your choice of stippling or contour hatching.",
+          "Place the egg on white paper with a lamp shining from one side, and darken the room a little. Ask an adult to check the lamp is safely placed, and do not touch the bulb, which gets hot.",
+          "Draw the egg lightly with a 2H, then build its tones using the technique you found most successful. Include the highlight, mid-tones, core shadow, reflected light and cast shadow. Compare your darkest dark with box 7 on your scale: is it dark enough?",
+          "Label the five areas of tone on your drawing with small arrows.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which pencil makes the darkest, softest mark?", options: ["2H", "HB", "6B"], answer: 2 },
+        { type: "choice", q: "What is a pencil 'lead' actually made of?", options: ["Lead metal", "Graphite mixed with clay", "Charcoal mixed with wax"], answer: 1 },
+        { type: "type", q: "What is the name for the darkest band of tone on the object itself? (... shadow)", answer: ["core", "core shadow", "Core shadow", "Core"] },
+        { type: "pick", q: "Which statements about cast shadows are true? There is more than one.", options: ["They are usually darkest right next to the object", "They are the brightest part of the drawing", "They often become softer-edged further from the object", "They help an object look as if it sits on a surface"], answers: [0, 2, 3] },
+        { type: "choice", q: "How do you make an area of hatching look darker?", options: ["Space the lines further apart", "Put the lines closer together, press harder or add cross-hatching", "Use an H pencil"], answer: 1 },
+        { type: "choice", q: "Why do Leonardo's hatching lines usually slope from upper left to lower right?", options: ["He always worked upside down", "It was the law in Florence", "He was left-handed, so that direction came naturally"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["A range of drawing pencils (a small set of sketching pencils is inexpensive; HB and a 4B or 6B is a workable minimum)", "An egg or orange", "A desk lamp", "Tissue or cotton buds"],
+        tips: [
+          "Desk lamp bulbs can get hot. Check the lamp is stable and away from paper before the learner starts.",
+          "The most common weakness is not going dark enough. Encourage them to compare their darkest area with the darkest box on their scale.",
+          "Squinting at the subject through half-closed eyes blurs detail and makes tonal differences easier to see. It is a trick professional artists use constantly.",
+        ],
+        younger: "Make one five-box scale with just HB and a soft pencil, then shade an egg with only three tones: light, middle and dark.",
+        older: "Draw a white object on a white cloth (for example a cup on a tea towel) to practise seeing subtle tones, and compare a version in blending with one in cross-hatching in a written evaluation.",
+      },
+    },
+    {
+      slug: "observational-drawing-5",
+      title: "Texture and mark-making",
+      emoji: "🪶",
+      minutes: 60,
+      goal: "I can invent and choose marks that describe different surface textures, and explain how Dürer recorded texture through observation.",
+      starter: [
+        { type: "choice", q: "Which is softer and darker: a 2H or a 4B?", options: ["2H", "4B", "They are the same"], answer: 1 },
+        { type: "order", q: "Put these from lightest to darkest on a lit ball.", items: ["Highlight", "Mid-tone", "Core shadow"] },
+        { type: "choice", q: "What is cross-hatching?", options: ["Layers of parallel lines crossing at different angles", "Smudging tone with a tissue", "Drawing with dots"], answer: 0 },
+        { type: "type", q: "What do we call the shadow an object throws onto the table? (... shadow)", answer: ["cast", "cast shadow", "Cast shadow", "Cast"] },
+        { type: "choice", q: "What is reflected light?", options: ["The brightest spot on an object", "Light from the sun only", "Light bounced back onto the shadow side of an object from nearby surfaces"], answer: 2 },
+        { type: "choice", q: "What do H and B stand for on pencils?", options: ["High and Bottom", "Hard and Black", "Heavy and Bright"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Actual and implied texture",
+            text: [
+              "Texture is the surface quality of something: rough, smooth, furry, shiny, grainy, cracked. Actual texture is a real, physical surface you can touch, such as the bumps of thick paint. Implied (or visual) texture is the illusion of a surface created with marks on a flat page.",
+              "In observational drawing you are almost always creating implied texture. The key is to look at how the surface breaks up the light. Tree bark is made of deep cracks (dark) and raised ridges (light). An orange's peel is covered in tiny pits that each catch a speck of light and a speck of shadow.",
+              "Texture and tone work together. You still need to show the overall form, the highlight, core shadow and cast shadow, and then lay texture over it. A common mistake is to draw texture evenly everywhere, which flattens the object. Texture usually shows most clearly in the mid-tones and at the edge between light and shadow, and is lost in the brightest highlights and deepest shadows.",
+              "Shiny and matt surfaces behave differently. A shiny surface such as a spoon or glass has crisp, bright highlights, sharp reflections and strong contrast. A matt surface such as felt or bread has soft, gradual changes of tone and no sharp highlights.",
+            ],
+          },
+          {
+            heading: "A vocabulary of marks",
+            text: [
+              "Mark-making is the range of lines, dots, patterns and textures an artist creates. Just as a writer chooses words, an artist chooses marks to suit what they are describing. Building a large vocabulary of marks gives you more choices.",
+              "Some useful marks: short flicks for fur or grass, following the direction of growth; scumbling, small overlapping circular scribbles, for soft or woolly surfaces; stippling for sand, stone or pitted skin; long, wavering lines for wood grain; and broken, jagged lines for cracked or crumbling surfaces.",
+              "Frottage is taking a rubbing from a textured surface by laying thin paper over it and rubbing with the side of a pencil. The Surrealist artist Max Ernst developed it as an art technique in 1925, using floorboards, leaves and string. Rubbings make a good library of real textures to study.",
+              "Impressing or indenting is another trick. Press firmly into the paper with a blunt point, such as an empty ballpoint pen, then shade lightly over the top with the side of a soft pencil. The dents stay white, giving fine pale lines for hairs, whiskers or veins on a leaf that would be hard to leave blank.",
+            ],
+          },
+          {
+            heading: "Dürer's eye for texture",
+            text: [
+              "Albrecht Dürer is still admired above all for how faithfully he recorded surfaces. His Young Hare (1502) builds fur from thousands of tiny brushstrokes, each following the direction in which the hairs grow: short and dense on the face, longer on the back, with fine pale whiskers laid over darker fur.",
+              "His Great Piece of Turf (1503), also in the Albertina in Vienna, is a watercolour study of an ordinary clump of grasses, dandelions and other wild plants, seen at ground level. At the time, painting a patch of weeds with such care was very unusual. It shows each blade and leaf as an individual observed object, not a symbol for 'grass'.",
+              "Dürer also drew himself at the age of 13, in 1484, using silverpoint, a metal stylus drawn over specially prepared paper. Silverpoint cannot be rubbed out, so every mark had to be decided before he made it. That drawing is in the Albertina too.",
+              "Notice the contrast with his Rhinoceros: when Dürer could see his subject, his textures were astonishingly accurate. When he could not, he invented them. Texture is something you observe, not something you apply from a set of stock patterns.",
+            ],
+          },
+        ],
+        words: [
+          { word: "texture", meaning: "the surface quality of something, such as rough, smooth or furry" },
+          { word: "implied texture", meaning: "the illusion of a surface created by marks on a flat page" },
+          { word: "mark-making", meaning: "the lines, dots, patterns and textures an artist creates to describe a subject" },
+          { word: "frottage", meaning: "taking a rubbing from a textured surface with paper and pencil" },
+          { word: "scumbling", meaning: "small overlapping circular marks used to build soft tone and texture" },
+          { word: "silverpoint", meaning: "drawing with a metal stylus on specially prepared paper; it cannot be erased" },
+        ],
+      },
+      practice: {
+        intro: "Check you can match marks to surfaces.",
+        questions: [
+          { type: "match", q: "Match each surface to a suitable mark.", pairs: [["Fur", "Short flicks following the growth"], ["Wool", "Scumbling"], ["Sand", "Stippling"], ["Wood grain", "Long wavering lines"]] },
+          { type: "choice", q: "Which describes a shiny surface such as a metal spoon?", options: ["Soft, gradual tones with no highlights", "Crisp bright highlights, sharp reflections and strong contrast", "An even mid-grey all over"], answer: 1 },
+          { type: "pick", q: "Which are examples of implied texture? There is more than one.", options: ["Stippling that makes a stone look grainy", "The real bumps of thick dried paint", "Flicked marks that make a hare look furry", "Lines that make a drawn plank look like wood"], answers: [0, 2, 3] },
+          { type: "choice", q: "Why does drawing texture evenly all over an object make it look flat?", options: ["Because texture should only be drawn in pen", "Because it uses too much graphite", "Because real texture is clearest in the mid-tones and disappears in highlights and deep shadows"], answer: 2 },
+          { type: "gap", q: "Fill in the gaps.", text: "Max Ernst developed ___ in 1925. Dürer painted Young ___ in 1502.", bank: ["frottage", "stippling", "Hare", "Rhinoceros"], answers: ["frottage", "Hare"] },
+        ],
+      },
+      task: {
+        title: "Texture library and study",
+        intro: "Collect textures by rubbing and by invention, then make a close-up observational study of one textured object.",
+        need: ["Thin paper (printer paper works)", "Soft pencils (2B to 6B) and an HB", "An empty ballpoint pen or a blunt knitting needle", "Textured household objects: a leaf, bark, a sponge, a knitted jumper, a scrubbing brush, a crust of bread, a piece of fruit"],
+        steps: [
+          "Make a frottage sheet: lay thin paper over six different textured surfaces around your home and rub with the side of a soft pencil. Label each.",
+          "Below, invent six drawn marks of your own, one for each rubbing, without rubbing. Try flicks, scumbling, stippling, wavering lines and broken lines.",
+          "Try the impressing trick: press a pattern of fine lines into a corner of the paper with the empty pen, then shade over it lightly.",
+          "Choose one textured object and place it under a single light source. Draw a close-up section of it, about 10 cm across, filling the frame.",
+          "First map the main shapes and tones, then add texture, strongest in the mid-tones. Leave highlights clean and keep deep shadows dark.",
+          "Write two or three sentences explaining which marks you chose and why they suit the surface.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is implied texture?", options: ["A real surface you can touch", "The illusion of a surface created with marks", "A type of pencil"], answer: 1 },
+        { type: "type", q: "What is the name for taking a rubbing from a textured surface?", answer: ["frottage", "Frottage"] },
+        { type: "choice", q: "Which mark is best suited to drawing fur?", options: ["Short flicks following the direction of growth", "Long straight ruled lines", "Large flat blended areas"], answer: 0 },
+        { type: "pick", q: "Which works by Dürer are known for their accurate observation of texture? There is more than one.", options: ["Young Hare", "Great Piece of Turf", "Vitruvian Man"], answers: [0, 1] },
+        { type: "choice", q: "Why did Dürer have to plan every mark in his 1484 self-portrait?", options: ["He had only one sheet of paper", "It was drawn in the dark", "It was drawn in silverpoint, which cannot be erased"], answer: 2 },
+        { type: "choice", q: "Where does texture usually show most clearly on a lit object?", options: ["In the brightest highlight", "In the mid-tones and where light meets shadow", "Only in the cast shadow"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Thin paper and soft pencils", "An empty ballpoint pen", "A handful of textured household objects"],
+        tips: [
+          "Collecting rubbings around the house is a good chance to move and look around. If they want to rub bark, brick or drain covers outside, go with them or agree where they can go.",
+          "Encourage them to look closely with a magnifying glass, if you have one, at the object they choose. Seeing the structure of a texture makes it easier to invent marks for it.",
+          "Images of Dürer's Young Hare and Great Piece of Turf are easy to find on the Albertina museum's website if they would like to look closely; supervise internet use as usual.",
+        ],
+        younger: "Make the frottage sheet and invent three marks, then draw just a small square of one texture rather than a whole object.",
+        older: "Make a 'texture versus tone' pair: draw the same object once with tone only and once with texture added, and write a short evaluation of what texture adds, using subject vocabulary.",
+      },
+    },
+    {
+      slug: "observational-drawing-6",
+      title: "Composing a still life",
+      emoji: "🍐",
+      minutes: 60,
+      goal: "I can plan and arrange a still life composition, and bring together line, proportion, tone and texture in a finished observational drawing that I can evaluate.",
+      starter: [
+        { type: "choice", q: "What is implied texture?", options: ["The illusion of a surface made with marks", "A real bumpy surface", "A type of shadow"], answer: 0 },
+        { type: "type", q: "Which technique uses small overlapping circular marks to build soft texture?", answer: ["scumbling", "Scumbling"] },
+        { type: "choice", q: "Max Ernst developed which technique in 1925?", options: ["Silverpoint", "Woodcut", "Frottage"], answer: 2 },
+        { type: "pick", q: "Which describe a shiny surface? There is more than one.", options: ["Crisp, bright highlights", "Strong contrast", "Only soft, gradual tones"], answers: [0, 1] },
+        { type: "choice", q: "Why can't silverpoint mistakes be easily corrected?", options: ["Silverpoint cannot be rubbed out", "It is too expensive", "It fades immediately"], answer: 0 },
+        { type: "choice", q: "Which Dürer watercolour shows a clump of grasses and wild plants?", options: ["Young Hare", "Great Piece of Turf", "Melencolia I"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What a still life is",
+            text: [
+              "A still life is an artwork of inanimate objects, usually everyday things such as fruit, flowers, bottles, food, books and tools, arranged by the artist. Because the subject does not move or change for hours, still life is the classic way to practise observation.",
+              "Artists have painted still life since ancient times; there are examples in Roman wall paintings at Pompeii. It became a major type of art in the Netherlands in the 1600s, and the English term comes from the Dutch word stilleven. Dutch painters showed off their skill at rendering glass, silver, fruit and fabric.",
+              "Some Dutch still lifes, called vanitas paintings, included objects such as a candle, an hourglass or wilting flowers as quiet reminders that time passes and life is short. Objects in a still life can carry meaning as well as being studies of form.",
+              "In the late 1800s the French artist Paul Cézanne painted apples, jugs and cloths again and again, looking hard at their solid forms and sometimes showing a table from more than one viewpoint at once. His still lifes strongly influenced the Cubists, including Pablo Picasso and Georges Braque.",
+            ],
+          },
+          {
+            heading: "Arranging a composition",
+            text: [
+              "Composition is how the parts of an artwork are arranged within the frame. In a still life you control the composition twice: first when you set up the objects, then when you choose your viewpoint and what to include on the page.",
+              "Some reliable guidelines: use objects of different heights, sizes and textures for variety; let some objects overlap to create depth; an odd number of objects (three or five) often feels more natural than an even number; and leave interesting negative spaces between them. A cloth with folds can lead the eye through the arrangement.",
+              "The rule of thirds divides the frame into a three-by-three grid. Placing the main object near one of the lines or where they cross usually looks more dynamic than placing it in the dead centre. Avoid tangents, where edges just touch each other or the edge of the paper, as they create awkward tension; either overlap clearly or leave a clear gap.",
+              "Lighting is part of composition too. A single light source from one side gives strong tones and cast shadows that link the objects together. Light from directly in front flattens everything.",
+            ],
+          },
+          {
+            heading: "Planning, drawing and evaluating",
+            text: [
+              "A viewfinder helps you choose your composition. Cut a small rectangle out of a piece of card, in the same proportions as your paper, and look through it at the arrangement with one eye. Move it closer or further away, and shift it around, to try different croppings.",
+              "Thumbnail sketches are small, quick drawings, a few centimetres across, that plan the layout and the main areas of light and dark. Make three or four before you start, each from a different angle or cropping, and choose the strongest. This is what artists mean by developing ideas.",
+              "When you draw the final piece, work from general to specific: block in the whole arrangement lightly, check proportions by sighting and negative space, refine the contours with varied line weight, build up tone across the whole drawing at once, then add texture and the final darkest darks and cleanest highlights.",
+              "Finally, evaluate. Step back from your drawing, or look at it in a mirror, which shows it reversed and makes errors jump out. Write a short evaluation: what is successful and why, what you would change, and which artist or technique influenced you. This kind of reflection is exactly what is expected in GCSE and National 5 Art and Design.",
+            ],
+          },
+        ],
+        words: [
+          { word: "still life", meaning: "an artwork of arranged inanimate objects such as fruit, bottles or flowers" },
+          { word: "composition", meaning: "how the parts of an artwork are arranged within the frame" },
+          { word: "rule of thirds", meaning: "dividing the frame into a three-by-three grid and placing key objects on its lines or crossing points" },
+          { word: "viewfinder", meaning: "a card frame used to look through and choose a composition" },
+          { word: "thumbnail sketch", meaning: "a small, quick sketch used to plan a composition" },
+          { word: "vanitas", meaning: "a type of still life with objects that remind the viewer that time passes" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of still life and composition.",
+        questions: [
+          { type: "pick", q: "Which choices usually make a stronger still life arrangement? There is more than one.", options: ["Objects of different heights and textures", "All objects in a straight row, evenly spaced", "Some objects overlapping", "An odd number of main objects"], answers: [0, 2, 3] },
+          { type: "choice", q: "What is a tangent in composition, and why avoid it?", options: ["A line that leads the eye; it should be avoided because it is too obvious", "A very dark shadow; it is too strong", "Edges that just touch each other or the paper edge; it creates awkward tension"], answer: 2 },
+          { type: "order", q: "Put the stages of a finished observational drawing in order.", items: ["Make thumbnail sketches", "Block in the whole arrangement lightly", "Check proportions with sighting and negative space", "Build up tone across the whole drawing", "Add texture, darkest darks and highlights", "Write an evaluation"] },
+          { type: "choice", q: "Which best explains why a single light from one side is usually better than light from directly in front?", options: ["It uses less electricity", "It creates clear tonal contrast and cast shadows that describe form and link the objects", "It makes everything the same tone"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "The term still life comes from the ___ word stilleven. Paul ___ painted apples and jugs again and again.", bank: ["Dutch", "Latin", "Cézanne", "Dürer"], answers: ["Dutch", "Cézanne"] },
+        ],
+      },
+      task: {
+        title: "Final still life",
+        intro: "Plan, draw and evaluate a still life of household objects, using every skill from this unit.",
+        need: ["A3 or A4 cartridge or printer paper", "Your range of pencils, a rubber and a tissue", "Card and scissors to make a viewfinder", "Three or five household objects with different heights, shapes and textures (for example a jug, a piece of fruit, a glass bottle, a crumpled cloth)", "A desk lamp or window light"],
+        steps: [
+          "Make a viewfinder by cutting a rectangle about 6 cm by 4 cm from card. Take care with scissors.",
+          "Arrange your objects on a table with some overlap, a range of heights and a cloth if you have one. Light them from one side.",
+          "Using your viewfinder, make four thumbnail sketches from different angles or croppings, each about 6 cm wide. Mark the main light and dark areas. Choose the best one and write why.",
+          "Draw the final piece for at least 30 minutes. Block in lightly with a hard pencil, check proportions by sighting and negative space, then refine with varied line weight.",
+          "Build tone across the whole drawing, then add texture where it suits each surface. Finish with your darkest darks and lift out the cleanest highlights with a rubber.",
+          "Check your drawing in a mirror and correct anything that looks wrong. Then write a 150 to 200 word evaluation: what is successful, what you would improve, and which artist or technique from this unit influenced you.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a still life?", options: ["An artwork of arranged inanimate objects", "A drawing of a person sitting still", "A landscape with no people"], answer: 0 },
+        { type: "type", q: "What is the name for a small, quick sketch used to plan a composition? (... sketch)", answer: ["thumbnail", "thumbnail sketch", "Thumbnail", "Thumbnail sketch", "thumbnails"] },
+        { type: "choice", q: "What does the rule of thirds suggest?", options: ["Always put the main object in the exact centre", "Use only three pencils", "Place key objects on the lines or crossing points of a three-by-three grid"], answer: 2 },
+        { type: "choice", q: "What is a viewfinder used for?", options: ["Measuring pencil grades", "Choosing a composition by looking through a card frame", "Taking rubbings"], answer: 1 },
+        { type: "pick", q: "Which might appear in a vanitas still life as reminders that time passes? There is more than one.", options: ["An hourglass", "A burning candle", "Wilting flowers", "A ruler"], answers: [0, 1, 2] },
+        { type: "choice", q: "Why is it useful to look at your drawing in a mirror?", options: ["It makes the drawing darker", "It shows the drawing reversed, which makes errors easier to spot", "It is how artists sign their work"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Larger paper if possible (A3)", "Card and scissors for a viewfinder", "Three or five household objects and a cloth", "A desk lamp"],
+        tips: [
+          "Help them find a spot where the still life can stay set up undisturbed; the final drawing may run over into a second session, which is fine.",
+          "Supervise or help with cutting the viewfinder, and check the lamp is stable and not touching anything that could get hot.",
+          "When discussing their evaluation, ask them to point to evidence in the drawing for each claim ('Where can I see the reflected light?'). This builds the habit of justifying judgements, which GCSE and National 5 courses reward.",
+        ],
+        younger: "Use three simple objects, skip to two thumbnails, and focus the final drawing on accurate shapes and three clear tones.",
+        older: "Make a second version in the style of an artist you have researched, such as Cézanne or the Dutch still-life painters, and annotate how your composition and mark-making changed. Present the work as a sketchbook page with thumbnails, studies, final piece and evaluation, as a GCSE portfolio page would.",
+      },
+    },
+  ],
+};

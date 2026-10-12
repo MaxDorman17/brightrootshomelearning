@@ -1,0 +1,649 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * The Crusades, for ages 11 to 14 (KS3). Written to be balanced and respectful to Christians, Muslims and Jews alike.
+ * Violence is described factually and without graphic detail; the unit keeps asking whose evidence we are reading.
+ */
+export const theCrusades: LessonUnit = {
+  slug: "the-crusades",
+  title: "The Crusades",
+  short: "Crusades",
+  subject: "History",
+  ages: "11 to 14",
+  emoji: "⚔️",
+  color: "#7A5C3E",
+  summary: "Six lessons on why Jerusalem mattered to three faiths, Pope Urban II's call in 1095, the First Crusade, Saladin and Richard I, the learning of the Islamic world, and how historians have interpreted the Crusades ever since.",
+  cover: "/lessons/units/the-crusades.jpg",
+  lessons: [
+    {
+      slug: "the-crusades-1",
+      title: "Why did Jerusalem matter?",
+      emoji: "🕌",
+      minutes: 60,
+      goal: "I can explain why Jerusalem was holy to Jews, Christians and Muslims, and describe the balance of power in the eastern Mediterranean before 1095.",
+      starter: [
+        { type: "choice", q: "Which of these happened in 1066?", options: ["The Romans invaded Britain", "The Battle of Hastings", "The Great Fire of London"], answer: 1 },
+        { type: "pick", q: "Which of these are world religions that began in the Middle East? There is more than one.", options: ["Judaism", "Christianity", "Islam", "Shinto"], answers: [0, 1, 2] },
+        { type: "choice", q: "What is a pilgrimage?", options: ["A journey to a holy place for religious reasons", "A type of medieval castle", "A tax paid to a king"], answer: 0 },
+        { type: "type", q: "What is the name of the period of history roughly between the end of the Roman Empire in the West and about 1500? (The ... Ages)", answer: ["Middle", "middle", "Middle Ages", "the Middle Ages"] },
+        { type: "choice", q: "What does 'medieval' mean?", options: ["From ancient Egypt", "From the Middle Ages", "From the Victorian period"], answer: 1 },
+        { type: "choice", q: "Which statement about historical sources is most accurate?", options: ["A source written at the time is always true", "A source can be useful even if it is biased, as long as we ask who wrote it and why", "Only objects count as sources, not writing"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "One city, three faiths",
+            text: [
+              "Jerusalem stands in the hills between the Mediterranean Sea and the River Jordan. For more than three thousand years it has been one of the most fought-over and most loved cities in the world, because it is sacred to three faiths that share common roots: Judaism, Christianity and Islam. All three trace their story back to the prophet Abraham, which is why they are sometimes called the Abrahamic faiths.",
+              "For Jews, Jerusalem is the holiest city of all. King David made it his capital around 1000 BCE, and his son Solomon built the First Temple on the hill known as the Temple Mount. The Second Temple stood there until the Romans destroyed it in 70 CE (CE, 'Common Era', counts the same years as AD). The Western Wall, part of the platform that surrounded the Temple, is still the most important place of Jewish prayer, and Jews around the world face towards Jerusalem when they pray.",
+              "For Christians, Jerusalem is where Jesus taught, was crucified and, Christians believe, rose from the dead. In the fourth century the Roman emperor Constantine, the first emperor to become Christian, built the Church of the Holy Sepulchre over the place believed to be Jesus's tomb. By the Middle Ages, a pilgrimage to Jerusalem was seen as one of the most spiritually powerful journeys a Christian could make.",
+              "For Muslims, Jerusalem (in Arabic, al-Quds, 'the Holy') is the third holiest city, after Mecca and Medina. Muslims believe the Prophet Muhammad was carried there on the Night Journey and rose to heaven from the rock on the Temple Mount. Early Muslims faced Jerusalem when they prayed, before the direction of prayer (the qibla) was changed to Mecca. The Dome of the Rock, completed in 691, and the al-Aqsa Mosque stand on the platform Muslims call the Haram al-Sharif, the Noble Sanctuary.",
+            ],
+          },
+          {
+            heading: "Who ruled the eastern Mediterranean?",
+            text: [
+              "In 638, Muslim armies under Caliph Umar took Jerusalem from the Byzantine Empire. A caliph was the leader of the Muslim community, seen as a successor to the Prophet Muhammad. For most of the next four centuries, Christians and Jews lived in Jerusalem under Muslim rule as protected communities. They paid a special tax and faced some restrictions, but they could usually worship, and Christian pilgrims from Europe continued to visit.",
+              "By the eleventh century the Muslim world was no longer united. The Abbasid caliphs in Baghdad had lost much of their real power. In Egypt, a rival dynasty called the Fatimids ruled, with their own caliph in Cairo. Then, from Central Asia, came the Seljuk Turks, who converted to Islam, took control of Baghdad in 1055 and pushed west.",
+              "Facing the Seljuks was the Byzantine Empire, the eastern, Greek-speaking half of the old Roman Empire, ruled from Constantinople (modern Istanbul). Its people were Christians, but of the Orthodox Church, which had formally split from the Catholic Church of western Europe in 1054. In 1071 the Seljuks crushed a Byzantine army at the Battle of Manzikert and went on to take much of Anatolia, the land that is now Turkey.",
+              "Jerusalem itself changed hands more than once in these years. The Seljuks and their allies took it in the 1070s, and the Fatimids recaptured it in 1098. This disunity in the Muslim world, with rival rulers more worried about each other than about outsiders, would matter a great deal when armies arrived from western Europe.",
+            ],
+          },
+          {
+            heading: "Latin Christendom in 1095",
+            text: [
+              "Western Europe in the eleventh century is often called Latin Christendom, because its Church used Latin and looked to the Pope in Rome as its leader. Religion shaped almost every part of life. Most people believed deeply in heaven and hell, and that sin had to be paid for through penance: acts such as prayer, fasting, giving to the poor or going on pilgrimage.",
+              "Society was organised through what historians often call the feudal system. Kings granted land to lords in return for loyalty and military service, and lords had trained, armoured warriors on horseback called knights. Knights were a warrior class whose violence often caused problems at home, and Church leaders had already tried to limit fighting through movements such as the 'Peace of God'.",
+              "The Church was also trying to increase the Pope's authority. Popes in this period clashed with kings and emperors over who had the right to appoint bishops. A Pope who could lead a great Christian expedition would show that the Church, not just kings, could direct the warriors of Europe.",
+              "Ordinary people in the west knew little about the Muslim world, but they heard stories, some true and some exaggerated, about pilgrims being robbed or mistreated on the roads to Jerusalem after the Seljuk advance. When historians explain why the Crusades began, they look at all of these long-term causes together, and then at the trigger that set them off in 1095.",
+            ],
+          },
+        ],
+        words: [
+          { word: "Abrahamic faiths", meaning: "Judaism, Christianity and Islam, the religions that trace their origins to the prophet Abraham" },
+          { word: "Temple Mount / Haram al-Sharif", meaning: "the raised platform in Jerusalem, site of the Jewish Temples and now of the Dome of the Rock and al-Aqsa Mosque" },
+          { word: "caliph", meaning: "a leader of the Muslim community, seen as a successor to the Prophet Muhammad" },
+          { word: "Byzantine Empire", meaning: "the Greek-speaking, Orthodox Christian eastern Roman Empire, ruled from Constantinople" },
+          { word: "Seljuk Turks", meaning: "a Turkish Muslim dynasty from Central Asia that took Baghdad in 1055 and defeated the Byzantines in 1071" },
+          { word: "penance", meaning: "an act carried out to show sorrow for sin and make up for it, such as prayer, fasting or pilgrimage" },
+        ],
+      },
+      practice: {
+        intro: "Check your understanding of Jerusalem and the world around it before 1095.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each holy site in Jerusalem to the faith for which it is most important.",
+            pairs: [
+              ["The Western Wall", "Judaism"],
+              ["The Church of the Holy Sepulchre", "Christianity"],
+              ["The Dome of the Rock", "Islam"],
+            ],
+          },
+          {
+            type: "order",
+            q: "Put these events in chronological order, earliest first.",
+            items: ["The Romans destroy the Second Temple", "Caliph Umar takes Jerusalem", "The Dome of the Rock is completed", "The Battle of Manzikert"],
+          },
+          { type: "choice", q: "Which best explains why the Muslim world was vulnerable to an attack from outside in the 1090s?", options: ["It had no armies at all", "Rival rulers, such as the Seljuks and the Fatimids, were divided and often fighting each other", "Its people had all converted to Christianity"], answer: 1, why: "Disunity meant there was no single, strong ruler able to lead a united response." },
+          { type: "gap", q: "Fill in the gaps.", text: "In 1071 the ___ Turks defeated the Byzantine army at the Battle of ___.", bank: ["Seljuk", "Ottoman", "Manzikert", "Hastings", "Fatimid"], answers: ["Seljuk", "Manzikert"] },
+          { type: "pick", q: "Which were long-term causes that made a crusade more likely? There is more than one.", options: ["Christian belief in penance and pilgrimage", "The Pope's wish to increase his authority", "A large class of trained, warlike knights", "The invention of gunpowder in Europe"], answers: [0, 1, 2] },
+        ],
+      },
+      task: {
+        title: "A city of three faiths: annotated map",
+        intro: "Create an annotated plan of medieval Jerusalem that shows why it mattered to three faiths, then write a short explanation.",
+        need: ["A large sheet of paper", "Pencil, ruler and coloured pens", "Optional: an atlas or, with permission, the internet to look at a plan of the Old City"],
+        steps: [
+          "Draw a simple outline of the walled Old City of Jerusalem. It does not need to be perfect: a rough square with walls and gates is fine.",
+          "Mark the Temple Mount / Haram al-Sharif on the east side, the Western Wall along its western edge, the Dome of the Rock and al-Aqsa Mosque on the platform, and the Church of the Holy Sepulchre to the north-west.",
+          "Use one colour for each faith. Next to each site, add a two-sentence annotation explaining what it is and why it is sacred.",
+          "In a box at the side, draw a small sketch map of the eastern Mediterranean and label the Byzantine Empire, the Seljuk Turks, Fatimid Egypt and Latin Christendom.",
+          "Underneath, write a paragraph of about 150 words answering: 'Why was Jerusalem so important in 1095, and why did control of it matter to so many people?' Use at least three key words from this lesson.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Why is Jerusalem especially holy to Christians?", options: ["It is where Jesus was crucified and, Christians believe, rose from the dead", "It is where Muhammad was born", "It is where the Pope lived"], answer: 0 },
+        { type: "choice", q: "What is the Western Wall?", options: ["A wall built by the crusaders", "Part of the platform that surrounded the Jewish Temple, and a place of Jewish prayer", "The wall of a Byzantine palace"], answer: 1 },
+        { type: "type", q: "Muslims call Jerusalem their third holiest city. Which city is the holiest?", answer: ["Mecca", "mecca", "Makkah", "makkah"] },
+        { type: "choice", q: "Who won the Battle of Manzikert in 1071?", options: ["The Byzantine Empire", "The Fatimids", "The Seljuk Turks"], answer: 2 },
+        { type: "pick", q: "Which statements about the Byzantine Empire are correct? There is more than one.", options: ["It was ruled from Constantinople", "Its people were Orthodox Christians", "It was ruled by the Pope", "It was the eastern half of the old Roman Empire"], answers: [0, 1, 3] },
+        { type: "choice", q: "What is penance?", options: ["A tax paid to a lord", "An act done to make up for sin, such as prayer, fasting or pilgrimage", "A type of knight's armour"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A large sheet of paper, pencil and coloured pens", "Optional: internet access, with your permission, to view a plan of the Old City"],
+        tips: [
+          "This unit deals with three living faiths. Encourage your learner to describe beliefs accurately and respectfully, using phrases such as 'Christians believe' or 'Muslims believe' rather than stating beliefs as facts.",
+          "Jerusalem remains politically sensitive today. If modern events come up, it is fine to say that the city is still contested and that this unit is about the Middle Ages; you can return to the present another time.",
+          "The split between the Catholic and Orthodox Churches in 1054 is a useful idea: the crusaders were western Catholics, while the Byzantines who asked for help were Orthodox Christians with their own interests.",
+        ],
+        younger: "Focus on the first card only. Make a three-column table, one column per faith, and list one holy site and one reason for each.",
+        older: "Research the idea of 'dhimmi' status for Christians and Jews under Muslim rule. Write a balanced paragraph on what it allowed and what it restricted, as a GCSE-style 'describe two features' answer.",
+      },
+    },
+    {
+      slug: "the-crusades-2",
+      title: "'God wills it': Urban II and the crusaders",
+      emoji: "📜",
+      minutes: 60,
+      goal: "I can explain why Pope Urban II called for a crusade in 1095, evaluate the different motives of crusaders, and question the reliability of the sources.",
+      starter: [
+        { type: "choice", q: "Which empire, ruled from Constantinople, was threatened by the Seljuk Turks?", options: ["The Roman Empire in the West", "The Byzantine Empire", "The Holy Roman Empire"], answer: 1 },
+        { type: "type", q: "In which year did the Seljuks win the Battle of Manzikert?", answer: "1071" },
+        { type: "choice", q: "What name do Muslims give to the platform on which the Dome of the Rock stands?", options: ["The Haram al-Sharif", "The Holy Sepulchre", "The Western Wall"], answer: 0 },
+        { type: "pick", q: "For which faiths is Jerusalem a holy city? There is more than one.", options: ["Judaism", "Christianity", "Islam"], answers: [0, 1, 2] },
+        { type: "choice", q: "Which dynasty ruled Egypt, with its own caliph in Cairo, in the late eleventh century?", options: ["The Abbasids", "The Normans", "The Fatimids"], answer: 2 },
+        { type: "choice", q: "Why did knights cause problems for the Church in western Europe?", options: ["They refused to go to church", "Their constant fighting caused violence and disorder at home", "They spoke only Greek"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "The Council of Clermont, 1095",
+            text: [
+              "The trigger for the First Crusade came from the east. In 1095, envoys from the Byzantine emperor Alexios I Komnenos met Pope Urban II at a Church council in Piacenza, in Italy, and asked for western soldiers to help fight the Seljuk Turks. Alexios probably hoped for a few thousand mercenaries to help him win back Anatolia. What he got was something far bigger.",
+              "On 27 November 1095, at the end of a council in Clermont, in central France, Urban preached to a large crowd of clergy, knights and ordinary people in a field outside the town. He called on western Christians to go east, help their fellow Christians and free Jerusalem from Muslim rule. According to some accounts, the crowd answered with the cry 'Deus vult!', 'God wills it!'.",
+              "Urban made a powerful promise. Anyone who went for the right reasons, out of devotion rather than for money or fame, would have the journey count as full penance for their sins. This was later developed into the idea of an indulgence. For people who feared what would happen to their souls after death, this was a remarkable offer.",
+              "Those who agreed took a solemn vow and sewed a cloth cross onto their clothes. They were known as 'crucesignati', 'those signed with the cross'. The word 'crusade' itself came into use later; at the time people spoke of a pilgrimage, a journey or 'the way to Jerusalem'.",
+            ],
+          },
+          {
+            heading: "What did Urban actually say?",
+            text: [
+              "No copy of Urban's speech survives from the day itself. We have at least four main versions, by Fulcher of Chartres, Robert the Monk, Baldric of Dol and Guibert of Nogent. Some of these writers may have been in the crowd, but all four wrote their accounts after the crusaders had captured Jerusalem in 1099, some of them about ten years after the speech.",
+              "The versions differ a great deal. Fulcher's account focuses on helping the eastern Christians and making peace among quarrelsome knights at home. Robert the Monk's version includes vivid, exaggerated descriptions of supposed Turkish cruelty to Christians, which were designed to stir up anger. Some versions put Jerusalem at the centre; others hardly mention it.",
+              "This makes the speech a classic problem of evidence. The writers knew the crusade had succeeded, so they may have shaped Urban's words to fit what happened next and to present the crusade as God's plan. They were also writing for western Christian readers, and their descriptions of Muslims are hostile and often untrue.",
+              "Historians therefore compare the versions, look for the points they agree on, and use other evidence, such as Urban's own surviving letters, which stress the defence of eastern Churches and the liberation of Jerusalem. Where several independent sources agree, we can be more confident.",
+            ],
+          },
+          {
+            heading: "Why did people take the cross?",
+            text: [
+              "Tens of thousands of people answered the call, from great lords to poor peasants. Historians have long argued about why. The journey was about 3,000 kilometres, many would die from disease, hunger or fighting, and a knight's equipment, horses and supplies could cost several years' income. Families often had to sell or mortgage land to pay for it.",
+              "Religious motives were clearly very important. Many crusaders believed that they were doing God's work, earning forgiveness for their sins and defending holy places. Charters written when knights sold land to raise money often describe their journey in deeply religious language.",
+              "Other motives mixed with faith. Some crusaders, especially younger sons with little chance of inheriting land, may have hoped to win land or wealth in the east. Others went out of loyalty to their lord, for adventure and reputation, or because the Church protected crusaders' property and families while they were away and paused their debts. For most people several motives probably worked together.",
+              "The call also unleashed terrible violence closer to home. In 1096, before the main armies left, groups of crusaders attacked Jewish communities in the Rhineland towns of Speyer, Worms and Mainz. Many Jews were killed, and others were forced to choose between conversion and death, despite efforts by some local bishops to protect them. Hebrew chronicles written in the following decades record these events and remember those who died.",
+            ],
+          },
+        ],
+        words: [
+          { word: "crusade", meaning: "a war blessed by the Pope, fought by Christians who took a vow, believing it earned spiritual reward" },
+          { word: "Council of Clermont", meaning: "the Church meeting in France in November 1095 where Pope Urban II called for the First Crusade" },
+          { word: "indulgence", meaning: "a grant by the Church that cancelled the penance owed for sins" },
+          { word: "vow", meaning: "a solemn religious promise; crusaders vowed to reach Jerusalem" },
+          { word: "motive", meaning: "a reason that makes a person act in a particular way" },
+          { word: "reliability", meaning: "how far a source can be trusted to give an accurate account" },
+        ],
+      },
+      practice: {
+        intro: "Work like a historian with motives and sources.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each crusader to the motive that best fits them.",
+            pairs: [
+              ["A knight who believes the journey will cleanse his soul", "Religious"],
+              ["A younger son hoping for an estate in the east", "Land and wealth"],
+              ["A man who goes because his lord has taken the cross", "Loyalty"],
+              ["A merchant in debt who wants his repayments paused", "Practical protection"],
+            ],
+          },
+          { type: "choice", q: "All the main versions of Urban's speech were written after 1099. Why does that affect their reliability?", options: ["The writers had forgotten how to write Latin", "The writers knew the crusade had succeeded and may have shaped the speech to fit later events", "It means none of them was a Christian"], answer: 1, why: "Hindsight can lead writers to present events as if they were always meant to turn out that way." },
+          { type: "gap", q: "Fill in the gaps.", text: "Pope ___ II called for the crusade at Clermont in ___. Those who agreed sewed a cloth ___ onto their clothes.", bank: ["Urban", "Gregory", "1095", "1099", "cross", "crown"], answers: ["Urban", "1095", "cross"] },
+          { type: "choice", q: "Which evidence best supports the view that many crusaders were driven by religion rather than profit?", options: ["Many sold or mortgaged their land, at great cost, and described their journey in religious language", "Some crusaders stole goods on the way", "The Byzantine emperor asked for help"], answer: 0, why: "If crusading cost more than most people could hope to gain, profit alone is unlikely to explain it." },
+          { type: "pick", q: "Which statements about the attacks on Rhineland Jewish communities in 1096 are accurate? There is more than one.", options: ["They were carried out by groups of crusaders", "They took place in towns such as Speyer, Worms and Mainz", "Urban II ordered them at Clermont", "Hebrew chronicles record them"], answers: [0, 1, 3] },
+        ],
+      },
+      task: {
+        title: "Comparing versions of the speech",
+        intro: "Compare two accounts of Urban II's speech and write a judgement about their usefulness.",
+        need: ["Paper or a notebook", "A pen and two highlighters", "With permission, the internet to read short extracts (search for 'Fulcher of Chartres Urban speech' and 'Robert the Monk Urban speech'), or the summaries on the Learn card"],
+        steps: [
+          "With a grown-up's permission, find short extracts (a paragraph or two) from Fulcher of Chartres's and Robert the Monk's versions of the speech. If you can't go online, use the descriptions on the 'What did Urban actually say?' card.",
+          "Highlight, in one colour, the reasons each writer says Urban gave for the crusade. In a second colour, highlight language designed to stir up emotion.",
+          "Draw a table with three columns: 'Fulcher', 'Robert' and 'Both'. Sort the reasons into it. What do both versions agree on?",
+          "For each writer, note the provenance: who they were, when they wrote and who they were writing for.",
+          "Write a paragraph of about 200 words: 'How useful are these accounts for finding out why Urban II called the crusade?' Make one point about what they reveal, one about their limitations, and finish with a judgement.",
+        ],
+      },
+      exit: [
+        { type: "type", q: "Which Pope called for the First Crusade? (Pope ... II)", answer: ["Urban", "urban", "Urban II", "Pope Urban II"] },
+        { type: "choice", q: "Where did he make his famous call in November 1095?", options: ["Rome", "Clermont", "Constantinople"], answer: 1 },
+        { type: "choice", q: "Who had asked the Pope for military help?", options: ["The Byzantine emperor Alexios I Komnenos", "The king of England", "The Fatimid caliph"], answer: 0 },
+        { type: "choice", q: "What spiritual reward did Urban promise crusaders who went out of devotion?", options: ["A guaranteed place as a bishop", "A gold coin from the Church", "That the journey would count as full penance for their sins"], answer: 2 },
+        { type: "pick", q: "Which were motives for taking the cross? There is more than one.", options: ["Forgiveness of sins", "Hope of land or wealth", "Loyalty to a lord", "Escaping the Black Death"], answers: [0, 1, 2] },
+        { type: "choice", q: "Which is the biggest problem with the surviving versions of Urban's speech?", options: ["They are written in Arabic", "They were all written after 1099 and differ from each other", "They were written by Muslims"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper and highlighters", "Internet access, with your permission, if your learner is reading the source extracts online"],
+        tips: [
+          "The Rhineland attacks on Jewish communities in 1096 are covered factually. Your learner may want to talk about antisemitism and why it happened; it is helpful to say clearly that the attacks were condemned by some Church leaders at the time and were not part of Urban's call.",
+          "Some medieval sources contain hostile and inaccurate descriptions of Muslims and Jews. If your learner reads extracts online, talk about why those descriptions were written and how historians treat them as evidence of attitudes, not facts.",
+          "The key skill here is source evaluation: content, provenance (who, when, why) and purpose. Ask 'How do you know?' as often as you can.",
+        ],
+        younger: "Skip the online research. Use the card descriptions to make a simple 'Reasons to go / Reasons to stay at home' table for a knight in 1096.",
+        older: "Read about the historian Jonathan Riley-Smith's argument that most crusaders were motivated by piety rather than profit. Write a GCSE-style answer to: 'Religion was the main reason people went on the First Crusade. How far do you agree?'",
+      },
+    },
+    {
+      slug: "the-crusades-3",
+      title: "The First Crusade and the fall of Jerusalem",
+      emoji: "🏰",
+      minutes: 60,
+      goal: "I can sequence the main events of the First Crusade, explain why it succeeded, and evaluate evidence about the capture of Jerusalem in 1099.",
+      starter: [
+        { type: "choice", q: "At which council did Urban II call for a crusade?", options: ["Piacenza", "Clermont", "Nicaea"], answer: 1 },
+        { type: "choice", q: "What were crusaders called at the time?", options: ["Crucesignati, 'those signed with the cross'", "Templars", "Saracens"], answer: 0 },
+        { type: "type", q: "What Latin cry is said to have been shouted at Clermont? ('Deus ...')", answer: ["vult", "Vult", "Deus vult", "deus vult"] },
+        { type: "pick", q: "Which towns saw attacks on Jewish communities by crusaders in 1096? There is more than one.", options: ["Mainz", "Worms", "Paris", "Speyer"], answers: [0, 1, 3] },
+        { type: "choice", q: "Why is it hard to know exactly what Urban said?", options: ["The speech was in Greek", "No record survives from the day, and the later versions differ", "He never gave a speech"], answer: 1 },
+        { type: "choice", q: "What is an indulgence?", options: ["A grant by the Church that cancelled the penance owed for sins", "A fee paid to join an army", "A medieval feast"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "The People's Crusade and the princes",
+            text: [
+              "The first groups to set out in 1096 were not organised armies. A preacher called Peter the Hermit gathered thousands of followers, many of them poor and with little training or equipment. This is known as the People's Crusade. They reached Constantinople, where Alexios quickly ferried them across into Anatolia. In October 1096 most were killed or captured by the Seljuks near Civetot, not far from Nicaea.",
+              "The main forces, often called the Princes' Crusade, followed in late 1096 and 1097. They were led by powerful nobles from France, Flanders, Lorraine and Norman southern Italy, including Godfrey of Bouillon, Raymond of Toulouse, Bohemond of Taranto and Robert of Normandy, the eldest son of William the Conqueror. There was no single commander, and the leaders often quarrelled.",
+              "At Constantinople, Alexios made most of the leaders swear to return any former Byzantine lands they captured. The relationship was tense from the start. The crusaders saw themselves as fighting for God and Jerusalem; Alexios saw them as useful but dangerous allies who might grab land for themselves.",
+            ],
+          },
+          {
+            heading: "The long march, 1097 to 1099",
+            text: [
+              "In 1097 the crusaders and Byzantines besieged Nicaea, which surrendered to Alexios in June. The crusaders then defeated a Seljuk army at Dorylaeum in July, and began a punishing march across Anatolia in the summer heat, losing many horses and people to thirst and disease.",
+              "The hardest test was Antioch, a huge walled city in northern Syria. The siege lasted from October 1097 to June 1098. The crusaders suffered terrible hunger through the winter. Bohemond finally persuaded a guard inside to let his men in over a tower, but days later the crusaders were themselves besieged by a large relief army led by Kerbogha, the ruler of Mosul. Against the odds, they broke out and defeated him. Their chroniclers saw this as a miracle; historians also point to divisions among Kerbogha's allies, some of whom left the battlefield.",
+              "Meanwhile, Bohemond kept Antioch for himself instead of returning it to Alexios, and Godfrey's brother Baldwin had already taken Edessa. These became two of the new 'crusader states'. Relations with Byzantium never fully recovered.",
+              "In June 1099 the crusaders reached Jerusalem, by then held by the Fatimids. Historians estimate that only about 12,000 to 15,000 fighting men remained from the tens of thousands who had set out. They built siege towers using timber partly brought by ships from Genoa, and on 15 July 1099 they broke through the walls.",
+            ],
+          },
+          {
+            heading: "July 1099: what does the evidence say?",
+            text: [
+              "When the crusaders entered Jerusalem, they killed large numbers of its Muslim and Jewish inhabitants, including people who had sought shelter on the Haram al-Sharif. The Fatimid governor, who had surrendered the citadel known as the Tower of David, was allowed to leave with his soldiers. The crusade leaders then gave thanks at the Church of the Holy Sepulchre, and Godfrey of Bouillon became ruler, taking the title 'Advocate', or defender, of the Holy Sepulchre.",
+              "The sources disagree about the scale of the killing. Some western chronicles, celebrating victory, boast that the crusaders waded through blood, a phrase borrowed from the Bible and not meant as a literal measurement. The Muslim historian Ibn al-Athir, writing over a century later in Mosul, gives a figure of 70,000 dead, which modern historians think is far too high for the population of the city.",
+              "Other evidence helps. Letters found in the Cairo Geniza, a store of old documents kept in a synagogue in Cairo, were written by Jewish communities soon after 1099. They describe raising money to ransom Jewish captives from Jerusalem, which shows that some inhabitants survived. Using this kind of evidence, some historians estimate that a few thousand people were killed, though no exact figure can be known.",
+              "Whatever the number, the capture of Jerusalem was a massacre, and it was remembered as one. For western Christians at the time it seemed a triumph of faith; for Muslims and Jews it was a catastrophe. Understanding both reactions, and treating the evidence carefully, is the historian's job.",
+            ],
+          },
+        ],
+        words: [
+          { word: "People's Crusade", meaning: "the largely untrained groups led by Peter the Hermit in 1096, destroyed in Anatolia" },
+          { word: "siege", meaning: "surrounding a fortified place to force it to surrender, by cutting off supplies or breaking the walls" },
+          { word: "crusader states", meaning: "the territories set up by crusaders: Edessa, Antioch, Tripoli and the Kingdom of Jerusalem" },
+          { word: "chronicle", meaning: "a written record of events in the order they happened" },
+          { word: "Cairo Geniza", meaning: "a huge collection of old documents preserved in a Cairo synagogue, a key source for Jewish life in the Middle Ages" },
+          { word: "corroborate", meaning: "to support a claim with evidence from another, independent source" },
+        ],
+      },
+      practice: {
+        intro: "Sequence the crusade, explain its success and test the evidence.",
+        questions: [
+          {
+            type: "order",
+            q: "Put these events of the First Crusade in order, earliest first.",
+            items: ["The People's Crusade is defeated near Civetot", "Nicaea surrenders", "The crusaders capture Antioch", "Jerusalem is captured"],
+          },
+          { type: "pick", q: "Which factors help explain why the First Crusade succeeded? There is more than one.", options: ["Divisions among Muslim rulers", "Strong religious belief that kept crusaders going", "A single, united crusader commander", "Supplies and timber brought by Italian ships"], answers: [0, 1, 3] },
+          { type: "choice", q: "Ibn al-Athir says 70,000 people died in Jerusalem. Which evidence most challenges this figure?", options: ["Western chronicles say the crusaders waded through blood", "Geniza letters show captives being ransomed, and the city's population was probably much smaller", "Godfrey became Advocate of the Holy Sepulchre"], answer: 1, why: "Independent, near-contemporary evidence and population estimates suggest a much lower, though still terrible, figure." },
+          { type: "gap", q: "Fill in the gaps.", text: "The siege of ___ lasted from 1097 to 1098. Jerusalem was captured on 15 ___ 1099.", bank: ["Antioch", "Nicaea", "July", "June", "Acre"], answers: ["Antioch", "July"] },
+          {
+            type: "match",
+            q: "Match each person to what they did.",
+            pairs: [
+              ["Peter the Hermit", "Led the People's Crusade"],
+              ["Bohemond of Taranto", "Kept Antioch for himself"],
+              ["Godfrey of Bouillon", "Became Advocate of the Holy Sepulchre"],
+              ["Kerbogha", "Led the army that besieged the crusaders in Antioch"],
+            ],
+          },
+        ],
+      },
+      task: {
+        title: "Mapping the march: distance and time",
+        intro: "Use data to build a map and timeline of the First Crusade and work out how hard the journey was.",
+        need: ["A printed or hand-drawn outline map of Europe and the Middle East", "A ruler, pencil, coloured pens and a calculator", "Optional, with permission: an online map to measure distances"],
+        steps: [
+          "Mark these places on your map: Clermont, Constantinople, Nicaea, Dorylaeum, Antioch, Edessa and Jerusalem. Join them with a line to show the main route.",
+          "Use these approximate road distances: Clermont to Constantinople 2,400 km; Constantinople to Antioch 1,100 km; Antioch to Jerusalem 550 km. Work out the total distance.",
+          "The main armies left Europe in August 1096 and reached Jerusalem in June 1099, about 34 months. Work out the average distance covered per month. Why is this average misleading? (Think about the siege of Antioch.)",
+          "Draw a timeline from 1095 to 1099 underneath the map. Mark Clermont, the People's Crusade, Nicaea, Dorylaeum, Antioch and Jerusalem.",
+          "Write a short paragraph explaining two reasons why the crusade was so slow and costly, and one reason why it still succeeded.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Who led the People's Crusade?", options: ["Godfrey of Bouillon", "Peter the Hermit", "Bohemond of Taranto"], answer: 1 },
+        { type: "type", q: "In which year did the crusaders capture Jerusalem?", answer: "1099" },
+        { type: "choice", q: "Which city was besieged by the crusaders from 1097 to 1098, before they were themselves besieged inside it?", options: ["Nicaea", "Constantinople", "Antioch"], answer: 2 },
+        { type: "choice", q: "Who held Jerusalem when the crusaders arrived in 1099?", options: ["The Fatimids", "The Byzantines", "The Mongols"], answer: 0 },
+        { type: "pick", q: "Which were crusader states? There is more than one.", options: ["Edessa", "Antioch", "Baghdad", "The Kingdom of Jerusalem"], answers: [0, 1, 3] },
+        { type: "choice", q: "Why are the Cairo Geniza letters useful for studying 1099?", options: ["They were written by crusade leaders", "They are independent, near-contemporary evidence showing that some Jewish inhabitants survived and were ransomed", "They give an exact death toll"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["An outline map (print one or draw it)", "A calculator", "Internet access with your permission, if using an online map"],
+        tips: [
+          "The capture of Jerusalem involved a massacre. The lesson describes it factually and without graphic detail, and focuses on how historians weigh evidence. Be ready to talk about it calmly if your learner finds it upsetting.",
+          "The 'wading in blood' image comes from the Bible (Revelation 14:20) and was used by chroniclers to signal a holy victory. It is a good example of why sources need reading in context.",
+          "Distances in the task are rounded approximations. Encourage your learner to explain why an average speed hides long stops.",
+        ],
+        younger: "Do the map and timeline only, with five places. Talk through what made each stage difficult.",
+        older: "Read about the historian Benjamin Kedar's work on the massacre of 1099. Write a paragraph explaining how historians use different types of source to reach an estimate when sources contradict each other.",
+      },
+    },
+    {
+      slug: "the-crusades-4",
+      title: "Saladin, Richard I and the Third Crusade",
+      emoji: "👑",
+      minutes: 60,
+      goal: "I can explain how Saladin recaptured Jerusalem, describe the main events of the Third Crusade, and compare how Saladin and Richard I have been portrayed.",
+      starter: [
+        { type: "choice", q: "Who led the People's Crusade?", options: ["Peter the Hermit", "Robert of Normandy", "Alexios I Komnenos"], answer: 0 },
+        { type: "order", q: "Put these events in order, earliest first.", items: ["Nicaea surrenders", "Antioch is captured", "Jerusalem is captured"] },
+        { type: "type", q: "Which crusade leader became 'Advocate of the Holy Sepulchre'? (Godfrey of ...)", answer: ["Bouillon", "bouillon", "Godfrey of Bouillon"] },
+        { type: "choice", q: "What is a siege?", options: ["A peace treaty", "Surrounding a fortified place to force it to surrender", "A type of knight's horse"], answer: 1 },
+        { type: "pick", q: "Which helped the First Crusade succeed? There is more than one.", options: ["Divisions among Muslim rulers", "Strong religious belief", "Gunpowder weapons"], answers: [0, 1] },
+        { type: "choice", q: "Why do historians doubt Ibn al-Athir's figure of 70,000 dead in 1099?", options: ["He was a crusader", "It is far higher than the likely population, and other evidence shows survivors", "He wrote it in 1099"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "From Edessa to Hattin",
+            text: [
+              "The crusader states were small and always short of soldiers. They survived for decades partly because their Muslim neighbours remained divided. That began to change when Zengi, the ruler of Mosul and Aleppo, captured Edessa in 1144. The Second Crusade (1147 to 1149), led by the kings of France and Germany, failed to win it back and ended in an unsuccessful siege of Damascus.",
+              "Zengi's son Nur al-Din continued to unite Syria and promoted the idea of jihad, here meaning a holy war to recover Muslim lands and Jerusalem. One of his commanders was a Kurdish officer called Salah al-Din Yusuf ibn Ayyub, known in the West as Saladin. Sent to Egypt, Saladin became its ruler in 1169 and ended the Fatimid caliphate in 1171. After Nur al-Din died in 1174, Saladin gradually took control of Syria too.",
+              "For the first time in the crusading period, the crusader states faced a single ruler controlling both Egypt and Syria. On 4 July 1187, at the Horns of Hattin near the Sea of Galilee, Saladin destroyed the army of the Kingdom of Jerusalem. The crusaders, cut off from water in the summer heat, were defeated; King Guy was captured and the relic believed to be part of the True Cross was taken.",
+              "Saladin then captured town after town. On 2 October 1187, Jerusalem surrendered after a short siege. In contrast to 1099, there was no massacre. Inhabitants were allowed to leave if they paid a ransom; Saladin and his brother freed some who could not pay, although thousands of poorer people were sold into slavery. Jews were later allowed to resettle in the city, and eastern Christians were allowed to stay.",
+            ],
+          },
+          {
+            heading: "The Third Crusade, 1189 to 1192",
+            text: [
+              "The loss of Jerusalem shocked western Europe and led to the Third Crusade. It was led by three of Europe's most powerful rulers: the German emperor Frederick Barbarossa, King Philip II of France and King Richard I of England, later known as 'the Lionheart'. Frederick drowned crossing a river in Anatolia in 1190 and most of his army went home.",
+              "Richard and Philip joined the long siege of Acre, an important port, which surrendered in July 1191. Philip returned to France soon afterwards. When negotiations with Saladin over the exchange of prisoners and the True Cross broke down, Richard ordered the execution of around 2,700 Muslim prisoners outside Acre in August 1191. Historians still debate his reasons, but the killing was condemned by Muslim writers and remembered long afterwards.",
+              "Richard then marched south along the coast and defeated Saladin's army at the Battle of Arsuf in September 1191, and took the port of Jaffa. Twice he advanced close to Jerusalem, but he turned back both times, judging that even if he took the city, he could not hold it once the crusaders went home.",
+              "In September 1192 the two sides agreed the Treaty of Jaffa: a three-year truce under which the crusaders kept a strip of coast from Tyre to Jaffa, Jerusalem stayed under Muslim rule, and unarmed Christian pilgrims were allowed to visit the holy places. Richard left for home and was captured on the way by Duke Leopold of Austria, being released only after a huge ransom was paid in 1194. Saladin died in Damascus in March 1193.",
+            ],
+          },
+          {
+            heading: "Two leaders, many reputations",
+            text: [
+              "Richard and Saladin never met in person, although their brothers and envoys did. Yet they became linked in stories almost at once. Chroniclers on both sides recorded gestures of respect: Saladin is said to have sent fresh fruit and snow to cool drinks when Richard was ill, and horses when Richard's was killed at Jaffa. These stories may be exaggerated, but they show how each side wanted to see a worthy opponent.",
+              "Saladin's reputation in the West grew over the centuries into that of a 'chivalrous' and generous enemy. Muslim writers who knew him, such as his adviser Baha al-Din ibn Shaddad, praised his piety, justice and generosity, although they were writing to celebrate their master and are hardly neutral. He was also a determined military leader who executed prisoners from the military orders after Hattin.",
+              "Richard has been remembered in England as a heroic warrior king; his statue stands outside the Houses of Parliament. Yet he spent only about six months of his ten-year reign in England, and his wars were funded by heavy taxes. Some historians see him as a brilliant commander; others emphasise his ruthlessness, as at Acre.",
+              "The way both men are portrayed has changed with the needs of each age. A historian must ask of every account: who created it, when, and what did they want their audience to believe?",
+            ],
+          },
+        ],
+        words: [
+          { word: "Saladin (Salah al-Din)", meaning: "the Kurdish sultan of Egypt and Syria who recaptured Jerusalem in 1187" },
+          { word: "sultan", meaning: "a Muslim ruler with political and military power, usually acting in the name of the caliph" },
+          { word: "jihad", meaning: "an Arabic word meaning 'struggle'; in this context, a holy war to recover Muslim lands" },
+          { word: "Battle of Hattin", meaning: "Saladin's decisive victory over the Kingdom of Jerusalem on 4 July 1187" },
+          { word: "truce", meaning: "an agreement to stop fighting for a set period" },
+          { word: "chivalry", meaning: "the medieval code of conduct expected of knights, valuing courage, honour and courtesy" },
+        ],
+      },
+      practice: {
+        intro: "Test yourself on Saladin, Richard and the Third Crusade.",
+        questions: [
+          {
+            type: "order",
+            q: "Put these events in order, earliest first.",
+            items: ["Zengi captures Edessa", "Battle of Hattin", "Siege of Acre ends", "Treaty of Jaffa"],
+          },
+          { type: "choice", q: "Which best explains why Saladin was able to defeat the crusader states when earlier Muslim rulers had not?", options: ["He had gunpowder weapons", "He united Egypt and Syria under one ruler", "The crusaders had left Jerusalem empty"], answer: 1, why: "Unity reversed the disunity that had helped the First Crusade succeed." },
+          {
+            type: "match",
+            q: "Match each leader of the Third Crusade to what happened to them.",
+            pairs: [
+              ["Frederick Barbarossa", "Drowned in Anatolia in 1190"],
+              ["Philip II of France", "Returned home after Acre in 1191"],
+              ["Richard I of England", "Agreed the Treaty of Jaffa in 1192"],
+            ],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Under the Treaty of ___, Jerusalem stayed under Muslim rule, but unarmed Christian ___ were allowed to visit.", bank: ["Jaffa", "Acre", "pilgrims", "knights", "Hattin"], answers: ["Jaffa", "pilgrims"] },
+          { type: "pick", q: "Which statements show that Saladin's reputation should be examined critically? There is more than one.", options: ["Much praise comes from his own adviser, writing to honour him", "He executed prisoners from the military orders after Hattin", "Stories of gifts to Richard may be exaggerated", "He was the first sultan of Egypt"], answers: [0, 1, 2] },
+        ],
+      },
+      task: {
+        title: "Hero or ruthless ruler? A two-sided profile",
+        intro: "Produce a balanced profile of either Saladin or Richard I, weighing positive and negative interpretations.",
+        need: ["Paper or a notebook", "Coloured pens", "Optional, with permission: the internet or library books for extra research"],
+        steps: [
+          "Choose Saladin or Richard I.",
+          "Divide a page into two columns: 'Evidence for a positive reputation' and 'Evidence for a negative reputation'. Add at least four points to each, using this lesson and, if allowed, your own research.",
+          "For each point, note where the evidence comes from (for example, a Muslim adviser, a crusader chronicle, a later legend). Circle any that come from people who might be biased.",
+          "Write a profile of about 300 words with an introduction, one paragraph on each side, and a conclusion that gives your judgement: 'Does this leader deserve his heroic reputation?'",
+          "Finish by writing one sentence about why the leader's reputation might have changed over time.",
+        ],
+      },
+      exit: [
+        { type: "type", q: "In which year did Saladin recapture Jerusalem?", answer: "1187" },
+        { type: "choice", q: "What happened at the Battle of Hattin?", options: ["Richard I defeated Saladin", "Saladin destroyed the army of the Kingdom of Jerusalem", "The Byzantines defeated the Seljuks"], answer: 1 },
+        { type: "choice", q: "How did Saladin's capture of Jerusalem in 1187 differ from the crusaders' capture in 1099?", options: ["There was no massacre; many inhabitants paid a ransom and left", "He destroyed the whole city", "He handed it to the Byzantines"], answer: 0 },
+        { type: "pick", q: "Who led the Third Crusade? There is more than one.", options: ["Richard I of England", "Philip II of France", "Frederick Barbarossa", "Godfrey of Bouillon"], answers: [0, 1, 2] },
+        { type: "choice", q: "Why did Richard turn back from Jerusalem?", options: ["Saladin paid him to leave", "He had already captured it", "He believed he could not hold it once the crusaders went home"], answer: 2 },
+        { type: "choice", q: "What did the Treaty of Jaffa (1192) allow?", options: ["Crusaders to rule Jerusalem again", "Unarmed Christian pilgrims to visit Jerusalem, while it stayed under Muslim rule", "Saladin to take all the coast"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper and coloured pens", "Optional internet access, with your permission"],
+        tips: [
+          "The execution of prisoners at Acre is mentioned factually. It is a good example of why historians resist simple 'hero' and 'villain' labels for either side.",
+          "The word 'jihad' is often misunderstood. Its basic meaning is 'struggle', including the personal struggle to live a good life; the lesson explains that in this context it was used for a holy war.",
+          "Encourage your learner to compare Saladin's reputation with Richard's using the same questions, so that both are judged fairly.",
+        ],
+        younger: "Make a simple 'fact file' on each leader with five facts, then say which one you would most like to know more about and why.",
+        older: "Read about how Saladin was presented in Sir Walter Scott's novel 'The Talisman' (1825) and in the 2005 film 'Kingdom of Heaven'. Write about how and why interpretations of Saladin have changed.",
+      },
+    },
+    {
+      slug: "the-crusades-5",
+      title: "Life and learning in the Islamic world",
+      emoji: "🔭",
+      minutes: 60,
+      goal: "I can describe the achievements of scholars in the medieval Islamic world, explain how knowledge was preserved and spread, and assess how it reached Europe.",
+      starter: [
+        { type: "type", q: "In which year did Saladin win the Battle of Hattin?", answer: "1187" },
+        { type: "choice", q: "Which English king led the Third Crusade?", options: ["Henry II", "Richard I", "John"], answer: 1 },
+        { type: "choice", q: "What did the Treaty of Jaffa allow?", options: ["Unarmed Christian pilgrims to visit Jerusalem", "Richard to rule Jerusalem", "The crusaders to take Egypt"], answer: 0 },
+        { type: "pick", q: "Which lands did Saladin unite under his rule? There is more than one.", options: ["Egypt", "Syria", "England"], answers: [0, 1] },
+        { type: "choice", q: "What is a truce?", options: ["A type of siege weapon", "A tax", "An agreement to stop fighting for a set period"], answer: 2 },
+        { type: "choice", q: "Why should historians be careful with Baha al-Din's praise of Saladin?", options: ["He was writing to honour his master, so he was not neutral", "He never met Saladin", "He wrote in Latin"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Baghdad and the House of Wisdom",
+            text: [
+              "While the crusades were the main story of these centuries for western Europeans, the Islamic world had long been one of the most advanced and connected civilisations on Earth. Its lands stretched from Spain to Central Asia, linked by trade routes along which goods, people and ideas moved, and by the Arabic language, which became a shared language of learning.",
+              "In 762 the Abbasid caliph al-Mansur founded Baghdad on the River Tigris. Built as a round city, it quickly became one of the largest cities in the world, with markets, mosques, hospitals and libraries. Paper-making, learned from China, spread through the Islamic world, and Baghdad had paper mills by the late eighth century. Paper was far cheaper than parchment, so books could be copied in huge numbers.",
+              "The caliphs, especially al-Ma'mun (ruled 813 to 833), supported scholars at the House of Wisdom (Bayt al-Hikma), a royal library and centre of learning. Historians debate exactly how large and organised it was, but Baghdad was clearly the heart of a great translation movement. Works of Greek philosophy, mathematics, medicine and astronomy, by writers such as Aristotle, Euclid, Galen and Ptolemy, were translated into Arabic, along with Persian and Indian works.",
+              "This was a multi-faith effort. One of the greatest translators, Hunayn ibn Ishaq, was a Christian, and Jewish, Christian, Muslim and Zoroastrian scholars all contributed. Scholars did not just preserve old knowledge: they tested it, corrected it and added to it.",
+            ],
+          },
+          {
+            heading: "Mathematics, science and medicine",
+            text: [
+              "In mathematics, Muhammad ibn Musa al-Khwarizmi, who worked in Baghdad in the ninth century, wrote a book on solving equations whose title gave us the word 'algebra', from 'al-jabr', meaning 'restoring'. The word 'algorithm' comes from the Latin form of his name. He also helped spread the Hindu-Arabic numerals, including zero, which are the digits we use today.",
+              "In science, Ibn al-Haytham (about 965 to 1040), working mainly in Cairo, wrote the 'Book of Optics'. He showed, through careful experiments, that we see because light enters the eye, not because the eye sends out rays as many Greek writers had believed. His insistence on testing ideas through experiment is an important step towards the modern scientific method.",
+              "In medicine, the Persian doctor al-Razi (Rhazes) wrote the first known clear description that distinguished smallpox from measles. Ibn Sina (Avicenna, 980 to 1037) wrote the 'Canon of Medicine', a vast encyclopaedia of medical knowledge that was used in European universities for around five hundred years. In the thirteenth century, Ibn al-Nafis correctly described how blood travels from the heart to the lungs and back.",
+              "Major cities had large hospitals called bimaristans, which treated patients free of charge, had separate wards for different illnesses and trained new doctors. Astronomers built observatories and improved instruments such as the astrolabe, which was used to measure the positions of stars and to tell the time.",
+            ],
+          },
+          {
+            heading: "How did knowledge reach Europe?",
+            text: [
+              "Most of this knowledge reached western Europe not through the crusades but through Spain and Sicily, where Christians, Muslims and Jews lived side by side. After Christian rulers took Toledo in 1085, scholars there translated hundreds of Arabic works into Latin during the twelfth century. Works by Aristotle, Ibn Sina and al-Khwarizmi entered European universities in this way.",
+              "The crusades did create contact. Western settlers in the crusader states lived alongside Muslims, Jews and eastern Christians, traded with them, and sometimes employed local doctors. Italian merchants from Venice, Genoa and Pisa grew rich on trade in spices, sugar, silk and cotton, and words such as 'sugar', 'cotton' and 'syrup' entered European languages from Arabic.",
+              "A memorable source on these encounters is the memoir of Usama ibn Munqidh (1095 to 1188), a Syrian Muslim nobleman and poet. He describes Frankish neighbours as brave fighters but often crude, and tells of a Frankish doctor whose rough treatment killed a patient whom an Arab doctor had been treating successfully. Like all sources, it reflects its author's point of view, but it shows how each side judged the other.",
+              "Learning also crossed faith boundaries within the Islamic world. The great Jewish philosopher and physician Moses Maimonides (1138 to 1204) worked in Cairo at the court of Saladin's family, writing in Arabic on medicine and philosophy. Baghdad's golden age ended violently in 1258, when the Mongols sacked the city, but much of its learning survived in other centres and in translation.",
+            ],
+          },
+        ],
+        words: [
+          { word: "Abbasid caliphate", meaning: "the Muslim dynasty that ruled from Baghdad from 750 and sponsored the House of Wisdom" },
+          { word: "House of Wisdom", meaning: "the royal library and centre of scholarship in Baghdad, especially under Caliph al-Ma'mun" },
+          { word: "translation movement", meaning: "the large-scale translation of Greek, Persian and Indian works into Arabic from the eighth to the tenth centuries" },
+          { word: "algebra", meaning: "the branch of mathematics that uses symbols to solve equations, named from al-Khwarizmi's 'al-jabr'" },
+          { word: "bimaristan", meaning: "a hospital in the medieval Islamic world" },
+          { word: "astrolabe", meaning: "an instrument used to measure the positions of stars and planets and to tell the time" },
+        ],
+      },
+      practice: {
+        intro: "Check what you know about learning in the medieval Islamic world.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each scholar to their achievement.",
+            pairs: [
+              ["Al-Khwarizmi", "Wrote the book that gave us the word 'algebra'"],
+              ["Ibn al-Haytham", "Showed through experiments that light enters the eye"],
+              ["Ibn Sina", "Wrote the 'Canon of Medicine'"],
+              ["Al-Razi", "Distinguished smallpox from measles"],
+            ],
+          },
+          { type: "choice", q: "Which best explains why Baghdad could produce and share so many books?", options: ["Paper, which was cheaper than parchment, was made there", "The printing press had been invented there", "Every book was carved on stone"], answer: 0 },
+          { type: "gap", q: "Fill in the gaps.", text: "Baghdad was founded in ___ by the caliph al-Mansur. Under al-___, scholars at the House of Wisdom translated Greek works into Arabic.", bank: ["762", "1099", "Ma'mun", "Khwarizmi", "Razi"], answers: ["762", "Ma'mun"] },
+          { type: "choice", q: "Through which route did most Arabic learning reach western European universities?", options: ["Crusaders carrying books home from Jerusalem", "Translations made in Spain and Sicily, especially at Toledo", "The Mongol conquest of Baghdad"], answer: 1, why: "Toledo's translators turned hundreds of Arabic works into Latin in the twelfth century." },
+          { type: "pick", q: "Which pieces of evidence show that learning in the Islamic world involved people of different faiths? There is more than one.", options: ["Hunayn ibn Ishaq, a Christian, was a leading translator", "Maimonides, a Jewish physician, worked in Cairo", "The Mongols sacked Baghdad in 1258", "Zoroastrian and Jewish scholars contributed to the translation movement"], answers: [0, 1, 3] },
+        ],
+      },
+      task: {
+        title: "Research project: a scholar's legacy",
+        intro: "Research one scholar from the medieval Islamic world and present their achievements and influence.",
+        need: ["Paper or a notebook", "Library books or, with a grown-up's permission, the internet", "Optional: a free, browser-based slide tool or document editor if you'd like to make a digital presentation"],
+        steps: [
+          "Choose one scholar: al-Khwarizmi, Ibn al-Haytham, Ibn Sina, al-Razi, Ibn al-Nafis or Maimonides.",
+          "Find out: when and where they lived, what they studied, their most important work, and one way their ideas influenced later science or medicine. Use at least two sources and note them down.",
+          "Check your facts: if two sources disagree on a date or detail, record both and decide which is more trustworthy (for example, a university or museum website over an anonymous page).",
+          "Make a one-page poster or a short presentation of four to six slides. Include a timeline of the scholar's life and a short explanation, in your own words, of their main idea.",
+          "Finish with a paragraph of about 150 words answering: 'How far did this scholar change the way people understood the world?'",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which city was home to the House of Wisdom?", options: ["Cairo", "Baghdad", "Damascus"], answer: 1 },
+        { type: "type", q: "Which word for a branch of mathematics comes from the title of al-Khwarizmi's book?", answer: ["algebra", "Algebra"] },
+        { type: "choice", q: "What was Ibn Sina's most famous book?", options: ["The Canon of Medicine", "The Book of Optics", "The Anglo-Saxon Chronicle"], answer: 0 },
+        { type: "choice", q: "What is a bimaristan?", options: ["An observatory", "A type of ship", "A hospital"], answer: 2 },
+        { type: "pick", q: "Which were achievements of scholars in the medieval Islamic world? There is more than one.", options: ["Translating Greek works into Arabic", "Spreading Hindu-Arabic numerals, including zero", "Inventing the printing press", "Experimental work on how we see"], answers: [0, 1, 3] },
+        { type: "choice", q: "Where was a major centre for translating Arabic works into Latin in the twelfth century?", options: ["Toledo", "Jerusalem", "London"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Library books or internet access, with your permission", "Optional: a free browser-based slide or document tool"],
+        tips: [
+          "If your learner researches online, agree which sites they will use and check in partway through. University, museum and encyclopaedia sites are usually reliable starting points.",
+          "A common misconception is that Europe's 'rediscovery' of Greek learning came mainly from the crusades. In fact Spain and Sicily were far more important; the crusades played a smaller part.",
+          "Encourage your learner to explain ideas in their own words rather than copying. Asking 'Can you explain that to me?' is a good test.",
+        ],
+        younger: "Pick one scholar and make a fact file with five facts and a drawing of something linked to their work, such as an astrolabe or the eye.",
+        older: "Investigate the debate about how far Ibn al-Haytham should be seen as a founder of the scientific method. Write a short argued paragraph using evidence.",
+      },
+    },
+    {
+      slug: "the-crusades-6",
+      title: "Legacy and interpretations",
+      emoji: "🧭",
+      minutes: 60,
+      goal: "I can explain the long-term consequences of the Crusades and evaluate different interpretations of them, reaching my own supported judgement.",
+      starter: [
+        { type: "choice", q: "Who founded Baghdad in 762?", options: ["Saladin", "The caliph al-Mansur", "Alexios I Komnenos"], answer: 1 },
+        { type: "match", q: "Match the scholar to the work.", pairs: [["Ibn Sina", "The Canon of Medicine"], ["Ibn al-Haytham", "The Book of Optics"], ["Al-Khwarizmi", "The book that gave us 'algebra'"]] },
+        { type: "type", q: "Which city in Spain was a major centre for translating Arabic works into Latin?", answer: ["Toledo", "toledo"] },
+        { type: "choice", q: "What was a bimaristan?", options: ["A hospital", "A mosque", "A library"], answer: 0 },
+        { type: "choice", q: "Who sacked Baghdad in 1258?", options: ["The crusaders", "The Byzantines", "The Mongols"], answer: 2 },
+        { type: "pick", q: "Which words entered European languages from Arabic? There is more than one.", options: ["Sugar", "Cotton", "Castle", "Syrup"], answers: [0, 1, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "How the crusading era ended",
+            text: [
+              "Crusading continued for centuries after Richard I. The Fourth Crusade (1202 to 1204) never reached the Holy Land: short of money and drawn into Byzantine politics, the crusaders attacked and sacked Constantinople, a Christian city, in 1204. This deepened the bitterness between Catholic and Orthodox Christians that still features in their history.",
+              "Jerusalem was briefly returned to Christian rule by treaty in 1229, when the Holy Roman Emperor Frederick II negotiated with the Sultan of Egypt, but it was lost again in 1244. The last major crusader city in the Holy Land, Acre, fell to the Mamluk sultans of Egypt in 1291, ending the crusader states.",
+              "The idea of crusading was also turned on other targets: Muslims in Spain during the Reconquista, pagan peoples around the Baltic, and even Christians the Church considered heretics, such as the Cathars of southern France. In England, crusading enthusiasm around the time of Richard I's coronation in 1189 to 1190 was followed by attacks on Jewish communities, including the massacre at Clifford's Tower in York in 1190.",
+            ],
+          },
+          {
+            heading: "Consequences and legacy",
+            text: [
+              "Historians identify several long-term consequences. Italian trading cities, such as Venice and Genoa, grew wealthy from trade with the eastern Mediterranean. Kings developed new ways of taxing their subjects to pay for crusades, such as England's Saladin Tithe of 1188. Military religious orders, such as the Knights Templar and the Knights Hospitaller, became powerful international organisations.",
+              "Relations between faiths were deeply affected. The crusades sharpened hostility between Christians and Muslims, worsened the persecution of Jewish communities in Europe, and widened the divide between western and Byzantine Christians. Yet there was also contact, trade, diplomacy and treaties, as the Treaty of Jaffa shows.",
+              "Interestingly, medieval Muslim writers usually saw the crusades as one of several threats, often less serious than the Mongols, and called the invaders simply 'Franj', the Franks. Interest in the crusades grew in the Arab world in the nineteenth and twentieth centuries, when European empires were expanding into the Middle East, and Saladin became a symbol of resistance.",
+              "Today, the word 'crusade' is still used, sometimes carelessly, in politics and the media. Because the crusades are part of the history of three living faiths, how we talk about them matters, and historians try to describe them accurately and fairly rather than using them to score points.",
+            ],
+          },
+          {
+            heading: "How have historians interpreted the crusades?",
+            text: [
+              "An interpretation is a historian's explanation or judgement about the past, based on evidence but shaped by their questions and their own time. The crusades have produced some of the strongest disagreements in history.",
+              "In nineteenth-century Britain and France, writers such as the novelist Sir Walter Scott often romanticised the crusades as tales of chivalry and adventure. In contrast, Sir Steven Runciman's three-volume 'A History of the Crusades' (1951 to 1954) was strongly critical, ending with the famous judgement that the Holy War was 'nothing more than a long act of intolerance in the name of God'. He emphasised the damage done to the Byzantine world.",
+              "From the 1970s, historians such as Jonathan Riley-Smith studied charters and letters and argued that most crusaders were motivated by genuine, if to us unfamiliar, religious devotion rather than greed. He showed that crusading was ruinously expensive for most families. Meanwhile, writers such as Amin Maalouf, in 'The Crusades Through Arab Eyes' (1983), brought Arabic sources to a wider western audience and showed the crusades as an invasion experienced by the people of the Middle East.",
+              "None of these interpretations is simply 'right' or 'wrong'. Each answers different questions and uses different evidence. To evaluate an interpretation, ask what evidence it rests on, what it leaves out, and how its author's time and viewpoint might have shaped it. Then reach your own judgement and support it.",
+            ],
+          },
+        ],
+        words: [
+          { word: "legacy", meaning: "the long-term effects of an event or period that last after it has ended" },
+          { word: "interpretation", meaning: "a historian's explanation or judgement about the past, based on evidence" },
+          { word: "Fourth Crusade", meaning: "the crusade of 1202 to 1204 that ended in the sack of Christian Constantinople" },
+          { word: "Mamluks", meaning: "the rulers of Egypt and Syria who captured Acre in 1291, ending the crusader states" },
+          { word: "military orders", meaning: "religious orders of knights, such as the Templars and Hospitallers, who took monastic vows and fought" },
+          { word: "romanticise", meaning: "to present something as more noble, heroic or exciting than it really was" },
+        ],
+      },
+      practice: {
+        intro: "Test your understanding of the legacy and the debate.",
+        questions: [
+          {
+            type: "order",
+            q: "Put these events in order, earliest first.",
+            items: ["Clifford's Tower massacre in York", "The sack of Constantinople", "Frederick II regains Jerusalem by treaty", "The fall of Acre"],
+          },
+          {
+            type: "match",
+            q: "Match each writer to their interpretation.",
+            pairs: [
+              ["Sir Walter Scott", "Romanticised the crusades as tales of chivalry"],
+              ["Steven Runciman", "Called the crusades a long act of intolerance"],
+              ["Jonathan Riley-Smith", "Argued most crusaders acted out of religious devotion"],
+              ["Amin Maalouf", "Told the story through Arabic sources"],
+            ],
+          },
+          { type: "choice", q: "Which best explains why Runciman's interpretation focused so much on the damage to the Byzantine world?", options: ["He had never heard of Byzantium", "He was a specialist in Byzantine history, so his questions and evidence centred on it", "He wrote in the Middle Ages"], answer: 1, why: "A historian's expertise and interests shape the questions they ask." },
+          { type: "pick", q: "Which were long-term consequences of the crusades? There is more than one.", options: ["Italian trading cities grew wealthy", "Hostility between faiths increased", "New taxes such as the Saladin Tithe", "The end of the Byzantine Empire in 1099"], answers: [0, 1, 2] },
+          { type: "gap", q: "Fill in the gaps.", text: "The last major crusader city, ___, fell in ___. Medieval Muslim writers called the crusaders the ___.", bank: ["Acre", "Jaffa", "1291", "1187", "Franj", "Seljuks"], answers: ["Acre", "1291", "Franj"] },
+        ],
+      },
+      task: {
+        title: "Extended essay: how should we remember the crusades?",
+        intro: "Write an extended answer that evaluates interpretations and reaches your own judgement, drawing on the whole unit.",
+        need: ["Your notes and work from Lessons 1 to 5", "Paper or a computer (a free, browser-based word processor is fine)"],
+        steps: [
+          "The question is: 'The crusades were mainly a story of religious devotion.' How far do you agree?",
+          "Plan first. Make two lists: evidence that supports the statement (for example, crusaders' charters, the vow and indulgence, Riley-Smith's research) and evidence that challenges it (for example, Bohemond keeping Antioch, the sack of Constantinople, trade and land, Runciman's and Maalouf's views).",
+          "Write an introduction of two or three sentences that defines the question and states your line of argument.",
+          "Write at least three paragraphs. Start each with a clear point, support it with specific evidence (dates, names, events), and explain how it answers the question. Include at least one historian's interpretation and evaluate it.",
+          "Write a conclusion that weighs up the evidence and gives your judgement. Aim for 500 to 700 words in total. Read it through, checking spelling of names and dates.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which city was sacked by the Fourth Crusade in 1204?", options: ["Jerusalem", "Constantinople", "Baghdad"], answer: 1 },
+        { type: "type", q: "In which year did Acre fall, ending the crusader states?", answer: "1291" },
+        { type: "choice", q: "What is a historical interpretation?", options: ["A source written at the time", "A translation of a document", "A historian's explanation or judgement about the past, based on evidence"], answer: 2 },
+        { type: "choice", q: "Which historian called the crusades 'a long act of intolerance in the name of God'?", options: ["Steven Runciman", "Jonathan Riley-Smith", "Sir Walter Scott"], answer: 0 },
+        { type: "pick", q: "Which were long-term effects of the crusades? There is more than one.", options: ["Growth of Italian trading cities", "Worsening persecution of Jewish communities in Europe", "Deeper division between Catholic and Orthodox Christians", "The founding of Baghdad"], answers: [0, 1, 2] },
+        { type: "choice", q: "What evidence did Jonathan Riley-Smith use to argue that most crusaders were religiously motivated?", options: ["Novels by Walter Scott", "Charters and letters showing the huge cost and religious language of crusading", "Ibn al-Athir's death tolls"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Your learner's notes from the unit", "Paper, or a computer with a free browser-based word processor"],
+        tips: [
+          "This lesson touches on how the crusades are still invoked today. Keep the discussion calm and evidence-based, and model respect for all three faiths.",
+          "The essay is the main assessment for the unit. Help with planning if needed, but let your learner do the writing. Good answers use specific evidence and reach a clear, supported judgement.",
+          "The Clifford's Tower massacre in York (1190) is a local, British example that some learners may wish to research further; English Heritage has calm, factual material about it.",
+        ],
+        younger: "Write three paragraphs instead of a full essay, using sentence starters: 'Some evidence suggests... because...', 'However... because...', 'Overall I think... because...'.",
+        older: "Compare two interpretations in depth, Runciman and Riley-Smith, and explain how the time each was written and the sources each used shaped their conclusions, as in a GCSE interpretations question.",
+      },
+    },
+  ],
+};
