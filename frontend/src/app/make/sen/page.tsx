@@ -5,7 +5,9 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Emoji from "@/components/Emoji";
 import { useSenRole } from "@/components/SenCards";
+import SenToolTiles from "@/components/SenToolTiles";
 import { SEN_TOOLS } from "@/lib/sen";
+import { SEN_SECTIONS } from "@/lib/senSections";
 
 /** SEN Support: picture supports to use on screen or print. */
 export default function SenPage() {
@@ -25,24 +27,25 @@ export default function SenPage() {
           </p>
         </PageHero>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          {SEN_TOOLS.map((t) => (
-            <Link key={t.slug} href={`/make/sen/${t.slug}`} className="brand-card group overflow-hidden transition-shadow hover:shadow-md">
-              <div className="flex aspect-square items-center justify-center border-b border-brand-line bg-brand-cream">
-                {t.art ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={t.art} alt="" className="h-3/4 w-3/4 object-contain" />
-                ) : (
-                  <Emoji e={t.emoji} className="h-1/2 w-1/2 text-7xl" />
-                )}
-              </div>
-              <div className="p-3">
-                <h2 className="font-extrabold text-brand-charcoal group-hover:text-brand-sage">{t.name}</h2>
-                <p className="mt-0.5 text-sm font-bold text-brand-earth/60">{t.blurb}</p>
+        <h2 className="text-xl font-extrabold text-brand-charcoal">Find support by area</h2>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {SEN_SECTIONS.map((sec) => (
+            <Link
+              key={sec.slug}
+              href={`/make/sen/${sec.slug}`}
+              className="brand-card group flex items-center gap-3 p-4 transition-shadow hover:shadow-md"
+            >
+              <Emoji e={sec.emoji} className="h-12 w-12 shrink-0 text-4xl" />
+              <div>
+                <h3 className="font-extrabold text-brand-charcoal group-hover:text-brand-sage">{sec.name}</h3>
+                <p className="text-sm font-bold text-brand-earth/60">{sec.blurb}</p>
               </div>
             </Link>
           ))}
         </div>
+
+        <h2 className="mb-3 mt-10 text-xl font-extrabold text-brand-charcoal">All picture supports</h2>
+        <SenToolTiles tools={SEN_TOOLS} />
 
         {role !== "child" && (
           <p className="mt-8 max-w-2xl text-xs text-brand-earth/60">
