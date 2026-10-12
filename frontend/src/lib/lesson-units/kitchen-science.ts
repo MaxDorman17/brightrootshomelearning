@@ -6,7 +6,7 @@ export const kitchenScience: LessonUnit = {
   title: "Kitchen science: materials",
   short: "Kitchen science",
   subject: "Science",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🧪",
   color: "#2F7A8C",
   summary: "Six lessons of experiments with things from the kitchen: properties, waterproofing, floating, dissolving, melting and changes you can't undo.",

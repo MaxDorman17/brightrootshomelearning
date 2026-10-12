@@ -6,7 +6,7 @@ export const lightAndShadows: LessonUnit = {
   title: "Light and shadows",
   short: "Light and shadows",
   subject: "Science",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🔦",
   color: "#C9A227",
   summary: "Six lessons of experiments with a torch and things from around the house: light sources, reflections, shadows, the sun, and how we see.",

@@ -6,7 +6,7 @@ export const festivalsOfLight: LessonUnit = {
   title: "Festivals of light",
   short: "Festivals of light",
   subject: "Religious Education",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🪔",
   color: "#7B4FA3",
   summary: "Six lessons on why light matters in so many faiths: Diwali, Hanukkah, Advent and Christmas, St Lucia's Day, and comparing them.",

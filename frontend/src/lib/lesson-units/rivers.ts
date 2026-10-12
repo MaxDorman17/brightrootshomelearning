@@ -6,7 +6,7 @@ export const rivers: LessonUnit = {
   title: "Rivers and the water cycle",
   short: "Rivers",
   subject: "Geography",
-  ages: "7 to 11",
+  ages: "7 to 9",
   emoji: "🌊",
   color: "#2C6FA6",
   summary: "Six lessons: the water cycle, a river's journey from source to sea, how rivers shape the land, great rivers of the UK and the world, and looking after them.",

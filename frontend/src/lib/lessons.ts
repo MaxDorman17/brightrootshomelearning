@@ -120,10 +120,12 @@ export const unitLink = (unit: LessonUnit) => {
 
 /** The school years an age range roughly matches, for families who think in years. */
 const YEARS: Record<string, string> = {
-  "4 to 5": "Reception",
-  "5 to 7": "Years 1 and 2",
-  "7 to 11": "Years 3 to 6",
-  "11 to 14": "Years 7 to 9",
+  "4 to 5": "Reception · P1",
+  "5 to 7": "Years 1 and 2 · P2 and P3",
+  "7 to 9": "Years 3 and 4 · P4 and P5",
+  "9 to 11": "Years 5 and 6 · P6 and P7",
+  "7 to 11": "Years 3 to 6 · P4 to P7",
+  "11 to 14": "Years 7 to 9 · S1 to S3",
 };
 /** Lower-case words of a search box, ignoring very short ones. */
 const searchWords = (q: string) => q.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
