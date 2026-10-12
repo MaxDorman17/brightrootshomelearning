@@ -30,6 +30,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "What is a force?",
+            picture: "/lessons/forces-and-magnets/lesson-1-1.jpg",
+            alt: "Children in a hallway pushing a toy pram, pulling a drawer and pulling on a welly boot",
             text: [
               "A force is a push or a pull. You can't see a force, but you can see what it does.",
               "When you push a door shut, kick a ball or pull up your socks, you are using forces.",
@@ -38,6 +40,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "What forces can do",
+            picture: "/lessons/forces-and-magnets/lesson-1-2.jpg",
+            alt: "A child kicking a ball, a child catching a ball and a child squashing play dough",
             text: [
               "A force can make something start moving, like a push on a toy car.",
               "A force can make something move faster, slow down or stop, like catching a ball.",
@@ -46,6 +50,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Contact forces",
+            picture: "/lessons/forces-and-magnets/lesson-1-3.jpg",
+            alt: "A child pushing a shopping trolley and a child pulling a sledge through the snow",
             text: [
               "Most pushes and pulls only work when two things touch. These are called contact forces.",
               "To push a trolley, your hands must touch it. To pull a sledge, the rope must be tied to it.",
@@ -132,6 +138,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "Rough and smooth",
+            picture: "/lessons/forces-and-magnets/lesson-2-1.jpg",
+            alt: "A toy car rolling across a smooth floor next to a toy car stopped at the edge of a shaggy rug",
             text: [
               "When something slides or rolls over a surface, the two surfaces rub together. This makes a force called friction.",
               "Friction pulls against the way something is moving, so it slows it down.",
@@ -140,6 +148,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Testing surfaces fairly",
+            picture: "/lessons/forces-and-magnets/lesson-2-2.jpg",
+            alt: "Two children letting a toy car roll down a tray ramp and measuring how far it goes on a towel",
             text: [
               "To find out which surface lets a toy car roll furthest, you can let it roll down a ramp onto each surface.",
               "To make the test fair, only change one thing: the surface. Keep the same car, the same ramp and the same height.",
@@ -148,6 +158,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Friction is useful",
+            picture: "/lessons/forces-and-magnets/lesson-2-3.jpg",
+            alt: "A grown-up gritting an icy path while children walk in grippy boots and ride a bike with brakes on",
             text: [
               "Friction can be very helpful. The grip on the bottom of your shoes stops you slipping over.",
               "Bike brakes rub on the wheel to slow it down. Tyres grip the road so cars can stop safely.",
@@ -231,6 +243,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "Touching or not touching?",
+            picture: "/lessons/forces-and-magnets/lesson-3-1.jpg",
+            alt: "A paperclip jumping up through the air towards a fridge magnet before they touch",
             text: [
               "Pushes, pulls and friction are contact forces. They only work when things touch.",
               "A magnet is different. Hold a fridge magnet near a paperclip and the paperclip can jump across to it before they even touch!",
@@ -239,6 +253,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Closer is stronger",
+            picture: "/lessons/forces-and-magnets/lesson-3-2.jpg",
+            alt: "A child sliding a magnet along a ruler towards a paperclip while a friend watches",
             text: [
               "The pull of a magnet gets stronger the closer you get to it.",
               "Far away, the paperclip doesn't move. As the magnet comes nearer, the pull gets strong enough to make it move.",
@@ -247,6 +263,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Through things",
+            picture: "/lessons/forces-and-magnets/lesson-3-3.jpg",
+            alt: "A child adding a painting to a fridge covered in drawings held up by magnets",
             text: [
               "The magnetic force can pass through some materials, like paper, thin card, plastic and even water.",
               "That's how a fridge magnet holds a drawing on the fridge. The force goes right through the paper.",
@@ -328,6 +346,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "Magnetic materials",
+            picture: "/lessons/forces-and-magnets/lesson-4-1.jpg",
+            alt: "A magnet holding paperclips, a safety pin and a hair grip, beside a steel tin with a magnet on it",
             text: [
               "A magnet only attracts some materials. These are called magnetic materials.",
               "The main magnetic material is the metal iron. Steel is made mostly from iron, so most steel is magnetic too.",
@@ -336,6 +356,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Not all metals",
+            picture: "/lessons/forces-and-magnets/lesson-4-2.jpg",
+            alt: "A child finding that a magnet won't stick to foil, a drinks can, a gold ring or a copper pan",
             text: [
               "Lots of people think magnets stick to all metals. They don't!",
               "Aluminium is not magnetic. Kitchen foil and most drinks cans are made of aluminium, so a magnet won't stick to them.",
@@ -344,6 +366,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Non-magnetic materials",
+            picture: "/lessons/forces-and-magnets/lesson-4-3.jpg",
+            alt: "A giant magnet lifting steel tins away from aluminium cans at a recycling centre",
             text: [
               "Materials that magnets don't attract are non-magnetic.",
               "Wood, plastic, glass, paper, fabric and rubber are never magnetic.",
@@ -437,6 +461,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "Two poles",
+            picture: "/lessons/forces-and-magnets/lesson-5-1.jpg",
+            alt: "A red and blue bar magnet with paperclips clinging to both ends and few in the middle",
             text: [
               "Every magnet has two ends called poles: a north pole and a south pole.",
               "The poles are where the magnet's force is strongest. If you dip a bar magnet in paperclips, most of them cling to the two ends.",
@@ -445,6 +471,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Attract and repel",
+            picture: "/lessons/forces-and-magnets/lesson-5-2.jpg",
+            alt: "Two bar magnets snapped together red to blue, and two pushing apart red to red",
             text: [
               "Put the north pole of one magnet near the south pole of another and they pull together. They attract.",
               "Put two north poles together, or two south poles, and they push each other away. They repel.",
@@ -453,6 +481,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Feel the push",
+            picture: "/lessons/forces-and-magnets/lesson-5-3.jpg",
+            alt: "A child pushing one magnet towards another so it slides away without being touched",
             text: [
               "You can feel two magnets repel. It feels like squashing an invisible spring between them.",
               "Repelling is a non-contact force too. One magnet can push another along the table without touching it!",
@@ -536,6 +566,8 @@ export const forcesAndMagnets: LessonUnit = {
         cards: [
           {
             heading: "Predict like a scientist",
+            picture: "/lessons/forces-and-magnets/lesson-6-1.jpg",
+            alt: "A child thinking hard and making a prediction before testing two bar magnets",
             text: [
               "If you know which poles are facing each other, you can predict what two magnets will do before you try.",
               "Look at the poles that face each other. Different poles? They will attract. The same poles? They will repel.",
@@ -544,6 +576,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "The Earth is a giant magnet",
+            picture: "/lessons/forces-and-magnets/lesson-6-2.jpg",
+            alt: "A child and a grown-up on a misty walk looking at a compass needle pointing the way",
             text: [
               "Deep inside, the Earth acts like a giant magnet.",
               "A compass has a little magnet inside called a needle. It can spin freely, and it always turns to point north.",
@@ -552,6 +586,8 @@ export const forcesAndMagnets: LessonUnit = {
           },
           {
             heading: "Magnets all around us",
+            picture: "/lessons/forces-and-magnets/lesson-6-3.jpg",
+            alt: "A child closing a fridge door with a magnetic seal and another playing a magnet fishing game",
             text: [
               "Magnets are hidden all over your home. There's a long, bendy magnet in the rubber seal of your fridge door that keeps it shut tight.",
               "Some cupboard doors, bag clasps and pencil cases close with magnets.",

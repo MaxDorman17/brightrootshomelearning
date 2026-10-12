@@ -30,6 +30,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "Rocks are everywhere",
+            picture: "/lessons/rocks-and-soils/lesson-1-1.jpg",
+            alt: "A hillside cut open to show grass, soil, stones and solid rock underneath, with a cliff and pebbly beach",
             text: [
               "Rock is the hard, natural material that makes up the outside of the Earth. Under the soil, the grass and the roads, there is solid rock.",
               "Mountains, cliffs and beaches are made of rock. So are pebbles, boulders and the tiny grains of sand.",
@@ -37,6 +39,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "What is rock made of?",
+            picture: "/lessons/rocks-and-soils/lesson-1-2.jpg",
+            alt: "A speckled rock split open to show different coloured minerals, with a shiny quartz crystal",
             text: [
               "Rocks are made of minerals. A mineral is a natural solid, like quartz or salt, that forms in the ground.",
               "Some rocks are made of one mineral. Most are a mix of several, which is why many rocks look speckled or stripy.",
@@ -44,6 +48,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Natural or made by people?",
+            picture: "/lessons/rocks-and-soils/lesson-1-3.jpg",
+            alt: "A child holding a pebble and a brick, between an old stone wall and a brick wall",
             text: [
               "Rocks are natural. Nobody made them. They formed in the Earth over a very, very long time.",
               "Bricks, concrete and tiles look a bit like rock, but people made them, often from clay, sand or crushed rock. They are man-made materials, not rocks.",
@@ -123,6 +129,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "Look closely",
+            picture: "/lessons/rocks-and-soils/lesson-2-1.jpg",
+            alt: "Two children looking at wet, colourful pebbles through a magnifying glass",
             text: [
               "Scientists compare rocks by looking closely at them. They look at the colour, and whether the rock is shiny or dull.",
               "They look at the texture too. Is it rough or smooth? Can you see grains, crystals or stripes called layers?",
@@ -130,6 +138,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Grains, crystals and layers",
+            picture: "/lessons/rocks-and-soils/lesson-2-2.jpg",
+            alt: "A grainy sandstone, a sparkly granite and a flat grey slate side by side",
             text: [
               "Some rocks, like sandstone, are made of tiny grains stuck together. Rub them and a little sand may come off.",
               "Some rocks, like granite, have crystals that fit together like a jigsaw. They often sparkle.",
@@ -138,6 +148,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Three families of rock",
+            picture: "/lessons/rocks-and-soils/lesson-2-3.jpg",
+            alt: "A volcano with cooling lava, layers building up on a seabed, and rock squeezed deep underground",
             text: [
               "Igneous rocks, like granite and basalt, formed when hot, melted rock from deep in the Earth cooled and went hard.",
               "Sedimentary rocks, like sandstone and chalk, formed when layers of sand, mud or shells were pressed together over millions of years.",
@@ -212,6 +224,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "Hard or soft?",
+            picture: "/lessons/rocks-and-soils/lesson-3-1.jpg",
+            alt: "A child scratching soft chalk with a fingernail while a friend fails to scratch granite with a coin",
             text: [
               "Rocks are not all equally hard. Scientists test hardness by trying to scratch them.",
               "Chalk is so soft you can scratch it with a fingernail. Granite is so hard that a steel nail won't scratch it. That's why granite is used for kitchen worktops and steps.",
@@ -219,6 +233,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Does water soak in?",
+            picture: "/lessons/rocks-and-soils/lesson-3-2.jpg",
+            alt: "Water soaking into sandstone but sitting as a bead on slate",
             text: [
               "Some rocks have tiny gaps between their grains. Water can soak into them. These rocks are permeable. Sandstone and chalk are permeable.",
               "Other rocks have no gaps, so water stays on top. These rocks are impermeable. Slate and granite are impermeable.",
@@ -226,6 +242,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "The right rock for the job",
+            picture: "/lessons/rocks-and-soils/lesson-3-3.jpg",
+            alt: "A stone cottage with a wet slate roof, granite steps and an old worn stone",
             text: [
               "Builders choose rocks for their properties. Slate is impermeable and splits into thin sheets, so it makes good roof tiles.",
               "Some rocks wear away slowly in wind and rain. Gravestones and old buildings show this. Hard rocks like granite last much longer than soft rocks like chalk.",
@@ -300,6 +318,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "What is a fossil?",
+            picture: "/lessons/rocks-and-soils/lesson-4-1.jpg",
+            alt: "A child on a beach holding an ammonite fossil, with a fern fossil and a fossil tooth nearby",
             text: [
               "A fossil is what is left of a plant or animal that lived a very long time ago, saved in rock. It can be bones, teeth, shells or even a footprint.",
               "Fossils show us living things that are now extinct, like dinosaurs and ammonites, sea creatures with curly shells.",
@@ -307,6 +327,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "How a fossil forms",
+            picture: "/lessons/rocks-and-soils/lesson-4-2.jpg",
+            alt: "An ammonite on the seabed being buried, turned to rock and uncovered in a cliff",
             text: [
               "A sea creature dies and sinks to the seabed. Its soft parts rot away, but the hard shell or bones are left.",
               "Layers of sand and mud cover it. Over millions of years, the layers are pressed into rock. Minerals in the water slowly replace the shell or bones, turning them to stone.",
@@ -315,6 +337,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Mary Anning, fossil hunter",
+            picture: "/lessons/rocks-and-soils/lesson-4-3.jpg",
+            alt: "Mary Anning uncovering a sea reptile skeleton in the cliffs at Lyme Regis",
             text: [
               "Mary Anning lived in Lyme Regis, by the sea in Dorset, about 200 years ago. She searched the crumbly cliffs for fossils.",
               "When she was about 12, she and her brother found the skeleton of an ichthyosaur, a huge sea reptile. She went on to make many important discoveries.",
@@ -402,6 +426,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "Rocks break down",
+            picture: "/lessons/rocks-and-soils/lesson-5-1.jpg",
+            alt: "Rain, ice and roots breaking a rocky hillside into stones and sand",
             text: [
               "Rain, ice, wind and plant roots slowly break rocks into smaller and smaller pieces. This is called weathering.",
               "Over a very long time, rock is broken into stones, then sand, then tiny bits too small to see. These bits of rock are the main part of soil.",
@@ -409,6 +435,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Rotted plants and animals",
+            picture: "/lessons/rocks-and-soils/lesson-5-2.jpg",
+            alt: "Fallen leaves rotting into dark soil with worms and a beetle",
             text: [
               "When leaves fall and plants and animals die, they rot. Worms, beetles and tiny living things called microbes break them down.",
               "This dark, rotted material is called organic matter, or humus. It feeds the soil and helps plants grow.",
@@ -416,6 +444,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Soil also has air, water and life",
+            picture: "/lessons/rocks-and-soils/lesson-5-3.jpg",
+            alt: "Soil close up, with rock grains, air spaces, water drops, roots and a worm",
             text: [
               "There are tiny spaces in soil filled with air and water. Plant roots need both.",
               "A handful of healthy soil holds millions of living things, from worms to microbes. Soil forms very slowly: making one centimetre can take hundreds of years.",
@@ -490,6 +520,8 @@ export const rocksAndSoils: LessonUnit = {
         cards: [
           {
             heading: "Not all soil is the same",
+            picture: "/lessons/rocks-and-soils/lesson-6-1.jpg",
+            alt: "Two children feeling gritty sandy soil and sticky clay soil",
             text: [
               "Soils are different depending on the rock they came from and how much organic matter they have.",
               "Sandy soil has big grains. It feels gritty and water drains through it quickly.",
@@ -498,6 +530,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Loam: the gardener's favourite",
+            picture: "/lessons/rocks-and-soils/lesson-6-2.jpg",
+            alt: "A grown-up and child adding compost to a vegetable patch",
             text: [
               "Loam is a mix of sand, clay and lots of humus. It holds enough water for plants but lets the extra drain away.",
               "Gardeners add compost to their soil to give it more organic matter. This helps almost any soil grow healthy plants.",
@@ -505,6 +539,8 @@ export const rocksAndSoils: LessonUnit = {
           },
           {
             heading: "Planning a fair test",
+            picture: "/lessons/rocks-and-soils/lesson-6-3.jpg",
+            alt: "Children testing three soils in bottle funnels with water dripping through",
             text: [
               "To compare soils fairly, change only one thing: the type of soil. Keep everything else the same.",
               "Use the same amount of soil, the same amount of water, and the same time for each test. Then measure how much water drips through.",
