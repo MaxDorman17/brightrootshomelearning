@@ -103,6 +103,7 @@ export const LESSON_SUBJECTS: LessonSubject[] = [
   { slug: "science", name: "Science", emoji: "🔬", color: "#2F7A8C", blurb: "Experiments with things you already have at home.", cover: "/lessons/covers/science.jpg" },
   { slug: "geography", name: "Geography", emoji: "🌍", color: "#2C6FA6", blurb: "Rivers, maps, weather and places near and far.", cover: "/lessons/covers/geography.jpg" },
   { slug: "art", name: "Art & Design", emoji: "🎨", color: "#B0457B", blurb: "Colour, drawing, making, and great artists.", cover: "/lessons/covers/art.jpg" },
+  { slug: "computing", name: "Computing", emoji: "💻", color: "#3D6B5A", blurb: "How computers work, staying safe online, and coding." },
   { slug: "rshe", name: "RSHE (PSHE)", emoji: "💛", color: "#C7892B", blurb: "Feelings, friendships, keeping healthy and staying safe.", cover: "/lessons/covers/rshe.jpg" },
   { slug: "re", name: "Religious Education", emoji: "🪔", color: "#7B4FA3", blurb: "Festivals, beliefs and stories from many faiths.", cover: "/lessons/covers/re.jpg" },
 ];
