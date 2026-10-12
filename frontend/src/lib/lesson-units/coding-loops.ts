@@ -1,0 +1,683 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Coding: loops and repeats, for ages 9 to 11. Builds on the Ages 7 to 9 "Algorithms" unit. Uses free Scratch
+ * (scratch.mit.edu, which works without an account) with a grown-up, and every task has an unplugged version on paper.
+ */
+export const codingLoops: LessonUnit = {
+  slug: "coding-loops",
+  title: "Coding: loops and repeats",
+  short: "Coding",
+  subject: "Computing",
+  ages: "9 to 11",
+  emoji: "🐱",
+  color: "#4A6E8C",
+  summary: "Six lessons of coding in free Scratch, each with an unplugged version: sequences and repeat loops, forever loops and animation, drawing shapes with the pen, nested loops, scores and conditions, and debugging before building your own animated pattern or game.",
+  cover: "/lessons/units/coding-loops.jpg",
+  lessons: [
+    {
+      slug: "coding-loops-1",
+      title: "Sequences and repeat loops",
+      emoji: "🔁",
+      minutes: 50,
+      goal: "I can explain what a sequence is, and use a 'repeat' loop in Scratch to make a script shorter and easier to change.",
+      starter: [
+        { type: "choice", q: "What is an algorithm?", options: ["A kind of computer screen", "A set of step-by-step instructions to do a job", "A type of robot"], answer: 1 },
+        { type: "choice", q: "Why does the order of instructions matter?", options: ["It doesn't matter at all", "Computers always sort the order out for you", "Steps in the wrong order can give the wrong result"], answer: 2 },
+        { type: "type", q: "What do programmers call a mistake in a program? It's also a word for a small creepy-crawly.", answer: ["bug", "a bug", "bugs"] },
+        { type: "choice", q: "Clap, clap, clap, clap could be written as...", options: ["Repeat 4 times: clap", "Repeat 2 times: clap", "Repeat 4 times: stomp"], answer: 0 },
+        { type: "pick", q: "Which of these are controlled by a computer program? There is more than one.", options: ["A traffic light", "A pebble", "A washing machine", "A games console"], answers: [0, 2, 3] },
+        { type: "choice", q: "What is Scratch?", options: ["A free website where you make programs by snapping blocks together", "A type of computer virus", "A game you can only play, not change"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Sequence: one step after another",
+            text: [
+              "A program is an algorithm written in a language a computer can understand. The computer carries out the instructions exactly, one after another, in the order they are written. Doing steps in order like this is called sequence.",
+              "A computer never guesses what you meant. If you tell it to walk before you tell it to face the right way, it walks the wrong way. That is why the order of the instructions matters so much.",
+              "In Scratch, instructions are blocks that click together like jigsaw pieces. A stack of joined blocks is called a script. Most scripts start with an Events block such as 'when green flag clicked', and then run from the top block to the bottom one.",
+            ],
+          },
+          {
+            heading: "Meet Scratch",
+            text: [
+              "Scratch is a free coding tool made by a team at MIT, a university in the USA. With a grown-up, go to scratch.mit.edu and click 'Create'. You can make programs straight away without an account. To keep your work, use the File menu and choose 'Save to your computer'.",
+              "On the left is the block palette, sorted into colour-coded categories: Motion blocks are blue, Looks are purple, Sound is pink, Events are yellow and Control blocks are orange. In the middle is the code area, where you drag blocks to build scripts.",
+              "On the right is the stage, where your program runs. The characters on the stage are called sprites. Every new project starts with the Scratch cat. Click the green flag above the stage to start your program, and the red stop sign to stop everything.",
+              "Scratch is an American website, so some blocks use American spelling, such as 'color'. Always ask a grown-up before going online, and never put your real name or where you live in a project.",
+            ],
+          },
+          {
+            heading: "Count-controlled loops",
+            text: [
+              "Imagine you want the cat to walk across the stage. You could stack 'move (10) steps' ten times. That works, but it is long, it's easy to lose count, and changing it means adding or removing lots of blocks.",
+              "Instead, use the 'repeat (10)' block from the Control category. It is shaped like a letter C, so it can wrap around other blocks. The number tells Scratch how many times to run the blocks inside. A loop that repeats a set number of times is called a count-controlled loop.",
+              "The blocks inside the loop run in sequence, top to bottom. Then the loop jumps back to the top and runs them again, until it has done them the right number of times. After that, the program carries on with whatever block sits underneath the loop.",
+              "Computers are extremely fast. Without a pause, ten moves happen so quickly you only see where the cat ends up. Adding 'wait (0.2) seconds' inside the loop slows it down so you can watch each step.",
+            ],
+          },
+        ],
+        words: [
+          { word: "program", meaning: "an algorithm written in a language a computer can understand" },
+          { word: "sequence", meaning: "instructions carried out one after another, in order" },
+          { word: "script", meaning: "a stack of joined blocks in Scratch" },
+          { word: "sprite", meaning: "a character or object on the Scratch stage that you can program" },
+          { word: "count-controlled loop", meaning: "a loop that repeats a set number of times, like 'repeat (10)'" },
+        ],
+      },
+      practice: {
+        intro: "Sequences and repeat loops.",
+        questions: [
+          { type: "choice", q: "A script says 'when green flag clicked', then 'repeat (4)' with 'move (10) steps' inside. How many steps does the cat move altogether?", options: ["4", "14", "40"], answer: 2 },
+          {
+            type: "order",
+            q: "Put these in order to make and test your first Scratch program.",
+            items: ["With a grown-up, open scratch.mit.edu", "Click 'Create'", "Drag 'when green flag clicked' into the code area", "Snap more blocks underneath it", "Click the green flag to test it"],
+          },
+          {
+            type: "match",
+            q: "Match each block to its category.",
+            pairs: [["'move (10) steps'", "Motion"], ["'say (Hello!) for (2) seconds'", "Looks"], ["'when green flag clicked'", "Events"], ["'repeat (10)'", "Control"]],
+          },
+          { type: "type", q: "Jump, jump, jump, jump, jump, jump. Finish the loop: repeat ( ___ ) with 'jump' inside. Type the number.", answer: ["6", "six"] },
+          {
+            type: "pick",
+            q: "Why is a 'repeat' loop better than copying the same blocks again and again? There is more than one.",
+            options: ["The script is shorter and easier to read", "It makes the computer run hotter", "You only change one number to change how many times", "There's less chance of losing count"],
+            answers: [0, 2, 3],
+          },
+        ],
+      },
+      task: {
+        title: "Loop the walk",
+        intro: "Make the Scratch cat walk across the stage, first the long way and then with a loop. No device? There's an unplugged version at the end.",
+        need: ["A computer or tablet with a web browser, used with a grown-up", "Paper, pens and scissors"],
+        steps: [
+          "With a grown-up, open scratch.mit.edu and click 'Create'. You don't need an account.",
+          "From Events, drag 'when green flag clicked' into the code area. From Motion, add 'go to x: (-200) y: (0)' so the cat always starts on the left.",
+          "Underneath, snap 'move (10) steps', then 'next costume' (Looks), then 'wait (0.2) seconds' (Control). Copy these three blocks until you have them three times. Click the green flag and watch.",
+          "Now drag the copies away (drop them back on the palette to delete them) so you have just one set of three. Wrap a 'repeat (10)' block around them. Click the green flag. What's different?",
+          "Change the 10 to 20, then to 40. Predict each time where the cat will stop before you click the flag. Write your predictions down and tick the ones you got right.",
+          "Save your work with File, 'Save to your computer'.",
+          "Unplugged: write each block on a strip of paper, including a big C-shaped 'repeat' strip. Arrange them into a script, then a grown-up acts as the sprite and follows it exactly while you watch for mistakes.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a sequence?", options: ["Instructions carried out one after another, in order", "A loop that never ends", "A picture of a sprite"], answer: 0 },
+        { type: "choice", q: "In the block 'repeat (10)', what does the 10 tell Scratch?", options: ["How fast to go", "How many times to run the blocks inside", "How many sprites to make"], answer: 1 },
+        { type: "choice", q: "A loop is 'repeat (3)' with 'say (Hi!) for (1) seconds' inside. How many times does the sprite say Hi?", options: ["1", "6", "3"], answer: 2 },
+        { type: "type", q: "Which category of blocks is 'repeat' in? Type one word.", answer: ["control", "Control", "the control category"] },
+        {
+          type: "gap",
+          q: "Fill in the gaps.",
+          text: "A ___ loop repeats a set number of times. The blocks inside it run in ___, then the loop goes back to the top.",
+          bank: ["sequence", "count-controlled", "colour", "random"],
+          answers: ["count-controlled", "sequence"],
+        },
+        { type: "choice", q: "Why might you put 'wait (0.2) seconds' inside a loop that moves a sprite?", options: ["To delete the sprite", "Because the computer is so fast you'd only see the end otherwise", "To make the loop repeat more times"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with a web browser", "Paper, pens and scissors"],
+        tips: [
+          "Scratch is free and run by a charity, the Scratch Foundation. Children can use the editor at scratch.mit.edu without an account; saving to your own computer keeps work safe without anything going online. If you do make an account later, the Scratch community is moderated, but stay involved in what is shared.",
+          "Sit with your child for the first session. Dragging, dropping and deleting blocks takes a few minutes to get used to, especially on a tablet.",
+          "Encourage predicting before clicking the green flag. 'What do you think will happen?' is the most useful question in coding.",
+          "There's also a free Scratch app for computers, which works offline once installed, if your internet is unreliable.",
+        ],
+        younger: "Keep to one loop and one number. Let your child change the number and see what happens, and talk about why the loop is shorter.",
+        older: "Add a second sprite with its own 'when green flag clicked' script and its own loop. Both scripts run at the same time: can they make the two sprites race?",
+      },
+    },
+    {
+      slug: "coding-loops-2",
+      title: "Forever loops and animation",
+      emoji: "♾️",
+      minutes: 50,
+      goal: "I can use a 'forever' loop to keep an animation running, and explain when to choose 'forever' instead of 'repeat'.",
+      starter: [
+        { type: "choice", q: "What is a sprite in Scratch?", options: ["A character or object on the stage that you can program", "The button that saves your work", "A type of loop"], answer: 0 },
+        { type: "choice", q: "'repeat (5)' with 'move (10) steps' inside. How many steps altogether?", options: ["15", "50", "5"], answer: 1 },
+        { type: "type", q: "What do we call a stack of joined blocks in Scratch?", answer: ["script", "a script", "scripts"] },
+        { type: "choice", q: "What does the green flag do?", options: ["Deletes the sprite", "Starts the program", "Saves the program"], answer: 1 },
+        { type: "match", q: "Match each word to its meaning.", pairs: [["Sequence", "Steps carried out in order"], ["Count-controlled loop", "Repeats a set number of times"], ["Script", "A stack of joined blocks"]] },
+        { type: "choice", q: "What happens after a 'repeat' loop has finished?", options: ["The program carries on with the block underneath", "The whole program deletes itself", "It starts again for ever"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Loops that never end",
+            text: [
+              "Sometimes you don't want a loop to stop after a certain number of goes. You want something to keep happening for as long as the program runs. For that, Scratch has the 'forever' block in the Control category.",
+              "A 'forever' loop has no number in it. It runs the blocks inside, goes back to the top, and does it again and again until you click the red stop sign. A loop that never ends by itself is called an infinite loop.",
+              "Look closely at the 'forever' block and you'll see its bottom edge is flat, with no bump to join anything on. That's because any block underneath would never be reached: the loop never finishes, so the program never gets there.",
+              "Lots of real devices run forever loops. A traffic light goes red, red and amber, green, amber, and round again all day. A game keeps checking which keys are pressed many times every second, for as long as you're playing.",
+            ],
+          },
+          {
+            heading: "Animation with costumes",
+            text: [
+              "Animation works like a flip book. You show a picture, then a slightly different one, then another, fast enough that your brain sees movement. Each picture is called a frame.",
+              "In Scratch, each sprite can have several costumes. The Scratch cat has two, with its legs in different positions. The Looks block 'next costume' swaps to the next one, and after the last costume it goes back to the first.",
+              "Put 'next costume' and 'wait (0.2) seconds' inside a 'forever' loop and the cat walks on the spot for as long as the program runs. Add 'move (10) steps' and 'if on edge, bounce' from Motion, and it strolls to and fro across the stage.",
+              "When the cat bounces, it turns to face the other way and ends up upside down! The Motion block 'set rotation style (left-right)', placed before the loop, makes it just flip round instead.",
+            ],
+          },
+          {
+            heading: "Repeat or forever?",
+            text: [
+              "Choose a 'repeat' loop when you know exactly how many times something should happen: draw four sides of a square, jump three times, flash five times.",
+              "Choose 'forever' when something should keep going for the whole program: background music, fish swimming, clouds drifting, or checking whether a player has been caught.",
+              "A forever loop in the wrong place can be a bug. If you want the cat to walk and then say 'The end', a forever loop means it never stops walking, so it never says it.",
+              "A Scratch project can have many scripts that start with 'when green flag clicked'. They all run at the same time. So one script can keep a sprite moving forever while another plays music forever.",
+            ],
+          },
+        ],
+        words: [
+          { word: "forever loop", meaning: "a loop that keeps repeating until the program is stopped" },
+          { word: "infinite loop", meaning: "a loop that never ends by itself" },
+          { word: "costume", meaning: "one of the pictures a Scratch sprite can show" },
+          { word: "animation", meaning: "pictures shown one after another, quickly, so things seem to move" },
+          { word: "frame", meaning: "one picture in an animation" },
+        ],
+      },
+      practice: {
+        intro: "Forever or repeat?",
+        questions: [
+          {
+            type: "match",
+            q: "Which loop would you use? Match each job to the best loop.",
+            pairs: [["Draw the 4 sides of a square", "repeat (4)"], ["Play music for the whole game", "forever"], ["Jump 3 times then stop", "repeat (3)"]],
+          },
+          { type: "choice", q: "Inside 'forever' are 'move (10) steps' and 'if on edge, bounce'. What happens when you click the green flag?", options: ["The sprite moves once and stops", "The sprite goes back and forth across the stage until you click stop", "The sprite disappears"], answer: 1 },
+          { type: "choice", q: "Why can't you join a block underneath a 'forever' loop?", options: ["It would never run, because the loop never finishes", "Scratch has run out of blocks", "Only Looks blocks can go there"], answer: 0 },
+          { type: "type", q: "Which Looks block swaps a sprite to its next picture? Type its name.", answer: ["next costume", "'next costume'", "next costume block"] },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "Animation shows ___ quickly one after another. A ___ loop keeps going until you click the stop sign.",
+            bank: ["frames", "forever", "repeat", "sounds"],
+            answers: ["frames", "forever"],
+          },
+        ],
+      },
+      task: {
+        title: "Animated aquarium",
+        intro: "Build an aquarium where the fish swim forever. No device? Make a flip book instead.",
+        need: ["A computer or tablet with Scratch, used with a grown-up", "A small notebook or a pad of sticky notes", "A pencil"],
+        steps: [
+          "With a grown-up, open Scratch and click 'Create'. Click the 'Choose a Backdrop' button at the bottom right and pick an underwater scene.",
+          "Click 'Choose a Sprite' and add a fish. You can delete the cat by clicking the small bin on its sprite tile.",
+          "Give the fish this script: 'when green flag clicked', 'set rotation style (left-right)', then a 'forever' loop with 'move (5) steps', 'if on edge, bounce', 'next costume' and 'wait (0.2) seconds' inside.",
+          "Click the green flag. Then add a second fish with a different number in 'move ( ) steps'. Which one is faster, and why?",
+          "Challenge: add a 'turn right (15) degrees' block (the one with the clockwise arrow) before the loop so a fish swims at an angle.",
+          "Save with File, 'Save to your computer'.",
+          "Unplugged: on the bottom corner of each page of a small notebook, draw a fish. Move it a little further on each page. Flick through the pages: you've made an animation. Write its 'code' on the first page, for example 'forever: move a little, flap tail'.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "When does a 'forever' loop stop?", options: ["After 10 goes", "When you click the red stop sign", "When the sprite gets tired"], answer: 1 },
+        { type: "choice", q: "Which would be best for background music that plays all through a game?", options: ["A forever loop", "repeat (2)", "No loop at all"], answer: 0 },
+        { type: "type", q: "What is the name for a loop that never ends by itself? Two words: ___ loop.", answer: ["infinite", "infinite loop", "an infinite loop", "forever", "forever loop"] },
+        { type: "choice", q: "What does 'next costume' do?", options: ["Deletes the sprite", "Shows the sprite's next picture", "Moves the sprite 10 steps"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which of these run a forever loop in real life? There is more than one.",
+          options: ["A traffic light changing all day", "Blowing out four birthday candles", "A game checking which keys are pressed while you play", "Jumping three times"],
+          answers: [0, 2],
+        },
+        { type: "choice", q: "A sprite flips upside down when it bounces. Which block fixes this?", options: ["'next costume'", "'wait (1) seconds'", "'set rotation style (left-right)'"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with Scratch", "A small notebook or sticky notes", "A pencil"],
+        tips: [
+          "Children love infinite loops, and that's fine. Show them the red stop sign early so they always know how to stop a program.",
+          "If nothing moves, check the script is joined to 'when green flag clicked'. Blocks that aren't snapped together don't run.",
+          "The flip book is worth doing even if you have a device: it shows clearly that animation is just a loop of slightly different pictures.",
+        ],
+        younger: "Just animate one sprite with 'next costume' and 'wait' in a forever loop. Try changing the wait time and talk about what happens.",
+        older: "Use the costume editor to draw a third costume for a sprite, or add a forever loop to a backdrop with 'change (color) effect by (25)' and a wait, so the sea slowly changes colour.",
+      },
+    },
+    {
+      slug: "coding-loops-3",
+      title: "Drawing shapes with the pen",
+      emoji: "📐",
+      minutes: 50,
+      goal: "I can use the Pen extension and a loop to draw regular polygons, working out the turn with 360 ÷ the number of sides.",
+      starter: [
+        { type: "choice", q: "When does a 'forever' loop stop?", options: ["After one go", "When you click the red stop sign", "After exactly 100 goes"], answer: 1 },
+        { type: "type", q: "What do we call one picture in an animation?", answer: ["frame", "a frame", "frames"] },
+        { type: "choice", q: "Which loop is best for 'jump 3 times'?", options: ["forever", "repeat (3)"], answer: 1 },
+        { type: "choice", q: "What does 'next costume' do?", options: ["Changes to the sprite's next picture", "Makes a new sprite", "Stops the program"], answer: 0 },
+        { type: "pick", q: "Which are true about a forever loop? There is more than one.", options: ["It has no number in it", "Nothing can join underneath it", "It always runs exactly ten times"], answers: [0, 1] },
+        { type: "choice", q: "How many degrees are there in a full turn?", options: ["90", "180", "360"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "The Pen extension",
+            text: [
+              "Scratch can draw! Click the 'Add Extension' button at the very bottom left of the screen and choose 'Pen'. A new green category of blocks appears.",
+              "The most important ones are 'pen down', which makes the sprite leave a line wherever it moves, and 'pen up', which stops it drawing. 'erase all' wipes the stage clean, and 'set pen color to' and 'set pen size to' change how the line looks.",
+              "Good drawing scripts start the same way: 'erase all', 'pen up', 'go to x: (0) y: (0)' to move to the middle, 'point in direction (90)' to face right, then 'pen down'. That way every drawing starts from the same place, facing the same way.",
+              "This idea is older than Scratch. In the late 1960s, a language called Logo let children steer a 'turtle', sometimes a real robot with a pen, to draw shapes with commands like 'forward' and 'right'. The Scratch pen works in the same way.",
+            ],
+          },
+          {
+            heading: "How far to turn",
+            text: [
+              "To draw a square, the sprite moves, turns, moves, turns, four times. In code: 'repeat (4)' with 'move (100) steps' and 'turn right (90) degrees' inside. The turn right block is the one with the clockwise arrow.",
+              "The number in the turn block is how far the sprite turns at each corner. This is not the angle inside the shape, but the angle the sprite turns through as it changes direction. It is called the turning angle, or exterior angle.",
+              "Walk all the way round any shape and you end up facing the way you started: you have turned exactly one full turn, 360 degrees. Each corner of a regular polygon gets an equal share. So: turning angle = 360 ÷ number of sides.",
+              "A triangle needs 360 ÷ 3 = 120 degrees, a pentagon 360 ÷ 5 = 72, a hexagon 360 ÷ 6 = 60 and an octagon 360 ÷ 8 = 45. A common bug is turning 60 for a triangle, because the angles inside an equilateral triangle are 60 degrees. Try it and see what goes wrong!",
+            ],
+          },
+          {
+            heading: "Circles and stars",
+            text: [
+              "The more sides a regular polygon has, the more it looks like a circle. 'repeat (36)' with 'move (10) steps' and 'turn right (10) degrees' draws a 36-sided shape that looks almost perfectly round.",
+              "The stage is 480 steps wide and 360 steps tall, so watch your sizes. A hexagon with sides of 200 steps will run off the edge. More sides usually means shorter moves.",
+              "Stars use a bigger turn. 'repeat (5)' with 'move (150) steps' and 'turn right (144) degrees' draws a five-pointed star. Here the sprite turns 5 × 144 = 720 degrees: two full turns, not one, which is why the lines cross over.",
+              "Notice how small the code is. Without a loop, a 36-sided shape would need 72 blocks. With a loop it needs three, and you change the shape by changing just two numbers.",
+            ],
+          },
+        ],
+        words: [
+          { word: "extension", meaning: "an extra set of blocks you add to Scratch, like Pen" },
+          { word: "regular polygon", meaning: "a flat shape with straight sides that are all the same length and angles that are all equal" },
+          { word: "turning angle", meaning: "how far the sprite turns at each corner; for a regular polygon, 360 ÷ the number of sides" },
+          { word: "degrees", meaning: "the units we use to measure turns and angles; a full turn is 360 degrees" },
+          { word: "pen down", meaning: "the block that makes a sprite draw a line as it moves" },
+        ],
+      },
+      practice: {
+        intro: "Work out the turns.",
+        questions: [
+          { type: "type", q: "A regular hexagon has 6 sides. How many degrees should the sprite turn at each corner?", answer: ["60", "60 degrees", "60°"] },
+          {
+            type: "match",
+            q: "Match each shape to its turning angle.",
+            pairs: [["Square (4 sides)", "90"], ["Equilateral triangle (3 sides)", "120"], ["Regular pentagon (5 sides)", "72"], ["Regular octagon (8 sides)", "45"]],
+          },
+          { type: "choice", q: "Someone uses 'repeat (3)' with 'move (100) steps' and 'turn right (60) degrees'. What goes wrong?", options: ["Nothing, it draws a perfect triangle", "The sprite turns too little, so the shape doesn't close up", "It draws a square"], answer: 1 },
+          { type: "choice", q: "Which block makes the sprite start drawing a line as it moves?", options: ["'erase all'", "'pen up'", "'pen down'"], answer: 2 },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "To draw a regular polygon, divide ___ by the number of ___ to find the turn.",
+            bank: ["360", "sides", "100", "colours"],
+            answers: ["360", "sides"],
+          },
+        ],
+      },
+      task: {
+        title: "Shape gallery",
+        intro: "Plan your turns on paper, then draw a whole gallery of shapes with one short loop. No device? Be the sprite.",
+        need: ["A computer or tablet with Scratch, used with a grown-up", "Paper, a pencil and a ruler", "A protractor if you have one", "Some space to walk around"],
+        steps: [
+          "On paper, make a table with three columns: shape, number of sides, turning angle. Fill it in for a triangle, square, pentagon, hexagon, octagon and decagon (10 sides), using 360 ÷ sides.",
+          "In Scratch, add the Pen extension. Build: 'when green flag clicked', 'erase all', 'pen up', 'go to x: (0) y: (0)', 'point in direction (90)', 'pen down', then 'repeat (4)' with 'move (100) steps' and 'turn right (90) degrees' inside.",
+          "Click the flag to draw a square. Now change only the repeat number and the turn to draw each shape in your table. Shorten the move for shapes with lots of sides so they fit.",
+          "Try the triangle bug on purpose: turn 60 instead of 120. Describe what happens and why.",
+          "Challenge: draw a five-pointed star with a turn of 144. Then add 'set pen color to' and 'set pen size to' blocks to make your gallery colourful.",
+          "Unplugged: be the sprite. Walk 4 big steps, then turn a quarter turn to your right, four times. Where do you end up? Now try a triangle: walk, then turn a third of a full turn, three times. Draw your path on paper afterwards.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Where do you find the pen blocks in Scratch?", options: ["They're always in Motion", "Click 'Add Extension' and choose Pen", "In the Sound category"], answer: 1 },
+        { type: "type", q: "What is the turning angle for a regular pentagon (5 sides)? Type the number.", answer: ["72", "72 degrees", "72°"] },
+        { type: "choice", q: "Why is the turning angle 360 ÷ the number of sides?", options: ["Because a sprite turns one full turn of 360 degrees to get all the way round the shape", "Because every shape has 360 sides", "Because Scratch only knows the number 360"], answer: 0 },
+        { type: "choice", q: "'repeat (8)' with 'move (50) steps' and 'turn right (45) degrees' inside draws...", options: ["a square", "a regular octagon", "a star"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which blocks would you put before the loop so every drawing starts in the same place? There is more than one.",
+          options: ["'erase all'", "'go to x: (0) y: (0)'", "'next costume'", "'point in direction (90)'"],
+          answers: [0, 1, 3],
+        },
+        { type: "choice", q: "A five-pointed star uses 'turn right (144) degrees' five times. How far does the sprite turn altogether?", options: ["360 degrees", "144 degrees", "720 degrees"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with Scratch", "Paper, pencil and ruler", "A protractor (optional)", "Space to walk around"],
+        tips: [
+          "The big idea is the turning angle. Children often use the angle inside the shape instead; walking the shape on the floor makes the difference very clear.",
+          "If drawings look messy, check that 'pen up' comes before 'go to x: (0) y: (0)', or the sprite draws a line on its way to the middle.",
+          "This lesson links well to Year 5 and 6 maths on angles in a full turn and properties of regular polygons.",
+        ],
+        younger: "Stick to the square and triangle, and walk them together first. Let your child type the turn and check whether the shape closes up.",
+        older: "Make one script draw any polygon: create a variable called 'sides', set it to a number, and use 'repeat (sides)' with 'turn right (360 / sides) degrees', using the divide block from Operators.",
+      },
+    },
+    {
+      slug: "coding-loops-4",
+      title: "Loops inside loops",
+      emoji: "🌸",
+      minutes: 50,
+      goal: "I can predict what a nested loop will do, and use one to draw a repeating pattern.",
+      starter: [
+        { type: "type", q: "What is the turning angle for a square? Type the number.", answer: ["90", "90 degrees", "90°"] },
+        { type: "choice", q: "What is the turning angle for an equilateral triangle?", options: ["60", "120", "90"], answer: 1 },
+        { type: "choice", q: "Which block makes the sprite stop drawing?", options: ["'pen up'", "'pen down'", "'erase all'"], answer: 0 },
+        { type: "choice", q: "How do you work out the turn for any regular polygon?", options: ["360 × the number of sides", "360 ÷ the number of sides", "100 − the number of sides"], answer: 1 },
+        { type: "match", q: "Match each shape to its turn.", pairs: [["Hexagon", "60"], ["Octagon", "45"], ["Pentagon", "72"]] },
+        { type: "choice", q: "Why do we add the Pen extension?", options: ["To make the sprite talk", "To let sprites draw lines as they move", "To save the project"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is a nested loop?",
+            text: [
+              "A nested loop is a loop inside another loop. The one on the outside is the outer loop and the one inside is the inner loop. In Scratch, you simply drop a 'repeat' block inside another 'repeat' block.",
+              "The rule to remember: every time the outer loop runs once, the inner loop runs all the way through. So 'repeat (3)' around 'repeat (4)' with 'clap' inside makes 3 × 4 = 12 claps.",
+              "You already live inside nested loops. A school week is like 'repeat (5) days', and inside each day is 'repeat (6) lessons'. That's 5 × 6 = 30 lessons a week. A clock is the same: for every hour, the minute hand goes round 60 minutes.",
+              "Each single run through a loop is called an iteration. In the clapping example, the outer loop has 3 iterations, and each one contains 4 iterations of the inner loop.",
+            ],
+          },
+          {
+            heading: "Patterns from shapes",
+            text: [
+              "Nested loops are brilliant for patterns. The inner loop draws a shape. The outer loop repeats that shape, turning a little in between, so the shapes fan out around a point like the petals of a flower.",
+              "Here is a flower made of squares: an outer 'repeat (12)' contains an inner 'repeat (4)' with 'move (80) steps' and 'turn right (90) degrees', and then, after the inner loop but still inside the outer one, 'turn right (30) degrees'.",
+              "Why 30? Twelve squares need to spread evenly round a full turn, so 360 ÷ 12 = 30. It's the same rule as before, used for the outer loop: outer repeats × outer turn = 360.",
+              "Swap the square for a hexagon, or change 12 to 36 and 30 to 10, and you get a completely different pattern from a tiny change to the code. That's the power of loops.",
+            ],
+          },
+          {
+            heading: "Reading nested code carefully",
+            text: [
+              "In nested code, where a block sits matters enormously. 'turn right (30) degrees' inside the inner loop runs 48 times; inside only the outer loop it runs 12 times. Same block, very different picture.",
+              "To predict what code will do, trace it like a computer. Point at each block in turn and keep a tally on paper of how many times each loop has run. Tracing is slow, but it's how programmers find out exactly what their code does.",
+              "A nice trick is to put 'change pen (color) by (10)' in the outer loop. Each petal is then drawn in a slightly different colour, so you can see the order the loop drew them.",
+            ],
+          },
+        ],
+        words: [
+          { word: "nested loop", meaning: "a loop inside another loop" },
+          { word: "outer loop", meaning: "the loop on the outside of a nested loop" },
+          { word: "inner loop", meaning: "the loop inside; it runs all the way through for each go of the outer loop" },
+          { word: "iteration", meaning: "one single run through a loop" },
+          { word: "trace", meaning: "to work through code step by step, keeping track of what happens" },
+        ],
+      },
+      practice: {
+        intro: "Predict the nested loops.",
+        questions: [
+          { type: "choice", q: "'repeat (2)' around 'repeat (5)' with 'jump' inside. How many jumps?", options: ["7", "25", "10"], answer: 2 },
+          { type: "type", q: "You want 8 squares spread evenly round a full turn. What should the outer turn be? Type the number of degrees.", answer: ["45", "45 degrees", "45°"] },
+          {
+            type: "choice",
+            q: "Outer 'repeat (3)' contains: 'clap', then an inner 'repeat (2)' with 'stomp' inside. What happens?",
+            options: ["Clap, stomp, stomp, clap, stomp, stomp, clap, stomp, stomp", "Clap, clap, clap, stomp, stomp", "Clap, stomp, clap, stomp"],
+            answer: 0,
+          },
+          {
+            type: "pick",
+            q: "Outer 'repeat (6)' contains an inner 'repeat (3)' that draws a triangle, then 'turn right (60) degrees'. Which are true? There is more than one.",
+            options: ["It draws 6 triangles", "The inner loop runs 18 times altogether", "The triangles are spread evenly round a full turn", "It draws 3 triangles"],
+            answers: [0, 1, 2],
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "For every one run of the ___ loop, the ___ loop runs all the way through.",
+            bank: ["outer", "inner", "forever", "green"],
+            answers: ["outer", "inner"],
+          },
+        ],
+      },
+      task: {
+        title: "Spinning flowers",
+        intro: "Use a nested loop to draw a flower of shapes, then invent your own pattern. No device? Make one with a card square and a pencil.",
+        need: ["A computer or tablet with Scratch, used with a grown-up", "Paper and coloured pencils", "A small square of card, about 5 cm across, and scissors"],
+        steps: [
+          "In Scratch, add the Pen extension. Start with 'when green flag clicked', 'erase all', 'pen up', 'go to x: (0) y: (0)', 'point in direction (90)' and 'pen down'.",
+          "Add an outer 'repeat (12)'. Inside it, put an inner 'repeat (4)' with 'move (80) steps' and 'turn right (90) degrees'. Below the inner loop, but still inside the outer one, add 'turn right (30) degrees'.",
+          "Before you click the flag, predict: how many squares, and how many lines altogether? Then click and check.",
+          "Add 'change pen (color) by (10)' inside the outer loop. Then change the inner loop to draw triangles or hexagons, and work out the outer turn for different numbers of petals.",
+          "Move the 'turn right (30) degrees' into the inner loop by mistake. What happens? Put it back.",
+          "Unplugged: draw a dot in the middle of your paper. Put one corner of the card square on the dot and draw round it. Turn the card a little around the dot and draw round it again. Keep going until you're back where you started. Write the nested loop that describes what you did.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a nested loop?", options: ["A loop that never ends", "A loop inside another loop", "A loop with no blocks in it"], answer: 1 },
+        { type: "choice", q: "'repeat (4)' around 'repeat (3)' with 'clap' inside. How many claps?", options: ["7", "43", "12"], answer: 2 },
+        { type: "type", q: "A flower has 10 identical petals spread round a full turn. What is the turn between petals? Type the number of degrees.", answer: ["36", "36 degrees", "36°"] },
+        { type: "choice", q: "What is one single run through a loop called?", options: ["An iteration", "A sprite", "A costume"], answer: 0 },
+        {
+          type: "choice",
+          q: "Outer 'repeat (5)' holds an inner 'repeat (4)' that draws a square. How many lines does the sprite draw altogether?",
+          options: ["9", "20", "45"],
+          answer: 1,
+        },
+        { type: "choice", q: "Why does it matter whether a block is inside the inner loop or only the outer loop?", options: ["It doesn't matter at all", "It changes how many times the block runs", "It changes the sprite's name"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with Scratch", "Paper and coloured pencils", "Card and scissors"],
+        tips: [
+          "Nested loops are a real step up. If your child is stuck, act the clapping example out together before going back to the screen.",
+          "Dragging the inner loop into the right place takes care. Watch for the outer turn landing inside the inner loop, which is the most common slip.",
+          "The patterns are very satisfying; screenshot or print the favourites for a 'code art' display.",
+        ],
+        younger: "Do the clap-and-stomp rhythms out loud, then draw just one flower in Scratch by changing the numbers in a ready-made script.",
+        older: "Try three loops deep: a flower of flowers, moving to a new spot and drawing a whole flower each time. Or use 'Make a Block' in My Blocks to create a 'square' block of your own, and use it inside a loop.",
+      },
+    },
+    {
+      slug: "coding-loops-5",
+      title: "Scores and conditions",
+      emoji: "🎯",
+      minutes: 50,
+      goal: "I can use a variable to keep a score, and put an 'if' block inside a loop so a game keeps checking what is happening.",
+      starter: [
+        { type: "choice", q: "What is a nested loop?", options: ["A loop inside another loop", "A loop that never runs", "A drawing of a bird's nest"], answer: 0 },
+        { type: "choice", q: "'repeat (3)' around 'repeat (5)' with 'hop' inside. How many hops?", options: ["8", "15", "35"], answer: 1 },
+        { type: "type", q: "What is one run through a loop called?", answer: ["iteration", "an iteration", "iterations"] },
+        { type: "choice", q: "Twelve squares are spread evenly round a full turn. What is the turn between them?", options: ["30 degrees", "12 degrees", "90 degrees"], answer: 0 },
+        { type: "match", q: "Match each word to its meaning.", pairs: [["Outer loop", "The loop on the outside"], ["Inner loop", "The loop inside"], ["Trace", "Work through code step by step"]] },
+        { type: "choice", q: "For each run of the outer loop, the inner loop runs...", options: ["once only", "all the way through", "not at all"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Variables: a labelled box",
+            text: [
+              "A variable is a named place where a program stores a value that can change, like a box with a label on it. A game's score, the number of lives left and the time remaining are all variables.",
+              "In Scratch, go to the Variables category and click 'Make a Variable'. Give it a clear name, like 'score', not 'thing'. A small display appears on the stage showing its value.",
+              "Two blocks do most of the work. 'set (score) to (0)' puts a value in the box, replacing what was there. 'change (score) by (1)' adds to it. A negative number, like 'change (lives) by (-1)', takes away.",
+              "Always set a score to 0 at the start of a game, just after 'when green flag clicked'. Otherwise the variable keeps its value from last time, and the new game starts with the old score.",
+            ],
+          },
+          {
+            heading: "Conditions: if ... then",
+            text: [
+              "A condition is a question that is either true or false. 'Is the cat touching the apple?' 'Is the space key pressed?' Choosing what to do based on a condition is called selection.",
+              "Scratch has the 'if < > then' block in Control. Like a loop, it wraps around other blocks, but it runs them once, and only if the condition is true. If the condition is false, it skips them.",
+              "The condition goes in the pointed, six-sided gap. Many conditions come from the Sensing category, such as 'touching (mouse-pointer)?', 'touching color?' and 'key (space) pressed?'. Operators blocks such as '( ) = ( )' let you check a variable too, for example whether the score equals 10.",
+            ],
+          },
+          {
+            heading: "Checking again and again",
+            text: [
+              "Here's a puzzle. You put 'if touching (Sprite1) then change (score) by (1)' straight after the green flag. It never works. Why? The program checks just once, at the very start, when nothing is touching anything, and then it's finished.",
+              "The fix is to put the 'if' inside a 'forever' loop. Now the program asks the question over and over, many times every second. Whenever the answer is true, it scores. Nearly every game is built around a loop like this, often called a game loop.",
+              "Scratch also has 'repeat until < >'. It's a loop controlled by a condition instead of a number: it keeps repeating until the condition becomes true, then stops and the program carries on. 'repeat until <touching (edge)?>' with 'move (5) steps' inside walks a sprite to the edge of the stage and stops it there.",
+            ],
+          },
+        ],
+        words: [
+          { word: "variable", meaning: "a named place that stores a value which can change, like a score" },
+          { word: "condition", meaning: "a question that is either true or false" },
+          { word: "selection", meaning: "when a program chooses what to do depending on a condition" },
+          { word: "game loop", meaning: "a forever loop that keeps checking and updating everything in a game" },
+          { word: "repeat until", meaning: "a loop that keeps going until a condition becomes true" },
+        ],
+      },
+      practice: {
+        intro: "Predict the scores.",
+        questions: [
+          { type: "type", q: "'set (score) to (0)', then 'repeat (5)' with 'change (score) by (2)' inside. What is the score at the end?", answer: ["10", "ten"] },
+          { type: "choice", q: "'set (lives) to (10)', then 'repeat (3)' with 'change (lives) by (-2)' inside. How many lives are left?", options: ["16", "7", "4"], answer: 2 },
+          { type: "choice", q: "Why should an 'if touching' check go inside a 'forever' loop?", options: ["So the program checks over and over, not just once", "To make the sprite bigger", "Because 'if' blocks can't go anywhere else"], answer: 0 },
+          {
+            type: "match",
+            q: "Match each block to what it does.",
+            pairs: [["'set (score) to (0)'", "Puts a value in the variable"], ["'change (score) by (1)'", "Adds to the variable"], ["'key (space) pressed?'", "Checks a condition"], ["'repeat until < >'", "Loops until something is true"]],
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "A ___ is a question that is either true or false. A ___ stores a value that can change.",
+            bank: ["condition", "variable", "costume", "backdrop"],
+            answers: ["condition", "variable"],
+          },
+        ],
+      },
+      task: {
+        title: "Catch the star",
+        intro: "Build a simple game where you steer the cat to catch a star and score points. No device? Play a dice game that works like a program.",
+        need: ["A computer or tablet with Scratch, used with a grown-up", "A dice", "Paper and a pencil"],
+        steps: [
+          "In Scratch, give the cat this script: 'when green flag clicked', then 'forever' with 'go to (mouse-pointer)' inside. Now the cat follows your mouse or finger.",
+          "Add a Star sprite. In Variables, click 'Make a Variable' and call it 'score'.",
+          "Give the star this script: 'when green flag clicked', 'set (score) to (0)', 'go to (random position)', then a 'forever' loop. Inside the loop put 'if <touching (Sprite1)?> then', and inside that 'change (score) by (1)' and 'go to (random position)'.",
+          "Play! Then try moving the 'if' block outside the forever loop. Does scoring still work? Explain why, then put it back.",
+          "Challenge: add another 'if' inside the loop: 'if <(score) = (10)> then' with 'say (You win!) for (2) seconds' and 'stop (all)'. Use the '( ) = ( )' block from Operators.",
+          "Save with File, 'Save to your computer'.",
+          "Unplugged: write this program and run it with a dice. 'set score to 0. repeat 10: roll the dice; if the roll is 6, change score by 3; if the roll is 1, change score by -1.' Keep the score on paper. Before you start, predict the highest and lowest scores possible.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a variable?", options: ["A named place that stores a value which can change", "A loop that never ends", "A type of sprite"], answer: 0 },
+        { type: "type", q: "'set (score) to (3)', then 'repeat (4)' with 'change (score) by (5)' inside. What is the score at the end?", answer: ["23", "twenty-three", "twenty three"] },
+        { type: "choice", q: "Why do we 'set (score) to (0)' at the start of a game?", options: ["To make the sprite move", "Because variables can only hold 0", "So the new game doesn't start with the old score"], answer: 2 },
+        { type: "choice", q: "An 'if touching' check is placed straight after the green flag, not in a loop. What happens?", options: ["It checks forever", "It only checks once, at the start", "It makes the game run faster"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which of these are conditions (true or false questions)? There is more than one.",
+          options: ["'touching (mouse-pointer)?'", "'move (10) steps'", "'key (space) pressed?'", "'next costume'"],
+          answers: [0, 2],
+        },
+        { type: "choice", q: "What does 'repeat until <touching (edge)?>' do?", options: ["Repeats exactly 10 times", "Keeps repeating until the sprite touches the edge, then stops", "Never repeats"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with Scratch", "A dice", "Paper and pencil"],
+        tips: [
+          "The 'if outside the loop' experiment is the heart of this lesson. Let your child discover it doesn't work before explaining why.",
+          "If the score climbs very fast, it's because the star is still touching the cat on the next check. Moving the star with 'go to (random position)' straight after scoring fixes it.",
+          "Variables also appear in Year 6 maths as simple algebra. A variable in code is a similar idea: a name standing for a number.",
+        ],
+        younger: "Build the game with your child, then let them change one thing at a time: the score per catch, or a different sprite to catch.",
+        older: "Add a timer: a 'time' variable set to 30, and a separate script with 'repeat until <(time) = (0)>' containing 'wait (1) seconds' and 'change (time) by (-1)', then 'stop (all)'.",
+      },
+    },
+    {
+      slug: "coding-loops-6",
+      title: "Debug it, then build it",
+      emoji: "🛠️",
+      minutes: 55,
+      goal: "I can find and fix bugs in loops, and plan, build, test and improve my own animated pattern or simple game.",
+      starter: [
+        { type: "choice", q: "What is a variable?", options: ["A loop that never ends", "A named place that stores a value which can change", "A Scratch backdrop"], answer: 1 },
+        { type: "type", q: "'set (score) to (0)', then 'repeat (3)' with 'change (score) by (4)' inside. What is the score?", answer: ["12", "twelve"] },
+        { type: "choice", q: "Which block checks a true or false question and only runs its blocks if it's true?", options: ["'repeat (10)'", "'if < > then'", "'forever'"], answer: 1 },
+        { type: "choice", q: "Where should an 'if touching' check go in a game?", options: ["Inside a forever loop", "After the stop sign", "Nowhere, it can't be used"], answer: 0 },
+        { type: "match", q: "Match each loop to how it decides to stop.", pairs: [["'repeat (10)'", "After a set number of times"], ["'forever'", "Only when the program is stopped"], ["'repeat until < >'", "When a condition becomes true"]] },
+        { type: "choice", q: "What is a condition?", options: ["A question that is true or false", "A picture of a sprite", "A sound effect"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Common loop bugs",
+            text: [
+              "Loops are powerful, which means a small mistake in a loop gets repeated too. Programmers learn to spot the same few bugs again and again.",
+              "Wrong numbers: the loop repeats the wrong number of times, or the turn is wrong, like turning 60 instead of 120 for a triangle. Blocks in the wrong place: 'erase all' inside a drawing loop wipes each line as soon as it's drawn, and 'set (score) to (0)' inside a forever loop resets the score many times a second, so it can never rise.",
+              "Missing blocks: no 'pen down', so nothing is drawn; no 'wait', so an animation flashes past too fast to see; or a script not joined to 'when green flag clicked', so it never starts. And the wrong kind of loop: a 'forever' when the program needed to stop, or an 'if' that isn't inside any loop and only checks once.",
+            ],
+          },
+          {
+            heading: "How to debug",
+            text: [
+              "First, predict what the code should do. Then run it and compare. The difference between what you expected and what happened is your best clue to where the bug is.",
+              "Next, narrow it down. In Scratch you can click a single block, or a small stack, to run just that part. You can also add a 'say' block with a variable in it, so the sprite tells you the value at that moment. Tracing on paper, with a tally of each loop, helps with nested loops.",
+              "Change one thing at a time, then test again. If you change three things at once and it works, you won't know which change fixed it. Explaining your code out loud to someone, even a teddy, often makes a bug jump out at you: programmers really do this, and call it rubber duck debugging.",
+            ],
+          },
+          {
+            heading: "Plan, build, test, improve",
+            text: [
+              "Now it's your turn to be the designer. Choose an animated pattern, such as a spinning flower that changes colour, or a simple game, such as catching falling apples or dodging a bouncing ball.",
+              "Plan on paper first. Sketch the stage. List each sprite and what it should do. Write which loops you need (repeat, forever, nested), which variables (a score, lives, a timer) and which conditions (if touching, if a key is pressed).",
+              "Build in small pieces and test each piece as soon as it's made, rather than building everything and hoping. Then ask someone to try it and watch what they do. Use what you notice to improve it. Real programmers go round this plan, build, test, improve cycle many times.",
+              "Save to your computer when you finish. Sharing a project on the Scratch website needs an account and a grown-up's permission, and you should never put your real name, school or photos of yourself in a project.",
+            ],
+          },
+        ],
+        words: [
+          { word: "bug", meaning: "a mistake in a program that makes it do the wrong thing" },
+          { word: "debug", meaning: "to find and fix bugs" },
+          { word: "test", meaning: "to run a program to check it does what you expected" },
+          { word: "design", meaning: "a plan for a program, made before you build it" },
+          { word: "evaluate", meaning: "to judge what works well and what could be better" },
+        ],
+      },
+      practice: {
+        intro: "Spot the bug.",
+        questions: [
+          { type: "choice", q: "A hexagon script is 'repeat (6)' with 'move (80) steps' and 'turn right (6) degrees'. What's the bug?", options: ["The turn should be 60, not 6", "The repeat should be 60", "There is no bug"], answer: 0 },
+          { type: "choice", q: "In a game, 'set (score) to (0)' is inside the forever loop. What happens?", options: ["The score goes up twice as fast", "The score keeps going back to 0, so it never really rises", "The game won't start"], answer: 1 },
+          { type: "choice", q: "A square script runs, the sprite moves, but nothing is drawn. Which block is probably missing?", options: ["'next costume'", "'wait (1) seconds'", "'pen down'"], answer: 2 },
+          {
+            type: "order",
+            q: "Put these debugging steps in a sensible order.",
+            items: ["Predict what the code should do", "Run it and compare with your prediction", "Find the part that goes wrong", "Change one thing", "Test again"],
+          },
+          {
+            type: "pick",
+            q: "Which are good debugging habits? There is more than one.",
+            options: ["Change one thing at a time", "Delete everything and start again every time", "Add a 'say' block to show a variable's value", "Explain the code out loud to someone"],
+            answers: [0, 2, 3],
+          },
+        ],
+      },
+      task: {
+        title: "My Scratch project",
+        intro: "Design, build, test and improve your own animated pattern or simple game, using at least two kinds of loop. No device? Design a board game that runs like a program.",
+        need: ["A computer or tablet with Scratch, used with a grown-up", "Paper, pencils and coloured pens", "A dice and counters for the unplugged version"],
+        steps: [
+          "Choose: an animated pattern or a simple game. Write one sentence saying what it will do.",
+          "Plan on paper: sketch the stage, list each sprite and its job, and write which loops, variables and conditions you'll use. Aim for at least two kinds of loop.",
+          "Build the first small piece, such as one sprite moving, and test it before adding anything else. Keep building and testing a piece at a time.",
+          "When something goes wrong, debug it: predict, run, compare, change one thing, test again. Keep a bug diary on paper of each bug and how you fixed it.",
+          "Ask someone in your family to try your project. Watch, but don't help! Write down one thing that worked and one thing to improve, then improve it.",
+          "Save it to your computer, and show your grown-up how the code works, pointing out each loop.",
+          "Unplugged: design a board game whose rules are written as code, such as 'repeat until someone reaches 30: roll the dice; move that many squares; if you land on a star, change score by 2'. Play it with your family, then fix any rules that didn't work.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "A triangle script uses 'turn right (60) degrees'. What should the turn be?", options: ["90", "120", "30"], answer: 1 },
+        { type: "choice", q: "A drawing loop has 'erase all' inside it. What goes wrong?", options: ["The stage is wiped every time round, so the drawing disappears", "The sprite changes costume", "The loop stops early"], answer: 0 },
+        { type: "type", q: "What do we call finding and fixing bugs? Type one word.", answer: ["debugging", "debug", "Debugging"] },
+        { type: "choice", q: "Why should you change only one thing at a time when debugging?", options: ["Scratch only lets you change one block", "Because it is faster to change everything", "So you know which change fixed the bug"], answer: 2 },
+        {
+          type: "gap",
+          q: "Fill in the gaps.",
+          text: "Good programmers ___ before they build, and ___ each small piece as soon as it is made.",
+          bank: ["plan", "test", "delete", "guess"],
+          answers: ["plan", "test"],
+        },
+        { type: "choice", q: "You want to share your project on the Scratch website. What should you do first?", options: ["Add your full name and school", "Ask a grown-up, and make sure there is nothing personal in it", "Share it without telling anyone"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A computer or tablet with Scratch", "Paper, pencils and coloured pens", "A dice and counters"],
+        tips: [
+          "Resist fixing bugs for your child. Ask 'What did you expect? What happened instead? Which block do you think does that part?'",
+          "Projects grow quickly. Encourage a small working version first; extra features can come once the basics work.",
+          "The project may take more than one session, and that's normal. Saving to your computer means it can be opened again with File, 'Load from your computer'.",
+          "If your child wants to share online, you'll need a Scratch account (children under 16 need a parent's email address to sign up). Look at the project together first and check it contains no personal information.",
+        ],
+        younger: "Remix an earlier lesson's project rather than starting from nothing: add a new sprite, a score, or a colour change, and debug it together.",
+        older: "Add a second level, lives as well as a score, or use a 'repeat until' loop to end the game. Write a short evaluation explaining which loops you used and why.",
+      },
+    },
+  ],
+};

@@ -1,0 +1,701 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Human growth and ageing, for ages 9 to 11 (Year 5 'Animals, including humans'). Puberty is covered once, simply and
+ * factually, in lesson 5; families can go further in their own way. Measuring tasks only use willing family members.
+ */
+export const humanGrowth: LessonUnit = {
+  slug: "human-growth",
+  title: "Human growth and ageing",
+  short: "Human growth",
+  subject: "Science",
+  ages: "9 to 11",
+  emoji: "👶",
+  color: "#8A6B8F",
+  summary: "Six lessons on how people grow and change: the stages of human life, how babies grow before birth compared with other animals, changing body proportions, measuring family data, the changes of puberty, and ageing and staying healthy for life.",
+  cover: "/lessons/units/human-growth.jpg",
+  lessons: [
+    {
+      slug: "human-growth-1",
+      title: "The stages of a human life",
+      emoji: "🧬",
+      minutes: 50,
+      goal: "I can name and describe the main stages of a human life, from baby to old age, and explain what changes at each stage.",
+      starter: [
+        { type: "choice", q: "What do we call a very young child who has just learned to walk?", options: ["A teenager", "A toddler", "An adult"], answer: 1 },
+        { type: "pick", q: "Which of these are living things that grow? There is more than one.", options: ["A puppy", "A pebble", "A sunflower", "A baby"], answers: [0, 2, 3] },
+        { type: "choice", q: "Which of these can a newborn baby do by itself?", options: ["Walk to the kitchen", "Suck milk", "Read a book"], answer: 1 },
+        { type: "type", q: "What word do we use for a person aged 13 to 19? It ends in '-teen'.", answer: ["teenager", "a teenager", "teenagers", "teen"] },
+        { type: "choice", q: "What do we call the pattern of changes a living thing goes through from birth to death?", options: ["A life cycle", "A food chain", "A habitat"], answer: 0 },
+        { type: "choice", q: "Roughly how long do most people in the UK live?", options: ["About 20 years", "About 80 years", "About 200 years"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "A human life cycle",
+            text: [
+              "Every living thing has a life cycle: a pattern of changes from the start of its life to the end. A butterfly's life cycle has four very different stages: egg, caterpillar, chrysalis and adult. A human's life cycle is gentler, but it still has clear stages.",
+              "Scientists often describe the human life cycle like this: baby, toddler, child, adolescent (teenager), adult and older adult. The stages blend into each other. Nobody wakes up one morning and is suddenly an adult!",
+              "Humans are mammals. Like other mammals, we grow inside our mother's body before we are born, we drink milk when we are babies, and we have hair on our bodies.",
+              "One special thing about humans is how long we take to grow up. A horse can stand within an hour or two of being born. A human baby needs grown-ups to look after it for many years.",
+            ],
+          },
+          {
+            heading: "From baby to child",
+            text: [
+              "A newborn baby is usually about 50 centimetres long and weighs around 3.5 kilograms, about the same as a large bag of potatoes. It can suck, cry, grip a finger and sleep, but it cannot hold its own head up.",
+              "In the first year, babies grow faster than at any other time after birth. They learn to smile, roll over, sit up, crawl and, often around their first birthday, take their first steps.",
+              "A toddler, from about 1 to 3 years old, is busy learning to walk steadily, talk in short sentences and feed themselves. By about 4, most children are roughly twice as tall as when they were born.",
+              "Childhood, from about 4 until 10 or so, is a time of steady growth. Children learn to read, write, run, swim, make friends and solve problems. Their brains are learning all the time.",
+            ],
+          },
+          {
+            heading: "Adolescence, adulthood and old age",
+            text: [
+              "Adolescence is the stage between childhood and adulthood, usually from about 10 to 19 years old. During it, the body goes through a set of changes called puberty, which we will learn about later in this unit.",
+              "Adults have usually stopped growing taller by their late teens or early twenties. Adulthood is the longest stage. Many adults work, look after homes and families, and keep learning new skills.",
+              "Older adults, sometimes called the elderly, are often in their late sixties and beyond. Their bodies change slowly: hair may turn grey, skin wrinkles, and they may move more slowly. Many stay active, busy and healthy.",
+              "In the UK today, most people live to around 80 years old, and more people than ever reach 100. Each stage of life has its own changes, and its own good things.",
+            ],
+          },
+        ],
+        words: [
+          { word: "life cycle", meaning: "the pattern of changes a living thing goes through from the start of its life to the end" },
+          { word: "toddler", meaning: "a young child, from about 1 to 3 years old, who is learning to walk and talk" },
+          { word: "adolescence", meaning: "the stage of life between childhood and adulthood, usually from about 10 to 19" },
+          { word: "adulthood", meaning: "the stage of life when a person is fully grown" },
+          { word: "mammal", meaning: "an animal with hair or fur that feeds its babies on milk" },
+        ],
+      },
+      practice: {
+        intro: "Put the stages of a human life in order, and match each one to what happens.",
+        questions: [
+          { type: "order", q: "Put the stages of a human life in order, starting with the youngest.", items: ["Baby", "Toddler", "Child", "Adolescent", "Adult", "Older adult"] },
+          {
+            type: "match",
+            q: "Match each stage to something that usually happens during it.",
+            pairs: [["Baby", "Learns to sit up and crawl"], ["Toddler", "Starts to talk in short sentences"], ["Adolescent", "Goes through puberty"], ["Adult", "Has stopped growing taller"]],
+          },
+          { type: "choice", q: "When does a human grow fastest after being born?", options: ["In old age", "In adulthood", "In the first year of life"], answer: 2 },
+          { type: "gap", q: "Fill in the gaps.", text: "Humans are ___, so babies feed on ___. The stage between childhood and adulthood is called ___.", bank: ["mammals", "milk", "adolescence", "reptiles", "seeds", "infancy"], answers: ["mammals", "milk", "adolescence"] },
+          {
+            type: "choice",
+            q: "Why do scientists say the stages of a human life 'blend into each other'?",
+            options: ["Because people change gradually, not suddenly on one day", "Because everyone becomes an adult on their 18th birthday", "Because babies and adults are the same size"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "A life cycle timeline",
+        intro: "Make a timeline of a human life and fill it with facts, then talk to a family member about their own life so far.",
+        need: ["A long strip of paper (tape two sheets together)", "A ruler, pencil and coloured pens", "Family photos, if you have some to look at"],
+        steps: [
+          "Draw a long line across your paper. Mark 0 years at one end and 100 years at the other, then mark every 10 years in between with your ruler.",
+          "Shade the six stages along your line in different colours: baby, toddler, child, adolescent, adult, older adult. Use the ages from the lesson as a guide.",
+          "Under each stage, write two things a person can usually do or learn at that age. Add a small drawing for each stage.",
+          "Mark where you are now with a star. Mark where two or three family members are, if they are happy to tell you their age.",
+          "Ask an older family member about one thing they remember from each stage of their life so far. Write their best memory on your timeline.",
+        ],
+      },
+      exit: [
+        { type: "order", q: "Put these stages in order, youngest first.", items: ["Toddler", "Child", "Adolescent", "Older adult"] },
+        { type: "choice", q: "What is a life cycle?", options: ["A bicycle for growing children", "The food a living thing eats", "The pattern of changes from the start of a life to the end"], answer: 2 },
+        { type: "choice", q: "Roughly how long is a newborn baby?", options: ["About 5 centimetres", "About 50 centimetres", "About 150 centimetres"], answer: 1 },
+        { type: "type", q: "What is the stage between childhood and adulthood called?", answer: ["adolescence", "adolescent", "the teenage years", "teenage years", "teenager"] },
+        {
+          type: "pick",
+          q: "Which of these show that humans are mammals? There is more than one.",
+          options: ["Babies drink milk", "We have hair on our bodies", "We hatch from eggs", "Babies grow inside their mother before birth"],
+          answers: [0, 1, 3],
+        },
+        {
+          type: "choice",
+          q: "Why is a human baby different from a newborn foal?",
+          options: ["It can run straight away", "It needs grown-ups to care for it for many years", "It never grows any bigger"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["A long strip of paper", "A ruler and coloured pens", "Family photos (optional)"],
+        tips: [
+          "The age ranges for each stage are rough guides, not rules. If your child asks 'when exactly does a child become an adult?', it's a great moment to talk about how growing up is gradual.",
+          "Old family photos are brilliant for this lesson, but only share what you're comfortable with. Some families have gaps or harder stories, and the timeline works just as well without photos.",
+          "If a grandparent or older friend can join in by phone or video call, the interview step becomes a real piece of family history.",
+        ],
+        younger: "Sort pictures of people of different ages (from magazines or catalogues) into a line from youngest to oldest, and name each stage.",
+        older: "Research the life cycle of another mammal, such as an elephant or a dog, and draw it underneath your human timeline. Which stages are longer or shorter?",
+      },
+    },
+    {
+      slug: "human-growth-2",
+      title: "Before we are born",
+      emoji: "🤰",
+      minutes: 50,
+      goal: "I can describe how a baby grows before it is born, and compare the gestation period of humans with other animals.",
+      starter: [
+        { type: "order", q: "Put these stages in order, youngest first.", items: ["Baby", "Toddler", "Child", "Adolescent", "Adult"] },
+        { type: "choice", q: "What is a life cycle?", options: ["The pattern of changes from the start of a life to the end", "The way water moves round the world", "A type of exercise"], answer: 0 },
+        { type: "choice", q: "What is adolescence?", options: ["The first year of life", "The stage between childhood and adulthood", "The very last stage of life"], answer: 1 },
+        { type: "pick", q: "Which of these are true of mammals? There is more than one.", options: ["They have hair or fur", "They feed their babies on milk", "They all live in the sea"], answers: [0, 1] },
+        { type: "choice", q: "When does a human grow fastest after birth?", options: ["In the first year", "At age 50", "In old age"], answer: 0 },
+        { type: "type", q: "Roughly how many kilograms does a newborn baby weigh? Type a number.", answer: ["3.5", "3", "4", "3 and a half"], after: "kg" },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Growing inside the womb",
+            text: [
+              "Every human starts life as a single cell, far too small to see without a microscope. That cell grows inside the mother's body, in a stretchy organ called the womb, or uterus.",
+              "The single cell divides again and again, making more and more cells. Over the weeks, these cells form the brain, the heart, the bones, the skin and every other part of the body.",
+              "The growing baby can't eat or breathe air. Instead, it gets food and oxygen from its mother's blood through a tube called the umbilical cord. Your tummy button is where your umbilical cord was once attached!",
+              "Inside the womb, the baby floats in warm fluid that cushions it and keeps it safe. By the end, it can hear sounds from outside, including its mother's voice.",
+            ],
+          },
+          {
+            heading: "Forty weeks of growth",
+            text: [
+              "The time a baby spends growing inside its mother is called the gestation period. For humans it is about 40 weeks, which is roughly 9 months.",
+              "By about 12 weeks, the baby has all its main body parts, including tiny fingers and toes, but it is only about the size of a plum.",
+              "In the middle months the baby grows fast and starts to move. The mother can feel it kicking and turning. In the last few months, it mostly puts on weight and gets ready to breathe and feed after birth.",
+              "When the baby is ready, it is born. Its lungs fill with air for the first time, often with a big cry, and it is ready to start drinking milk.",
+            ],
+          },
+          {
+            heading: "Comparing with other animals",
+            text: [
+              "All mammals grow inside their mothers before they are born, but their gestation periods are very different. A mouse grows for only about 3 weeks. A cat or a dog grows for about 9 weeks.",
+              "A cow's gestation is about 9 months, similar to ours. A horse's is about 11 months. An African elephant has the longest gestation of any land animal: about 22 months, nearly two years!",
+              "Scientists have spotted a pattern: in general, bigger mammals have longer gestation periods. There are exceptions, because how developed a baby is at birth matters too.",
+              "Some babies, like foals and baby giraffes, are born able to stand and walk within hours. Others, like kittens and human babies, are born helpless and need lots of care. Human babies have very big brains that carry on growing fast after birth.",
+            ],
+          },
+        ],
+        words: [
+          { word: "womb", meaning: "the organ inside a mother's body where a baby grows; also called the uterus" },
+          { word: "gestation period", meaning: "the time a baby spends growing inside its mother before it is born" },
+          { word: "umbilical cord", meaning: "the tube that carries food and oxygen from the mother to the growing baby" },
+          { word: "cell", meaning: "the tiny building block that all living things are made from" },
+          { word: "pattern", meaning: "something that happens again and again, which scientists can spot in data" },
+        ],
+      },
+      practice: {
+        intro: "How long does each animal grow before it is born?",
+        questions: [
+          { type: "order", q: "Put these animals in order of gestation period, shortest first.", items: ["Mouse", "Cat", "Human", "Horse", "African elephant"] },
+          {
+            type: "match",
+            q: "Match each animal to its gestation period.",
+            pairs: [["Mouse", "About 3 weeks"], ["Dog", "About 9 weeks"], ["Human", "About 40 weeks"], ["Elephant", "About 22 months"]],
+          },
+          { type: "choice", q: "How does a baby get oxygen before it is born?", options: ["It breathes air through its nose", "Through the umbilical cord from its mother's blood", "It doesn't need any"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "A baby grows inside its mother's ___. The time it spends growing there is called the ___ period.", bank: ["womb", "gestation", "stomach", "holiday", "lungs"], answers: ["womb", "gestation"] },
+          {
+            type: "choice",
+            q: "Which pattern did scientists spot in mammal gestation periods?",
+            options: ["Smaller mammals have longer gestation periods", "All mammals have the same gestation period", "Bigger mammals generally have longer gestation periods"],
+            answer: 2,
+          },
+        ],
+      },
+      task: {
+        title: "Gestation bar chart",
+        intro: "Turn gestation periods into a bar chart and look for the pattern for yourself.",
+        need: ["Squared paper or a ruler and plain paper", "Pencil and coloured pens", "The table of facts below"],
+        steps: [
+          "Copy this table of gestation periods, given in weeks so they are easy to compare: mouse 3 weeks, cat 9 weeks, dog 9 weeks, human 40 weeks, cow 40 weeks, horse 48 weeks, giraffe 65 weeks, African elephant 95 weeks.",
+          "Draw a bar chart. Put the animals along the bottom and 'gestation in weeks' up the side. Count up in 10s. Remember a title and labels on both axes.",
+          "Colour the bars for animals whose babies can walk within a day in one colour, and the others in a different colour.",
+          "Write two sentences about the pattern you see. Is it true that bigger animals have longer gestation periods? Are there any animals that don't quite fit?",
+          "Challenge: write a short paragraph explaining why a human baby needs so much care after birth, even though it has grown for 40 weeks.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "About how long is the gestation period for a human?", options: ["9 weeks", "40 weeks", "22 months"], answer: 1 },
+        { type: "type", q: "What is the name of the tube that carries food and oxygen to a growing baby?", answer: ["umbilical cord", "the umbilical cord", "umbilical", "cord"] },
+        { type: "choice", q: "Which animal has the longest gestation period of any land animal?", options: ["The horse", "The cow", "The African elephant"], answer: 2 },
+        { type: "choice", q: "Where does a baby grow before it is born?", options: ["In the womb", "In the stomach", "In the lungs"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which statements are true? There is more than one.",
+          options: ["Every human starts as a single cell", "By about 12 weeks, the baby has all its main body parts", "Babies breathe air in the womb", "A mouse's gestation period is about 3 weeks"],
+          answers: [0, 1, 3],
+        },
+        {
+          type: "choice",
+          q: "Why can a foal walk within hours, but a human baby can't?",
+          options: ["Foals are lazier", "Different animals are born at different stages of development", "Human babies are born too big"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["Squared paper", "A ruler and coloured pens"],
+        tips: [
+          "This lesson stays with what the science curriculum covers: a baby grows from a single cell in the womb, fed through the umbilical cord. If your child asks how the baby got there, answer in the way that suits your family. It's fine to say 'that's a good question, let's talk about it together later'.",
+          "Children love hearing their own birth story, how long they were or what they weighed. Share what you're comfortable with. Adoptive, foster and other families can talk about 'a baby' rather than 'you'.",
+          "The weeks in the task are rounded so they're easy to plot. Real gestation varies a little from animal to animal.",
+        ],
+        younger: "Match pictures of baby animals to their parents, and talk about which babies can walk soon after birth and which need looking after.",
+        older: "Research the gestation period of a blue whale, a hamster and a kangaroo, and add them to the chart. Find out why the kangaroo is a surprise: its baby finishes growing in a pouch.",
+      },
+    },
+    {
+      slug: "human-growth-3",
+      title: "Growing and changing shape",
+      emoji: "📏",
+      minutes: 50,
+      goal: "I can explain how the proportions of the human body change as we grow, and measure body proportions accurately.",
+      starter: [
+        { type: "choice", q: "What is a gestation period?", options: ["The first year after birth", "The time it takes to learn to walk", "The time a baby grows inside its mother before birth"], answer: 2 },
+        { type: "type", q: "About how many weeks is the human gestation period? Type a number.", answer: ["40", "forty", "38", "39"], after: "weeks" },
+        { type: "choice", q: "What carries food and oxygen to a growing baby?", options: ["The womb", "The umbilical cord", "The lungs"], answer: 1 },
+        { type: "choice", q: "Which mammal has a gestation period of about 3 weeks?", options: ["Mouse", "Elephant", "Horse"], answer: 0 },
+        { type: "pick", q: "Which animals' babies can walk within hours of being born? There is more than one.", options: ["Foal", "Human baby", "Baby giraffe", "Kitten"], answers: [0, 2] },
+        { type: "choice", q: "What pattern do mammal gestation periods show?", options: ["Bigger mammals generally have longer gestation", "Smaller mammals always have longer gestation", "There is no pattern at all"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Not just bigger",
+            text: [
+              "When you grow, you don't just get bigger like a photo being enlarged. Different parts of your body grow at different speeds, so your shape changes too.",
+              "The proportions of something are the sizes of its parts compared with each other, and with the whole. Scientists and artists both study body proportions.",
+              "A newborn baby's head is very big compared with its body: about a quarter of its whole length. In an adult, the head is only about an eighth of their height.",
+              "Babies also have short legs and long bodies compared with adults. During childhood and adolescence, the legs grow fastest, so they make up more and more of a person's height.",
+            ],
+          },
+          {
+            heading: "Why is a baby's head so big?",
+            text: [
+              "The head holds the brain, and the brain grows very quickly before birth and in the first few years. By the age of about 6, a child's brain is already close to adult size.",
+              "Because the head starts big and grows less afterwards, while the arms and legs grow a lot, the head looks smaller and smaller compared with the rest of the body.",
+              "Bones change too. A baby has around 300 bones, many of them partly made of soft, bendy cartilage. As we grow, some of these fuse (join together), so an adult has 206 bones.",
+              "The bones of a baby's skull are not yet joined, which leaves soft spots on its head. This lets the skull change shape slightly at birth and gives the brain room to grow.",
+            ],
+          },
+          {
+            heading: "Measuring proportions",
+            text: [
+              "One way to compare proportions is to count how many 'head heights' tall a person is. A baby is about 4 heads tall. A child of your age is about 6 heads tall. Most adults are about 7 to 8 heads tall.",
+              "Some measurements tend to match each other. In many adults, the arm span (fingertip to fingertip with arms stretched out) is about the same as their height. Children's arm spans are often close to their height too.",
+              "To measure accurately, scientists use the same method each time. They measure in centimetres, start exactly at zero on the ruler or tape, and repeat a measurement to check it.",
+              "Everyone is different, so these are patterns, not rules. Your measurements might not match exactly, and that's completely normal.",
+            ],
+          },
+        ],
+        words: [
+          { word: "proportion", meaning: "the size of one part compared with another part, or with the whole" },
+          { word: "arm span", meaning: "the distance from fingertip to fingertip with your arms stretched out wide" },
+          { word: "cartilage", meaning: "a tough, bendy material in the body, softer than bone" },
+          { word: "fuse", meaning: "to join together to make one piece" },
+          { word: "accurate", meaning: "careful and correct, as close as possible to the true value" },
+        ],
+      },
+      practice: {
+        intro: "How does the body's shape change as we grow?",
+        questions: [
+          { type: "choice", q: "About what fraction of a newborn baby's length is its head?", options: ["About a quarter", "About a tenth", "About a half"], answer: 0 },
+          {
+            type: "match",
+            q: "Match each person to roughly how many head heights tall they are.",
+            pairs: [["Newborn baby", "About 4 heads"], ["Child aged 10", "About 6 heads"], ["Adult", "About 7 to 8 heads"]],
+          },
+          { type: "choice", q: "Which part of the body grows the most during childhood and adolescence?", options: ["The head", "The legs", "The ears"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "A baby has around ___ bones. Some of them ___ as we grow, so an adult has ___ bones.", bank: ["300", "fuse", "206", "50", "vanish", "1000"], answers: ["300", "fuse", "206"] },
+          {
+            type: "choice",
+            q: "Why does a baby's head look so big compared with its body?",
+            options: ["Because babies' heads are full of air", "Because the brain grows very early, so the head starts big while the legs grow more later", "Because babies eat more than adults"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "How many heads tall are you?",
+        intro: "Investigate your own proportions with careful measuring, then compare them with the patterns in the lesson.",
+        need: ["A tape measure, or a long piece of string and a ruler", "A hardback book", "Paper and a pencil", "A helper"],
+        steps: [
+          "Stand with your back against a wall, heels touching it. Your helper lays the book flat on your head, marks the wall lightly with a pencil (or a sticky note) and measures from the floor. Write your height in centimetres.",
+          "Measure your head height, from the top of your head to the bottom of your chin. Your helper can hold two books upright either side of your head to make it easier.",
+          "Divide your height by your head height. How many heads tall are you? Is it close to 6?",
+          "Stretch your arms out wide and ask your helper to measure your arm span from fingertip to fingertip. Is it close to your height?",
+          "Repeat each measurement once more. Were they the same both times? Write a sentence about how accurate you think your results are, and why.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does 'proportion' mean?", options: ["How heavy something is", "How old someone is", "The size of one part compared with another or with the whole"], answer: 2 },
+        { type: "choice", q: "Roughly how many head heights tall is a child aged about 10?", options: ["About 2", "About 6", "About 12"], answer: 1 },
+        { type: "type", q: "How many bones does an adult usually have? Type a number.", answer: ["206", "two hundred and six"] },
+        { type: "choice", q: "In many adults, the arm span is about the same as their...", options: ["foot length", "height", "head height"], answer: 1 },
+        {
+          type: "pick",
+          q: "Which of these help you measure accurately? There is more than one.",
+          options: ["Start exactly at zero on the tape", "Measure once and guess the rest", "Repeat the measurement to check", "Use the same method each time"],
+          answers: [0, 2, 3],
+        },
+        {
+          type: "choice",
+          q: "Why does an adult's head look smaller compared with their body than a baby's?",
+          options: ["Adults' heads shrink", "The rest of the body, especially the legs, grows much more than the head", "Adults have fewer bones in their head"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["A tape measure (or string and a ruler)", "A hardback book", "Paper and a pencil"],
+        tips: [
+          "Some children are sensitive about their height or size. Keep the focus on proportions and accurate measuring, not on who is tall or short, and remind them everyone grows at their own pace.",
+          "The division in step 3 is a good maths link. A calculator is fine; the science is in the comparison, not the sum.",
+          "If you have baby photos or a baby in the family, compare their head-to-body proportion with your child's. It makes the idea click.",
+        ],
+        younger: "Measure each other with string instead of numbers: cut a piece the length of each person's arm span and lay it next to them lying down.",
+        older: "Look up the drawing 'Vitruvian Man' by Leonardo da Vinci (with a grown-up) and find out what he believed about body proportions. Do your measurements agree?",
+      },
+    },
+    {
+      slug: "human-growth-4",
+      title: "Investigating growth with data",
+      emoji: "📊",
+      minutes: 55,
+      goal: "I can plan a fair investigation into human growth, collect measurements from willing family members, and draw conclusions from my results.",
+      starter: [
+        { type: "choice", q: "What does 'proportion' mean?", options: ["How fast something moves", "A type of bone", "The size of one part compared with another or the whole"], answer: 2 },
+        { type: "choice", q: "Roughly how many head heights tall is an adult?", options: ["About 4", "About 7 to 8", "About 15"], answer: 1 },
+        { type: "type", q: "What do we call the distance from fingertip to fingertip with arms outstretched?", answer: ["arm span", "armspan", "span", "wingspan"] },
+        { type: "choice", q: "Which part of the body grows most in childhood and adolescence?", options: ["The legs", "The head", "The nose"], answer: 0 },
+        { type: "choice", q: "Why should you repeat a measurement?", options: ["To make it take longer", "To check it is accurate", "To change the answer"], answer: 1 },
+        { type: "type", q: "What unit should you use to measure a person's height? Type the word.", answer: ["centimetres", "centimetre", "cm", "centimeters"] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Asking a scientific question",
+            text: [
+              "Scientists start an investigation with a question they can answer by collecting data. For example: 'Do taller people have longer hand spans?' or 'Do people with longer legs jump further?'",
+              "A good question compares two things that can be measured. Your hand span is the distance from the tip of your thumb to the tip of your little finger when your hand is stretched wide.",
+              "Before you start, make a prediction: what do you think you will find, and why? A prediction uses what you already know. You don't have to be right, and finding out you were wrong is still good science.",
+              "To make it fair, measure everyone in exactly the same way. Use the same tape measure, measure the same hand (the right one, say), and ask everyone to take their shoes off for height.",
+            ],
+          },
+          {
+            heading: "Collecting data kindly",
+            text: [
+              "Data is the information you collect. In this investigation, your data comes from real people, so you must always ask permission first. If someone doesn't want to be measured, that's fine, and you don't ask why.",
+              "Measurements about bodies are personal. Keep your results private, don't compare people unkindly, and use initials or 'Person A, Person B' instead of names if anyone prefers.",
+              "Record your results in a table as you go. Put the person's label in the first column, then a column for each measurement, with the unit in the heading, like 'Height (cm)'.",
+              "The more people you measure, the more you can trust a pattern. Five or six people of different ages is a good start. You could include yourself!",
+            ],
+          },
+          {
+            heading: "Finding patterns and drawing conclusions",
+            text: [
+              "A scatter graph is a good way to look for a link between two measurements. Each person becomes one cross: across for their height and up for their hand span.",
+              "If the crosses roughly make a line going up from left to right, there is a pattern: as one measurement increases, the other tends to increase too.",
+              "A conclusion answers your question using your evidence: 'In our results, taller people tended to have longer hand spans.' Then say whether your prediction was correct.",
+              "Good scientists also say what could be improved. Maybe you only measured a few people, or a measurement was tricky. A pattern is a tendency, not a rule: there can be a tall person with small hands, and that is completely normal.",
+            ],
+          },
+        ],
+        words: [
+          { word: "data", meaning: "information, such as measurements, that is collected to answer a question" },
+          { word: "prediction", meaning: "what you think will happen, and why, before you test it" },
+          { word: "fair test", meaning: "an investigation where everything is kept the same except the thing you are testing" },
+          { word: "scatter graph", meaning: "a graph of crosses that shows whether two measurements are linked" },
+          { word: "conclusion", meaning: "what you found out, using your evidence to answer the question" },
+          { word: "permission", meaning: "when someone agrees that you may do something" },
+        ],
+      },
+      practice: {
+        intro: "Plan, collect and conclude.",
+        questions: [
+          { type: "order", q: "Put the steps of an investigation in order.", items: ["Ask a question", "Make a prediction", "Collect measurements", "Draw a graph", "Write a conclusion"] },
+          { type: "choice", q: "Before you measure someone in your family, what must you do first?", options: ["Ask their permission", "Tell them their result", "Measure them while they're asleep"], answer: 0 },
+          {
+            type: "pick",
+            q: "Which of these help make the investigation fair? There is more than one.",
+            options: ["Measure everyone's right hand", "Let some people keep their shoes on", "Use the same tape measure each time", "Measure everyone in centimetres"],
+            answers: [0, 2, 3],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "A ___ graph shows whether two measurements are linked. If the crosses go up from left to right, as one measurement ___, the other tends to as well.", bank: ["scatter", "increases", "pie", "disappears"], answers: ["scatter", "increases"] },
+          {
+            type: "choice",
+            q: "Your results show taller people tend to have longer hand spans, but your aunt is tall with small hands. What does this tell you?",
+            options: ["The whole investigation is wrong", "A pattern is a tendency, not a rule, and people vary", "Your aunt was measured wrongly"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "The family growth investigation",
+        intro: "Carry out a real investigation: do taller people have longer hand spans? Only measure people who are happy to take part.",
+        need: ["A tape measure or a ruler and string", "Paper, a pencil and a ruler", "Squared paper for your graph", "Five or six willing people (family, or friends with their grown-up's permission)"],
+        steps: [
+          "Write your question and your prediction at the top of your page, with a reason for your prediction.",
+          "Draw a results table with three columns: 'Person', 'Height (cm)' and 'Right hand span (cm)'.",
+          "Ask each person politely if they would like to take part. Measure their height (shoes off, back against the wall) and their right hand span (stretched wide on the table, thumb tip to little finger tip). Record each result straight away.",
+          "Draw a scatter graph with height along the bottom and hand span up the side. Plot one neat cross for each person.",
+          "Write your conclusion: what pattern did you find, and was your prediction correct? Then write one way you could make your investigation better.",
+          "Challenge: think of another question about human growth you could investigate, such as 'Do older children have longer feet?', and plan how you would test it fairly.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a hand span?", options: ["The distance from wrist to elbow", "The distance from thumb tip to little finger tip with the hand stretched wide", "How many fingers you have"], answer: 1 },
+        { type: "type", q: "What do we call what you think will happen before you test it?", answer: ["prediction", "a prediction", "hypothesis", "predict"] },
+        { type: "choice", q: "Which graph is best for seeing whether two measurements are linked?", options: ["A pie chart", "A scatter graph", "A pictogram"], answer: 1 },
+        { type: "choice", q: "Why should you measure everyone's right hand?", options: ["To keep the test fair", "Because left hands are always bigger", "To make it quicker"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which are kind and respectful ways to collect body data? There is more than one.",
+          options: ["Ask permission first", "Use labels like 'Person A' if someone prefers", "Tell everyone who has the smallest hands", "Accept it if someone says no"],
+          answers: [0, 1, 3],
+        },
+        {
+          type: "choice",
+          q: "Why is it better to measure six people than two?",
+          options: ["Two people is always enough", "It makes the graph more colourful", "You can trust a pattern more with more data"],
+          answer: 2,
+        },
+      ],
+      grownUp: {
+        need: ["A tape measure or string and a ruler", "Squared paper", "Willing volunteers"],
+        tips: [
+          "Model asking permission yourself, and make it easy for anyone (including you) to say no without explanation. Body measurements can be a sensitive subject, especially for teenagers and adults.",
+          "Hand span and height are deliberately chosen as neutral measures. Please don't swap in weight; it isn't needed for this science and can upset people.",
+          "If you have only a few people at home, add the measurements of soft toys or use a video call with relatives who measure themselves. Fewer results is fine: it gives your child something to say in 'how could I improve it?'",
+        ],
+        younger: "Measure hand spans with string, cut each piece to length, and line them up in order on the table with each person's name on a sticky note.",
+        older: "Draw a line of best fit through the crosses on your scatter graph, then use it to predict the hand span of someone 150 cm tall. Measure someone that height, if you can, to test your prediction.",
+      },
+    },
+    {
+      slug: "human-growth-5",
+      title: "Puberty: changing as you grow up",
+      emoji: "🌱",
+      minutes: 45,
+      goal: "I can describe simply some of the changes that happen to the body during puberty, and explain that they are a normal part of growing up.",
+      starter: [
+        { type: "choice", q: "What is data?", options: ["A type of graph", "A kind of tape measure", "Information collected to answer a question"], answer: 2 },
+        { type: "choice", q: "Which graph shows whether two measurements are linked?", options: ["A scatter graph", "A pie chart", "A tally chart"], answer: 0 },
+        { type: "type", q: "What must you always ask for before measuring another person?", answer: ["permission", "their permission", "consent", "permision"] },
+        { type: "pick", q: "Which of these help make a test fair? There is more than one.", options: ["Measuring everyone the same way", "Using the same tape measure", "Changing the method for each person"], answers: [0, 1] },
+        { type: "choice", q: "What is a conclusion?", options: ["A guess before you start", "What you found out, using your evidence", "The list of things you need"], answer: 1 },
+        { type: "choice", q: "What is the stage of life between childhood and adulthood called?", options: ["Infancy", "Old age", "Adolescence"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is puberty?",
+            text: [
+              "Puberty is the time when a child's body gradually changes into an adult's body. It happens to everyone, and it is a completely normal part of growing up.",
+              "Puberty is started by hormones. Hormones are chemical messengers that travel around the body in the blood and tell different parts of it what to do.",
+              "It usually starts somewhere between the ages of 8 and 14, and the changes happen slowly over several years. Girls often start a little earlier than boys.",
+              "Everybody's timing is different. Some people start early, some later, and both are normal. There is no 'right' age, and it is not a race.",
+            ],
+          },
+          {
+            heading: "Changes that happen to everyone",
+            text: [
+              "During puberty, most people have a growth spurt: they grow taller more quickly than before, and their body shape changes. Feet and hands often grow first.",
+              "Hair starts to grow in new places, such as under the arms. Skin can become oilier, and some people get spots. People also sweat more, so washing every day and using deodorant become important.",
+              "Feelings can change too. Hormones and a fast-growing brain can mean moods go up and down, and people may care more about privacy and what friends think. This is normal, and talking helps.",
+              "Some changes are different in boys and girls. For example, boys' voices get deeper, and girls start to have periods, a natural monthly process that is part of a body growing up.",
+            ],
+          },
+          {
+            heading: "Why do these changes happen?",
+            text: [
+              "All living things grow, change and, as adults, are able to reproduce: to have young of their own. Puberty is the time when the human body becomes an adult body that could, one day, have a baby.",
+              "Being able to have a baby doesn't mean being ready for one. That comes much later, when someone is a grown adult and chooses to.",
+              "Puberty is a private and personal time, so it's important to be kind. Never tease anyone about how their body is changing, whether they have started puberty yet or not.",
+              "If you have a question or a worry about growing up, talk to a grown-up you trust at home, a school nurse or your doctor. Every adult you know went through puberty too!",
+            ],
+          },
+        ],
+        words: [
+          { word: "puberty", meaning: "the time when a child's body gradually changes into an adult's body" },
+          { word: "hormone", meaning: "a chemical messenger that travels in the blood and tells parts of the body what to do" },
+          { word: "growth spurt", meaning: "a time of growing taller much more quickly than usual" },
+          { word: "hygiene", meaning: "keeping yourself clean to stay healthy" },
+          { word: "reproduce", meaning: "to have young of your own" },
+        ],
+      },
+      practice: {
+        intro: "Calm, clear facts about growing up.",
+        questions: [
+          { type: "choice", q: "What starts the changes of puberty?", options: ["Eating more vegetables", "Hormones", "Doing exercise"], answer: 1 },
+          {
+            type: "pick",
+            q: "Which of these are changes that can happen during puberty? There is more than one.",
+            options: ["A growth spurt", "Hair grows under the arms", "You shrink a little", "Sweating more"],
+            answers: [0, 1, 3],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Hormones are chemical ___ that travel in the ___. Puberty usually starts between about 8 and ___ years old.", bank: ["messengers", "blood", "14", "bones", "30", "muscles"], answers: ["messengers", "blood", "14"] },
+          { type: "choice", q: "Your friend starts puberty a year before you. What does this mean?", options: ["Something is wrong with one of you", "Everyone's timing is different, and both are normal", "You will never start"], answer: 1 },
+          {
+            type: "choice",
+            q: "Why does washing every day become more important during puberty?",
+            options: ["Because people sweat more and skin can be oilier", "Because hair stops growing", "Because hormones make you smell of flowers"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "A growing-up guide for a younger child",
+        intro: "Write a short, kind and calm guide that explains puberty to a child a year or two younger than you. Clear facts help people feel less worried.",
+        need: ["Paper or card, folded into a small leaflet", "Pens and pencils"],
+        steps: [
+          "On the front, write a friendly title, like 'Growing up: what to expect'.",
+          "Inside, explain in your own words what puberty is and what hormones do. Keep your sentences short and clear.",
+          "List three or four changes from the lesson, with a tip for each one, for example: 'You might sweat more, so wash every day and use deodorant.'",
+          "Add a section called 'Remember' with reassuring facts: everyone's timing is different, it's all normal, and it's never OK to tease anyone.",
+          "On the back, write who someone could talk to if they have questions. Show your guide to a grown-up at home and talk about it together.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is puberty?", options: ["An illness that some children catch", "The time when a child's body gradually changes into an adult's body", "The first year of a baby's life"], answer: 1 },
+        { type: "type", q: "What are the chemical messengers that start puberty called?", answer: ["hormones", "hormone"] },
+        { type: "choice", q: "At what age does puberty usually start?", options: ["At exactly 13", "Between about 8 and 14", "Between 20 and 25"], answer: 1 },
+        { type: "choice", q: "What is a growth spurt?", options: ["A type of spot", "When hair turns grey", "A time of growing taller much more quickly than usual"], answer: 2 },
+        {
+          type: "pick",
+          q: "Which are true about puberty? There is more than one.",
+          options: ["It happens to everyone", "Everyone starts at exactly the same age", "It is a normal part of growing up", "It is good to talk to a trusted grown-up about it"],
+          answers: [0, 2, 3],
+        },
+        {
+          type: "choice",
+          q: "Why is it important never to tease someone about how their body is changing?",
+          options: ["Because teasing is only allowed at school", "Because nobody's body changes", "Because puberty is personal, and everyone changes at their own pace"],
+          answer: 2,
+        },
+      ],
+      grownUp: {
+        need: ["Paper or card", "Pens"],
+        tips: [
+          "This lesson deliberately stays brief and factual, matching what primary science and health education cover. Families can go further in their own way and at their own pace, and many will want to: this is a natural opening for that conversation.",
+          "Try to sit with your child for this lesson and keep your tone matter-of-fact. If you stay calm, they will too. 'Good question, I'll tell you what I know' works well.",
+          "Some children will already be going through puberty and others won't start for years. Reassure your child that both are normal. If they've already started their periods or other changes, a quiet word beforehand can help them feel comfortable.",
+          "The NHS website has clear, child-friendly pages on puberty if you want a trusted source to look at together.",
+        ],
+        younger: "Focus on the first card only: bodies change as we grow up, it happens to everyone, and you can always ask a grown-up questions.",
+        older: "Make a 'myth or fact' quiz about growing up, using only facts from the lesson, and check each answer with a trusted grown-up.",
+      },
+    },
+    {
+      slug: "human-growth-6",
+      title: "Ageing and staying healthy for life",
+      emoji: "🧓",
+      minutes: 50,
+      goal: "I can describe how the body changes in old age, and explain how people can stay healthy at every stage of life.",
+      starter: [
+        { type: "choice", q: "What is puberty?", options: ["The time before a baby is born", "The very last stage of life", "The time when a child's body gradually changes into an adult's"], answer: 2 },
+        { type: "type", q: "What are the chemical messengers that start puberty called?", answer: ["hormones", "hormone"] },
+        { type: "choice", q: "What is a growth spurt?", options: ["Getting a cold", "Growing taller much more quickly than usual", "A kind of exercise"], answer: 1 },
+        { type: "pick", q: "Which changes can happen during puberty? There is more than one.", options: ["A growth spurt", "Sweating more", "Getting shorter", "Hair growing under the arms"], answers: [0, 1, 3] },
+        { type: "choice", q: "Your cousin started puberty earlier than you. Is that normal?", options: ["No, it's a problem", "Yes, everyone's timing is different"], answer: 1 },
+        { type: "choice", q: "Who could you talk to if you had a question about growing up?", options: ["Nobody, it's a secret", "A grown-up you trust", "A stranger online"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "How the body changes as we age",
+            text: [
+              "Ageing is the slow change in the body that happens over many years, mostly noticed in later adulthood. It happens gradually and at different speeds for different people.",
+              "Hair often turns grey or white because the body makes less of the pigment that gives hair its colour. Skin becomes thinner and less stretchy, so wrinkles form.",
+              "Bones can become weaker and break more easily, and muscles can lose some strength. Joints such as knees and hips may get stiff. Some older people become a little shorter as the discs in their spine get thinner.",
+              "Eyesight and hearing often change, which is why many older people wear glasses or hearing aids. Reactions can become slower too.",
+            ],
+          },
+          {
+            heading: "Old age is a stage to enjoy",
+            text: [
+              "Ageing isn't just about what gets harder. Older adults have a lifetime of knowledge, skills and stories. Many of them help their families, volunteer, travel, learn new things and look after grandchildren.",
+              "People are living longer than ever. In 1900, a baby born in the UK could expect to live to around 50. Today it is around 80, thanks to better food, cleaner water, vaccines and medicine.",
+              "Ageing happens at very different speeds. Two people of 75 can be very different: one might run marathons, while another needs a walking stick. Genes play a part, but so do the choices we make throughout life.",
+              "That's why the habits you build now really matter. Healthy habits in childhood help you to grow well, and they can help you to stay well when you are older.",
+            ],
+          },
+          {
+            heading: "Staying healthy at every stage",
+            text: [
+              "Exercise keeps the heart, lungs, muscles and bones strong at every age. Children should be active for about an hour a day. Even in old age, walking, swimming, dancing and gardening make a real difference.",
+              "A balanced diet with plenty of fruit, vegetables and water gives the body what it needs to grow and repair itself. Calcium, found in foods like milk, yoghurt and some green vegetables, helps keep bones strong.",
+              "Sleep matters too. Children aged 9 to 11 need around 9 to 11 hours a night, because the body does a lot of its growing and repairing while we sleep. Not smoking is one of the best things anyone can do for a long, healthy life.",
+              "Looking after your mind is just as important. Friendships, learning new things, being outdoors and talking about worries help people of every age to stay happy and healthy.",
+            ],
+          },
+        ],
+        words: [
+          { word: "ageing", meaning: "the slow changes in the body that happen over many years" },
+          { word: "life expectancy", meaning: "how long, on average, people can expect to live" },
+          { word: "pigment", meaning: "a natural substance that gives something its colour" },
+          { word: "balanced diet", meaning: "eating the right amounts of different kinds of food to stay healthy" },
+          { word: "lifestyle", meaning: "the way someone lives, including what they eat and how active they are" },
+        ],
+      },
+      practice: {
+        intro: "Ageing well, at every age.",
+        questions: [
+          { type: "choice", q: "Why does hair often turn grey in old age?", options: ["It gets covered in dust", "Older people wash it less", "The body makes less of the pigment that colours hair"], answer: 2 },
+          {
+            type: "match",
+            q: "Match each change in old age to the reason or the help for it.",
+            pairs: [["Wrinkles", "Skin becomes thinner and less stretchy"], ["Glasses", "Help with changing eyesight"], ["Weaker bones", "Calcium and exercise help keep them strong"]],
+          },
+          {
+            type: "pick",
+            q: "Which habits help people stay healthy throughout life? There is more than one.",
+            options: ["Being active every day", "Smoking", "Getting enough sleep", "Eating plenty of fruit and vegetables"],
+            answers: [0, 2, 3],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "In 1900, life ___ in the UK was around 50. Today it is around ___, thanks to better food, water, vaccines and ___.", bank: ["expectancy", "80", "medicine", "length", "150", "television"], answers: ["expectancy", "80", "medicine"] },
+          {
+            type: "choice",
+            q: "Why can two people of the same age be very different in how healthy they are?",
+            options: ["Because their genes and their lifestyle choices differ", "Because one is lucky with birthdays", "They can't: everyone ages the same way"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "Interview: a life of healthy habits",
+        intro: "Interview an older person you know about growing up and growing older, then make a poster of tips for staying healthy at every stage of life.",
+        need: ["Paper and pens", "An older relative, neighbour or family friend who is happy to be interviewed (in person, or by phone or video call with a grown-up)"],
+        steps: [
+          "Write five interview questions. Include: 'What did you do to stay active when you were my age?', 'What has changed about your body as you've got older?' and 'What advice would you give me about staying healthy?'",
+          "Ask your interviewee politely if they'd like to take part, and tell them they can skip any question they don't want to answer. Write down their answers carefully.",
+          "Compare their childhood with yours. What is the same? What is different? Write three sentences.",
+          "Make a poster called 'Healthy for life'. Divide it into three sections, childhood, adulthood and old age, with at least two tips for each stage from the lesson and your interview.",
+          "Give your poster or a thank-you card to the person you interviewed.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is ageing?", options: ["Something that only happens to babies", "The slow changes in the body over many years", "A sudden change on your 60th birthday"], answer: 1 },
+        { type: "type", q: "Roughly how long do people in the UK live today, on average? Type a number.", answer: ["80", "eighty", "81", "82", "79"], after: "years" },
+        { type: "choice", q: "Why do many older people wear hearing aids?", options: ["They are fashionable jewellery", "To keep their ears warm", "Hearing often changes as people age"], answer: 2 },
+        {
+          type: "pick",
+          q: "Which of these help keep bones strong throughout life? There is more than one.",
+          options: ["Foods with calcium, such as milk and yoghurt", "Regular exercise", "Sitting still all day", "Smoking"],
+          answers: [0, 1],
+        },
+        { type: "choice", q: "About how much sleep do children aged 9 to 11 need each night?", options: ["About 5 hours", "About 9 to 11 hours", "About 15 hours"], answer: 1 },
+        {
+          type: "choice",
+          q: "Why do healthy habits in childhood matter for old age?",
+          options: ["They stop you ever getting older", "They help the body grow well now and stay well later", "They don't matter until you are 60"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["Paper and pens", "An older person happy to be interviewed, in person or by phone or video call"],
+        tips: [
+          "Arrange the interview beforehand so the older person knows what to expect. Supervise any video call.",
+          "If your child has an older relative who is unwell, or has lost a grandparent, this lesson may bring up feelings. Let them talk, and remind them that they can interview anyone they like, or use a person from a book or programme instead.",
+          "Keep the message about health positive and practical. Avoid suggesting that illness in old age is someone's fault; genes and luck play a big part too.",
+        ],
+        younger: "Draw pictures of activities that keep people of all ages healthy, from babies to grandparents, and talk about which ones your family enjoys together.",
+        older: "Use the interview answers to write a short biography of the person's life, with a paragraph for each stage of the life cycle you have learned about in this unit.",
+      },
+    },
+  ],
+};

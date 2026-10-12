@@ -1,0 +1,852 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Friendships and peer pressure, for ages 9 to 11. Builds on "Feelings and friendships" (ages 7 to 9) without repeating
+ * it. Talk-based lessons built around scenarios and role-play, not lectures. Lesson 6 covers bullying, including online,
+ * and where to get help, with Childline's free number (0800 1111).
+ */
+export const friendshipsAndPeerPressure: LessonUnit = {
+  slug: "friendships-and-peer-pressure",
+  title: "Friendships and peer pressure",
+  short: "Friendships",
+  subject: "RSHE (PSHE)",
+  ages: "9 to 11",
+  emoji: "🤝",
+  color: "#B0664F",
+  summary: "Six lessons on growing friendships: what makes a friendship healthy, how friendships change as you grow, peer pressure and how to say no, being assertive rather than aggressive, falling out and putting things right, and bullying, getting help and being a good bystander.",
+  cover: "/lessons/units/friendships-and-peer-pressure.jpg",
+  lessons: [
+    {
+      slug: "friendships-and-peer-pressure-1",
+      title: "What makes a healthy friendship?",
+      emoji: "🌱",
+      minutes: 50,
+      goal: "I can describe what makes a friendship healthy, spot the warning signs of an unhealthy one, and explain what I could do about it.",
+      starter: [
+        { type: "choice", q: "Which of these is a sign of a good friend?", options: ["They only talk to you when they want something", "They listen when you're upset", "They tell your secrets to everyone"], answer: 1 },
+        { type: "pick", q: "Which words describe a good friendship? There is more than one.", options: ["Trust", "Kindness", "Bossiness", "Respect"], answers: [0, 1, 3] },
+        { type: "choice", q: "Is it normal for good friends to disagree sometimes?", options: ["No, real friends always agree", "Yes, even close friends disagree"], answer: 1 },
+        {
+          type: "match",
+          q: "Match each word to what it means.",
+          pairs: [["Loyal", "Sticks by you"], ["Honest", "Tells you the truth"], ["Respectful", "Treats your feelings as important"]],
+        },
+        { type: "type", q: "Someone who always keeps their promises is trust-what? Type the whole word.", answer: ["trustworthy", "Trustworthy"] },
+        { type: "choice", q: "A friendship keeps making you unhappy. Who could you talk to?", options: ["Nobody, keep it to yourself", "Only the friend who upset you", "A grown-up you trust"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Healthy friendships",
+            text: [
+              "As you get older, friendships start to matter more and more. Friends are the people you laugh with, share secrets with and turn to when things go wrong. Good friendships make us happier and even healthier, so it's worth knowing what a good one looks like.",
+              "A healthy friendship is built on trust and respect. You trust your friend to be honest with you and to keep private things private. You respect each other's feelings, opinions and differences, even when you don't agree.",
+              "Healthy friendships have give and take. Sometimes you choose the game, sometimes they do. Sometimes you need cheering up, sometimes they do. Neither person is always in charge, and neither person is always giving way.",
+              "Most of all, a healthy friendship lets you be yourself. You don't have to pretend to like things you don't, or hide the things you do. You can say 'I don't fancy that' without being worried about what will happen.",
+            ],
+          },
+          {
+            heading: "When a friendship isn't healthy",
+            text: [
+              "Some friendships slowly become unhealthy. Here are some warning signs: a friend who tells you who you can and can't play with, or says 'You can't be my friend if you're friends with her.' That's called controlling behaviour.",
+              "Other warning signs are put-downs dressed up as jokes, being nice to you only when nobody else is around, making you feel guilty for spending time with other people, or telling you to keep secrets that worry you.",
+              "Some people call this sort of friend a 'frenemy': someone who acts like a friend but often leaves you feeling small. It can be confusing, because they can be great fun too.",
+              "Remember, one bad day doesn't make a friendship unhealthy. Everybody is grumpy or thoughtless sometimes. What matters is the pattern: if the same hurtful things keep happening, week after week, something needs to change.",
+            ],
+          },
+          {
+            heading: "Listening to your gut",
+            text: [
+              "A useful test is to notice how you feel after spending time with a friend. Do you usually come away feeling happy, relaxed and like yourself? Or worried, tense and as if you've done something wrong?",
+              "If a friendship often leaves you feeling bad, you could tell your friend calmly how you feel. Sometimes people don't realise how they're coming across. You can also spend more time with other friends who make you feel good.",
+              "You don't have to sort it out alone. Talking to a grown-up you trust can help you work out what's happening and what to do next.",
+              "And the test works both ways. It's worth asking yourself, honestly: am I being a healthy friend? Do I listen, share, and let my friends be themselves too?",
+            ],
+          },
+        ],
+        words: [
+          { word: "healthy friendship", meaning: "a friendship built on trust, respect, kindness and give and take, where you can be yourself" },
+          { word: "unhealthy friendship", meaning: "a friendship that often leaves you feeling hurt, worried, controlled or small" },
+          { word: "trust", meaning: "believing that someone will be honest and keep their word" },
+          { word: "respect", meaning: "treating someone's feelings, opinions and differences as important" },
+          { word: "controlling", meaning: "trying to decide what someone else does, thinks or who they spend time with" },
+        ],
+      },
+      practice: {
+        intro: "Healthy, or a warning sign?",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are signs of a healthy friendship? There is more than one.",
+            options: ["Taking turns to choose what to do", "Being able to say no without worrying", "Only being friendly when nobody else is around", "Being happy when your friend does well"],
+            answers: [0, 1, 3],
+          },
+          {
+            type: "choice",
+            q: "Mia tells Ava: 'If you sit with Zara at lunch, I won't be your friend any more.' What is Mia doing?",
+            options: ["Being a loyal friend", "Making a fair compromise", "Controlling who Ava spends time with"],
+            answer: 2,
+          },
+          {
+            type: "choice",
+            q: "Every day, Kai makes a 'joke' about Sam's trainers and laughs when Sam looks upset. What is going on?",
+            options: ["A put-down dressed up as a joke", "Just harmless fun, so it doesn't matter", "A sign that Kai really likes Sam"],
+            answer: 0,
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "A healthy friendship has give and ___. You should feel ___ to be yourself.",
+            bank: ["take", "free", "grab", "scared"],
+            answers: ["take", "free"],
+          },
+          {
+            type: "choice",
+            q: "Why doesn't one bad day make a friendship unhealthy?",
+            options: ["Because friends are never allowed to be grumpy", "Because everyone has bad days; it's a pattern of hurtful behaviour that matters", "Because bad days don't count at weekends"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "Friendship health check",
+        intro: "Sort some friendship moments into healthy and unhealthy, then write your own guide to being a great friend.",
+        need: ["Paper or card", "Scissors", "Pens or pencils"],
+        steps: [
+          "Cut a sheet of paper into ten small cards. On each one, write a friendship moment. Ideas: 'shares their snack', 'reads your messages without asking', 'says sorry when they get it wrong', 'laughs at you, not with you', 'cheers when you win', 'tells you not to talk to someone', 'keeps your secret', 'sulks unless they get their way', 'asks how you are', 'lets you choose the game'.",
+          "Make three headings on the table: Healthy, Warning sign, and It depends. Sort your cards under them.",
+          "Talk to your grown-up about any card you put under 'It depends'. What would make it healthy, and what would make it a warning sign?",
+          "Now write 'My guide to being a healthy friend': at least six tips, each with a sentence explaining why it matters.",
+          "Finish by writing one thing you already do well as a friend, and one thing you'd like to get better at.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which two things is a healthy friendship built on?", options: ["Trust and respect", "Money and presents", "Always agreeing and never arguing"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which of these are warning signs of an unhealthy friendship? There is more than one.",
+          options: ["Telling you who you can play with", "Asking how your weekend was", "Making you feel guilty for having other friends", "Put-downs dressed up as jokes"],
+          answers: [0, 2, 3],
+        },
+        { type: "type", q: "What word means believing someone will be honest and keep their word?", answer: ["trust", "Trust", "trusting"] },
+        {
+          type: "choice",
+          q: "Jamie and his friend have one argument about a game, then make up. Is the friendship unhealthy?",
+          options: ["Yes, friends should never argue", "Yes, Jamie should find new friends", "No, one disagreement is normal; it's a repeated pattern of hurt that's a warning sign"],
+          answer: 2,
+        },
+        {
+          type: "match",
+          q: "Match each moment to what it shows.",
+          pairs: [["Taking turns to choose the game", "Give and take"], ["Keeping a private thing private", "Trust"], ["'You can't be friends with him'", "Controlling behaviour"]],
+        },
+        {
+          type: "choice",
+          q: "Why is it a good idea to notice how you feel after spending time with a friend?",
+          options: ["It helps you decide who has the best toys", "Your feelings are a clue to whether the friendship is good for you", "So you can tell everyone what they did wrong"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["Paper or card", "Scissors", "Pens"],
+        tips: [
+          "Children this age often stay in hurtful friendships because they're scared of having no friends at all. Reassure your child that having one or two kind friends is better than a big group that makes them feel small.",
+          "Talk about friendships in books, films and TV programmes your child knows. It's often easier to spot warning signs in a character than in real life.",
+          "If your child mentions a friendship that worries you, listen first and ask questions before giving advice. 'How do you feel after you've been with them?' is a good one.",
+        ],
+        younger: "Use just six cards and sort them into 'kind' and 'unkind' before talking about the trickier ones.",
+        older: "Write a short story in which a character slowly realises a friendship is unhealthy. What do they notice first, and what do they do about it?",
+      },
+    },
+    {
+      slug: "friendships-and-peer-pressure-2",
+      title: "Friendships change as you grow",
+      emoji: "🍂",
+      minutes: 50,
+      goal: "I can explain why friendships change as we grow up, describe how it might feel, and suggest ways to make new friends and keep old ones.",
+      starter: [
+        { type: "choice", q: "What are the two big things a healthy friendship is built on?", options: ["Presents and parties", "Trust and respect", "Always agreeing"], answer: 1 },
+        { type: "pick", q: "Which are warning signs of an unhealthy friendship? There is more than one.", options: ["Telling you who you can't play with", "Laughing at you, not with you", "Taking turns to choose", "Making you feel guilty for having other friends"], answers: [0, 1, 3] },
+        { type: "type", q: "What do we call it when a friend tries to decide what you do or who you see? It begins with 'c'.", answer: ["controlling", "controlling behaviour", "control", "Controlling"] },
+        { type: "choice", q: "Does one argument mean a friendship is unhealthy?", options: ["No, it's a repeated pattern that matters", "Yes, always"], answer: 0 },
+        { type: "gap", q: "Fill in the gap.", text: "A healthy friendship has give and ___.", bank: ["take", "shout", "grab"], answers: ["take"] },
+        { type: "choice", q: "What is a good way to check if a friendship is good for you?", options: ["Count how many presents they give you", "Notice how you usually feel after seeing them", "Ask them to fill in a test"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Why friendships change",
+            text: [
+              "Think about who your friends were when you were five. Are they the same people now? For lots of people, the answer is 'some of them' or 'not really'. That's completely normal.",
+              "Friendships change because people change. You might discover new interests, like football, drama or drawing, while an old friend gets into something different. You might move house, start a new club, or join a different home-ed group. Friends grow up at different speeds, too.",
+              "Over the next few years there will be even more change, as you move towards secondary school or new groups and meet lots of new people. Some friendships will last for years. Others will be important for a while, then gently fade.",
+              "It can help to picture your friendships as circles. In the middle are your closest friends. Around them are good friends, then people you know a bit, called acquaintances. People move between the circles over time, and that's all right.",
+            ],
+          },
+          {
+            heading: "When a friend drifts away",
+            text: [
+              "When a close friend starts spending more time with someone else, it can really hurt. You might feel sad, left out, jealous or even angry. These feelings are normal, and it helps to talk about them with someone you trust.",
+              "A friendship drifting doesn't mean there is something wrong with you. Often nobody has done anything wrong at all. You've simply grown in different directions.",
+              "It's tempting to try to win a friend back by changing who you are, or by being unkind about their new friend. This rarely works, and it can leave you feeling worse. Staying friendly and kind keeps the door open.",
+              "Sometimes friends form a tight group that's hard to join, called a clique. If you're in a group, think about who might be feeling left out. A simple 'Do you want to join in?' can mean a lot.",
+            ],
+          },
+          {
+            heading: "Making new friends, keeping old ones",
+            text: [
+              "The best place to find new friends is doing things you enjoy: clubs, sports, groups, classes or meet-ups. You already share an interest, which gives you something to talk about straight away.",
+              "Be brave and start small: smile, say hello, ask a question about what they're doing, and listen properly to the answer. Real friendships take time. They grow from lots of shared moments, not just one good conversation.",
+              "Old friendships can be kept going even when you don't see each other often. A message, a phone call, a letter or an invitation shows that you still care.",
+              "Some people make friends online, through games or apps. Remember that people online aren't always who they say they are. Never arrange to meet someone you've only met online, and always tell a grown-up you trust about new online friends.",
+            ],
+          },
+        ],
+        words: [
+          { word: "friendship circles", meaning: "a way of picturing friends, with your closest friends in the middle and people you know less well further out" },
+          { word: "acquaintance", meaning: "someone you know a bit, but not well enough to call a close friend" },
+          { word: "drift apart", meaning: "when friends slowly become less close, often without anyone doing anything wrong" },
+          { word: "jealousy", meaning: "an uncomfortable feeling that someone has something, or someone, you want" },
+          { word: "clique", meaning: "a tight group of friends who make it hard for others to join in" },
+          { word: "inclusive", meaning: "making sure people are welcomed and not left out" },
+        ],
+      },
+      practice: {
+        intro: "Changing friendships.",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are reasons friendships can change? There is more than one.",
+            options: ["Moving house", "Discovering new interests", "Growing up at different speeds", "Friendships never change"],
+            answers: [0, 1, 2],
+          },
+          {
+            type: "choice",
+            q: "Priya's best friend Ellie has started spending every break with a new girl. What would be the kindest, most helpful thing Priya could do?",
+            options: ["Tell everyone a mean story about the new girl", "Stay friendly, tell a grown-up how she feels, and spend time with other friends too", "Copy everything the new girl does so Ellie likes her again"],
+            answer: 1,
+          },
+          {
+            type: "match",
+            q: "Match each word to its meaning.",
+            pairs: [["Acquaintance", "Someone you know a bit"], ["Clique", "A tight group that's hard to join"], ["Drift apart", "Slowly become less close"]],
+          },
+          {
+            type: "choice",
+            q: "Why are clubs and groups a good place to make new friends?",
+            options: ["You already share an interest, so you have something to talk about", "Everyone there has to be your friend", "You don't need to talk to anyone"],
+            answer: 0,
+          },
+          {
+            type: "choice",
+            q: "A new friend you met in an online game asks to meet up at the park. What should you do?",
+            options: ["Go, but don't tell anyone", "Go if they seem nice", "Don't arrange to meet, and tell a grown-up you trust"],
+            answer: 2,
+          },
+        ],
+      },
+      task: {
+        title: "My friendship circles",
+        intro: "Draw your own friendship circles and think about how they have changed, then plan how to grow and look after your friendships.",
+        need: ["A large sheet of paper", "Coloured pencils", "A round plate or bowl to draw around (optional)"],
+        steps: [
+          "Draw a small circle in the middle of your page with your name in it. Draw three bigger circles around it, like the rings of a target.",
+          "In the first ring, write your closest friends. In the second, good friends. In the third, acquaintances. Include family members if you like. There's no right number: one or two close friends is plenty.",
+          "Use a different colour to add anyone who was in your circles when you were younger but has moved further out. Next to one of them, write why you think it changed.",
+          "Choose one friend you'd like to keep in touch with. Write them a short message, letter or card, or plan a time to call them with your grown-up's help.",
+          "Write three things you could do to make a new friend in the next month, and one way you could help someone else feel included.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Is it normal for friendships to change as you grow up?", options: ["No, it means you did something wrong", "Yes, it's a normal part of growing up"], answer: 1 },
+        { type: "type", q: "What word means someone you know a bit, but not well? It begins with 'a'.", answer: ["acquaintance", "an acquaintance", "Acquaintance", "aquaintance"] },
+        {
+          type: "pick",
+          q: "Which feelings might someone have when a friend drifts away? There is more than one.",
+          options: ["Sad", "Left out", "Jealous", "Bored of breathing"],
+          answers: [0, 1, 2],
+        },
+        {
+          type: "choice",
+          q: "Why isn't it a good idea to change who you are to win a friend back?",
+          options: ["It rarely works, and you can end up feeling worse", "Because you're not allowed to change", "Because friends never come back"],
+          answer: 0,
+        },
+        {
+          type: "order",
+          q: "Put these friendship circles in order, from the middle outwards.",
+          items: ["Closest friends", "Good friends", "Acquaintances"],
+        },
+        {
+          type: "choice",
+          q: "What should you always do about new friends you've only met online?",
+          options: ["Send them your address", "Keep them secret", "Tell a grown-up you trust"],
+          answer: 2,
+        },
+      ],
+      grownUp: {
+        need: ["A large sheet of paper", "Coloured pencils"],
+        tips: [
+          "Home-educated children may have fewer daily chances to meet peers, so regular clubs, groups and meet-ups matter a lot. Let your child help choose them.",
+          "If your child is grieving a lost friendship, take it seriously rather than saying 'You'll make new friends'. Naming the feeling ('It sounds like you really miss her') helps more than fixing it.",
+          "If online friends come up, keep the conversation calm and curious. Children are far more likely to tell you about online contacts if they don't fear losing the device.",
+        ],
+        younger: "Draw just two circles, 'close friends' and 'friends', and talk about one way to make a new friend at your next group or club.",
+        older: "Interview a grown-up about a friendship that changed when they were young. Write up what happened and what they learned.",
+      },
+    },
+    {
+      slug: "friendships-and-peer-pressure-3",
+      title: "Peer pressure and saying no",
+      emoji: "👥",
+      minutes: 50,
+      goal: "I can explain what peer pressure is, tell good influence from bad, and use different ways to say no.",
+      starter: [
+        { type: "choice", q: "Is it normal for friendships to change as you grow up?", options: ["Yes", "No"], answer: 0 },
+        { type: "match", q: "Match each word to its meaning.", pairs: [["Acquaintance", "Someone you know a bit"], ["Clique", "A tight group that's hard to join"], ["Inclusive", "Making sure nobody is left out"]] },
+        { type: "pick", q: "Which are good ways to make new friends? There is more than one.", options: ["Joining a club you enjoy", "Asking someone about what they like", "Ignoring everyone", "Inviting someone to join your game"], answers: [0, 1, 3] },
+        { type: "choice", q: "A friend you only know online asks to meet. What should you do?", options: ["Meet them on your own", "Don't arrange to meet, and tell a trusted grown-up", "Send them a photo of your house"], answer: 1 },
+        { type: "type", q: "When friends slowly become less close, we say they drift ___. Type the missing word.", answer: ["apart", "Apart"] },
+        { type: "choice", q: "Why is changing who you are to win a friend back a bad idea?", options: ["It rarely works and can leave you feeling worse", "It always works perfectly"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is peer pressure?",
+            text: [
+              "Your peers are people around your own age, like friends, cousins, teammates and the children at your clubs. Peer pressure is when you feel pushed to do something because of what your peers are doing or saying.",
+              "Sometimes the pressure is direct: someone tells you to do something, dares you, or teases you if you won't. 'Go on, everyone else has. Don't be boring!'",
+              "Sometimes it's indirect: nobody says anything, but you feel you need to do what everyone else does, wear what they wear or like what they like, so you fit in.",
+              "Peer pressure is powerful because humans want to belong. Feeling left out is horrible, so it's tempting to go along with things even when a little voice inside says 'I don't want to.' Everyone feels this, even grown-ups.",
+            ],
+          },
+          {
+            heading: "Good pressure and bad pressure",
+            text: [
+              "Not all peer pressure is bad. A friend who persuades you to try out for the team, to have a go at the climbing wall, or to stand up for someone who's being picked on is having a positive influence on you.",
+              "Negative peer pressure pushes you towards something that could hurt you or someone else, get you into trouble, or that simply doesn't feel right. It might be leaving someone out, saying something unkind in a group chat, taking a risky dare, or copying a dangerous online 'challenge'.",
+              "When you feel pressure, stop and ask yourself three questions. Would I choose this on my own? Could it hurt me or anyone else? Would I be happy for my grown-up to know about it?",
+              "If the answers make you uneasy, trust that feeling. It's your brain's way of keeping you safe.",
+            ],
+          },
+          {
+            heading: "Ways to say no",
+            text: [
+              "Saying no can feel scary, but it gets easier with practice. You can just say 'No thanks' clearly and firmly. You don't have to give a reason. If they keep asking, say the same thing again, calmly, like a broken record.",
+              "You could suggest something else ('Nah, let's play football instead'), use a bit of humour, or simply walk away. Some people find it easier to blame a grown-up: 'My dad would go mad. Not worth it!'",
+              "Stick with friends who think like you. It's much easier to say no when someone says 'Me neither'. And you could be that person for someone else.",
+              "Some families agree a secret code word. If you text or say it, your grown-up knows to come and get you, no questions asked. Real friends accept your no. If someone keeps pushing after you've said no, that tells you something about the friendship.",
+            ],
+          },
+        ],
+        words: [
+          { word: "peer", meaning: "someone around your own age, like a friend, teammate or classmate" },
+          { word: "peer pressure", meaning: "feeling pushed to do something because of what people your own age are doing or saying" },
+          { word: "direct pressure", meaning: "when someone openly tells, dares or teases you to do something" },
+          { word: "indirect pressure", meaning: "feeling you need to do what everyone else does, even though nobody has asked you" },
+          { word: "influence", meaning: "the effect someone has on what you think or do" },
+        ],
+      },
+      practice: {
+        intro: "Spot the pressure, and say no.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each example to the kind of pressure.",
+            pairs: [["'Go on, I dare you!'", "Direct pressure"], ["Everyone has the same trainers, so you want them too", "Indirect pressure"], ["A friend encourages you to try out for the choir", "Positive influence"]],
+          },
+          {
+            type: "pick",
+            q: "Which of these are good ways to say no? There is more than one.",
+            options: ["'No thanks.'", "Suggesting something else to do", "Doing it anyway so they stop asking", "Walking away"],
+            answers: [0, 1, 3],
+          },
+          {
+            type: "choice",
+            q: "In a group chat, everyone is sending laughing faces about a photo of a boy who fell over. Leo feels uncomfortable. What should he do?",
+            options: ["Send a laughing face too, so he fits in", "Not join in, and tell a grown-up he trusts if it carries on", "Forward the photo to more people"],
+            answer: 1,
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "If someone keeps asking, you can say the same thing again, calmly, like a broken ___. Real ___ accept your no.",
+            bank: ["record", "friends", "window", "strangers"],
+            answers: ["record", "friends"],
+          },
+          {
+            type: "choice",
+            q: "Why can peer pressure be so hard to resist?",
+            options: ["Because people want to belong, and feeling left out is horrible", "Because it only happens to grown-ups", "Because saying no is against the rules"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "Say no five ways",
+        intro: "Practise saying no to pressure in role-plays, then make a comic strip that shows someone handling it well.",
+        need: ["Paper and pens", "A grown-up or older brother or sister to role-play with"],
+        steps: [
+          "Your grown-up plays a friend putting on the pressure. Try these scenarios: 'Climb on the garage roof, everyone else has!', 'Let's leave Jas out, she's annoying', 'Just tell your mum you're at my house', 'Everyone's doing this online challenge, film yourself doing it!'",
+          "For each one, try a different way to say no: a clear 'No thanks', the broken record, suggesting something else, humour, or blaming a grown-up. Which felt most natural to you?",
+          "Swap roles. You put on the pressure and your grown-up says no. Notice how it feels when someone says no firmly. Is it easy to keep pushing?",
+          "Talk about whether your family would like a code word for when you need collecting, no questions asked. If so, choose one together and keep it private.",
+          "Draw a comic strip of at least six boxes showing a character under peer pressure. Show what they feel and think in thought bubbles, and how they say no in speech bubbles.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Who are your peers?", options: ["People in charge of you", "People around your own age", "People who live next door"], answer: 1 },
+        { type: "choice", q: "Everyone in your group has started saying a new rude word, and nobody has asked you to, but you feel you should too. What kind of pressure is this?", options: ["Direct pressure", "Positive influence", "Indirect pressure"], answer: 2 },
+        {
+          type: "pick",
+          q: "Which of these are examples of positive peer influence? There is more than one.",
+          options: ["Encouraging you to try a new sport", "Daring you to take something from a shop", "Inviting a new child to join in", "Persuading you to practise for a show"],
+          answers: [0, 2, 3],
+        },
+        {
+          type: "order",
+          q: "Put these steps for handling pressure in a sensible order.",
+          items: ["Notice the uneasy feeling inside", "Ask yourself: could this hurt me or anyone else?", "Say 'No thanks' clearly", "If they keep pushing, walk away or suggest something else"],
+        },
+        { type: "type", q: "Saying the same calm answer again and again is called the broken ___ technique. Type the missing word.", answer: ["record", "Record"] },
+        {
+          type: "choice",
+          q: "A friend keeps pushing you to do something after you've clearly said no. What does that tell you?",
+          options: ["That you should give in", "Something about the friendship: real friends accept your no", "That saying no never works"],
+          answer: 1,
+        },
+      ],
+      grownUp: {
+        need: ["Paper and pens"],
+        tips: [
+          "Role-play really works. Children who have practised the words out loud are much more likely to use them for real. Make the pressure realistic, but keep it light and fun.",
+          "A family code word is a simple, powerful safety net. The promise that matters is 'no questions asked in the moment'. You can talk calmly about what happened later.",
+          "Share a time you felt peer pressure as a child, or still do as an adult. It shows that it's normal and that it never fully goes away.",
+          "Some online 'challenges' are dangerous. If your child mentions one, stay calm and talk about why it's risky, rather than banning the topic.",
+        ],
+        younger: "Do just two role-plays, and practise one way of saying no until your child can say it confidently.",
+        older: "Look at an advert for clothes or a game together. How does it use the idea that 'everyone has one'? Is advertising a kind of peer pressure?",
+      },
+    },
+    {
+      slug: "friendships-and-peer-pressure-4",
+      title: "Assertive, not aggressive",
+      emoji: "🗣️",
+      minutes: 50,
+      goal: "I can explain the difference between passive, aggressive and assertive behaviour, and stand up for myself calmly and respectfully.",
+      starter: [
+        { type: "choice", q: "What is peer pressure?", options: ["Feeling pushed to do something because of people your own age", "Pressing on a friend's arm", "A kind of weather"], answer: 0 },
+        { type: "match", q: "Match each example to the kind of pressure.", pairs: [["'I dare you!'", "Direct"], ["Wanting the same trainers as everyone else", "Indirect"], ["A friend encouraging you to join a club", "Positive"]] },
+        { type: "pick", q: "Which are good ways to say no? There is more than one.", options: ["Suggest something else", "Use the broken record", "Say yes so they stop", "Blame a grown-up"], answers: [0, 1, 3] },
+        { type: "choice", q: "Do you always have to give a reason when you say no?", options: ["Yes, always", "No, 'No thanks' is enough"], answer: 1 },
+        { type: "type", q: "What can some families agree on, so a child can be collected with no questions asked? A code ___.", answer: ["word", "Word", "code word"] },
+        { type: "choice", q: "Can peer pressure ever be good?", options: ["No, never", "Yes, when it pushes you towards something positive"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Three ways to respond",
+            text: [
+              "Imagine someone pushes in front of you in a queue. You could stay quiet and let it go, even though you're annoyed. That's being passive. Your feelings and needs get ignored, often by you.",
+              "You could shout 'Oi, get out of the way, you idiot!' and shove them. That's being aggressive. You stand up for yourself, but you ignore the other person's feelings, and things often get worse.",
+              "Or you could say, calmly and clearly, 'Excuse me, I was here first. The queue starts behind me.' That's being assertive. You stand up for yourself and you respect the other person too.",
+              "Assertive is the healthy middle. It says: 'My feelings matter, and so do yours.' Most of us are passive in some situations and aggressive in others. The good news is that being assertive is a skill, and skills get better with practice.",
+            ],
+          },
+          {
+            heading: "How assertive looks and sounds",
+            text: [
+              "A useful tool is the I-statement. Instead of blaming ('You always ruin everything!'), you describe how you feel: 'I feel ___ when ___ because ___. I'd like ___.'",
+              "For example: 'I feel left out when you whisper with Ben because I don't know what's going on. I'd like us to all talk together.' It's hard to argue with someone telling you honestly how they feel.",
+              "Your body speaks too. Assertive body language means standing or sitting tall, looking at the person, keeping your voice steady and not too loud, and keeping your hands relaxed. Passive body language looks down and shrinks. Aggressive body language looms, points and glares.",
+              "If someone doesn't listen, you can use the broken record again: repeat your point calmly, without getting louder.",
+            ],
+          },
+          {
+            heading: "Boundaries and respect",
+            text: [
+              "A boundary is a line that shows what you are and aren't comfortable with. You might be happy to lend your pens but not your sketchbook, or enjoy play-fighting with your cousin but not with someone you've just met.",
+              "Your body belongs to you. You can say no to a hug, a tickle or play-fighting, even from people you like, and even if you said yes last time. Assertive words like 'Stop, I don't like that' are always OK.",
+              "Other people have boundaries too, and a respectful friend listens to them. If someone says stop or no, you stop, even if you think it's only a game.",
+              "Being assertive doesn't mean you'll always get your own way. It means you've been honest and fair. If a situation ever feels unsafe, the most assertive thing to do is to leave and tell a grown-up you trust.",
+            ],
+          },
+        ],
+        words: [
+          { word: "passive", meaning: "staying quiet and giving in, so your own feelings and needs are ignored" },
+          { word: "aggressive", meaning: "standing up for yourself in a way that ignores or hurts other people" },
+          { word: "assertive", meaning: "standing up for yourself calmly and honestly, while respecting other people" },
+          { word: "I-statement", meaning: "a sentence that explains how you feel, like 'I feel... when... because...'" },
+          { word: "body language", meaning: "the messages your face, posture and movements send without words" },
+          { word: "boundary", meaning: "a line that shows what you are and aren't comfortable with" },
+        ],
+      },
+      practice: {
+        intro: "Passive, aggressive or assertive?",
+        questions: [
+          {
+            type: "match",
+            q: "Someone takes your seat. Match each reply to the way of responding.",
+            pairs: [["Saying nothing and sitting on the floor", "Passive"], ["'Move, or you'll be sorry!'", "Aggressive"], ["'I was sitting there. Could I have it back, please?'", "Assertive"]],
+          },
+          {
+            type: "choice",
+            q: "Which of these is an I-statement?",
+            options: ["'You're so selfish, you never share.'", "'Whatever, I don't care.'", "'I feel upset when the game is changed without asking, because I was enjoying it.'"],
+            answer: 2,
+          },
+          {
+            type: "pick",
+            q: "Which of these are assertive body language? There is more than one.",
+            options: ["Standing tall", "A steady, calm voice", "Jabbing your finger at someone", "Looking at the person"],
+            answers: [0, 1, 3],
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps to make an I-statement.",
+            text: "I feel ___ when you borrow my things without asking ___ I can't find them. I'd like you to ask first.",
+            bank: ["frustrated", "because", "never", "idiot"],
+            answers: ["frustrated", "because"],
+          },
+          {
+            type: "choice",
+            q: "Your cousin keeps tickling you after you've said stop, and laughs. What is the best response?",
+            options: ["Say clearly 'Stop, I don't like that,' and tell a grown-up if they carry on", "Stay quiet and hope they get bored", "Kick them as hard as you can"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "Same words, three ways",
+        intro: "Act out the difference between passive, aggressive and assertive, then turn tricky moments into I-statements.",
+        need: ["Paper and pens", "A grown-up to act with", "A mirror (optional)"],
+        steps: [
+          "Choose a line, like 'I'd like my pen back.' Say it three ways: passively (quiet, looking down), aggressively (loud, pointing, glaring) and assertively (calm, tall, looking at the person). Use a mirror to watch your body language.",
+          "Your grown-up says a line three ways too. Can you tell which is which, just from their body language and voice?",
+          "Write I-statements for these situations: a friend keeps interrupting you; your sister reads your diary; someone in your group always picks the game; a friend shares a photo of you without asking.",
+          "Role-play two of them with your grown-up. Your grown-up doesn't give in straight away, so practise the broken record.",
+          "Finish by writing a paragraph: which do you find hardest, being assertive with friends, with family, or with people you don't know well? Why do you think that is?",
+        ],
+      },
+      exit: [
+        {
+          type: "match",
+          q: "Match each word to its meaning.",
+          pairs: [["Passive", "Giving in and staying quiet"], ["Aggressive", "Ignoring or hurting others' feelings"], ["Assertive", "Calm, honest and respectful"]],
+        },
+        { type: "choice", q: "Someone pushes in front of you in a queue. Which reply is assertive?", options: ["'Get lost!'", "Saying nothing", "'Excuse me, I was here first.'"], answer: 2 },
+        { type: "type", q: "What do we call a line that shows what you are and aren't comfortable with?", answer: ["boundary", "a boundary", "boundaries", "Boundary"] },
+        {
+          type: "order",
+          q: "Put this I-statement in order.",
+          items: ["I feel upset", "when you laugh at my drawing", "because I worked hard on it.", "I'd like you to be kind about it."],
+        },
+        {
+          type: "choice",
+          q: "Why do I-statements often work better than blaming?",
+          options: ["They are louder", "They describe your feelings honestly, so the other person is less likely to get defensive", "They mean you always win"],
+          answer: 1,
+        },
+        {
+          type: "choice",
+          q: "If someone says no or stop during a game, what should you do?",
+          options: ["Stop, and respect their boundary", "Carry on, because it's only a game", "Ask them to say it ten more times"],
+          answer: 0,
+        },
+      ],
+      grownUp: {
+        need: ["Paper and pens", "A mirror (optional)"],
+        tips: [
+          "Children copy what they see. When you're cross, try modelling an I-statement out loud: 'I feel frustrated when shoes are left on the stairs because someone could trip.'",
+          "Let your child practise being assertive with you, and praise it when they do, even when the answer is still no. 'That was a really calm, clear way to ask' teaches a lot.",
+          "The lesson says children can say no to hugs and tickles, even from family. Backing this up at home, for example by not insisting on hugs for relatives, helps children learn that their body belongs to them.",
+        ],
+        younger: "Use three soft toys: a mouse (passive), a lion (aggressive) and an owl (assertive). Act out a problem with each and talk about which works best.",
+        older: "Watch a short clip of a TV argument together. Pause it and decide whether each person is passive, aggressive or assertive. Rewrite one line to make it assertive.",
+      },
+    },
+    {
+      slug: "friendships-and-peer-pressure-5",
+      title: "Falling out and putting it right",
+      emoji: "🩹",
+      minutes: 50,
+      goal: "I can explain why friends fall out, give a real apology, and describe how to repair a friendship.",
+      starter: [
+        { type: "choice", q: "Which word means calm, honest and respectful?", options: ["Passive", "Assertive", "Aggressive"], answer: 1 },
+        { type: "gap", q: "Fill in the gaps.", text: "An I-statement goes: I feel ___ when ___ because...", bank: ["upset", "you shout", "never", "idiot"], answers: ["upset", "you shout"] },
+        { type: "pick", q: "Which are assertive body language? There is more than one.", options: ["Steady voice", "Standing tall", "Pointing and glaring", "Looking at the person"], answers: [0, 1, 3] },
+        { type: "type", q: "What do we call a line showing what you are and aren't comfortable with?", answer: ["boundary", "a boundary", "Boundary"] },
+        { type: "choice", q: "Someone takes your seat. You sit on the floor and say nothing. That's...", options: ["aggressive", "assertive", "passive"], answer: 2 },
+        { type: "choice", q: "Does being assertive mean you'll always get your own way?", options: ["No, it means you've been honest and fair", "Yes, every time"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Why friends fall out",
+            text: [
+              "Even the closest friends fall out. As you get older, the reasons can get more complicated. You might misunderstand each other, feel jealous, feel left out, or simply be tired and grumpy at the same time.",
+              "Messages cause lots of fall-outs. When you read a message, you can't hear the person's tone of voice or see their face, so a joke can sound like an insult. If a message upsets you, it's worth asking 'Did you mean that how it sounded?' before reacting.",
+              "Every disagreement has at least two sides. Seeing things from the other person's point of view is called taking their perspective. It doesn't mean you have to agree, but it helps you understand why they feel the way they do.",
+              "When you're both angry, it's very hard to sort anything out. Taking time to cool off first, even until the next day, is often the wisest move.",
+            ],
+          },
+          {
+            heading: "A real apology",
+            text: [
+              "Saying 'sorry' is easy. Meaning it is harder. A real apology has a few parts. First, say exactly what you did: 'I'm sorry I told everyone about your nickname.'",
+              "Next, show you understand how it affected them: 'That must have been really embarrassing.' Don't add 'but', as in 'Sorry, but you started it.' A 'but' cancels out everything before it.",
+              "Then, offer to put things right if you can: 'Can I help fix it?' Finally, and most importantly, change what you do, so it doesn't happen again.",
+              "Watch out for fake apologies like 'I'm sorry if you were upset' or 'Sorry you feel that way.' They sound like apologies, but they blame the other person's feelings instead of taking responsibility.",
+            ],
+          },
+          {
+            heading: "Repairing and forgiving",
+            text: [
+              "When someone apologises to you, try to listen properly. You could say 'Thank you for saying sorry.' You don't have to pretend everything is fine straight away if you're still hurt.",
+              "Forgiving someone means deciding to let go of the anger, so the friendship can move on. It's a gift you give, and it often makes you feel lighter too. But forgiving doesn't mean that what happened was OK, and it doesn't mean you have to let it happen again.",
+              "Repairing a friendship takes time. Doing something fun together, being kind in small ways and keeping your word all help to rebuild trust.",
+              "Sometimes, even after apologies, a friendship doesn't go back to how it was. That's sad, but it happens. You can still choose to be polite and kind, and to wish each other well.",
+            ],
+          },
+        ],
+        words: [
+          { word: "conflict", meaning: "a serious disagreement or argument" },
+          { word: "misunderstanding", meaning: "when someone gets the wrong idea about what another person meant" },
+          { word: "perspective", meaning: "how something looks from one person's point of view" },
+          { word: "apology", meaning: "saying sorry, taking responsibility for what you did, and trying to put it right" },
+          { word: "responsibility", meaning: "owning up to what you did, without blaming someone else" },
+          { word: "forgiveness", meaning: "deciding to let go of anger towards someone who has hurt you" },
+        ],
+      },
+      practice: {
+        intro: "Real apology or fake apology?",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are real apologies? There is more than one.",
+            options: ["'I'm sorry I left you out of the game. That wasn't fair.'", "'Sorry, but you started it.'", "'I'm sorry I broke your model. Can I help you fix it?'", "'Sorry if you were upset.'"],
+            answers: [0, 2],
+          },
+          {
+            type: "order",
+            q: "Put the parts of a real apology in order.",
+            items: ["Say exactly what you did", "Show you understand how it made them feel", "Offer to put it right", "Change what you do next time"],
+          },
+          {
+            type: "choice",
+            q: "Tom messages Ali: 'nice drawing lol'. Ali feels hurt and thinks Tom is laughing at him. What would be wise for Ali to do?",
+            options: ["Send an angry message back straight away", "Ask Tom what he meant, because messages don't show tone of voice", "Tell everyone Tom is mean"],
+            answer: 1,
+          },
+          {
+            type: "choice",
+            q: "What does forgiving someone mean?",
+            options: ["Pretending it never happened", "Letting go of your anger so you can move on, without saying what happened was OK", "Letting them do it again"],
+            answer: 1,
+          },
+          {
+            type: "gap",
+            q: "Fill in the gaps.",
+            text: "Seeing things from someone else's point of view is called taking their ___. When you're both angry, it's often best to ___ off first.",
+            bank: ["perspective", "cool", "photo", "show"],
+            answers: ["perspective", "cool"],
+          },
+        ],
+      },
+      task: {
+        title: "Apology makeover and repair plan",
+        intro: "Turn fake apologies into real ones, then think through how two friends could repair their friendship.",
+        need: ["Paper and pens", "A grown-up to role-play with"],
+        steps: [
+          "Rewrite these fake apologies as real ones: 'Sorry if you got upset.' 'Sorry, but it was only a joke.' 'Fine, SORRY, happy now?' Make sure each one says what happened, shows understanding and offers to put it right.",
+          "Read this scenario: Nia and Grace are best friends. Grace told another girl that Nia still sleeps with a teddy, and now people are teasing Nia. Nia is hurt and has stopped speaking to Grace.",
+          "Write the story from both sides. Write a paragraph from Nia's perspective, then one from Grace's. How does each girl feel, and why?",
+          "Role-play with your grown-up: one of you is Grace, giving a real apology; the other is Nia, responding honestly. Then swap.",
+          "Write a five-step repair plan for the two friends. What could each of them do over the next week to rebuild trust?",
+        ],
+      },
+      exit: [
+        {
+          type: "choice",
+          q: "Why do messages often cause misunderstandings?",
+          options: ["You can't hear tone of voice or see the person's face", "Messages are always rude", "Phones change the words"],
+          answer: 0,
+        },
+        { type: "type", q: "What word means seeing things from someone else's point of view? It begins with 'p'.", answer: ["perspective", "Perspective", "their perspective"] },
+        {
+          type: "choice",
+          q: "Which of these is a real apology?",
+          options: ["'Sorry you feel that way.'", "'Sorry, but you did it first.'", "'I'm sorry I laughed at you. That was unkind, and I won't do it again.'"],
+          answer: 2,
+        },
+        {
+          type: "choice",
+          q: "Why does adding 'but' to an apology spoil it?",
+          options: ["Because 'but' is a rude word", "Because it shifts the blame and cancels out the sorry", "Because apologies have to be one word long"],
+          answer: 1,
+        },
+        {
+          type: "pick",
+          q: "Which of these help to repair a friendship? There is more than one.",
+          options: ["Keeping your word", "Doing something fun together", "Bringing up the argument every day", "Being kind in small ways"],
+          answers: [0, 1, 3],
+        },
+        {
+          type: "match",
+          q: "Match each word to its meaning.",
+          pairs: [["Conflict", "A serious disagreement"], ["Forgiveness", "Letting go of anger"], ["Responsibility", "Owning up to what you did"]],
+        },
+      ],
+      grownUp: {
+        need: ["Paper and pens"],
+        tips: [
+          "Avoid forcing a quick 'say sorry' after a squabble at home. A real apology often comes more easily after a cool-off, and it means more.",
+          "Model good apologies yourself, including to your child: 'I'm sorry I snapped at you. I was tired, but that wasn't fair on you.' Notice that 'I was tired' explains without excusing.",
+          "Make clear that forgiving is a choice, not a duty. Children should never feel they must forgive or stay friends with someone who keeps hurting them.",
+        ],
+        younger: "Do just the apology makeover out loud, using toys to act out the fake and real apologies.",
+        older: "Write a short advice-column letter from a child who has fallen out with a friend, then write the agony aunt's or uncle's reply using ideas from the lesson.",
+      },
+    },
+    {
+      slug: "friendships-and-peer-pressure-6",
+      title: "Bullying, getting help and being an upstander",
+      emoji: "🛡️",
+      minutes: 50,
+      goal: "I can explain what bullying is, including online, know how and where to get help, and describe safe ways to be a good bystander.",
+      starter: [
+        { type: "choice", q: "Why do messages often cause misunderstandings?", options: ["You can't hear tone of voice", "They are always too long", "They are written in code"], answer: 0 },
+        { type: "order", q: "Put the parts of a real apology in order.", items: ["Say what you did", "Show you understand how they feel", "Offer to put it right", "Change what you do"] },
+        { type: "choice", q: "Which is a fake apology?", options: ["'Sorry if you were upset.'", "'I'm sorry I broke it. Can I help fix it?'"], answer: 0 },
+        { type: "type", q: "What word means letting go of anger towards someone who hurt you?", answer: ["forgiveness", "forgiving", "forgive", "Forgiveness"] },
+        { type: "pick", q: "Which help to repair a friendship? There is more than one.", options: ["Keeping your word", "Small acts of kindness", "Spreading rumours", "Spending fun time together"], answers: [0, 1, 3] },
+        { type: "choice", q: "Does forgiving someone mean what they did was OK?", options: ["Yes", "No"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What bullying is",
+            text: [
+              "Bullying is when someone deliberately hurts or upsets another person, again and again, and the person being targeted finds it hard to stop. Often the person doing it has more power, perhaps because they're older, more popular, or in a group.",
+              "Bullying can be physical, like hitting or pushing; verbal, like name-calling or threats; or social, like spreading rumours or deliberately leaving someone out. Cyberbullying is bullying online or by phone: nasty messages, embarrassing photos shared without permission, or being excluded from group chats on purpose.",
+              "Some bullying picks on something about who a person is, like their skin colour, religion, disability, appearance, family or whether they're a boy or a girl. This is called prejudice-based bullying, and it is never acceptable.",
+              "Bullying is different from an ordinary fall-out between equals, where both people disagree and then make up. But a one-off nasty act still matters, and you can always get help with it. Bullying is never the fault of the person being bullied.",
+            ],
+          },
+          {
+            heading: "Getting help",
+            text: [
+              "If you're being bullied, the most important thing is to tell a grown-up you trust: a parent or carer, grandparent, aunt or uncle, a club leader, coach or teacher. If the first person doesn't help, keep telling until someone does. If it's hard to say out loud, you could write it down instead.",
+              "For bullying online: don't reply, as that's what the bully wants. Keep evidence by taking a screenshot or saving the messages. Then block the person, report them using the app or game's report button, and tell your trusted grown-up.",
+              "You can also contact Childline, a free service for children and young people under 19. You can call 0800 1111 at any time of the day or night, or talk to a counsellor online at childline.org.uk. It's free, the number won't show up on a phone bill, and what you say is kept private unless they're worried that you or someone else is in danger.",
+              "If anyone is in danger right now, call 999. Asking for help isn't weak or 'telling tales'. It takes courage, and it's the right thing to do.",
+            ],
+          },
+          {
+            heading: "Being a good bystander",
+            text: [
+              "A bystander is someone who sees or knows about bullying but isn't the target. Most bullying happens when other people are around, and what bystanders do makes a big difference. Bullies often want an audience. When nobody laughs or joins in, bullying often stops quickly.",
+              "Someone who safely does something to help is sometimes called an upstander. You don't have to be a hero or put yourself in danger. Simply not laughing, not joining in, and not liking or forwarding hurtful posts takes away the bully's audience.",
+              "You can support the person afterwards: check they're OK, sit with them, invite them to join in. Knowing that someone is on their side can mean the world. If it feels safe, you could say 'Leave it, that's not funny' at the time.",
+              "Most importantly, tell a trusted adult. There's a big difference between telling tales, which is trying to get someone into trouble, and reporting, which is trying to keep someone safe. Reporting bullying is always the right choice.",
+            ],
+          },
+        ],
+        words: [
+          { word: "bullying", meaning: "deliberately hurting or upsetting someone again and again, when they find it hard to stop it" },
+          { word: "cyberbullying", meaning: "bullying that happens online or by phone, through messages, posts, games or apps" },
+          { word: "prejudice", meaning: "an unfair opinion about someone because of who they are, like their race, religion or disability" },
+          { word: "bystander", meaning: "someone who sees or knows about bullying but isn't the target" },
+          { word: "upstander", meaning: "a bystander who safely does something to help" },
+          { word: "confidential", meaning: "kept private, and only shared if someone is in danger" },
+        ],
+      },
+      practice: {
+        intro: "Bullying, help and upstanders.",
+        questions: [
+          {
+            type: "pick",
+            q: "Which of these are usually part of bullying? There is more than one.",
+            options: ["It's done on purpose", "It happens again and again", "Both people are equally upset and then make up", "The target finds it hard to stop"],
+            answers: [0, 1, 3],
+          },
+          {
+            type: "match",
+            q: "Match each example to the type of bullying.",
+            pairs: [["Pushing someone every day", "Physical"], ["Spreading rumours and leaving someone out", "Social"], ["Posting embarrassing photos of someone", "Cyberbullying"], ["Calling someone names", "Verbal"]],
+          },
+          {
+            type: "order",
+            q: "Someone sends you nasty messages online. Put these steps in a sensible order.",
+            items: ["Don't reply", "Take a screenshot to keep evidence", "Block and report them", "Tell a trusted grown-up"],
+          },
+          { type: "type", q: "What is the free phone number for Childline? Type it with or without spaces.", answer: ["0800 1111", "08001111", "0800-1111"] },
+          {
+            type: "choice",
+            q: "At the park, some children keep laughing at a younger boy's accent, and he looks upset. What could a good bystander do?",
+            options: ["Laugh along so they don't pick on you", "Film it and share it", "Not join in, check the boy is OK, and tell a trusted adult"],
+            answer: 2,
+          },
+        ],
+      },
+      task: {
+        title: "My helping hand and upstander plan",
+        intro: "Make a reminder of who you can go to for help, then plan what you would do as an upstander.",
+        need: ["Paper or card", "Pens and coloured pencils"],
+        steps: [
+          "Draw around your hand. On each finger, write the name of one grown-up you trust and could tell if something was wrong. Try to include people both inside and outside your home.",
+          "In the palm, write: Childline 0800 1111, free, day or night. Add childline.org.uk too. Keep your hand somewhere you'll see it.",
+          "Read this scenario: In a group chat for your club, someone posts an unkind picture of a girl called Rosa with a mean caption. Lots of people send laughing faces.",
+          "Write an upstander plan for this scenario: what you would not do, what you could do straight away, how you could support Rosa, and who you would tell. Explain why each step helps.",
+          "Make a poster for younger children called 'What to do about bullying'. Use your own words and pictures, and include at least four tips from today.",
+        ],
+      },
+      exit: [
+        {
+          type: "choice",
+          q: "Which of these is bullying?",
+          options: ["Two friends argue about a game once, then make up", "Someone is called names and left out on purpose, week after week", "A friend says they'd rather play a different game"],
+          answer: 1,
+        },
+        { type: "type", q: "What do we call bullying that happens online or by phone?", answer: ["cyberbullying", "cyber bullying", "cyber-bullying", "online bullying", "Cyberbullying"] },
+        {
+          type: "choice",
+          q: "What is Childline's free phone number?",
+          options: ["999", "101", "0800 1111"],
+          answer: 2,
+        },
+        {
+          type: "pick",
+          q: "Which are good things to do if you're cyberbullied? There is more than one.",
+          options: ["Take a screenshot", "Send something nasty back", "Block and report", "Tell a trusted grown-up"],
+          answers: [0, 2, 3],
+        },
+        {
+          type: "choice",
+          q: "Why can bystanders make such a difference to bullying?",
+          options: ["Bullies often want an audience, so when nobody joins in, it often stops", "Bystanders are always bigger than bullies", "Bystanders can make bullies disappear"],
+          answer: 0,
+        },
+        {
+          type: "gap",
+          q: "Fill in the gaps.",
+          text: "Telling ___ is trying to get someone into trouble. ___ is trying to keep someone safe.",
+          bank: ["tales", "Reporting", "jokes", "Laughing"],
+          answers: ["tales", "Reporting"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper or card", "Pens and coloured pencils"],
+        tips: [
+          "If your child tells you about bullying, stay calm, listen, and thank them for telling you. Don't promise to keep it secret, but do promise to work out what to do together. Write down what happened, with dates.",
+          "Reassure your child that telling you about online bullying won't mean losing their device. Fear of that is a big reason children stay silent.",
+          "Childline (0800 1111, childline.org.uk) is free and open 24 hours a day for anyone under 19. If you're worried about a child, the NSPCC helpline for adults is 0808 800 5000.",
+          "Many children who bully are struggling themselves. It's worth talking about this, while being clear that it's never an excuse.",
+          "If your child researches anti-bullying organisations online, sit with them while they search.",
+        ],
+        younger: "Do the helping hand together, and practise saying 'I need to tell you something that's worrying me' to each person on it.",
+        older: "Research Anti-Bullying Week with your grown-up, then write a short speech persuading other children to be upstanders.",
+      },
+    },
+  ],
+};

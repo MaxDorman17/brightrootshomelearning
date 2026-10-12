@@ -1,0 +1,678 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/** Rainforests, for ages 9 to 11. Tropical rainforests around the world, with the UK's own temperate rainforest too. */
+export const rainforests: LessonUnit = {
+  slug: "rainforests",
+  title: "Rainforests",
+  short: "Rainforests",
+  subject: "Geography",
+  ages: "9 to 11",
+  emoji: "🌴",
+  color: "#2F6B4F",
+  summary: "Six lessons: where the world's rainforests are, their hot and wet climate, the four layers, plant and animal adaptations, the people who call them home, and deforestation and what we can do about it.",
+  cover: "/lessons/units/rainforests.jpg",
+  lessons: [
+    {
+      slug: "rainforests-1",
+      title: "Where in the world are rainforests?",
+      emoji: "🌍",
+      minutes: 50,
+      goal: "I can locate the world's main tropical rainforests and explain why they lie near the Equator.",
+      starter: [
+        { type: "choice", q: "What is the Equator?", options: ["A real wall around the Earth", "An imaginary line around the middle of the Earth", "The line between the UK and France"], answer: 1 },
+        { type: "choice", q: "Which word best describes a rainforest?", options: ["Dry and sandy", "Cold and icy", "Thick forest where lots of rain falls"], answer: 2 },
+        { type: "pick", q: "Which of these are continents? There is more than one.", options: ["Africa", "Brazil", "South America", "Asia"], answers: [0, 2, 3] },
+        { type: "choice", q: "Which of these animals lives in a rainforest?", options: ["Polar bear", "Jaguar", "Camel"], answer: 1 },
+        { type: "type", q: "What is the name of the huge river, and rainforest, in South America?", answer: ["Amazon", "the Amazon", "amazon"] },
+        { type: "choice", q: "Is the UK north or south of the Equator?", options: ["North", "South", "Right on it"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "A green belt around the Earth",
+            text: [
+              "If you look at a map of the world's tropical rainforests, you'll notice something striking: almost all of them sit in a belt around the middle of the Earth. That middle line is the Equator, an imaginary line at 0° of latitude, exactly halfway between the North Pole and the South Pole.",
+              "Two more imaginary lines help us describe this belt. The Tropic of Cancer runs about 23½° north of the Equator, and the Tropic of Capricorn runs about 23½° south of it. The area between them is called the tropics.",
+              "The tropics get strong sunshine all year round, because the sun is high in the sky there in every month. That steady heat, along with plenty of rain, is exactly what tropical rainforests need. That's why you won't find a tropical rainforest in Scotland, Canada or Russia.",
+              "Rainforests cover only around 6% of the Earth's land, yet scientists think at least half of all the world's kinds of plants and animals live in them.",
+            ],
+          },
+          {
+            heading: "The three great rainforests",
+            text: [
+              "The biggest tropical rainforest on Earth is the Amazon rainforest in South America. It surrounds the Amazon River and its many tributaries, and it stretches across nine countries and territories. About 60% of it is in Brazil, with large parts in Peru and Colombia too.",
+              "The second largest is the Congo rainforest in Central Africa, around the Congo River. Much of it lies in the Democratic Republic of the Congo, with more in countries such as Cameroon, Gabon and the Republic of the Congo. It is home to gorillas, chimpanzees, forest elephants and the shy okapi.",
+              "The third big region is South-East Asia, where rainforests grow on islands such as Borneo, Sumatra and New Guinea, and in countries such as Malaysia and Indonesia. This is where wild orangutans live.",
+              "There are smaller tropical rainforests too: in Central America, West Africa, Madagascar, India and the north-east of Australia.",
+            ],
+          },
+          {
+            heading: "A rainforest closer to home",
+            text: [
+              "Here's a surprising fact: the UK has rainforest too! It isn't a tropical rainforest, though. It's a temperate rainforest, sometimes called Atlantic or Celtic rainforest.",
+              "Temperate means mild, not hot. Along the western edges of Britain, winds from the Atlantic Ocean bring lots of rain and keep the air damp and mild all year. Here, old woods of oak, birch and hazel are covered in mosses, lichens and ferns, which grow on the trunks and branches as well as the ground.",
+              "You can find patches of it in western Scotland, such as Argyll and the coast near Sunart, in Wales, especially Eryri (Snowdonia), and in Devon and Cornwall. Wistman's Wood on Dartmoor, with its twisted, mossy oaks, is a famous example.",
+              "Long ago, much more of Britain's west coast was covered in this kind of forest. Today only small pieces remain, and people are working hard to protect and grow them.",
+            ],
+          },
+        ],
+        words: [
+          { word: "Equator", meaning: "an imaginary line around the middle of the Earth, at 0° latitude" },
+          { word: "Tropic of Cancer", meaning: "an imaginary line about 23½° north of the Equator" },
+          { word: "Tropic of Capricorn", meaning: "an imaginary line about 23½° south of the Equator" },
+          { word: "the tropics", meaning: "the hot area of the Earth between the Tropic of Cancer and the Tropic of Capricorn" },
+          { word: "tropical rainforest", meaning: "a thick, hot, wet forest that grows in the tropics" },
+          { word: "temperate rainforest", meaning: "a mild, very damp forest outside the tropics, like the Atlantic rainforest in the UK" },
+        ],
+      },
+      practice: {
+        intro: "Find your way around the world's rainforests.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each rainforest to the continent or region it's in.",
+            pairs: [["Amazon", "South America"], ["Congo", "Africa"], ["Borneo", "South-East Asia"]],
+          },
+          { type: "choice", q: "Why are most tropical rainforests found near the Equator?", options: ["Because it's always windy there", "Because the sun is strong all year and there is lots of rain", "Because there are no mountains there"], answer: 1 },
+          {
+            type: "order",
+            q: "Put these lines in order from north to south.",
+            items: ["Tropic of Cancer", "Equator", "Tropic of Capricorn"],
+          },
+          { type: "pick", q: "Where in the UK can you find temperate rainforest? There is more than one.", options: ["Western Scotland", "Wales", "Devon", "The middle of London"], answers: [0, 1, 2] },
+          {
+            type: "gap",
+            q: "Fill the gaps.",
+            text: "The biggest tropical rainforest is the ___, and most of it is in the country of ___.",
+            bank: ["Amazon", "Congo", "Brazil", "Borneo"],
+            answers: ["Amazon", "Brazil"],
+          },
+        ],
+      },
+      task: {
+        title: "Map the green belt",
+        intro: "Make your own map showing where the world's rainforests are, and the lines that explain why.",
+        need: [
+          "An atlas, a printed world map, or a world map on a screen (with a grown-up if you use the internet)",
+          "A blank outline map of the world, or plain paper to trace one",
+          "Coloured pencils, especially green, red and blue",
+          "A ruler",
+        ],
+        steps: [
+          "Trace or print an outline map of the world. Label the seven continents and the five oceans.",
+          "Use a ruler and a red pencil to draw the Equator. Draw the Tropic of Cancer and the Tropic of Capricorn in blue, and label all three lines.",
+          "Using your atlas, shade in green the Amazon, the Congo and the rainforests of South-East Asia. Add any smaller ones you can find, such as Madagascar or north-east Australia.",
+          "Mark the UK, and draw a small star on its west coast for our temperate rainforest.",
+          "Underneath, write three or four sentences explaining the pattern you can see. Use the words Equator, tropics and sunshine.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is the area between the Tropic of Cancer and the Tropic of Capricorn called?", options: ["The poles", "The tropics", "The temperate zone"], answer: 1 },
+        { type: "choice", q: "Which is the largest tropical rainforest in the world?", options: ["The Congo", "Borneo", "The Amazon"], answer: 2 },
+        { type: "choice", q: "On which continent is the Congo rainforest?", options: ["Africa", "Asia", "South America"], answer: 0 },
+        { type: "type", q: "What is the name of the imaginary line around the middle of the Earth?", answer: ["Equator", "the Equator", "equator"] },
+        { type: "choice", q: "What kind of rainforest does the UK have?", options: ["Tropical rainforest", "Temperate rainforest", "None at all"], answer: 1 },
+        { type: "pick", q: "Which of these places have tropical rainforest? There is more than one.", options: ["Borneo", "The Sahara Desert", "Brazil", "The Congo Basin"], answers: [0, 2, 3] },
+      ],
+      grownUp: {
+        need: ["An atlas or world map", "A blank outline world map (many free ones can be printed)", "Coloured pencils and a ruler"],
+        tips: [
+          "A globe is ideal for this lesson: turn it slowly and run a finger along the Equator to see which countries it passes through.",
+          "Latitude may be new. All your child needs is that it measures how far north or south of the Equator a place is, in degrees.",
+          "If you live near the west coast of Scotland, Wales, Devon or Cornwall, a damp, mossy oak wood may be within reach for a visit.",
+        ],
+        younger: "Focus on finding the Equator and colouring the three big rainforests green, then name one animal from each.",
+        older: "Find the latitude of the UK (about 50° to 60° north) and of Manaus in Brazil (about 3° south). Explain how the difference affects their weather.",
+      },
+    },
+    {
+      slug: "rainforests-2",
+      title: "Hot and wet: the rainforest climate",
+      emoji: "🌧️",
+      minutes: 50,
+      goal: "I can describe the climate of a tropical rainforest and read a climate graph to compare it with the UK.",
+      starter: [
+        { type: "choice", q: "What is the Equator?", options: ["An imaginary line around the middle of the Earth", "A river in Africa", "The top of the world"], answer: 0 },
+        { type: "choice", q: "Which line is north of the Equator?", options: ["Tropic of Capricorn", "Tropic of Cancer"], answer: 1 },
+        { type: "match", q: "Match each rainforest to where it is.", pairs: [["Amazon", "South America"], ["Congo", "Central Africa"], ["Sumatra", "South-East Asia"]] },
+        { type: "choice", q: "Why do tropical rainforests grow in the tropics?", options: ["Strong sunshine all year and lots of rain", "Cold winters and dry summers", "No rain at all"], answer: 0 },
+        { type: "type", q: "What kind of rainforest grows on the west coast of the UK?", answer: ["temperate", "temperate rainforest", "Atlantic", "Celtic", "Atlantic rainforest", "Celtic rainforest"] },
+        { type: "choice", q: "In which country is most of the Amazon rainforest?", options: ["Peru", "Brazil", "Indonesia"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Weather and climate",
+            text: [
+              "Weather is what's happening in the sky today: sunny, rainy, windy. Climate is the usual pattern of weather in a place over many years. You might have one rainy day in a desert, but its climate is still dry.",
+              "The climate of a tropical rainforest is hot and wet all year round. The temperature is usually between about 25°C and 30°C, day after day, month after month. There's no cold winter at all, so there are no real seasons like ours.",
+              "Rainforests also get a huge amount of rain: usually more than 2,000 millimetres (2 metres) a year. If it all stayed where it fell, a year's rain would be deeper than a tall adult! London, by comparison, gets about 600 millimetres a year.",
+              "Near the Equator, day and night are each about 12 hours long all year. There are no long summer evenings or short winter days like we have in the UK.",
+            ],
+          },
+          {
+            heading: "A day in the rainforest",
+            text: [
+              "Many rainforest days follow the same pattern. In the morning the sky is clear and the strong sun heats the ground, the plants and all the puddles from yesterday's rain.",
+              "As the morning goes on, huge amounts of water evaporate from the warm ground and from the leaves of the trees. The warm, damp air rises. High up, it cools and the water vapour condenses into towering clouds.",
+              "By the afternoon the clouds are enormous. Then the rain comes: a heavy downpour, often with thunder and lightning. This is called convectional rainfall. By the evening it clears, and the next day it all starts again.",
+              "Because so much water is in the air, the rainforest is very humid: it feels hot, sticky and damp. Trees put so much water into the air that a big rainforest actually helps make its own rain.",
+            ],
+          },
+          {
+            heading: "Reading a climate graph",
+            text: [
+              "Geographers show climate on a climate graph. It has the twelve months along the bottom. Rainfall is shown as bars, read against the axis on one side, in millimetres. Temperature is shown as a line, read against the axis on the other side, in °C.",
+              "Picture the climate graph for Manaus, a city in the middle of the Amazon. The temperature line is almost flat and high, at about 27°C in every month. The rainfall bars are tall for most of the year, reaching around 300 millimetres in the wettest months, March and April. They shrink in the drier months, July to September, but some rain still falls.",
+              "Now picture London's graph. The temperature line curves like a hill: about 5°C in January, rising to about 19°C in July, then falling again. The rainfall bars are short and fairly even, around 40 to 60 millimetres each month.",
+              "So from the graphs alone, you could tell that Manaus is hot all year and very wet, while London has warm summers, cool winters and much less rain.",
+            ],
+          },
+        ],
+        words: [
+          { word: "climate", meaning: "the usual pattern of weather in a place over many years" },
+          { word: "humid", meaning: "when the air is full of water vapour and feels damp and sticky" },
+          { word: "convectional rainfall", meaning: "rain that forms when the sun heats the ground, warm damp air rises, cools and makes storm clouds" },
+          { word: "climate graph", meaning: "a graph showing a place's rainfall as bars and its temperature as a line, month by month" },
+          { word: "millimetre (mm)", meaning: "the unit used to measure rainfall; 1,000 mm make 1 metre" },
+        ],
+      },
+      practice: {
+        intro: "Think like a climate scientist.",
+        questions: [
+          {
+            type: "order",
+            q: "Put a typical rainforest day in order.",
+            items: ["The morning sun heats the ground", "Water evaporates and warm, damp air rises", "The air cools and huge clouds form", "A heavy afternoon storm falls"],
+          },
+          { type: "choice", q: "On a climate graph, how is rainfall usually shown?", options: ["As a line", "As bars", "As a pie chart"], answer: 1 },
+          { type: "choice", q: "A climate graph shows a flat temperature line at about 27°C and tall rainfall bars. Where is it most likely to be?", options: ["Edinburgh", "Manaus in the Amazon", "The North Pole"], answer: 1 },
+          { type: "choice", q: "Why are there no warm and cold seasons in a tropical rainforest?", options: ["Because the sun is high in the sky all year near the Equator", "Because it rains every day", "Because the trees keep the heat in"], answer: 0 },
+          {
+            type: "gap",
+            q: "Fill the gaps.",
+            text: "Climate is the usual ___ of weather over many years. A rainforest climate is hot and ___ all year.",
+            bank: ["pattern", "wet", "dry", "day"],
+            answers: ["pattern", "wet"],
+          },
+        ],
+      },
+      task: {
+        title: "Draw two climate graphs",
+        intro: "Use real (rounded) figures to draw climate graphs for Manaus and London, then compare them.",
+        need: [
+          "Squared or graph paper",
+          "A ruler and a sharp pencil",
+          "A blue and a red pencil",
+          "These rounded monthly rainfall figures for Manaus, in mm, from January to December: 260, 290, 330, 290, 230, 110, 90, 60, 80, 120, 180, 220",
+          "These for London: 55, 40, 40, 45, 50, 45, 45, 50, 50, 70, 65, 55",
+        ],
+        steps: [
+          "Draw a horizontal axis with the twelve months, one square wide each. Draw a vertical axis on the left for rainfall, from 0 to 350 mm. Choose a scale, such as one square for every 10 or 25 mm.",
+          "Draw blue bars for Manaus's rainfall, one for each month.",
+          "Draw a second axis on the right for temperature, from 0°C to 35°C. Manaus is about 27°C every month: plot a red dot above each month and join them.",
+          "Draw a second graph for London using the same scales. For temperature use: 5, 5, 7, 9, 13, 16, 19, 18, 15, 12, 8, 6 (°C).",
+          "Write a paragraph comparing the two places. Which is wetter? Which has more change in temperature through the year? Use numbers from your graphs as evidence.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is the temperature like in a tropical rainforest?", options: ["Hot all year, about 25 to 30°C", "Freezing in winter, hot in summer", "Cool all year, about 10°C"], answer: 0 },
+        { type: "choice", q: "Which word means the air is full of water vapour and feels sticky?", options: ["Arid", "Humid", "Frozen"], answer: 1 },
+        { type: "choice", q: "On a climate graph, what does the line usually show?", options: ["Rainfall", "Temperature", "Hours of sunshine"], answer: 1 },
+        { type: "choice", q: "When does convectional rain usually fall in the rainforest?", options: ["In the afternoon", "Early in the morning", "Only at midnight"], answer: 0 },
+        { type: "type", q: "Roughly how many millimetres of rain does a tropical rainforest get in a year? (More than ...)", answer: ["2000", "2,000", "2000mm", "2000 mm"] },
+        { type: "choice", q: "What is the difference between weather and climate?", options: ["There is no difference", "Weather is today; climate is the usual pattern over many years", "Climate is today; weather is over many years"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Squared paper, a ruler, a sharp pencil", "Blue and red pencils"],
+        tips: [
+          "The figures in the task are rounded averages, which are fine for this purpose. Your child doesn't need to match any graph exactly.",
+          "The two-axis climate graph is tricky. If it helps, draw the rainfall bars first and add the temperature line as a separate step.",
+          "Link the daily rainforest cycle to the water cycle: evaporation, condensation and precipitation, all in one afternoon.",
+        ],
+        younger: "Draw just the rainfall bars for Manaus and London side by side and talk about which is taller.",
+        older: "Find the yearly total for each place by adding the twelve rainfall figures, and work out how many times wetter Manaus is than London.",
+      },
+    },
+    {
+      slug: "rainforests-3",
+      title: "The layers of the rainforest",
+      emoji: "🌳",
+      minutes: 50,
+      goal: "I can name and describe the four layers of a tropical rainforest and explain how light changes from top to bottom.",
+      starter: [
+        { type: "choice", q: "What is the temperature like in a tropical rainforest?", options: ["Hot all year", "Cold in winter, hot in summer"], answer: 0 },
+        { type: "choice", q: "On a climate graph, how is rainfall shown?", options: ["As a line", "As bars"], answer: 1 },
+        { type: "type", q: "What word means the air is damp and sticky?", answer: ["humid", "humidity"] },
+        { type: "order", q: "Put a rainforest day in order.", items: ["Sun heats the ground", "Warm, damp air rises", "Clouds form", "Afternoon storm"] },
+        { type: "choice", q: "About how much rain falls in a rainforest each year?", options: ["Less than 100 mm", "About 600 mm, like London", "More than 2,000 mm"], answer: 2 },
+        { type: "choice", q: "What is climate?", options: ["Today's weather", "The usual pattern of weather over many years"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "A forest built in storeys",
+            text: [
+              "A tropical rainforest is a bit like a tall block of flats. Different plants and animals live on different floors, or layers, and each layer has its own conditions of light, warmth and dampness.",
+              "Geographers usually describe four layers. From the top down, they are the emergent layer, the canopy, the understorey and the forest floor.",
+              "The biggest difference between the layers is light. At the top, the sun blazes down. By the time light reaches the forest floor, only about 2% of it is left. Everything that lives in each layer is suited to the amount of light it gets.",
+            ],
+          },
+          {
+            heading: "The emergent layer and the canopy",
+            text: [
+              "The emergent layer is made of the very tallest trees, which poke up above everything else, sometimes over 60 metres high. Up here it is bright, hot and windy. Birds of prey such as the harpy eagle nest in the emergents, watching for monkeys and sloths below.",
+              "Just beneath is the canopy, roughly 30 to 45 metres up. The crowns of the trees grow so closely together that they form a thick, leafy roof. The canopy catches most of the sunlight and most of the rain.",
+              "The canopy is the busiest layer of all. It is packed with flowers and fruit, so most rainforest animals live here: monkeys, sloths, toucans, parrots, tree frogs and countless insects. Some of them hardly ever go down to the ground.",
+            ],
+          },
+          {
+            heading: "The understorey and the forest floor",
+            text: [
+              "Below the canopy is the understorey, a dim, still, humid layer of young trees, shrubs and palms waiting for their chance to reach the light. Many plants here have very large leaves, to catch as much of the weak light as possible. Jaguars, snakes, frogs and many insects live here.",
+              "At the bottom is the forest floor. It is dark, damp and surprisingly open, because few plants can grow without light. It's covered in a layer of fallen leaves, called leaf litter.",
+              "On the forest floor, decomposers such as fungi, termites and bacteria break down dead leaves and animals very quickly in the heat and damp. The nutrients are soaked up again by tree roots almost at once. That's why rainforest soil itself is actually thin and poor: the goodness is held in the living plants, not stored in the ground.",
+              "Large animals such as tapirs, gorillas, okapi and forest elephants (depending on the continent) roam the forest floor, along with armies of ants.",
+            ],
+          },
+        ],
+        words: [
+          { word: "emergent layer", meaning: "the tallest trees, which stick up above the canopy" },
+          { word: "canopy", meaning: "the thick, leafy 'roof' of the rainforest, where most animals live" },
+          { word: "understorey", meaning: "the dim layer of young trees and shrubs below the canopy" },
+          { word: "forest floor", meaning: "the dark ground layer, covered in fallen leaves" },
+          { word: "decomposer", meaning: "a living thing, such as a fungus, that breaks down dead plants and animals" },
+          { word: "nutrients", meaning: "the goodness in soil and food that living things need to grow" },
+        ],
+      },
+      practice: {
+        intro: "Climb up and down the rainforest.",
+        questions: [
+          {
+            type: "order",
+            q: "Put the layers in order from top to bottom.",
+            items: ["Emergent layer", "Canopy", "Understorey", "Forest floor"],
+          },
+          {
+            type: "match",
+            q: "Match each layer to its description.",
+            pairs: [
+              ["Emergent layer", "The tallest trees, bright and windy"],
+              ["Canopy", "A thick leafy roof full of animals"],
+              ["Understorey", "Dim, with young trees and big leaves"],
+              ["Forest floor", "Dark, covered in leaf litter"],
+            ],
+          },
+          { type: "choice", q: "Why do many understorey plants have very large leaves?", options: ["To hide from animals", "To catch as much of the weak light as possible", "To keep the rain off the forest floor"], answer: 1 },
+          { type: "choice", q: "Why is rainforest soil thin and poor, even though so much grows there?", options: ["Because the nutrients are quickly taken back up by the living plants", "Because it never rains", "Because there are no decomposers"], answer: 0 },
+          { type: "pick", q: "Which of these are decomposers? There is more than one.", options: ["Fungi", "Termites", "Toucans", "Bacteria"], answers: [0, 1, 3] },
+        ],
+      },
+      task: {
+        title: "A rainforest in four layers",
+        intro: "Build a tall, layered rainforest picture or model that shows how life changes from top to bottom.",
+        need: [
+          "A long strip of paper (tape four sheets of A4 together, end to end) or an empty cereal box",
+          "Coloured pencils, felt tips or paint",
+          "Scissors and glue (old magazines are useful for leaves)",
+          "Sticky notes for labels",
+        ],
+        steps: [
+          "Stand your strip upright and mark it into four layers. Make the canopy the thickest band.",
+          "Colour each layer to show its light: bright yellows at the top, getting darker and darker towards the forest floor.",
+          "Draw or stick plants and animals into the right layers: at least two in each.",
+          "Label each layer, and add one fact sticky note to each, for example how much light reaches it or what lives there.",
+          "Explain your finished rainforest to someone at home, from the top down, using the word 'canopy' and 'decomposer'.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which is the top layer of the rainforest?", options: ["Canopy", "Emergent layer", "Understorey"], answer: 1 },
+        { type: "choice", q: "In which layer do most rainforest animals live?", options: ["The canopy", "The forest floor", "The emergent layer"], answer: 0 },
+        { type: "choice", q: "Roughly how much sunlight reaches the forest floor?", options: ["About 2%", "About half", "All of it"], answer: 0 },
+        { type: "type", q: "What is the layer of fallen leaves on the forest floor called?", answer: ["leaf litter", "litter", "leaf-litter"] },
+        { type: "choice", q: "What do decomposers do?", options: ["Climb to the top of the trees", "Break down dead plants and animals", "Make the rain fall"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "Below the canopy is the dim ___, where young trees wait to reach the ___.",
+          bank: ["understorey", "light", "emergent", "soil"],
+          answers: ["understorey", "light"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper or a cereal box", "Colouring materials, scissors and glue", "Sticky notes"],
+        tips: [
+          "The 'block of flats' comparison works well. You could ask: who lives on the top floor? Who lives in the basement?",
+          "The point about poor soil is a key idea for lesson 6: once trees are cleared, the land soon becomes poor for farming.",
+          "Heights of layers vary from forest to forest; the figures here are typical rather than exact.",
+        ],
+        younger: "Name the four layers and draw one animal in each.",
+        older: "Write a diary entry for a scientist climbing from the forest floor to the top of an emergent tree, describing how light, heat and sounds change on the way.",
+      },
+    },
+    {
+      slug: "rainforests-4",
+      title: "Adaptations: built for the rainforest",
+      emoji: "🦥",
+      minutes: 50,
+      goal: "I can explain how rainforest plants and animals are adapted to survive in their habitat.",
+      starter: [
+        { type: "order", q: "Put the rainforest layers in order from top to bottom.", items: ["Emergent layer", "Canopy", "Understorey", "Forest floor"] },
+        { type: "choice", q: "Which layer is like a thick, leafy roof?", options: ["Forest floor", "Canopy"], answer: 1 },
+        { type: "choice", q: "Why is the forest floor so dark?", options: ["The canopy blocks most of the sunlight", "It is always night there"], answer: 0 },
+        { type: "type", q: "What do we call living things, like fungi, that break down dead material?", answer: ["decomposers", "decomposer"] },
+        { type: "choice", q: "Why do understorey plants often have big leaves?", options: ["To catch more of the weak light", "To scare away jaguars"], answer: 0 },
+        { type: "choice", q: "Is rainforest soil rich or poor in nutrients?", options: ["Rich", "Poor"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is an adaptation?",
+            text: [
+              "An adaptation is a feature of a living thing that helps it survive in its habitat. It might be a body part, such as a long tail, or a way of behaving, such as moving very slowly.",
+              "Adaptations don't appear because an animal wants them. They develop over a very long time, over many, many generations. Living things with features that suit their surroundings are more likely to survive and have young, which pass those features on.",
+              "The rainforest is a tough place in its own way: fierce competition for light, heavy rain, poor soil and lots of hungry predators. So its plants and animals have some brilliant adaptations.",
+            ],
+          },
+          {
+            heading: "Plant adaptations",
+            text: [
+              "Drip tips: many rainforest leaves are waxy and end in a long point. Rain runs off them quickly, so water doesn't sit on the leaf, where it could encourage mould or algae and make the leaf heavy.",
+              "Buttress roots: huge trees grow giant, wall-like roots that spread out from the base of the trunk. The soil is thin, so the roots stay shallow, and the buttresses help hold the tall tree steady.",
+              "Lianas are woody vines that root in the ground and climb up tree trunks to reach the light in the canopy. Epiphytes, such as many orchids and bromeliads, go one better: they grow perched on branches high in the trees and collect water and nutrients from the rain and air, without needing soil at all.",
+              "Some bromeliads hold a little pool of water in the middle of their leaves, and tiny frogs may raise their tadpoles in it, high above the ground.",
+            ],
+          },
+          {
+            heading: "Animal adaptations",
+            text: [
+              "The three-toed sloth hangs from branches with long, hooked claws. It moves very slowly, which saves energy on its diet of leaves and helps it go unnoticed by predators. Green algae grow in its fur, helping it blend in with the leaves.",
+              "The toucan's enormous, light beak lets it reach fruit on thin branches that couldn't take its weight. The beak also helps it lose heat in the hot climate.",
+              "Poison dart frogs are brilliantly coloured: bright red, blue or yellow. This warning colouration tells predators, 'I am poisonous; don't eat me!' The jaguar's spotted coat, on the other hand, is camouflage that helps it hide in the dappled light of the understorey.",
+              "Spider monkeys use their prehensile tail, which can grip like an extra hand, to swing through the canopy. In South-East Asia, orangutans have extra-long arms for reaching between branches and hooking themselves from tree to tree.",
+            ],
+          },
+        ],
+        words: [
+          { word: "adaptation", meaning: "a feature that helps a living thing survive in its habitat" },
+          { word: "habitat", meaning: "the natural home of a plant or animal" },
+          { word: "drip tip", meaning: "the pointed end of a leaf that lets rain run off quickly" },
+          { word: "buttress roots", meaning: "huge, wall-like roots that help hold up a tall tree in thin soil" },
+          { word: "epiphyte", meaning: "a plant that grows on another plant, high in the trees, without soil" },
+          { word: "camouflage", meaning: "colours or patterns that help an animal blend in with its surroundings" },
+        ],
+      },
+      practice: {
+        intro: "Match the feature to the reason.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each living thing to its adaptation.",
+            pairs: [
+              ["Sloth", "Algae in its fur for camouflage"],
+              ["Toucan", "A long, light beak to reach fruit"],
+              ["Poison dart frog", "Bright warning colours"],
+              ["Spider monkey", "A tail that can grip"],
+            ],
+          },
+          { type: "choice", q: "Why do many rainforest leaves have drip tips?", options: ["To catch insects", "So rain runs off quickly", "To store water for dry weather"], answer: 1 },
+          { type: "choice", q: "Why do huge rainforest trees need buttress roots?", options: ["The soil is thin, so the roots are shallow and the tree needs support", "To store fruit", "To climb other trees"], answer: 0 },
+          { type: "pick", q: "Which of these are epiphytes? There is more than one.", options: ["Orchids growing on branches", "Bromeliads in the canopy", "A jaguar", "Buttress roots"], answers: [0, 1] },
+          { type: "choice", q: "A predator sees a bright blue frog. Why might it leave it alone?", options: ["Bright colours often warn that an animal is poisonous", "Blue frogs are too fast to catch", "Blue frogs are too small to see"], answer: 0 },
+        ],
+      },
+      task: {
+        title: "Test a drip tip",
+        intro: "Find out whether a pointed leaf really does shed water faster than a rounded one.",
+        need: [
+          "Kitchen foil or a clean plastic bag",
+          "Scissors (ask a grown-up if they are sharp)",
+          "A cup of water and a teaspoon",
+          "A timer or a phone stopwatch",
+          "A tray or a towel underneath",
+        ],
+        steps: [
+          "Cut two leaf shapes the same size from foil: one rounded, and one with a long, pointed drip tip.",
+          "Predict which leaf will lose its water first, and write down why.",
+          "Hold both leaves at the same slight angle over the tray. Drop three teaspoons of water onto the middle of each.",
+          "Time how long it takes for the water to stop dripping off each leaf. Repeat three times to make your results more reliable.",
+          "Write up your results. Then invent your own rainforest creature: choose a layer for it, and give it at least three adaptations. Draw it and explain each one.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is an adaptation?", options: ["A feature that helps a living thing survive in its habitat", "A type of rainforest tree", "A change in the weather"], answer: 0 },
+        { type: "choice", q: "What is a liana?", options: ["A rainforest bird", "A kind of root", "A woody vine that climbs up trees to reach the light"], answer: 2 },
+        { type: "choice", q: "Why does the sloth move so slowly?", options: ["Because it is always asleep", "To save energy and avoid being noticed", "Because its legs are weak"], answer: 1 },
+        { type: "type", q: "What word means colours or patterns that help an animal blend in?", answer: ["camouflage", "camoflage", "camouflaged"] },
+        { type: "choice", q: "Where do epiphytes grow?", options: ["Deep underground", "On other plants, high in the trees", "Only in rivers"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "A leaf's ___ lets rain run off quickly. A jaguar's spotted coat is ___.",
+          bank: ["drip tip", "camouflage", "buttress", "canopy"],
+          answers: ["drip tip", "camouflage"],
+        },
+      ],
+      grownUp: {
+        need: ["Kitchen foil, scissors, a teaspoon, water", "A timer and a tray or towel"],
+        tips: [
+          "Results with foil leaves can be close. If they are, talk about why repeating a test matters and what else might affect it, such as the angle.",
+          "A common misconception is that animals choose to adapt. Gently steer towards the idea of change over very many generations.",
+          "If you have a houseplant such as a weeping fig or peace lily, look at its leaf tips: many popular houseplants come from tropical forests.",
+        ],
+        younger: "Pick two animals, draw them, and label one feature on each that helps them survive.",
+        older: "Research one more rainforest animal, such as the okapi or the harpy eagle, and write a paragraph on how three of its adaptations help it survive in its layer.",
+      },
+    },
+    {
+      slug: "rainforests-5",
+      title: "People of the rainforest",
+      emoji: "🛶",
+      minutes: 50,
+      goal: "I can describe how some Indigenous peoples live in and care for the rainforest, and explain why their knowledge matters.",
+      starter: [
+        { type: "choice", q: "What is an adaptation?", options: ["A feature that helps a living thing survive", "A type of weather"], answer: 0 },
+        { type: "match", q: "Match each animal to its adaptation.", pairs: [["Sloth", "Algae in its fur"], ["Toucan", "Long, light beak"], ["Jaguar", "Spotted camouflage"]] },
+        { type: "choice", q: "What does a drip tip do?", options: ["Holds a tree up", "Lets rain run off a leaf quickly"], answer: 1 },
+        { type: "type", q: "What do we call a plant that grows high on another plant, without soil?", answer: ["epiphyte", "an epiphyte", "epiphytes"] },
+        { type: "choice", q: "Why are poison dart frogs brightly coloured?", options: ["To warn predators they are poisonous", "To attract the sun"], answer: 0 },
+        { type: "choice", q: "What do buttress roots help with?", options: ["Catching insects", "Holding a tall tree steady in thin soil"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "The first people of the forest",
+            text: [
+              "People have lived in rainforests for thousands of years. The people whose families and cultures belong to a place from long before others arrived are called Indigenous peoples.",
+              "In the Amazon alone there are hundreds of different Indigenous peoples, each with its own language, beliefs, traditions and way of life. Examples include the Yanomami, who live in the rainforest on the border of Brazil and Venezuela, and the Kayapó in Brazil. In the Congo rainforest, the Baka people have lived in the forests of Cameroon and neighbouring countries for many generations.",
+              "It's important not to think of all Indigenous peoples as the same, or as people 'from the past'. Many live in a mix of traditional and modern ways: they might fish with handmade traps and also use mobile phones, go to school, run businesses or work as doctors, lawyers and politicians.",
+            ],
+          },
+          {
+            heading: "Living with the forest",
+            text: [
+              "Many Indigenous communities get much of what they need from the forest around them. They hunt, fish and gather fruit, nuts, honey and medicinal plants, taking what they need without destroying what is left.",
+              "Some grow crops such as cassava, bananas and sweet potatoes in small garden plots. A family may clear a small patch, farm it for a few years, then let the forest grow back while they plant somewhere else. This is called shifting cultivation, and when it's done on a small scale the forest can recover.",
+              "Over generations, people have built up a deep knowledge of thousands of plants and animals: which can be eaten, which heal, and which are poisonous. Some modern medicines were developed from rainforest plants, and scientists often learn from Indigenous experts.",
+            ],
+          },
+          {
+            heading: "Guardians of the forest",
+            text: [
+              "Studies have found that, in many places, land looked after by Indigenous peoples has less deforestation than other land nearby. Their way of life depends on the forest staying healthy, so they protect it.",
+              "But many Indigenous communities face serious challenges. Their land can be taken or damaged by illegal logging, mining and farming, and outsiders have sometimes brought diseases that people had no protection against.",
+              "Many Indigenous peoples campaign for their land rights: the legal right to own and look after their own land. Some leaders, such as Raoni Metuktire of the Kayapó, have spoken to world leaders about protecting the Amazon.",
+              "A few groups in the Amazon have chosen to live with no contact with the outside world. Most countries now try to protect them by keeping outsiders away from their land.",
+            ],
+          },
+        ],
+        words: [
+          { word: "Indigenous peoples", meaning: "the first peoples of a place, whose families and cultures belong there from long before others arrived" },
+          { word: "culture", meaning: "the way of life, language, beliefs and traditions of a group of people" },
+          { word: "shifting cultivation", meaning: "farming a small cleared plot for a few years, then moving on so the forest can grow back" },
+          { word: "land rights", meaning: "the legal right of a people to own and look after their own land" },
+          { word: "sustainable", meaning: "able to carry on for a long time without using up or harming what we depend on" },
+        ],
+      },
+      practice: {
+        intro: "Think carefully and fairly.",
+        questions: [
+          { type: "choice", q: "Who are Indigenous peoples?", options: ["Tourists who visit the rainforest", "The first peoples of a place, whose cultures belong there from long ago", "Scientists who study the rainforest"], answer: 1 },
+          { type: "choice", q: "Which statement is fairest?", options: ["All rainforest peoples live in exactly the same way", "Indigenous peoples are many different groups, with different languages and ways of life", "Indigenous peoples only lived in the past"], answer: 1 },
+          {
+            type: "order",
+            q: "Put shifting cultivation in order.",
+            items: ["Clear a small patch of forest", "Grow crops there for a few years", "Move to a new plot", "Let the old patch grow back into forest"],
+          },
+          { type: "choice", q: "Why might land looked after by Indigenous peoples often have less deforestation?", options: ["Because nobody lives there", "Because their way of life depends on a healthy forest, so they protect it", "Because trees grow faster there"], answer: 1 },
+          {
+            type: "match",
+            q: "Match each people to where they live.",
+            pairs: [["Yanomami", "Amazon, Brazil and Venezuela"], ["Kayapó", "Amazon, Brazil"], ["Baka", "Congo rainforest, Cameroon"]],
+          },
+        ],
+      },
+      task: {
+        title: "A respectful fact file",
+        intro: "Research one Indigenous people of the rainforest and write a fact file that shows respect for their way of life.",
+        need: [
+          "Books from the library, or the internet with a grown-up helping you choose good sources (such as museums, charities working with Indigenous peoples, or the BBC)",
+          "Paper and pens, or a computer",
+        ],
+        steps: [
+          "Choose one people, such as the Yanomami, the Kayapó or the Baka.",
+          "Find out: where they live, the language they speak, how they get food, one tradition or belief, and one challenge they face today.",
+          "Where you can, find the words of Indigenous people themselves, such as a quotation from a leader or a young person.",
+          "Write your fact file with headings. Use 'they' and 'their' with care, and avoid words like 'primitive' or 'strange'. Different is not less.",
+          "Finish with a short paragraph: what could people in the UK learn from the way they look after the forest?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does 'Indigenous peoples' mean?", options: ["Visitors to a country", "The first peoples of a place", "People who work in cities"], answer: 1 },
+        { type: "choice", q: "Which of these is an Indigenous people of the Amazon?", options: ["The Yanomami", "The Romans", "The Vikings"], answer: 0 },
+        { type: "type", q: "What is the name for farming a plot for a few years, then moving on so the forest can recover?", answer: ["shifting cultivation", "shifting agriculture"] },
+        { type: "choice", q: "What are land rights?", options: ["Rules about which side of the road to drive on", "The right to cut down any tree", "The legal right of a people to own and look after their land"], answer: 2 },
+        { type: "pick", q: "Which challenges do some Indigenous communities face? There is more than one.", options: ["Illegal mining on their land", "Illegal logging", "Too much snow", "Farmers taking their land"], answers: [0, 1, 3] },
+        { type: "choice", q: "Why is Indigenous knowledge of plants valuable?", options: ["It only helps with sport", "It has helped people find foods and medicines", "It isn't valuable"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Library books or supervised internet access", "Paper and pens"],
+        tips: [
+          "Help your child pick reliable sources. Museum websites, the BBC and organisations that work alongside Indigenous peoples are good starting points.",
+          "Gently challenge stereotypes if they come up. A useful question is: 'How do we know that? Who said it?'",
+          "Illness and loss of land are real and sad parts of this story. Keep the tone calm and focus on how communities are standing up for themselves and the forest.",
+        ],
+        younger: "Draw and label a picture of one way people get food from the rainforest, and say one way they look after it.",
+        older: "Compare the lives of two young people: one in an Amazon community and one in your own town. What is the same? What is different? Present it as a Venn diagram, with a written explanation.",
+      },
+    },
+    {
+      slug: "rainforests-6",
+      title: "Deforestation and how we can help",
+      emoji: "🪓",
+      minutes: 50,
+      goal: "I can explain the causes and effects of deforestation and describe ways to use rainforests more sustainably.",
+      starter: [
+        { type: "choice", q: "Who are Indigenous peoples?", options: ["The first peoples of a place", "Tourists"], answer: 0 },
+        { type: "type", q: "What is the name for farming a small plot, then moving on so the forest can grow back?", answer: ["shifting cultivation", "shifting agriculture"] },
+        { type: "choice", q: "What are land rights?", options: ["The right to cut down trees anywhere", "The right of a people to own and look after their land"], answer: 1 },
+        { type: "choice", q: "Which statement is fairest?", options: ["All Indigenous peoples live the same way", "There are many different Indigenous peoples, each with their own culture"], answer: 1 },
+        { type: "pick", q: "Which of these do many Indigenous communities get from the forest? There is more than one.", options: ["Fish", "Medicinal plants", "Fruit and nuts", "Snow"], answers: [0, 1, 2] },
+        { type: "choice", q: "On land looked after by Indigenous peoples, is there often more or less deforestation?", options: ["More", "Less"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Why forests are cut down",
+            text: [
+              "Deforestation means cutting down or burning forests on a large scale and using the land for something else. Huge areas of tropical rainforest are lost every year.",
+              "In the Amazon, the biggest cause is clearing land for cattle ranching, to raise cows for beef and leather. Large areas are also cleared to grow soya, much of which is used to feed farm animals around the world.",
+              "In South-East Asia, much forest has been replaced with plantations of oil palm trees. Palm oil is found in many everyday products, from biscuits and chocolate spreads to soap and shampoo.",
+              "Other causes include logging for valuable hardwoods, mining for gold and other metals, and building roads, dams and new towns. Roads matter a lot, because once a road is built, people can reach and clear more and more of the forest beside it.",
+            ],
+          },
+          {
+            heading: "The effects of deforestation",
+            text: [
+              "For wildlife, deforestation means losing habitat. Animals such as orangutans, which need large areas of forest, are now critically endangered. Some species may become extinct before scientists have even discovered them.",
+              "For the climate, trees take in carbon dioxide from the air as they grow and store the carbon in their wood. When forests are burned or left to rot, that carbon goes back into the air as carbon dioxide, adding to climate change.",
+              "Without trees, the heavy rain washes the thin soil away. This is called soil erosion, and it can clog rivers with mud. Farmland soon becomes poor, so more forest may be cleared. Fewer trees also means less water going back into the air, and so less rain, in a forest that helps make its own rain.",
+              "For people, Indigenous communities can lose their homes, food and way of life. But deforestation also brings jobs and money to poor regions, which is why it's a hard problem for countries to solve.",
+            ],
+          },
+          {
+            heading: "What can be done?",
+            text: [
+              "Sustainability means meeting our needs today without spoiling things for people in the future. A sustainable rainforest is one that can keep providing food, wood, medicines and homes for a very long time.",
+              "Governments can create protected areas such as national parks, and recognise Indigenous land rights. Scientists and local people replant trees and restore damaged forest. Ecotourism, where visitors pay to see the forest carefully, can make a living forest worth more than a cleared one.",
+              "Shoppers can help through what they buy. The FSC logo (Forest Stewardship Council) shows that wood or paper comes from forests that are managed responsibly. The Fairtrade mark shows that farmers, for example of cocoa, coffee or bananas, were paid a fairer price, and must meet environmental standards. Look out for products made with sustainable palm oil, too.",
+              "At home you can recycle paper, use both sides of a page, avoid wasting food, and learn and talk about the issue. And remember our own Atlantic rainforest: in the UK, people are clearing invasive rhododendron and planting native trees to help it spread again.",
+            ],
+          },
+        ],
+        words: [
+          { word: "deforestation", meaning: "cutting down or burning forests on a large scale" },
+          { word: "palm oil", meaning: "an oil from the fruit of the oil palm, used in many foods and toiletries" },
+          { word: "soil erosion", meaning: "when soil is washed or blown away" },
+          { word: "sustainability", meaning: "meeting our needs today without harming the future" },
+          { word: "Fairtrade", meaning: "a mark showing farmers were paid a fairer price and met standards for people and nature" },
+          { word: "FSC", meaning: "Forest Stewardship Council: a logo showing wood or paper comes from responsibly managed forests" },
+        ],
+      },
+      practice: {
+        intro: "Causes, effects and answers.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each cause of deforestation to what it's for.",
+            pairs: [["Cattle ranching", "Beef and leather"], ["Oil palm plantations", "Palm oil for foods and soap"], ["Logging", "Valuable hardwood"], ["Mining", "Gold and other metals"]],
+          },
+          { type: "pick", q: "Which of these are effects of deforestation? There is more than one.", options: ["Animals lose their habitat", "More carbon dioxide in the air", "Soil erosion", "More rain in the forest"], answers: [0, 1, 2] },
+          { type: "choice", q: "Why does building a road into the rainforest often lead to more deforestation?", options: ["Roads make it rain less", "People and machines can reach more of the forest to clear it", "Roads are made of trees"], answer: 1 },
+          { type: "choice", q: "What does the FSC logo on a notebook tell you?", options: ["The paper comes from responsibly managed forests", "It was made in the UK", "It is waterproof"], answer: 0 },
+          {
+            type: "gap",
+            q: "Fill the gaps.",
+            text: "Trees store ___ in their wood. Without trees, heavy rain washes the soil away, which is called soil ___.",
+            bank: ["carbon", "erosion", "oxygen", "sand"],
+            answers: ["carbon", "erosion"],
+          },
+        ],
+      },
+      task: {
+        title: "Label detectives and a letter",
+        intro: "Hunt for rainforest-friendly labels at home, then write a persuasive letter.",
+        need: [
+          "Packets, tins and products from your kitchen and bathroom (with a grown-up's permission)",
+          "Paper and pens",
+          "A table to record what you find",
+        ],
+        steps: [
+          "Search the house for products that might come from rainforest regions: chocolate, coffee, tea, bananas, biscuits, paper, wooden items, soap.",
+          "Make a table with columns: product, rainforest ingredient or material, label found (FSC, Fairtrade, Rainforest Alliance, sustainable palm oil, or none).",
+          "Count how many products had a label. Were you surprised?",
+          "Write a persuasive letter to a supermarket, your school or a local MP explaining why rainforests matter and what they could do to help. Use at least one cause, one effect and one solution from today.",
+          "Read your letter aloud to someone at home. With a grown-up's help, you could send it.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is the biggest cause of deforestation in the Amazon?", options: ["Building schools", "Forest fires started by lightning", "Clearing land for cattle ranching"], answer: 2 },
+        { type: "choice", q: "In South-East Asia, a lot of rainforest has been replaced with which crop?", options: ["Wheat", "Oil palm", "Potatoes"], answer: 1 },
+        { type: "type", q: "What do we call it when heavy rain washes away soil?", answer: ["soil erosion", "erosion"] },
+        { type: "choice", q: "What does sustainability mean?", options: ["Using everything up quickly", "Meeting our needs today without harming the future", "Never using any resources"], answer: 1 },
+        { type: "choice", q: "What does the Fairtrade mark show?", options: ["The product is free", "Farmers were paid a fairer price and met standards for people and nature", "The product was made from recycled plastic"], answer: 1 },
+        { type: "choice", q: "Why does deforestation add to climate change?", options: ["Trees store carbon, which is released as carbon dioxide when they are burned", "Trees make the Earth spin faster", "Fewer trees means more snow"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Everyday products from the kitchen and bathroom", "Paper and pens"],
+        tips: [
+          "This can be a heavy topic. Balance the problems with the many people and projects making a real difference, so your child finishes feeling hopeful and able to act.",
+          "Palm oil is not simply 'bad': swapping it for other oils can need even more land. Sustainable palm oil is the usual recommendation.",
+          "If your child wants to send their letter, help them find the right address and check it over together first.",
+        ],
+        younger: "Find two labels at home (Fairtrade or FSC) and draw a poster saying 'Look for this logo!'",
+        older: "Hold a balanced debate: one side argues for a new road through a rainforest to bring jobs, the other argues against it. Then write a conclusion giving your own view and reasons.",
+      },
+    },
+  ],
+};

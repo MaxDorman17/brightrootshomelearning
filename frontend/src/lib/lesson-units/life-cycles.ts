@@ -1,0 +1,616 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/** Life cycles, for ages 9 to 11. Mammals, amphibians, insects and birds, how plants reproduce, and the work of naturalists. */
+export const lifeCycles: LessonUnit = {
+  slug: "life-cycles",
+  title: "Life cycles",
+  short: "Life cycles",
+  subject: "Science",
+  ages: "9 to 11",
+  emoji: "🦋",
+  color: "#6B7A3A",
+  summary: "Six lessons on how living things grow and reproduce: the life cycles of a mammal, an amphibian, an insect and a bird, how plants make new plants with and without seeds, and the naturalists who studied animals in the wild.",
+  cover: "/lessons/units/life-cycles.jpg",
+  lessons: [
+    {
+      slug: "life-cycles-1",
+      title: "What is a life cycle? Mammals",
+      emoji: "🐘",
+      minutes: 50,
+      goal: "I can describe the stages of a mammal's life cycle and explain what makes mammals different from other animals.",
+      starter: [
+        { type: "choice", q: "What do we call a baby cat?", options: ["A cub", "A kitten", "A foal"], answer: 1 },
+        { type: "pick", q: "Which of these are mammals? There is more than one.", options: ["A dog", "A goldfish", "A human", "A robin"], answers: [0, 2] },
+        { type: "choice", q: "What does a frog lay?", options: ["Frogspawn", "Pebbles", "Seeds"], answer: 0 },
+        { type: "type", q: "A caterpillar turns into a butterfly or a...?", answer: ["moth", "a moth"] },
+        { type: "choice", q: "What do most mammal mothers feed their babies on?", options: ["Seeds", "Milk", "Worms"], answer: 1 },
+        { type: "choice", q: "Which of these do all living things do at some point?", options: ["Fly", "Lay eggs", "Grow"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "The circle of life",
+            text: [
+              "Every living thing goes through a series of changes from the start of its life to the end. This series of changes is called its life cycle.",
+              "Life cycles are different for different living things, but they share some big stages: a living thing begins life, grows and develops, becomes an adult that can reproduce, and eventually dies.",
+              "To reproduce means to make new living things of the same kind, called offspring. Reproduction is what turns a line into a cycle: the offspring grow up and reproduce in their turn, so the cycle starts again.",
+              "We draw life cycles as circles with arrows, because there is no real beginning or end. You can start anywhere and keep going round.",
+            ],
+          },
+          {
+            heading: "What makes a mammal a mammal?",
+            text: [
+              "Mammals are a group of animals that includes humans, dogs, whales, bats, elephants and mice. They share some important features.",
+              "Mammals have hair or fur (even whales and dolphins have a few bristles when they are born). They are warm-blooded, which means their bodies keep the same warm temperature whatever the weather.",
+              "Most important of all, mammal mothers make milk to feed their young. The word mammal comes from 'mammary glands', the parts of the body that make the milk.",
+              "Almost all mammals give birth to live young instead of laying eggs. There are a few remarkable exceptions: the platypus and the echidnas of Australia and New Guinea lay eggs, but they still feed their babies on milk.",
+            ],
+          },
+          {
+            heading: "A mammal's life cycle",
+            text: [
+              "A mammal's life begins when a male sex cell (sperm) joins with a female sex cell (an egg) inside the mother's body. This is called fertilisation. The baby then grows inside its mother. The time it spends growing there is called the gestation period.",
+              "Gestation periods vary hugely. A mouse is pregnant for about three weeks, a human for about nine months, and an African elephant for about 22 months, the longest of any land animal.",
+              "After birth, the young mammal drinks its mother's milk and is cared for by its parent or parents while it grows. Humans go through infancy, childhood and adolescence (when puberty changes the body so it can one day reproduce) before becoming adults.",
+              "Once it is an adult, the mammal can reproduce and the cycle begins again. Mammals usually have only a few young at a time and look after them carefully, which gives each baby a good chance of surviving.",
+            ],
+          },
+        ],
+        words: [
+          { word: "life cycle", meaning: "the series of changes a living thing goes through during its life" },
+          { word: "reproduce", meaning: "to make new living things of the same kind" },
+          { word: "offspring", meaning: "the young of a living thing" },
+          { word: "mammal", meaning: "a warm-blooded animal with hair or fur that feeds its young on milk" },
+          { word: "fertilisation", meaning: "when a male sex cell and a female sex cell join to start a new living thing" },
+          { word: "gestation", meaning: "the time a baby mammal spends growing inside its mother" },
+        ],
+      },
+      practice: {
+        intro: "Mammal life cycles",
+        questions: [
+          { type: "order", q: "Put the stages of a human life cycle in order.", items: ["Baby growing inside the mother", "Infant", "Child", "Adolescent", "Adult"] },
+          {
+            type: "pick",
+            q: "Which features do all mammals share? There is more than one.",
+            options: ["They feed their young on milk", "They lay eggs in water", "They have hair or fur", "They have feathers"],
+            answers: [0, 2],
+          },
+          { type: "choice", q: "Which mammal lays eggs?", options: ["A bat", "A platypus", "A dolphin"], answer: 1 },
+          {
+            type: "match",
+            q: "Match each mammal to its gestation period.",
+            pairs: [["Mouse", "About 3 weeks"], ["Human", "About 9 months"], ["African elephant", "About 22 months"]],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "A life cycle is drawn as a ___ because the ___ grow up and reproduce in their turn.", bank: ["circle", "offspring", "line", "parents"], answers: ["circle", "offspring"] },
+        ],
+      },
+      task: {
+        title: "A mammal life cycle wheel",
+        intro: "Make a spinning wheel that shows the life cycle of a mammal you choose, and find out about how you grew.",
+        need: ["Two paper plates or two circles of card", "A split pin, or a pencil and some sticky tack", "Colouring pencils", "Child-safe scissors", "Baby photos of you, if your family has some"],
+        steps: [
+          "Choose a mammal: a human, a cat, a dog, a horse, an elephant or another you are interested in.",
+          "Divide one plate into four or five sections, like slices of a pizza. In each section, draw and label one stage of your mammal's life cycle, going round clockwise.",
+          "Cut a window the size of one section out of the second plate. Fix the two plates together through the middle with a split pin (ask a grown-up to help push it through) so the top one turns.",
+          "Spin the wheel and explain each stage out loud as it appears in the window. Use the words fertilisation, gestation and reproduce.",
+          "Ask a grown-up how you changed in your first five years. Look at baby photos if you have them. Write a short paragraph explaining all the ways a human baby depends on its parents.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a life cycle?", options: ["A bike for animals", "The series of changes a living thing goes through during its life", "The food a living thing eats"], answer: 1 },
+        { type: "pick", q: "Which of these are true of mammals? There is more than one.", options: ["They are warm-blooded", "Mothers feed their young on milk", "They all lay eggs", "They breathe through gills"], answers: [0, 1] },
+        { type: "type", q: "What word means the time a baby mammal spends growing inside its mother?", answer: ["gestation", "gestation period", "pregnancy"] },
+        { type: "choice", q: "Which animal has the longest gestation period?", options: ["A human", "A mouse", "An African elephant"], answer: 2 },
+        { type: "choice", q: "Why do we draw a life cycle as a circle?", options: ["Because adults reproduce and the cycle starts again", "Because animals walk in circles", "Because it is easier to draw"], answer: 0 },
+        { type: "choice", q: "Why do baby mammals usually have a good chance of surviving?", options: ["They are born fully grown", "There are thousands of them at a time", "Their parents feed them milk and care for them"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["Paper plates or card", "Split pin or sticky tack", "Colouring pencils and scissors", "Baby photos (optional)"],
+        tips: [
+          "Children this age often know that mammals 'have babies' but not that milk is the defining feature. Return to it: whales, bats and humans all feed their young on milk.",
+          "Reproduction is covered here at a simple level: a sperm and an egg join inside the mother. Answer further questions calmly and at the level your child asks; the science of puberty is taught separately in Year 5 and 6 RSHE.",
+          "Life cycles include death. If this is sensitive for your family at the moment, you can talk about it simply as the natural end of a cycle and move on.",
+        ],
+        younger: "Match baby animal names to their parents (kitten, puppy, calf, foal, cub) and draw a simple three-stage cycle: baby, child, adult.",
+        older: "Research marsupials such as kangaroos, whose tiny newborns finish developing in a pouch. Write a paragraph comparing a kangaroo's life cycle with a human's.",
+      },
+    },
+    {
+      slug: "life-cycles-2",
+      title: "Amphibians: the frog",
+      emoji: "🐸",
+      minutes: 50,
+      goal: "I can describe the life cycle of a frog and explain what metamorphosis means.",
+      starter: [
+        { type: "choice", q: "What is a life cycle?", options: ["The series of changes a living thing goes through in its life", "A kind of exercise", "A list of foods"], answer: 0 },
+        { type: "choice", q: "What do all mammal mothers feed their young on?", options: ["Seeds", "Milk", "Insects"], answer: 1 },
+        { type: "type", q: "What word means to make new living things of the same kind?", answer: ["reproduce", "reproduction", "breed"] },
+        { type: "choice", q: "Which unusual mammal lays eggs?", options: ["A platypus", "A rabbit", "A whale"], answer: 0 },
+        { type: "order", q: "Put these stages of a human life cycle in order.", items: ["Infant", "Child", "Adolescent", "Adult"] },
+        { type: "choice", q: "What is gestation?", options: ["The time a baby mammal grows inside its mother", "The time it takes to eat a meal", "A type of milk"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Living a double life",
+            text: [
+              "Amphibians are a group of animals that includes frogs, toads, newts and salamanders. The word amphibian comes from Greek words meaning 'both lives', because most amphibians spend part of their life in water and part on land.",
+              "Amphibians are cold-blooded: their body temperature changes with their surroundings, which is why British frogs hide away and rest through the coldest months.",
+              "They have thin, moist skin. Adult frogs breathe with lungs, but they can also take in some oxygen through their damp skin.",
+              "Most amphibians must return to water to breed, because their eggs have no hard shell and would quickly dry out on land.",
+            ],
+          },
+          {
+            heading: "From frogspawn to tadpole",
+            text: [
+              "In early spring, common frogs gather in ponds. The female lays a large clump of eggs, often well over a thousand, called frogspawn. The male fertilises the eggs as they are laid, outside the female's body. This is called external fertilisation.",
+              "Each egg is a black dot surrounded by a ball of clear jelly. The jelly protects the egg and helps keep it warm in the sunlight.",
+              "After about two or three weeks, tiny tadpoles hatch. At first they cling to the jelly and feed on it. They have a long tail for swimming and feathery gills on the outside of their heads for breathing underwater. Soon the gills are covered over by skin, and the tadpole breathes through gills inside its body.",
+              "Very few of the eggs survive. Fish, newts, birds and diving beetles eat huge numbers of eggs and tadpoles. Laying so many is how frogs make sure a few will live to become adults.",
+            ],
+          },
+          {
+            heading: "Metamorphosis: a complete change",
+            text: [
+              "Over the next weeks, the tadpole's body changes dramatically. This change in body shape is called metamorphosis.",
+              "First the back legs grow, then the front legs. The tadpole grows lungs and starts swimming up to gulp air at the surface. Its tail gets shorter as its body absorbs it, using it for energy.",
+              "At around 12 to 16 weeks old, the young frog, now called a froglet, leaves the water with a tiny stump of tail. It feeds on small insects and slugs and keeps growing.",
+              "After two or three years it is a fully grown adult. It returns to the pond where it hatched to breed, and the cycle begins again.",
+            ],
+          },
+        ],
+        words: [
+          { word: "amphibian", meaning: "a cold-blooded animal with moist skin that usually lives in water when young and on land as an adult" },
+          { word: "frogspawn", meaning: "a clump of frog eggs, each inside a ball of jelly" },
+          { word: "tadpole", meaning: "the young of a frog or toad, which lives in water and breathes with gills" },
+          { word: "gills", meaning: "body parts that take oxygen from water" },
+          { word: "metamorphosis", meaning: "a big change in body shape as a young animal becomes an adult" },
+          { word: "external fertilisation", meaning: "when eggs are fertilised outside the mother's body" },
+        ],
+      },
+      practice: {
+        intro: "From pond to land",
+        questions: [
+          { type: "order", q: "Put the stages of a frog's life cycle in order.", items: ["Frogspawn", "Tadpole with gills", "Tadpole with back legs", "Froglet", "Adult frog"] },
+          { type: "choice", q: "Which legs does a tadpole grow first?", options: ["Its front legs", "Its back legs", "All four at once"], answer: 1 },
+          { type: "pick", q: "Which animals are amphibians? There is more than one.", options: ["A newt", "A lizard", "A toad", "A goldfish"], answers: [0, 2] },
+          { type: "choice", q: "Why does a frog lay so many eggs?", options: ["Because most eggs and tadpoles are eaten, so only a few survive", "Because it has nothing else to do", "Because the pond is very big"], answer: 0 },
+          { type: "gap", q: "Fill in the gaps.", text: "A young tadpole breathes using ___. An adult frog breathes using ___ and through its skin.", bank: ["gills", "lungs", "fins", "feathers"], answers: ["gills", "lungs"] },
+        ],
+      },
+      task: {
+        title: "A frog's life comic strip",
+        intro: "Tell the story of one frog's life as a comic strip, with a scientific caption under every picture.",
+        need: ["A large sheet of paper", "A ruler", "Pencils and colouring pencils"],
+        steps: [
+          "Rule your paper into six boxes.",
+          "Draw the six stages of the frog's life in order: frogspawn, newly hatched tadpole, tadpole with back legs, tadpole with four legs, froglet, adult frog. Use a ruler and pencil and draw carefully, like a scientist.",
+          "Under each box, write a caption of one or two sentences explaining what has changed and why it matters. Use at least four of the key words.",
+          "Give your frog speech bubbles too. What dangers does it face at each stage?",
+          "Finish with an arrow from the adult frog back to the frogspawn, and explain in a sentence why the arrow is there.",
+          "If you live near a pond, visit with a grown-up in spring to look for frogspawn or tadpoles. Look, but leave them where they are, and stay well back from the edge.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does the word amphibian mean?", options: ["Cold skin", "Both lives", "Many legs"], answer: 1 },
+        { type: "order", q: "Put the stages of a frog's life cycle in order.", items: ["Frogspawn", "Tadpole", "Froglet", "Adult frog"] },
+        { type: "type", q: "What is the name for the big change in body shape as a tadpole becomes a frog?", answer: ["metamorphosis"] },
+        { type: "choice", q: "What happens to a tadpole's tail?", options: ["It falls off in one go", "It turns into the back legs", "It shrinks as the body absorbs it"], answer: 2 },
+        { type: "choice", q: "Why must frogs lay their eggs in water?", options: ["The eggs have no hard shell and would dry out on land", "The eggs are too heavy for land", "Frogs cannot walk on land"], answer: 0 },
+        { type: "choice", q: "What is external fertilisation?", options: ["When eggs hatch in the sun", "When a tadpole grows legs", "When eggs are fertilised outside the mother's body"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["Large paper", "Ruler, pencils and colouring pencils"],
+        tips: [
+          "Timings vary with the weather: warmer water speeds up development. The figures here are typical for the common frog in the UK.",
+          "A common misconception is that the tail drops off. Stress that it is absorbed and its material is reused by the growing frog.",
+          "Visiting a pond in March or April is a wonderful extension, but supervise closely near water. Taking frogspawn from the wild is discouraged now because it can spread disease between ponds.",
+        ],
+        younger: "Make a simple four-stage cycle with plasticine models: a ball of spawn, a tadpole, a froglet and a frog.",
+        older: "Compare frogs with toads and newts: how do their eggs differ? (Toads lay strings of eggs, and newts wrap single eggs in leaves.) Present your findings as a table.",
+      },
+    },
+    {
+      slug: "life-cycles-3",
+      title: "Insects: complete metamorphosis",
+      emoji: "🐛",
+      minutes: 50,
+      goal: "I can describe the four stages of complete metamorphosis in an insect and compare it with incomplete metamorphosis.",
+      starter: [
+        { type: "choice", q: "What does a frog lay?", options: ["Frogspawn", "Hard-shelled eggs", "Live babies"], answer: 0 },
+        { type: "choice", q: "What does a young tadpole use to breathe underwater?", options: ["Lungs", "Gills", "Its tail"], answer: 1 },
+        { type: "type", q: "What is the young frog called when it first leaves the water?", answer: ["froglet", "a froglet"] },
+        { type: "choice", q: "What is metamorphosis?", options: ["A big change in body shape as a young animal becomes an adult", "A type of pond", "Laying eggs"], answer: 0 },
+        { type: "pick", q: "Which of these are amphibians? There is more than one.", options: ["A frog", "A snake", "A newt", "A shark"], answers: [0, 2] },
+        { type: "choice", q: "Which legs grow first on a tadpole?", options: ["Front legs", "Back legs"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Four stages: egg, larva, pupa, adult",
+            text: [
+              "Most insects go through metamorphosis too. Butterflies, moths, beetles, ladybirds, bees, ants and flies all go through four very different stages. This is called complete metamorphosis.",
+              "The stages are egg, larva, pupa and adult. The young stage, the larva, looks nothing like the adult. A caterpillar is a butterfly larva, a maggot is a fly larva, and a ladybird larva looks like a tiny, spiky crocodile.",
+              "Each stage has its own job. The larva's job is to eat and grow. The pupa's job is to transform. The adult's job is to find a mate, reproduce and spread to new places.",
+              "Because larvae and adults often eat different food and live in different places, they don't compete with each other for food.",
+            ],
+          },
+          {
+            heading: "The butterfly's story",
+            text: [
+              "A female butterfly lays her eggs on a plant that her caterpillars will be able to eat. A cabbage white chooses cabbages; a peacock butterfly chooses stinging nettles.",
+              "The caterpillar hatches and often eats its own eggshell first. Then it eats and eats. Its skin cannot stretch very far, so as it grows it sheds its skin several times. This is called moulting.",
+              "When it is fully grown, the caterpillar forms a hard case around itself. A butterfly pupa is called a chrysalis. Many moth caterpillars spin a silk cocoon to protect the pupa.",
+              "Inside, the caterpillar's body breaks down and is rebuilt into a completely new shape, with wings, long legs and a long tongue for sipping nectar. When the adult butterfly emerges, it pumps blood into its crumpled wings, waits for them to dry, and flies off to find a mate.",
+            ],
+          },
+          {
+            heading: "Incomplete metamorphosis",
+            text: [
+              "Not all insects have a pupa stage. Grasshoppers, dragonflies, earwigs and aphids go through three stages instead: egg, nymph and adult. This is called incomplete metamorphosis.",
+              "A nymph looks like a small adult without fully grown wings. It grows by moulting again and again, getting a little more like the adult each time.",
+              "Dragonfly nymphs live underwater in ponds for months or even years, hunting tadpoles and small creatures. Finally a nymph climbs up a plant stem out of the water, splits its skin one last time, and the winged adult climbs out.",
+              "So scientists sort insects by their life cycles: four stages with a pupa (complete) or three stages with nymphs (incomplete).",
+            ],
+          },
+        ],
+        words: [
+          { word: "larva", meaning: "the young stage of an insect that goes through complete metamorphosis, such as a caterpillar (plural: larvae)" },
+          { word: "pupa", meaning: "the stage when a larva changes into an adult inside a protective case (plural: pupae)" },
+          { word: "chrysalis", meaning: "the hard case of a butterfly pupa" },
+          { word: "moulting", meaning: "shedding an old skin so the body can grow bigger" },
+          { word: "nymph", meaning: "the young stage of an insect with incomplete metamorphosis, which looks like a small adult" },
+          { word: "complete metamorphosis", meaning: "a life cycle with four stages: egg, larva, pupa and adult" },
+        ],
+      },
+      practice: {
+        intro: "Four stages or three?",
+        questions: [
+          { type: "order", q: "Put the stages of complete metamorphosis in order.", items: ["Egg", "Larva", "Pupa", "Adult"] },
+          {
+            type: "match",
+            q: "Match each insect to the name of its larva or young.",
+            pairs: [["Butterfly", "Caterpillar"], ["Housefly", "Maggot"], ["Dragonfly", "Nymph"]],
+          },
+          { type: "choice", q: "What is the main job of a caterpillar?", options: ["To find a mate", "To eat and grow", "To lay eggs"], answer: 1 },
+          { type: "pick", q: "Which insects go through complete metamorphosis? There is more than one.", options: ["A ladybird", "A grasshopper", "A bee", "A dragonfly"], answers: [0, 2] },
+          { type: "gap", q: "Fill in the gaps.", text: "A caterpillar sheds its skin as it grows. This is called ___. A butterfly pupa is called a ___.", bank: ["moulting", "chrysalis", "cocoon", "hatching"], answers: ["moulting", "chrysalis"] },
+        ],
+      },
+      task: {
+        title: "Diary of a caterpillar",
+        intro: "Write a diary from the point of view of a caterpillar going through complete metamorphosis, and make a model of its four stages.",
+        need: ["Paper and a pencil", "Dried pasta shapes (a grain of rice, a spiral, a shell and a bow work well)", "Glue", "A paper plate", "Colouring pens"],
+        steps: [
+          "Divide your paper plate into four and draw arrows going round it clockwise.",
+          "Glue on a pasta shape for each stage: a grain of rice or tiny pasta for the egg, a spiral for the larva, a shell for the pupa and a bow for the butterfly. Label each one.",
+          "Now write a diary of at least four entries, one for each stage, as if you were the insect. Day 1 could start: 'Today I chewed my way out of my egg...'",
+          "Include real science in every entry: what you eat, how you grow, moulting, the chrysalis, and what happens when your wings dry.",
+          "Finish with an entry from the adult butterfly laying her eggs on just the right plant. Explain why she chose it.",
+          "With a grown-up, look on nettles, cabbages or other garden plants in summer for eggs, caterpillars or ladybird larvae. Look closely, but don't touch hairy caterpillars, as some can irritate skin.",
+        ],
+      },
+      exit: [
+        { type: "order", q: "Put the stages of a butterfly's life cycle in order.", items: ["Egg", "Caterpillar", "Chrysalis", "Butterfly"] },
+        { type: "choice", q: "What is moulting?", options: ["Shedding an old skin to grow bigger", "Spinning a web", "Flying south for winter"], answer: 0 },
+        { type: "type", q: "What is the young stage of a dragonfly called?", answer: ["nymph", "a nymph", "nymphs"] },
+        { type: "choice", q: "What happens inside a chrysalis?", options: ["The caterpillar sleeps and stays the same", "The caterpillar's body is broken down and rebuilt as a butterfly", "The butterfly lays its eggs"], answer: 1 },
+        { type: "choice", q: "Which insect goes through incomplete metamorphosis, with no pupa stage?", options: ["A beetle", "A moth", "A grasshopper"], answer: 2 },
+        { type: "choice", q: "Why does a butterfly lay its eggs on a particular plant?", options: ["So the caterpillars can eat it when they hatch", "To hide the eggs from rain", "Because it likes the colour"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["Dried pasta shapes and glue", "A paper plate", "Paper and pens"],
+        tips: [
+          "The difference between larva (eats and grows) and nymph (a small, wingless version of the adult) is the key idea. Ask your child to explain it in their own words.",
+          "Children often think cocoon and chrysalis mean the same thing. A chrysalis is the butterfly pupa's own hard case; a cocoon is silk spun around a pupa, mostly by moths.",
+          "If you go outside to look for caterpillars, stay with your child, look rather than collect, and wash hands afterwards. Some hairy caterpillars, such as the oak processionary moth, can cause rashes.",
+        ],
+        younger: "Read The Very Hungry Caterpillar together and spot what Eric Carle got slightly wrong: he calls the pupa a cocoon, and real caterpillars don't eat cake!",
+        older: "Research how a honeybee colony raises its young. Who looks after the larvae, and what are they fed? Write a short report.",
+      },
+    },
+    {
+      slug: "life-cycles-4",
+      title: "Birds, and comparing life cycles",
+      emoji: "🐣",
+      minutes: 50,
+      goal: "I can describe the life cycle of a bird and compare the life cycles of mammals, amphibians, insects and birds.",
+      starter: [
+        { type: "order", q: "Put the stages of complete metamorphosis in order.", items: ["Egg", "Larva", "Pupa", "Adult"] },
+        { type: "choice", q: "What is a butterfly pupa called?", options: ["A nymph", "A chrysalis", "A tadpole"], answer: 1 },
+        { type: "type", q: "What word means shedding an old skin so the body can grow?", answer: ["moulting", "moult", "molting"] },
+        { type: "choice", q: "Which stage is missing in incomplete metamorphosis?", options: ["The egg", "The adult", "The pupa"], answer: 2 },
+        { type: "choice", q: "What is the main job of a larva?", options: ["To eat and grow", "To find a mate", "To build a nest"], answer: 0 },
+        { type: "pick", q: "Which young insects are larvae? There is more than one.", options: ["A caterpillar", "A maggot", "A dragonfly nymph"], answers: [0, 1] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Eggs with shells",
+            text: [
+              "All birds lay eggs. A bird's egg is fertilised inside the female's body (internal fertilisation), and then a hard shell forms around it before it is laid.",
+              "The shell is a brilliant invention. It stops the egg drying out, so unlike frogs, birds can lay their eggs on land, in nests on the ground, in trees or even on bare cliff ledges.",
+              "Inside the shell, the yolk is food for the growing chick, the white (albumen) cushions it and provides water, and a small air space at the blunt end gives it a first breath of air before hatching. Tiny holes in the shell let oxygen in.",
+              "The eggs must be kept warm for the chick inside to develop. Parent birds sit on them, which is called incubation. A robin's eggs take about two weeks to hatch; a hen's take about three weeks. Male emperor penguins balance a single egg on their feet through the Antarctic winter for about two months.",
+            ],
+          },
+          {
+            heading: "From hatchling to adult",
+            text: [
+              "When it is ready, the chick chips its way out of the shell, using a small, hard point on its beak called an egg tooth. The newly hatched bird is called a hatchling.",
+              "Some hatchlings, like baby robins and blackbirds, are born blind and almost naked and depend completely on their parents, who make hundreds of trips a day to bring them food. Others, like ducklings and chicken chicks, hatch covered in fluffy down and can walk and feed themselves within hours.",
+              "As the young bird grows its feathers and leaves the nest, it is called a fledgling. Its parents may still feed it for a while as it learns to fly and find food.",
+              "Gradually it grows into a juvenile, then an adult, which can find a mate, build a nest and lay eggs of its own. The cycle begins again.",
+            ],
+          },
+          {
+            heading: "Comparing four life cycles",
+            text: [
+              "Scientists compare life cycles to spot patterns. Every life cycle includes birth or hatching, growth, reproduction and death, but the details differ.",
+              "Fertilisation: in mammals, birds and insects it happens inside the female's body; in frogs it usually happens outside, in the water. Eggs or live young: most mammals give birth to live young, while birds, most amphibians and insects lay eggs.",
+              "Metamorphosis: frogs and many insects change completely as they grow up. Mammals and birds don't; their young look broadly like small versions of the adult.",
+              "Number of young and care: mammals and birds usually have few young and care for them a lot. Frogs and most insects produce huge numbers of eggs and leave them to fend for themselves. These are two different strategies for the same goal: making sure some offspring survive to reproduce.",
+            ],
+          },
+        ],
+        words: [
+          { word: "incubation", meaning: "keeping eggs warm so the young inside can develop" },
+          { word: "hatchling", meaning: "a young bird or reptile that has just come out of its egg" },
+          { word: "fledgling", meaning: "a young bird that has grown feathers and left the nest" },
+          { word: "internal fertilisation", meaning: "when eggs are fertilised inside the mother's body" },
+          { word: "albumen", meaning: "the white of an egg, which cushions the chick and gives it water" },
+        ],
+      },
+      practice: {
+        intro: "Birds and comparisons",
+        questions: [
+          { type: "order", q: "Put the stages of a bird's life cycle in order.", items: ["Egg", "Hatchling", "Fledgling", "Adult"] },
+          { type: "choice", q: "Why can birds lay their eggs on land when frogs cannot?", options: ["Birds' eggs are bigger", "Birds' eggs have a shell that stops them drying out", "Birds can fly"], answer: 1 },
+          {
+            type: "match",
+            q: "Match each part of an egg to its job.",
+            pairs: [["Yolk", "Food for the growing chick"], ["Albumen", "Cushions the chick and gives it water"], ["Air space", "Gives the chick its first breath"]],
+          },
+          {
+            type: "pick",
+            q: "Which animals go through metamorphosis? There is more than one.",
+            options: ["A frog", "A robin", "A butterfly", "A horse"],
+            answers: [0, 2],
+          },
+          { type: "gap", q: "Fill in the gaps.", text: "Frogs lay ___ eggs and do not care for them. Mammals have ___ young and care for them a lot.", bank: ["many", "few", "no", "square"], answers: ["many", "few"] },
+        ],
+      },
+      task: {
+        title: "Inside an egg, and a big comparison",
+        intro: "Look closely at a real egg from the kitchen, then build a table comparing all four life cycles you have studied.",
+        need: ["A raw hen's egg from the kitchen", "A white plate or saucer", "A magnifying glass, if you have one", "A ruler, a pencil and a large sheet of paper"],
+        steps: [
+          "Look at the egg's shell with the magnifying glass. Can you see the tiny pores that let air in? Which end is more rounded? That is where the air space is.",
+          "With a grown-up, gently crack the egg onto the plate. (Eggs from the shop are not fertilised, so there is no chick inside.) Find the yolk, the albumen and the twisted white cords that hold the yolk in the middle. Look inside the shell for the air space at the blunt end.",
+          "Wash your hands well with soap afterwards. Raw egg can carry germs.",
+          "Draw a table with five columns: Question, Mammal, Amphibian, Insect, Bird. In the first column write: Eggs or live young? Where does fertilisation happen? Is there metamorphosis? Many young or few? Do parents care for them?",
+          "Fill in every box. Then write a paragraph explaining the biggest similarity and the biggest difference you found, and why you think frogs lay so many more eggs than birds do.",
+        ],
+      },
+      exit: [
+        { type: "order", q: "Put the stages of a bird's life cycle in order.", items: ["Egg", "Hatchling", "Fledgling", "Adult"] },
+        { type: "type", q: "What is the word for keeping eggs warm so the chick can develop?", answer: ["incubation", "incubating", "incubate"] },
+        { type: "choice", q: "What is a fledgling?", options: ["A bird egg with no shell", "A young bird that has grown feathers and left the nest", "A fully grown bird"], answer: 1 },
+        { type: "choice", q: "Where does fertilisation happen in birds?", options: ["Inside the female's body", "Outside, in water", "Inside the nest"], answer: 0 },
+        { type: "pick", q: "Which animals usually care for their young? There is more than one.", options: ["A blackbird", "A common frog", "A cat", "A housefly"], answers: [0, 2] },
+        { type: "choice", q: "Why do frogs and insects lay so many eggs?", options: ["Because they have nowhere else to put them", "Because their parents don't care for them, so most die and only a few survive", "Because their eggs are very large"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A raw egg", "A white plate", "Magnifying glass (optional)", "Large paper, ruler and pencil"],
+        tips: [
+          "Supermarket eggs are unfertilised. Some children worry about this, so reassure them there is no chick inside.",
+          "Supervise the egg cracking and make sure everyone washes their hands afterwards. If there are egg allergies in the house, just study the shell or use pictures instead.",
+          "The comparison table is the heart of the lesson. Generalisations have exceptions (some frogs carry their eggs, the platypus lays eggs), so praise your child if they spot one.",
+        ],
+        younger: "Sort pictures of baby animals into two groups: those that hatch from eggs and those that are born live.",
+        older: "Find out about cuckoos, which lay their eggs in other birds' nests. How does this strategy fit into what you learned about parental care?",
+      },
+    },
+    {
+      slug: "life-cycles-5",
+      title: "How plants reproduce",
+      emoji: "🌷",
+      minutes: 50,
+      goal: "I can explain the difference between sexual and asexual reproduction in plants, and describe how new plants grow from cuttings, runners and bulbs.",
+      starter: [
+        { type: "order", q: "Put the stages of a bird's life cycle in order.", items: ["Egg", "Hatchling", "Fledgling", "Adult"] },
+        { type: "choice", q: "What does a bird's eggshell do?", options: ["Stops the egg drying out", "Makes the egg heavier", "Keeps the egg cold"], answer: 0 },
+        { type: "type", q: "What is the word for keeping eggs warm?", answer: ["incubation", "incubating", "incubate"] },
+        { type: "choice", q: "Which group of animals feeds its young on milk?", options: ["Birds", "Amphibians", "Mammals"], answer: 2 },
+        { type: "pick", q: "Which animals lay eggs? There is more than one.", options: ["A frog", "A dog", "A robin", "A butterfly"], answers: [0, 2, 3] },
+        { type: "choice", q: "Which animals usually have the most young at once?", options: ["Elephants", "Frogs", "Humans"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Two ways to make new plants",
+            text: [
+              "Plants have life cycles too, and like animals they need to reproduce. But plants have a trick most animals don't: many can reproduce in two different ways.",
+              "Sexual reproduction needs two parents (or at least a male and a female sex cell). The offspring get a mixture of features from both, so each one is a little different from its parents and from each other.",
+              "Asexual reproduction needs only one parent. The new plant grows from part of the parent plant, and it is an exact copy of it, called a clone.",
+              "Both ways are useful. Variety from sexual reproduction means some offspring may cope better with disease or a changing world. Asexual reproduction is fast and doesn't need pollen, insects or seeds.",
+            ],
+          },
+          {
+            heading: "Flowers, pollen and seeds",
+            text: [
+              "Flowers are where sexual reproduction happens in flowering plants. The male parts, the stamens, make pollen, which contains the male sex cells. The female part in the middle, the carpel, has a sticky top called the stigma, and contains ovules, which hold the female sex cells.",
+              "Pollination is when pollen is carried from a stamen to a stigma, usually of another flower of the same kind. Bees, butterflies and other insects carry it while feeding on nectar; grasses and many trees use the wind instead.",
+              "After pollination, a tube grows from the pollen grain down into the ovary, and a male sex cell joins with an ovule. This is fertilisation. The ovule becomes a seed, and the ovary around it often becomes a fruit.",
+              "The seeds are spread away from the parent (dispersal) by wind, water, animals or by bursting pods. If a seed lands in a good spot, it germinates and grows into a new plant, and the cycle begins again.",
+            ],
+          },
+          {
+            heading: "Cuttings, runners and bulbs",
+            text: [
+              "Runners are long stems that grow sideways along the ground. Where they touch the soil, they grow roots and a new plant forms. Strawberries and spider plants reproduce this way.",
+              "Bulbs, like those of daffodils, tulips, onions and garlic, are underground food stores made of swollen leaves. As well as flowering, a bulb can grow small new bulbs at its side, which become new plants. Each clove in a bulb of garlic can grow into a whole new plant. Potatoes do something similar with swollen underground stems called tubers.",
+              "Gardeners use asexual reproduction on purpose by taking cuttings. They cut off a short piece of stem from a plant such as mint, basil or a geranium and put it in water or damp compost. After a week or two, roots grow from the stem and it becomes a new plant.",
+              "Every plant grown from a cutting, runner or bulb is a clone of its parent. That is why gardeners use cuttings when they want more plants that are exactly like a favourite one.",
+            ],
+          },
+        ],
+        words: [
+          { word: "sexual reproduction", meaning: "reproduction with male and female sex cells, making offspring that are different from their parents" },
+          { word: "asexual reproduction", meaning: "reproduction from just one parent, making offspring that are identical copies" },
+          { word: "pollination", meaning: "when pollen is carried from the male part of a flower to the female part" },
+          { word: "clone", meaning: "a living thing that is an exact copy of its parent" },
+          { word: "runner", meaning: "a stem that grows along the ground and forms new plants" },
+          { word: "cutting", meaning: "a piece cut from a plant that can grow roots and become a new plant" },
+        ],
+      },
+      practice: {
+        intro: "One parent or two?",
+        questions: [
+          { type: "order", q: "Put the stages of sexual reproduction in a flowering plant in order.", items: ["Pollination", "Fertilisation", "Seed forms", "Seed dispersal", "Germination"] },
+          {
+            type: "match",
+            q: "Match each plant to the way it can reproduce asexually.",
+            pairs: [["Strawberry", "Runners"], ["Daffodil", "Bulbs"], ["Potato", "Tubers"], ["Mint", "Cuttings"]],
+          },
+          { type: "choice", q: "A new plant grows from a strawberry runner. How is it different from its parent?", options: ["It has a different colour of flower", "It is not different at all: it is a clone", "It has bigger strawberries"], answer: 1 },
+          { type: "pick", q: "Which of these are examples of asexual reproduction? There is more than one.", options: ["A spider plant grows a baby plant on a runner", "A bee carries pollen to another flower", "A garlic clove grows into a new plant", "A seed grows from a pollinated flower"], answers: [0, 2] },
+          { type: "gap", q: "Fill in the gaps.", text: "Pollen is made by the ___. Pollination is when pollen lands on the ___.", bank: ["stamens", "stigma", "roots", "seed"], answers: ["stamens", "stigma"] },
+        ],
+      },
+      task: {
+        title: "Grow a clone",
+        intro: "Grow new plants without seeds, and observe them over two weeks like a scientist.",
+        need: [
+          "A supermarket pot of mint or basil (or a spider plant or geranium, if you have one)",
+          "Kitchen scissors (a grown-up uses or supervises these)",
+          "Two or three clear glasses or jars of water",
+          "A garlic clove or the root end of a spring onion",
+          "Paper and a pencil for an observation diary",
+        ],
+        steps: [
+          "With a grown-up, cut a piece of stem about 8 to 10 cm long from the mint or basil, just below the point where a leaf joins the stem.",
+          "Pull off the lowest leaves, so no leaves sit in the water. Stand the cutting in a glass of water on a bright windowsill.",
+          "Stand a garlic clove, pointed end up, in a little water so only its base is wet. Or stand the root end of a spring onion in water.",
+          "Every two or three days, draw what you see and measure any roots or new shoots. Change the water if it gets cloudy.",
+          "After two weeks, write a conclusion: what grew, how long it took, and why the new plants are clones of their parents. Explain why gardeners might choose cuttings instead of seeds.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "How many parents does asexual reproduction need?", options: ["One", "Two", "Three"], answer: 0 },
+        { type: "choice", q: "What is pollination?", options: ["When roots grow from a stem", "When pollen is carried from a stamen to a stigma", "When a seed falls to the ground"], answer: 1 },
+        { type: "type", q: "What is the word for a living thing that is an exact copy of its parent?", answer: ["clone", "a clone", "clones"] },
+        { type: "pick", q: "Which are ways plants reproduce asexually? There is more than one.", options: ["Runners", "Bulbs", "Pollination", "Cuttings"], answers: [0, 1, 3] },
+        { type: "choice", q: "Why are plants grown from seeds all slightly different?", options: ["Because seeds come from sexual reproduction, mixing features from two parents", "Because they are planted in different pots", "Because seeds are different sizes"], answer: 0 },
+        { type: "choice", q: "After fertilisation, what does the ovule become?", options: ["A petal", "A root", "A seed"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["A pot of mint or basil", "Kitchen scissors", "Glasses or jars", "A garlic clove or spring onion"],
+        tips: [
+          "Handle the scissors yourself or supervise closely. Mint roots very quickly, often within a week, so it is the most reliable choice.",
+          "Some plants (like strawberries) reproduce both ways: they flower and make seeds, and they send out runners. That's a good discussion point.",
+          "The words 'sexual' and 'asexual' are the correct scientific terms in the Year 5 curriculum. Keep it matter-of-fact: here they mean 'two parents' and 'one parent'.",
+        ],
+        younger: "Just do the garlic or spring onion in water and draw it each day. Talk about how a whole new plant can grow from one part.",
+        older: "Investigate whether a cutting roots faster in water or in damp compost, keeping everything else the same. Record your results in a table and line graph.",
+      },
+    },
+    {
+      slug: "life-cycles-6",
+      title: "Naturalists: Jane Goodall and David Attenborough",
+      emoji: "🔭",
+      minutes: 50,
+      goal: "I can describe the work of naturalists such as Jane Goodall and David Attenborough, and explain how careful observation helps us understand living things.",
+      starter: [
+        { type: "choice", q: "How many parents does sexual reproduction need?", options: ["One", "Two"], answer: 1 },
+        { type: "choice", q: "What is a clone?", options: ["An exact copy of its parent", "A kind of seed", "A flower part"], answer: 0 },
+        { type: "match", q: "Match each plant to how it reproduces asexually.", pairs: [["Strawberry", "Runners"], ["Garlic", "Bulbs"], ["Mint", "Cuttings"]] },
+        { type: "type", q: "What is the name for pollen being carried from a stamen to a stigma?", answer: ["pollination"] },
+        { type: "choice", q: "What does an ovule become after fertilisation?", options: ["A seed", "A leaf", "A bulb"], answer: 0 },
+        { type: "choice", q: "Which part of a flower makes pollen?", options: ["The stigma", "The petals", "The stamens"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is a naturalist?",
+            text: [
+              "A naturalist is someone who studies living things, especially by watching them carefully in their natural surroundings rather than only in a laboratory.",
+              "Much of what we know about life cycles came from naturalists' patient observations. Over 300 years ago, the German artist and naturalist Maria Sibylla Merian raised caterpillars and painted every stage of their metamorphosis. At the time, many people still believed insects simply appeared out of mud.",
+              "Naturalists keep detailed field notes: what they saw, where, when, and how the animal behaved. They watch for long periods, often over many years, because some behaviour happens only rarely.",
+              "You don't need to travel far to be a naturalist. Watching birds at a feeder, beetles under a log or snails after rain, and writing down exactly what you see, is real science.",
+            ],
+          },
+          {
+            heading: "Jane Goodall and the chimpanzees",
+            text: [
+              "Jane Goodall was born in London in 1934. As a child she loved animals and dreamed of going to Africa. In 1960, aged 26, she began studying wild chimpanzees at Gombe, in what is now Tanzania, with the support of the scientist Louis Leakey.",
+              "At first the chimpanzees ran away from her. She was patient, returning day after day until they accepted her. She gave them names, such as David Greybeard, and noticed that each had its own personality.",
+              "Her most famous discovery came when she watched David Greybeard strip the leaves from a twig and poke it into a termite mound to fish out termites to eat. At the time, many scientists believed only humans made and used tools. She also observed that chimpanzees hunt and eat meat, and she recorded how mothers care for their young over many years.",
+              "Jane Goodall's study of the Gombe chimpanzees became one of the longest-running studies of wild animals ever. She later founded the Jane Goodall Institute and the Roots & Shoots programme for young people, was made a Dame, and spent her life campaigning to protect chimpanzees and their forests until she died in 2025, aged 91.",
+            ],
+          },
+          {
+            heading: "David Attenborough and the living planet",
+            text: [
+              "David Attenborough was born in 1926 and grew up in Leicester, where as a boy he collected fossils, stones and birds' eggs. He studied natural sciences at the University of Cambridge and joined the BBC in 1952.",
+              "In 1954 he began presenting Zoo Quest, filming animals in their habitats around the world. In 1979, his series Life on Earth told the story of the evolution of life, and it was watched by millions. Many more series followed, including The Blue Planet and Planet Earth.",
+              "Attenborough is a broadcaster and naturalist rather than a research scientist. His great gift has been sharing other scientists' discoveries, and the extraordinary behaviour of animals, with people all over the world, using new filming techniques to show things few people had ever seen.",
+              "In later life he has spoken out strongly about protecting nature. Blue Planet II (2017) showed the harm plastic does to ocean life and helped persuade many people to use less single-use plastic. He was knighted in 1985, several species of plants and animals have been named after him, and so has a British polar research ship, the RRS Sir David Attenborough.",
+            ],
+          },
+        ],
+        words: [
+          { word: "naturalist", meaning: "someone who studies living things, especially by observing them in the wild" },
+          { word: "observation", meaning: "watching something carefully and recording what you see" },
+          { word: "field notes", meaning: "a naturalist's detailed written record of what they observe outdoors" },
+          { word: "primatologist", meaning: "a scientist who studies primates such as chimpanzees, gorillas and monkeys" },
+          { word: "conservation", meaning: "protecting living things and their habitats" },
+        ],
+      },
+      practice: {
+        intro: "Naturalists and their work",
+        questions: [
+          {
+            type: "match",
+            q: "Match each naturalist to their work.",
+            pairs: [["Jane Goodall", "Studied wild chimpanzees at Gombe"], ["David Attenborough", "Presented Life on Earth and Planet Earth"], ["Maria Sibylla Merian", "Painted the metamorphosis of insects"]],
+          },
+          { type: "choice", q: "What did Jane Goodall see David Greybeard do?", options: ["Build a nest from mud", "Use a twig as a tool to fish for termites", "Swim across a lake"], answer: 1 },
+          { type: "choice", q: "Why was that discovery so important?", options: ["Many scientists thought only humans made and used tools", "Nobody knew chimpanzees ate", "Termites had never been seen before"], answer: 0 },
+          { type: "order", q: "Put these events in order, from earliest to latest.", items: ["David Attenborough joins the BBC (1952)", "Jane Goodall begins her study at Gombe (1960)", "Life on Earth is shown (1979)", "Blue Planet II is shown (2017)"] },
+          { type: "gap", q: "Fill in the gaps.", text: "A naturalist studies living things by careful ___. They write down what they see in ___ notes.", bank: ["observation", "field", "guessing", "kitchen"], answers: ["observation", "field"] },
+        ],
+      },
+      task: {
+        title: "Be a naturalist",
+        intro: "Spend time observing a living thing like Jane Goodall did, keep proper field notes, then write a fact file about a naturalist.",
+        need: ["A notebook or paper on a clipboard", "A pencil", "A watch or timer", "Binoculars or a magnifying glass, if you have them"],
+        steps: [
+          "Choose something to observe for 15 minutes: birds at a feeder or in a park, insects in a garden or window box, snails, or a pet at home. If you go outside, take a grown-up with you.",
+          "At the top of your page, write the date, time, place and weather, just as real naturalists do.",
+          "Sit quietly and still. Every few minutes, write down exactly what you see: what the animal does, what it eats, how it moves, how it reacts to others. Make quick sketches too.",
+          "Afterwards, write three questions your observation raised. What would you need to watch for longer to find out?",
+          "Write a one-page fact file about Jane Goodall or David Attenborough: when and where they were born, what they studied or made, one important discovery or achievement, and why their work matters. You can use library books, or websites with a grown-up's help.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a naturalist?", options: ["Someone who studies living things by observing them in their natural surroundings", "Someone who only works in a laboratory", "Someone who grows vegetables"], answer: 0 },
+        { type: "choice", q: "Which animals did Jane Goodall study at Gombe?", options: ["Gorillas", "Elephants", "Chimpanzees"], answer: 2 },
+        { type: "type", q: "What was the name of the chimpanzee Jane Goodall first saw using a tool? Type his first name.", answer: ["David", "David Greybeard"] },
+        { type: "choice", q: "What is David Attenborough best known for?", options: ["Discovering that chimpanzees use tools", "Presenting nature programmes such as Life on Earth and Planet Earth", "Painting insects over 300 years ago"], answer: 1 },
+        { type: "choice", q: "What did Blue Planet II help people understand?", options: ["How plastic harms ocean life", "How to build a boat", "How chimpanzees use tools"], answer: 0 },
+        { type: "choice", q: "Why did Jane Goodall return to watch the chimpanzees day after day?", options: ["Because she wanted to tame them as pets", "So they would get used to her and behave naturally", "Because she was lost"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A notebook and pencil", "A timer", "Binoculars or a magnifying glass (optional)", "Library books or supervised internet access for the fact file"],
+        tips: [
+          "Go with your child for any outdoor observation, and supervise any internet research for the fact file.",
+          "Praise precise, factual notes ('the blackbird pulled a worm from the lawn three times') over vague ones ('it was looking for food').",
+          "Discuss the difference between a research scientist like Jane Goodall, who made original discoveries, and a broadcaster like David Attenborough, who shares science with the public. Both are naturalists, and both matter.",
+        ],
+        younger: "Watch birds from a window for five minutes and draw what they do. Talk about what Jane Goodall would have noticed.",
+        older: "Research a living naturalist or conservationist whose work interests you, such as Chris Packham or Steve Backshall, and compare their work with Jane Goodall's.",
+      },
+    },
+  ],
+};

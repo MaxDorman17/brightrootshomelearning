@@ -1,0 +1,730 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/**
+ * Map skills, for ages 9 to 11. Builds on "The UK and our local area" (ages 7 to 9). Works for families anywhere in the
+ * UK: Ordnance Survey maps cover Great Britain, and Ordnance Survey of Northern Ireland (OSNI) maps cover Northern Ireland.
+ * Grid questions describe grids in words, so no pictures are needed.
+ */
+export const mapSkills: LessonUnit = {
+  slug: "map-skills",
+  title: "Map skills: grid references and OS maps",
+  short: "Map skills",
+  subject: "Geography",
+  ages: "9 to 11",
+  emoji: "🧭",
+  color: "#7A6A3E",
+  summary: "Six lessons: the eight points of the compass, four-figure and six-figure grid references, Ordnance Survey maps and their symbols, scale and distance, and contour lines, ending with planning a real family walk.",
+  cover: "/lessons/units/map-skills.jpg",
+  lessons: [
+    {
+      slug: "map-skills-1",
+      title: "The eight points of the compass",
+      emoji: "🧭",
+      minutes: 50,
+      goal: "I can name and use the eight points of the compass, find north in real life, and describe where one place is from another.",
+      starter: [
+        { type: "choice", q: "On most maps, which direction is at the top?", options: ["South", "North", "East"], answer: 1 },
+        { type: "order", q: "Go round the compass clockwise, starting at north.", items: ["North", "East", "South", "West"] },
+        { type: "choice", q: "Which tool has a needle that points north?", options: ["A thermometer", "A ruler", "A compass"], answer: 2 },
+        { type: "type", q: "What is the opposite direction to north?", answer: ["south", "South"] },
+        { type: "choice", q: "Roughly where does the Sun rise in the morning?", options: ["In the east", "In the west", "Straight overhead"], answer: 0 },
+        { type: "pick", q: "Which of these help you read a map? There is more than one.", options: ["A key", "A shopping list", "Symbols", "A compass rose"], answers: [0, 2, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Eight points, not four",
+            text: [
+              "You probably already know the four main points of the compass: north, east, south and west. These are called the cardinal points. Going clockwise from north, you can remember them with a silly sentence such as 'Naughty Elephants Squirt Water'.",
+              "Halfway between each pair of cardinal points is another direction. Between north and east is north-east. Between south and east is south-east. Then come south-west and north-west. These four are called the intercardinal points, so a full compass rose has eight points.",
+              "Notice that the in-between names always start with north or south. We say north-east, never east-north. A compass rose is the drawing of all the points that you will find in the corner of many maps.",
+              "A whole turn is 360 degrees. The cardinal points are 90 degrees apart, and each intercardinal point sits exactly halfway between two of them, so neighbouring points on an eight-point compass are 45 degrees apart. Opposite points are always half a turn, 180 degrees, apart: the opposite of north-east is south-west, and the opposite of north-west is south-east.",
+            ],
+          },
+          {
+            heading: "Finding north in real life",
+            text: [
+              "A magnetic compass has a tiny magnetised needle that swings round until it points to magnetic north, a place in the Arctic, near the North Pole, that slowly drifts over the years. Magnetic north is not quite the same as the north on a map, but in the UK today the difference is very small, so for everyday use you can treat them as the same.",
+              "Because the needle is a magnet, other magnets and lumps of metal can pull it the wrong way. Hold your compass flat and keep it away from fridges, speakers, phones and metal railings, or it may give you a false reading.",
+              "You can also use the Sun. It rises roughly in the east and sets roughly in the west. In the UK, around the middle of the day (about 1 pm in summer, when the clocks have gone forward) the Sun is roughly due south, so your shadow points roughly north. Never look straight at the Sun.",
+              "At night, the Pole Star sits almost exactly above the North Pole, so it shows you which way is north. Many phones also have a compass app, but it is still worth knowing how to manage without one.",
+            ],
+          },
+          {
+            heading: "Giving directions on a map",
+            text: [
+              "Before you use a map outdoors, set it, or orient it. This means turning the map round until north on the map points towards north in real life. Now the road on your left on the map is also the road on your left in front of you, which makes the map much easier to follow.",
+              "Geographers describe where places are using compass directions. 'The farm is north-east of the church' means that if you stood at the church, you would walk north-east to reach the farm. The word 'of' tells you where you start from.",
+              "If you turn it round, the direction flips to its opposite. If the farm is north-east of the church, then the church is south-west of the farm. Many mix-ups on maps happen because people forget which place they are starting from.",
+            ],
+          },
+        ],
+        words: [
+          { word: "cardinal points", meaning: "the four main directions: north, east, south and west" },
+          { word: "intercardinal points", meaning: "the four directions halfway between the cardinal points: north-east, south-east, south-west and north-west" },
+          { word: "compass rose", meaning: "a drawing on a map that shows the points of the compass" },
+          { word: "magnetic north", meaning: "the place in the Arctic that a compass needle points to" },
+          { word: "orient a map", meaning: "turn a map so that its north points to north in real life" },
+        ],
+      },
+      practice: {
+        intro: "Find your way round all eight points.",
+        questions: [
+          {
+            type: "order",
+            q: "Go round the compass clockwise, starting at north.",
+            items: ["North", "North-east", "East", "South-east", "South", "South-west", "West", "North-west"],
+          },
+          {
+            type: "match",
+            q: "Match each direction to its opposite.",
+            pairs: [["North-east", "South-west"], ["South-east", "North-west"], ["West", "East"], ["North", "South"]],
+          },
+          { type: "choice", q: "You face north and turn 90 degrees clockwise. Which way are you facing now?", options: ["West", "East", "South-east"], answer: 1 },
+          {
+            type: "choice",
+            q: "The school is north-east of the park. In which direction is the park from the school?",
+            options: ["North-east", "South-east", "South-west"],
+            answer: 2,
+            why: "Swapping the starting place flips the direction to its opposite, and the opposite of north-east is south-west.",
+          },
+          {
+            type: "choice",
+            q: "Why do walkers turn their map so that its north points to north in real life?",
+            options: ["So the writing is upside down", "So what is on the map matches what they see around them", "So the map takes up less room"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "Compass detectives at home",
+        intro: "Find north in your home, label all eight directions, and use them to send someone on a hunt.",
+        need: ["Paper and a pencil", "Eight sticky notes or scraps of paper and some tape", "A compass, or a phone compass app with your grown-up", "A small object to hide"],
+        steps: [
+          "Draw a large compass rose with all eight points. Label each one, and write the number of degrees between neighbouring points in the middle.",
+          "With your grown-up, use a compass or a phone compass app to find which way is north in one room. Hold it flat and away from the fridge, speakers and anything metal.",
+          "Write N, NE, E, SE, S, SW, W and NW on your sticky notes and stick each one on the right wall or piece of furniture.",
+          "Stand in the middle of the room. Write six sentences such as 'The window is south-east of the sofa.' Then write each one backwards: 'The sofa is north-west of the window.'",
+          "Hide a small object. Write directions using only compass points and numbers of steps, for example '4 steps north, then 3 steps south-east'. Can someone in your family follow them and find it?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which direction is halfway between south and west?", options: ["South-east", "North-west", "South-west"], answer: 2 },
+        { type: "type", q: "What is the opposite direction to north-east?", answer: ["south-west", "southwest", "south west", "SW"] },
+        { type: "choice", q: "How many degrees are there between north and north-east?", options: ["45", "90", "180"], answer: 0 },
+        { type: "choice", q: "In the UK, around the middle of the day, in which direction is the Sun roughly?", options: ["North", "South", "East"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "North, east, south and west are the ___ points. North-east, south-east, south-west and north-west are the ___ points.",
+          bank: ["magnetic", "cardinal", "intercardinal"],
+          answers: ["cardinal", "intercardinal"],
+        },
+        {
+          type: "choice",
+          q: "Why should you keep a compass away from a fridge or a speaker?",
+          options: ["They make it too cold to work", "It makes the compass heavier", "Their magnets can pull the needle the wrong way"],
+          answer: 2,
+        },
+      ],
+      grownUp: {
+        need: ["Paper, a pencil and sticky notes", "A compass, or a phone with a compass app"],
+        tips: [
+          "Phone compass apps sometimes need calibrating (usually by moving the phone in a figure of eight). Check the reading against a second method, such as the midday Sun, if you can.",
+          "Children often mix up 'the farm is north-east of the church' with 'the church is north-east of the farm'. Ask 'Where are you standing?' every time.",
+          "If you have a garden or a balcony, finding north at about midday from shadows makes a lovely link with science. Remind your child never to look straight at the Sun.",
+        ],
+        younger: "Stick on only the four cardinal points first, then add the four in-between ones once those feel easy.",
+        older: "Find out about bearings: directions given as a number of degrees clockwise from north, so east is 090 and south-west is 225. Give directions to the hidden object as bearings.",
+      },
+    },
+    {
+      slug: "map-skills-2",
+      title: "Four-figure grid references",
+      emoji: "🔢",
+      minutes: 50,
+      goal: "I can give and find four-figure grid references, reading along the corridor and then up the stairs.",
+      starter: [
+        { type: "choice", q: "Which direction is halfway between north and west?", options: ["North-east", "North-west", "South-west"], answer: 1 },
+        { type: "type", q: "What is the opposite direction to south-east?", answer: ["north-west", "northwest", "north west", "NW"] },
+        { type: "choice", q: "How many degrees apart are neighbouring points on an eight-point compass?", options: ["90", "180", "45"], answer: 2 },
+        { type: "choice", q: "The shop is south of the station. In which direction is the station from the shop?", options: ["North", "South", "East"], answer: 0 },
+        { type: "choice", q: "What does it mean to orient a map?", options: ["Turn it so its north points to north in real life", "Fold it up neatly", "Colour it in"], answer: 0 },
+        {
+          type: "gap",
+          q: "Fill the gap.",
+          text: "The four directions halfway between the main points are called the ___ points.",
+          bank: ["cardinal", "intercardinal", "magnetic"],
+          answers: ["intercardinal"],
+        },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Why maps have grids",
+            text: [
+              "Saying 'the castle is somewhere near the top of the map' isn't much help to anyone. To point to a place exactly, maps are covered with a grid: two sets of straight, evenly spaced lines that cross each other to make squares.",
+              "Each line has a number. That means every square can be given its own name made of numbers, called a grid reference. If you have used coordinates in maths, or played a game where you call out squares on a board, you already know the idea.",
+              "Ordnance Survey maps of England, Scotland and Wales are printed with the National Grid, a set of thin blue lines. Maps of Northern Ireland made by Ordnance Survey of Northern Ireland (OSNI) use a different grid, the Irish Grid, but you read it in exactly the same way.",
+              "On these maps, each grid square stands for a real piece of land 1 kilometre long and 1 kilometre wide. That makes the grid useful for measuring too, as you will find out later in this unit.",
+            ],
+          },
+          {
+            heading: "Along the corridor, then up the stairs",
+            text: [
+              "The lines that run up and down the map are called eastings. Their numbers are printed along the bottom and top edges, and they get bigger as you move east, which is how they got their name.",
+              "The lines that run across the map are called northings. Their numbers are printed up the sides, and they get bigger as you move north.",
+              "The golden rule is: eastings first, then northings. To help you remember, think 'along the corridor, then up the stairs'. You walk along the corridor before you can climb the stairs. In maths, you would say along the x-axis first, then up the y-axis.",
+            ],
+          },
+          {
+            heading: "Writing a four-figure grid reference",
+            text: [
+              "A square is named after the two lines that meet at its bottom-left corner. Find the easting line on the left-hand side of the square, then the northing line along its bottom edge.",
+              "Say a pond sits in a square whose left-hand line is easting 24 and whose bottom line is northing 36. Put the two numbers together, easting first, and the pond is in square 2436. Write the four digits together, with no comma or space.",
+              "Getting the order right really matters. Square 3624 is a completely different square, and on a real map it could be many kilometres away from 2436.",
+              "On a real Ordnance Survey map, a full grid reference also starts with two letters, such as SD or NN, which name the large 100 kilometre area the map is in. On an OSNI map it starts with one letter, such as J. When you are using just one map sheet, the four figures are usually enough.",
+            ],
+          },
+        ],
+        words: [
+          { word: "grid", meaning: "two sets of evenly spaced lines that cross to make squares" },
+          { word: "grid reference", meaning: "numbers that tell you exactly where something is on a map" },
+          { word: "easting", meaning: "a grid line running up and down a map, numbered along the bottom; the numbers increase going east" },
+          { word: "northing", meaning: "a grid line running across a map, numbered up the side; the numbers increase going north" },
+          { word: "National Grid", meaning: "the grid used on Ordnance Survey maps of Great Britain" },
+        ],
+      },
+      practice: {
+        intro: "Along the corridor, then up the stairs.",
+        questions: [
+          { type: "choice", q: "In a grid reference, which number do you give first?", options: ["The northing", "The easting"], answer: 1 },
+          {
+            type: "type",
+            q: "A windmill is in the square whose bottom-left corner is where easting 47 meets northing 12. What is its four-figure grid reference?",
+            answer: ["4712", "47 12"],
+          },
+          { type: "choice", q: "A lake is in square 5309. What is the number of the easting line on its left?", options: ["53", "09", "5309"], answer: 0 },
+          {
+            type: "choice",
+            q: "Why is 'along the corridor, then up the stairs' a useful saying?",
+            options: ["It tells you how far away something is", "It reminds you to give the easting before the northing", "It tells you which way is north"],
+            answer: 1,
+          },
+          {
+            type: "gap",
+            q: "Fill the gaps.",
+            text: "Easting numbers get bigger as you go ___. Northing numbers get bigger as you go ___.",
+            bank: ["west", "east", "south", "north"],
+            answers: ["east", "north"],
+          },
+        ],
+      },
+      task: {
+        title: "A gridded map of your home",
+        intro: "Draw a bird's-eye view map of your home or garden, put a grid on it, and use four-figure grid references to find things.",
+        need: ["A large sheet of paper", "A ruler and a sharp pencil", "Coloured pencils", "A small toy or object to hide"],
+        steps: [
+          "Choose one room, one floor of your home, or your garden. Draw it as a bird's-eye view plan, looking straight down. Add the main things, such as beds, tables, doors, flower beds or a shed.",
+          "With a ruler, lightly draw lines up and down your map every 5 centimetres. Then draw lines across it every 5 centimetres. Now your map has a grid.",
+          "Number the lines that run up and down, along the bottom edge: 10, 11, 12 and so on. These are your eastings. Number the lines that run across, up the left-hand side, starting at 20: 20, 21, 22. These are your northings.",
+          "Make a key with a symbol for each thing on your map, and add a compass rose showing which way is really north.",
+          "Write a list of at least six things with their four-figure grid references, for example 'Fridge: 1221'.",
+          "Hide a small toy in your real room or garden. Give someone in your family only the four-figure grid reference of the square it is in. Can they use your map to find it?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What are eastings?", options: ["Lines running across the map, numbered up the side", "Lines running up and down the map, numbered along the bottom", "The names of towns in the east"], answer: 1 },
+        { type: "choice", q: "A bridge is in square 6218. What is the number of its northing line?", options: ["62", "6218", "18"], answer: 2 },
+        { type: "type", q: "A church is in the square whose bottom-left corner is where easting 30 meets northing 85. What is its four-figure grid reference?", answer: ["3085", "30 85"] },
+        { type: "choice", q: "Which corner of a grid square gives the square its name?", options: ["The top-right corner", "The bottom-left corner", "The middle"], answer: 1 },
+        {
+          type: "choice",
+          q: "Why must everyone give the easting first and the northing second?",
+          options: ["Because it looks neater", "Because e comes before n in the alphabet", "So that everyone reading the reference finds the same square"],
+          answer: 2,
+        },
+        { type: "choice", q: "On an Ordnance Survey or OSNI map, how big is the real land shown by one grid square?", options: ["1 kilometre by 1 kilometre", "1 metre by 1 metre", "100 kilometres by 100 kilometres"], answer: 0 },
+      ],
+      grownUp: {
+        need: ["A large sheet of paper, a ruler and pencils", "A small object to hide"],
+        tips: [
+          "If your child has met coordinates in maths, point out that eastings work like the x-axis and northings like the y-axis.",
+          "The most common mistake is reading the line on the right-hand side or the top of the square. Ask 'Which line is on the left? Which line is at the bottom?'",
+          "If you have an Ordnance Survey or OSNI map at home, or can borrow one from the library, find your home's square together. Online map viewers from Ordnance Survey and OSNI can show the grid too.",
+        ],
+        younger: "Use a smaller grid of just three squares by three, numbered 1 to 3 along the bottom and 1 to 3 up the side, and give references like '2, 3'.",
+        older: "Draw the grid on a map of your whole home or garden, then write a treasure trail of five clues, each giving the four-figure grid reference of the next clue.",
+      },
+    },
+    {
+      slug: "map-skills-3",
+      title: "Six-figure grid references",
+      emoji: "🎯",
+      minutes: 50,
+      goal: "I can give and find six-figure grid references to pinpoint a place inside a grid square.",
+      starter: [
+        { type: "choice", q: "In a grid reference, which comes first?", options: ["The northing", "The easting"], answer: 1 },
+        { type: "type", q: "A tree is in the square whose bottom-left corner is where easting 15 meets northing 72. What is its four-figure grid reference?", answer: ["1572", "15 72"] },
+        { type: "choice", q: "A school is in square 4103. What is its easting?", options: ["03", "4103", "41"], answer: 2 },
+        { type: "choice", q: "Which corner of a grid square gives the square its name?", options: ["The bottom-left corner", "The top-left corner", "The bottom-right corner"], answer: 0 },
+        { type: "choice", q: "Which lines run across the map, numbered up the side?", options: ["Eastings", "Contours", "Northings"], answer: 2 },
+        { type: "choice", q: "How big is the real land shown by one grid square on an Ordnance Survey map?", options: ["10 metres by 10 metres", "1 kilometre by 1 kilometre", "10 kilometres by 10 kilometres"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "When a square is not enough",
+            text: [
+              "A four-figure grid reference tells you which square something is in. But on an Ordnance Survey map each square is a whole square kilometre of land. That is an area big enough to hold a village, several farms, a wood and a stretch of river.",
+              "If you told a friend to meet you 'in square 2436', they might spend an hour looking for you. You need a way to point to an exact spot inside the square.",
+              "The answer is to imagine each square split into ten thin strips going across and ten thin strips going up, like a tiny grid inside the grid. Each strip is one tenth of the square. On an Ordnance Survey map, one tenth of a square is 100 metres of real land.",
+            ],
+          },
+          {
+            heading: "Making a six-figure reference",
+            text: [
+              "You still go along the corridor first, then up the stairs. The only difference is that you add one extra digit to each number, to say how many tenths across or up the square you have gone.",
+              "Imagine a footbridge in square 2436. First, find the easting line on its left: 24. Then estimate how many tenths east of that line the footbridge is. If it is seven tenths of the way across, the easting part is 247.",
+              "Next, find the northing line below it: 36. If the footbridge is three tenths of the way up the square, the northing part is 363.",
+              "Put them together, easting first: 247363. The first three digits are always the easting, and the last three are always the northing. You might see it written with a space in the middle, 247 363, to make it easier to read.",
+            ],
+          },
+          {
+            heading: "Getting it accurate",
+            text: [
+              "Estimating tenths takes practice. A good starting point is halfway, which is five tenths. Then ask yourself: is it a little less than halfway, or a lot more?",
+              "Many walkers' compasses have a romer printed on them: a tiny ruler marked in tenths, sized to fit a grid square on a particular map scale. You line it up with the bottom-left corner of the square to read the tenths exactly.",
+              "Six-figure grid references pinpoint a spot to within about 100 metres. Mountain rescue teams, coastguards and the emergency services use grid references to find people who need help, so it is a skill that can make a real difference.",
+              "Here is a real one: the top of Ben Nevis, the highest mountain in the UK, is at NN 166 712. The letters NN name the 100 kilometre area of the National Grid it is in, and the six figures pinpoint the summit.",
+            ],
+          },
+        ],
+        words: [
+          { word: "six-figure grid reference", meaning: "six digits that pinpoint a spot inside a grid square, to within about 100 metres" },
+          { word: "tenth", meaning: "one of ten equal parts" },
+          { word: "romer", meaning: "a small ruler marked in tenths for measuring inside a grid square" },
+          { word: "pinpoint", meaning: "find or show the exact position of something" },
+          { word: "estimate", meaning: "make a careful, sensible guess" },
+        ],
+      },
+      practice: {
+        intro: "Zoom in with six figures.",
+        questions: [
+          {
+            type: "type",
+            q: "A church is 3 tenths east of easting line 58, and 6 tenths north of northing line 21. What is its six-figure grid reference?",
+            answer: ["583216", "583 216"],
+          },
+          { type: "choice", q: "In the grid reference 247363, which digits are the easting part?", options: ["363", "247", "2473"], answer: 1 },
+          {
+            type: "choice",
+            q: "A postbox is exactly in the middle of square 4512. What is its six-figure grid reference?",
+            options: ["450120", "545215", "455125"],
+            answer: 2,
+            why: "The middle is five tenths across and five tenths up, so the easting is 455 and the northing is 125.",
+          },
+          {
+            type: "match",
+            q: "Match each six-figure grid reference to the four-figure square it is in.",
+            pairs: [["347821", "3482"], ["583216", "5821"], ["120995", "1299"]],
+          },
+          {
+            type: "choice",
+            q: "Why is a six-figure reference better than a four-figure one for meeting a friend at a bus stop?",
+            options: ["It points to a spot within about 100 metres, not a whole square kilometre", "It tells you how high the bus stop is", "It is longer, so it looks more impressive"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "Six-figure treasure hunt",
+        intro: "Make your own romer, then hide treasure on your gridded map using six-figure grid references.",
+        need: ["Your gridded map from the last lesson, or a new one with 5 centimetre squares", "A strip of card about 6 centimetres long", "A ruler and a sharp pencil", "A family member to play with"],
+        steps: [
+          "Make a romer. Along one edge of your card strip, use your ruler to make a mark every 5 millimetres, so 5 centimetres is split into ten equal parts. Number the marks 0 to 10.",
+          "On your gridded map, mark six pieces of treasure with a small cross. Put some near the corners of squares and some near the middle.",
+          "Use your romer to work out the six-figure grid reference of each cross. Line up the 0 with the bottom-left corner of the square, count tenths along, then count tenths up. Write each reference on a separate list, not on the map.",
+          "Give a family member a clean copy of your grid, or rub out your crosses, and read them the six references. Can they mark the treasure in the right places?",
+          "Compare the two maps. How close did they get? Talk about which references were hardest to give, and why.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "In a six-figure grid reference, how many digits make up the easting part?", options: ["2", "3", "6"], answer: 1 },
+        { type: "type", q: "A gate is 4 tenths east of easting line 72, and 8 tenths north of northing line 05. What is its six-figure grid reference?", answer: ["724058", "724 058"] },
+        { type: "choice", q: "The grid reference 316849 is inside which four-figure square?", options: ["3168", "3184", "8431"], answer: 1 },
+        { type: "choice", q: "On an Ordnance Survey map, a six-figure grid reference pinpoints a spot to within about...", options: ["10 metres", "100 metres", "10 kilometres"], answer: 1 },
+        { type: "choice", q: "What is a romer?", options: ["A kind of compass needle", "A line joining places of the same height", "A small ruler marked in tenths for measuring inside a grid square"], answer: 2 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "In a six-figure grid reference, the third digit tells you how many ___ east across the square to go. The ___ digits are the northing.",
+          bank: ["tenths", "metres", "first three", "last three"],
+          answers: ["tenths", "last three"],
+        },
+      ],
+      grownUp: {
+        need: ["The gridded map from lesson 2, a ruler and a pencil", "A strip of card"],
+        tips: [
+          "The extra digit is an estimate. Accept answers that are one tenth out, and praise good reasoning such as 'just under halfway, so four'.",
+          "If your child is confident with decimals, link it to maths: 247 means 24.7 lines along, and 363 means 36.3 lines up.",
+          "If you have a walkers' compass with a romer, or an Ordnance Survey or OSNI map, try reading the six-figure reference of your home, a local school or a park.",
+        ],
+        younger: "Use only 'halfway' (5) and 'right at the line' (0) for the extra digits until the idea clicks.",
+        older: "Find a real mountain summit on a map or online, for example Yr Wyddfa in Wales or Slieve Donard in Northern Ireland, and work out its six-figure grid reference, then check it.",
+      },
+    },
+    {
+      slug: "map-skills-4",
+      title: "Ordnance Survey maps and their symbols",
+      emoji: "🗺️",
+      minutes: 50,
+      goal: "I can explain what Ordnance Survey and OSNI maps are, and recognise and use common map symbols.",
+      starter: [
+        { type: "type", q: "A tree is 2 tenths east of easting line 34, and 9 tenths north of northing line 60. What is its six-figure grid reference?", answer: ["342609", "342 609"] },
+        { type: "choice", q: "In the grid reference 581239, which digits are the northing part?", options: ["239", "581", "5812"], answer: 0 },
+        { type: "choice", q: "A six-figure grid reference pinpoints a spot to within about...", options: ["1 kilometre", "1 metre", "100 metres"], answer: 2 },
+        { type: "choice", q: "The grid reference 452187 is inside which four-figure square?", options: ["4518", "4521", "1845"], answer: 0 },
+        { type: "choice", q: "What does a romer help you measure?", options: ["Tenths inside a grid square", "The height of a hill", "Temperature"], answer: 0 },
+        {
+          type: "choice",
+          q: "Why do mountain rescue teams like to be given a six-figure grid reference?",
+          options: ["It tells them what the weather is like", "It pinpoints where someone is, to within about 100 metres", "It tells them how many people are lost"],
+          answer: 1,
+        },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Ordnance Survey and OSNI",
+            text: [
+              "Ordnance Survey, often shortened to OS, is the national mapping agency for Great Britain: England, Scotland and Wales. It began in 1791, when the government needed accurate maps to help defend the country. 'Ordnance' is an old word for military weapons and supplies.",
+              "Early surveyors measured the land with a method called triangulation, working out distances from carefully measured angles between high points. From 1936, thousands of concrete pillars called trig points were built on hilltops to help with this. Many are still there, and walkers love reaching them.",
+              "Northern Ireland has its own mapping agency, Ordnance Survey of Northern Ireland, or OSNI. Its maps use the Irish Grid instead of the National Grid, but the grid squares, grid references and many of the symbols work in the same way.",
+              "Today, surveyors use satellites and aerial photographs as well, and the maps are kept up to date as new roads, houses and paths appear.",
+            ],
+          },
+          {
+            heading: "The maps walkers use",
+            text: [
+              "In Great Britain, the two best-known OS paper maps are OS Explorer and OS Landranger. OS Explorer maps have orange covers and a scale of 1:25,000. They show lots of detail, even the walls and fences between fields.",
+              "OS Landranger maps have pink covers and a scale of 1:50,000. They cover a bigger area on each sheet but show less detail, which makes them handy for planning longer journeys.",
+              "In Northern Ireland, OSNI makes Discoverer maps at 1:50,000, and Activity maps at 1:25,000 for popular walking areas such as the Mourne Mountains.",
+              "Every one of these maps has a key, sometimes called a legend, printed on the cover or down the side. It explains every symbol, so you never have to guess.",
+            ],
+          },
+          {
+            heading: "Reading the symbols",
+            text: [
+              "Colours tell you a lot. Water, such as rivers, lakes and the sea, is blue. Woods are green, with small tree shapes: pointed trees mean coniferous trees, like pines, and round, bushy trees mean broadleaved trees, like oaks. Motorways are blue, main A roads are green or red, and B roads are yellow or orange.",
+              "Some symbols are shapes. A place of worship with a tower is a small black square with a cross on top. One with a spire, minaret or dome is a small black circle with a cross on top. A small triangle with a dot in its middle marks a trig point.",
+              "On OS Explorer maps, public footpaths are short green dashes and bridleways, for horses and bikes too, are longer green dashes. On Landranger maps they are red. In Scotland, people have a right of responsible access to most land, so maps there do not show rights of way in the same way.",
+              "Things for visitors are mostly shown in blue: a little tent shape for a campsite, a picnic table for a picnic site, and a fan of short lines for a viewpoint. Some places are shortened to letters, such as Sch for a school.",
+            ],
+          },
+        ],
+        words: [
+          { word: "Ordnance Survey", meaning: "the national mapping agency for Great Britain, often shortened to OS" },
+          { word: "OSNI", meaning: "Ordnance Survey of Northern Ireland, which makes maps of Northern Ireland" },
+          { word: "key (or legend)", meaning: "the part of a map that explains what every symbol means" },
+          { word: "trig point", meaning: "a concrete pillar on a hilltop, once used for measuring the land" },
+          { word: "public footpath", meaning: "a path that everyone has the right to walk along" },
+          { word: "coniferous", meaning: "describes trees with needles and cones, like pines, that usually stay green all year" },
+        ],
+      },
+      practice: {
+        intro: "Read the symbols like a map expert.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each symbol to its meaning.",
+            pairs: [
+              ["A small black square with a cross on top", "Place of worship with a tower"],
+              ["A small black circle with a cross on top", "Place of worship with a spire, minaret or dome"],
+              ["A small triangle with a dot in the middle", "Trig point"],
+              ["Short green dashes on an OS Explorer map", "Public footpath"],
+            ],
+          },
+          { type: "choice", q: "Who makes the official maps of Northern Ireland?", options: ["The Met Office", "Ordnance Survey of Northern Ireland (OSNI)", "The Royal Mail"], answer: 1 },
+          { type: "choice", q: "On an OS map, what does a green area filled with small pointed tree shapes show?", options: ["A golf course", "A lake", "A coniferous wood"], answer: 2 },
+          { type: "pick", q: "Which of these are shown in blue on OS maps? There is more than one.", options: ["Rivers and lakes", "Motorways", "Woods", "Campsites and viewpoints"], answers: [0, 1, 3] },
+          {
+            type: "choice",
+            q: "Why do maps use symbols instead of writing everything out in words?",
+            options: ["To keep the map a secret", "Symbols are small and clear, so lots of information fits without cluttering the map", "Because surveyors could not write"],
+            answer: 1,
+          },
+        ],
+      },
+      task: {
+        title: "Symbol pairs",
+        intro: "Make a memory game from real map symbols, then add them to your own map.",
+        need: ["16 small pieces of card or paper, all the same size", "Coloured pencils", "An OS or OSNI map, borrowed from a library, or an online map viewer used with your grown-up", "Your gridded map from lesson 2"],
+        steps: [
+          "With your grown-up, look closely at the key of a real OS or OSNI map. Talk about which symbols are easy to guess and which are surprising.",
+          "Choose eight symbols. On eight cards, draw just the symbol, carefully copying its shape and colour. On the other eight, write what each symbol means.",
+          "Shuffle the cards and lay them face down. Take turns to turn over two. If the symbol matches its meaning, keep the pair. The player with the most pairs wins.",
+          "Now add some OS-style symbols to your gridded home or garden map, and update your key to match.",
+          "Look for three symbols on the real map near where you live. Write down each one's six-figure grid reference.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does OS stand for?", options: ["Official Streets", "Ordnance Survey", "Outdoor Signs"], answer: 1 },
+        { type: "choice", q: "Which countries do Ordnance Survey maps of Great Britain cover?", options: ["England, Scotland and Wales", "Only England", "The whole island of Ireland"], answer: 0 },
+        { type: "choice", q: "On an OS map, what does a small black circle with a cross on top mean?", options: ["A trig point", "A place of worship with a tower", "A place of worship with a spire, minaret or dome"], answer: 2 },
+        { type: "choice", q: "Which OS map, with an orange cover, shows the most detail?", options: ["OS Landranger, at 1:50,000", "OS Explorer, at 1:25,000"], answer: 1 },
+        { type: "type", q: "What do we call the concrete pillar on a hilltop, shown by a small triangle with a dot in the middle?", answer: ["trig point", "a trig point", "trig pillar", "triangulation pillar", "triangulation point"] },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "On OS Explorer maps, a public footpath is shown with short ___ dashes, and rivers and lakes are shown in ___.",
+          bank: ["green", "blue", "red", "black"],
+          answers: ["green", "blue"],
+        },
+      ],
+      grownUp: {
+        need: ["Small pieces of card and coloured pencils", "An OS or OSNI map if you can get one: libraries often lend them, and both agencies have online map viewers"],
+        tips: [
+          "In England, Wales and Scotland, look for an OS Explorer or Landranger map; in Northern Ireland, an OSNI Discoverer or Activity map. Any map that covers your area is ideal.",
+          "Let your child find the key themselves and work out symbols before you explain. Ask 'What do you think this one is, and why?'",
+          "If you use an online map, stay with your child and choose the map layer that shows the paper-map style and symbols.",
+        ],
+        younger: "Play the pairs game with just four symbols, matching symbol to meaning.",
+        older: "Find out how the Ordnance Survey made the first accurate maps of Great Britain, and write a short paragraph about it. Or design five new symbols for things that aren't on OS maps yet, such as electric car chargers or skate parks.",
+      },
+    },
+    {
+      slug: "map-skills-5",
+      title: "Scale and measuring distance",
+      emoji: "📏",
+      minutes: 50,
+      goal: "I can explain what a map scale means and use it to measure real distances, along straight and winding routes.",
+      starter: [
+        { type: "choice", q: "What does OS stand for?", options: ["Ordnance Survey", "Ordinary Signs", "Outdoor Society"], answer: 0 },
+        { type: "choice", q: "Who makes the official maps of Northern Ireland?", options: ["Ordnance Survey of Great Britain", "OSNI", "The Coastguard"], answer: 1 },
+        { type: "choice", q: "On an OS map, what does a small black square with a cross on top mean?", options: ["A school", "A trig point", "A place of worship with a tower"], answer: 2 },
+        { type: "choice", q: "What colour is water on OS maps?", options: ["Green", "Blue", "Brown"], answer: 1 },
+        { type: "type", q: "What is the part of a map that explains the symbols called? Give either name.", answer: ["key", "a key", "the key", "legend", "the legend", "a legend"] },
+        { type: "pick", q: "Which of these are OS maps used in Great Britain? There is more than one.", options: ["OS Explorer", "OS Landranger", "OS Moonwalker"], answers: [0, 1] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What scale means",
+            text: [
+              "A map is much smaller than the real place it shows. The scale tells you exactly how much smaller. It is often written as a ratio, such as 1:25,000, which you say as 'one to twenty-five thousand'.",
+              "1:25,000 means that 1 centimetre on the map stands for 25,000 centimetres on the ground. That is 250 metres, which is about the length of two and a half football pitches. On a 1:50,000 map, 1 centimetre stands for 50,000 centimetres, which is 500 metres.",
+              "The bigger the second number, the more the land has been shrunk, so the less detail fits on the map. A 1:25,000 map shows more detail than a 1:50,000 map, and a road atlas at 1:250,000 shows far less.",
+              "Most maps also have a scale bar: a line marked off in metres or kilometres. You can hold a ruler or a strip of paper against it to turn map distances into real ones without any sums.",
+            ],
+          },
+          {
+            heading: "Measuring in a straight line",
+            text: [
+              "To find a straight-line distance, measure between the two places with a ruler, then use the scale. On a 1:25,000 map, every 4 centimetres is 1 kilometre. On a 1:50,000 map, every 2 centimetres is 1 kilometre.",
+              "There is a handy shortcut on OS and OSNI maps: each grid square is 1 kilometre across, whatever the scale of the map. If a village is three squares east of you, it is about 3 kilometres away.",
+              "Be careful going diagonally. The distance from one corner of a grid square to the opposite corner is about 1.4 kilometres, not 1.",
+              "A straight-line distance is sometimes called the distance 'as the crow flies', because a bird can fly straight there without following roads or paths.",
+            ],
+          },
+          {
+            heading: "Measuring a winding route",
+            text: [
+              "People can't fly like crows. Real paths and roads bend around fields, hills and rivers, so the distance you actually walk is always longer than the straight-line distance.",
+              "To measure a winding route, lay a piece of thin string along it on the map, carefully following every bend. Pinch the string where the route ends, then straighten it out against a ruler or the scale bar.",
+              "Another way is to use the straight edge of a piece of paper. Line it up with the first straight-ish part of the route and mark the start and end. Then pivot the paper to follow the next part, and keep going, adding up as you go.",
+              "Some walkers use a little gadget with a wheel, called a map measurer, which they roll along the route. However you do it, check your answer: does it seem sensible?",
+            ],
+          },
+        ],
+        words: [
+          { word: "scale", meaning: "how much smaller a map is than the real place it shows" },
+          { word: "ratio", meaning: "a way of comparing two amounts, such as 1:25,000" },
+          { word: "scale bar", meaning: "a line on a map marked in real distances, used for measuring" },
+          { word: "as the crow flies", meaning: "measured in a straight line, not following roads or paths" },
+          { word: "kilometre", meaning: "1,000 metres, about 12 to 15 minutes of brisk walking for an adult" },
+        ],
+      },
+      practice: {
+        intro: "Measure like a map reader.",
+        questions: [
+          { type: "choice", q: "On a 1:25,000 map, what real distance does 1 centimetre stand for?", options: ["25 metres", "250 metres", "2.5 kilometres"], answer: 1 },
+          { type: "type", q: "On a 1:50,000 map, two villages are 6 centimetres apart. How many kilometres apart are they in real life?", answer: ["3", "3 km", "3km", "three", "3 kilometres"] },
+          { type: "order", q: "Put these map scales in order, from the most detail to the least.", items: ["1:10,000", "1:25,000", "1:50,000", "1:250,000"] },
+          {
+            type: "choice",
+            q: "Why should you measure a winding footpath with string rather than a ruler?",
+            options: ["String is easier to carry", "Rulers only work on maths homework", "String can follow every bend, so you measure the real walking distance"],
+            answer: 2,
+          },
+          { type: "choice", q: "On an OS map, you walk straight east across three grid squares. Roughly how far have you walked?", options: ["300 metres", "3 kilometres", "30 kilometres"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "A scale plan of a room",
+        intro: "Measure a real room or garden and draw it accurately to scale.",
+        need: ["A tape measure", "Squared paper, or plain paper and a ruler", "A pencil and a rubber", "A grown-up to help measure"],
+        steps: [
+          "With your grown-up, measure the length and width of a room, or a small garden, in metres and centimetres. Write the measurements down.",
+          "Use the scale 1:50. That means 2 centimetres on your paper stands for 1 metre in real life. Work out how long each wall should be on your plan before you draw.",
+          "Draw the outline of the room to scale. Then measure and add the biggest pieces of furniture, such as a bed, a table or a sofa, as bird's-eye view shapes.",
+          "Write the scale as a ratio in the corner, and draw a scale bar showing 0, 1, 2 and 3 metres.",
+          "Test your plan: measure the distance between two things on your plan, use the scale to work out the real distance, then check it in the room with the tape measure. How close were you?",
+          "If you have an OS or OSNI map, use string to measure a winding route near your home, and compare it with the distance as the crow flies.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does a scale of 1:50,000 mean?", options: ["The map is 50,000 centimetres wide", "1 centimetre on the map stands for 50,000 centimetres on the ground", "The map shows 50,000 places"], answer: 1 },
+        { type: "type", q: "On a 1:25,000 map, a path measures 8 centimetres. How many kilometres long is it in real life?", answer: ["2", "2 km", "2km", "two", "2 kilometres"] },
+        { type: "choice", q: "Which map shows more detail?", options: ["A 1:25,000 map", "A 1:50,000 map"], answer: 0 },
+        { type: "choice", q: "What does 'as the crow flies' mean?", options: ["Following the roads", "In a straight line", "Very early in the morning"], answer: 1 },
+        {
+          type: "choice",
+          q: "A footpath winds between two farms. How does the walking distance compare with the straight-line distance?",
+          options: ["It is exactly the same", "It is shorter", "It is longer"],
+          answer: 2,
+        },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "On a 1:50,000 map, ___ centimetres stand for 1 kilometre. A grid square on an OS map is ___ kilometre across.",
+          bank: ["2", "4", "1", "10"],
+          answers: ["2", "1"],
+        },
+      ],
+      grownUp: {
+        need: ["A tape measure and squared paper", "String, and an OS or OSNI map if you have one"],
+        tips: [
+          "Converting centimetres to metres to kilometres is the hard part. Write '100 cm = 1 m' and '1,000 m = 1 km' somewhere your child can see while working.",
+          "Choose a fairly empty, rectangular room for the scale plan. A bedroom usually works well.",
+          "If your child finds 1:50 tricky, use squared paper where each 1 centimetre square is half a metre.",
+        ],
+        younger: "Use a simple scale, such as 1 square on squared paper stands for 1 big step, and pace out the room instead of using a tape measure.",
+        older: "Use a map or an online route planner with your grown-up to find the straight-line distance and the road distance between your home and your nearest city. Work out how much longer the road journey is, as a fraction or a percentage.",
+      },
+    },
+    {
+      slug: "map-skills-6",
+      title: "Contours, height and planning a walk",
+      emoji: "🥾",
+      minutes: 55,
+      goal: "I can read contour lines to understand height and slope, and use all my map skills to plan a route for a family walk.",
+      starter: [
+        { type: "choice", q: "On a 1:25,000 map, what does 1 centimetre stand for?", options: ["250 metres", "25 metres", "25 kilometres"], answer: 0 },
+        { type: "type", q: "On a 1:50,000 map, a road measures 4 centimetres. How many kilometres long is it in real life?", answer: ["2", "2 km", "2km", "two", "2 kilometres"] },
+        { type: "choice", q: "Which map scale shows more detail?", options: ["1:250,000", "1:50,000", "1:25,000"], answer: 2 },
+        { type: "choice", q: "What does 'as the crow flies' mean?", options: ["In a straight line", "Along the river", "Following footpaths"], answer: 0 },
+        { type: "choice", q: "What is the best way to measure a winding path on a map?", options: ["Guess", "Lay string along every bend, then measure the string", "Count the symbols"], answer: 1 },
+        { type: "choice", q: "On an OS map, roughly how far is it from one side of a grid square to the other?", options: ["100 metres", "10 kilometres", "1 kilometre"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Showing height on a flat map",
+            text: [
+              "A map is flat, but the land isn't. Mapmakers show hills and valleys using contour lines: thin lines that join up places which are the same height above sea level. On OS maps they are printed in orange-brown.",
+              "If you walked exactly along a contour line on a real hillside, you would never go up or down. It's a bit like the tidemark the water would leave if the sea rose up the hill to that height.",
+              "Contour lines are drawn at regular steps of height, called the contour interval. On OS Explorer maps this is usually every 5 metres, or 10 metres in mountain areas. On OS Landranger maps it is every 10 metres. Some lines are drawn thicker, and the height is printed on them, with the tops of the numbers facing uphill.",
+              "Maps also show spot heights: a small dot with a number next to it giving the exact height in metres at that point. Trig points have their height printed beside them too.",
+            ],
+          },
+          {
+            heading: "Reading the shape of the land",
+            text: [
+              "The spacing of contour lines tells you how steep the land is. When the lines are close together, the height changes quickly over a short distance, so the slope is steep. When they are far apart, the slope is gentle. Where there are hardly any lines, the land is almost flat.",
+              "A set of rings getting smaller towards the middle, with the numbers getting bigger, shows a hill or mountain top. When contour lines make V shapes with a stream running through them, and the point of each V aims uphill, you are looking at a valley.",
+              "This is how a map reader can 'see' that Ben Nevis in Scotland, at 1,345 metres the highest mountain in the UK, has steep cliffs on one side. Other high points include Yr Wyddfa (Snowdon) in Wales at 1,085 metres, Scafell Pike in England at 978 metres, and Slieve Donard in Northern Ireland's Mourne Mountains at 850 metres.",
+            ],
+          },
+          {
+            heading: "Planning a route",
+            text: [
+              "Now you can put all your skills together. Choose a start and finish, perhaps at a car park or bus stop, and give each a six-figure grid reference. Follow public paths on the map, and split the route into short legs between landmarks such as a bridge, a church or a path junction.",
+              "For each leg, a route card records the direction, using compass points, and the distance, measured with string and the scale. Then use the contours to see how much you will climb: count the lines you cross going uphill and multiply by the contour interval.",
+              "To estimate the time, walkers use Naismith's rule, worked out by a Scottish mountaineer in 1892: allow 1 hour for every 5 kilometres, plus 10 minutes for every 100 metres you climb. Families with younger walkers often go slower, so add extra time for rests and snacks.",
+              "Always walk with an adult, check the weather, and tell someone where you are going. Look after the countryside too: in England and Wales walkers follow the Countryside Code, in Scotland the Scottish Outdoor Access Code, and Northern Ireland has similar advice. Leave gates as you find them, keep to paths, and take all your litter home.",
+            ],
+          },
+        ],
+        words: [
+          { word: "contour line", meaning: "a line on a map joining places that are the same height above sea level" },
+          { word: "contour interval", meaning: "the difference in height between one contour line and the next" },
+          { word: "spot height", meaning: "a dot on a map with a number giving the exact height at that point" },
+          { word: "steep", meaning: "rising or falling sharply, shown by contour lines close together" },
+          { word: "route card", meaning: "a plan of a walk split into legs, with directions, distances and times" },
+          { word: "Naismith's rule", meaning: "a way to estimate walking time: 1 hour per 5 kilometres, plus 10 minutes per 100 metres climbed" },
+        ],
+      },
+      practice: {
+        intro: "Read the hills and plan the walk.",
+        questions: [
+          { type: "choice", q: "What does it mean when contour lines are very close together?", options: ["The land is flat", "The slope is steep", "There is a river"], answer: 1 },
+          {
+            type: "choice",
+            q: "Contour lines make rings that get smaller towards the middle, and the numbers get bigger towards the middle. What does this show?",
+            options: ["A lake", "A valley", "A hill or mountain top"],
+            answer: 2,
+          },
+          { type: "type", q: "Using Naismith's rule, how many hours would a 10 kilometre walk on flat ground take?", answer: ["2", "2 hours", "two hours", "two", "2 hrs", "2hrs"] },
+          { type: "order", q: "Put these mountains in order of height, from lowest to highest.", items: ["Slieve Donard", "Scafell Pike", "Yr Wyddfa (Snowdon)", "Ben Nevis"] },
+          {
+            type: "choice",
+            q: "Why does a route card include a time for each leg?",
+            options: ["So you can check you are on track and get back before dark", "So it looks more official", "Because walks always take exactly one hour"],
+            answer: 0,
+          },
+        ],
+      },
+      task: {
+        title: "Plan and walk a family route",
+        intro: "Plan a short walk on a real map with your grown-up, write a route card, then go and walk it together.",
+        need: [
+          "An OS or OSNI map of your area, or an online map viewer used with your grown-up",
+          "String, a ruler and a pencil",
+          "Paper for your route card",
+          "Comfortable shoes, a waterproof and a drink for the walk",
+          "A grown-up to plan and walk with you",
+        ],
+        steps: [
+          "With your grown-up, find a short circular walk of about 3 to 5 kilometres near your home, using paths or quiet lanes. Write down the six-figure grid reference of your start.",
+          "Split the route into four to six legs, each ending at a landmark you can spot on the map and in real life, such as a bridge, a church or a gate.",
+          "Draw a route card with a column for each leg: from, to, direction, distance, height climbed and time. Fill it in using your compass points, string and scale, and the contour lines.",
+          "Add up the total distance and use Naismith's rule to estimate the time. Add extra time for rests. Check the weather together, and tell someone else where you are going.",
+          "Go on the walk with your grown-up. Take turns to navigate: orient the map, find each landmark, and tick off each leg. Follow the countryside code for where you live.",
+          "Back home, compare your estimated time with your real time. Write a few sentences explaining any differences.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does a contour line join?", options: ["All the footpaths on a map", "Places that are the same height above sea level", "Places with the same name"], answer: 1 },
+        { type: "choice", q: "What do contour lines that are far apart show?", options: ["A steep cliff", "A gentle slope", "A mountain top"], answer: 1 },
+        {
+          type: "choice",
+          q: "Using Naismith's rule, about how long would a 5 kilometre walk that climbs 200 metres take?",
+          options: ["1 hour", "1 hour 20 minutes", "2 hours 30 minutes"],
+          answer: 1,
+          why: "5 kilometres takes 1 hour, and 200 metres of climbing adds 2 × 10 = 20 minutes.",
+        },
+        { type: "choice", q: "What is the highest mountain in Northern Ireland?", options: ["Ben Nevis", "Scafell Pike", "Slieve Donard"], answer: 2 },
+        { type: "type", q: "What do we call a dot on a map with a number next to it giving the exact height at that point?", answer: ["spot height", "a spot height", "spot heights"] },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "Contour lines that are close together show a ___ slope. On OS maps, contour lines are printed in ___.",
+          bank: ["steep", "gentle", "orange-brown", "blue"],
+          answers: ["steep", "orange-brown"],
+        },
+      ],
+      grownUp: {
+        need: ["An OS Explorer or Landranger map (Great Britain) or an OSNI Discoverer or Activity map (Northern Ireland), or an online map viewer", "String, a ruler and paper", "Outdoor clothes, a drink and a snack for the walk"],
+        tips: [
+          "You choose the route; your child plans the detail. Pick a short, well-used path you are confident about, and check access rules where you live: in Scotland, the Scottish Outdoor Access Code gives broad rights of responsible access.",
+          "Stay with your child the whole walk, check the forecast first, and let someone know your plans. Turn back if the weather changes.",
+          "If a walk isn't possible, plan it fully on the map and 'walk' it on screen with an online map, or do a shorter route around your local streets with a street map.",
+          "A quick contour model helps: put a small stone or a lump of play dough in a clear tub, pour in water 1 centimetre deep, and draw the waterline on the model with a felt pen. Keep adding 1 centimetre and drawing. Look from above to see contour lines.",
+        ],
+        younger: "Keep the walk to about 2 kilometres with two or three legs, and let your child be in charge of orienting the map and spotting landmarks.",
+        older: "Add a 'bad weather' alternative route to your route card, and explain why you would choose it. Research what mountain rescue teams in your part of the UK ask walkers to carry.",
+      },
+    },
+  ],
+};
