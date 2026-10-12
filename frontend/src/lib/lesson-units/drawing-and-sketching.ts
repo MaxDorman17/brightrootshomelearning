@@ -35,6 +35,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "Every drawing starts with a line",
+            picture: "/lessons/drawing-and-sketching/lesson-1-1.jpg",
+            alt: "A child on the floor drawing lots of different lines, straight, wavy, zigzag, dotted and spiral",
             text: [
               "A line is a mark made by moving a pencil across paper. Every drawing is built from lines and marks.",
               "Lines can be straight, curved, wavy, zigzag, dotted or spiral. They can be thick or thin, long or short.",
@@ -43,6 +45,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Mark-making",
+            picture: "/lessons/drawing-and-sketching/lesson-1-2.jpg",
+            alt: "A child's pencil making dots, flicks and curls that turn into sand, grass and a woolly sheep",
             text: [
               "Mark-making means all the different marks you can make: dots, dashes, ticks, crosses, curls and scribbles.",
               "Artists use marks to show things. Tiny dots can be sand. Short flicks can be grass. Curls can be a sheep's woolly coat.",
@@ -51,6 +55,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Light and heavy",
+            picture: "/lessons/drawing-and-sketching/lesson-1-3.jpg",
+            alt: "Two children comparing a pale line pressed lightly and a dark line pressed hard",
             text: [
               "How hard you press changes your mark. This is called pressure.",
               "Press lightly and you get a pale, thin line. Press firmly and you get a dark, strong line.",
@@ -146,6 +152,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "Shapes hiding everywhere",
+            picture: "/lessons/drawing-and-sketching/lesson-2-1.jpg",
+            alt: "A child's drawing of a mug and a cat, with simple shapes showing faintly underneath",
             text: [
               "Almost everything can be drawn by starting with simple shapes: circles, ovals, squares, rectangles and triangles.",
               "A mug is a rectangle with an oval on top and a curved handle. A cat sitting down is a big oval for its body and a circle for its head, with two triangle ears.",
@@ -154,6 +162,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Observational drawing",
+            picture: "/lessons/drawing-and-sketching/lesson-2-2.jpg",
+            alt: "A child looking closely at a real pear and a nibbled leaf while drawing the pear",
             text: [
               "Observational drawing means drawing something real that is in front of you, not from memory.",
               "Good artists look more than they draw. Look at the object, draw a little, then look again.",
@@ -162,6 +172,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Compare sizes",
+            picture: "/lessons/drawing-and-sketching/lesson-2-3.jpg",
+            alt: "A child laughing while drawing their own hand without looking at the paper",
             text: [
               "Compare the parts of your object with each other. Is the handle half as tall as the mug? Is the pear's top narrower than its bottom?",
               "The outline is the line around the outside edge of a shape.",
@@ -251,6 +263,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "What is tone?",
+            picture: "/lessons/drawing-and-sketching/lesson-3-1.jpg",
+            alt: "An egg lit by a lamp, with a bright highlight, a dark side and a shadow on the table",
             text: [
               "Tone means how light or dark something is.",
               "Light comes from somewhere, like a window, a lamp or the sun. This is the light source. The side of an object facing the light is light. The side facing away is darker.",
@@ -259,6 +273,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Pressure makes tone",
+            picture: "/lessons/drawing-and-sketching/lesson-3-2.jpg",
+            alt: "A child shading boxes from white to dark grey, next to a drawing of a round ball",
             text: [
               "Remember pressure? You can use it to make tone. Press very lightly for pale grey, a bit harder for middle grey, and firmly for dark grey.",
               "A tonal scale is a row of boxes going from white to the darkest dark you can make, a little darker in each box.",
@@ -267,6 +283,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Hatching and cross-hatching",
+            picture: "/lessons/drawing-and-sketching/lesson-3-3.jpg",
+            alt: "Patches of hatching, cross-hatching and stippling getting darker on a sheet of paper",
             text: [
               "Hatching is drawing lots of lines side by side, all going the same way. The closer together the lines, the darker it looks.",
               "Cross-hatching is adding another layer of lines that cross over the first ones. More layers make it darker still.",
@@ -359,6 +377,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "What is texture?",
+            picture: "/lessons/drawing-and-sketching/lesson-4-1.jpg",
+            alt: "A child feeling tree bark, a furry slipper and a bumpy orange, with matching pencil marks",
             text: [
               "Texture is how something feels when you touch it: rough, smooth, bumpy, furry, spiky or soft.",
               "In a drawing, you can't really touch the texture. So artists use marks to show what it would feel like.",
@@ -367,6 +387,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Rubbings",
+            picture: "/lessons/drawing-and-sketching/lesson-4-2.jpg",
+            alt: "A child making pencil rubbings of a leaf and a coin",
             text: [
               "A rubbing is a way to collect real textures. Put thin paper over a bumpy surface and rub over it with the side of your pencil.",
               "The bumps and patterns appear on your paper as if by magic. Try a coin, a leaf, a cheese grater or the sole of a shoe.",
@@ -375,6 +397,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Drawing from life",
+            picture: "/lessons/drawing-and-sketching/lesson-4-3.jpg",
+            alt: "A child quietly sketching a sleeping dog curled up in its basket",
             text: [
               "Drawing from life means drawing something real while you look at it: a pet, a plant, a person or an object.",
               "Pets move, so draw them fast! Do quick sketches of just the main shapes. A sleeping pet is the easiest model of all.",
@@ -473,6 +497,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "Leonardo da Vinci's notebooks",
+            picture: "/lessons/drawing-and-sketching/lesson-5-1.jpg",
+            alt: "An old open notebook full of ink sketches of horses, hands, plants and a flying machine",
             text: [
               "Leonardo da Vinci was an Italian artist and inventor. He lived from 1452 to 1519 and painted the Mona Lisa.",
               "He always carried a notebook. He filled thousands of pages with drawings of people, horses, plants, flowing water and inventions like flying machines.",
@@ -482,6 +508,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Albrecht Dürer",
+            picture: "/lessons/drawing-and-sketching/lesson-5-2.jpg",
+            alt: "A finely detailed drawing of a young hare showing every hair of its fur",
             text: [
               "Albrecht Dürer was a German artist from the city of Nuremberg. He lived from 1471 to 1528.",
               "When he was just 13, he drew a picture of himself using a mirror. It is one of the oldest self-portraits by a child that we know of.",
@@ -490,6 +518,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "A study",
+            picture: "/lessons/drawing-and-sketching/lesson-5-3.jpg",
+            alt: "A child drawing a page of studies of their own hand in different positions",
             text: [
               "Both artists made studies: careful drawings to learn about something, like a hand, a face, a plant or an animal.",
               "Leonardo often drew the same thing many times on one page, from different sides, with notes beside it.",
@@ -581,6 +611,8 @@ export const drawingAndSketching: LessonUnit = {
         cards: [
           {
             heading: "What is a still life?",
+            picture: "/lessons/drawing-and-sketching/lesson-6-1.jpg",
+            alt: "A still life of a jug, apples, a shell and a cloth lit from a window",
             text: [
               "A still life is a picture of objects that don't move, arranged by the artist. Fruit, cups, jugs, flowers and shells are favourites.",
               "Artists have drawn and painted still lifes for hundreds of years. It's a great way to practise, because your models never get bored or walk away!",
@@ -588,6 +620,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Setting it up",
+            picture: "/lessons/drawing-and-sketching/lesson-6-2.jpg",
+            alt: "A child looking through a card viewfinder at a mug, an orange and a sock on a table",
             text: [
               "Choose three to five objects with different shapes and textures, like a smooth mug, a bumpy orange and a soft sock.",
               "Overlap some of them, so one is partly in front of another. Put tall things at the back.",
@@ -597,6 +631,8 @@ export const drawingAndSketching: LessonUnit = {
           },
           {
             heading: "Keeping a sketchbook",
+            picture: "/lessons/drawing-and-sketching/lesson-6-3.jpg",
+            alt: "A child on a window seat with a homemade sketchbook full of small pencil drawings",
             text: [
               "A sketchbook is a place to practise, try ideas and collect things you notice. It doesn't have to be neat.",
               "Draw in it a little and often: your breakfast, a shoe, the view from a window, your pet asleep. Write the date and a few notes, like Leonardo did.",

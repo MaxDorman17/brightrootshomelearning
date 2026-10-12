@@ -30,6 +30,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "Instructions everywhere",
+            picture: "/lessons/algorithms/lesson-1-1.jpg",
+            alt: "A girl and her dad following a recipe step by step, measuring flour into a bowl",
             text: [
               "An algorithm is a set of step-by-step instructions to do a job. A recipe is an algorithm. So are the steps for brushing your teeth.",
               "You follow algorithms every day, often without noticing. Getting dressed, crossing the road safely and playing a board game all have steps.",
@@ -37,6 +39,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Computers need algorithms",
+            picture: "/lessons/algorithms/lesson-1-2.jpg",
+            alt: "A boy looking at his sister dressed as a cardboard-box robot, waiting for an instruction",
             text: [
               "Computers, tablets and robots can't guess what you mean. They only do exactly what their instructions say.",
               "When we turn an algorithm into instructions a computer can follow, it becomes a program. People who write programs are called programmers.",
@@ -44,6 +48,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Clear and precise",
+            picture: "/lessons/algorithms/lesson-1-3.jpg",
+            alt: "A dad walking stiffly like a robot towards a cup on a chair while a boy gives instructions",
             text: [
               "A good algorithm is precise. That means every step is clear and exact, so there's only one way to follow it.",
               "'Make some toast' isn't precise. 'Put one slice of bread in the toaster and push the lever down' is much better.",
@@ -119,6 +125,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "Sequence",
+            picture: "/lessons/algorithms/lesson-2-1.jpg",
+            alt: "A boy laughing as he holds up a trainer with a sock pulled over it",
             text: [
               "A sequence is a set of steps in a particular order. In an algorithm, the order of the steps really matters.",
               "Think about getting dressed. You put your socks on before your shoes. Swap them, and you get shoes with socks on top!",
@@ -126,6 +134,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "When order goes wrong",
+            picture: "/lessons/algorithms/lesson-2-2.jpg",
+            alt: "A girl putting picture strips of her morning routine in order on the floor",
             text: [
               "Computers follow steps in order, from the top to the bottom. They do step 1, then step 2, then step 3.",
               "If two steps are in the wrong order, the computer still does them. It doesn't notice that something silly is happening.",
@@ -133,6 +143,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Does every step need an order?",
+            picture: "/lessons/algorithms/lesson-2-3.jpg",
+            alt: "Two children laying a table, one placing a fork and one a knife at the same time",
             text: [
               "Sometimes order doesn't matter. When you lay the table, it doesn't matter if the fork or the knife goes down first.",
               "But often it does. You must open the door before you walk through it. Good programmers check which steps have to come first.",
@@ -201,6 +213,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "Everyday algorithms",
+            picture: "/lessons/algorithms/lesson-3-1.jpg",
+            alt: "A boy thinking over bread, a jam jar and a blunt knife, with paper and a pencil",
             text: [
               "Writing an algorithm for an everyday job is harder than it sounds. We do lots of small steps without thinking about them.",
               "Making a jam sandwich seems easy. But how do you open the jar? Which side of the bread gets the jam? Where does the knife go?",
@@ -208,6 +222,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Leave nothing out",
+            picture: "/lessons/algorithms/lesson-3-2.jpg",
+            alt: "A mum as a robot pushing a knife against the lid of a closed jam jar while her daughter laughs",
             text: [
               "A person can guess a missing step. A computer can't. If you forget 'take the lid off the jar', a robot will try to spread jam through the lid!",
               "Good algorithms break a job into small, clear steps. Each step does one thing.",
@@ -215,6 +231,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Words that help",
+            picture: "/lessons/algorithms/lesson-3-3.jpg",
+            alt: "A girl spreading jam on bread while her brother holds up two fingers",
             text: [
               "Precise words make instructions easier to follow. Use exact amounts, like 'two slices' or 'one spoonful'.",
               "Say which one, like 'the left hand' or 'the top slice'. Use clear action words, like pick up, put down, open, spread and press.",
@@ -290,6 +308,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "What is a bug?",
+            picture: "/lessons/algorithms/lesson-4-1.jpg",
+            alt: "A boy with a magnifying glass looking at a drawn ladybird bug on his instructions",
             text: [
               "A bug is a mistake in an algorithm or program. Bugs stop it working the way we want.",
               "Everyone makes bugs, even expert programmers. Finding them is a normal part of the job.",
@@ -297,6 +317,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Three kinds of bug",
+            picture: "/lessons/algorithms/lesson-4-2.jpg",
+            alt: "A child with shoes on before socks, an unopened jam jar, and a child turning the wrong way",
             text: [
               "A step might be missing, like forgetting to open the jar.",
               "Steps might be in the wrong order, like putting shoes on before socks.",
@@ -305,6 +327,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Debugging",
+            picture: "/lessons/algorithms/lesson-4-3.jpg",
+            alt: "A girl crossing out a step on her instructions, with a toy treasure under a cushion behind her",
             text: [
               "Finding and fixing bugs is called debugging. Go through the algorithm one step at a time and check what happens after each step.",
               "When you spot where it goes wrong, fix that step. Then test the whole algorithm again from the start to check it works.",
@@ -397,6 +421,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "Doing it again",
+            picture: "/lessons/algorithms/lesson-5-1.jpg",
+            alt: "A boy climbing the stairs one step at a time, repeating the same movement",
             text: [
               "Lots of jobs have steps that repeat. When you climb the stairs, you do 'step up' again and again.",
               "Writing 'step up' twelve times is slow and boring. And it's easy to make a mistake, like writing it eleven times.",
@@ -404,6 +430,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Loops",
+            picture: "/lessons/algorithms/lesson-5-2.jpg",
+            alt: "A girl drawing a big looping arrow around a picture of a footstep",
             text: [
               "A loop tells a computer to repeat some steps. Instead of twelve lines, you write: 'Repeat 12 times: step up'.",
               "Loops make algorithms shorter and easier to read. They are also easier to change: to climb 14 stairs, you change just one number.",
@@ -411,6 +439,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Spotting patterns",
+            picture: "/lessons/algorithms/lesson-5-3.jpg",
+            alt: "Two children and a grown-up doing a clapping and stomping dance",
             text: [
               "To use a loop, look for a pattern of steps that repeats. Clap, stomp, clap, stomp, clap, stomp is 'Repeat 3 times: clap, stomp'.",
               "You can repeat more than one step inside a loop. Everything inside the loop is done in order, and then the loop starts again.",
@@ -481,6 +511,8 @@ export const algorithms: LessonUnit = {
         cards: [
           {
             heading: "Floor robots",
+            picture: "/lessons/algorithms/lesson-6-1.jpg",
+            alt: "A small toy robot on a masking-tape grid on the floor, with two children kneeling beside it",
             text: [
               "Some schools use little floor robots that you program by pressing arrow buttons. They move around a grid of squares on the floor.",
               "You don't need a real robot. A toy, or even a person, can be the robot on a grid drawn on paper or marked out on the floor.",
@@ -488,6 +520,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Forward, left, right",
+            picture: "/lessons/algorithms/lesson-6-2.jpg",
+            alt: "A boy on a chalk grid turning a quarter turn on the spot with his arms out",
             text: [
               "'Forward' moves the robot one square in the direction it is facing.",
               "'Turn left' and 'turn right' make the robot turn a quarter turn on the spot. It doesn't move to a new square, it just faces a new way.",
@@ -496,6 +530,8 @@ export const algorithms: LessonUnit = {
           },
           {
             heading: "Predict, then test",
+            picture: "/lessons/algorithms/lesson-6-3.jpg",
+            alt: "A girl tracing a route with her finger across a paper grid from a toy car to a treasure",
             text: [
               "Before you run a program, predict where the robot will end up. Trace the route with your finger, one instruction at a time.",
               "Then run it and see if you were right. If not, there's a bug to find. You can use loops here too: 'Repeat 3 times: forward'.",
