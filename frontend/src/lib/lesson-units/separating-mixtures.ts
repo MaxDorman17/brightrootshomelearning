@@ -30,6 +30,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "What is a mixture?",
+            picture: "/lessons/separating-mixtures/lesson-1-1.jpg",
+            alt: "A bowl of mixed nuts and raisins next to a dish of sand and gravel",
             text: [
               "A mixture is made when two or more different substances are put together but do not join up chemically to make something new. Each substance in a mixture keeps its own properties.",
               "Think of a bag of mixed nuts and raisins, a bowl of breakfast cereal with milk, or a handful of sand and gravel. You can still see each part, and in theory you could pick each part out again.",
@@ -38,6 +40,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Dissolving and solutions",
+            picture: "/lessons/separating-mixtures/lesson-1-2.jpg",
+            alt: "A child stirring salt into a glass of water as it dissolves",
             text: [
               "When you stir salt or sugar into water, the solid seems to vanish. It hasn't really gone. It has dissolved: it has broken up into pieces far too tiny to see, which spread out evenly between the water particles.",
               "The liquid you end up with is called a solution. A solution is a special kind of mixture. It is see-through (though it can be coloured, like squash), and the dissolved substance never sinks to the bottom however long you leave it.",
@@ -47,6 +51,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Soluble or insoluble?",
+            picture: "/lessons/separating-mixtures/lesson-1-3.jpg",
+            alt: "A clear sugar solution beside a glass with sand settled at the bottom",
             text: [
               "A substance that dissolves in a liquid is soluble. Salt, sugar, instant coffee and the powder in a stock cube are all soluble in water.",
               "A substance that will not dissolve is insoluble. Sand, chalk, flour, rice and pepper are insoluble in water. However long you stir, the pieces stay whole, and they either sink, float, or make the water cloudy.",
@@ -130,6 +136,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "Separating by size: sieving",
+            picture: "/lessons/separating-mixtures/lesson-2-1.jpg",
+            alt: "Dried peas and rice being poured into a colander",
             text: [
               "To separate a mixture, scientists look for a property that is different for each substance. One of the simplest is size.",
               "A sieve is a mesh with holes of a certain size. Pieces smaller than the holes fall through; pieces larger than the holes are caught. If you mix dried peas and rice and pour them into a colander, the rice falls through and the peas are left behind.",
@@ -139,6 +147,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Separating with a magnet",
+            picture: "/lessons/separating-mixtures/lesson-2-2.jpg",
+            alt: "A fridge magnet lifting paperclips out of a bowl of rice",
             text: [
               "Another useful property is magnetism. Only a few metals are magnetic: iron, nickel and cobalt, and steel, which is mostly iron. Most materials, including many other metals such as aluminium, copper and brass, are not attracted to a magnet.",
               "So if a mixture contains something magnetic, a magnet can pull it out. Drop some steel paperclips into a bowl of rice, then sweep a fridge magnet over the top, and the paperclips jump out while the rice stays put.",
@@ -147,6 +157,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Separating in the real world",
+            picture: "/lessons/separating-mixtures/lesson-2-3.jpg",
+            alt: "An electromagnet lifting steel cans from a recycling conveyor belt",
             text: [
               "Separating mixtures is a huge job in real life. At a recycling centre, a mixed pile of cans travels along a conveyor belt under a powerful electromagnet. Steel cans are lifted away; aluminium drinks cans, which are not magnetic, stay on the belt.",
               "Builders use big sieves called riddles to sort stones from soil, and farmers use machines with shaking screens to separate grain from bits of straw.",
@@ -230,6 +242,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "A very fine sieve",
+            picture: "/lessons/separating-mixtures/lesson-3-1.jpg",
+            alt: "Muddy water being poured through a coffee filter in a funnel",
             text: [
               "What if you want to separate sand from water? The grains of sand are far too small to be caught by a kitchen sieve. You need something with much, much smaller holes. That is a filter.",
               "Filter paper, a coffee filter or a sheet of kitchen roll looks solid, but it is really a tangle of fibres with tiny gaps between them. Water particles are small enough to squeeze through the gaps. Grains of sand, mud or coffee grounds are too big, so they are trapped on the paper.",
@@ -238,6 +252,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Residue and filtrate",
+            picture: "/lessons/separating-mixtures/lesson-3-2.jpg",
+            alt: "Sand residue on an opened coffee filter beside a jar of filtered water",
             text: [
               "Scientists give names to the two things that come out of filtering. The solid left behind on the filter paper is called the residue. The liquid that drips through is called the filtrate.",
               "To filter well, fold the paper into a cone and sit it in a funnel, or in the top of a jar. Pour the mixture in slowly so it never spills over the top of the paper, and be patient: good filtering can take a few minutes.",
@@ -246,6 +262,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "What filtering can't do",
+            picture: "/lessons/separating-mixtures/lesson-3-3.jpg",
+            alt: "A child looking at an empty filter above a jar of clear salt water",
             text: [
               "Here is a puzzle. Stir salt into water until it dissolves, then pour it through filter paper. What will be left on the paper? Nothing. The filtrate is still salt water.",
               "This is because a dissolved solid has broken up into pieces as tiny as the water particles, small enough to pass straight through the gaps in the paper alongside them.",
@@ -330,6 +348,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "Evaporation",
+            picture: "/lessons/separating-mixtures/lesson-4-1.jpg",
+            alt: "A saucer of water drying on a sunny windowsill",
             text: [
               "Evaporation happens when a liquid turns into a gas. When water evaporates, it becomes water vapour, an invisible gas that mixes into the air. This is why puddles dry up and washing dries on the line.",
               "Evaporation happens faster when it is warmer, when there is a breeze, and when the liquid is spread out over a large surface. A shallow saucer of water dries out far sooner than a deep glass of the same amount.",
@@ -338,6 +358,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Recovering the salt",
+            picture: "/lessons/separating-mixtures/lesson-4-2.jpg",
+            alt: "Cube-shaped salt crystals seen through a magnifying glass",
             text: [
               "To get salt back from salt water, pour a thin layer of the solution into a shallow dish and leave it somewhere warm, such as a sunny windowsill or near a radiator. Over a few days, the water evaporates.",
               "As the water disappears, there is less and less solvent to hold the salt, so the solution becomes saturated and the salt comes out as solid crystals. Look at them with a magnifying glass and you may see tiny cubes, because salt crystals naturally grow in that shape.",
@@ -347,6 +369,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Putting methods together",
+            picture: "/lessons/separating-mixtures/lesson-4-3.jpg",
+            alt: "Shallow salt pans by the sea under a bright sun",
             text: [
               "Many mixtures need more than one method. Imagine a bucket of sand and salt mixed together. Neither a sieve nor a magnet will work, because the grains are about the same size and neither is magnetic.",
               "But they differ in one important property: salt is soluble and sand is not. So first add water and stir, and the salt dissolves. Next, filter: the sand stays on the paper as the residue, and the salt water passes through as the filtrate. Finally, leave the filtrate to evaporate, and the salt is left behind as crystals. Dry the sand on a plate, and you have both back.",
@@ -430,6 +454,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "Ink is a mixture",
+            picture: "/lessons/separating-mixtures/lesson-5-1.jpg",
+            alt: "Felt-tip pens beside a black ink line running into other colours",
             text: [
               "Look at a black felt-tip pen line. It looks like one colour, but most inks are mixtures of several coloured dyes. A black pen might contain blue, purple, red and yellow dyes mixed together.",
               "The dyes in water-based felt-tip pens are soluble in water. That is why a drop of water on your drawing makes the colours run.",
@@ -438,6 +464,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "How chromatography works",
+            picture: "/lessons/separating-mixtures/lesson-5-2.jpg",
+            alt: "A paper strip in a glass of water with coloured bands rising up it",
             text: [
               "Draw a thick dot or line of ink near the bottom of a strip of kitchen roll or filter paper. Then stand the strip in a little water, so that the water touches the bottom of the paper but does not reach the ink.",
               "The water slowly creeps up the paper, soaking through the fibres. When it reaches the ink, the dyes dissolve in the water and are carried upwards with it.",
@@ -447,6 +475,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "What chromatography is used for",
+            picture: "/lessons/separating-mixtures/lesson-5-3.jpg",
+            alt: "A scientist comparing chromatogram strips in a laboratory",
             text: [
               "Each ink has its own pattern of colours, almost like a fingerprint. If two inks make exactly the same pattern, under the same conditions, they are probably the same ink.",
               "Forensic scientists have used chromatography to compare inks on documents and to identify substances found at a crime scene. Food scientists use it to check which colourings are in sweets and drinks, and doctors' laboratories use more advanced kinds to test blood and medicines.",
@@ -529,6 +559,8 @@ export const separatingMixtures: LessonUnit = {
         cards: [
           {
             heading: "Cleaning dirty water",
+            picture: "/lessons/separating-mixtures/lesson-6-1.jpg",
+            alt: "A water treatment works with tanks and sand filter beds",
             text: [
               "In the last few lessons you learned that filtering removes insoluble bits, like mud and sand, from water. Engineers use the same idea, on a much bigger scale, to clean water for towns and cities.",
               "At a water treatment works, water from rivers and reservoirs passes through screens to catch large objects, then through deep beds of sand and gravel that trap smaller particles. Then it is treated with a small amount of chemicals to kill germs, before it is piped to homes.",
@@ -537,6 +569,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Planning a fair test",
+            picture: "/lessons/separating-mixtures/lesson-6-2.jpg",
+            alt: "Four bottle filters packed with different materials over jars",
             text: [
               "Which material makes the best filter: cotton wool, kitchen roll, a cloth, or sand? To find out, you need a fair test. In a fair test, you change only one thing and keep everything else the same, so you know that the thing you changed caused any difference.",
               "Each thing that could change in an experiment is called a variable. The one you choose to change is the independent variable: here, the filter material. The one you measure or observe is the dependent variable: here, how clear the water is, or how long it takes to drip through.",
@@ -545,6 +579,8 @@ export const separatingMixtures: LessonUnit = {
           },
           {
             heading: "Recording and explaining results",
+            picture: "/lessons/separating-mixtures/lesson-6-3.jpg",
+            alt: "A child checking how clear a jar of filtered water is",
             text: [
               "Scientists record results in a table as they go, so they don't forget anything. Give the table a column for the thing you changed on the left, and a column for each thing you measured or observed on the right, with units such as 'seconds' or 'cm' in the column heading.",
               "Measuring clearness is tricky, so make it fairer by using a scale. For example, hold each jar of filtered water in front of a piece of paper with a dark line drawn on it, and score it: 5 if the line is crystal clear, down to 1 if you can't see it at all.",

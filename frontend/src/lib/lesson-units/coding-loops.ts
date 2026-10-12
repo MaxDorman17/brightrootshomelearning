@@ -33,6 +33,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "Sequence: one step after another",
+            picture: "/lessons/coding-loops/lesson-1-1.jpg",
+            alt: "Coloured paper strips lined up in order like snapped-together code blocks",
             text: [
               "A program is an algorithm written in a language a computer can understand. The computer carries out the instructions exactly, one after another, in the order they are written. Doing steps in order like this is called sequence.",
               "A computer never guesses what you meant. If you tell it to walk before you tell it to face the right way, it walks the wrong way. That is why the order of the instructions matters so much.",
@@ -41,6 +43,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Meet Scratch",
+            picture: "/lessons/coding-loops/lesson-1-2.jpg",
+            alt: "A boy and his dad using Scratch on a laptop, with the cat on the stage",
             text: [
               "Scratch is a free coding tool made by a team at MIT, a university in the USA. With a grown-up, go to scratch.mit.edu and click 'Create'. You can make programs straight away without an account. To keep your work, use the File menu and choose 'Save to your computer'.",
               "On the left is the block palette, sorted into colour-coded categories: Motion blocks are blue, Looks are purple, Sound is pink, Events are yellow and Control blocks are orange. In the middle is the code area, where you drag blocks to build scripts.",
@@ -50,6 +54,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Count-controlled loops",
+            picture: "/lessons/coding-loops/lesson-1-3.jpg",
+            alt: "An orange repeat block wrapped around three blocks, with arrows looping back to the top",
             text: [
               "Imagine you want the cat to walk across the stage. You could stack 'move (10) steps' ten times. That works, but it is long, it's easy to lose count, and changing it means adding or removing lots of blocks.",
               "Instead, use the 'repeat (10)' block from the Control category. It is shaped like a letter C, so it can wrap around other blocks. The number tells Scratch how many times to run the blocks inside. A loop that repeats a set number of times is called a count-controlled loop.",
@@ -147,6 +153,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "Loops that never end",
+            picture: "/lessons/coding-loops/lesson-2-1.jpg",
+            alt: "Traffic lights glowing red, amber and green in a repeating cycle",
             text: [
               "Sometimes you don't want a loop to stop after a certain number of goes. You want something to keep happening for as long as the program runs. For that, Scratch has the 'forever' block in the Control category.",
               "A 'forever' loop has no number in it. It runs the blocks inside, goes back to the top, and does it again and again until you click the red stop sign. A loop that never ends by itself is called an infinite loop.",
@@ -156,6 +164,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Animation with costumes",
+            picture: "/lessons/coding-loops/lesson-2-2.jpg",
+            alt: "A girl flicking through a flip book of a swimming fish",
             text: [
               "Animation works like a flip book. You show a picture, then a slightly different one, then another, fast enough that your brain sees movement. Each picture is called a frame.",
               "In Scratch, each sprite can have several costumes. The Scratch cat has two, with its legs in different positions. The Looks block 'next costume' swaps to the next one, and after the last costume it goes back to the first.",
@@ -165,6 +175,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Repeat or forever?",
+            picture: "/lessons/coding-loops/lesson-2-3.jpg",
+            alt: "Two children watching animated fish swim forever on a laptop",
             text: [
               "Choose a 'repeat' loop when you know exactly how many times something should happen: draw four sides of a square, jump three times, flash five times.",
               "Choose 'forever' when something should keep going for the whole program: background music, fish swimming, clouds drifting, or checking whether a player has been caught.",
@@ -257,6 +269,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "The Pen extension",
+            picture: "/lessons/coding-loops/lesson-3-1.jpg",
+            alt: "A robot turtle with a pen drawing a line on paper on the floor",
             text: [
               "Scratch can draw! Click the 'Add Extension' button at the very bottom left of the screen and choose 'Pen'. A new green category of blocks appears.",
               "The most important ones are 'pen down', which makes the sprite leave a line wherever it moves, and 'pen up', which stops it drawing. 'erase all' wipes the stage clean, and 'set pen color to' and 'set pen size to' change how the line looks.",
@@ -266,6 +280,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "How far to turn",
+            picture: "/lessons/coding-loops/lesson-3-2.jpg",
+            alt: "A boy walking and turning around a masking-tape triangle on the floor",
             text: [
               "To draw a square, the sprite moves, turns, moves, turns, four times. In code: 'repeat (4)' with 'move (100) steps' and 'turn right (90) degrees' inside. The turn right block is the one with the clockwise arrow.",
               "The number in the turn block is how far the sprite turns at each corner. This is not the angle inside the shape, but the angle the sprite turns through as it changes direction. It is called the turning angle, or exterior angle.",
@@ -275,6 +291,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Circles and stars",
+            picture: "/lessons/coding-loops/lesson-3-3.jpg",
+            alt: "A triangle, square, hexagon, near-circle and star drawn on the Scratch stage",
             text: [
               "The more sides a regular polygon has, the more it looks like a circle. 'repeat (36)' with 'move (10) steps' and 'turn right (10) degrees' draws a 36-sided shape that looks almost perfectly round.",
               "The stage is 480 steps wide and 360 steps tall, so watch your sizes. A hexagon with sides of 200 steps will run off the edge. More sides usually means shorter moves.",
@@ -366,6 +384,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "What is a nested loop?",
+            picture: "/lessons/coding-loops/lesson-4-1.jpg",
+            alt: "Two children clapping and stomping a repeating rhythm",
             text: [
               "A nested loop is a loop inside another loop. The one on the outside is the outer loop and the one inside is the inner loop. In Scratch, you simply drop a 'repeat' block inside another 'repeat' block.",
               "The rule to remember: every time the outer loop runs once, the inner loop runs all the way through. So 'repeat (3)' around 'repeat (4)' with 'clap' inside makes 3 × 4 = 12 claps.",
@@ -375,6 +395,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Patterns from shapes",
+            picture: "/lessons/coding-loops/lesson-4-2.jpg",
+            alt: "A rainbow flower pattern made from twelve squares turned around a point",
             text: [
               "Nested loops are brilliant for patterns. The inner loop draws a shape. The outer loop repeats that shape, turning a little in between, so the shapes fan out around a point like the petals of a flower.",
               "Here is a flower made of squares: an outer 'repeat (12)' contains an inner 'repeat (4)' with 'move (80) steps' and 'turn right (90) degrees', and then, after the inner loop but still inside the outer one, 'turn right (30) degrees'.",
@@ -384,6 +406,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Reading nested code carefully",
+            picture: "/lessons/coding-loops/lesson-4-3.jpg",
+            alt: "A girl tracing code with her finger and keeping a tally in a notebook",
             text: [
               "In nested code, where a block sits matters enormously. 'turn right (30) degrees' inside the inner loop runs 48 times; inside only the outer loop it runs 12 times. Same block, very different picture.",
               "To predict what code will do, trace it like a computer. Point at each block in turn and keep a tally on paper of how many times each loop has run. Tracing is slow, but it's how programmers find out exactly what their code does.",
@@ -480,6 +504,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "Variables: a labelled box",
+            picture: "/lessons/coding-loops/lesson-5-1.jpg",
+            alt: "A child dropping a counter into a box, like storing a value in a variable",
             text: [
               "A variable is a named place where a program stores a value that can change, like a box with a label on it. A game's score, the number of lives left and the time remaining are all variables.",
               "In Scratch, go to the Variables category and click 'Make a Variable'. Give it a clear name, like 'score', not 'thing'. A small display appears on the stage showing its value.",
@@ -489,6 +515,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Conditions: if ... then",
+            picture: "/lessons/coding-loops/lesson-5-2.jpg",
+            alt: "A cartoon cat reaching for an apple with a question mark between them",
             text: [
               "A condition is a question that is either true or false. 'Is the cat touching the apple?' 'Is the space key pressed?' Choosing what to do based on a condition is called selection.",
               "Scratch has the 'if < > then' block in Control. Like a loop, it wraps around other blocks, but it runs them once, and only if the condition is true. If the condition is false, it skips them.",
@@ -497,6 +525,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Checking again and again",
+            picture: "/lessons/coding-loops/lesson-5-3.jpg",
+            alt: "A boy steering the cat to catch a star in a simple game",
             text: [
               "Here's a puzzle. You put 'if touching (Sprite1) then change (score) by (1)' straight after the green flag. It never works. Why? The program checks just once, at the very start, when nothing is touching anything, and then it's finished.",
               "The fix is to put the 'if' inside a 'forever' loop. Now the program asks the question over and over, many times every second. Whenever the answer is true, it scores. Nearly every game is built around a loop like this, often called a game loop.",
@@ -588,6 +618,8 @@ export const codingLoops: LessonUnit = {
         cards: [
           {
             heading: "Common loop bugs",
+            picture: "/lessons/coding-loops/lesson-6-1.jpg",
+            alt: "A ladybird on a stack of code blocks with one block out of place",
             text: [
               "Loops are powerful, which means a small mistake in a loop gets repeated too. Programmers learn to spot the same few bugs again and again.",
               "Wrong numbers: the loop repeats the wrong number of times, or the turn is wrong, like turning 60 instead of 120 for a triangle. Blocks in the wrong place: 'erase all' inside a drawing loop wipes each line as soon as it's drawn, and 'set (score) to (0)' inside a forever loop resets the score many times a second, so it can never rise.",
@@ -596,6 +628,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "How to debug",
+            picture: "/lessons/coding-loops/lesson-6-2.jpg",
+            alt: "A girl explaining her code to a rubber duck",
             text: [
               "First, predict what the code should do. Then run it and compare. The difference between what you expected and what happened is your best clue to where the bug is.",
               "Next, narrow it down. In Scratch you can click a single block, or a small stack, to run just that part. You can also add a 'say' block with a variable in it, so the sprite tells you the value at that moment. Tracing on paper, with a tally of each loop, helps with nested loops.",
@@ -604,6 +638,8 @@ export const codingLoops: LessonUnit = {
           },
           {
             heading: "Plan, build, test, improve",
+            picture: "/lessons/coding-loops/lesson-6-3.jpg",
+            alt: "Two children planning on paper and testing their game on a laptop",
             text: [
               "Now it's your turn to be the designer. Choose an animated pattern, such as a spinning flower that changes colour, or a simple game, such as catching falling apples or dodging a bouncing ball.",
               "Plan on paper first. Sketch the stage. List each sprite and what it should do. Write which loops you need (repeat, forever, nested), which variables (a score, lives, a timer) and which conditions (if touching, if a key is pressed).",

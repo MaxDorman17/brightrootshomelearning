@@ -30,6 +30,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "Why do things fall?",
+            picture: "/lessons/forces-gravity-friction/lesson-1-1.jpg",
+            alt: "A child drops a book that falls towards a rug",
             text: [
               "If you hold a book out and let go, it falls. If you jump, you come back down. This happens because of a force called gravity, an invisible pull that acts between any two objects that have mass.",
               "The Earth is enormous, so its pull on everything near it is strong. Gravity pulls objects towards the centre of the Earth. That is why 'down' means the same thing to a child in Glasgow and a child in New Zealand: both are being pulled towards the middle of the planet.",
@@ -39,6 +41,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Isaac Newton's big idea",
+            picture: "/lessons/forces-gravity-friction/lesson-1-2.jpg",
+            alt: "Isaac Newton watches an apple fall in his garden",
             text: [
               "Isaac Newton was an English scientist and mathematician, born in 1642 in Woolsthorpe, Lincolnshire. In 1665 and 1666, when Cambridge University closed because of the plague, he went home and did some of his most important thinking.",
               "A famous story says he watched an apple fall from a tree in the garden and wondered why it always fell straight down, never sideways or up. Newton himself told this story when he was older, although the idea that the apple hit him on the head was added later.",
@@ -48,6 +52,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Do heavy things fall faster?",
+            picture: "/lessons/forces-gravity-friction/lesson-1-3.jpg",
+            alt: "An astronaut on the Moon drops a hammer and a feather together",
             text: [
               "For about two thousand years, many people believed the ancient Greek thinker Aristotle, who taught that heavy objects fall faster than light ones. It sounds sensible, but it is not quite right.",
               "In the late 1500s and early 1600s the Italian scientist Galileo Galilei tested falling objects carefully. He showed that, if air does not get in the way, a heavy ball and a light ball dropped together hit the ground at the same time.",
@@ -144,6 +150,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "The newton",
+            picture: "/lessons/forces-gravity-friction/lesson-2-1.jpg",
+            alt: "Everyday forces: holding an apple, opening a door and pulling a suitcase",
             text: [
               "Scientists measure the size of a force in newtons, named after Isaac Newton. The short way to write it is a capital N, so ten newtons is written 10 N.",
               "One newton is quite a small force. It is roughly the force you feel when you hold an apple or a 100 g bar of chocolate still in your hand, because that is how hard gravity pulls on it.",
@@ -153,6 +161,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Mass and weight",
+            picture: "/lessons/forces-gravity-friction/lesson-2-2.jpg",
+            alt: "A bag of flour on scales and an astronaut bouncing on the Moon",
             text: [
               "In everyday talk we say 'weight' when we mean how heavy something is in kilograms. Scientists are more careful, because mass and weight are not the same thing.",
               "Mass is the amount of matter in an object. It is measured in grams (g) and kilograms (kg), and it does not change wherever you take the object.",
@@ -162,6 +172,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Force meters",
+            picture: "/lessons/forces-gravity-friction/lesson-2-3.jpg",
+            alt: "A homemade elastic-band force meter hanging from a door handle",
             text: [
               "A force meter, sometimes called a newton meter or spring balance, measures forces. Inside is a spring. The bigger the force pulling the hook, the more the spring stretches, and a pointer shows the reading on a scale.",
               "To use one, hold it by the top ring, let it hang straight, check the pointer is at zero, then hang the object on the hook or pull it gently. Read the scale at eye level once the pointer stops moving.",
@@ -259,6 +271,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "Air pushes back",
+            picture: "/lessons/forces-gravity-friction/lesson-3-1.jpg",
+            alt: "A flat sheet of paper floating down beside a scrunched paper ball",
             text: [
               "Air is all around us. It is made of tiny particles that you can't see, but you can feel them push against you when you cycle fast or stick your hand out of a car window.",
               "When an object moves through air, it has to push those particles out of the way, and the air pushes back. This force is called air resistance. It always acts in the opposite direction to the movement.",
@@ -268,6 +282,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "How a parachute works",
+            picture: "/lessons/forces-gravity-friction/lesson-3-2.jpg",
+            alt: "A skydiver floating down under an open parachute",
             text: [
               "When a skydiver jumps from a plane, gravity pulls them down and they speed up. As they get faster, air resistance grows, until it is as big as the pull of gravity. Then they stop speeding up and fall at a steady speed, which is still very fast.",
               "Opening the parachute suddenly gives a huge surface area. Air resistance becomes much bigger than gravity for a moment, so the skydiver slows down sharply.",
@@ -277,6 +293,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Planning a fair test",
+            picture: "/lessons/forces-gravity-friction/lesson-3-3.jpg",
+            alt: "Children timing homemade parachutes of different sizes",
             text: [
               "Scientists find things out with fair tests. In a fair test you change just one thing, called the independent variable, and measure one thing, called the dependent variable. Everything else stays the same; these are the control variables.",
               "For parachutes, you might change the size of the canopy. You would measure how long it takes to fall. You would keep the same material, string length, weight and drop height.",
@@ -384,6 +402,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "Pushing through water",
+            picture: "/lessons/forces-gravity-friction/lesson-4-1.jpg",
+            alt: "A child pushing through water in a swimming pool",
             text: [
               "Try walking through a swimming pool and you'll feel it: water pushes back much harder than air. This force is called water resistance, and like air resistance it acts in the opposite direction to the movement.",
               "Water is much denser than air. Its particles are packed far more closely together, so there are many more of them to push out of the way. That is why moving through water takes so much more effort.",
@@ -393,6 +413,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Streamlined shapes",
+            picture: "/lessons/forces-gravity-friction/lesson-4-2.jpg",
+            alt: "A streamlined dolphin swimming beside the pointed bow of a ship",
             text: [
               "A streamlined shape is smooth, with a narrow, often pointed front that gently widens and then narrows again, a bit like a teardrop lying on its side. Water flows smoothly around it instead of crashing against a flat face.",
               "Many fast swimmers in nature are streamlined. Dolphins, sharks, mackerel and penguins all have smooth, tapered bodies. Over millions of years, animals with these shapes found it easier to chase food and escape danger.",
@@ -402,6 +424,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Floating and upthrust",
+            picture: "/lessons/forces-gravity-friction/lesson-4-3.jpg",
+            alt: "A sunken plasticine lump and a floating plasticine boat",
             text: [
               "When a boat sits in water, gravity pulls it down. But the water also pushes up on it with a force called upthrust. If upthrust balances the boat's weight, the boat floats.",
               "A steel ship is very heavy, so how does it float? Its hull is hollow and shaped to push aside a huge amount of water. The more water an object pushes aside, the bigger the upthrust.",
@@ -508,6 +532,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "What causes friction?",
+            picture: "/lessons/forces-gravity-friction/lesson-5-1.jpg",
+            alt: "Hands rubbing together and two bumpy surfaces up close",
             text: [
               "Friction is a force that acts when two surfaces slide, or try to slide, over each other. It always acts against the movement, so it slows things down or stops them starting to move.",
               "Even surfaces that feel smooth are bumpy if you look under a powerful microscope. When two surfaces press together, their tiny bumps catch on each other. Rougher surfaces have bigger bumps, so they make more friction.",
@@ -517,6 +543,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Useful friction, unhelpful friction",
+            picture: "/lessons/forces-gravity-friction/lesson-5-2.jpg",
+            alt: "A bicycle's tyre treads, brakes and oiled chain",
             text: [
               "Without friction we couldn't walk: our shoes would slip on the ground as if it were ice. Shoe soles and tyres have deep patterns called treads to grip the ground. Bike and car brakes use friction to stop the wheels.",
               "Friction is also why a pencil leaves a mark, why a knot stays tied and why a ladder doesn't slide down a wall.",
@@ -526,6 +554,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Balanced and unbalanced forces",
+            picture: "/lessons/forces-gravity-friction/lesson-5-3.jpg",
+            alt: "Two teams pulling evenly in a tug of war",
             text: [
               "Usually more than one force acts on an object at once. We can draw them as arrows: the direction of the arrow shows which way the force acts, and its length shows how big it is.",
               "If the forces are equal in size and act in opposite directions, they are balanced. A book resting on a table is balanced: gravity pulls it down and the table pushes it up equally. In a tug of war where neither team moves, the forces are balanced.",
@@ -634,6 +664,8 @@ export const forcesGravityFriction: LessonUnit = {
         cards: [
           {
             heading: "Levers",
+            picture: "/lessons/forces-gravity-friction/lesson-6-1.jpg",
+            alt: "A child and an adult balancing on a see-saw",
             text: [
               "A mechanism is a device that changes a force: making it bigger, changing its direction, or both. The simplest is a lever, a rigid bar that turns around a fixed point called the pivot or fulcrum.",
               "A lever has three parts: the fulcrum, the load (the thing you want to move) and the effort (the force you put in). If the effort is much further from the fulcrum than the load, a small effort can move a big load.",
@@ -643,6 +675,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Pulleys",
+            picture: "/lessons/forces-gravity-friction/lesson-6-2.jpg",
+            alt: "A crane lifting a load with pulleys",
             text: [
               "A pulley is a wheel with a groove around its edge for a rope to run in. A single fixed pulley, like the one at the top of a flagpole, changes the direction of a force: you pull down and the flag goes up. Pulling down is easier because you can use your body weight.",
               "When you use two or more pulleys together, the load hangs from more than one length of rope. Each length of rope shares the work, so the effort you need is smaller.",
@@ -652,6 +686,8 @@ export const forcesGravityFriction: LessonUnit = {
           },
           {
             heading: "Gears",
+            picture: "/lessons/forces-gravity-friction/lesson-6-3.jpg",
+            alt: "Interlocking gears and a bicycle chain",
             text: [
               "Gears are wheels with teeth around the edge. When two gears mesh (their teeth lock together), turning one makes the other turn too, in the opposite direction.",
               "If a small gear drives a big gear, the big gear turns more slowly but with a stronger turning force. If a big gear drives a small gear, the small gear spins faster but with less force.",

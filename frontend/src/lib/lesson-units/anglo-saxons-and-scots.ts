@@ -30,6 +30,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "The Romans leave",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-1-1.jpg",
+            alt: "Roman soldiers marching out of a half-empty town as a British family watches",
             text: [
               "By the year AD 400 the Roman Empire was in serious trouble. Enemy armies were attacking Rome itself, and the emperors needed every soldier they had to defend the heart of the empire.",
               "Bit by bit the Roman legions were taken out of Britain. Around AD 410, the story goes, the Emperor Honorius wrote to the Britons telling them they would have to look after their own defence from now on. Roman rule in Britain was over.",
@@ -39,6 +41,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Raiders from every side",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-1-2.jpg",
+            alt: "A lookout on a cliff spotting rowing boats approaching across the sea",
             text: [
               "Even before the Romans left, Britain was being raided. The Picts attacked from the far north, beyond Hadrian's Wall. The Scots sailed across the Irish Sea from Ireland. Saxons crossed the North Sea from mainland Europe.",
               "A British monk called Gildas, writing in the 500s, described this as a terrible time of attacks and fear. He was writing a sermon to tell people off, though, so historians think he may have made things sound even worse than they were.",
@@ -47,6 +51,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Angles, Saxons and Jutes",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-1-3.jpg",
+            alt: "An Anglo-Saxon family landing on a beach with animals and tools",
             text: [
               "Bede said the newcomers came from three peoples. The Angles came from Angeln, an area in the north of Germany, close to Denmark. The Saxons came from the north of Germany. The Jutes came from Jutland, which is part of Denmark today. Frisians from the coast of the Netherlands came too.",
               "Why did they come? Their own low-lying lands near the sea often flooded, and good farmland was scarce. Britain had rich soil, and with the Roman army gone it was poorly defended. Some came first as paid soldiers, invited by British leaders.",
@@ -131,6 +137,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "A land of many peoples",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-2-1.jpg",
+            alt: "Mountains, sea lochs and a fortress on a great rock in the north of Britain",
             text: [
               "After the Romans left, there was no such place as Scotland. The north of Britain was shared by four different peoples, each with their own language and rulers.",
               "The Picts lived in the north and east. The Britons lived in the south-west, in a kingdom later called Strathclyde, ruled from a fortress on Dumbarton Rock on the River Clyde. They spoke a language related to Welsh.",
@@ -140,6 +148,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "The Scots and Dál Riata",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-2-2.jpg",
+            alt: "A king placing his foot in a carved footprint at the top of a hill fort",
             text: [
               "The Romans used the word 'Scotti' for raiders from Ireland. Some of these Irish people did more than raid. From around AD 500 they ruled a kingdom called Dál Riata (say 'dahl REE-ah-ta'), which stretched across the sea from the north-east of Ireland to Argyll, on the west coast of what is now Scotland.",
               "To them, the sea wasn't a barrier but a road. It was often quicker to sail between Ireland and Argyll than to walk over the mountains. The Scots brought their language, Gaelic, which is still spoken in Scotland today.",
@@ -149,6 +159,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "The Picts and the making of Alba",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-2-3.jpg",
+            alt: "A Pictish carver making a symbol stone while a child watches",
             text: [
               "The Picts are one of the great mysteries of British history. The Romans called them 'Picti', which means 'painted people', perhaps because they painted or tattooed their bodies. The Picts left almost no writing of their own, so we learn about them from other people's writing and from what they carved.",
               "They carved beautiful symbol stones, decorated with patterns, animals such as salmon, eagles and wolves, and strange shapes that archaeologists call the 'crescent and V-rod' and the 'double disc and Z-rod'. Nobody knows for certain what the symbols mean. They may stand for names, families or important people.",
@@ -229,6 +241,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "Many kingdoms, not one country",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-3-1.jpg",
+            alt: "An Anglo-Saxon king surrounded by warriors with round shields",
             text: [
               "At first, the Anglo-Saxons did not build one country. They lived in lots of small groups, each led by a chief. Over time, the strongest leaders took over their neighbours and became kings.",
               "By the 600s there were seven main kingdoms, which historians sometimes call the 'heptarchy' (from the Greek for 'seven rulers'): Northumbria, Mercia, East Anglia, Essex, Wessex, Sussex and Kent.",
@@ -238,6 +252,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "The king's hall",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-3-2.jpg",
+            alt: "A feast in a great hall with a poet and a lord giving a gold ring",
             text: [
               "A king or lord lived in a great hall: a long wooden building with a fire burning down the middle. Here he held feasts, gave out justice and rewarded his warriors with gifts like gold rings, weapons and land.",
               "In return, his warriors swore to be loyal and to fight for him, even to the death. At feasts, people drank mead, a strong drink made from honey, and a poet called a scop sang long stories of heroes and monsters, like the poem Beowulf.",
@@ -247,6 +263,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Life in the village",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-3-3.jpg",
+            alt: "An Anglo-Saxon village with thatched houses, farming and weaving",
             text: [
               "Most Anglo-Saxons were farmers living in small villages of just a few families. They chose places with fresh water, good soil for crops, woodland for fuel and building, and sometimes a hill or river for protection.",
               "Houses were rectangular, built of timber with thatched roofs. Most had one main room with a fire in the middle for cooking, light and warmth. There was no chimney, so smoke drifted out through the thatch. Smaller huts with sunken floors were used for weaving and storage. At West Stow in Suffolk, archaeologists have rebuilt a whole village where the remains of one were found.",
@@ -331,6 +349,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "A ship in a field",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-4-1.jpg",
+            alt: "Archaeologists uncovering the shape of a ship marked by rows of rivets",
             text: [
               "In 1939, a landowner called Edith Pretty asked a local archaeologist, Basil Brown, to dig into some grassy mounds on her land at Sutton Hoo, near Woodbridge in Suffolk. She had long wondered what was inside them.",
               "In the largest mound, Basil Brown found rows of iron rivets lying in the sand. The wooden ship they had once held together had rotted away completely, but the sand had kept its exact shape, like a ghost ship. It was about 27 metres long, with room for around 40 rowers.",
@@ -340,6 +360,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Treasures fit for a king",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-4-2.jpg",
+            alt: "The Sutton Hoo helmet, gold buckle, shoulder clasps and silver bowls",
             text: [
               "The burial chamber held over 260 objects. The most famous is an iron helmet with a face mask, eyebrows inlaid with garnets and a dragon across the face. It was found crushed into hundreds of rusty pieces, and experts spent years fitting them back together.",
               "There was a great gold buckle weighing more than 400 grams, covered in swirling, knotted snakes and animals. There were gold shoulder clasps set with red garnets and glass, and a purse lid that held 37 gold coins.",
@@ -348,6 +370,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Who was buried there?",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-4-3.jpg",
+            alt: "Mourners hauling a ship up from a river for a king's burial",
             text: [
               "No body was found. The soil at Sutton Hoo is very acidic, and over 1,300 years it dissolved the bones. Later chemical tests found traces that suggest a body had once lain in the chamber.",
               "So archaeologists have to act like detectives. The coins date the burial to around the 620s. The treasures are so rich that this must have been a king. Many historians think it was Rædwald, king of East Anglia, who died around AD 624 and was, for a time, the most powerful king in England.",
@@ -429,6 +453,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "The old gods",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-5-1.jpg",
+            alt: "An Anglo-Saxon family leaving offerings at a shrine in an oak grove",
             text: [
               "When they arrived, the Anglo-Saxons were pagans. They worshipped many gods. Woden was the chief god, wise and powerful. Thunor was the god of thunder, Tiw a god of war, and Frige a goddess of love and marriage.",
               "Christianity had already reached Britain in Roman times. After the Romans left, many Britons in the west stayed Christian. One of them, Patrick, was captured by Irish raiders as a teenager, escaped, and later went back to Ireland in the 400s to spread Christianity there.",
@@ -437,6 +463,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Columba and Iona",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-5-2.jpg",
+            alt: "Columba and monks landing a boat on the beach of a small island",
             text: [
               "Columba (in Gaelic, Colum Cille, 'dove of the church') was an Irish monk from a royal family. In AD 563 he sailed with twelve companions to Iona, a small island off the coast of Mull, in the kingdom of Dál Riata.",
               "There they built a monastery. The monks prayed, farmed, cared for visitors and copied out holy books by hand. Iona became one of the most important centres of learning in Europe.",
@@ -446,6 +474,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Augustine and Kent",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-5-3.jpg",
+            alt: "Augustine meeting King Æthelberht and Queen Bertha outdoors",
             text: [
               "Bede tells a story that Pope Gregory, the head of the Church in Rome, once saw fair-haired boys for sale in a market. When he was told they were Angles, he joked, 'Not Angles, but angels!' and decided to send missionaries to their land.",
               "In AD 597, Augustine landed in Kent with about 40 monks. King Æthelberht of Kent already knew about Christianity, because his wife, Queen Bertha, was a Christian princess from Francia. Even so, he insisted on meeting Augustine outdoors, in case the newcomers tried any magic.",
@@ -526,6 +556,8 @@ export const angloSaxonsAndScots: LessonUnit = {
         cards: [
           {
             heading: "Old English",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-6-1.jpg",
+            alt: "A poet telling a story by the fire to an Anglo-Saxon family",
             text: [
               "The Anglo-Saxons spoke Old English, the great-great-grandparent of the English we speak now. It would sound like a foreign language to us, and it used some letters we have lost, such as 'thorn' for the 'th' sound.",
               "But listen closely and you'll recognise lots of it. Many of our most everyday words come from Old English: house, bread, water, earth, sheep, child, hand, eat, sleep and love.",
@@ -535,6 +567,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Reading place names",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-6-2.jpg",
+            alt: "A child tracing a river past a ford, a village and a hill fort",
             text: [
               "Place names are clues to history. When the Anglo-Saxons founded a settlement, they often named it by describing it, and the endings still tell us what was there.",
               "'-ham' meant a homestead or village (Birmingham, Nottingham). '-ton' meant a farm or enclosure (Taunton, Brighton). '-ford' was a river crossing (Oxford, the ford for oxen). '-ley' was a clearing in a wood (Barnsley). '-bury' came from 'burh', a fortified place (Canterbury, Shrewsbury). '-ing' meant 'the people of' (Reading, 'Reada's people').",
@@ -544,6 +578,8 @@ export const angloSaxonsAndScots: LessonUnit = {
           },
           {
             heading: "Gold, garnets and gospels",
+            picture: "/lessons/anglo-saxons-and-scots/lesson-6-3.jpg",
+            alt: "A monk painting a page covered in colourful interlace patterns",
             text: [
               "Anglo-Saxon craftworkers were famous for metalwork. They cut thin slices of red garnet and set them in gold, and covered objects in interlace: patterns of knotted ribbons and twisting animals that weave over and under each other.",
               "In 2009 a metal detectorist found the Staffordshire Hoard in a field near Lichfield: thousands of pieces of gold and silver, mostly decorations stripped from swords and helmets. It is the largest Anglo-Saxon treasure ever found.",

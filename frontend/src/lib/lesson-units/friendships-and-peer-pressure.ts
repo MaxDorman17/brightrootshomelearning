@@ -38,6 +38,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "Healthy friendships",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-1-1.jpg",
+            alt: "Two friends sharing a sketchbook on a rug, relaxed and smiling",
             text: [
               "As you get older, friendships start to matter more and more. Friends are the people you laugh with, share secrets with and turn to when things go wrong. Good friendships make us happier and even healthier, so it's worth knowing what a good one looks like.",
               "A healthy friendship is built on trust and respect. You trust your friend to be honest with you and to keep private things private. You respect each other's feelings, opinions and differences, even when you don't agree.",
@@ -47,6 +49,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "When a friendship isn't healthy",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-1-2.jpg",
+            alt: "A girl whispering and pointing away from a child sitting alone on a bench",
             text: [
               "Some friendships slowly become unhealthy. Here are some warning signs: a friend who tells you who you can and can't play with, or says 'You can't be my friend if you're friends with her.' That's called controlling behaviour.",
               "Other warning signs are put-downs dressed up as jokes, being nice to you only when nobody else is around, making you feel guilty for spending time with other people, or telling you to keep secrets that worry you.",
@@ -56,6 +60,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Listening to your gut",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-1-3.jpg",
+            alt: "A thoughtful boy walking home beside a grown-up",
             text: [
               "A useful test is to notice how you feel after spending time with a friend. Do you usually come away feeling happy, relaxed and like yourself? Or worried, tense and as if you've done something wrong?",
               "If a friendship often leaves you feeling bad, you could tell your friend calmly how you feel. Sometimes people don't realise how they're coming across. You can also spend more time with other friends who make you feel good.",
@@ -176,6 +182,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "Why friendships change",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-2-1.jpg",
+            alt: "Children standing in rings at different distances around a child in the centre",
             text: [
               "Think about who your friends were when you were five. Are they the same people now? For lots of people, the answer is 'some of them' or 'not really'. That's completely normal.",
               "Friendships change because people change. You might discover new interests, like football, drama or drawing, while an old friend gets into something different. You might move house, start a new club, or join a different home-ed group. Friends grow up at different speeds, too.",
@@ -185,6 +193,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "When a friend drifts away",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-2-2.jpg",
+            alt: "A girl watching her old friend walk away with a new friend among autumn leaves",
             text: [
               "When a close friend starts spending more time with someone else, it can really hurt. You might feel sad, left out, jealous or even angry. These feelings are normal, and it helps to talk about them with someone you trust.",
               "A friendship drifting doesn't mean there is something wrong with you. Often nobody has done anything wrong at all. You've simply grown in different directions.",
@@ -194,6 +204,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Making new friends, keeping old ones",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-2-3.jpg",
+            alt: "A child at a craft club offering pencils to a shy newcomer",
             text: [
               "The best place to find new friends is doing things you enjoy: clubs, sports, groups, classes or meet-ups. You already share an interest, which gives you something to talk about straight away.",
               "Be brave and start small: smile, say hello, ask a question about what they're doing, and listen properly to the answer. Real friendships take time. They grow from lots of shared moments, not just one good conversation.",
@@ -313,6 +325,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "What is peer pressure?",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-3-1.jpg",
+            alt: "A boy standing apart from a group of older children who are watching him",
             text: [
               "Your peers are people around your own age, like friends, cousins, teammates and the children at your clubs. Peer pressure is when you feel pushed to do something because of what your peers are doing or saying.",
               "Sometimes the pressure is direct: someone tells you to do something, dares you, or teases you if you won't. 'Go on, everyone else has. Don't be boring!'",
@@ -322,6 +336,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Good pressure and bad pressure",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-3-2.jpg",
+            alt: "Two friends cheering on a nervous girl at the bottom of a climbing wall",
             text: [
               "Not all peer pressure is bad. A friend who persuades you to try out for the team, to have a go at the climbing wall, or to stand up for someone who's being picked on is having a positive influence on you.",
               "Negative peer pressure pushes you towards something that could hurt you or someone else, get you into trouble, or that simply doesn't feel right. It might be leaving someone out, saying something unkind in a group chat, taking a risky dare, or copying a dangerous online 'challenge'.",
@@ -331,6 +347,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Ways to say no",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-3-3.jpg",
+            alt: "A girl and her friend calmly saying no and turning away from a group",
             text: [
               "Saying no can feel scary, but it gets easier with practice. You can just say 'No thanks' clearly and firmly. You don't have to give a reason. If they keep asking, say the same thing again, calmly, like a broken record.",
               "You could suggest something else ('Nah, let's play football instead'), use a bit of humour, or simply walk away. Some people find it easier to blame a grown-up: 'My dad would go mad. Not worth it!'",
@@ -446,6 +464,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "Three ways to respond",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-4-1.jpg",
+            alt: "Three children in a queue showing passive, aggressive and assertive body language",
             text: [
               "Imagine someone pushes in front of you in a queue. You could stay quiet and let it go, even though you're annoyed. That's being passive. Your feelings and needs get ignored, often by you.",
               "You could shout 'Oi, get out of the way, you idiot!' and shove them. That's being aggressive. You stand up for yourself, but you ignore the other person's feelings, and things often get worse.",
@@ -455,6 +475,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "How assertive looks and sounds",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-4-2.jpg",
+            alt: "A boy calmly explaining his feelings to his sister at the kitchen table",
             text: [
               "A useful tool is the I-statement. Instead of blaming ('You always ruin everything!'), you describe how you feel: 'I feel ___ when ___ because ___. I'd like ___.'",
               "For example: 'I feel left out when you whisper with Ben because I don't know what's going on. I'd like us to all talk together.' It's hard to argue with someone telling you honestly how they feel.",
@@ -464,6 +486,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Boundaries and respect",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-4-3.jpg",
+            alt: "A girl holding up her hand to stop her cousin tickling her, and the cousin stepping back",
             text: [
               "A boundary is a line that shows what you are and aren't comfortable with. You might be happy to lend your pens but not your sketchbook, or enjoy play-fighting with your cousin but not with someone you've just met.",
               "Your body belongs to you. You can say no to a hug, a tickle or play-fighting, even from people you like, and even if you said yes last time. Assertive words like 'Stop, I don't like that' are always OK.",
@@ -583,6 +607,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "Why friends fall out",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-5-1.jpg",
+            alt: "Two friends sitting apart on a bench after a falling out",
             text: [
               "Even the closest friends fall out. As you get older, the reasons can get more complicated. You might misunderstand each other, feel jealous, feel left out, or simply be tired and grumpy at the same time.",
               "Messages cause lots of fall-outs. When you read a message, you can't hear the person's tone of voice or see their face, so a joke can sound like an insult. If a message upsets you, it's worth asking 'Did you mean that how it sounded?' before reacting.",
@@ -592,6 +618,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "A real apology",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-5-2.jpg",
+            alt: "A boy offering a mended paper model to a friend as an apology",
             text: [
               "Saying 'sorry' is easy. Meaning it is harder. A real apology has a few parts. First, say exactly what you did: 'I'm sorry I told everyone about your nickname.'",
               "Next, show you understand how it affected them: 'That must have been really embarrassing.' Don't add 'but', as in 'Sorry, but you started it.' A 'but' cancels out everything before it.",
@@ -601,6 +629,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Repairing and forgiving",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-5-3.jpg",
+            alt: "Two friends laughing as they build a blanket den together",
             text: [
               "When someone apologises to you, try to listen properly. You could say 'Thank you for saying sorry.' You don't have to pretend everything is fine straight away if you're still hurt.",
               "Forgiving someone means deciding to let go of the anger, so the friendship can move on. It's a gift you give, and it often makes you feel lighter too. But forgiving doesn't mean that what happened was OK, and it doesn't mean you have to let it happen again.",
@@ -726,6 +756,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
         cards: [
           {
             heading: "What bullying is",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-6-1.jpg",
+            alt: "A worried child alone on a step looking at a phone",
             text: [
               "Bullying is when someone deliberately hurts or upsets another person, again and again, and the person being targeted finds it hard to stop. Often the person doing it has more power, perhaps because they're older, more popular, or in a group.",
               "Bullying can be physical, like hitting or pushing; verbal, like name-calling or threats; or social, like spreading rumours or deliberately leaving someone out. Cyberbullying is bullying online or by phone: nasty messages, embarrassing photos shared without permission, or being excluded from group chats on purpose.",
@@ -735,6 +767,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Getting help",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-6-2.jpg",
+            alt: "A boy talking to a listening grown-up at the kitchen table",
             text: [
               "If you're being bullied, the most important thing is to tell a grown-up you trust: a parent or carer, grandparent, aunt or uncle, a club leader, coach or teacher. If the first person doesn't help, keep telling until someone does. If it's hard to say out loud, you could write it down instead.",
               "For bullying online: don't reply, as that's what the bully wants. Keep evidence by taking a screenshot or saving the messages. Then block the person, report them using the app or game's report button, and tell your trusted grown-up.",
@@ -744,6 +778,8 @@ export const friendshipsAndPeerPressure: LessonUnit = {
           },
           {
             heading: "Being a good bystander",
+            picture: "/lessons/friendships-and-peer-pressure/lesson-6-3.jpg",
+            alt: "A girl sitting beside an upset younger child while another goes to fetch a grown-up",
             text: [
               "A bystander is someone who sees or knows about bullying but isn't the target. Most bullying happens when other people are around, and what bystanders do makes a big difference. Bullies often want an audience. When nobody laughs or joins in, bullying often stops quickly.",
               "Someone who safely does something to help is sometimes called an upstander. You don't have to be a hero or put yourself in danger. Simply not laughing, not joining in, and not liking or forwarding hurtful posts takes away the bully's audience.",

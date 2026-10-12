@@ -34,6 +34,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "Judaism and the Jewish people",
+            picture: "/lessons/judaism/lesson-1-1.jpg",
+            alt: "A Jewish family of three generations around a dining table",
             text: [
               "Judaism is the religion of the Jewish people. It is one of the oldest religions in the world that is still practised today, with roots going back thousands of years to the land of Canaan, the area around modern Israel. Christianity and Islam grew from the same family of beliefs, which is why all three are sometimes called Abrahamic religions.",
               "There are around 15 million Jewish people in the world. The largest communities are in Israel and the United States, and around 280,000 Jewish people live in the UK.",
@@ -43,6 +45,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Hear, O Israel",
+            picture: "/lessons/judaism/lesson-1-2.jpg",
+            alt: "A girl covering her eyes with her hand to concentrate on a prayer",
             text: [
               "At the centre of Judaism is the belief that there is one God, who created the whole universe and cares about it. Believing in one God is called monotheism. Many Jewish people believe God is eternal, with no beginning and no end, is present everywhere, and cannot be seen or pictured. That is why you will not find statues or pictures of God in a synagogue.",
               "This belief is summed up in a prayer called the Shema. Its first line comes from the Torah, in the book of Deuteronomy (chapter 6, verse 4). In English it is usually translated: 'Hear, O Israel: the Lord is our God, the Lord is One.' In Hebrew it begins 'Shema Yisrael'. The prayer takes its name from its first word, Shema, which means 'hear' or 'listen'.",
@@ -52,6 +56,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Keeping the words close",
+            picture: "/lessons/judaism/lesson-1-3.jpg",
+            alt: "A boy touching a mezuzah on a front doorpost",
             text: [
               "Many Jewish people say the Shema twice a day, in morning and evening prayers, just as the Torah instructs. Many children learn it as one of their first prayers and say it at bedtime. While saying the first line, many people cover their eyes with a hand to help them concentrate. It is also hoped that the Shema will be among the last words a Jewish person says in their life.",
               "On the right-hand doorpost of the front door, and of most rooms in many Jewish homes, there is a mezuzah (plural mezuzot). It is a small case holding a tiny parchment scroll, handwritten with the words of the Shema and another passage from Deuteronomy. Many people touch the mezuzah and then kiss their fingers as they pass through the doorway, as a reminder of God and of the promise to love God.",
@@ -138,6 +144,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "Abraham and the covenant",
+            picture: "/lessons/judaism/lesson-2-1.jpg",
+            alt: "Abraham and Sarah travelling with their animals under a starry sky",
             text: [
               "Jewish tradition traces the story of the Jewish people back to Abraham, who is thought to have lived around 4,000 years ago. The Torah says his family came from Ur, a city in Mesopotamia, in what is now Iraq, where people worshipped idols: statues of many different gods.",
               "A famous story told by the rabbis, which is not in the Torah itself, says Abraham's father Terah sold idols. One day young Abraham smashed every idol in the shop except the biggest, and put a stick in its hand. When his father asked what had happened, Abraham said the big idol had done it. 'Statues cannot move!' said his father. 'Then why do you worship them?' Abraham replied. The story shows Abraham working out that there is one God who made everything.",
@@ -147,6 +155,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Moses and the Exodus",
+            picture: "/lessons/judaism/lesson-2-2.jpg",
+            alt: "A basket floating among the reeds of the River Nile",
             text: [
               "Generations later, the Torah tells, Jacob's descendants, the Israelites, were living in Egypt, where a Pharaoh made them slaves. Afraid that there were too many of them, he ordered that their baby boys be thrown into the River Nile. One mother hid her baby in a basket among the reeds. He was found by Pharaoh's daughter, who named him Moses and brought him up in the palace.",
               "When Moses was grown up, he saw a bush that was on fire but did not burn away. From it, the Torah says, God spoke to him and sent him back to Pharaoh with the message 'Let my people go.' Pharaoh refused, again and again, and Egypt suffered ten plagues, ending with the death of the eldest child in every Egyptian family. At last Pharaoh let the Israelites go.",
@@ -156,6 +166,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Mount Sinai and the Torah",
+            picture: "/lessons/judaism/lesson-2-3.jpg",
+            alt: "The Israelites camped at the foot of Mount Sinai at sunrise",
             text: [
               "After the Exodus, the Israelites travelled into the desert and camped at the foot of Mount Sinai. The Torah says Moses climbed the mountain and God gave him the Ten Commandments, written on two tablets of stone. Many Jewish people believe that God also gave Moses the whole Torah, the teaching that shows them how to live.",
               "The Ten Commandments include: to have no other gods, not to make idols, to respect God's name, to keep Shabbat holy, to honour your father and mother, and not to murder, steal, tell lies about other people or be jealous of what others have.",
@@ -253,6 +265,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "What is the Torah?",
+            picture: "/lessons/judaism/lesson-3-1.jpg",
+            alt: "An open Torah scroll beside old books",
             text: [
               "The word Torah means 'teaching' or 'instruction'. Most often, it means the five books that many Jewish people believe God gave to Moses: Genesis, Exodus, Leviticus, Numbers and Deuteronomy. In Hebrew they are called Bereshit, Shemot, Vayikra, Bamidbar and Devarim, each named after a key word near its beginning.",
               "The Torah begins with the creation of the world and the stories of Abraham's family, tells of the Exodus and the journey through the desert, and ends with the death of Moses. Along the way it contains the mitzvot: laws about worship, festivals, food, fairness and kindness, such as 'love your neighbour as yourself'.",
@@ -262,6 +276,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "A scroll treated with honour",
+            picture: "/lessons/judaism/lesson-3-2.jpg",
+            alt: "A scribe's quill on parchment and a yad beside a dressed Torah scroll",
             text: [
               "In a synagogue, the Torah is read not from a printed book but from a Sefer Torah, a Torah scroll. Every scroll is written by hand by a specially trained scribe called a sofer, using a feather quill, special black ink and sheets of parchment made from the skin of a kosher animal. The sheets are sewn together and rolled onto two wooden rollers. A whole scroll takes about a year to write.",
               "A Sefer Torah contains 304,805 Hebrew letters, and every single one must be perfect. A scroll with a missing or wrongly written letter cannot be used until a sofer has corrected it. Because of all this skill and care, a Torah scroll is very precious.",
@@ -271,6 +287,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Inside a synagogue",
+            picture: "/lessons/judaism/lesson-3-3.jpg",
+            alt: "Inside a synagogue, with the bimah, the ark and the ner tamid",
             text: [
               "A synagogue is a Jewish house of prayer, study and meeting. Synagogue is a Greek word meaning 'coming together'. In Hebrew it is called a beit knesset ('house of gathering'), and many Jewish people call it shul, a Yiddish word. The community is usually led and taught by a rabbi, a word that means 'my teacher'.",
               "Inside, look for the Aron Hakodesh on the wall that faces towards Jerusalem, often behind a decorated curtain. Above it hangs the ner tamid, an 'everlasting light' that is always kept burning, remembering the lamp of the ancient Temple. In the middle or at the front is the bimah, a raised platform from which the Torah is read. There are no statues or pictures of God or of people. Decoration uses patterns, Hebrew words, the Ten Commandments, the menorah and the Star of David.",
@@ -357,6 +375,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "A day of rest",
+            picture: "/lessons/judaism/lesson-4-1.jpg",
+            alt: "A table set for the Friday night Shabbat meal",
             text: [
               "Shabbat (the Sabbath) is the Jewish day of rest. It begins at sunset on Friday and ends at nightfall on Saturday, when three stars can be seen in the sky, so it lasts about 25 hours. In the Jewish calendar every day begins at sunset, because the creation story in Genesis says 'there was evening and there was morning'.",
               "Many Jewish people keep Shabbat because it is one of the Ten Commandments: 'Remember the Sabbath day and keep it holy.' The Torah gives two reasons. God rested on the seventh day after creating the world, and the Israelites had once been slaves in Egypt who could never rest, so a day of rest is a sign of freedom.",
@@ -366,6 +386,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Friday night at home",
+            picture: "/lessons/judaism/lesson-4-2.jpg",
+            alt: "A mother lighting Shabbat candles beside two challah loaves",
             text: [
               "Shortly before sunset on Friday, Shabbat is welcomed by lighting at least two candles. In many homes this is done by the mother or another woman of the household, though anyone may light them. After lighting, she often circles her hands over the flames three times, covers her eyes and says a blessing, then opens her eyes to see the Shabbat lights.",
               "Many families go to synagogue for a Friday evening service, then come home for the Shabbat meal. Before eating, parents often place their hands on their children's heads and bless them. Then comes Kiddush, a blessing said over a cup of wine or grape juice, thanking God for Shabbat.",
@@ -375,6 +397,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Resting, and saying goodbye",
+            picture: "/lessons/judaism/lesson-4-3.jpg",
+            alt: "A family at Havdalah with a plaited candle and a spice box",
             text: [
               "The Torah forbids work on Shabbat, and the rabbis described 39 kinds of activity that count as work, including cooking, writing, building, lighting a fire and carrying things outside the home. So many Orthodox Jewish people do not drive, cook, write, use money, phones or computers, or switch lights on and off. Food is kept warm on a hot plate set up before Shabbat, and lights can be set on timers.",
               "Many Reform and Liberal Jewish people keep Shabbat in different ways. Some may drive to synagogue or phone relatives, while still making the day about rest and family and setting aside everyday work. What matters most to them is making the day feel different and holy. Other Jewish families keep only a few Shabbat customs but still share a Friday night dinner together.",
@@ -465,6 +489,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "A time of danger",
+            picture: "/lessons/judaism/lesson-5-1.jpg",
+            alt: "The Maccabees setting off from an ancient hill village",
             text: [
               "You may already know the outline of the Hanukkah story. Now we can look at it more closely, as historians and Jewish tradition tell it. In the 300s BCE, Alexander the Great conquered a huge empire. After he died it split apart, and the land of Judea, where many Jewish people lived, came to be ruled by Greek-speaking kings called the Seleucids, based in Syria. (BCE means 'Before the Common Era'. Many Jewish people use BCE and CE instead of BC and AD.)",
               "Across the empire, many people took up Greek ways: the Greek language, clothes, sports and gods. Some Jewish people liked this way of life, while others wanted to keep the Torah faithfully, and Jewish people argued about it among themselves.",
@@ -474,6 +500,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Dedication and a miracle",
+            picture: "/lessons/judaism/lesson-5-2.jpg",
+            alt: "The golden Temple menorah and a small jar of oil",
             text: [
               "Although they were few, and their enemies had large armies with even war elephants, the Maccabees won battle after battle. In 164 BCE they recaptured Jerusalem. They found the Temple damaged and made unholy, so they cleaned it, built a new altar and rededicated it to God. The word Hanukkah means 'dedication'.",
               "The Temple had a golden menorah, a seven-branched lamp that was meant to burn with pure olive oil. According to the Talmud, written down several hundred years later, they found only one small jar of pure oil, still sealed by the High Priest, enough for one day. Yet the lamp burned for eight days, long enough to prepare new pure oil.",
@@ -483,6 +511,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "When and how the lights are lit",
+            picture: "/lessons/judaism/lesson-5-3.jpg",
+            alt: "A child lighting a hanukkiah in a front window, seen from outside",
             text: [
               "The Jewish calendar follows both the Moon and the Sun. Each month starts at the new moon and lasts 29 or 30 days, so twelve months come to about eleven days fewer than a solar year. To keep festivals in the right seasons, an extra month is added seven times in every 19 years. That is why Hanukkah moves around in the ordinary calendar. It begins on the 25th of the Jewish month of Kislev, which always falls between late November and late December, and lasts eight days.",
               "Hanukkah is celebrated by lighting a hanukkiah, a lamp or candlestick with eight branches, one for each night, plus a ninth for the shamash ('helper'), which stands higher or apart from the others. Many people also call it a Hanukkah menorah, though the Temple menorah had seven branches. The shamash is lit first and used to light the others, because the Hanukkah lights are holy and should not be used for anything practical, like reading by.",
@@ -564,6 +594,8 @@ export const judaism: LessonUnit = {
         cards: [
           {
             heading: "Latkes, doughnuts and dreidels",
+            picture: "/lessons/judaism/lesson-6-1.jpg",
+            alt: "Latkes, doughnuts, chocolate gelt and a spinning dreidel",
             text: [
               "Because the Hanukkah miracle is about oil, many Jewish families eat foods fried in oil. Families with roots in Central and Eastern Europe often make latkes, crispy pancakes of grated potato and onion, eaten with apple sauce or soured cream. In Israel, the favourite is sufganiyot, round doughnuts filled with jam. Families with roots in Spain, North Africa and the Middle East often make fried pastries or fritters soaked in honey or syrup.",
               "Children play with a dreidel, a spinning top with four sides. Dreidel is a Yiddish word; in Hebrew it is a sevivon. Each side has a Hebrew letter: nun, gimel, hei and shin. Nun is tall and narrow, like a closing square bracket. Gimel looks like a little figure with one foot kicked out to the left. Hei looks like a box with its bottom missing and a small gap at the top of its left side. Shin has three strokes rising from a shared base, like a crown or a three-pronged fork.",
@@ -573,6 +605,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Jewish people in the UK",
+            picture: "/lessons/judaism/lesson-6-2.jpg",
+            alt: "A giant hanukkiah lit in a London square",
             text: [
               "Jewish communities first settled in England after the Norman Conquest of 1066. In 1290, King Edward I expelled all Jewish people from England, and they were not allowed to live openly there again until 1656, when Oliver Cromwell allowed them to return. Bevis Marks Synagogue in the City of London, opened in 1701, is the oldest synagogue in the UK that is still in use.",
               "In the late 1800s and early 1900s, many thousands of Jewish people came to Britain to escape violence and poverty in Russia and Eastern Europe. Many settled in the East End of London, Manchester, Leeds and Glasgow. Just before the Second World War, around 10,000 children, most of them Jewish, were brought to safety in Britain from Nazi Germany and nearby countries on the Kindertransport.",
@@ -582,6 +616,8 @@ export const judaism: LessonUnit = {
           },
           {
             heading: "Many ways of being Jewish",
+            picture: "/lessons/judaism/lesson-6-3.jpg",
+            alt: "A varied group of British Jewish people on a sunny street",
             text: [
               "Jewish people in the UK belong to different movements, which understand the Torah and Jewish law in different ways. They share the Shema, the Torah, Shabbat and the festivals, but they practise them differently.",
               "Orthodox Judaism is the largest group of synagogue members in the UK. Orthodox Jewish people believe the whole Torah was given by God to Moses, and that its laws, as explained by the rabbis, should be kept in full today. They keep Shabbat and the food laws strictly, pray mainly in Hebrew, and men and women have different roles in the synagogue. Strictly Orthodox, or Haredi, communities, such as those in Stamford Hill in London, Salford and Gateshead, keep especially close to tradition in dress and daily life.",
