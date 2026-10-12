@@ -33,6 +33,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "A human life cycle",
+            picture: "/lessons/human-growth/lesson-1-1.jpg",
+            alt: "People of every age walking along a park path in order, from a baby in a pram to an older couple",
             text: [
               "Every living thing has a life cycle: a pattern of changes from the start of its life to the end. A butterfly's life cycle has four very different stages: egg, caterpillar, chrysalis and adult. A human's life cycle is gentler, but it still has clear stages.",
               "Scientists often describe the human life cycle like this: baby, toddler, child, adolescent (teenager), adult and older adult. The stages blend into each other. Nobody wakes up one morning and is suddenly an adult!",
@@ -42,6 +44,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "From baby to child",
+            picture: "/lessons/human-growth/lesson-1-2.jpg",
+            alt: "A newborn baby asleep in a parent's arms, a baby crawling and a toddler taking first steps towards an older child",
             text: [
               "A newborn baby is usually about 50 centimetres long and weighs around 3.5 kilograms, about the same as a large bag of potatoes. It can suck, cry, grip a finger and sleep, but it cannot hold its own head up.",
               "In the first year, babies grow faster than at any other time after birth. They learn to smile, roll over, sit up, crawl and, often around their first birthday, take their first steps.",
@@ -51,6 +55,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Adolescence, adulthood and old age",
+            picture: "/lessons/human-growth/lesson-1-3.jpg",
+            alt: "Teenagers, adults and grandparents at a community picnic, with older people playing a game with a child",
             text: [
               "Adolescence is the stage between childhood and adulthood, usually from about 10 to 19 years old. During it, the body goes through a set of changes called puberty, which we will learn about later in this unit.",
               "Adults have usually stopped growing taller by their late teens or early twenties. Adulthood is the longest stage. Many adults work, look after homes and families, and keep learning new skills.",
@@ -145,6 +151,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "Growing inside the womb",
+            picture: "/lessons/human-growth/lesson-2-1.jpg",
+            alt: "An unborn baby curled up peacefully in the womb, attached by the umbilical cord",
             text: [
               "Every human starts life as a single cell, far too small to see without a microscope. That cell grows inside the mother's body, in a stretchy organ called the womb, or uterus.",
               "The single cell divides again and again, making more and more cells. Over the weeks, these cells form the brain, the heart, the bones, the skin and every other part of the body.",
@@ -154,6 +162,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Forty weeks of growth",
+            picture: "/lessons/human-growth/lesson-2-2.jpg",
+            alt: "Two children feeling a baby kick in their pregnant mother's tummy",
             text: [
               "The time a baby spends growing inside its mother is called the gestation period. For humans it is about 40 weeks, which is roughly 9 months.",
               "By about 12 weeks, the baby has all its main body parts, including tiny fingers and toes, but it is only about the size of a plum.",
@@ -163,6 +173,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Comparing with other animals",
+            picture: "/lessons/human-growth/lesson-2-3.jpg",
+            alt: "Animal mothers with their young: an elephant and calf, a horse and foal, a cat with kittens and a mouse with babies",
             text: [
               "All mammals grow inside their mothers before they are born, but their gestation periods are very different. A mouse grows for only about 3 weeks. A cat or a dog grows for about 9 weeks.",
               "A cow's gestation is about 9 months, similar to ours. A horse's is about 11 months. An African elephant has the longest gestation of any land animal: about 22 months, nearly two years!",
@@ -257,6 +269,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "Not just bigger",
+            picture: "/lessons/human-growth/lesson-3-1.jpg",
+            alt: "A baby, a child and a teenager side by side, showing how body shape changes with growth",
             text: [
               "When you grow, you don't just get bigger like a photo being enlarged. Different parts of your body grow at different speeds, so your shape changes too.",
               "The proportions of something are the sizes of its parts compared with each other, and with the whole. Scientists and artists both study body proportions.",
@@ -266,6 +280,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Why is a baby's head so big?",
+            picture: "/lessons/human-growth/lesson-3-2.jpg",
+            alt: "A baby with a big round head and short legs looking up at its older sister",
             text: [
               "The head holds the brain, and the brain grows very quickly before birth and in the first few years. By the age of about 6, a child's brain is already close to adult size.",
               "Because the head starts big and grows less afterwards, while the arms and legs grow a lot, the head looks smaller and smaller compared with the rest of the body.",
@@ -275,6 +291,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Measuring proportions",
+            picture: "/lessons/human-growth/lesson-3-3.jpg",
+            alt: "A boy stretching his arms wide while his sister measures his arm span with a tape measure",
             text: [
               "One way to compare proportions is to count how many 'head heights' tall a person is. A baby is about 4 heads tall. A child of your age is about 6 heads tall. Most adults are about 7 to 8 heads tall.",
               "Some measurements tend to match each other. In many adults, the arm span (fingertip to fingertip with arms stretched out) is about the same as their height. Children's arm spans are often close to their height too.",
@@ -369,6 +387,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "Asking a scientific question",
+            picture: "/lessons/human-growth/lesson-4-1.jpg",
+            alt: "A grandad measuring a girl's hand span on the kitchen table with a ruler",
             text: [
               "Scientists start an investigation with a question they can answer by collecting data. For example: 'Do taller people have longer hand spans?' or 'Do people with longer legs jump further?'",
               "A good question compares two things that can be measured. Your hand span is the distance from the tip of your thumb to the tip of your little finger when your hand is stretched wide.",
@@ -378,6 +398,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Collecting data kindly",
+            picture: "/lessons/human-growth/lesson-4-2.jpg",
+            alt: "A boy with a tape measure and clipboard asking his aunt's permission to measure her",
             text: [
               "Data is the information you collect. In this investigation, your data comes from real people, so you must always ask permission first. If someone doesn't want to be measured, that's fine, and you don't ask why.",
               "Measurements about bodies are personal. Keep your results private, don't compare people unkindly, and use initials or 'Person A, Person B' instead of names if anyone prefers.",
@@ -387,6 +409,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Finding patterns and drawing conclusions",
+            picture: "/lessons/human-growth/lesson-4-3.jpg",
+            alt: "Two children plotting crosses on a scatter graph on squared paper",
             text: [
               "A scatter graph is a good way to look for a link between two measurements. Each person becomes one cross: across for their height and up for their hand span.",
               "If the crosses roughly make a line going up from left to right, there is a pattern: as one measurement increases, the other tends to increase too.",
@@ -484,6 +508,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "What is puberty?",
+            picture: "/lessons/human-growth/lesson-5-1.jpg",
+            alt: "A group of children of different heights walking home from school together",
             text: [
               "Puberty is the time when a child's body gradually changes into an adult's body. It happens to everyone, and it is a completely normal part of growing up.",
               "Puberty is started by hormones. Hormones are chemical messengers that travel around the body in the blood and tell different parts of it what to do.",
@@ -493,6 +519,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Changes that happen to everyone",
+            picture: "/lessons/human-growth/lesson-5-2.jpg",
+            alt: "A girl washing her face at a bathroom sink with soap and deodorant on the shelf",
             text: [
               "During puberty, most people have a growth spurt: they grow taller more quickly than before, and their body shape changes. Feet and hands often grow first.",
               "Hair starts to grow in new places, such as under the arms. Skin can become oilier, and some people get spots. People also sweat more, so washing every day and using deodorant become important.",
@@ -502,6 +530,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Why do these changes happen?",
+            picture: "/lessons/human-growth/lesson-5-3.jpg",
+            alt: "A parent and child talking calmly together on a sofa with mugs of hot chocolate",
             text: [
               "All living things grow, change and, as adults, are able to reproduce: to have young of their own. Puberty is the time when the human body becomes an adult body that could, one day, have a baby.",
               "Being able to have a baby doesn't mean being ready for one. That comes much later, when someone is a grown adult and chooses to.",
@@ -598,6 +628,8 @@ export const humanGrowth: LessonUnit = {
         cards: [
           {
             heading: "How the body changes as we age",
+            picture: "/lessons/human-growth/lesson-6-1.jpg",
+            alt: "A smiling grandmother with white hair, glasses and a hearing aid, sitting in a garden",
             text: [
               "Ageing is the slow change in the body that happens over many years, mostly noticed in later adulthood. It happens gradually and at different speeds for different people.",
               "Hair often turns grey or white because the body makes less of the pigment that gives hair its colour. Skin becomes thinner and less stretchy, so wrinkles form.",
@@ -607,6 +639,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Old age is a stage to enjoy",
+            picture: "/lessons/human-growth/lesson-6-2.jpg",
+            alt: "Active older people jogging, gardening and reading a story to a child",
             text: [
               "Ageing isn't just about what gets harder. Older adults have a lifetime of knowledge, skills and stories. Many of them help their families, volunteer, travel, learn new things and look after grandchildren.",
               "People are living longer than ever. In 1900, a baby born in the UK could expect to live to around 50. Today it is around 80, thanks to better food, cleaner water, vaccines and medicine.",
@@ -616,6 +650,8 @@ export const humanGrowth: LessonUnit = {
           },
           {
             heading: "Staying healthy at every stage",
+            picture: "/lessons/human-growth/lesson-6-3.jpg",
+            alt: "A family of all ages cycling and walking together on a sunny riverside path",
             text: [
               "Exercise keeps the heart, lungs, muscles and bones strong at every age. Children should be active for about an hour a day. Even in old age, walking, swimming, dancing and gardening make a real difference.",
               "A balanced diet with plenty of fruit, vegetables and water gives the body what it needs to grow and repair itself. Calcium, found in foods like milk, yoghurt and some green vegetables, helps keep bones strong.",

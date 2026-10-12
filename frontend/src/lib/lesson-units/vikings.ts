@@ -30,6 +30,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "People from the North",
+            picture: "/lessons/vikings/lesson-1-1.jpg",
+            alt: "Turf-roofed longhouses beside a deep fjord with mountains behind",
             text: [
               "The people we call the Vikings came from Scandinavia, the part of northern Europe that is now Norway, Denmark and Sweden. At the time there were no countries with those borders. Instead there were many small kingdoms, each led by a king or a powerful chieftain.",
               "Scandinavia has long, cold winters, thick forests and steep mountains. In Norway especially, there is only a thin strip of good farmland along the coast and the deep sea inlets called fjords. Because travelling over land was so hard, the sea became the main road.",
@@ -39,6 +41,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Why did they leave home?",
+            picture: "/lessons/vikings/lesson-1-2.jpg",
+            alt: "Viking traders at a market with furs, amber and silver",
             text: [
               "Historians think there were several reasons, and they probably worked together. One reason was land. As the number of people grew, there was not enough good farmland to go round, and often the eldest son inherited the family farm, so younger sons had to find land elsewhere.",
               "Another reason was wealth. A successful voyage could bring back silver, which gave a person power and respect at home. Traders sold furs, amber, walrus ivory and iron, and brought back silver coins, silk, glass and spices.",
@@ -48,6 +52,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "The Viking Age",
+            picture: "/lessons/vikings/lesson-1-3.jpg",
+            alt: "Two children making a long paper timeline at a table",
             text: [
               "Historians call the years from about AD 793 to 1066 the Viking Age. That is long after the Romans left Britain, in around AD 410, and about 1,000 years before you were born.",
               "When the Vikings arrived, Britain was not one country. England was split into Anglo-Saxon kingdoms such as Northumbria, Mercia, East Anglia and Wessex. In the north, the Picts and the Gaels were joining together into the kingdom that would become Scotland, and Wales had its own Welsh kingdoms.",
@@ -141,6 +147,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "A holy island",
+            picture: "/lessons/vikings/lesson-2-1.jpg",
+            alt: "A stone monastery on a small island with a causeway",
             text: [
               "Lindisfarne is a small island off the coast of Northumberland, in the north-east of England. Twice a day the tide goes out and you can walk or drive across to it. Today it is often called Holy Island.",
               "In AD 635 a monk called Aidan came from the island of Iona, in Scotland, and started a monastery there. A monastery is a place where monks live, work and pray together. Lindisfarne became one of the most important Christian centres in Britain, and the home of St Cuthbert.",
@@ -149,6 +157,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "The raid of 793",
+            picture: "/lessons/vikings/lesson-2-2.jpg",
+            alt: "Ships approaching an island monastery at dawn",
             text: [
               "In 793, ships arrived from the sea and Viking raiders came ashore at Lindisfarne. The raid was sudden and short. The raiders took treasure from the church, such as gold and silver crosses, cups and book covers. Some monks were hurt or killed, and some were taken away.",
               "Why choose a monastery? Monasteries were often wealthy, they were close to the sea, and they had no soldiers to guard them. The monks did not expect anyone to attack a holy place, so they were not ready.",
@@ -158,6 +168,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Whose story are we reading?",
+            picture: "/lessons/vikings/lesson-2-3.jpg",
+            alt: "A monk writing in a decorated book by candlelight",
             text: [
               "Almost everything we know about the raid was written by Christian monks and scholars. One of the main sources is the Anglo-Saxon Chronicle, a record of events kept by English monks. It describes terrible signs in the sky, such as lightning and 'fiery dragons', before the raiders came.",
               "These writers were on the side of the people who were attacked, so they described the Vikings as cruel and wicked heathens (people who were not Christian). Their accounts are important, but they only show one point of view.",
@@ -243,6 +255,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "Built for the sea",
+            picture: "/lessons/vikings/lesson-3-1.jpg",
+            alt: "A Viking longship under sail with oars and a steering oar",
             text: [
               "The Vikings were some of the finest shipbuilders of their time. Their famous longships were long, narrow and light, built from overlapping planks of oak held together with iron rivets. This way of building is called clinker building, and it made the hull strong but slightly bendy, so it could flex with the waves.",
               "A longship had a single large square sail, often made of wool, and rows of oars for when the wind dropped or the ship needed to move quickly. It was steered with a large oar fixed to the right-hand side at the back. The Old Norse word for that side, the 'steering board', is where our word 'starboard' comes from.",
@@ -252,6 +266,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Finding the way",
+            picture: "/lessons/vikings/lesson-3-2.jpg",
+            alt: "Viking sailors watching seabirds and a whale at sea",
             text: [
               "Viking sailors had no compass and no maps like ours. Instead, they used knowledge passed down from older sailors and close observation of the world around them.",
               "They watched the sun by day and the stars at night to judge direction. They knew the shapes of coastlines, mountains and islands, and they noticed clues at sea: seabirds flying out to feed and back to land, whales gathering where fish were plentiful, and the colour and feel of the water.",
@@ -261,6 +277,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Across the Atlantic",
+            picture: "/lessons/vikings/lesson-3-3.jpg",
+            alt: "Norse settlers landing on a wooded North American coast",
             text: [
               "From around the 870s, Norse settlers sailed west to Iceland, an island of volcanoes and glaciers in the North Atlantic. They set up farms, and in 930 they started a great outdoor assembly called the Althing, where free men met to make laws and settle disputes.",
               "In the 980s a man called Erik the Red was sent away from Iceland for three years for killing two men. He sailed west and explored a huge, icy land. According to the sagas, he called it Greenland because a good name would make people want to settle there. Norse farms lasted in Greenland for over 400 years.",
@@ -351,6 +369,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "The Great Army",
+            picture: "/lessons/vikings/lesson-4-1.jpg",
+            alt: "A Viking army camp beside a river in England",
             text: [
               "For about 70 years after Lindisfarne, most Viking attacks on England were raids: ships arrived, took what they could, and left. Then, in 865, something changed. A huge Viking force landed in East Anglia. The Anglo-Saxon Chronicle calls it the 'great army'.",
               "This army did not go home. It stayed in England for years, moving from kingdom to kingdom. In 866 it captured York, the most important city in the north, and the Vikings called it Jorvik. Over the next few years, Northumbria, East Anglia and much of Mercia fell under Viking control.",
@@ -359,6 +379,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Alfred fights back",
+            picture: "/lessons/vikings/lesson-4-2.jpg",
+            alt: "King Alfred sitting by a fire in a hut in the marshes",
             text: [
               "In January 878, a Viking leader called Guthrum made a surprise winter attack on Chippenham, where Alfred was staying. Alfred escaped with a small band of followers and hid in the marshes of Athelney, in Somerset. For a while it looked as though the whole of England might fall.",
               "A famous story says that while he was hiding, Alfred sheltered in a peasant woman's home and, lost in his worries, let her cakes burn. The story was first written down long after Alfred's death, so it is probably a legend, but it shows how low his fortunes had sunk.",
@@ -368,6 +390,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Sharing England: the Danelaw",
+            picture: "/lessons/vikings/lesson-4-3.jpg",
+            alt: "An Anglo-Saxon fortified town with a wooden wall",
             text: [
               "Alfred and Guthrum agreed a boundary across England. It ran roughly along the River Thames, up the River Lea and then along an old Roman road called Watling Street. To the south and west was Anglo-Saxon land. To the north and east was the area later called the Danelaw, where Viking (Danish) law and customs were followed.",
               "In the Danelaw, many Vikings settled down as farmers and traders, married local people and, over time, became Christian. Alfred also cared about learning. He had important books translated into English, and the Anglo-Saxon Chronicle was begun during his reign. He is the only English king to be called 'the Great'.",
@@ -457,6 +481,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "Life on a Viking farm",
+            picture: "/lessons/vikings/lesson-5-1.jpg",
+            alt: "Family life inside a Viking longhouse around the hearth",
             text: [
               "Most Vikings lived on farms. A family lived in a longhouse, a long building with thick walls of wood, stone or turf and a roof of thatch or turf. Inside was one main room with a fire burning in a long hearth down the middle, giving heat, light and a place to cook. Smoke escaped through a hole in the roof.",
               "Along the walls were raised wooden platforms used as benches by day and beds at night. In the coldest months, animals were sometimes kept at one end of the house, and their warmth helped to heat it.",
@@ -466,6 +492,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "The Norse gods",
+            picture: "/lessons/vikings/lesson-5-2.jpg",
+            alt: "A great ash tree with ravens flying around it",
             text: [
               "Before they became Christian, the Vikings believed in many gods and goddesses. Odin was the wise and powerful chief of the gods, who gave up one eye in exchange for wisdom and had two ravens that flew around the world bringing him news.",
               "Thor, the god of thunder, carried a mighty hammer called Mjölnir. He was hugely popular, and many people wore small hammer-shaped pendants. Freyja was the goddess of love and beauty, Frigg was Odin's wife, and Loki was a clever trickster who caused trouble for the other gods.",
@@ -475,6 +503,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Sagas and runes",
+            picture: "/lessons/vikings/lesson-5-3.jpg",
+            alt: "A family beside a carved runestone in a meadow",
             text: [
               "Vikings loved stories and poems. Poets called skalds composed verses praising kings and heroes, and families passed on tales of their ancestors by telling them aloud on long winter evenings.",
               "Many of these stories were written down in Iceland in the 1200s and 1300s as sagas. Some tell of gods and giants. Others, like the sagas of Erik the Red and of the Greenlanders, tell of real families and journeys. Because they were written down 200 years or more after the events, they mix history with storytelling, so historians check them against other evidence.",
@@ -560,6 +590,8 @@ export const vikings: LessonUnit = {
         cards: [
           {
             heading: "Jorvik under the streets",
+            picture: "/lessons/vikings/lesson-6-1.jpg",
+            alt: "Archaeologists uncovering a Viking house in York",
             text: [
               "From 1976 to 1981, archaeologists dug on a street in York called Coppergate. Several metres under the modern city, they found the Viking town of Jorvik. The ground there was damp and had very little air in it, so things that normally rot away had survived for over 1,000 years.",
               "They uncovered the wooden walls of houses and workshops, and tens of thousands of objects: leather shoes, woollen and silk cloth, wooden bowls and cups, combs made from antler, jewellery, coins and tools. Even seeds, insects and parasites survived, which told scientists what people ate and how healthy they were.",
@@ -569,6 +601,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Viking Scotland",
+            picture: "/lessons/vikings/lesson-6-2.jpg",
+            alt: "A Norse stone farmstead on an Orkney headland",
             text: [
               "Norse people from Norway sailed to the north and west of Scotland from around 800. They settled in Orkney and Shetland, in Caithness, and in the Western Isles (the Outer Hebrides), where the sea routes from Norway were short and the land suited farming and fishing.",
               "Orkney became the centre of a powerful earldom ruled by Norse earls, whose story is told in the Orkneyinga saga. At Maeshowe, an ancient tomb in Orkney, Norse visitors in the 1100s carved runes on the walls, and you can still read them today. In the Western Isles, Norse and Gaelic people lived side by side and married each other, mixing their languages and cultures.",
@@ -578,6 +612,8 @@ export const vikings: LessonUnit = {
           },
           {
             heading: "Clues in names, words and hoards",
+            picture: "/lessons/vikings/lesson-6-3.jpg",
+            alt: "A metal detectorist and a child finding a silver hoard",
             text: [
               "Viking settlers named the places where they lived. In England, towns and villages ending in -by (a farm or village), such as Whitby, Grimsby and Derby, or in -thorpe (a smaller, outlying settlement), such as Scunthorpe and Cleethorpes, usually have Norse names. On a map, these names cluster thickly in the old Danelaw.",
               "In Scotland, -wick comes from the Norse word for a bay, as in Lerwick and Wick, and many island names end in -ay or -a, from the Norse word for an island, such as Stronsay and Sanday in Orkney. Dingwall and Tingwall come from 'thing-field', the place where an assembly met.",
