@@ -1,0 +1,621 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/** Forces and magnets, for ages 7 to 9. Every experiment uses things from around the house, and fridge magnets. */
+export const forcesAndMagnets: LessonUnit = {
+  slug: "forces-and-magnets",
+  title: "Forces and magnets",
+  short: "Forces and magnets",
+  subject: "Science",
+  ages: "7 to 9",
+  emoji: "🧲",
+  color: "#A3473F",
+  summary: "Six lessons of experiments with toy cars, ramps and fridge magnets: pushes and pulls, rough and smooth surfaces, forces at a distance, magnetic materials and the poles of a magnet.",
+  cover: "/lessons/units/forces-and-magnets.jpg",
+  lessons: [
+    {
+      slug: "forces-and-magnets-1",
+      title: "Pushes and pulls",
+      emoji: "🛒",
+      minutes: 45,
+      goal: "I can explain that a force is a push or a pull, and describe what forces can do to an object.",
+      starter: [
+        { type: "choice", q: "What do you do to open a drawer?", options: ["Push it", "Pull it", "Sing to it"], answer: 1 },
+        { type: "choice", q: "What makes a swing go higher?", options: ["Closing your eyes", "Shouting at it", "A push"], answer: 2 },
+        { type: "choice", q: "Which rolls more easily?", options: ["A ball on long grass", "A ball on a smooth floor"], answer: 1 },
+        { type: "pick", q: "Which things do you think a magnet might stick to? Have a guess. There is more than one.", options: ["A paperclip", "A rubber", "A tissue", "A steel food tin"], answers: [0, 3] },
+        { type: "type", q: "What do we call the thing that holds pictures on a fridge door?", answer: ["magnet", "a magnet", "fridge magnet", "a fridge magnet", "magnets"] },
+        { type: "choice", q: "What happens if you roll a ball and nobody stops it?", options: ["It slows down and stops by itself after a while", "It rolls for ever", "It flies up to the ceiling"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is a force?",
+            text: [
+              "A force is a push or a pull. You can't see a force, but you can see what it does.",
+              "When you push a door shut, kick a ball or pull up your socks, you are using forces.",
+              "Nothing starts moving all by itself. Something has to push it or pull it.",
+            ],
+          },
+          {
+            heading: "What forces can do",
+            text: [
+              "A force can make something start moving, like a push on a toy car.",
+              "A force can make something move faster, slow down or stop, like catching a ball.",
+              "A force can change the direction something is moving, like hitting a ball with a bat. It can even change an object's shape, like squashing play dough.",
+            ],
+          },
+          {
+            heading: "Contact forces",
+            text: [
+              "Most pushes and pulls only work when two things touch. These are called contact forces.",
+              "To push a trolley, your hands must touch it. To pull a sledge, the rope must be tied to it.",
+              "But some forces can work without touching at all. We'll meet one of them, the magnetic force, later in this unit.",
+            ],
+          },
+        ],
+        words: [
+          { word: "force", meaning: "a push or a pull" },
+          { word: "push", meaning: "a force that moves something away from you" },
+          { word: "pull", meaning: "a force that moves something towards you" },
+          { word: "contact force", meaning: "a force that only works when two things touch" },
+        ],
+      },
+      practice: {
+        intro: "Push or pull?",
+        questions: [
+          {
+            type: "match",
+            q: "Match each force to what it does.",
+            pairs: [["Kicking a ball", "Starts it moving"], ["Catching a ball", "Stops it moving"], ["Squashing play dough", "Changes its shape"]],
+          },
+          { type: "choice", q: "What can a force do?", options: ["Change the colour of a ball", "Make a ball start moving", "Make a ball disappear"], answer: 1 },
+          {
+            type: "pick",
+            q: "Which of these use a pull? There is more than one.",
+            options: ["Pulling up your socks", "Pushing a pram", "Tugging a rope", "Kicking a ball"],
+            answers: [0, 2],
+          },
+          { type: "choice", q: "You hit a moving ball with a bat. What does the force do?", options: ["Makes it melt", "Changes its direction", "Makes it heavier"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "A force is a push or a ___. Forces that only work when things touch are called ___ forces.", bank: ["pull", "contact", "magic", "colour"], answers: ["pull", "contact"] },
+        ],
+      },
+      task: {
+        title: "Push and pull hunt",
+        intro: "Go on a force hunt around your home and see what forces can do.",
+        need: ["Paper and a pencil", "A ball", "Some play dough or a soft sponge"],
+        steps: [
+          "Draw two columns on your paper: 'push' and 'pull'.",
+          "Walk round your home. Open and close doors, drawers, cupboards and taps. Write each one in the right column. Some might need a push and a pull!",
+          "Roll the ball gently along the floor to a grown-up. Can they stop it? Can they send it back in a different direction? Which forces did you both use?",
+          "Squash, stretch and twist the play dough or sponge. Draw how the forces changed its shape.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a force?", options: ["A kind of material", "A push or a pull", "A type of magnet"], answer: 1 },
+        { type: "choice", q: "Opening a drawer is a...", options: ["pull", "push"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which things can a force do? There is more than one.",
+          options: ["Start something moving", "Change its colour", "Stop something moving", "Change its shape"],
+          answers: [0, 2, 3],
+        },
+        { type: "choice", q: "What is a contact force?", options: ["A force that works from far away", "A force that only works when things touch", "A force you can see"], answer: 1 },
+        { type: "type", q: "You squash play dough with your hands. What does the force change? Type one word.", answer: ["shape", "its shape", "the shape"] },
+        { type: "choice", q: "Can a toy car start moving all by itself?", options: ["Yes, if it wants to", "No, it needs a push or a pull"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper and a pencil", "A soft ball", "Play dough or a sponge"],
+        tips: [
+          "Children often think a force is something an object 'has'. Keep saying 'a force is a push or a pull that acts on something'.",
+          "Twisting and squeezing are fine answers. Explain that they are made of pushes and pulls in different directions.",
+          "Use a soft ball indoors and clear a space away from anything breakable.",
+        ],
+        younger: "Play 'push or pull' with toys: your child shows you a push or a pull with a teddy, a toy car or a door, and you guess which it is.",
+        older: "Draw arrows on pictures of everyday actions to show which way the force goes, using a bigger arrow for a bigger force.",
+      },
+    },
+    {
+      slug: "forces-and-magnets-2",
+      title: "Moving on different surfaces",
+      emoji: "🚗",
+      minutes: 45,
+      goal: "I can test how far a toy car rolls on different surfaces, and explain that rough surfaces slow things down more.",
+      starter: [
+        { type: "choice", q: "What is a force?", options: ["A push or a pull", "A kind of metal", "A light source"], answer: 0 },
+        { type: "choice", q: "Opening a door towards you is a...", options: ["push", "pull"], answer: 1 },
+        { type: "pick", q: "What can a force do? There is more than one.", options: ["Change something's direction", "Make something speed up", "Make something invisible"], answers: [0, 1] },
+        { type: "choice", q: "What is a contact force?", options: ["A force that works across a room", "A force that is very weak", "A force that only works when things touch"], answer: 2 },
+        { type: "type", q: "Is kicking a ball a push or a pull?", answer: ["push", "a push"] },
+        { type: "choice", q: "You squash play dough. What has the force changed?", options: ["Its colour", "Its shape", "Its smell"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Rough and smooth",
+            text: [
+              "When something slides or rolls over a surface, the two surfaces rub together. This makes a force called friction.",
+              "Friction pulls against the way something is moving, so it slows it down.",
+              "Rough surfaces, like carpet or grass, make lots of friction. Smooth surfaces, like a kitchen floor or ice, make only a little.",
+            ],
+          },
+          {
+            heading: "Testing surfaces fairly",
+            text: [
+              "To find out which surface lets a toy car roll furthest, you can let it roll down a ramp onto each surface.",
+              "To make the test fair, only change one thing: the surface. Keep the same car, the same ramp and the same height.",
+              "Let go of the car each time. Don't push it, or some goes will get a bigger push than others!",
+            ],
+          },
+          {
+            heading: "Friction is useful",
+            text: [
+              "Friction can be very helpful. The grip on the bottom of your shoes stops you slipping over.",
+              "Bike brakes rub on the wheel to slow it down. Tyres grip the road so cars can stop safely.",
+              "On ice there is hardly any friction, which is why it's so slippery and why people sprinkle grit on icy paths.",
+            ],
+          },
+        ],
+        words: [
+          { word: "surface", meaning: "the top or outside layer of something" },
+          { word: "friction", meaning: "a force made when two surfaces rub together, which slows things down" },
+          { word: "fair test", meaning: "a test where you only change one thing" },
+          { word: "grip", meaning: "holding on without slipping" },
+        ],
+      },
+      practice: {
+        intro: "Rough or smooth?",
+        questions: [
+          { type: "choice", q: "On which surface will a toy car roll furthest?", options: ["Thick carpet", "A towel", "A smooth kitchen floor"], answer: 2 },
+          {
+            type: "order",
+            q: "Put these surfaces in order, from the one a car rolls furthest on to the one it rolls least far on.",
+            items: ["Ice", "Kitchen floor", "Carpet", "Long grass"],
+          },
+          { type: "choice", q: "In a fair test of surfaces, what should you change?", options: ["The car", "Only the surface", "The height of the ramp"], answer: 1 },
+          { type: "choice", q: "Why do shoes have bumpy soles?", options: ["To make them heavier", "To give more grip so you don't slip", "To make them squeak"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Ramp racers",
+        intro: "Find out which surface lets a toy car roll the furthest.",
+        need: [
+          "A toy car",
+          "A baking tray, chopping board or big hardback book for a ramp",
+          "A few books to prop it up",
+          "Different surfaces: a carpet or rug, a towel, kitchen foil, bubble wrap, a smooth floor",
+          "A tape measure, or count with your hand spans",
+          "Paper and a pencil",
+        ],
+        steps: [
+          "Prop one end of your ramp on two books. Keep it the same height all the time.",
+          "Predict which surface the car will roll furthest on. Write it down.",
+          "Lay the first surface at the bottom of the ramp. Hold the car at the top and let go. Don't push!",
+          "Measure how far the car rolled from the bottom of the ramp. Do it three times and write down each result.",
+          "Test each surface the same way. Which was furthest? Was your prediction right?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is friction?", options: ["A force made when surfaces rub together", "A type of magnet", "A kind of light"], answer: 0 },
+        { type: "choice", q: "Which surface makes the most friction?", options: ["Ice", "Smooth floor", "Carpet"], answer: 2 },
+        { type: "choice", q: "What does friction do to a rolling car?", options: ["Speeds it up", "Slows it down", "Makes it change colour"], answer: 1 },
+        { type: "choice", q: "Why should you let go of the car instead of pushing it?", options: ["To keep the test fair", "To make it go faster", "Because pushing is not allowed"], answer: 0 },
+        { type: "gap", q: "Fill in the gaps.", text: "A toy car rolls further on a ___ surface, because there is less ___.", bank: ["smooth", "friction", "rough", "light"], answers: ["smooth", "friction"] },
+        { type: "choice", q: "Why is ice slippery?", options: ["It is very rough", "It is magnetic", "There is hardly any friction"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["A toy car", "Something for a ramp and books to prop it", "Towel, foil, bubble wrap, rug", "Tape measure"],
+        tips: [
+          "The fair test idea is the heart of this lesson. Ask 'what are we keeping the same?' before each go.",
+          "Doing each surface three times shows that results can vary. Older children can pick the middle result.",
+          "Clear a long space, and tape the surfaces down if they keep slipping.",
+        ],
+        younger: "Just compare two surfaces, the rug and the kitchen floor, and talk about which felt rougher.",
+        older: "Make a bar chart of the results, then repeat with the ramp higher. Does the order of the surfaces stay the same?",
+      },
+    },
+    {
+      slug: "forces-and-magnets-3",
+      title: "Forces that work at a distance",
+      emoji: "📎",
+      minutes: 45,
+      goal: "I can explain that magnets can pull some things without touching them, and that this force can pass through some materials.",
+      starter: [
+        { type: "choice", q: "What is friction?", options: ["A force that speeds things up", "A force made when surfaces rub together", "A kind of metal"], answer: 1 },
+        { type: "choice", q: "On which surface does a toy car roll furthest?", options: ["A smooth floor", "A rug", "A towel"], answer: 0 },
+        { type: "choice", q: "In a fair test, how many things do you change?", options: ["Everything", "Three things", "Just one thing"], answer: 2 },
+        { type: "pick", q: "Which surfaces are rough? There is more than one.", options: ["Carpet", "Ice", "Long grass", "A glass window"], answers: [0, 2] },
+        { type: "type", q: "What do the bumpy soles of your shoes give you, so you don't slip?", answer: ["grip", "friction", "more grip", "more friction"] },
+        { type: "choice", q: "What does friction do to something that is moving?", options: ["Slows it down", "Makes it lighter"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Touching or not touching?",
+            text: [
+              "Pushes, pulls and friction are contact forces. They only work when things touch.",
+              "A magnet is different. Hold a fridge magnet near a paperclip and the paperclip can jump across to it before they even touch!",
+              "A force that works without touching is called a non-contact force. We say it acts at a distance.",
+            ],
+          },
+          {
+            heading: "Closer is stronger",
+            text: [
+              "The pull of a magnet gets stronger the closer you get to it.",
+              "Far away, the paperclip doesn't move. As the magnet comes nearer, the pull gets strong enough to make it move.",
+              "Some magnets are stronger than others, so they can pull from further away.",
+            ],
+          },
+          {
+            heading: "Through things",
+            text: [
+              "The magnetic force can pass through some materials, like paper, thin card, plastic and even water.",
+              "That's how a fridge magnet holds a drawing on the fridge. The force goes right through the paper.",
+              "If something is too thick, the magnet is too far away and the force is too weak to work.",
+            ],
+          },
+        ],
+        words: [
+          { word: "magnet", meaning: "an object that pulls certain metals towards it" },
+          { word: "non-contact force", meaning: "a force that works without touching" },
+          { word: "attract", meaning: "to pull something towards you" },
+          { word: "at a distance", meaning: "from further away, without touching" },
+        ],
+      },
+      practice: {
+        intro: "Touching or not touching?",
+        questions: [
+          {
+            type: "match",
+            q: "Does each force need to touch? Match it up.",
+            pairs: [["Pushing a trolley", "Needs to touch"], ["A magnet pulling a paperclip", "Can work without touching"]],
+          },
+          { type: "choice", q: "When is a magnet's pull strongest?", options: ["When the magnet is far away", "When the magnet is close", "It is always the same"], answer: 1 },
+          { type: "choice", q: "How does a fridge magnet hold up a drawing?", options: ["Its force passes through the paper", "It is sticky like glue", "The paper is made of metal"], answer: 0 },
+          {
+            type: "pick",
+            q: "Which can a magnet's force pass through? There is more than one.",
+            options: ["A sheet of paper", "Thin card", "Water", "A very thick wooden table"],
+            answers: [0, 1, 2],
+            why: "A very thick table puts the magnet too far away, so the force is too weak.",
+          },
+        ],
+      },
+      task: {
+        title: "The magic moving paperclip",
+        intro: "Use a magnet to move a paperclip without touching it, then test how far away it works.",
+        need: ["A fridge magnet (a chunky button one works best)", "Some steel paperclips", "A paper plate", "Felt pens", "A ruler", "A few sheets of paper"],
+        steps: [
+          "Draw a twisty road on the paper plate. Put a paperclip at the start.",
+          "Hold the magnet under the plate and slide it around. Can you drive the paperclip along the road without touching it?",
+          "Now lay a paperclip on the table next to a ruler. Slowly slide the magnet towards it. Measure how close the magnet is when the paperclip jumps.",
+          "Put one sheet of paper between the magnet and a paperclip. Does it still pull? Keep adding sheets. How many before it stops working?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a non-contact force?", options: ["A force that only works when things touch", "A force that works without touching", "A very small push"], answer: 1 },
+        { type: "choice", q: "Which is a non-contact force?", options: ["Friction", "Pushing a door", "The pull of a magnet"], answer: 2 },
+        { type: "choice", q: "A magnet's pull gets stronger when it is...", options: ["further away", "closer"], answer: 1 },
+        { type: "type", q: "Can a magnet pull a paperclip through a sheet of paper? Type yes or no.", answer: ["yes", "Yes"] },
+        { type: "choice", q: "Why might a magnet not work through a very thick book?", options: ["Books are magnetic", "The magnet is too far away, so the force is too weak", "Paper blocks all forces"], answer: 1 },
+        { type: "gap", q: "Fill in the gaps.", text: "A magnet can ___ a paperclip without touching it. We say the force acts at a ___.", bank: ["attract", "distance", "melt", "surface"], answers: ["attract", "distance"] },
+      ],
+      grownUp: {
+        need: ["A fridge magnet", "Steel paperclips", "A paper plate and felt pens", "A ruler and some paper"],
+        tips: [
+          "Thin, bendy fridge magnets are weak and work best touching. A chunky button magnet works through more paper.",
+          "Keep magnets away from phones, tablets, laptops, bank cards and anyone with a pacemaker. Fridge magnets are weak, but it's a good habit to learn.",
+          "If you have a younger child or a pet at home, avoid tiny magnets and count the paperclips back in at the end: small magnets and clips are a choking and swallowing risk.",
+        ],
+        younger: "Just play the paper plate road game, and talk about how the paperclip moves without being touched.",
+        older: "Test whether the magnet works through other materials, such as a plastic lid, a cloth, a glass of water or a wooden chopping board, and record the results in a table.",
+      },
+    },
+    {
+      slug: "forces-and-magnets-4",
+      title: "Magnetic or not?",
+      emoji: "🥫",
+      minutes: 45,
+      goal: "I can sort materials into magnetic and non-magnetic, and explain that only some metals are magnetic.",
+      starter: [
+        { type: "choice", q: "What is a non-contact force?", options: ["A force that works without touching", "A force that needs touching", "A kind of friction"], answer: 0 },
+        { type: "choice", q: "Which is a non-contact force?", options: ["Pushing a pram", "The pull of a magnet", "Kicking a ball"], answer: 1 },
+        { type: "choice", q: "When is a magnet's pull strongest?", options: ["When it is far away", "When it is close", "At night"], answer: 1 },
+        { type: "type", q: "Can a magnet's force pass through paper? Type yes or no.", answer: ["yes", "Yes"] },
+        { type: "choice", q: "What does attract mean?", options: ["Push away", "Pull towards", "Break into pieces"], answer: 1 },
+        { type: "pick", q: "Which are contact forces? There is more than one.", options: ["Friction", "A magnet pulling a paperclip from a distance", "Pulling a sledge with a rope"], answers: [0, 2] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Magnetic materials",
+            text: [
+              "A magnet only attracts some materials. These are called magnetic materials.",
+              "The main magnetic material is the metal iron. Steel is made mostly from iron, so most steel is magnetic too.",
+              "Paperclips, steel food tins, safety pins and hair grips are usually made of steel, so a magnet sticks to them.",
+            ],
+          },
+          {
+            heading: "Not all metals",
+            text: [
+              "Lots of people think magnets stick to all metals. They don't!",
+              "Aluminium is not magnetic. Kitchen foil and most drinks cans are made of aluminium, so a magnet won't stick to them.",
+              "Copper, gold and silver aren't magnetic either. So a magnet won't pick up a gold ring.",
+            ],
+          },
+          {
+            heading: "Non-magnetic materials",
+            text: [
+              "Materials that magnets don't attract are non-magnetic.",
+              "Wood, plastic, glass, paper, fabric and rubber are never magnetic.",
+              "Magnets help sort rubbish at recycling centres. A giant magnet lifts out the steel tins and leaves the aluminium cans behind.",
+            ],
+          },
+        ],
+        words: [
+          { word: "magnetic", meaning: "attracted by a magnet" },
+          { word: "non-magnetic", meaning: "not attracted by a magnet" },
+          { word: "iron", meaning: "a magnetic metal" },
+          { word: "steel", meaning: "a strong metal made mostly from iron, usually magnetic" },
+          { word: "aluminium", meaning: "a light metal that is not magnetic" },
+        ],
+      },
+      practice: {
+        intro: "Will the magnet stick?",
+        questions: [
+          {
+            type: "pick",
+            q: "Which will a magnet attract? There is more than one.",
+            options: ["A wooden spoon", "A steel paperclip", "Kitchen foil", "A steel food tin", "A plastic cup"],
+            answers: [1, 3],
+          },
+          { type: "choice", q: "Does a magnet stick to all metals?", options: ["Yes, every metal", "No, only some metals"], answer: 1 },
+          {
+            type: "match",
+            q: "Match each object to what it is made of.",
+            pairs: [["Paperclip", "Steel"], ["Drinks can", "Aluminium"], ["Pencil", "Wood"]],
+          },
+          { type: "choice", q: "Kitchen foil is a metal. Is it magnetic?", options: ["Yes", "No"], answer: 1, why: "Foil is made of aluminium, which is not magnetic." },
+          { type: "gap", q: "Fill in the gaps.", text: "Steel is made mostly from ___, so it is magnetic. Foil is made of ___, so it is not.", bank: ["iron", "aluminium", "wood", "glass"], answers: ["iron", "aluminium"] },
+        ],
+      },
+      task: {
+        title: "Magnet detective",
+        intro: "Predict, then test, which things around your home are magnetic.",
+        need: [
+          "A fridge magnet",
+          "About 10 objects, such as a paperclip, foil, a wooden spoon, a plastic toy, a sock, an empty steel food tin, an empty drinks can, a hair grip, a pencil and a glass jar",
+          "Paper and a pencil",
+        ],
+        steps: [
+          "Draw a table with three columns: object, my prediction, result.",
+          "For each object, predict: will the magnet attract it? Write yes or no.",
+          "Test each object with the magnet. Write what happened.",
+          "Sort the objects into two groups: magnetic and non-magnetic. Were any of your predictions wrong?",
+          "Look at your metal objects. Were they all magnetic?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does magnetic mean?", options: ["Made of metal", "Attracted by a magnet", "Very shiny"], answer: 1 },
+        { type: "choice", q: "Which metal is magnetic?", options: ["Aluminium", "Gold", "Iron"], answer: 2 },
+        { type: "choice", q: "Will a magnet stick to a drinks can made of aluminium?", options: ["No", "Yes"], answer: 0 },
+        {
+          type: "pick",
+          q: "Which materials are never magnetic? There is more than one.",
+          options: ["Plastic", "Steel", "Wood", "Glass"],
+          answers: [0, 2, 3],
+        },
+        { type: "type", q: "Paperclips are usually made of a magnetic metal. What is it called?", answer: ["steel", "iron"] },
+        { type: "choice", q: "Is it true that magnets attract all metals?", options: ["True", "False"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["A fridge magnet", "About 10 household objects, some metal", "Paper and a pencil"],
+        tips: [
+          "Check empty tins first for sharp edges around the rim, or use the lid end only.",
+          "Cutlery is a fun surprise: some stainless steel is magnetic and some isn't, depending on the mix of metals.",
+          "UK 1p and 2p coins made since 1992 are steel with a copper coating, so they stick to a strong magnet even though they look copper. Older ones don't.",
+          "Keep the magnet away from phones, bank cards and anyone with a pacemaker.",
+        ],
+        younger: "Test five objects together and make two piles, 'sticks' and 'doesn't stick'.",
+        older: "Find out how a recycling centre uses magnets to sort cans, then design a poster explaining it.",
+      },
+    },
+    {
+      slug: "forces-and-magnets-5",
+      title: "North and south poles",
+      emoji: "🔴",
+      minutes: 45,
+      goal: "I can explain that magnets have a north and a south pole, and that like poles repel and unlike poles attract.",
+      starter: [
+        { type: "choice", q: "What does magnetic mean?", options: ["Shiny", "Attracted by a magnet", "Made of wood"], answer: 1 },
+        { type: "choice", q: "Is kitchen foil magnetic?", options: ["Yes", "No"], answer: 1 },
+        { type: "pick", q: "Which will a magnet attract? There is more than one.", options: ["A steel paperclip", "A plastic cup", "A steel food tin", "A wooden spoon"], answers: [0, 2] },
+        { type: "choice", q: "Which metal is magnetic?", options: ["Iron", "Gold", "Aluminium"], answer: 0 },
+        { type: "type", q: "Steel is made mostly from which magnetic metal?", answer: ["iron"] },
+        { type: "choice", q: "Do magnets attract all metals?", options: ["Yes", "No, only some"], answer: 1 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Two poles",
+            text: [
+              "Every magnet has two ends called poles: a north pole and a south pole.",
+              "The poles are where the magnet's force is strongest. If you dip a bar magnet in paperclips, most of them cling to the two ends.",
+              "On many bar magnets, the north pole is painted red and the south pole is painted blue.",
+            ],
+          },
+          {
+            heading: "Attract and repel",
+            text: [
+              "Put the north pole of one magnet near the south pole of another and they pull together. They attract.",
+              "Put two north poles together, or two south poles, and they push each other away. They repel.",
+              "A handy way to remember: opposites attract, and the same poles push away.",
+            ],
+          },
+          {
+            heading: "Feel the push",
+            text: [
+              "You can feel two magnets repel. It feels like squashing an invisible spring between them.",
+              "Repelling is a non-contact force too. One magnet can push another along the table without touching it!",
+              "Many round fridge magnets have one pole on each flat face. Flip one over and it will change from attracting to repelling.",
+            ],
+          },
+        ],
+        words: [
+          { word: "pole", meaning: "one of the two ends of a magnet, where its force is strongest" },
+          { word: "north pole", meaning: "one end of a magnet" },
+          { word: "south pole", meaning: "the other end of a magnet" },
+          { word: "attract", meaning: "pull together" },
+          { word: "repel", meaning: "push apart" },
+        ],
+      },
+      practice: {
+        intro: "Attract or repel?",
+        questions: [
+          {
+            type: "match",
+            q: "Match each pair of poles to what happens.",
+            pairs: [["North and south", "Attract"], ["North and north", "Repel"]],
+          },
+          { type: "choice", q: "Two south poles are pushed together. What happens?", options: ["They attract", "They repel"], answer: 1 },
+          { type: "choice", q: "Where is a magnet's force strongest?", options: ["In the middle", "At the poles", "It is the same all over"], answer: 1 },
+          { type: "gap", q: "Fill in the gaps.", text: "Every magnet has two ___, north and south. Opposite poles ___ and the same poles ___.", bank: ["poles", "attract", "repel", "colours"], answers: ["poles", "attract", "repel"] },
+        ],
+      },
+      task: {
+        title: "Pushing and pulling magnets",
+        intro: "Use two magnets to feel them attract and repel.",
+        need: [
+          "Two chunky round fridge magnets, or two magnetic toy train carriages",
+          "A small sticker or a dab of felt pen",
+          "Steel paperclips",
+          "Paper and a pencil",
+        ],
+        steps: [
+          "Hold the two magnets close together, face to face. Do they pull together or push apart?",
+          "Turn one magnet over and try again. What changes?",
+          "When they pull together, put a sticker on each of the two faces that are touching. Now you know which side is which.",
+          "Lay one magnet flat on the table. Slowly push the other towards it so they repel. Can you chase the first magnet across the table without touching it?",
+          "Dip a magnet in paperclips. Where do most of the clips cling? Draw what you find.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "How many poles does a magnet have?", options: ["One", "Two", "Four"], answer: 1 },
+        { type: "choice", q: "What are the two poles called?", options: ["Up and down", "North and south", "Left and right"], answer: 1 },
+        { type: "choice", q: "A north pole and a south pole are put together. What happens?", options: ["They repel", "Nothing", "They attract"], answer: 2 },
+        { type: "choice", q: "Two north poles are put together. What happens?", options: ["They repel", "They attract"], answer: 0 },
+        { type: "type", q: "What word means 'push apart'?", answer: ["repel", "repels"] },
+        { type: "choice", q: "Where do most paperclips cling on a bar magnet?", options: ["The middle", "The two ends", "Nowhere"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Two chunky fridge magnets or magnetic toy trains", "A sticker", "Paperclips"],
+        tips: [
+          "Household magnets don't usually have their poles marked, so this lesson focuses on finding which faces attract and repel, rather than naming north and south.",
+          "Thin, flat fridge magnets have lots of tiny stripes of north and south poles. Slide the backs of two together and you'll feel them bump: a fun extra!",
+          "Avoid small, powerful magnets, such as tiny round ones from toys or desk sets. If two are swallowed they can stick together inside the body, which is very dangerous.",
+          "Keep magnets away from phones, bank cards and anyone with a pacemaker.",
+        ],
+        younger: "Just play with the two magnets, saying 'pull' or 'push' each time they meet.",
+        older: "Line up three or four magnets in a row so they all attract, then predict what happens if you flip the one in the middle.",
+      },
+    },
+    {
+      slug: "forces-and-magnets-6",
+      title: "Predicting with magnets",
+      emoji: "🧭",
+      minutes: 45,
+      goal: "I can predict whether two magnets will attract or repel, and describe some ways we use magnets.",
+      starter: [
+        { type: "choice", q: "How many poles does a magnet have?", options: ["Two", "Three", "One"], answer: 0 },
+        { type: "choice", q: "What happens when two south poles meet?", options: ["They attract", "They repel"], answer: 1 },
+        { type: "choice", q: "What happens when a north pole and a south pole meet?", options: ["They repel", "They attract"], answer: 1 },
+        { type: "type", q: "What word means 'pull together'?", answer: ["attract", "attracts"] },
+        { type: "choice", q: "Where is a magnet's force strongest?", options: ["In the middle", "At the poles"], answer: 1 },
+        { type: "match", q: "Match each word to what it means.", pairs: [["Attract", "Pull together"], ["Repel", "Push apart"], ["Pole", "An end of a magnet"]] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Predict like a scientist",
+            text: [
+              "If you know which poles are facing each other, you can predict what two magnets will do before you try.",
+              "Look at the poles that face each other. Different poles? They will attract. The same poles? They will repel.",
+              "If you turn one magnet round, the pole facing the other magnet changes, so what happens changes too.",
+            ],
+          },
+          {
+            heading: "The Earth is a giant magnet",
+            text: [
+              "Deep inside, the Earth acts like a giant magnet.",
+              "A compass has a little magnet inside called a needle. It can spin freely, and it always turns to point north.",
+              "For hundreds of years, sailors and explorers have used compasses to find their way, even in fog or at night.",
+            ],
+          },
+          {
+            heading: "Magnets all around us",
+            text: [
+              "Magnets are hidden all over your home. There's a long, bendy magnet in the rubber seal of your fridge door that keeps it shut tight.",
+              "Some cupboard doors, bag clasps and pencil cases close with magnets.",
+              "Magnets are also in toys, games and speakers, and they help sort steel from aluminium at recycling centres.",
+            ],
+          },
+        ],
+        words: [
+          { word: "predict", meaning: "to say what you think will happen before you try it" },
+          { word: "compass", meaning: "a tool with a magnetic needle that points north" },
+          { word: "needle", meaning: "the small magnet that spins inside a compass" },
+        ],
+      },
+      practice: {
+        intro: "Predict, then check.",
+        questions: [
+          { type: "choice", q: "The red ends of two bar magnets face each other. Both red ends are north poles. What will happen?", options: ["They will attract", "They will repel"], answer: 1 },
+          { type: "choice", q: "A red end faces a blue end. The red end is north and the blue end is south. What will happen?", options: ["They will repel", "They will attract"], answer: 1 },
+          { type: "choice", q: "Two magnets are attracting. You turn one round. What will happen now?", options: ["They will still attract", "They will repel", "One magnet will melt"], answer: 1 },
+          {
+            type: "pick",
+            q: "Which things at home often use magnets? There is more than one.",
+            options: ["A fridge door seal", "A wooden spoon", "A bag clasp", "A cupboard catch"],
+            answers: [0, 2, 3],
+          },
+          { type: "choice", q: "Which way does a compass needle point?", options: ["Up", "North", "Towards the nearest person"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Magnet challenge and fishing game",
+        intro: "Test your predictions, then make a magnet game to play with your family.",
+        need: [
+          "Your two marked fridge magnets from last lesson, or two magnetic toy trains",
+          "Card or paper, felt pens and scissors",
+          "Steel paperclips",
+          "String and a pencil or wooden spoon",
+          "A washing-up bowl or a box for the 'pond'",
+        ],
+        steps: [
+          "Ask a grown-up to hold the two magnets in different ways, with the sticker side facing in or out. Before they bring them together, predict: attract or repel? Score a point for each right prediction.",
+          "Now make a fishing game. Draw and cut out six paper fish and slide a paperclip onto each one.",
+          "Tie one end of the string to a pencil or wooden spoon and the other end to a fridge magnet.",
+          "Put the fish in the bowl and take turns to catch them with your magnet rod.",
+          "Add a fish with a piece of foil instead of a paperclip. Predict whether you can catch it, then test!",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Two north poles face each other. What will they do?", options: ["Attract", "Repel"], answer: 1 },
+        { type: "choice", q: "A south pole faces a north pole. What will they do?", options: ["Repel", "Attract"], answer: 1 },
+        { type: "choice", q: "Two magnets are repelling. You turn one round. What happens?", options: ["They attract", "They still repel"], answer: 0 },
+        { type: "choice", q: "What does a compass needle always point to?", options: ["The sun", "North", "South"], answer: 1 },
+        { type: "type", q: "What word means to say what you think will happen before you try it?", answer: ["predict", "prediction", "guess"] },
+        { type: "choice", q: "Why is there a magnet in a fridge door seal?", options: ["To keep the food cold", "To make the door shiny", "To keep the door shut tight"], answer: 2 },
+      ],
+      grownUp: {
+        need: ["Two marked fridge magnets or magnetic toy trains", "Card, felt pens and scissors", "Paperclips and string"],
+        tips: [
+          "In the prediction challenge, use the sticker as the 'pole' your child knows. The stickered faces attract each other, so plain to plain attracts too, and sticker to plain repels.",
+          "Supervise the scissors, and count the paperclips back in at the end if you have younger children or pets.",
+          "If you have a real compass, show how its needle swings round when you bring a fridge magnet near, then settles back to north when you take it away. Keep magnets away from phones and cards.",
+        ],
+        younger: "Skip the prediction scoring and just enjoy the fishing game, saying 'magnetic' or 'not magnetic' for each catch.",
+        older: "Make the fishing game harder: give fish with paperclips more points the further away they are, and add 'trick fish' made with foil or plastic clips.",
+      },
+    },
+  ],
+};

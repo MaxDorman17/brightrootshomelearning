@@ -1,0 +1,594 @@
+import type { LessonUnit } from "@/lib/lessons";
+
+/** The UK and our local area, for ages 7 to 9. Works for families in all four countries of the UK. */
+export const ukAndLocalArea: LessonUnit = {
+  slug: "uk-and-local-area",
+  title: "The UK and our local area",
+  short: "The UK",
+  subject: "Geography",
+  ages: "7 to 9",
+  emoji: "🗺️",
+  color: "#4A7C59",
+  summary: "Six lessons: the four countries of the UK, where the UK is in the world, counties and cities, human and physical features, how land is used, and maps and fieldwork on your own street.",
+  cover: "/lessons/units/uk-and-local-area.jpg",
+  lessons: [
+    {
+      slug: "uk-and-local-area-1",
+      title: "The four countries of the UK",
+      emoji: "🏴",
+      minutes: 45,
+      goal: "I can name the four countries of the UK and their capital cities.",
+      starter: [
+        { type: "choice", q: "What do the letters UK stand for?", options: ["United Kingdom", "Upper Kingdom", "United Kitchens"], answer: 0 },
+        { type: "choice", q: "What is a capital city?", options: ["The biggest village", "The main city of a country, where it is run from", "Any city by the sea"], answer: 1 },
+        { type: "pick", q: "Which of these are countries in the UK? There is more than one.", options: ["Wales", "France", "Scotland", "Spain"], answers: [0, 2] },
+        { type: "choice", q: "Is the UK on an island, or surrounded by land?", options: ["Surrounded by land", "In the middle of a desert", "On islands, with sea all around"], answer: 2 },
+        { type: "choice", q: "Which city is the capital of England?", options: ["Manchester", "London", "Liverpool"], answer: 1 },
+        { type: "type", q: "What do we call land with water all around it?", answer: ["island", "an island", "islands"] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "One country made of four",
+            text: [
+              "The United Kingdom, or UK for short, is a country made of four countries joined together.",
+              "They are England, Scotland, Wales and Northern Ireland.",
+              "Each one has its own flag, its own story and its own special places. Together, they share one king and one government in London.",
+            ],
+          },
+          {
+            heading: "Four capital cities",
+            text: [
+              "A capital city is a country's main city. It is where the country is run from.",
+              "The capital of England is London. The capital of Scotland is Edinburgh. The capital of Wales is Cardiff. The capital of Northern Ireland is Belfast.",
+              "London is also the capital of the whole UK.",
+            ],
+          },
+          {
+            heading: "Where they are",
+            text: [
+              "England, Scotland and Wales are on one big island called Great Britain. Scotland is in the north, England is in the south and east, and Wales is in the west.",
+              "Northern Ireland is on a different island, called Ireland. It shares that island with another country, the Republic of Ireland, which is not part of the UK.",
+              "There are also hundreds of smaller islands, like the Isle of Skye, Anglesey and the Isles of Scilly.",
+            ],
+          },
+        ],
+        words: [
+          { word: "United Kingdom", meaning: "the country made of England, Scotland, Wales and Northern Ireland" },
+          { word: "capital city", meaning: "a country's main city, where it is run from" },
+          { word: "Great Britain", meaning: "the biggest island in the UK, with England, Scotland and Wales on it" },
+          { word: "island", meaning: "land with water all around it" },
+        ],
+      },
+      practice: {
+        intro: "Match the countries to their capitals.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each country to its capital city.",
+            pairs: [["England", "London"], ["Scotland", "Edinburgh"], ["Wales", "Cardiff"], ["Northern Ireland", "Belfast"]],
+          },
+          { type: "choice", q: "Which country of the UK is NOT on the island of Great Britain?", options: ["Wales", "Scotland", "Northern Ireland"], answer: 2 },
+          { type: "choice", q: "Which country is in the north of Great Britain?", options: ["Scotland", "England", "Wales"], answer: 0 },
+          { type: "gap", q: "Fill the gaps.", text: "The UK is made of ___ countries. The capital of the whole UK is ___.", bank: ["four", "three", "London", "Cardiff"], answers: ["four", "London"] },
+        ],
+      },
+      task: {
+        title: "Draw the UK",
+        intro: "Make your own map of the four countries.",
+        need: ["Paper and a pencil", "Four coloured pencils or crayons", "A map of the UK in an atlas or on a screen, with your grown-up"],
+        steps: [
+          "Look carefully at a map of the UK. Notice the shape of Great Britain and the island of Ireland.",
+          "Copy the outline as well as you can. It doesn't have to be perfect!",
+          "Colour each of the four countries a different colour.",
+          "Put a dot for each capital city and write its name next to it.",
+          "Put a star where you live, or where someone you know lives.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is the capital of Wales?", options: ["Swansea", "Edinburgh", "Cardiff"], answer: 2 },
+        { type: "choice", q: "What is the capital of Scotland?", options: ["Edinburgh", "Glasgow", "Belfast"], answer: 0 },
+        { type: "pick", q: "Which countries are on the island of Great Britain? There is more than one.", options: ["England", "Northern Ireland", "Scotland", "Wales"], answers: [0, 2, 3] },
+        { type: "choice", q: "What is the capital of Northern Ireland?", options: ["London", "Belfast", "Cardiff"], answer: 1 },
+        { type: "type", q: "How many countries make up the UK? Type a number.", answer: ["4", "four"] },
+        { type: "choice", q: "Is the Republic of Ireland part of the UK?", options: ["Yes", "No"], answer: 1 },
+      ],
+      grownUp: {
+        need: ["Paper and coloured pencils", "An atlas, a printed map of the UK, or an online map"],
+        tips: [
+          "A simple online map zoomed out to show the whole UK works well. Turn off labels if you can, and see what your child can name.",
+          "Children often think Britain and the UK mean the same thing. Great Britain is the big island; the UK also includes Northern Ireland.",
+          "Whichever country you live in, start from there: 'We live in Wales. Its capital is Cardiff.'",
+        ],
+        younger: "Learn the four country names with a clap for each, then add the capitals one at a time.",
+        older: "Find each country's national flower or patron saint, and add them to the map.",
+      },
+    },
+    {
+      slug: "uk-and-local-area-2",
+      title: "The UK in Europe and the world",
+      emoji: "🌍",
+      minutes: 45,
+      goal: "I can find the UK on a map of Europe and the world, and name the seas around it.",
+      starter: [
+        { type: "choice", q: "What is the capital of England?", options: ["Birmingham", "London", "York"], answer: 1 },
+        { type: "choice", q: "What is the capital of Northern Ireland?", options: ["Belfast", "Dublin", "Cardiff"], answer: 0 },
+        { type: "choice", q: "Which island are England, Scotland and Wales on?", options: ["Ireland", "Great Britain", "Anglesey"], answer: 1 },
+        { type: "match", q: "Match each capital to its country.", pairs: [["Edinburgh", "Scotland"], ["Cardiff", "Wales"], ["London", "England"]] },
+        { type: "type", q: "What is the capital city of Wales?", answer: ["Cardiff", "Caerdydd"] },
+        { type: "choice", q: "How many countries are in the UK?", options: ["Two", "Six", "Four"], answer: 2 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Our place in the world",
+            text: [
+              "The world has seven huge areas of land called continents, and five oceans.",
+              "The UK is part of the continent of Europe. It sits in the north-west of Europe, off the coast of the mainland.",
+              "On a globe, the UK looks quite small. Lots of countries, like Russia, Canada and Brazil, are much bigger.",
+            ],
+          },
+          {
+            heading: "Seas all around",
+            text: [
+              "The UK is surrounded by water.",
+              "The North Sea is to the east. The English Channel is to the south, between England and France. The Irish Sea is to the west, between Great Britain and Ireland.",
+              "The huge Atlantic Ocean is to the west and north. Its waves crash onto the coasts of Scotland, Wales, Northern Ireland and Cornwall.",
+            ],
+          },
+          {
+            heading: "Our neighbours",
+            text: [
+              "The UK's closest neighbours are the Republic of Ireland and France.",
+              "Northern Ireland shares a land border with the Republic of Ireland. You can walk from one country to the other.",
+              "France is only about 33 kilometres from England at the narrowest part of the English Channel. On a clear day you can see it from the cliffs at Dover! A train tunnel under the sea joins the two countries.",
+            ],
+          },
+        ],
+        words: [
+          { word: "continent", meaning: "one of seven very big areas of land in the world" },
+          { word: "Europe", meaning: "the continent the UK is part of" },
+          { word: "ocean", meaning: "a huge area of salty water, bigger than a sea" },
+          { word: "coast", meaning: "where the land meets the sea" },
+          { word: "border", meaning: "a line where one country ends and another begins" },
+        ],
+      },
+      practice: {
+        intro: "Find your way around the seas.",
+        questions: [
+          {
+            type: "match",
+            q: "Match each sea to where it is.",
+            pairs: [["North Sea", "To the east of the UK"], ["English Channel", "Between England and France"], ["Irish Sea", "Between Great Britain and Ireland"]],
+          },
+          { type: "choice", q: "Which continent is the UK part of?", options: ["Africa", "Asia", "Europe"], answer: 2 },
+          { type: "choice", q: "Which ocean is to the west of the UK?", options: ["The Atlantic Ocean", "The Pacific Ocean", "The Indian Ocean"], answer: 0 },
+          { type: "pick", q: "Which countries are the UK's closest neighbours? There is more than one.", options: ["France", "Australia", "Republic of Ireland", "Brazil"], answers: [0, 2] },
+        ],
+      },
+      task: {
+        title: "Seas and neighbours map",
+        intro: "Make a map that shows the UK and everything around it.",
+        need: ["Paper and a pencil", "A blue pencil or crayon", "A map of Europe in an atlas or on a screen, with your grown-up"],
+        steps: [
+          "Look at a map of Europe with your grown-up. Find the UK, the Republic of Ireland and France.",
+          "Draw a simple outline of Great Britain and Ireland in the middle of your page, with a bit of France at the bottom.",
+          "Colour all the sea blue.",
+          "Label the North Sea, the English Channel, the Irish Sea and the Atlantic Ocean.",
+          "Draw a little compass in the corner with N at the top, to show which way is north.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which sea is to the east of the UK?", options: ["The Irish Sea", "The North Sea", "The English Channel"], answer: 1 },
+        { type: "choice", q: "Which sea is between England and France?", options: ["The English Channel", "The North Sea", "The Irish Sea"], answer: 0 },
+        { type: "type", q: "Which continent is the UK part of?", answer: ["Europe"] },
+        { type: "choice", q: "Which country shares a land border with Northern Ireland?", options: ["France", "Scotland", "The Republic of Ireland"], answer: 2 },
+        { type: "choice", q: "Which is bigger, a sea or an ocean?", options: ["A sea", "An ocean"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "The ___ Sea is between Great Britain and Ireland. The ___ Ocean is to the west.",
+          bank: ["Irish", "Atlantic", "North", "Pacific"],
+          answers: ["Irish", "Atlantic"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper, a pencil and a blue crayon", "An atlas, globe or online map of Europe"],
+        tips: [
+          "If you have a globe or world map, start zoomed right out, then 'zoom in' to Europe and then to the UK.",
+          "Link to holidays or family: 'Grandma lives across the Irish Sea' or 'We took the ferry across the Channel.'",
+        ],
+        younger: "Colour the sea blue and the land green, and name just the North Sea and the Atlantic Ocean.",
+        older: "Name the seven continents and five oceans, and find three countries in Europe that are further from the UK than France.",
+      },
+    },
+    {
+      slug: "uk-and-local-area-3",
+      title: "Counties, cities, towns and villages",
+      emoji: "🏙️",
+      minutes: 45,
+      goal: "I can explain the difference between a city, a town and a village, and name some UK cities.",
+      starter: [
+        { type: "choice", q: "Which continent is the UK part of?", options: ["Europe", "Asia", "Africa"], answer: 0 },
+        { type: "choice", q: "Which sea is to the east of the UK?", options: ["The Irish Sea", "The English Channel", "The North Sea"], answer: 2 },
+        { type: "choice", q: "Which country is across the English Channel from England?", options: ["Wales", "France", "Scotland"], answer: 1 },
+        { type: "type", q: "Which huge ocean is to the west of the UK?", answer: ["Atlantic", "the Atlantic", "Atlantic Ocean", "the Atlantic Ocean"] },
+        { type: "pick", q: "Which of these are seas or oceans near the UK? There is more than one.", options: ["Irish Sea", "North Sea", "Red Sea", "Atlantic Ocean"], answers: [0, 1, 3] },
+        { type: "choice", q: "What is a border?", options: ["A line where one country ends and another begins", "A kind of sea", "A capital city"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Smaller areas",
+            text: [
+              "Each country in the UK is split into smaller areas, so that it is easier to look after.",
+              "In England these are often called counties, like Kent, Cornwall or Yorkshire. Wales has counties too, like Pembrokeshire and Gwynedd. Scotland has council areas, like Fife and Highland. Northern Ireland has six counties, including Antrim and Down.",
+              "Do you know the name of the area you live in?",
+            ],
+          },
+          {
+            heading: "City, town or village?",
+            text: [
+              "A village is a small place, with a few streets, perhaps a church, a shop and a school.",
+              "A town is bigger, with lots of streets, shops, schools and a high street.",
+              "A city is bigger still, with thousands of homes and often a cathedral, a university and tall buildings. Some places are cities because the king or queen has said so.",
+            ],
+          },
+          {
+            heading: "Cities across the UK",
+            text: [
+              "London is the biggest city in the UK. Millions of people live there.",
+              "Other big cities include Birmingham and Manchester in England, Glasgow and Aberdeen in Scotland, Swansea in Wales, and Derry~Londonderry in Northern Ireland.",
+              "Lots of people live in cities, but many live in towns, villages or on farms in the countryside.",
+            ],
+          },
+        ],
+        words: [
+          { word: "county", meaning: "one of the smaller areas a country is split into" },
+          { word: "village", meaning: "a small place with a few streets and buildings" },
+          { word: "town", meaning: "a bigger place than a village, with a high street and lots of shops" },
+          { word: "city", meaning: "a very big place where lots of people live and work" },
+          { word: "countryside", meaning: "land outside towns and cities, with fields, farms and woods" },
+        ],
+      },
+      practice: {
+        intro: "Sort places by size.",
+        questions: [
+          { type: "order", q: "Put these in order of size, from smallest to biggest.", items: ["House", "Village", "Town", "City"] },
+          {
+            type: "match",
+            q: "Match each city to its country.",
+            pairs: [["Glasgow", "Scotland"], ["Swansea", "Wales"], ["Manchester", "England"], ["Derry~Londonderry", "Northern Ireland"]],
+          },
+          { type: "choice", q: "Which is the biggest city in the UK?", options: ["Glasgow", "Birmingham", "London"], answer: 2 },
+          { type: "choice", q: "A small place with a few streets, a shop and a school is probably a...", options: ["village", "city", "continent"], answer: 0 },
+        ],
+      },
+      task: {
+        title: "My place in the world",
+        intro: "Find out exactly where you live, from your street to the whole world.",
+        need: ["Paper and a pencil", "Your grown-up to help with names"],
+        steps: [
+          "Draw six boxes on your paper, one inside the other, like a set of nesting boxes.",
+          "In the smallest box, write your street name and draw your home.",
+          "In the next box, write your village, town or city.",
+          "Then your county or council area, then your country, then the UK.",
+          "In the biggest box, write Europe. Now you know your place in the world!",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "Which is bigger, a town or a village?", options: ["A village", "A town"], answer: 1 },
+        { type: "choice", q: "What is a county?", options: ["A kind of sea", "A very small village", "One of the smaller areas a country is split into"], answer: 2 },
+        { type: "choice", q: "Which city is in Scotland?", options: ["Glasgow", "Swansea", "Birmingham"], answer: 0 },
+        { type: "order", q: "Put these in order of size, from smallest to biggest.", items: ["Village", "Town", "City"] },
+        { type: "choice", q: "Which city is in Wales?", options: ["Manchester", "Swansea", "Aberdeen"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gap.",
+          text: "Land outside towns and cities, with fields, farms and woods, is called the ___.",
+          bank: ["countryside", "county", "capital"],
+          answers: ["countryside"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper and a pencil", "Your full address, and the name of your county or council area"],
+        tips: [
+          "Many adults aren't sure of their county or council area. Look it up together on your council's website or a council tax letter.",
+          "If you live in a city, talk about a village you've visited; if you live in a village, talk about a city trip. Comparing helps.",
+        ],
+        younger: "Just do three boxes: your street, your town or village, and your country.",
+        older: "Find your nearest city and work out roughly how far away it is, and which direction it is in.",
+      },
+    },
+    {
+      slug: "uk-and-local-area-4",
+      title: "Human and physical features",
+      emoji: "⛰️",
+      minutes: 45,
+      goal: "I can sort places into human features and physical features, and name some famous ones in the UK.",
+      starter: [
+        { type: "choice", q: "Which is the biggest: a village, a town or a city?", options: ["A village", "A city", "A town"], answer: 1 },
+        { type: "choice", q: "What is a county?", options: ["One of the smaller areas a country is split into", "A very big city", "An island"], answer: 0 },
+        { type: "match", q: "Match each city to its country.", pairs: [["Glasgow", "Scotland"], ["Swansea", "Wales"], ["Birmingham", "England"]] },
+        { type: "choice", q: "What is the biggest city in the UK?", options: ["Manchester", "Belfast", "London"], answer: 2 },
+        { type: "type", q: "What word means land outside towns and cities, with fields and farms?", answer: ["countryside", "the countryside"] },
+        { type: "order", q: "Put these in order of size, from smallest to biggest.", items: ["Village", "Town", "City"] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "Physical features",
+            text: [
+              "Physical features are parts of the land that nature made. People didn't build them.",
+              "Mountains, hills, rivers, lakes, beaches, cliffs, forests, valleys and the sea are all physical features.",
+              "They took a very long time to form, often thousands or millions of years.",
+            ],
+          },
+          {
+            heading: "Human features",
+            text: [
+              "Human features are things that people have made or built.",
+              "Houses, roads, bridges, schools, shops, farms, factories, railways, parks and churches are all human features.",
+              "A good way to check: ask yourself, 'Did people make this?' If the answer is yes, it's a human feature.",
+            ],
+          },
+          {
+            heading: "Famous features of the UK",
+            text: [
+              "The UK's highest mountain is Ben Nevis in Scotland. Wales's highest is Yr Wyddfa, also called Snowdon.",
+              "The longest river is the River Severn, which flows through Wales and England. The biggest lake is Lough Neagh in Northern Ireland.",
+              "Famous human features include the Forth Bridge in Scotland, the Houses of Parliament in London and Caernarfon Castle in Wales. In Northern Ireland, the Giant's Causeway is a physical feature made of thousands of rock columns.",
+            ],
+          },
+        ],
+        words: [
+          { word: "physical feature", meaning: "a part of the land made by nature, like a hill or a river" },
+          { word: "human feature", meaning: "something made or built by people, like a road or a house" },
+          { word: "valley", meaning: "low land between hills or mountains, often with a river" },
+          { word: "landmark", meaning: "a feature that is easy to spot and helps you know where you are" },
+        ],
+      },
+      practice: {
+        intro: "Human or physical? Sort them out.",
+        questions: [
+          { type: "pick", q: "Which of these are physical features? There is more than one.", options: ["Mountain", "Bridge", "River", "Beach", "School"], answers: [0, 2, 3] },
+          { type: "pick", q: "Which of these are human features? There is more than one.", options: ["Cliff", "Road", "Lake", "Factory"], answers: [1, 3] },
+          {
+            type: "match",
+            q: "Match each feature to where it is.",
+            pairs: [["Ben Nevis", "Scotland"], ["Lough Neagh", "Northern Ireland"], ["Yr Wyddfa (Snowdon)", "Wales"]],
+          },
+          { type: "choice", q: "Is a park a human or a physical feature?", options: ["Physical, because it has grass", "Human, because people made it"], answer: 1, why: "A park has grass and trees, but people planned and made it, so it is a human feature." },
+        ],
+      },
+      task: {
+        title: "Feature hunt",
+        intro: "Look out of the window, or go on a short walk with your grown-up, and hunt for features.",
+        need: ["Paper and a pencil", "A clipboard or a book to lean on", "A grown-up to walk with you"],
+        steps: [
+          "Fold your paper in half. Write 'Human' at the top of one side and 'Physical' at the top of the other.",
+          "Look out of a window, or go for a short walk with your grown-up. Stay with them the whole time.",
+          "Draw or write every feature you spot on the right side of the paper.",
+          "Count them up. Did you find more human or more physical features? Why do you think that is?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a physical feature?", options: ["Something people built", "A part of the land made by nature", "A kind of map"], answer: 1 },
+        { type: "choice", q: "Which of these is a human feature?", options: ["A hill", "A waterfall", "A railway"], answer: 2 },
+        { type: "pick", q: "Which of these are physical features? There is more than one.", options: ["Forest", "Shop", "Valley", "House"], answers: [0, 2] },
+        { type: "choice", q: "What is the highest mountain in the UK?", options: ["Ben Nevis", "Yr Wyddfa (Snowdon)", "Lough Neagh"], answer: 0 },
+        { type: "type", q: "Which is the longest river in the UK? Type its name.", answer: ["Severn", "River Severn", "the Severn", "the River Severn"] },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "A bridge is a ___ feature. A lake is a ___ feature.",
+          bank: ["human", "physical"],
+          answers: ["human", "physical"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper, a pencil and something to lean on", "Time for a short walk, if you can"],
+        tips: [
+          "Some things are tricky: a reservoir, a hedge or a canal is made by people, so it's a human feature, even though it looks natural. These make great talking points.",
+          "If a walk isn't possible, photos from a holiday or a look out of the window work just as well.",
+          "Stay with your child on any walk and stop at a safe place, away from the road, to make notes.",
+        ],
+        younger: "Sort a pile of toys or pictures into 'made by nature' and 'made by people'.",
+        older: "Find the highest point and the longest river in your own country of the UK, and add them to your UK map from lesson 1.",
+      },
+    },
+    {
+      slug: "uk-and-local-area-5",
+      title: "How land is used",
+      emoji: "🚜",
+      minutes: 45,
+      goal: "I can describe the different ways land is used, in the UK and in my own local area.",
+      starter: [
+        { type: "choice", q: "Which of these is a physical feature?", options: ["A road", "A mountain", "A school"], answer: 1 },
+        { type: "choice", q: "Which of these is a human feature?", options: ["A bridge", "A river", "A cliff"], answer: 0 },
+        { type: "choice", q: "Where is Ben Nevis, the UK's highest mountain?", options: ["Wales", "England", "Scotland"], answer: 2 },
+        { type: "pick", q: "Which of these are human features? There is more than one.", options: ["Factory", "Beach", "Railway", "Forest"], answers: [0, 2] },
+        { type: "type", q: "Is a lake a human or a physical feature?", answer: ["physical", "a physical feature", "physical feature"] },
+        { type: "choice", q: "Where is Lough Neagh, the UK's biggest lake?", options: ["Northern Ireland", "Scotland", "England"], answer: 0 },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "What is land used for?",
+            text: [
+              "Land use means what people do with a piece of land.",
+              "Some land is used for homes. Some is used for farming. Some is used for shops and offices, or for factories where things are made.",
+              "Land is also used for roads and railways, for parks and sports fields, and some is left wild as woods, moors and nature reserves.",
+            ],
+          },
+          {
+            heading: "Land use across the UK",
+            text: [
+              "Most of the land in the UK is farmland. Farmers grow crops like wheat and potatoes, and keep animals like sheep and cows.",
+              "In hilly and mountain areas, such as the Scottish Highlands, the Welsh hills and the Mourne Mountains, there are lots of sheep and fewer people.",
+              "Towns and cities cover only a small part of the land, but most people live in them.",
+            ],
+          },
+          {
+            heading: "Your local area",
+            text: [
+              "Your local area is the place around your home: your street and the streets, shops, parks and fields nearby.",
+              "Every local area is different. A city street might have flats, shops and buses. A village might have a farm, a church and a post office. A seaside town might have a harbour and a beach.",
+              "Geographers study their local area by looking closely and asking questions: what is here, and why?",
+            ],
+          },
+        ],
+        words: [
+          { word: "land use", meaning: "what people do with a piece of land" },
+          { word: "farmland", meaning: "land used for growing crops or keeping animals" },
+          { word: "local area", meaning: "the place around your home" },
+          { word: "industry", meaning: "work like making things in factories" },
+        ],
+      },
+      practice: {
+        intro: "What is the land being used for?",
+        questions: [
+          {
+            type: "match",
+            q: "Match each place to how the land is used.",
+            pairs: [["A field of wheat", "Farming"], ["A block of flats", "Homes"], ["A football pitch", "Sport and play"], ["A car factory", "Industry"]],
+          },
+          { type: "choice", q: "What is most of the land in the UK used for?", options: ["Cities", "Farming", "Factories"], answer: 1 },
+          { type: "choice", q: "Where in the UK might you find lots of sheep and fewer people?", options: ["In the middle of a big city", "In hilly and mountain areas", "On a motorway"], answer: 1 },
+          { type: "pick", q: "Which of these are ways land can be used? There is more than one.", options: ["Transport, like roads", "Homes", "Clouds", "Farming"], answers: [0, 1, 3] },
+        ],
+      },
+      task: {
+        title: "Land use colouring map",
+        intro: "Make a colour map of the land around your home.",
+        need: ["Paper and a pencil", "Coloured pencils or crayons", "A grown-up to walk with you, or an online map to look at together"],
+        steps: [
+          "Choose a colour for each land use: for example, red for homes, yellow for shops, green for parks and fields, grey for roads, and blue for water.",
+          "Make a key in the corner of your paper showing what each colour means.",
+          "Go for a short walk with your grown-up around your street, or look at an online map of your area together.",
+          "Draw the main shapes you see, like your street, nearby houses, a park or a shop, and colour them using your key.",
+          "Which colour did you use most? What is most of the land near you used for?",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What does land use mean?", options: ["What people do with a piece of land", "How big a piece of land is", "How old a field is"], answer: 0 },
+        { type: "choice", q: "What is farmland used for?", options: ["Building factories", "Growing crops and keeping animals", "Parking cars"], answer: 1 },
+        { type: "choice", q: "Most people in the UK live in...", options: ["the mountains", "farms", "towns and cities"], answer: 2 },
+        { type: "match", q: "Match each place to its land use.", pairs: [["A house", "Homes"], ["A railway", "Transport"], ["A wood", "Nature"]] },
+        { type: "type", q: "What do we call the place around your home? Type two words.", answer: ["local area", "my local area", "the local area"] },
+        { type: "pick", q: "Which crops and animals do UK farmers often grow and keep? There is more than one.", options: ["Wheat", "Sheep", "Bananas", "Potatoes"], answers: [0, 1, 3] },
+      ],
+      grownUp: {
+        need: ["Paper and coloured pencils", "An online map with satellite view, or a short walk"],
+        tips: [
+          "Satellite view on an online map is brilliant for land use: fields, rooftops, parks and water all show up clearly.",
+          "Every area works, whether it's a city centre, a suburb, a village, a farm or an island. Talk about why land near you is used the way it is.",
+          "Stay with your child on any walk, and keep to pavements and paths.",
+        ],
+        younger: "Use just three colours: homes, green spaces and roads.",
+        older: "Compare your local area with somewhere very different, like a city if you live in the country, and write three ways the land use is different.",
+      },
+    },
+    {
+      slug: "uk-and-local-area-6",
+      title: "Maps, symbols and fieldwork",
+      emoji: "🧭",
+      minutes: 45,
+      goal: "I can use simple map symbols and compass directions, and do fieldwork on my own street.",
+      starter: [
+        { type: "choice", q: "What does land use mean?", options: ["How old the land is", "What people do with a piece of land", "How much rain falls"], answer: 1 },
+        { type: "choice", q: "What is most of the land in the UK used for?", options: ["Factories", "Cities", "Farming"], answer: 2 },
+        { type: "match", q: "Match each place to its land use.", pairs: [["A field of sheep", "Farming"], ["A road", "Transport"], ["A playground", "Play"]] },
+        { type: "type", q: "What do we call the place around your home?", answer: ["local area", "my local area", "the local area"] },
+        { type: "choice", q: "On a land use map, what tells you what each colour means?", options: ["The key", "The title", "The edge"], answer: 0 },
+        { type: "pick", q: "Which of these are land uses? There is more than one.", options: ["Homes", "Farming", "Sunshine", "Shops"], answers: [0, 1, 3] },
+      ],
+      learn: {
+        cards: [
+          {
+            heading: "A bird's-eye view",
+            text: [
+              "A map shows a place as if you were a bird looking straight down from the sky. This is called a bird's-eye view, or a plan view.",
+              "From above, a round table looks like a circle and a house looks like a rectangle, its roof.",
+              "Maps are much smaller than the real place, but everything stays in the right position.",
+            ],
+          },
+          {
+            heading: "Symbols and keys",
+            text: [
+              "Maps use small pictures or shapes called symbols to show where things are, like a cross for a church, a blue line for a river, or a tree shape for a wood.",
+              "A key is a box on the map that tells you what every symbol means.",
+              "A compass shows directions. North is at the top of most maps, south is at the bottom, east is on the right and west is on the left.",
+            ],
+          },
+          {
+            heading: "Fieldwork",
+            text: [
+              "Fieldwork means going outside to find things out for yourself, like a real geographer.",
+              "On your street you could count cars and bikes with a tally chart, note the human and physical features, or draw a sketch map.",
+              "Always do fieldwork with a grown-up. Stay on the pavement and stop somewhere safe to make notes.",
+            ],
+          },
+        ],
+        words: [
+          { word: "bird's-eye view", meaning: "looking straight down on something from above" },
+          { word: "symbol", meaning: "a small picture or shape on a map that stands for something real" },
+          { word: "key", meaning: "a box that explains what the symbols on a map mean" },
+          { word: "compass", meaning: "a tool or drawing that shows north, east, south and west" },
+          { word: "fieldwork", meaning: "going outside to find things out for yourself" },
+        ],
+      },
+      practice: {
+        intro: "Read the map like a geographer.",
+        questions: [
+          { type: "choice", q: "On most maps, which direction is at the top?", options: ["South", "West", "North"], answer: 2 },
+          { type: "order", q: "Go round the compass clockwise, starting at north.", items: ["North", "East", "South", "West"] },
+          { type: "choice", q: "What does a key on a map tell you?", options: ["What the symbols mean", "How to open a door", "What time it is"], answer: 0 },
+          {
+            type: "match",
+            q: "Match each thing to how it looks from a bird's-eye view.",
+            pairs: [["A round table", "A circle"], ["A house", "A rectangle"], ["A river", "A wiggly line"]],
+          },
+          { type: "choice", q: "If north is at the top of a map, which way is east?", options: ["Left", "Right", "Bottom"], answer: 1 },
+        ],
+      },
+      task: {
+        title: "Street detectives",
+        intro: "Do real fieldwork on your own street, then turn it into a map.",
+        need: ["Paper and a pencil", "A clipboard or a book to lean on", "A grown-up to go with you"],
+        steps: [
+          "Before you go, draw a tally chart with rows for cars, buses or vans, bikes and people walking.",
+          "Go outside with your grown-up and stand somewhere safe on the pavement, away from the road edge. Make a tally mark for everything that passes in five minutes.",
+          "On the way back, look for features on your street: houses, trees, a postbox, a lamp post, a bus stop, a shop or a park.",
+          "At home, draw a bird's-eye view sketch map of your street. Make up a symbol for each feature and draw a key.",
+          "Add a compass to show which way is north. Your grown-up can help you work it out with a phone compass or the sun.",
+        ],
+      },
+      exit: [
+        { type: "choice", q: "What is a bird's-eye view?", options: ["Looking at something from the side", "Looking straight down from above", "Looking through a window"], answer: 1 },
+        { type: "choice", q: "What is a map symbol?", options: ["A small picture or shape that stands for something real", "The name of the map", "A kind of compass"], answer: 0 },
+        { type: "choice", q: "On most maps, which direction is at the bottom?", options: ["North", "East", "South"], answer: 2 },
+        { type: "type", q: "What is the box on a map that explains the symbols called?", answer: ["key", "a key", "the key"] },
+        { type: "choice", q: "What is fieldwork?", options: ["Working on a farm", "Going outside to find things out for yourself", "Drawing in a book"], answer: 1 },
+        {
+          type: "gap",
+          q: "Fill the gaps.",
+          text: "With north at the top, ___ is on the right and ___ is on the left.",
+          bank: ["east", "west", "south"],
+          answers: ["east", "west"],
+        },
+      ],
+      grownUp: {
+        need: ["Paper, a pencil and something to lean on", "Ten minutes outside together"],
+        tips: [
+          "Stay with your child the whole time outside. Choose a safe spot well back from the kerb, such as a garden wall or a wide pavement.",
+          "Any street works, busy or quiet, in a city, a town, a village or the countryside. A quiet lane might have more tractors and walkers than cars, and that's a great finding.",
+          "If going out isn't possible, do the tally from a front window instead.",
+          "Show your child a real map of your area, online or on paper, and spot the symbols together.",
+        ],
+        younger: "Draw a bird's-eye view of a table with a few objects on it, then make a key for them.",
+        older: "Do the traffic tally at two different times of day and compare. Turn your results into a simple bar chart.",
+      },
+    },
+  ],
+};

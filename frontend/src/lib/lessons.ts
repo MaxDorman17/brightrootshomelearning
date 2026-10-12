@@ -6,6 +6,12 @@ import { rivers } from "@/lib/lesson-units/rivers";
 import { colourAndArtists } from "@/lib/lesson-units/colour-and-artists";
 import { feelingsAndFriendships } from "@/lib/lesson-units/feelings-and-friendships";
 import { festivalsOfLight } from "@/lib/lesson-units/festivals-of-light";
+import { rocksAndSoils } from "@/lib/lesson-units/rocks-and-soils";
+import { forcesAndMagnets } from "@/lib/lesson-units/forces-and-magnets";
+import { ukAndLocalArea } from "@/lib/lesson-units/uk-and-local-area";
+import { drawingAndSketching } from "@/lib/lesson-units/drawing-and-sketching";
+import { computerSafely } from "@/lib/lesson-units/computer-safely";
+import { algorithms } from "@/lib/lesson-units/algorithms";
 import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
 import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
 
@@ -85,14 +91,19 @@ export const UNITS: LessonUnit[] = [
   colourAndArtists,
   feelingsAndFriendships,
   festivalsOfLight,
+  rocksAndSoils,
+  forcesAndMagnets,
+  ukAndLocalArea,
+  drawingAndSketching,
+  computerSafely,
+  algorithms,
 ];
 
 export const COMING_UNITS: ComingUnit[] = [
-  { title: "The UK and our local area", subject: "Geography", emoji: "🗺️" },
-  { title: "Drawing and sketching", subject: "Art & Design", emoji: "✏️" },
-  { title: "Keeping healthy", subject: "RSHE (PSHE)", emoji: "🍎" },
-  { title: "Special places of worship", subject: "Religious Education", emoji: "🕌" },
-  { title: "The Vikings", subject: "History", emoji: "⛵" },
+  { title: "Plants and growing", subject: "Science", emoji: "🌱" },
+  { title: "Stone Age to Iron Age", subject: "History", emoji: "🪓" },
+  { title: "Maps and compasses", subject: "Geography", emoji: "🧭" },
+  { title: "Coding with Scratch", subject: "Computing", emoji: "🐱" },
 ];
 
 /** The subjects on the Bright Roots Lessons page, in order. `name` matches each unit's `subject`. */
