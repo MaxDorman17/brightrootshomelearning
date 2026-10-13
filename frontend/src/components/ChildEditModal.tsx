@@ -8,11 +8,12 @@ const input =
   "w-full rounded-xl border border-[#D9D1C4] bg-white px-3.5 py-2.5 text-sm text-[#2E342F] outline-none focus:border-brand-softsage focus:ring-2 focus:ring-brand-softsage/20";
 const label = "block text-sm font-semibold text-[#2E342F] mb-1.5";
 
-export type ActivityLevel = "little" | "young" | "teen" | "both";
+export type ActivityLevel = "little" | "seedling" | "young" | "teen" | "both";
 
 const LEVELS: { id: ActivityLevel; title: string; text: string }[] = [
   { id: "little", title: "Little Roots", text: "Ages 3 to 4: story books you do together, with no login" },
-  { id: "young", title: "Saplings", text: "Ages 5 to 10: cookbook, crafts, P.E., Outdoors and life skills, with their own login" },
+  { id: "seedling", title: "Seedlings", text: "Ages 5 to 7: the Seedlings menu with lessons, cookbook, crafts, P.E. and outdoors, with their own login" },
+  { id: "young", title: "Saplings", text: "Ages 7 to 11: the Saplings menu with lessons, cookbook, crafts, P.E., outdoors and life skills" },
   { id: "teen", title: "Teens", text: "Ages 11 to 16: the Teens menu with cooking, projects, P.E., outdoors, life skills and exams" },
   { id: "both", title: "Everything", text: "Show every age group" },
 ];
@@ -29,6 +30,7 @@ export function ActivityLevelPicker({ value, onChange }: { value: ActivityLevel;
           aria-pressed={value === l.id}
           className={
             "rounded-xl border-2 p-3 text-left " +
+            (l.id === "both" ? "sm:col-span-2 " : "") +
             (value === l.id ? "border-brand-sage bg-brand-tint" : "border-brand-line bg-white hover:border-brand-softsage")
           }
         >
