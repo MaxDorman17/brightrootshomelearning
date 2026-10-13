@@ -18,7 +18,7 @@ class ChildPasswordReset(BaseModel):
 
 
 # "little" is a Little Roots child (3 or 4): no login of their own, a grown-up does everything with them.
-ACTIVITY_LEVELS = {"young", "teen", "both", "little"}
+ACTIVITY_LEVELS = {"seedling", "young", "teen", "both", "little"}
 
 
 class ChildUpdate(BaseModel):
@@ -32,7 +32,7 @@ def _clean_level(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     if value not in ACTIVITY_LEVELS:
-        raise HTTPException(status_code=400, detail="Choose Little Roots, younger, teens or both")
+        raise HTTPException(status_code=400, detail="Choose Little Roots, Seedlings, Saplings, Teens or Everything")
     return value
 
 

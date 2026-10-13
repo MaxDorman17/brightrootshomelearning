@@ -40,7 +40,7 @@ const BELL_SEEN_KEY = "bell_seen";
 type NavLink = { href: string; label: string; short?: string };
 // A group is a dropdown; a group inside a group opens to the side (or folds open on a phone).
 // `stage` hides a whole group when no child is at that stage.
-type NavGroup = { label: string; short?: string; items: NavEntry[]; stage?: "young" | "teen" };
+type NavGroup = { label: string; short?: string; items: NavEntry[]; stage?: "seedling" | "young" | "teen" };
 type NavEntry = NavLink | NavGroup;
 
 const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
@@ -52,7 +52,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
   "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
 };
 
-// The younger activity pages (ages 5 to 11). Hidden when no child is set to Saplings or Both.
+// The younger activity pages (ages 5 to 11). Hidden when no child is set to Seedlings, Saplings or Everything.
 const YOUNG_PAGES = ["/make/comics", "/make/cookbook", "/make/crafts", "/make/colouring", "/make/life-skills", "/make/pe", "/make/outdoors"];
 // The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
 const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/outdoors?age=little", "/make/new?kind=little"];
@@ -184,7 +184,7 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
-  stageMenu("Seedlings", ["5-7"], SEEDLINGS_ACTIVITIES, "young"),
+  stageMenu("Seedlings", ["5-7"], SEEDLINGS_ACTIVITIES, "seedling"),
   stageMenu("Saplings", ["7-9", "9-11"], SAPLINGS_ACTIVITIES, "young"),
   stageMenu("Teens", ["11-14"], TEEN_ACTIVITIES, "teen"),
   // Its own menu so families who need it don't have to hunt for it. The sections live in lib/sen.ts.
@@ -472,12 +472,13 @@ export default function Navbar() {
     (href === "/make/cookbook" && /^\/make\/(\d+|new)/.test(pathname));
 
   const showTeen = levels.some((l) => l === "teen" || l === "both");
+  const showSeedling = levels.some((l) => l === "seedling" || l === "both");
   const showYoung = levels.some((l) => l === "young" || l === "both");
   const showLittle = levels.some((l) => l !== "teen");
 
   const visible = (link: NavLink) => {
     if (link.href.startsWith("/teens") && !showTeen) return false;
-    if (YOUNG_PAGES.includes(link.href) && !showYoung) return false;
+    if (YOUNG_PAGES.includes(link.href) && !showYoung && !showSeedling) return false;
     if (LITTLE_PAGES.includes(link.href) && !showLittle) return false;
     const rule = OPTIONAL_PAGES[link.href];
     // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
@@ -488,7 +489,7 @@ export default function Navbar() {
   const prune = (entries: NavEntry[]): NavEntry[] =>
     entries.flatMap((entry): NavEntry[] => {
       if (!isGroup(entry)) return visible(entry) ? [entry] : [];
-      if ((entry.stage === "young" && !showYoung) || (entry.stage === "teen" && !showTeen)) return [];
+      if ((entry.stage === "seedling" && !showSeedling) || (entry.stage === "young" && !showYoung) || (entry.stage === "teen" && !showTeen)) return [];
       const items = prune(entry.items);
       return items.length ? [{ ...entry, items }] : [];
     });

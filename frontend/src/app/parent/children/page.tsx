@@ -284,7 +284,7 @@ export default function ChildrenPage() {
                       <p className="text-sm text-[#6E5A46] mt-1 truncate">
                         Logs in as <span className="font-bold text-[#2E342F]">{child.login_name}</span>
                         {child.activity_level && child.activity_level !== "both"
-                          ? ` · ${child.activity_level === "teen" ? "Teens" : "Saplings"}`
+                          ? ` · ${child.activity_level === "teen" ? "Teens" : child.activity_level === "seedling" ? "Seedlings" : "Saplings"}`
                           : ""}
                       </p>
                     )}

@@ -417,3 +417,8 @@ def test_newsletter_confirmation_carries_an_unsubscribe_link():
     finally:
         emails.send, newsletter._email_configured = real_send, real_configured
     assert sent and sent[0][0] == "curious@example.test" and "/newsletter/unsubscribe#token=" in sent[0][1]
+
+
+def test_a_child_can_be_set_to_seedlings(family):
+    family.add_child("Small", activity_level="seedling")
+    assert family.parent.get("/api/auth/me").json()["activity_levels"] == ["seedling"]

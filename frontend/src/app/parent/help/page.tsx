@@ -55,7 +55,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
           <>Open <L href="/parent/children">Family, then Children</L> and press <b>Edit</b> next to the child.</>,
           "Change their name. Two children can have the same name, even in different families.",
           "Change their login name if you like. The page tells you if it's free and suggests others if it isn't. Their password stays the same.",
-          <>Under <b>Which activities should they see?</b>, pick Little Roots, Saplings, Teens or Everything. This decides which age menus show for them: Little Roots (3 to 4), Saplings (5 to 10) or Teens (11 to 16).</>,
+          <>Under <b>Which activities should they see?</b>, pick Little Roots, Seedlings, Saplings, Teens or Everything. This decides which age menus show for them: Little Roots (3 to 4), Seedlings (5 to 7), Saplings (7 to 11) or Teens (11 to 16).</>,
           "Press Save changes. Your own menu updates too: if none of your children are set to Teens, the Teens menu is hidden for you as well, and the same goes for Saplings and Little Roots.",
         ],
         tip: "We ask which activities to show rather than a date of birth, so you choose what suits your child.",
@@ -442,7 +442,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         intro: "Cooking, projects, P.E., outdoor skills and life skills written for ages 11 to 16 to do on their own.",
         steps: [
           <>Open <L href="/teens">Teens, then Teen Corner</L> to see everything, or go straight to Cooking, Projects, P.E., Outdoors or Life skills.</>,
-          "The Saplings menu shows the versions for ages 5 to 10.",
+          "The Seedlings and Saplings menus show the versions for ages 5 to 11.",
           "Anything marked from age 10 appears in both, because it suits both.",
           <>To hide the Teens menu for a younger child (or the younger pages for a teenager), press <b>Edit</b> on <L href="/parent/children">Family, then Children</L>.</>,
         ],
