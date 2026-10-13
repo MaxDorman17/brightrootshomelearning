@@ -28,6 +28,18 @@ import { stayingSafeOnline } from "@/lib/lesson-units/staying-safe-online";
 import { codingLoops } from "@/lib/lesson-units/coding-loops";
 import { friendshipsAndPeerPressure } from "@/lib/lesson-units/friendships-and-peer-pressure";
 import { judaism } from "@/lib/lesson-units/judaism";
+import { ourSenses } from "@/lib/lesson-units/our-senses";
+import { everydayMaterials } from "@/lib/lesson-units/everyday-materials";
+import { autumnAndWinter } from "@/lib/lesson-units/autumn-and-winter";
+import { animalsAndBabies } from "@/lib/lesson-units/animals-and-babies";
+import { toysThenAndNow } from "@/lib/lesson-units/toys-then-and-now";
+import { bonfireNight } from "@/lib/lesson-units/bonfire-night";
+import { myHomeAndStreet } from "@/lib/lesson-units/my-home-and-street";
+import { mapsAndDirections } from "@/lib/lesson-units/maps-and-directions";
+import { colourMixing } from "@/lib/lesson-units/colour-mixing";
+import { linesAndShapes } from "@/lib/lesson-units/lines-and-shapes";
+import { allAboutMe } from "@/lib/lesson-units/all-about-me";
+import { christmasAndSpecialTimes } from "@/lib/lesson-units/christmas-and-special-times";
 import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
 import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
 
@@ -129,6 +141,18 @@ export const UNITS: LessonUnit[] = [
   codingLoops,
   friendshipsAndPeerPressure,
   judaism,
+  ourSenses,
+  everydayMaterials,
+  autumnAndWinter,
+  animalsAndBabies,
+  toysThenAndNow,
+  bonfireNight,
+  myHomeAndStreet,
+  mapsAndDirections,
+  colourMixing,
+  linesAndShapes,
+  allAboutMe,
+  christmasAndSpecialTimes,
 ];
 
 export const COMING_UNITS: ComingUnit[] = [
