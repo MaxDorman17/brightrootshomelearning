@@ -66,7 +66,6 @@ function LessonSubjectPage() {
 
   const isChild = role === "child";
   const units = unitsIn(subject);
-  const allAges = Array.from(new Set(units.map((u) => u.ages)));
   const shown = onlyAges ? units.filter((u) => u.ages === onlyAges) : units;
   const found = searchUnits(shown, query);
   const byAge = new Map<string, { unit: LessonUnit; lessons?: Set<string> }[]>();
@@ -99,25 +98,7 @@ function LessonSubjectPage() {
             </p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{subject.name}</h1>
             <p className="mt-2 text-brand-earth">{subject.blurb}</p>
-            {(allAges.length > 1 || onlyAges) && (
-              <nav className="mt-4 flex flex-wrap gap-2" aria-label="Age ranges">
-                {onlyAges && (
-                  <Link href={`/lessons/subject/${subject.slug}`} className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-earth hover:text-brand-sage">
-                    All ages
-                  </Link>
-                )}
-                {allAges.map((a) => (
-                  <Link
-                    key={a}
-                    href={`/lessons/subject/${subject.slug}?ages=${a.replace(" to ", "-")}`}
-                    aria-current={a === onlyAges ? "page" : undefined}
-                    className={`rounded-full px-3 py-1 text-sm font-bold ${a === onlyAges ? "bg-brand-sage text-white" : "bg-brand-cream text-brand-earth hover:text-brand-sage"}`}
-                  >
-                    Ages {a}
-                  </Link>
-                ))}
-              </nav>
-            )}
+            {onlyAges && <p className="mt-3 text-sm font-bold text-brand-earth/80">Ages {onlyAges}</p>}
           </div>
         </header>
 
