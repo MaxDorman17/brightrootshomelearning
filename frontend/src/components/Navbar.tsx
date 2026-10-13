@@ -55,7 +55,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
 // The younger activity pages (ages 5 to 11). Hidden when no child is set to Saplings or Both.
 const YOUNG_PAGES = ["/make/comics", "/make/cookbook", "/make/crafts", "/make/colouring", "/make/life-skills", "/make/pe", "/make/outdoors"];
 // The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
-const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
+const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/outdoors?age=little", "/make/new?kind=little"];
 
 // The subjects in the Seedlings, Saplings and Teens menus. `lesson` is the Bright Roots Lessons subject
 // (lib/lessons.ts) and `sheet` the worksheet subject (lib/worksheets.ts).
@@ -72,32 +72,58 @@ const SUBJECTS = [
 const lessonsFor = (subject: string, ages: string) => `/lessons/subject/${subject}?ages=${ages}`;
 const agesLabel = (ages: string) => `Ages ${ages}`;
 
-// The make-and-do pages for each stage, after the subjects.
-const YOUNG_ACTIVITIES = { pe: "/make/pe", lifeSkills: "/make/life-skills", cook: "/make/cookbook", craft: "/make/crafts" };
-const TEEN_ACTIVITIES = { pe: "/teens/pe", lifeSkills: "/teens/life-skills", cook: "/teens/cooking", craft: "/teens/projects" };
+// The make-and-do pages for each stage, after the subjects. Seedlings opens the shared pages at the
+// 3 to 6 activities and Saplings at the 7 to 10 ones (components/make/common.tsx, inAgeBand).
+type Activities = { pe: string; outdoors: string; lifeSkills: string; cook: string; craft: string; comics: string; extra?: NavLink[] };
+const SEEDLINGS_ACTIVITIES: Activities = {
+  pe: "/make/pe?age=little",
+  outdoors: "/make/outdoors?age=little",
+  lifeSkills: "/make/life-skills?age=little",
+  cook: "/make/cookbook?age=little",
+  craft: "/make/crafts?age=little",
+  comics: "/make/comics?for=seedlings",
+};
+const SAPLINGS_ACTIVITIES: Activities = {
+  pe: "/make/pe?age=junior",
+  outdoors: "/make/outdoors?age=junior",
+  lifeSkills: "/make/life-skills?age=junior",
+  cook: "/make/cookbook?age=junior",
+  craft: "/make/crafts?age=junior",
+  comics: "/make/comics",
+};
+const TEEN_ACTIVITIES: Activities = {
+  pe: "/teens/pe",
+  outdoors: "/teens/outdoors",
+  lifeSkills: "/teens/life-skills",
+  cook: "/teens/cooking",
+  craft: "/teens/projects",
+  comics: "/teens/comics",
+  extra: [{ href: "/teens/exams", label: "Exams" }],
+};
 
 /**
- * One stage's menu: the subjects in the order families asked for, with P.E. after R.E. and the
- * make-and-do pages last. A stage with more than one age range gives each subject a menu of its ages.
+ * One stage's menu: the subjects in the order families asked for, with P.E. and Outdoors after R.E.
+ * and the make-and-do pages last. A stage with more than one age range gives each subject a menu of its ages.
  */
-function stageMenu(label: string, ages: string[], activities: typeof YOUNG_ACTIVITIES, stage: NavGroup["stage"]): NavGroup {
+function stageMenu(label: string, ages: string[], activities: Activities, stage: NavGroup["stage"]): NavGroup {
   const subject = (s: (typeof SUBJECTS)[number]): NavEntry =>
     ages.length === 1
       ? { href: lessonsFor(s.lesson, ages[0]), label: s.label }
       : { label: s.label, items: ages.map((a) => ({ href: lessonsFor(s.lesson, a), label: agesLabel(a) })) };
   const subjects = SUBJECTS.map(subject);
-  const pe: NavLink = { href: activities.pe, label: "P.E." };
   return {
     label,
     stage,
     items: [
       ...subjects.slice(0, 6),
-      pe,
+      { href: activities.pe, label: "P.E." },
+      { href: activities.outdoors, label: "Outdoors" },
       ...subjects.slice(6),
       { href: activities.lifeSkills, label: "Life Skills" },
       { href: activities.cook, label: "Cook Book" },
       { href: activities.craft, label: "Craft Book" },
-      { href: "/make/comics", label: "Comics" },
+      { href: activities.comics, label: "Comics" },
+      ...(activities.extra ?? []),
     ],
   };
 }
@@ -154,11 +180,12 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/little-roots", label: "Activities" },
       { href: "/make/little-roots/getting-started", label: "Getting started" },
+      { href: "/make/outdoors?age=little", label: "Outdoors" },
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
-  stageMenu("Seedlings", ["5-7"], YOUNG_ACTIVITIES, "young"),
-  stageMenu("Saplings", ["7-9", "9-11"], YOUNG_ACTIVITIES, "young"),
+  stageMenu("Seedlings", ["5-7"], SEEDLINGS_ACTIVITIES, "young"),
+  stageMenu("Saplings", ["7-9", "9-11"], SAPLINGS_ACTIVITIES, "young"),
   stageMenu("Teens", ["11-14"], TEEN_ACTIVITIES, "teen"),
   // Its own menu so families who need it don't have to hunt for it. The sections live in lib/sen.ts.
   {
@@ -448,10 +475,9 @@ export default function Navbar() {
   const showYoung = levels.some((l) => l === "young" || l === "both");
   const showLittle = levels.some((l) => l !== "teen");
 
-  const visible = (link: NavLink, inTeens: boolean) => {
+  const visible = (link: NavLink) => {
     if (link.href.startsWith("/teens") && !showTeen) return false;
-    // Comics are for every age in the Teens menu.
-    if (YOUNG_PAGES.includes(link.href) && !showYoung && !inTeens) return false;
+    if (YOUNG_PAGES.includes(link.href) && !showYoung) return false;
     if (LITTLE_PAGES.includes(link.href) && !showLittle) return false;
     const rule = OPTIONAL_PAGES[link.href];
     // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
@@ -459,11 +485,11 @@ export default function Navbar() {
   };
 
   // Drops the links and stages this family doesn't need, then any menu left empty.
-  const prune = (entries: NavEntry[], inTeens = false): NavEntry[] =>
+  const prune = (entries: NavEntry[]): NavEntry[] =>
     entries.flatMap((entry): NavEntry[] => {
-      if (!isGroup(entry)) return visible(entry, inTeens) ? [entry] : [];
+      if (!isGroup(entry)) return visible(entry) ? [entry] : [];
       if ((entry.stage === "young" && !showYoung) || (entry.stage === "teen" && !showTeen)) return [];
-      const items = prune(entry.items, inTeens || entry.stage === "teen");
+      const items = prune(entry.items);
       return items.length ? [{ ...entry, items }] : [];
     });
 

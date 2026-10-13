@@ -830,6 +830,15 @@ export default function ParentPlanner() {
                 >
                   Holidays
                 </button>
+
+                {/* The week on screen, ready to print, for the child picked above if there is one. */}
+                <a
+                  href={`/parent/print?week=${format(weekStart, "yyyy-MM-dd")}${selectedChildId !== null ? `&child=${selectedChildId}` : ""}`}
+                  title="Print this week's lessons"
+                  className="px-4 py-2 text-sm rounded-xl font-bold border transition-all bg-brand-white text-brand-charcoal border-brand-softsage/30 hover:border-brand-sage"
+                >
+                  Print Week
+                </a>
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">

@@ -6,8 +6,19 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import UnitCard from "@/components/lessons/UnitCard";
+import ResourceLibrary from "@/components/ResourceLibrary";
 import { getRole, isAuthenticated } from "@/lib/auth";
 import { comingIn, pageSubject, searchUnits, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
+
+/** Other names families give these subjects, so the right Resources folder shows. */
+const FOLDER_ALIASES: Record<string, string[]> = {
+  maths: ["Math", "Mathematics", "Numeracy"],
+  english: ["Literacy", "English Language"],
+  re: ["RE", "R.E.", "RME", "Religious Studies"],
+  rshe: ["RSHE", "PSHE", "Wellbeing", "Health and Wellbeing"],
+  art: ["Art", "Art and Design"],
+  computing: ["ICT", "Computer Science"],
+};
 
 export default function LessonSubjectPageWrapper() {
   return (
@@ -109,6 +120,18 @@ function LessonSubjectPage() {
             )}
           </div>
         </header>
+
+        {/* The family's own links and files for this subject, from their Resources folders. */}
+        {role && (
+          <section className="mb-8" aria-label={`${subject.name} resources`}>
+            <ResourceLibrary isParent={!isChild} folder={subject.name} aliases={FOLDER_ALIASES[subject.slug]} />
+            {!isChild && (
+              <Link href="/parent/resources" className="mt-2 inline-block text-sm font-bold text-brand-sage hover:underline">
+                All your resources →
+              </Link>
+            )}
+          </section>
+        )}
 
         {onlyAges && shown.length === 0 && (
           <div className="brand-card mb-8 p-6">
