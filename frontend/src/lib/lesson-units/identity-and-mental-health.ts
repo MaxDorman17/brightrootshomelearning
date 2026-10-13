@@ -34,6 +34,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "What is identity?",
+            picture: "/lessons/identity-and-mental-health/lesson-1-1.jpg",
+            alt: "A teenager surrounded by symbols of their interests and family",
             text: [
               "Your identity is your sense of who you are. It is made of many parts: the things you care about, the people you belong to, the activities you love, your beliefs and values, your heritage, the languages you speak, and the way you see yourself and want others to see you.",
               "Psychologists often split identity into two overlapping parts. Personal identity is what makes you an individual, such as your personality, your sense of humour or your taste in music. Social identity comes from the groups you belong to, such as your family, your faith or culture, your nationality, a team or a group of friends.",
@@ -43,6 +45,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "What shapes who we are?",
+            picture: "/lessons/identity-and-mental-health/lesson-1-2.jpg",
+            alt: "A teenager at the centre of circles showing family, friends, community and media",
             text: [
               "Identity is shaped by an interaction between the things you are born with and the world around you. Some influences are biological, such as your genes and temperament, which is the natural way you tend to react to things, for example being quick to get excited or slow to warm up to new people.",
               "Many influences are social. Family passes on traditions, values, food and language. Friends influence what we find funny, what we wear and what we think is 'normal'. School, faith communities, clubs and the area where we live all give us groups to belong to and people to learn from.",
@@ -52,6 +56,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Identity changes, and that's normal",
+            picture: "/lessons/identity-and-mental-health/lesson-1-3.jpg",
+            alt: "The same teenager at four ages, changing style and hobbies along a path",
             text: [
               "Adolescence, roughly the years between about 10 and 19, is a time when identity develops especially quickly. The brain is still changing a great deal during these years, particularly the areas involved in planning, judgement and understanding other people. It is very common to try out new interests, styles and friendship groups, and to question ideas you once took for granted.",
               "Trying things out is part of working out who you are. Changing your mind is not being fake; it is learning. Many adults look back and see that the person they were at 13 was a stage on the way to who they became.",
@@ -138,6 +144,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "What is self-esteem?",
+            picture: "/lessons/identity-and-mental-health/lesson-2-1.jpg",
+            alt: "A relaxed teenager standing on a hilltop at sunrise",
             text: [
               "Self-esteem is how much you value yourself overall: whether you feel you are a worthwhile person who deserves respect. It is different from confidence, which is how sure you feel about being able to do a particular thing. You can have high confidence in a skill, such as maths, but still have low self-esteem overall, or the other way round.",
               "Healthy self-esteem does not mean thinking you are perfect or better than everyone else. It means accepting yourself, including your mistakes and weaknesses, while still feeling you have value. People with healthy self-esteem can say 'I got that wrong' without deciding 'I am useless'.",
@@ -147,6 +155,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "What raises and lowers it?",
+            picture: "/lessons/identity-and-mental-health/lesson-2-2.jpg",
+            alt: "A table held up by legs made of books, a paintbrush, trainers and linked hands",
             text: [
               "Things that tend to build self-esteem include feeling accepted by people who matter to you, having relationships where you are treated with respect, getting better at something through effort, helping other people, and being encouraged rather than constantly criticised.",
               "Things that tend to lower it include bullying, harsh criticism, being left out, and constant comparison with other people. Comparison is especially powerful online, where people usually share their best moments, and we end up comparing our ordinary lives with everyone else's highlights.",
@@ -156,6 +166,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Talking back to the inner critic",
+            picture: "/lessons/identity-and-mental-health/lesson-2-3.jpg",
+            alt: "A teenager writing in a journal as a storm cloud breaks into sunlight",
             text: [
               "Most people have an inner critic, a voice in their head that comments harshly on what they do: 'You always mess up', 'Everyone thinks you're weird'. These automatic thoughts pop up quickly and feel true, but thoughts are not facts.",
               "Some common thinking traps make the critic louder. All-or-nothing thinking sees things as total success or total failure. Mind reading assumes you know what others think of you. Catastrophising jumps to the worst possible outcome. Overgeneralising turns one event into 'always' or 'never'.",
@@ -242,6 +254,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "What is body image?",
+            picture: "/lessons/identity-and-mental-health/lesson-3-1.jpg",
+            alt: "A group of teenagers with different body shapes walking together in a park",
             text: [
               "Body image is how you think and feel about your body: how you picture it, what you believe about it, and how it makes you feel. It is not the same as how your body actually looks. Two people with very similar bodies can have very different body images.",
               "A positive or healthy body image means being broadly accepting of your body and appreciating what it does for you, even if there are things you would change. A negative body image can involve constantly checking or criticising your appearance, comparing yourself with others, or avoiding things you enjoy because of how you look.",
@@ -251,6 +265,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Edited images and the 'ideal'",
+            picture: "/lessons/identity-and-mental-health/lesson-3-2.jpg",
+            alt: "A phone showing a natural face beside an edited, unnaturally smooth version",
             text: [
               "Many images we see are not real in the way they appear. Professional photos in magazines and adverts are carefully lit, posed and then retouched with editing software to smooth skin, change body shapes, whiten teeth or lengthen legs. Even the models often say they do not look like their own pictures.",
               "Filters and editing apps now put the same tools on every phone. Filters can change face shape, enlarge eyes, slim noses or add 'perfect' skin in real time. Posts can also be selected from dozens of attempts, taken at flattering angles and edited before sharing.",
@@ -260,6 +276,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Building a healthier relationship with your body",
+            picture: "/lessons/identity-and-mental-health/lesson-3-3.jpg",
+            alt: "A teenager scrolling a feed of hobbies and art, smiling",
             text: [
               "Research has linked frequent comparison with idealised images to lower body satisfaction and lower mood in young people. Comparison is the key: the more someone measures themselves against edited images, the worse they tend to feel. Being media literate, which means knowing how images are made and asking questions about them, helps to weaken that effect.",
               "Helpful questions include: Who made this image and why? Has it been edited or filtered? Is someone trying to sell me something? How does looking at this make me feel?",
@@ -345,6 +363,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "What is mental health?",
+            picture: "/lessons/identity-and-mental-health/lesson-4-1.jpg",
+            alt: "A landscape from sunshine to cloud with teenagers at different points along a path",
             text: [
               "Mental health is about how we think, feel and cope with life. Just like physical health, everyone has mental health, all the time. It is not only about illness; it includes feeling able to enjoy things, get on with people, learn, and deal with the ups and downs of everyday life.",
               "The World Health Organization describes good mental health as a state of wellbeing in which a person can cope with the normal stresses of life, realise their abilities, learn and work well, and contribute to their community. Wellbeing is a broader word for feeling good and functioning well.",
@@ -354,6 +374,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Stress and the body",
+            picture: "/lessons/identity-and-mental-health/lesson-4-2.jpg",
+            alt: "A nervous teenager outside an exam hall with a quickened heart shown glowing",
             text: [
               "Stress is the feeling of being under pressure. A little stress can be useful: it can sharpen your focus before a match or help you revise for a test. Problems arise when stress is very strong or goes on for a long time without a break.",
               "When the brain senses a threat or pressure, it triggers the stress response, often called 'fight or flight'. The body releases hormones such as adrenaline and cortisol. Heart rate and breathing speed up, muscles tense, the mouth can feel dry and digestion slows, which can cause 'butterflies' or a sick feeling. This response evolved to help our ancestors escape danger quickly.",
@@ -363,6 +385,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Worry, anxiety and low mood",
+            picture: "/lessons/identity-and-mental-health/lesson-4-3.jpg",
+            alt: "One teenager listening kindly to a worried friend on a bench",
             text: [
               "Anxiety is a feeling of worry, unease or fear, often about something that might happen. Everyone feels anxious sometimes, for example before a performance, a new school or a difficult conversation. It is a normal emotion and usually passes once the situation is over.",
               "Anxiety can become a problem when it is very intense, lasts for weeks, feels out of proportion to the situation, or stops someone doing everyday things such as going to school or seeing friends. Some people experience panic attacks: sudden surges of intense fear with a racing heart, fast breathing and dizziness. They feel frightening but are not dangerous and usually pass within minutes.",
@@ -443,6 +467,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "Looking after the basics: sleep and movement",
+            picture: "/lessons/identity-and-mental-health/lesson-5-1.jpg",
+            alt: "A teenager sleeping with the phone away from the bed, then cycling in the sun",
             text: [
               "Sleep is when the brain processes memories and emotions and the body repairs itself. The NHS advises that teenagers need around 8 to 10 hours of sleep a night, and many get much less. Short sleep is linked to worse mood, poorer concentration, irritability and finding stress harder to manage.",
               "Good sleep habits, sometimes called sleep hygiene, include going to bed and getting up at similar times each day, keeping the bedroom dark and cool, avoiding caffeine (in cola, energy drinks, coffee and tea) later in the day, and putting screens away before bed. Screens are stimulating, and notifications keep the brain alert.",
@@ -452,6 +478,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Connection and talking",
+            picture: "/lessons/identity-and-mental-health/lesson-5-2.jpg",
+            alt: "A teenager and grandparent laughing while cooking together",
             text: [
               "Humans are social. Feeling connected to other people is one of the strongest protective factors for mental health. Spending time with people who care about you, even doing simple things together, helps to buffer stress.",
               "Talking about how you feel can make problems feel more manageable. Putting a feeling into words can reduce its intensity, and the other person may offer support or a new perspective. Talking can be face to face, by phone or message, or while doing something side by side, like walking or cooking, which many people find easier.",
@@ -461,6 +489,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Mindfulness, and helpful versus unhelpful coping",
+            picture: "/lessons/identity-and-mental-health/lesson-5-3.jpg",
+            alt: "A teenager sitting on grass with eyes closed, breathing slowly",
             text: [
               "Mindfulness means paying attention to the present moment, on purpose, without judging it. Instead of being swept along by worries about the future or replays of the past, you notice what is happening now: your breathing, sounds, sensations in your body. Research suggests regular mindfulness practice can help some people reduce stress and anxiety.",
               "Simple techniques include slow breathing, such as breathing in for a count of 4 and out for a count of 6, which helps calm the stress response, and grounding, such as the 5-4-3-2-1 exercise: notice five things you can see, four you can hear, three you can touch, two you can smell and one you can taste.",
@@ -547,6 +577,8 @@ export const identityAndMentalHealth: LessonUnit = {
         cards: [
           {
             heading: "When is it time to get help?",
+            picture: "/lessons/identity-and-mental-health/lesson-6-1.jpg",
+            alt: "A teenager at a fork in a path, one way leading to a warmly lit house",
             text: [
               "Everyone has hard days, and self-help strategies are often enough. But it is time to talk to someone and get extra support if difficult feelings are very strong, last for more than a couple of weeks, or start getting in the way of everyday life, such as sleeping, eating, going to school, or seeing friends.",
               "Other signs include losing interest in things you usually enjoy, feeling hopeless or worthless, withdrawing from people, big changes in eating or sleeping, or using unhealthy ways to cope. You do not need to wait until things are really bad. Asking for help early is sensible, not weak.",
@@ -556,6 +588,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Where to get help",
+            picture: "/lessons/identity-and-mental-health/lesson-6-2.jpg",
+            alt: "A teenager talking with a kind adult in a calm room",
             text: [
               "A trusted adult is usually the first step: a parent or carer, another family member, a teacher, a school nurse, a school counsellor, a youth worker or a sports coach. A trusted adult is someone who listens, takes you seriously, and can help you get further support.",
               "A GP (family doctor) can talk through what's going on, offer advice, and refer young people to specialist services such as CAMHS, the Child and Adolescent Mental Health Services, or local support services. You can ask a parent or carer to book an appointment, or in many cases ask to speak to the GP alone for part of it.",
@@ -565,6 +599,8 @@ export const identityAndMentalHealth: LessonUnit = {
           },
           {
             heading: "Supporting a friend",
+            picture: "/lessons/identity-and-mental-health/lesson-6-3.jpg",
+            alt: "Two friends walking by a river, one supporting the other",
             text: [
               "If a friend seems to be struggling, you can make a real difference by being there for them. Signs might include seeming withdrawn or quieter than usual, being irritable, missing school, or saying things that suggest they feel hopeless.",
               "Good support starts with listening. Find a private moment, ask open questions such as 'How are you really doing?', and give them time. Try not to judge, interrupt or rush to fix things. Saying 'That sounds really hard' or 'Thanks for telling me' shows you are taking them seriously.",

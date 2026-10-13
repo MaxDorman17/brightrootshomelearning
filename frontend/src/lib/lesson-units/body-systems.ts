@@ -34,6 +34,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "What the skeleton does",
+            picture: "/lessons/body-systems/lesson-1-1.jpg",
+            alt: "A human skeleton standing upright",
             text: [
               "An adult human skeleton has 206 bones. A newborn baby has around 300 pieces of bone and cartilage, and many of these fuse together as the child grows. The skeleton is not just a frame: it is living tissue with its own blood supply, nerves and cells that constantly break down old bone and build new bone.",
               "Biologists describe four main functions of the skeleton. First, support: it holds the body upright and gives it shape. Second, protection: the skull surrounds the brain, the ribs guard the heart and lungs, and the vertebrae of the spine enclose the spinal cord. Third, movement: muscles are attached to bones, and when muscles pull, bones move at joints.",
@@ -43,6 +45,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Types of joint",
+            picture: "/lessons/body-systems/lesson-1-2.jpg",
+            alt: "A teenager bending an elbow and rotating a shoulder, showing the joints inside",
             text: [
               "A joint is a place where two or more bones meet. Different joints allow different amounts and directions of movement, and their shape explains why.",
               "Hinge joints, such as the elbow and knee, work like the hinge of a door: they let the bones move back and forth in one plane only. Ball and socket joints, found at the shoulder and hip, have a rounded end of one bone sitting in a cup-shaped hollow in another. They allow movement in almost every direction, including rotation. The shoulder's socket is shallow, giving a huge range of movement but making it easier to dislocate; the hip's socket is deep, making it more stable.",
@@ -51,6 +55,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Inside a moving joint",
+            picture: "/lessons/body-systems/lesson-1-3.jpg",
+            alt: "A cross-section of a knee joint with cartilage, fluid and ligaments",
             text: [
               "Most of the joints we move freely are synovial joints. They have several parts that work together to let bones move smoothly without wearing away.",
               "The ends of the bones are covered in cartilage, a smooth, tough and slightly squashy tissue that reduces friction and absorbs shock. Between them is synovial fluid, an oily liquid that lubricates the joint, held in by a membrane.",
@@ -161,6 +167,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "Muscles can only pull",
+            picture: "/lessons/body-systems/lesson-2-1.jpg",
+            alt: "A bundle of red muscle fibres, some contracted and some relaxed",
             text: [
               "Skeletal muscles are made of long cells called muscle fibres, bundled together. When a muscle receives a signal from a nerve, its fibres contract: they get shorter and fatter, and the muscle pulls on the tendon attached to the bone.",
               "When the signal stops, the muscle relaxes. It does not push; it simply stops pulling and can be stretched back to its original length. This is the key idea of the lesson: muscles can only pull, never push.",
@@ -169,6 +177,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Antagonistic pairs",
+            picture: "/lessons/body-systems/lesson-2-2.jpg",
+            alt: "A teenager lifting a mug, showing the biceps and triceps in the upper arm",
             text: [
               "Because a muscle can only pull in one direction, moving a bone back again needs a second muscle pulling the opposite way. Two muscles that work against each other at a joint are called an antagonistic pair.",
               "The classic example is the upper arm. The biceps, on the front, is attached to the forearm below the elbow. When the biceps contracts, it pulls the forearm up and the arm bends. At the same time the triceps, on the back of the upper arm, relaxes.",
@@ -178,6 +188,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Three types of muscle",
+            picture: "/lessons/body-systems/lesson-2-3.jpg",
+            alt: "Skeletal, smooth and cardiac muscle side by side",
             text: [
               "Skeletal muscle is attached to bones and moves the skeleton. It is under voluntary control: you decide when to use it. It can contract strongly and quickly but tires with long use.",
               "Smooth muscle is found in the walls of organs such as the stomach, intestines, bladder and blood vessels. It contracts slowly and automatically, without you thinking about it. In the gut, waves of smooth muscle contraction called peristalsis push food along.",
@@ -290,6 +302,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "Why we digest food",
+            picture: "/lessons/body-systems/lesson-3-1.jpg",
+            alt: "A plate of food beside chains of beads breaking into single beads",
             text: [
               "Much of the food we eat is made of large, insoluble molecules: starch (a carbohydrate), proteins and lipids (fats and oils). These molecules are far too big to pass through the wall of the gut into the blood.",
               "Digestion is the process of breaking these large molecules into small, soluble ones. Starch is broken down into sugars such as glucose. Proteins are broken into amino acids. Lipids are broken into fatty acids and glycerol.",
@@ -299,6 +313,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "The journey through the gut",
+            picture: "/lessons/body-systems/lesson-3-2.jpg",
+            alt: "The human digestive system from mouth to intestines",
             text: [
               "In the mouth, teeth break food up and saliva moistens it. Saliva contains an enzyme, amylase, which starts digesting starch. The tongue rolls the food into a ball, which is swallowed down the oesophagus (gullet), pushed along by peristalsis.",
               "The stomach is a muscular bag that churns food with gastric juice. This contains hydrochloric acid, which kills most bacteria in food and gives the right conditions for a protease enzyme that starts digesting protein.",
@@ -308,6 +324,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Enzymes: biological catalysts",
+            picture: "/lessons/body-systems/lesson-3-3.jpg",
+            alt: "An enzyme with a molecule fitting into its active site like a puzzle piece",
             text: [
               "Enzymes are proteins that act as biological catalysts: they speed up chemical reactions without being used up. Without digestive enzymes, breaking down a meal would take far too long to keep us alive.",
               "Each enzyme has a special shape with a region called the active site. Only a molecule with the matching shape, the substrate, fits into it, rather like a key in a lock. This means each enzyme works on just one kind of substance.",
@@ -425,6 +443,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "The respiratory system",
+            picture: "/lessons/body-systems/lesson-4-1.jpg",
+            alt: "The lungs with branching airways ending in clusters of air sacs",
             text: [
               "Air enters through the nose or mouth. In the nose, hairs and sticky mucus trap dust and microbes, and the air is warmed and moistened. It then passes down the trachea (windpipe), a tube held open by C-shaped rings of cartilage.",
               "The trachea divides into two bronchi, one to each lung. Each bronchus branches again and again into thousands of narrower tubes called bronchioles. At the end of the bronchioles are clusters of tiny air sacs called alveoli. Adult lungs contain several hundred million of them.",
@@ -434,6 +454,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "How breathing works",
+            picture: "/lessons/body-systems/lesson-4-2.jpg",
+            alt: "A teenager breathing in, showing the ribs lifting and the diaphragm flattening",
             text: [
               "Breathing works by changing the volume of the chest, which changes the pressure inside it. Air always moves from a region of higher pressure to a region of lower pressure.",
               "Breathing in (inhaling): the intercostal muscles contract, pulling the ribs up and out. The diaphragm contracts and flattens. The volume of the chest increases, so the pressure inside falls below the air pressure outside, and air rushes into the lungs.",
@@ -443,6 +465,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Gas exchange in the alveoli",
+            picture: "/lessons/body-systems/lesson-4-3.jpg",
+            alt: "Alveoli wrapped in capillaries with gases crossing their walls",
             text: [
               "Each alveolus is surrounded by a network of tiny blood vessels called capillaries. Here oxygen moves from the air in the alveolus into the blood, and carbon dioxide moves from the blood into the alveolus to be breathed out.",
               "The gases move by diffusion: the overall movement of particles from a region of higher concentration to a region of lower concentration. Air in the alveoli has more oxygen than the blood arriving at the lungs, so oxygen diffuses in; the blood has more carbon dioxide than the air, so carbon dioxide diffuses out.",
@@ -560,6 +584,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "The heart: a double pump",
+            picture: "/lessons/body-systems/lesson-5-1.jpg",
+            alt: "A human heart cut open to show its four chambers",
             text: [
               "The heart is a muscular organ, about the size of your fist, made of cardiac muscle. Its job is to pump blood around the body, carrying oxygen and glucose to cells and taking carbon dioxide and other wastes away.",
               "The heart has four chambers. The two upper chambers are the atria (singular: atrium), which receive blood coming in. The two lower chambers are the ventricles, which pump blood out. A wall of muscle, the septum, separates the right side from the left.",
@@ -569,6 +595,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Valves and the route of blood",
+            picture: "/lessons/body-systems/lesson-5-2.jpg",
+            alt: "A heart valve with blood cells and platelets flowing past",
             text: [
               "Valves inside the heart act like one-way doors. They open to let blood through when a chamber squeezes, then snap shut to stop it flowing backwards. The 'lub-dub' sound of a heartbeat is the sound of the valves closing.",
               "Follow the route: blood from the body enters the right atrium through the vena cava, a large vein. It passes into the right ventricle, which pumps it through the pulmonary artery to the lungs. Oxygenated blood returns through the pulmonary vein to the left atrium, flows into the left ventricle, and is pumped out through the aorta, the body's largest artery.",
@@ -578,6 +606,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Arteries, veins and capillaries",
+            picture: "/lessons/body-systems/lesson-5-3.jpg",
+            alt: "An artery, a vein and a capillary in cross-section",
             text: [
               "Arteries carry blood away from the heart. Blood in them is at high pressure, pulsing with each heartbeat, so arteries have thick walls with layers of muscle and elastic fibres that stretch and recoil. You can feel this surge as your pulse where an artery runs close to the skin, such as at the wrist or neck.",
               "Veins carry blood back towards the heart at low pressure. They have thinner walls and a wider space inside (the lumen). Many veins, especially in the legs, have valves to stop blood flowing backwards. Squeezing by nearby skeletal muscles helps push the blood along.",
@@ -693,6 +723,8 @@ export const bodySystems: LessonUnit = {
         cards: [
           {
             heading: "Why exercise changes your body",
+            picture: "/lessons/body-systems/lesson-6-1.jpg",
+            alt: "Teenagers doing star jumps in a garden",
             text: [
               "When you exercise, your skeletal muscles contract more often and more strongly. That takes more energy, which muscle cells release by respiration. So the rate of respiration in the muscles rises sharply.",
               "Aerobic respiration needs a steady supply of glucose and oxygen, and it produces carbon dioxide that must be removed: glucose + oxygen → carbon dioxide + water. Working muscles need much more oxygen and glucose delivered, and much more carbon dioxide taken away, than resting ones.",
@@ -701,6 +733,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Heart rate and breathing rate",
+            picture: "/lessons/body-systems/lesson-6-2.jpg",
+            alt: "A teenager taking their pulse at the wrist after running",
             text: [
               "During exercise your heart rate increases, and each beat pumps out more blood. This delivers oxygen and glucose to the muscles faster and removes carbon dioxide faster. Blood flow is also directed towards the working muscles and away from organs such as the gut.",
               "Your breathing rate increases and each breath gets deeper. More air reaches the alveoli each minute, so more oxygen diffuses into the blood and more carbon dioxide diffuses out.",
@@ -710,6 +744,8 @@ export const bodySystems: LessonUnit = {
           },
           {
             heading: "Investigating exercise like a scientist",
+            picture: "/lessons/body-systems/lesson-6-3.jpg",
+            alt: "A teenager recording exercise results with a stopwatch and a notebook",
             text: [
               "A good investigation starts with a question, such as 'How does the length of time I exercise affect my pulse rate?' The variable you change is the independent variable (exercise time); the one you measure is the dependent variable (pulse rate).",
               "Everything else should be kept the same, so the test is fair. These are control variables: the type of exercise, how hard you work, the same person, the same method of measuring the pulse, and the same rest beforehand.",

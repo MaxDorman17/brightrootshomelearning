@@ -36,6 +36,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "Active and passive footprints",
+            picture: "/lessons/digital-footprint/lesson-1-1.jpg",
+            alt: "A teenager's footprints in the sand turning into glowing digital squares",
             text: [
               "Every time you use the internet, you leave a trail of data behind. This trail is your digital footprint. Unlike a footprint in sand, it is not washed away by the next wave: data can be copied, stored and searched for years.",
               "Your active digital footprint is the data you choose to share. Posting a photo, writing a comment, filling in a profile, leaving a product review or joining a group chat all add to it. You can see this part, and you have some control over it.",
@@ -46,6 +48,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Who can see it?",
+            picture: "/lessons/digital-footprint/lesson-1-2.jpg",
+            alt: "A teenager at the centre of rings showing friends, a wider group and the public",
             text: [
               "It helps to think of your audience in rings. The inner ring is people you choose: friends and family in a private chat. The next ring is friends of friends, who may see things your friends share or comment on. The outer ring is the public: anyone, anywhere, including strangers, search engines and, years from now, people you have not met yet.",
               "The audience you intend is not always the audience you get. A message in a private chat can be screenshotted and forwarded in seconds. A 'disappearing' photo can be captured by another phone. Once something has been copied, you cannot control where the copy goes.",
@@ -55,6 +59,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "How long does it last?",
+            picture: "/lessons/digital-footprint/lesson-1-3.jpg",
+            alt: "A photo on a phone with hidden layers of time, device and location data",
             text: [
               "Digital data is persistent, which means it tends to last. Pages are saved by archive services, posts are copied into other people's accounts, and backups keep old versions of files. Something posted at 12 may still be findable at 22.",
               "Pictures can also carry hidden information called metadata. A photo taken on a phone may store the date, the time, the type of phone and, if location is switched on, the exact place it was taken. Many apps strip this out when you post, but not all do, and a photo sent as a file may keep it.",
@@ -140,6 +146,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "What counts as personal data?",
+            picture: "/lessons/digital-footprint/lesson-2-1.jpg",
+            alt: "Jigsaw pieces of everyday details fitting together into the outline of a person",
             text: [
               "Personal data is any information that relates to an identifiable living person. Your name, home address, email address, phone number, date of birth and photos of your face are obvious examples. Less obvious ones include your location history, your IP address (the number that identifies a device on a network) and the unique ID of your phone.",
               "Some personal data is especially sensitive, so the law calls it special category data. This includes information about health, religion or beliefs, ethnicity, sexual orientation and biometric data such as fingerprints or face scans used to identify someone. It needs extra protection because misuse could cause serious harm or unfair treatment.",
@@ -149,6 +157,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Your rights under the law",
+            picture: "/lessons/digital-footprint/lesson-2-2.jpg",
+            alt: "A padlocked filing cabinet beneath a set of scales, standing for data protection law",
             text: [
               "In the UK, personal data is protected by UK GDPR (the UK General Data Protection Regulation) and the Data Protection Act 2018. These laws say organisations must process personal data lawfully, fairly and transparently, collect only what they need for a clear purpose, keep it accurate and secure, and not keep it longer than necessary.",
               "The law also gives you rights. You have the right to be informed about how your data is used, the right to see a copy of the data an organisation holds about you (called a subject access request), the right to have wrong data corrected, and in many cases the right to have your data erased.",
@@ -158,6 +168,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Taking control with privacy settings",
+            picture: "/lessons/digital-footprint/lesson-2-3.jpg",
+            alt: "Two teenagers checking privacy switches on a phone together",
             text: [
               "Privacy settings let you decide who sees what. Good default choices for most teenagers are: a private account, so only approved followers see your posts; messages only from people you know; location sharing switched off, or shared only with family; and your profile hidden from search engines.",
               "Check app permissions too. Permissions are what an app is allowed to access on your device, such as your camera, microphone, contacts, photos or location. Ask whether each permission makes sense. A torch app does not need your contacts. A map app does need your location, but perhaps only 'while using the app' rather than 'always'.",
@@ -245,6 +257,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "How passwords get cracked",
+            picture: "/lessons/digital-footprint/lesson-3-1.jpg",
+            alt: "A robot arm trying a huge ring of keys on a lock",
             text: [
               "Authentication means proving you are who you say you are. A password is the most common way, and it protects everything from your games to your email. Your email is especially important, because it is usually where 'reset your password' links are sent: whoever controls your email can often get into everything else.",
               "Attackers rarely sit and guess passwords one at a time by hand. A brute-force attack uses software to try every possible combination. A dictionary attack tries common words, names and well-known passwords such as 'password1' and '123456', along with common tweaks like swapping 'a' for '@'.",
@@ -254,6 +268,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Length beats complexity: passphrases",
+            picture: "/lessons/digital-footprint/lesson-3-2.jpg",
+            alt: "A lantern, a pebble and a planet linked by a glowing chain, like a three-word passphrase",
             text: [
               "Each extra character multiplies the number of possible passwords, so length matters more than anything else. A password of 8 characters using lowercase letters has 26 to the power of 8 possible combinations, about 209 billion, which modern software can try very quickly. Make it 16 lowercase letters and the number becomes so large that brute force is impractical.",
               "The UK's National Cyber Security Centre (NCSC) recommends the 'three random words' method. Pick three words that are random and not connected to you, and put them together, for example 'lanternpebbleorbit'. This is a passphrase: long, so it is hard to crack, but memorable, so you do not need to write it on a sticky note.",
@@ -263,6 +279,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Two-factor authentication",
+            picture: "/lessons/digital-footprint/lesson-3-3.jpg",
+            alt: "A teenager using a phone as a second step to unlock a laptop",
             text: [
               "Authentication factors come in three types: something you know (a password or PIN), something you have (your phone or a security key) and something you are (a fingerprint or face). Two-factor authentication, often shortened to 2FA, asks for two different types.",
               "A common example: you type your password, and then the site asks for a six-digit code from a text message or an authenticator app on your phone. Even if an attacker has stolen your password, they cannot get in without your phone as well.",
@@ -349,6 +367,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "Phishing and social engineering",
+            picture: "/lessons/digital-footprint/lesson-4-1.jpg",
+            alt: "A fishing hook baited with an envelope and a gift dangling over devices",
             text: [
               "Phishing is a message that pretends to come from someone you trust, such as a bank, a delivery company, a streaming service, a game or a friend, in order to trick you into giving away information, clicking a harmful link or sending money. The name comes from 'fishing': the attacker casts out bait and waits for a bite.",
               "Phishing comes in many forms. By email it is simply called phishing; by text message it is smishing (from SMS); by phone call it is vishing (voice phishing). It also arrives through direct messages in games and social media, and through QR codes. Spear phishing is a message aimed at one particular person, using details from their digital footprint to seem convincing.",
@@ -358,6 +378,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Spotting the signs",
+            picture: "/lessons/digital-footprint/lesson-4-2.jpg",
+            alt: "A teenager examining an email closely with a magnifying glass",
             text: [
               "Check the sender. A display name can say anything, so look at the actual email address or number. Scammers often use addresses that are close to the real thing, with an extra letter, a swapped character or an unusual ending.",
               "Check links before you click. On a computer, hovering over a link shows where it really goes. Look carefully at the domain name, the main part of the web address. In 'brand.example-login.net' the real domain is 'example-login.net', not 'brand'. When in doubt, do not click: go to the official website or app by typing it yourself.",
@@ -367,6 +389,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "What to do: stop, check, report",
+            picture: "/lessons/digital-footprint/lesson-4-3.jpg",
+            alt: "A teenager pausing before acting on a message, with an adult beside them",
             text: [
               "If you are unsure about a message, stop and do not reply, click or download anything. Check by contacting the organisation or person in a different way you already trust, such as the official app or a phone number from their real website. If a friend's message seems odd, ask them in person or by another route.",
               "In the UK, you can report suspicious emails by forwarding them to report@phishing.gov.uk, which is run by the National Cyber Security Centre. Suspicious text messages can be forwarded free of charge to 7726, which spells SPAM on a phone keypad. Most apps and games have a 'report' button too.",
@@ -453,6 +477,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "Mis-, dis- and malinformation",
+            picture: "/lessons/digital-footprint/lesson-5-1.jpg",
+            alt: "Three speech bubbles standing for misinformation, disinformation and malinformation",
             text: [
               "Not all false or misleading information is the same, and the differences matter. Misinformation is false or misleading information shared by people who believe it is true. A relative forwarding an inaccurate health tip because they want to help is spreading misinformation.",
               "Disinformation is false information created or shared deliberately to deceive, for example to make money, to damage someone's reputation or to influence how people vote. Malinformation is information that may be true but is shared to cause harm, such as leaking someone's private messages or presenting an old event as if it happened today.",
@@ -462,6 +488,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Why false information spreads",
+            picture: "/lessons/digital-footprint/lesson-5-2.jpg",
+            alt: "A single post multiplying and spreading across a network",
             text: [
               "Studies of social media have found that false news can spread faster and further than accurate news. One reason is that false stories are often more surprising and emotional, and people like sharing things that are new and shocking. Content that makes us angry or afraid gets more reactions, comments and shares.",
               "Recommendation algorithms play a part. Many platforms choose what to show you based on engagement: how likely you are to watch, like, comment or share. This can reward sensational content, true or not. Over time, an algorithm can also create a filter bubble, in which you mostly see content that matches what you already like and believe.",
@@ -471,6 +499,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Checking sources: SIFT and lateral reading",
+            picture: "/lessons/digital-footprint/lesson-5-3.jpg",
+            alt: "A teenager comparing several sources side by side on a laptop",
             text: [
               "Professional fact-checkers do not just stare hard at a website to decide whether it looks trustworthy, because a fake site can look very professional. Instead they use lateral reading: they open new tabs and find out what other, independent sources say about the website, the author and the claim.",
               "A simple method called SIFT, developed by the digital literacy researcher Mike Caulfield, gives four moves. Stop: notice your emotional reaction and pause before sharing. Investigate the source: who is behind it, and what is their purpose or expertise? Find better coverage: do trusted news organisations or experts report the same thing? Trace claims, quotes and media to the original context: where did this photo or quote first appear?",
@@ -557,6 +587,8 @@ export const digitalFootprint: LessonUnit = {
         cards: [
           {
             heading: "Online life and wellbeing",
+            picture: "/lessons/digital-footprint/lesson-6-1.jpg",
+            alt: "A teenager between a bright video call with friends and a dim endless scroll",
             text: [
               "Being online brings real benefits for wellbeing: keeping in touch with friends and family, finding people who share your interests, learning new skills, creating things and finding support. For many young people, online spaces are where they feel most understood.",
               "There can also be downsides, and they are often subtle. Social comparison is one: feeds show other people's highlights, often edited or filtered, and comparing your everyday life with someone else's best moments can leave you feeling worse. Remember that what you see is a selection, not the whole picture.",
@@ -566,6 +598,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Balance and healthy habits",
+            picture: "/lessons/digital-footprint/lesson-6-2.jpg",
+            alt: "A phone charging in the kitchen at night while a teenager sleeps",
             text: [
               "The UK's Chief Medical Officers have not set a single 'right' number of hours for young people, because the evidence does not support one. Instead, their advice focuses on balance: making sure screens do not crowd out sleep, physical activity, time with family, schoolwork and face-to-face friendships.",
               "Sleep is the clearest case. Most young teenagers need around 9 hours of sleep a night. Using screens late at night can delay sleep, both because the content keeps your brain busy and because notifications interrupt rest. A common, effective habit is to keep phones out of the bedroom overnight, or at least switch on do-not-disturb, and to stop screen use some time before bed.",
@@ -575,6 +609,8 @@ export const digitalFootprint: LessonUnit = {
           },
           {
             heading: "Where to get help",
+            picture: "/lessons/digital-footprint/lesson-6-3.jpg",
+            alt: "A teenager talking with a trusted adult on a park bench",
             text: [
               "Most problems online can be sorted out, and asking for help is a sensible, grown-up thing to do. Start with a trusted adult: a parent or carer, a relative, a teacher or another adult you feel comfortable with. You will not be in trouble for telling someone about something that worried you.",
               "Childline is a free, confidential service for anyone in the UK under 19. You can call 0800 1111, which does not show up on phone bills, or chat online through the Childline website. You can talk to them about anything, big or small, including online worries, friendships, stress or feeling low. Their website also has message boards and tools for calming down.",

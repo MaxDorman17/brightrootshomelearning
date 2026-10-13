@@ -34,6 +34,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "Counting belief",
+            picture: "/lessons/religion-in-the-uk/lesson-1-1.jpg",
+            alt: "A census form with blank tick boxes on a kitchen table",
             text: [
               "Every ten years the UK holds a census, a survey that every household must fill in. It asks about age, work, housing, language and health. Since 2001 it has also asked about religion. The census in England and Wales took place in March 2021; Scotland's was delayed by the pandemic and took place in 2022. Northern Ireland also held a census in 2021.",
               "The religion question is voluntary, so people can leave it blank. It was the first voluntary question ever added to the census in England and Wales, and in 2021 new voluntary questions on sexual orientation and gender identity joined it. About 6% of people chose not to answer the religion question in 2021. The question in England and Wales simply asks 'What is your religion?', and people tick a box or write in an answer.",
@@ -42,6 +44,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "The 2021 picture",
+            picture: "/lessons/religion-in-the-uk/lesson-1-2.jpg",
+            alt: "A teenager studying a bar chart on a laptop",
             text: [
               "In England and Wales in 2021, about 46% of people described themselves as Christian. About 37% said they had no religion. The next largest groups were Muslims (about 6.5%), Hindus (about 1.7%), Sikhs (about 0.9%), Buddhists (about 0.5%) and Jews (about 0.5%). Smaller numbers wrote in other religions, such as Pagan, Jain or Bahá'í.",
               "The numbers have changed fast. In 2011, about 59% of people in England and Wales said they were Christian and about 25% said they had no religion. 2021 was the first census in which fewer than half the population of England and Wales described themselves as Christian. Over the same decade, the number of Muslims, Hindus and Sikhs grew.",
@@ -51,6 +55,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "What the numbers cannot tell us",
+            picture: "/lessons/religion-in-the-uk/lesson-1-3.jpg",
+            alt: "A diverse crowd on a British high street",
             text: [
               "A census measures religious identity: what people say they are. It does not measure how often people pray, attend worship or what they actually believe. Someone may tick 'Christian' because of their family or culture without going to church, while someone who ticks 'no religion' may still pray, feel spiritual or follow some traditions.",
               "The wording of a question can also change the answer. Surveys that ask 'Do you belong to a religion?' tend to find more people with no religion than surveys that ask 'What is your religion?', because the second question can suggest that everyone has one.",
@@ -127,6 +133,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "One faith, many churches",
+            picture: "/lessons/religion-in-the-uk/lesson-2-1.jpg",
+            alt: "A Quaker meeting room, a Catholic church and a modern church hall",
             text: [
               "Christians follow the teachings of Jesus, whom most Christians believe to be the Son of God, and many believe that through his death and resurrection people can be forgiven and have a restored relationship with God. Christianity reached Britain in Roman times and has shaped its laws, calendar, art, language and landscape for well over a thousand years.",
               "Christianity is divided into denominations, groups with their own organisation and traditions. The three main branches worldwide are Roman Catholic, Orthodox and Protestant. In the 1500s, during the Reformation, the churches of England and Scotland broke away from the authority of the Pope in Rome.",
@@ -135,6 +143,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "The established Church of England",
+            picture: "/lessons/religion-in-the-uk/lesson-2-2.jpg",
+            alt: "An English village parish church among fields",
             text: [
               "The Church of England is the established church of England. This means it has a special, official link with the state. It began when Henry VIII broke with the Pope in the 1530s, and over the following decades it developed as a Protestant church that kept some Catholic traditions.",
               "Being established has real effects. The monarch is the Church's Supreme Governor and promises at their coronation to maintain it. Twenty-six bishops, known as the Lords Spiritual, sit in the House of Lords. Senior bishops are appointed by the monarch on the advice of the Prime Minister, after the Church has chosen its candidates. Parliament must approve major changes to Church law.",
@@ -144,6 +154,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Scotland and a changing picture",
+            picture: "/lessons/religion-in-the-uk/lesson-2-3.jpg",
+            alt: "A Scottish kirk with a tall steeple above a city street",
             text: [
               "The Church of Scotland, often called the Kirk, is Scotland's national church, but it is not established in the same way. Since the Church of Scotland Act 1921, it governs itself, free from control by the state. It is Presbyterian: it has no bishops, and it is run by elected elders and ministers meeting in courts, up to the yearly General Assembly in Edinburgh, which is chaired by a Moderator chosen for one year.",
               "The Roman Catholic Church has a strong presence across the UK, especially in parts of Scotland, north-west England and Northern Ireland, and among people with Irish, Polish and other European family roots. Catholics recognise the Pope as the leader of the Church.",
@@ -221,6 +233,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "Core beliefs and practices",
+            picture: "/lessons/religion-in-the-uk/lesson-3-1.jpg",
+            alt: "Prayer mats laid in rows in a mosque prayer hall",
             text: [
               "Islam is a monotheistic religion: Muslims believe in one God, called Allah in Arabic. Muslims believe that God revealed the Qur'an to the Prophet Muhammad in Arabia in the 7th century CE, and that Muhammad was the last in a line of prophets that includes Ibrahim (Abraham), Musa (Moses) and Isa (Jesus).",
               "The word 'Islam' is linked to the Arabic words for submission and peace: Muslims try to live in submission to God's will. Many Muslims organise their lives around the Five Pillars: the Shahadah (the declaration of faith), Salah (prayer five times a day), Zakah (giving a share of savings to those in need), Sawm (fasting from dawn to sunset in Ramadan) and Hajj (pilgrimage to Makkah, for those able to go).",
@@ -229,6 +243,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Muslim communities in Britain",
+            picture: "/lessons/religion-in-the-uk/lesson-3-2.jpg",
+            alt: "A Victorian mosque with a green dome among trees",
             text: [
               "Muslims have lived in Britain for centuries. In the 1800s, Muslim sailors from Yemen, Somalia and India settled in ports such as Cardiff, Liverpool and South Shields. In 1889 two early mosques opened: the Liverpool Muslim Institute, founded by the convert Abdullah Quilliam, and the Shah Jahan Mosque in Woking, one of the first purpose-built mosques in Britain.",
               "Hundreds of thousands of Muslim soldiers from undivided India served with British forces in both World Wars. After 1945, Britain invited workers from the Commonwealth to help rebuild the country, and many came from Pakistan, Bangladesh and India to work in textile mills, factories, transport and the health service. Later, Muslims also arrived from places such as Somalia, Turkey, Bosnia, Iraq and Syria, many fleeing conflict.",
@@ -237,6 +253,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "The mosque at the heart of the community",
+            picture: "/lessons/religion-in-the-uk/lesson-3-3.jpg",
+            alt: "Neighbours sharing an evening meal together in a community hall",
             text: [
               "There are well over a thousand mosques in the UK, from converted terraced houses to large purpose-built buildings such as the East London Mosque and the Central Mosque in Regent's Park. A mosque, or masjid, means 'place of prostration'. Worshippers remove their shoes and perform wudu, a ritual washing, before prayer, and face the qiblah, the direction of the Ka'bah in Makkah.",
               "The most important weekly prayer is Jumu'ah, held at midday on Friday, when an imam gives a sermon. Many mosques also run classes in Arabic and the Qur'an, youth clubs, food banks, advice sessions and open days for visitors of all faiths and none.",
@@ -313,6 +331,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "Hindu beliefs and practice",
+            picture: "/lessons/religion-in-the-uk/lesson-4-1.jpg",
+            alt: "A Hindu home shrine with garlands, a lamp and fruit",
             text: [
               "Hinduism is one of the world's oldest religions, with roots in the Indian subcontinent going back thousands of years. Many Hindus call it Sanatana Dharma, the 'eternal way'. It has no single founder or single holy book; important texts include the Vedas, the Upanishads and the Bhagavad Gita.",
               "Many Hindus believe in Brahman, one supreme reality, which can be worshipped in many forms, such as Vishnu, Shiva, Lakshmi and Ganesh. Many believe in samsara, the cycle of birth, death and rebirth; in karma, the idea that actions have consequences in this life and the next; and in moksha, release from the cycle. Living according to dharma, one's duty and right conduct, is central.",
@@ -321,6 +341,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Sikh beliefs and practice",
+            picture: "/lessons/religion-in-the-uk/lesson-4-2.jpg",
+            alt: "People sharing a meal on the floor of a gurdwara langar hall",
             text: [
               "Sikhism began in the Punjab region of South Asia with Guru Nanak, born in 1469, and was shaped by ten human Gurus. Sikhs believe in one God, who is beyond human form. The holy scripture, the Guru Granth Sahib, is treated with the respect given to a living Guru and is seen as the final, eternal Guru.",
               "Many Sikhs try to live by three principles taught by Guru Nanak: remembering God (Nam Japna), earning an honest living (Kirat Karni) and sharing with others (Vand Chhakna). Sikhs believe all people are equal, whatever their gender, caste or religion, and sewa, selfless service, is very important.",
@@ -330,6 +352,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "British Hindu and Sikh communities",
+            picture: "/lessons/religion-in-the-uk/lesson-4-3.jpg",
+            alt: "A carved white stone Hindu temple in London",
             text: [
               "Sikh soldiers served in large numbers with the British Indian Army in both World Wars. After 1945, many Sikhs and Hindus came to Britain from India, especially from Punjab and Gujarat, to work in factories, foundries and transport. In the late 1960s and early 1970s, many Hindus and Sikhs of Indian heritage arrived from East Africa, including those expelled from Uganda in 1972.",
               "In 2021 there were about 1 million Hindus (about 1.7%) and about 520,000 Sikhs (about 0.9%) in England and Wales. Leicester and parts of London have large Hindu communities, and Leicester's Diwali celebrations are among the biggest outside India. Large Sikh communities live in places such as Southall, Wolverhampton, Birmingham and Gravesend.",
@@ -405,6 +429,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "Many ways of having no religion",
+            picture: "/lessons/religion-in-the-uk/lesson-5-1.jpg",
+            alt: "A teenager thinking on a park bench",
             text: [
               "In England and Wales, 37% of people ticked 'no religion' in 2021, and in Scotland in 2022 it was just over half. 'No religion' is not one single belief. It includes atheists, who believe there is no god; agnostics, who think we cannot know whether a god exists; humanists; people who describe themselves as 'spiritual but not religious'; and many people who simply do not think about religion much.",
               "Some people with no religion still celebrate Christmas or Diwali with family, visit places of worship for weddings and funerals, or pray occasionally. Others have never had any connection with religion. Researchers sometimes call people with no religion 'nones', and they are now the largest single group among young adults in Britain.",
@@ -413,6 +439,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "What humanists believe",
+            picture: "/lessons/religion-in-the-uk/lesson-5-2.jpg",
+            alt: "Teenagers discussing ideas around a library table",
             text: [
               "Humanism is a non-religious worldview. Humanists UK, the main humanist organisation in Britain, traces its roots back to 1896. Humanists usually describe three core ideas. First, they think about the world using reason, evidence and science, and do not believe in a god or the supernatural. Second, they believe this is the only life we have. Third, they believe people can make their own meaning and purpose in life.",
               "Because they do not look to a holy book or a god for moral rules, humanists decide how to behave by thinking about the likely consequences of their actions for others, using empathy and reason. Many humanists point to the Golden Rule, 'treat others as you would like them to treat you', which appears in different forms in many religions as well.",
@@ -421,6 +449,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Marking life's big moments",
+            picture: "/lessons/religion-in-the-uk/lesson-5-3.jpg",
+            alt: "A humanist wedding in a Scottish garden",
             text: [
               "Non-religious people mark birth, marriage and death too. Trained humanist celebrants lead naming ceremonies to welcome a baby, weddings and funerals. These ceremonies are personal and focus on the life and values of the people involved, with readings, music and poems chosen by the family.",
               "Humanist weddings have been legally recognised in Scotland since 2005, where they have become one of the most popular kinds of wedding. Humanist weddings are also legally recognised in Northern Ireland. In England and Wales, couples having a humanist ceremony have usually also needed a separate civil ceremony to be legally married, and the law has long been under review.",
@@ -496,6 +526,8 @@ export const religionInTheUk: LessonUnit = {
         cards: [
           {
             heading: "Places of worship near you",
+            picture: "/lessons/religion-in-the-uk/lesson-6-1.jpg",
+            alt: "A teenager and parent spotting places of worship on a town street",
             text: [
               "Look around almost any town in the UK and you will see the story of its beliefs in its buildings. An ancient parish church may stand near a Victorian Methodist chapel, a Catholic church built for Irish workers, a mosque in a former warehouse and a gurdwara in an old cinema. Buildings change use as communities change.",
               "A place of worship is more than a building for prayer. Most are also community hubs, with toddler groups, food banks, lunch clubs for older people, language classes, youth groups and help for refugees. Many are listed buildings that tell us about local history, architecture and migration.",
@@ -504,6 +536,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Rights, law and responsibilities",
+            picture: "/lessons/religion-in-the-uk/lesson-6-2.jpg",
+            alt: "Hands of different skin tones resting together on a table",
             text: [
               "In the UK, freedom of thought, conscience and religion is protected by law. The Human Rights Act 1998 brings the European Convention on Human Rights into UK law, and Article 9 protects everyone's right to hold a religion or belief, to change it, or to have none, and to practise it, as long as this does not harm the rights and freedoms of others.",
               "The Equality Act 2010 makes it unlawful to discriminate against people because of their religion or belief, or lack of belief, in areas such as work, education and services. Religion or belief is one of nine protected characteristics under the Act, which applies in England, Scotland and Wales; Northern Ireland has its own similar laws.",
@@ -512,6 +546,8 @@ export const religionInTheUk: LessonUnit = {
           },
           {
             heading: "Building understanding",
+            picture: "/lessons/religion-in-the-uk/lesson-6-3.jpg",
+            alt: "Volunteers of different faiths packing food parcels together",
             text: [
               "Interfaith dialogue means people of different religions and worldviews meeting to learn about each other, share concerns and work together. It does not mean everyone has to agree; it means listening with respect and disagreeing well.",
               "Every November, Inter Faith Week takes place in England, Wales and Northern Ireland, with Scotland holding its own Interfaith Week. Local interfaith groups run joint events, shared meals, walks between places of worship and volunteering projects. During the pandemic, churches, mosques, gurdwaras, mandirs, synagogues and secular charities worked side by side on food deliveries and vaccine campaigns.",

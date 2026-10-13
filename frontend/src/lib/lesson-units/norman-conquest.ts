@@ -34,6 +34,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "The death of a childless king",
+            picture: "/lessons/norman-conquest/lesson-1-1.jpg",
+            alt: "An empty throne and crown in an eleventh-century royal hall",
             text: [
               "On 5 January 1066 King Edward of England died in London. He was later made a saint and is remembered as Edward the Confessor because of his reputation for piety. Edward had ruled since 1042, but he and his wife Edith had no children. In a hereditary monarchy, where the crown normally passes to the king's eldest son, a childless king creates a serious problem: a succession crisis.",
               "England in 1066 was one of the richest and best-organised kingdoms in Europe. It was divided into shires, each with a sheriff who collected taxes and kept order for the king. The king could raise a national land tax called the geld, and a skilled system of mints produced silver pennies. Whoever won the crown would win great wealth and power, which is exactly why several men were prepared to fight for it.",
@@ -43,6 +45,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Harold Godwinson and William of Normandy",
+            picture: "/lessons/norman-conquest/lesson-1-2.jpg",
+            alt: "An Anglo-Saxon earl and a Norman duke facing each other across a table",
             text: [
               "Harold Godwinson was Earl of Wessex, the most powerful noble in England, and the brother of Queen Edith. He was an experienced soldier who had led successful campaigns in Wales. Harold claimed that, on his deathbed, Edward had named him as his successor, and the Witan accepted him. He was crowned in Westminster Abbey on 6 January 1066, the day after Edward died. Speed mattered: by acting quickly, Harold made himself the anointed king before any rival could act.",
               "William, Duke of Normandy, ruled a powerful duchy in northern France. He was a distant cousin of Edward: Edward's mother, Emma, was William's great-aunt, and Edward had spent many years in exile in Normandy. William claimed that Edward had promised him the throne in about 1051, when Edward was in conflict with Harold's family.",
@@ -51,6 +55,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Harald Hardrada and weighing the claims",
+            picture: "/lessons/norman-conquest/lesson-1-3.jpg",
+            alt: "A Norwegian king at the prow of a longship on a grey sea",
             text: [
               "Harald Hardrada, King of Norway, was perhaps the most feared warrior in Europe. His nickname means 'hard ruler'. As a young man he had served in the elite Varangian Guard of the Byzantine emperor in Constantinople. His claim came from an agreement said to have been made between his nephew, King Magnus of Norway, and Harthacnut, who ruled England and Denmark until 1042: whichever of them died first would leave his kingdom to the other.",
               "Hardrada was encouraged by Tostig Godwinson, Harold's own brother. Tostig had been Earl of Northumbria until 1065, when the Northumbrians rebelled against his harsh rule and Harold agreed to his exile. Tostig wanted revenge and his earldom back, and he could offer Hardrada local knowledge and support.",
@@ -136,6 +142,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "Waiting for the invasion",
+            picture: "/lessons/norman-conquest/lesson-2-1.jpg",
+            alt: "Norman ships and horses gathered on a river estuary beach",
             text: [
               "Harold expected William to invade, so through the summer of 1066 he kept an army and a fleet on watch along the south coast. His army had two main parts. The housecarls were professional, well-armed full-time soldiers who fought with large two-handed axes. The fyrd was made up of part-time soldiers called up from the shires for a limited period, who also needed to return home to farm.",
               "Meanwhile William was preparing a huge invasion force at the mouth of the River Dives in Normandy. He gathered knights from Normandy and beyond, built or collected hundreds of ships, and transported warhorses, which was a major feat of organisation. Yet for weeks his fleet did not sail. The traditional explanation is that the wind was against him; some historians argue that William was also waiting deliberately until Harold's army had to break up.",
@@ -144,6 +152,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Fulford and Stamford Bridge",
+            picture: "/lessons/norman-conquest/lesson-2-2.jpg",
+            alt: "A wooden bridge over a river with Anglo-Saxon soldiers approaching",
             text: [
               "In September Harald Hardrada sailed to England with around 300 ships and was joined by Tostig. They landed in Yorkshire and on 20 September defeated the northern earls Edwin and Morcar at the Battle of Fulford, just outside York. York then surrendered to them.",
               "When news reached Harold in London, he moved with remarkable speed. He gathered his housecarls and summoned more troops as he travelled, covering roughly 185 miles north in about four or five days. On 25 September he caught the Norwegians by surprise at Stamford Bridge, east of York. According to later accounts, many of them had left their armour with the ships at Riccall because it was a hot day and they were not expecting a battle.",
@@ -152,6 +162,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "The Battle of Hastings, 14 October 1066",
+            picture: "/lessons/norman-conquest/lesson-2-3.jpg",
+            alt: "A shield wall along a ridge with Norman horsemen in the valley below",
             text: [
               "On 28 September, three days after Stamford Bridge, William landed unopposed at Pevensey on the Sussex coast. He moved to Hastings, built a wooden castle, and raided the surrounding land, which was part of Harold's own family estates. This put pressure on Harold to respond quickly. Harold marched back south, gathering troops in London, and took up position on a ridge, now called Senlac Hill, about seven miles from Hastings.",
               "Each army may have had around 7,000 men, although numbers are estimates. Harold's men formed a shield wall along the top of the ridge: a line of overlapping shields that was very hard to break. William's army had three types of soldier: archers, foot soldiers and mounted knights. The battle began in the morning and lasted most of the day, which was unusually long for a medieval battle.",
@@ -227,6 +239,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "Skill, luck or mistakes?",
+            picture: "/lessons/norman-conquest/lesson-3-1.jpg",
+            alt: "A teenager sorting cards into three piles around a toy knight",
             text: [
               "Historians usually group the reasons for William's victory into three broad factors. The first is William's leadership and his army. He planned the invasion carefully, built a fleet, brought horses across the Channel, gained the Pope's backing, and won over knights from beyond Normandy with the promise of land. On the battlefield he used a combined army of archers, infantry and cavalry, and he kept control when panic spread.",
               "The second is luck. The wind delayed William, which turned out to be fortunate: he crossed after Harold had dismissed the fyrd and just after Hardrada had invaded the north. The invasions fell in the worst possible order for Harold. Even at Hastings, chance played its part: had Harold not been killed, the English might have held the ridge until nightfall and gathered reinforcements.",
@@ -235,6 +249,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Interpretations: why historians disagree",
+            picture: "/lessons/norman-conquest/lesson-3-2.jpg",
+            alt: "Two historians in a library comparing old books",
             text: [
               "An interpretation is a view of the past constructed by a historian, writer or film-maker from the evidence. Interpretations of 1066 differ because the evidence is limited and often partial, because writers ask different questions, and because they bring different ideas about what matters in history.",
               "Writers in the generations after the Conquest tended to explain it as God's judgement. Norman writers such as William of Poitiers presented William as a righteous duke punishing Harold, the oath-breaker. Some English writers saw the defeat as God's punishment for the sins of the English. In the Victorian period, some historians argued about whether the Normans had destroyed ancient English freedoms or brought energy and order to a weaker kingdom.",
@@ -243,6 +259,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Building a historical argument",
+            picture: "/lessons/norman-conquest/lesson-3-3.jpg",
+            alt: "A teenager planning an essay with highlighters in a notebook",
             text: [
               "A good historical explanation does not just list reasons. It shows how factors connect and makes a judgement about which mattered most. For example, luck over the timing of the invasions made Harold's decision to rush south more risky, and William's leadership allowed him to make the most of that luck.",
               "To judge importance, historians ask questions such as: Without this factor, would the outcome have changed? Did this factor make others possible? Is the evidence for it strong, or does it rely on one biased source? A factor that was necessary for the result is usually more significant than one that just made it a little easier.",
@@ -317,6 +335,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "A small army in a large country",
+            picture: "/lessons/norman-conquest/lesson-4-1.jpg",
+            alt: "Norman knights riding past an Anglo-Saxon village",
             text: [
               "Being crowned did not mean William controlled England. He had perhaps 10,000 followers, far fewer than the English population of around two million, and many English nobles were still powerful. William's challenge was to turn a single victory into lasting control.",
               "At first William tried to work with the English elite. Some earls, such as Edwin and Morcar, kept their lands, and English officials such as sheriffs continued in office. But William also confiscated the lands of those who had fought against him at Hastings and gave them to his followers, and he imposed heavy taxes.",
@@ -325,6 +345,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Castles: controlling the land",
+            picture: "/lessons/norman-conquest/lesson-4-2.jpg",
+            alt: "Workers building a motte and bailey castle",
             text: [
               "The Normans' most important tool of control was the castle. Castles had been rare in England before 1066, but the Normans built them rapidly: by around 1100 there were perhaps 500. Most early castles were motte and bailey castles. The motte was a large earth mound with a wooden tower on top, and the bailey was an enclosed yard below, protected by a ditch and a wooden fence called a palisade, where soldiers, horses and stores were kept.",
               "Motte and bailey castles could be built in a few weeks using local labour, often forced. They were placed at strategic points: in towns, at river crossings and along main roads, so that small Norman garrisons could watch the population, collect taxes and launch mounted patrols. In towns such as York and Lincoln, English houses were demolished to make room for them.",
@@ -333,6 +355,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "The Harrying of the North, 1069 to 1070",
+            picture: "/lessons/norman-conquest/lesson-4-3.jpg",
+            alt: "An empty winter landscape with abandoned cottages in northern England",
             text: [
               "The north of England had a strong regional identity, close links with Scandinavia and a history of resisting southern kings. In 1069 rebels, supported by Edgar Ætheling and a Danish fleet, attacked York and killed the Norman garrison. William marched north, retook York, and then, over the winter of 1069 to 1070, carried out a deliberate campaign to stop the north from ever rebelling again. It became known as the Harrying of the North.",
               "William's soldiers destroyed villages, crops, farm animals, ploughs and stored food across large areas of Yorkshire and beyond. Without food or the means to grow it, many people died in the famine that followed, and others fled as refugees. This was a scorched-earth policy: it targeted the land that supported the population, not just armed rebels.",
@@ -409,6 +433,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "The feudal system",
+            picture: "/lessons/norman-conquest/lesson-5-1.jpg",
+            alt: "A baron kneeling to swear loyalty to the king",
             text: [
               "After the Conquest, William claimed that all the land in England belonged to the king. He kept a large share for himself and granted the rest to his leading followers, the tenants-in-chief: barons and senior churchmen such as bishops and abbots. In return, they swore homage and fealty, a solemn promise of loyalty, and agreed to provide the king with a set number of knights when needed.",
               "The tenants-in-chief in turn granted parts of their land to knights, who promised military service in return. At the bottom were the peasants, the great majority of the population, who worked the land. Many were villeins, unfree peasants who held land from their lord in return for working on his land for part of the week and paying dues, and who could not leave the manor without permission.",
@@ -418,6 +444,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Why William ordered the Domesday survey",
+            picture: "/lessons/norman-conquest/lesson-5-2.jpg",
+            alt: "Domesday commissioners questioning villagers outside a church",
             text: [
               "At Christmas 1085, while at Gloucester, William held what the Anglo-Saxon Chronicle calls a 'deep speech' with his council and ordered a survey of England. At the time he faced a threatened invasion from King Cnut IV of Denmark and had brought a large army of mercenaries to England, which he needed to pay and feed.",
               "In 1086 royal commissioners travelled around England in groups, each covering a circuit of several counties. In each area, juries of local people, both Norman and English, answered questions under oath: who held this land in 1066, and who holds it now? How many ploughs, villagers, mills, fishponds and woods are there? What is it worth now, and what was it worth before?",
@@ -426,6 +454,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Domesday as evidence",
+            picture: "/lessons/norman-conquest/lesson-5-3.jpg",
+            alt: "A teenager looking at a large old book in a museum",
             text: [
               "The results were written up in Latin in two volumes, Great Domesday and Little Domesday (covering Essex, Norfolk and Suffolk in more detail). Together they record over 13,000 places. The name 'Domesday' was used by the twelfth century, a reference to the Day of Judgement, because its verdict was final. William died in 1087, before the work was completely finished. The volumes are kept today at The National Archives in Kew, London.",
               "For historians, Domesday is an extraordinary source, giving a detailed snapshot of England in 1086 and, through its comparisons, in 1066. It allows historians to measure the replacement of the English landholding class, the scale of destruction in the north, the number of mills and ploughs, and the presence of enslaved people, who made up roughly a tenth of the recorded population.",
@@ -501,6 +531,8 @@ export const normanConquest: LessonUnit = {
         cards: [
           {
             heading: "What is the Bayeux Tapestry?",
+            picture: "/lessons/norman-conquest/lesson-6-1.jpg",
+            alt: "A long medieval embroidery displayed in a museum gallery",
             text: [
               "The Bayeux Tapestry is one of the most famous objects from medieval Europe. Strictly speaking it is not a tapestry, which is woven, but an embroidery: coloured woollen threads stitched onto long strips of linen. It is about 70 metres long and about 50 centimetres high, and it tells the story of 1066 in more than 50 scenes, from Harold's journey to Normandy to the Battle of Hastings.",
               "It was probably made in the 1070s, within a few years of the events it shows. Most historians think it was commissioned by Bishop Odo of Bayeux, William's half-brother, who appears prominently in it and who fought at Hastings. Many think it was stitched in England, perhaps at Canterbury, by skilled English embroiderers. It has been kept in Bayeux, in Normandy, for most of its history.",
@@ -509,6 +541,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Reading the Tapestry as a source",
+            picture: "/lessons/norman-conquest/lesson-6-2.jpg",
+            alt: "A teenager studying a stitched figure with a magnifying glass",
             text: [
               "Historians assess any source by asking about its provenance (who made it, when and why), its content (what it shows) and its context. The Tapestry was made for a Norman patron soon after the Conquest, so it largely tells the story from the Norman point of view: Harold swears an oath on holy relics, becomes king, and is defeated, which presents the conquest as justified.",
               "Yet it is not simply propaganda. It shows Harold as brave, rescuing Norman soldiers from quicksand during a campaign in Brittany, and it is ambiguous at key moments. For example, it does not make clear exactly what Edward said on his deathbed. Some historians suggest the English embroiderers may have included subtle details that an English viewer would read differently from a Norman one.",
@@ -517,6 +551,8 @@ export const normanConquest: LessonUnit = {
           },
           {
             heading: "Change and continuity after 1066",
+            picture: "/lessons/norman-conquest/lesson-6-3.jpg",
+            alt: "A Norman cathedral being built beside peasants ploughing a field",
             text: [
               "The Conquest brought major changes. A new ruling class of Norman and French barons replaced the English nobility almost completely. Hundreds of castles changed the landscape. The Church was reorganised: William replaced English bishops and abbots with Normans, such as Lanfranc, who became Archbishop of Canterbury in 1070, and great new cathedrals in the Romanesque style, such as Durham, were begun. French became the language of the court and the elite, and Latin replaced English in most official documents.",
               "But there was also important continuity. Most people were still English peasants, farming the same fields in the same villages, and the yearly rhythm of rural life carried on. William kept the shires, the sheriffs, the local courts, the geld and the system of minting coins, because they worked well and helped him rule. English remained the everyday language of the vast majority.",

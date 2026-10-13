@@ -33,6 +33,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "One city, three faiths",
+            picture: "/lessons/the-crusades/lesson-1-1.jpg",
+            alt: "The walled Old City of Jerusalem with the Dome of the Rock, the Western Wall and church domes",
             text: [
               "Jerusalem stands in the hills between the Mediterranean Sea and the River Jordan. For more than three thousand years it has been one of the most fought-over and most loved cities in the world, because it is sacred to three faiths that share common roots: Judaism, Christianity and Islam. All three trace their story back to the prophet Abraham, which is why they are sometimes called the Abrahamic faiths.",
               "For Jews, Jerusalem is the holiest city of all. King David made it his capital around 1000 BCE, and his son Solomon built the First Temple on the hill known as the Temple Mount. The Second Temple stood there until the Romans destroyed it in 70 CE (CE, 'Common Era', counts the same years as AD). The Western Wall, part of the platform that surrounded the Temple, is still the most important place of Jewish prayer, and Jews around the world face towards Jerusalem when they pray.",
@@ -42,6 +44,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Who ruled the eastern Mediterranean?",
+            picture: "/lessons/the-crusades/lesson-1-2.jpg",
+            alt: "A painted view of the eastern Mediterranean coast with Constantinople to the north",
             text: [
               "In 638, Muslim armies under Caliph Umar took Jerusalem from the Byzantine Empire. A caliph was the leader of the Muslim community, seen as a successor to the Prophet Muhammad. For most of the next four centuries, Christians and Jews lived in Jerusalem under Muslim rule as protected communities. They paid a special tax and faced some restrictions, but they could usually worship, and Christian pilgrims from Europe continued to visit.",
               "By the eleventh century the Muslim world was no longer united. The Abbasid caliphs in Baghdad had lost much of their real power. In Egypt, a rival dynasty called the Fatimids ruled, with their own caliph in Cairo. Then, from Central Asia, came the Seljuk Turks, who converted to Islam, took control of Baghdad in 1055 and pushed west.",
@@ -51,6 +55,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Latin Christendom in 1095",
+            picture: "/lessons/the-crusades/lesson-1-3.jpg",
+            alt: "A medieval village with a church, peasants in the fields and a knight riding past",
             text: [
               "Western Europe in the eleventh century is often called Latin Christendom, because its Church used Latin and looked to the Pope in Rome as its leader. Religion shaped almost every part of life. Most people believed deeply in heaven and hell, and that sin had to be paid for through penance: acts such as prayer, fasting, giving to the poor or going on pilgrimage.",
               "Society was organised through what historians often call the feudal system. Kings granted land to lords in return for loyalty and military service, and lords had trained, armoured warriors on horseback called knights. Knights were a warrior class whose violence often caused problems at home, and Church leaders had already tried to limit fighting through movements such as the 'Peace of God'.",
@@ -139,6 +145,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "The Council of Clermont, 1095",
+            picture: "/lessons/the-crusades/lesson-2-1.jpg",
+            alt: "A pope preaching to a large crowd of knights and townspeople in a field",
             text: [
               "The trigger for the First Crusade came from the east. In 1095, envoys from the Byzantine emperor Alexios I Komnenos met Pope Urban II at a Church council in Piacenza, in Italy, and asked for western soldiers to help fight the Seljuk Turks. Alexios probably hoped for a few thousand mercenaries to help him win back Anatolia. What he got was something far bigger.",
               "On 27 November 1095, at the end of a council in Clermont, in central France, Urban preached to a large crowd of clergy, knights and ordinary people in a field outside the town. He called on western Christians to go east, help their fellow Christians and free Jerusalem from Muslim rule. According to some accounts, the crowd answered with the cry 'Deus vult!', 'God wills it!'.",
@@ -148,6 +156,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "What did Urban actually say?",
+            picture: "/lessons/the-crusades/lesson-2-2.jpg",
+            alt: "A teenager comparing two old manuscripts with a magnifying glass",
             text: [
               "No copy of Urban's speech survives from the day itself. We have at least four main versions, by Fulcher of Chartres, Robert the Monk, Baldric of Dol and Guibert of Nogent. Some of these writers may have been in the crowd, but all four wrote their accounts after the crusaders had captured Jerusalem in 1099, some of them about ten years after the speech.",
               "The versions differ a great deal. Fulcher's account focuses on helping the eastern Christians and making peace among quarrelsome knights at home. Robert the Monk's version includes vivid, exaggerated descriptions of supposed Turkish cruelty to Christians, which were designed to stir up anger. Some versions put Jerusalem at the centre; others hardly mention it.",
@@ -157,6 +167,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Why did people take the cross?",
+            picture: "/lessons/the-crusades/lesson-2-3.jpg",
+            alt: "A family sewing a cloth cross onto a tunic as a squire packs for a journey",
             text: [
               "Tens of thousands of people answered the call, from great lords to poor peasants. Historians have long argued about why. The journey was about 3,000 kilometres, many would die from disease, hunger or fighting, and a knight's equipment, horses and supplies could cost several years' income. Families often had to sell or mortgage land to pay for it.",
               "Religious motives were clearly very important. Many crusaders believed that they were doing God's work, earning forgiveness for their sins and defending holy places. Charters written when knights sold land to raise money often describe their journey in deeply religious language.",
@@ -242,6 +254,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "The People's Crusade and the princes",
+            picture: "/lessons/the-crusades/lesson-3-1.jpg",
+            alt: "A long column of pilgrims and soldiers crossing a dusty hillside",
             text: [
               "The first groups to set out in 1096 were not organised armies. A preacher called Peter the Hermit gathered thousands of followers, many of them poor and with little training or equipment. This is known as the People's Crusade. They reached Constantinople, where Alexios quickly ferried them across into Anatolia. In October 1096 most were killed or captured by the Seljuks near Civetot, not far from Nicaea.",
               "The main forces, often called the Princes' Crusade, followed in late 1096 and 1097. They were led by powerful nobles from France, Flanders, Lorraine and Norman southern Italy, including Godfrey of Bouillon, Raymond of Toulouse, Bohemond of Taranto and Robert of Normandy, the eldest son of William the Conqueror. There was no single commander, and the leaders often quarrelled.",
@@ -250,6 +264,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "The long march, 1097 to 1099",
+            picture: "/lessons/the-crusades/lesson-3-2.jpg",
+            alt: "The great walls of Antioch on a mountainside with an army camped below",
             text: [
               "In 1097 the crusaders and Byzantines besieged Nicaea, which surrendered to Alexios in June. The crusaders then defeated a Seljuk army at Dorylaeum in July, and began a punishing march across Anatolia in the summer heat, losing many horses and people to thirst and disease.",
               "The hardest test was Antioch, a huge walled city in northern Syria. The siege lasted from October 1097 to June 1098. The crusaders suffered terrible hunger through the winter. Bohemond finally persuaded a guard inside to let his men in over a tower, but days later the crusaders were themselves besieged by a large relief army led by Kerbogha, the ruler of Mosul. Against the odds, they broke out and defeated him. Their chroniclers saw this as a miracle; historians also point to divisions among Kerbogha's allies, some of whom left the battlefield.",
@@ -259,6 +275,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "July 1099: what does the evidence say?",
+            picture: "/lessons/the-crusades/lesson-3-3.jpg",
+            alt: "A historian carefully turning old paper letters on a library table",
             text: [
               "When the crusaders entered Jerusalem, they killed large numbers of its Muslim and Jewish inhabitants, including people who had sought shelter on the Haram al-Sharif. The Fatimid governor, who had surrendered the citadel known as the Tower of David, was allowed to leave with his soldiers. The crusade leaders then gave thanks at the Church of the Holy Sepulchre, and Godfrey of Bouillon became ruler, taking the title 'Advocate', or defender, of the Holy Sepulchre.",
               "The sources disagree about the scale of the killing. Some western chronicles, celebrating victory, boast that the crusaders waded through blood, a phrase borrowed from the Bible and not meant as a literal measurement. The Muslim historian Ibn al-Athir, writing over a century later in Mosul, gives a figure of 70,000 dead, which modern historians think is far too high for the population of the city.",
@@ -348,6 +366,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "From Edessa to Hattin",
+            picture: "/lessons/the-crusades/lesson-4-1.jpg",
+            alt: "A rocky plain below twin hills under a hot sun, with distant horsemen",
             text: [
               "The crusader states were small and always short of soldiers. They survived for decades partly because their Muslim neighbours remained divided. That began to change when Zengi, the ruler of Mosul and Aleppo, captured Edessa in 1144. The Second Crusade (1147 to 1149), led by the kings of France and Germany, failed to win it back and ended in an unsuccessful siege of Damascus.",
               "Zengi's son Nur al-Din continued to unite Syria and promoted the idea of jihad, here meaning a holy war to recover Muslim lands and Jerusalem. One of his commanders was a Kurdish officer called Salah al-Din Yusuf ibn Ayyub, known in the West as Saladin. Sent to Egypt, Saladin became its ruler in 1169 and ended the Fatimid caliphate in 1171. After Nur al-Din died in 1174, Saladin gradually took control of Syria too.",
@@ -357,6 +377,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "The Third Crusade, 1189 to 1192",
+            picture: "/lessons/the-crusades/lesson-4-2.jpg",
+            alt: "The busy medieval harbour of Acre with ships and merchants",
             text: [
               "The loss of Jerusalem shocked western Europe and led to the Third Crusade. It was led by three of Europe's most powerful rulers: the German emperor Frederick Barbarossa, King Philip II of France and King Richard I of England, later known as 'the Lionheart'. Frederick drowned crossing a river in Anatolia in 1190 and most of his army went home.",
               "Richard and Philip joined the long siege of Acre, an important port, which surrendered in July 1191. Philip returned to France soon afterwards. When negotiations with Saladin over the exchange of prisoners and the True Cross broke down, Richard ordered the execution of around 2,700 Muslim prisoners outside Acre in August 1191. Historians still debate his reasons, but the killing was condemned by Muslim writers and remembered long afterwards.",
@@ -366,6 +388,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Two leaders, many reputations",
+            picture: "/lessons/the-crusades/lesson-4-3.jpg",
+            alt: "Envoys from two sides bowing to each other in a decorated tent",
             text: [
               "Richard and Saladin never met in person, although their brothers and envoys did. Yet they became linked in stories almost at once. Chroniclers on both sides recorded gestures of respect: Saladin is said to have sent fresh fruit and snow to cool drinks when Richard was ill, and horses when Richard's was killed at Jaffa. These stories may be exaggerated, but they show how each side wanted to see a worthy opponent.",
               "Saladin's reputation in the West grew over the centuries into that of a 'chivalrous' and generous enemy. Muslim writers who knew him, such as his adviser Baha al-Din ibn Shaddad, praised his piety, justice and generosity, although they were writing to celebrate their master and are hardly neutral. He was also a determined military leader who executed prisoners from the military orders after Hattin.",
@@ -454,6 +478,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "Baghdad and the House of Wisdom",
+            picture: "/lessons/the-crusades/lesson-5-1.jpg",
+            alt: "Scholars working together in a grand library in medieval Baghdad",
             text: [
               "While the crusades were the main story of these centuries for western Europeans, the Islamic world had long been one of the most advanced and connected civilisations on Earth. Its lands stretched from Spain to Central Asia, linked by trade routes along which goods, people and ideas moved, and by the Arabic language, which became a shared language of learning.",
               "In 762 the Abbasid caliph al-Mansur founded Baghdad on the River Tigris. Built as a round city, it quickly became one of the largest cities in the world, with markets, mosques, hospitals and libraries. Paper-making, learned from China, spread through the Islamic world, and Baghdad had paper mills by the late eighth century. Paper was far cheaper than parchment, so books could be copied in huge numbers.",
@@ -463,6 +489,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Mathematics, science and medicine",
+            picture: "/lessons/the-crusades/lesson-5-2.jpg",
+            alt: "A scholar's workshop with an astrolabe, lenses and a beam of light",
             text: [
               "In mathematics, Muhammad ibn Musa al-Khwarizmi, who worked in Baghdad in the ninth century, wrote a book on solving equations whose title gave us the word 'algebra', from 'al-jabr', meaning 'restoring'. The word 'algorithm' comes from the Latin form of his name. He also helped spread the Hindu-Arabic numerals, including zero, which are the digits we use today.",
               "In science, Ibn al-Haytham (about 965 to 1040), working mainly in Cairo, wrote the 'Book of Optics'. He showed, through careful experiments, that we see because light enters the eye, not because the eye sends out rays as many Greek writers had believed. His insistence on testing ideas through experiment is an important step towards the modern scientific method.",
@@ -472,6 +500,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "How did knowledge reach Europe?",
+            picture: "/lessons/the-crusades/lesson-5-3.jpg",
+            alt: "Christian, Muslim and Jewish scholars translating books together in Toledo",
             text: [
               "Most of this knowledge reached western Europe not through the crusades but through Spain and Sicily, where Christians, Muslims and Jews lived side by side. After Christian rulers took Toledo in 1085, scholars there translated hundreds of Arabic works into Latin during the twelfth century. Works by Aristotle, Ibn Sina and al-Khwarizmi entered European universities in this way.",
               "The crusades did create contact. Western settlers in the crusader states lived alongside Muslims, Jews and eastern Christians, traded with them, and sometimes employed local doctors. Italian merchants from Venice, Genoa and Pisa grew rich on trade in spices, sugar, silk and cotton, and words such as 'sugar', 'cotton' and 'syrup' entered European languages from Arabic.",
@@ -557,6 +587,8 @@ export const theCrusades: LessonUnit = {
         cards: [
           {
             heading: "How the crusading era ended",
+            picture: "/lessons/the-crusades/lesson-6-1.jpg",
+            alt: "The quiet stone walls of a coastal fortress at dusk",
             text: [
               "Crusading continued for centuries after Richard I. The Fourth Crusade (1202 to 1204) never reached the Holy Land: short of money and drawn into Byzantine politics, the crusaders attacked and sacked Constantinople, a Christian city, in 1204. This deepened the bitterness between Catholic and Orthodox Christians that still features in their history.",
               "Jerusalem was briefly returned to Christian rule by treaty in 1229, when the Holy Roman Emperor Frederick II negotiated with the Sultan of Egypt, but it was lost again in 1244. The last major crusader city in the Holy Land, Acre, fell to the Mamluk sultans of Egypt in 1291, ending the crusader states.",
@@ -565,6 +597,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "Consequences and legacy",
+            picture: "/lessons/the-crusades/lesson-6-2.jpg",
+            alt: "Merchant ships unloading spices, cotton and sugar in an Italian port",
             text: [
               "Historians identify several long-term consequences. Italian trading cities, such as Venice and Genoa, grew wealthy from trade with the eastern Mediterranean. Kings developed new ways of taxing their subjects to pay for crusades, such as England's Saladin Tithe of 1188. Military religious orders, such as the Knights Templar and the Knights Hospitaller, became powerful international organisations.",
               "Relations between faiths were deeply affected. The crusades sharpened hostility between Christians and Muslims, worsened the persecution of Jewish communities in Europe, and widened the divide between western and Byzantine Christians. Yet there was also contact, trade, diplomacy and treaties, as the Treaty of Jaffa shows.",
@@ -574,6 +608,8 @@ export const theCrusades: LessonUnit = {
           },
           {
             heading: "How have historians interpreted the crusades?",
+            picture: "/lessons/the-crusades/lesson-6-3.jpg",
+            alt: "A teenager weighing up different history books in a library",
             text: [
               "An interpretation is a historian's explanation or judgement about the past, based on evidence but shaped by their questions and their own time. The crusades have produced some of the strongest disagreements in history.",
               "In nineteenth-century Britain and France, writers such as the novelist Sir Walter Scott often romanticised the crusades as tales of chivalry and adventure. In contrast, Sir Steven Runciman's three-volume 'A History of the Crusades' (1951 to 1954) was strongly critical, ending with the famous judgement that the Holy War was 'nothing more than a long act of intolerance in the name of God'. He emphasised the damage done to the Byzantine world.",

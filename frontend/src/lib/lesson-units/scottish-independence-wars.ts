@@ -34,6 +34,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "Scotland in 1286",
+            picture: "/lessons/scottish-independence-wars/lesson-1-1.jpg",
+            alt: "The great hall of a medieval Scottish castle with a throne and fire",
             text: [
               "In the 1280s Scotland was an established kingdom with its own king, laws, church and nobility. Alexander III had ruled since 1249, when he became king at the age of seven. His kingdom mixed Gaelic, Scots, Norse and Anglo-Norman traditions, and its nobles often held land in both Scotland and England.",
               "Alexander's reign was largely peaceful. After the Battle of Largs in 1263, the Treaty of Perth (1266) transferred the Western Isles and the Isle of Man from Norway to Scotland. Relations with England were mostly friendly: Alexander had married Margaret, the daughter of Henry III of England, so Edward I of England was his brother-in-law.",
@@ -43,6 +45,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "A fall in the dark",
+            picture: "/lessons/scottish-independence-wars/lesson-1-2.jpg",
+            alt: "A lone rider on a stormy cliff path at night",
             text: [
               "On the stormy night of 18 to 19 March 1286, Alexander III rode from Edinburgh towards Kinghorn in Fife to join his new wife, Yolande de Dreux. In the dark he became separated from his companions, and he was found dead the next morning at the foot of a steep bank, apparently after a fall from his horse. He was 44.",
               "His death was a disaster for the kingdom because all three of his children had died before him: David in 1281, Margaret in 1283 and Alexander in January 1284. The only direct heir was a small child, Margaret, the daughter of Alexander's daughter Margaret and King Eric II of Norway. She was born in 1283 and is known as the Maid of Norway.",
@@ -52,6 +56,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Birgham and Orkney",
+            picture: "/lessons/scottish-independence-wars/lesson-1-3.jpg",
+            alt: "A medieval ship approaching green islands",
             text: [
               "The Guardians looked for a way to protect the young queen and keep the peace. Edward I proposed that Margaret should marry his son and heir, Edward of Caernarfon. In July 1290 the Treaty of Birgham agreed the marriage, but also set out guarantees: Scotland would remain 'separate and divided from England' and 'free in itself and without subjection', with its own laws and customs.",
               "A marriage like this, a dynastic marriage, was a normal way of joining royal families. If it had happened, the same royal family would eventually have ruled both kingdoms, but the treaty tried to make sure Scotland kept its own government.",
@@ -141,6 +147,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "Thirteen claimants and an umpire",
+            picture: "/lessons/scottish-independence-wars/lesson-2-1.jpg",
+            alt: "Medieval nobles presenting claims to a seated king",
             text: [
               "After Margaret's death, thirteen men put forward claims to the Scottish throne. This contest is known as the Great Cause. The two strongest claimants were John Balliol, Lord of Galloway, and Robert Bruce, Lord of Annandale (grandfather of the future King Robert). Both were descended from David, Earl of Huntingdon, a younger brother of King William the Lion.",
               "Their claims rested on different principles. Balliol was the grandson of David's eldest daughter, so he came from the senior line. This is primogeniture, the right of the eldest line to inherit. Bruce was the son of David's second daughter, so he was one generation closer to the royal line. He argued that nearness of blood should count for more.",
@@ -150,6 +158,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "King John and the overlord",
+            picture: "/lessons/scottish-independence-wars/lesson-2-2.jpg",
+            alt: "A king kneeling to pay homage to another king",
             text: [
               "On 17 November 1292, at Berwick, Edward gave judgement in favour of John Balliol. By the rules of inheritance most lawyers followed at the time, Balliol had the stronger claim, and many historians think the decision was legally correct. He was inaugurated as King of Scots at Scone on 30 November 1292, and in December he paid homage to Edward for the kingdom of Scotland.",
               "Edward then treated Scotland as a dependent territory. He allowed Scots who lost cases in Scottish courts to appeal to him in England, and he summoned King John to appear before English courts as if he were an ordinary lord. In 1294, when war broke out with France, Edward demanded that John and the Scottish nobles provide military service.",
@@ -159,6 +169,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "1296: conquest",
+            picture: "/lessons/scottish-independence-wars/lesson-2-3.jpg",
+            alt: "A stone block carried on a cart escorted by knights",
             text: [
               "In March 1296 Edward invaded. His army stormed Berwick, then Scotland's wealthiest trading town, and a great many of its inhabitants were killed. On 27 April 1296 the Scottish army was defeated at the Battle of Dunbar, and many leading nobles were captured.",
               "In July 1296 King John surrendered. He gave up his kingdom and was stripped of his royal insignia, including the royal arms on his surcoat. This led to his mocking nickname 'Toom Tabard', meaning 'empty coat'. He was taken to England as a prisoner and later allowed to go into exile in France.",
@@ -239,6 +251,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "The rising of 1297",
+            picture: "/lessons/scottish-independence-wars/lesson-3-1.jpg",
+            alt: "Medieval Scottish rebels gathered in a forest clearing",
             text: [
               "English rule after 1296 was unpopular. English officials collected heavy taxes and demanded that Scots serve in Edward's wars in France. In 1297 resistance broke out in several places at once, which suggests widespread discontent rather than the work of one man.",
               "In the north, Andrew Murray (also spelled Moray), the son of a powerful lord, led a rising that drove the English out of many castles. In the south-west and centre, William Wallace emerged as a leader. In May 1297 Wallace and his followers killed William Heselrig, the English sheriff of Lanark, which made him an outlaw and a rallying point for resistance.",
@@ -248,6 +262,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Stirling Bridge, 11 September 1297",
+            picture: "/lessons/scottish-independence-wars/lesson-3-2.jpg",
+            alt: "A narrow wooden bridge over a river below a craggy hill",
             text: [
               "Stirling controlled the main crossing of the River Forth, the gateway between southern and northern Scotland. An English army led by John de Warenne, Earl of Surrey, and Hugh de Cressingham, Edward's treasurer in Scotland, marched north to crush the rising. To reach the Scots they had to cross a narrow wooden bridge, wide enough for perhaps two horsemen side by side.",
               "Wallace and Murray placed their army on high ground near the Abbey Craig, overlooking a loop of the river where the land was soft and marshy. They waited while part of the English army crossed. When enough men were over the bridge to be defeated, but not enough to fight effectively, the Scots attacked and seized the end of the bridge, cutting the English force in two.",
@@ -257,6 +273,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Falkirk, capture and the sources",
+            picture: "/lessons/scottish-independence-wars/lesson-3-3.jpg",
+            alt: "A teenager comparing an old manuscript with a history book",
             text: [
               "In 1298 Edward I led a large army north himself. At the Battle of Falkirk on 22 July 1298, the Scots fought in schiltrons, tightly packed formations of spearmen. English longbowmen shot into the schiltrons until they broke, and English cavalry finished the defeat. Wallace resigned as Guardian soon afterwards and went to France, and possibly to Rome, to seek support for Scotland.",
               "By 1304 most Scottish nobles had submitted to Edward, but Wallace refused. In August 1305 he was captured near Glasgow by men serving Sir John Menteith, a Scottish lord loyal to Edward. He was taken to London, tried for treason in Westminster Hall on 23 August 1305 and executed the same day. He denied that he was a traitor, because he had never sworn loyalty to Edward.",
@@ -346,6 +364,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "Murder at Dumfries and a crown at Scone",
+            picture: "/lessons/scottish-independence-wars/lesson-4-1.jpg",
+            alt: "The quiet interior of a small medieval church",
             text: [
               "Robert Bruce was born on 11 July 1274. He was Earl of Carrick and the grandson of the Robert Bruce who had lost the Great Cause. His family had never accepted John Balliol as king. During the years of war Bruce changed sides more than once: he joined the rising of 1297, served as a joint Guardian of Scotland from 1298, but submitted to Edward I in 1302.",
               "His great rival was John Comyn, Lord of Badenoch, known as the Red Comyn. Comyn was King John's nephew and head of the most powerful noble family in Scotland. On 10 February 1306 the two men met in the church of the Greyfriars in Dumfries. They quarrelled, and Bruce and his companions killed Comyn in the church.",
@@ -355,6 +375,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "From outlaw to master of Scotland",
+            picture: "/lessons/scottish-independence-wars/lesson-4-2.jpg",
+            alt: "A ruined castle wall on a green hillside",
             text: [
               "Bruce's reign began disastrously. In June 1306 an English force defeated him at Methven, near Perth, and he became a fugitive, probably hiding in the islands of the west. His wife, daughter and sisters were captured and imprisoned, and three of his brothers were executed by the English. Bruce had lost almost everything.",
               "In early 1307 he returned to his own earldom of Carrick and fought a guerrilla war, using ambushes, raids and surprise attacks rather than risking open battles. He won small but important victories at Glen Trool and Loudoun Hill in 1307. Then, on 7 July 1307, Edward I died near Carlisle while marching north. His son, Edward II, was a far less determined war leader.",
@@ -364,6 +386,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Bannockburn, 23 to 24 June 1314",
+            picture: "/lessons/scottish-independence-wars/lesson-4-3.jpg",
+            alt: "Scottish spearmen in tight formations advancing across a meadow",
             text: [
               "By 1314 Stirling Castle was one of the last major English strongholds. Its commander agreed to surrender if an English army had not come to relieve it by midsummer. Edward II brought a large army north, probably about twice the size of Bruce's, though medieval numbers are very uncertain.",
               "On the first day, 23 June, an English knight, Henry de Bohun, charged at Bruce in front of the armies. Bruce dodged the charge and killed him with a blow of his axe. Scottish spearmen also drove back English cavalry. The English then spent the night on low, cramped ground between the Bannock Burn and boggy land beside the River Forth.",
@@ -439,6 +463,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "Why write to the Pope?",
+            picture: "/lessons/scottish-independence-wars/lesson-5-1.jpg",
+            alt: "The red sandstone ruins of a medieval abbey",
             text: [
               "In the Middle Ages the Pope was the most important authority in Western Christendom. Kings wanted papal recognition because it gave their rule legitimacy. Pope John XXII had excommunicated Robert the Bruce and refused to call him king, addressing him only as 'governor of the kingdom of Scotland'. The English king, Edward II, used his influence at the papal court to keep it that way.",
               "In 1320 the Scots sent three letters to the Pope: one from the king, one from the bishops, and one in the name of the barons and 'the whole community of the realm of Scotland'. Only the barons' letter survives. It is dated at Arbroath Abbey on 6 April 1320 and is now known as the Declaration of Arbroath.",
@@ -448,6 +474,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "What does it say?",
+            picture: "/lessons/scottish-independence-wars/lesson-5-2.jpg",
+            alt: "An old parchment document with hanging wax seals",
             text: [
               "The Declaration begins with a history of the Scots. It claims they came from Greater Scythia, travelled through Spain, and settled in Scotland, where 113 kings of their own royal line had reigned 'without the intrusion of a single foreigner'. Historians see this origin story as legend, but in 1320 it served a purpose: a long line of independent kings strengthened Scotland's claim to be a separate kingdom.",
               "It then describes Edward I's invasion and its suffering, and praises Robert the Bruce as the leader who delivered the people from their enemies. In a remarkable passage, the barons say that if Robert ever tried to make Scotland subject to England, they would drive him out as an enemy and choose another king.",
@@ -457,6 +485,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Reading it as a historian",
+            picture: "/lessons/scottish-independence-wars/lesson-5-3.jpg",
+            alt: "A teenager studying an old document with a magnifying glass",
             text: [
               "To judge a source, historians look at its provenance (who made it, when and where), its purpose and its intended audience. The Declaration was a carefully crafted piece of diplomacy, written to persuade one powerful reader, the Pope. Its high-flown language and its history were chosen to win his support, not to give a balanced account.",
               "The clause about removing the king has been read in different ways. Some have seen it as an early idea of government by consent of the people. Many historians argue that it was a way of presenting Bruce, who had seized the throne after a killing, as king by the choice of the community. It may also have been a warning to nobles who still doubted him. Either way, the 'community of the realm' meant the nobles, churchmen and landholders, not every Scot.",
@@ -542,6 +572,8 @@ export const scottishIndependenceWars: LessonUnit = {
         cards: [
           {
             heading: "The road to peace",
+            picture: "/lessons/scottish-independence-wars/lesson-6-1.jpg",
+            alt: "Medieval envoys exchanging sealed documents at a table",
             text: [
               "After Bannockburn, Bruce tried to force England to make peace. Scottish forces raided deep into northern England, collecting payments from communities in return for leaving them alone. In 1315 Bruce's brother Edward invaded Ireland, hoping to open a second front against England, but he was killed at the Battle of Faughart in 1318. In the same year the Scots recaptured Berwick.",
               "In 1323 the two kingdoms agreed a 13-year truce, but England still refused to recognise Bruce as king. The real change came from events inside England. In January 1327 Edward II was deposed by his wife, Queen Isabella, and her ally Roger Mortimer. His son, Edward III, was only fourteen, so Isabella and Mortimer governed in his name.",
@@ -550,6 +582,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "The Treaty of Edinburgh–Northampton, 1328",
+            picture: "/lessons/scottish-independence-wars/lesson-6-2.jpg",
+            alt: "A medieval royal wedding procession of two children",
             text: [
               "The treaty was agreed at Edinburgh on 17 March 1328 and ratified by the English parliament at Northampton in May 1328, which is why it carries both names. Its main terms were that England recognised Scotland as a fully independent kingdom, with the border as it had been in Alexander III's time, and recognised Robert as its king. The English crown gave up all claims to overlordship.",
               "In return, the Scots agreed to pay £20,000, a very large sum. The peace was sealed with a dynastic marriage: Bruce's son and heir, David, then aged four, married Edward III's sister Joan, aged seven, at Berwick in July 1328. Later in 1328 the Pope lifted Bruce's excommunication, and in 1329 he granted Scottish kings the right to be anointed at their coronation, a sign of full royal status.",
@@ -559,6 +593,8 @@ export const scottishIndependenceWars: LessonUnit = {
           },
           {
             heading: "Myth and history: Braveheart",
+            picture: "/lessons/scottish-independence-wars/lesson-6-3.jpg",
+            alt: "Two teenagers watching a historical film and taking notes",
             text: [
               "The film Braveheart (1995), directed by and starring Mel Gibson, made William Wallace famous around the world and won five Academy Awards, including Best Picture. Its story draws heavily on Blind Harry's poem from the 1470s, and it changes or invents a great deal.",
               "Some examples: the Battle of Stirling Bridge is shown without a bridge, even though the bridge was the key to the battle. The Scots wear belted plaids and blue face paint, but the belted plaid dates from the 1500s and face paint belongs to a much earlier time. The film shows Wallace having a relationship with Isabella of France, but she was a small child living in France at the time of Falkirk and did not marry Edward II until 1308, three years after Wallace died. It also shows Bruce betraying Wallace at Falkirk, for which there is no evidence, and Edward I dying at the moment of Wallace's execution, though Edward actually died in 1307.",

@@ -34,6 +34,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "Drawing symbols",
+            picture: "/lessons/observational-drawing/lesson-1-1.jpg",
+            alt: "A symbol tree and an observed tree drawn side by side",
             text: [
               "Ask most people to draw an eye, a house or a tree from memory and they will draw almost exactly the same thing: an almond shape with a circle in the middle, a square with a triangle on top, a lollipop on a stick. These are symbols. They are quick, shared shorthand for an idea, and they work well for signs and diagrams.",
               "Young children draw almost entirely in symbols, and that is normal. As we get older we build up a store of these shortcuts, and we keep using them without noticing. The trouble is that symbols are what we know about an object, not what it actually looks like from where we are sitting.",
@@ -43,6 +45,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "When knowing gets in the way",
+            picture: "/lessons/observational-drawing/lesson-1-2.jpg",
+            alt: "A round mug rim seen as an oval from the side",
             text: [
               "Think about the top of a mug. You know it is a circle. But unless you look straight down into it, you do not see a circle. From the side you see an ellipse, a flattened oval, and the lower your eye level, the flatter it becomes. Drawing a circle because you know it is round makes the mug look wrong.",
               "The same thing happens with lengths. You know a table top is a rectangle with four right angles, but from a seat at one end the far edge looks shorter than the near edge and the corners are not right angles at all. This shortening of things that point towards or away from you is called foreshortening.",
@@ -52,6 +56,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Dürer's rhinoceros",
+            picture: "/lessons/observational-drawing/lesson-1-3.jpg",
+            alt: "An imagined armoured rhinoceros in the style of an old woodcut",
             text: [
               "Albrecht Dürer (1471 to 1528) was a German artist from Nuremberg, famous across Europe for his drawings, woodcuts and engravings. He was a superb observer. His Young Hare of 1502, painted in watercolour and gouache, shows individual hairs and even the reflection of a window in the hare's eye. It is kept at the Albertina museum in Vienna.",
               "In 1515 an Indian rhinoceros was shipped to Lisbon in Portugal, the first living one seen in Europe for well over a thousand years. Dürer never saw it. He made his famous Rhinoceros woodcut from a written description and a sketch sent by someone else.",
@@ -128,6 +134,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "Blind contour drawing",
+            picture: "/lessons/observational-drawing/lesson-2-1.jpg",
+            alt: "A girl drawing her hand without looking at the paper",
             text: [
               "A contour is the edge of a form, including the edges inside it, such as the fold of a sleeve or the line where a thumb meets the palm. An outline only traces the outside silhouette; a contour line travels across the form too.",
               "In a blind contour drawing you look only at the subject, never at your paper, while your pencil slowly follows the edges your eye is tracing. Imagine your pencil point is touching the object itself and moving at exactly the same speed as your eye.",
@@ -137,6 +145,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Continuous line drawing",
+            picture: "/lessons/observational-drawing/lesson-2-2.jpg",
+            alt: "A houseplant drawn in one continuous line",
             text: [
               "In a continuous line drawing the pencil does not leave the paper from start to finish. You may look at your paper this time, but you cannot lift the pencil to start a new line, so you have to travel across the form, doubling back over lines you have already drawn.",
               "This forces you to think about how parts connect: how the handle joins the mug, how the stem joins the leaf. It also stops the habit of drawing lots of short, hairy, uncertain marks, which can make a drawing look nervous.",
@@ -146,6 +156,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Line weight",
+            picture: "/lessons/observational-drawing/lesson-2-3.jpg",
+            alt: "A shoe drawing with bold and delicate lines",
             text: [
               "Line weight means how thick, thin, dark or light a line is. A single line can change weight along its length simply by changing how hard you press, how much you tilt the pencil, or which grade of pencil you use.",
               "Line weight can describe form and space without any shading. A common convention is to use heavier lines where an edge is in shadow, where one object overlaps another, or where something is close to you, and lighter lines where an edge catches the light or is further away.",
@@ -222,6 +234,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "What proportion means",
+            picture: "/lessons/observational-drawing/lesson-3-1.jpg",
+            alt: "A bottle, mug and jar grouped on a table",
             text: [
               "Proportion is the size of one part compared with another, or with the whole. A wine bottle might be four times as tall as it is wide; its neck might be one third of its total height. Get these relationships right and a drawing looks convincing at any size. Get them wrong and it looks odd, even if every detail is beautifully drawn.",
               "Proportion in a drawing is relative, not absolute. You do not need to draw an object at its real size; you need its parts to be in the right ratio to each other. This is why measuring with a ruler held against the real object does not help you, but comparing lengths by eye does.",
@@ -231,6 +245,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Sighting with a pencil",
+            picture: "/lessons/observational-drawing/lesson-3-2.jpg",
+            alt: "A boy sighting a bottle with a pencil at arm's length",
             text: [
               "Sighting is a way of measuring by eye using a pencil held at arm's length. Hold the pencil upright, straighten your arm fully and lock your elbow, and close one eye. Keeping your arm straight matters because it keeps the pencil the same distance from your eye for every measurement.",
               "Line the tip of the pencil up with the top of your unit, then slide your thumbnail down the pencil until it lines up with the bottom. Keeping your thumb in place, turn the pencil, or move it to another part of the subject, and see how many times that length fits. You are comparing, not measuring in centimetres.",
@@ -240,6 +256,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Negative space, Leonardo and Dürer",
+            picture: "/lessons/observational-drawing/lesson-3-3.jpg",
+            alt: "The negative space inside a mug handle",
             text: [
               "Negative space is the space around and between objects, such as the gap between a mug's handle and its body. The object itself is the positive shape. Because we have no symbols for gaps, we tend to draw negative shapes accurately, so checking them is an excellent way to spot mistakes in proportion.",
               "Artists have studied proportion for centuries. Leonardo da Vinci (1452 to 1519) made his famous drawing known as Vitruvian Man around 1490. It shows a man inside a circle and a square, and is based on the writings of the Roman architect Vitruvius, who described the ideal proportions of the human body, such as the arm span being equal to the height.",
@@ -317,6 +335,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "Pencil grades",
+            picture: "/lessons/observational-drawing/lesson-4-1.jpg",
+            alt: "Drawing pencils beside a tonal scale",
             text: [
               "A pencil 'lead' contains no lead at all. It is graphite, a soft form of carbon, mixed with clay and baked. The more clay, the harder the core and the lighter and finer the mark. The more graphite, the softer the core and the darker and smoother the mark.",
               "Pencils are graded with letters and numbers. H stands for hard and B for black. A 4H is harder and lighter than a 2H; a 6B is softer and darker than a 2B. HB sits in the middle, and many ranges also include F (for fine) between HB and H. Art ranges commonly run from about 9H to 9B.",
@@ -326,6 +346,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "How light falls on a form",
+            picture: "/lessons/observational-drawing/lesson-4-2.jpg",
+            alt: "An egg lit from one side showing highlight and shadows",
             text: [
               "To draw tone accurately, first identify the light source: where is the light coming from? Using one strong light, such as a desk lamp or a window, gives clear tones that are easier to see.",
               "On a rounded object such as an egg or an orange, the highlight is the brightest spot, where light hits the surface most directly. Moving away from it, the surface turns through the mid-tones into the core shadow, the darkest band on the object itself, where the surface turns away from the light.",
@@ -335,6 +357,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Hatching, cross-hatching and blending",
+            picture: "/lessons/observational-drawing/lesson-4-3.jpg",
+            alt: "An apple drawn with hatching and cross-hatching",
             text: [
               "Hatching is tone built from parallel lines. The closer together and heavier the lines, the darker the area appears. Cross-hatching adds further layers of lines at different angles over the first, building darker tones step by step. Contour hatching curves the lines around the form, like lines of latitude on a globe, which helps describe its shape.",
               "Blending creates smooth, gradual tone. You lay down graphite with even pressure, often with the side of the pencil, then soften it with a tissue, a cotton bud or a paper blending stump (also called a tortillon). A rubber can then lift out highlights. Blending is excellent for smooth surfaces but can look muddy if overdone.",
@@ -413,6 +437,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "Actual and implied texture",
+            picture: "/lessons/observational-drawing/lesson-5-1.jpg",
+            alt: "Textured household objects including bark, an orange and a spoon",
             text: [
               "Texture is the surface quality of something: rough, smooth, furry, shiny, grainy, cracked. Actual texture is a real, physical surface you can touch, such as the bumps of thick paint. Implied (or visual) texture is the illusion of a surface created with marks on a flat page.",
               "In observational drawing you are almost always creating implied texture. The key is to look at how the surface breaks up the light. Tree bark is made of deep cracks (dark) and raised ridges (light). An orange's peel is covered in tiny pits that each catch a speck of light and a speck of shadow.",
@@ -422,6 +448,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "A vocabulary of marks",
+            picture: "/lessons/observational-drawing/lesson-5-2.jpg",
+            alt: "Pencil rubbings of leaves, wood and fabric",
             text: [
               "Mark-making is the range of lines, dots, patterns and textures an artist creates. Just as a writer chooses words, an artist chooses marks to suit what they are describing. Building a large vocabulary of marks gives you more choices.",
               "Some useful marks: short flicks for fur or grass, following the direction of growth; scumbling, small overlapping circular scribbles, for soft or woolly surfaces; stippling for sand, stone or pitted skin; long, wavering lines for wood grain; and broken, jagged lines for cracked or crumbling surfaces.",
@@ -431,6 +459,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Dürer's eye for texture",
+            picture: "/lessons/observational-drawing/lesson-5-3.jpg",
+            alt: "A detailed study of a hare's fur",
             text: [
               "Albrecht Dürer is still admired above all for how faithfully he recorded surfaces. His Young Hare (1502) builds fur from thousands of tiny brushstrokes, each following the direction in which the hairs grow: short and dense on the face, longer on the back, with fine pale whiskers laid over darker fur.",
               "His Great Piece of Turf (1503), also in the Albertina in Vienna, is a watercolour study of an ordinary clump of grasses, dandelions and other wild plants, seen at ground level. At the time, painting a patch of weeds with such care was very unusual. It shows each blade and leaf as an individual observed object, not a symbol for 'grass'.",
@@ -508,6 +538,8 @@ export const observationalDrawing: LessonUnit = {
         cards: [
           {
             heading: "What a still life is",
+            picture: "/lessons/observational-drawing/lesson-6-1.jpg",
+            alt: "A still life of a jug, pears and a bottle",
             text: [
               "A still life is an artwork of inanimate objects, usually everyday things such as fruit, flowers, bottles, food, books and tools, arranged by the artist. Because the subject does not move or change for hours, still life is the classic way to practise observation.",
               "Artists have painted still life since ancient times; there are examples in Roman wall paintings at Pompeii. It became a major type of art in the Netherlands in the 1600s, and the English term comes from the Dutch word stilleven. Dutch painters showed off their skill at rendering glass, silver, fruit and fabric.",
@@ -517,6 +549,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Arranging a composition",
+            picture: "/lessons/observational-drawing/lesson-6-2.jpg",
+            alt: "A card viewfinder framing a still life",
             text: [
               "Composition is how the parts of an artwork are arranged within the frame. In a still life you control the composition twice: first when you set up the objects, then when you choose your viewpoint and what to include on the page.",
               "Some reliable guidelines: use objects of different heights, sizes and textures for variety; let some objects overlap to create depth; an odd number of objects (three or five) often feels more natural than an even number; and leave interesting negative spaces between them. A cloth with folds can lead the eye through the arrangement.",
@@ -526,6 +560,8 @@ export const observationalDrawing: LessonUnit = {
           },
           {
             heading: "Planning, drawing and evaluating",
+            picture: "/lessons/observational-drawing/lesson-6-3.jpg",
+            alt: "A teenager checking a drawing in a mirror",
             text: [
               "A viewfinder helps you choose your composition. Cut a small rectangle out of a piece of card, in the same proportions as your paper, and look through it at the arrangement with one eye. Move it closer or further away, and shift it around, to try different croppings.",
               "Thumbnail sketches are small, quick drawings, a few centimetres across, that plan the layout and the main areas of light and dark. Make three or four before you start, each from a different angle or cropping, and choose the strongest. This is what artists mean by developing ideas.",

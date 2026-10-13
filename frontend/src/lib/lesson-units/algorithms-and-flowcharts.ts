@@ -35,6 +35,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "What computational thinking is",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-1-1.jpg",
+            alt: "A teenager studying a sheet of paper covered in boxes and arrows",
             text: [
               "Computational thinking is a way of approaching problems so that they can be solved, either by a computer or by a person working methodically. It is not the same as programming. Programming is writing instructions in a language a computer understands; computational thinking is the planning that comes first, working out exactly what those instructions should be.",
               "The idea was popularised by the computer scientist Jeannette Wing in 2006, who argued that it was a basic skill for everyone, like reading and arithmetic. Engineers, scientists, doctors and logistics planners all use it, often without a computer in sight.",
@@ -44,6 +46,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Decomposition and pattern recognition",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-1-2.jpg",
+            alt: "Two teenagers sorting jigsaw pieces into piles",
             text: [
               "Decomposition means breaking a large, complex problem into smaller sub-problems that are easier to understand and solve. 'Make a video game' is overwhelming. 'Draw the player', 'make the player move', 'detect when the player touches an enemy' and 'keep score' are each manageable, and different people can work on them at the same time.",
               "Each sub-problem can be broken down again until every piece is small enough to solve directly. This produces a tree of tasks, with the big problem at the top and simple, concrete jobs at the bottom.",
@@ -53,6 +57,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Abstraction and algorithms",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-1-3.jpg",
+            alt: "A detailed aerial view of a city beside a simplified line diagram",
             text: [
               "Abstraction means removing unnecessary detail so you can focus on what matters for the problem in hand. A famous example is Harry Beck's map of the London Underground, first published in 1933. It ignores real distances and the twists of the tunnels and shows only stations, lines and where you can change. For a passenger, that is all that matters.",
               "Choosing what to leave out depends on the purpose. A sat nav needs road lengths and speed limits but not the colour of the houses. A model of the weather keeps temperature, pressure and wind but ignores individual raindrops. Every computer program is an abstraction of some part of the real world.",
@@ -138,6 +144,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "Why draw an algorithm?",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-2-1.jpg",
+            alt: "A teenage boy arranging paper shapes into a flowchart",
             text: [
               "A flowchart is a diagram that shows the steps of an algorithm and the order in which they happen. Each type of step has its own shape, and arrows called flow lines join the shapes to show which step comes next.",
               "Flowcharts are useful because they are visual and independent of any programming language. A programmer, a manager and a customer can all look at the same flowchart and agree on what a system should do before anyone writes code. They also make it easy to spot paths that lead nowhere or loops that never end.",
@@ -147,6 +155,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "The symbols",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-2-2.jpg",
+            alt: "The five flowchart symbols cut out of coloured card",
             text: [
               "Terminator: a rounded rectangle (sometimes drawn as an oval) marks the start and the end of the algorithm. It contains just 'Start' or 'Stop'.",
               "Process: a rectangle holds an instruction or calculation, such as 'add 1 to score' or 'total = price × quantity'. Input and output: a parallelogram (a slanted rectangle) is used whenever data comes in, such as 'input guess', or goes out, such as 'output \"Well done\"'.",
@@ -156,6 +166,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Branches and loops",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-2-3.jpg",
+            alt: "A paper flowchart with an arrow looping back and a coin marker",
             text: [
               "A flowchart with no decisions is pure sequence: every step happens once, in order, from Start to Stop. Most useful algorithms need more than that.",
               "When a decision leads to two different paths that later rejoin and carry on down the page, the flowchart is showing selection. For example: 'Is it raining?' Yes leads to 'take umbrella'; No skips it; both paths then continue to 'leave the house'.",
@@ -246,6 +258,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "What pseudocode is",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-3-1.jpg",
+            alt: "A teenage girl writing indented lines in a notebook",
             text: [
               "Pseudocode is a way of writing an algorithm in structured, code-like English. It looks like a program but is not written in any real programming language, so it cannot be run. Its job is to describe the logic clearly so that a programmer can then turn it into Python, Java or any other language.",
               "Unlike a flowchart, pseudocode is quick to write and easy to change, and it maps closely onto real code. Unlike ordinary English, it is precise and uses a small set of keywords such as if, else, for and while.",
@@ -255,6 +269,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Sequence and selection",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-3-2.jpg",
+            alt: "A park path splitting into two at a fork",
             text: [
               "Every algorithm is built from three basic constructs: sequence, selection and iteration. Any algorithm, however complex, can be written using only these three.",
               "Sequence means instructions run one after another, in the order they are written. In 'price = 4', 'quantity = 3', 'total = price * quantity', 'print(total)', each line runs once, top to bottom, and the output is 12. Swap the last two lines and the program breaks, because total has not been worked out yet.",
@@ -264,6 +280,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Iteration and trace tables",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-3-3.jpg",
+            alt: "A teenager filling in a hand-ruled trace table",
             text: [
               "Iteration means repeating a set of instructions. A count-controlled loop repeats a fixed number of times and is written with for: 'total = 0', 'for i = 1 to 4', 'total = total + i', 'next i', 'print(total)'. The variable i takes the values 1, 2, 3 and 4 in turn, so total becomes 1, 3, 6 and finally 10.",
               "A condition-controlled loop repeats until something changes, so you do not need to know in advance how many times it will run. A while loop checks its condition before each repeat: 'number = 1', 'while number < 50', 'number = number * 3', 'endwhile', 'print(number)'. Number goes 1, 3, 9, 27, 81; when it reaches 81 the condition is false, the loop ends and 81 is printed.",
@@ -349,6 +367,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "Linear search",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-4-1.jpg",
+            alt: "A hand turning over playing cards one by one along a row",
             text: [
               "Searching means finding whether an item is in a list and, if so, where. It is one of the most common jobs a computer does: finding a contact in your phone, a product in an online shop or a word in a document.",
               "The simplest method is a linear search. You start at the first item and check each item in turn. If it matches the target, you stop and report where it is. If you reach the end of the list without a match, the item is not there.",
@@ -358,6 +378,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Binary search",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-4-2.jpg",
+            alt: "A row of cards with the middle card turned and half pushed aside",
             text: [
               "A binary search is much faster, but it only works if the list is already sorted into order. It repeatedly halves the part of the list that could contain the target, like looking up a word in a paper dictionary by opening it near the middle.",
               "The steps are: look at the middle item. If it is the target, stop. If the target is smaller, throw away the middle item and everything after it. If the target is larger, throw away the middle item and everything before it. Repeat with the half that is left until you find the target or there is nothing left to search.",
@@ -367,6 +389,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Which is better?",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-4-3.jpg",
+            alt: "A teenager opening a paper dictionary near the middle",
             text: [
               "Each comparison in a binary search halves the number of items left. That means the number of comparisons grows very slowly as the list gets longer. A list of 1,000 items needs at most 10 comparisons, because halving 1,000 ten times gets you down to 1. A list of a million items needs at most 20.",
               "Compare that with linear search, where the worst case is 1,000 comparisons for 1,000 items and 1,000,000 for a million. For large, sorted lists, binary search is dramatically faster.",
@@ -447,6 +471,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "Why sort?",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-5-1.jpg",
+            alt: "Ordered books on a shelf beside a jumbled pile",
             text: [
               "Sorting means putting items into order: numbers from smallest to largest (ascending) or largest to smallest (descending), or words alphabetically. Sorted data is easier for people to read, and it makes other algorithms possible, as you saw with binary search.",
               "Computers sort constantly: emails by date, search results by relevance, a music library by artist, a leaderboard by score. Because sorting is so common, computer scientists have invented dozens of sorting algorithms and studied carefully which ones are fastest for which kinds of data.",
@@ -455,6 +481,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "How bubble sort works",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-5-2.jpg",
+            alt: "Hands swapping two neighbouring playing cards",
             text: [
               "Bubble sort works through the list comparing each pair of neighbouring items. If a pair is in the wrong order, the two items are swapped. Going through the whole list once like this is called a pass.",
               "Try it with the cards 7, 3, 9, 2, 5. First pass: compare 7 and 3, wrong order, swap: 3, 7, 9, 2, 5. Compare 7 and 9, fine. Compare 9 and 2, swap: 3, 7, 2, 9, 5. Compare 9 and 5, swap: 3, 7, 2, 5, 9. That pass made 4 comparisons and 3 swaps.",
@@ -464,6 +492,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Strengths and weaknesses",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-5-3.jpg",
+            alt: "Bubbles rising through water in a glass",
             text: [
               "Bubble sort is simple to understand and to code. It sorts the list 'in place', moving items within the list itself, so it needs hardly any extra memory. On a list that is already sorted, or nearly sorted, a version that stops after a pass with no swaps is quick: it needs just one pass to confirm the order.",
               "A simple improvement: because the end of the list is already sorted after each pass, each new pass can stop one comparison earlier. The first pass on 5 items makes 4 comparisons, the next 3, then 2, then 1.",
@@ -539,6 +569,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
         cards: [
           {
             heading: "Divide and conquer",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-6-1.jpg",
+            alt: "A teenager dividing laundry into smaller and smaller piles",
             text: [
               "Merge sort uses a strategy called divide and conquer: split a big problem into smaller versions of the same problem, solve those, then combine the answers. It is decomposition turned into an algorithm. It was described by the mathematician John von Neumann in 1945, in the early days of electronic computers.",
               "The key insight is that a list of one item is already sorted, and that it is easy to merge two lists that are each already sorted. So merge sort splits the list in half, then splits each half, and keeps going until every item is on its own. Then it merges the single items into sorted pairs, the pairs into sorted fours, and so on, until the whole list is back together, in order.",
@@ -547,6 +579,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Merge sort with cards",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-6-2.jpg",
+            alt: "Playing cards laid out in a diamond of splitting and merging rows",
             text: [
               "Take the cards 6, 3, 8, 1, 7, 2, 5, 4. Split them in half: 6, 3, 8, 1 and 7, 2, 5, 4. Split again: 6, 3 / 8, 1 / 7, 2 / 5, 4. Split again into eight single cards. With 8 cards that takes three rounds of splitting, because 8 halves to 4, then 2, then 1.",
               "Now merge pairs: 6 and 3 make 3, 6; 8 and 1 make 1, 8; 7 and 2 make 2, 7; 5 and 4 make 4, 5.",
@@ -556,6 +590,8 @@ export const algorithmsAndFlowcharts: LessonUnit = {
           },
           {
             heading: "Comparing and choosing",
+            picture: "/lessons/algorithms-and-flowcharts/lesson-6-3.jpg",
+            alt: "Two teenagers racing to sort playing cards",
             text: [
               "Merge sort is much faster than bubble sort on large lists. Each round of merging touches every item once, and the number of rounds only grows with the number of times you can halve the list. For 1,000 items there are 10 rounds, so merge sort needs fewer than 10,000 comparisons, compared with up to 499,500 for bubble sort.",
               "Its speed is also reliable: merge sort takes about the same number of steps whatever the starting order, while bubble sort's time varies hugely from best case to worst case. That predictability matters for systems that must respond quickly.",

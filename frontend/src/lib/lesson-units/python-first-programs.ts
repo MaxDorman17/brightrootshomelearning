@@ -34,6 +34,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "What is Python?",
+            picture: "/lessons/python-first-programs/lesson-1-1.jpg",
+            alt: "A teenager reading lines of code on a laptop",
             text: [
               "Python is a text-based programming language. Instead of snapping blocks together, you type instructions using a small set of words and symbols that the computer understands. It was created by the Dutch programmer Guido van Rossum and first released in 1991. Its name comes from the comedy series Monty Python's Flying Circus, not the snake.",
               "Python is a high-level language. That means it is written in a way humans can read fairly easily, using English words like print, if and else. Your computer's processor cannot run it directly. A program called an interpreter reads your Python one line at a time and carries out each instruction.",
@@ -43,6 +45,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Where to write your code",
+            picture: "/lessons/python-first-programs/lesson-1-2.jpg",
+            alt: "A parent and teenager looking at a browser-based code editor",
             text: [
               "To write Python you need an editor (where you type) and an interpreter (which runs the code). The easiest option is a free, browser-based Python editor: you type in one part of the page, press a Run button, and the results appear in another part called the output or console.",
               "Ask a grown-up before you go online to find one. Many free editors work without an account. If one asks you to sign up, check with your grown-up first, and never give more personal information than you need to. Avoid any site that asks for payment.",
@@ -52,6 +56,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "print() and strings",
+            picture: "/lessons/python-first-programs/lesson-1-3.jpg",
+            alt: "A short line of code producing output on a laptop screen",
             text: [
               `Your first instruction is print(). Whatever you put inside the brackets is displayed in the output. To display words, you put them inside quotation marks: print("Hello, world!") displays Hello, world! on the screen.`,
               `Text inside quotation marks is called a string, because it is a string of characters: letters, digits, spaces and symbols. You can use double quotes or single quotes, but the opening and closing marks must match. "Hello" and 'Hello' are both fine; "Hello' is an error.`,
@@ -142,6 +148,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "Variables: named storage",
+            picture: "/lessons/python-first-programs/lesson-2-1.jpg",
+            alt: "Labelled boxes holding different objects, like variables",
             text: [
               `A variable is a named location in the computer's memory that stores a value. You can think of it as a labelled box: the label is the variable's name and the contents are its value. In Python you create a variable with an assignment statement, such as name = "Amira".`,
               `The = sign in Python does not mean 'equals' as it does in maths. It means 'store the value on the right in the variable on the left'. Read name = "Amira" as 'name is assigned the value Amira'. The right-hand side is worked out first, then stored.`,
@@ -151,6 +159,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Choosing good names",
+            picture: "/lessons/python-first-programs/lesson-2-2.jpg",
+            alt: "A teenager labelling storage jars next to a laptop",
             text: [
               "Python has rules for variable names. A name can contain letters, digits and the underscore character, but it cannot start with a digit and cannot contain spaces. So score2 and high_score are allowed, but 2score and high score are not.",
               "You also cannot use Python's own keywords, such as if, else, while or True, as variable names. And remember that names are case-sensitive: Score and score are two different variables.",
@@ -160,6 +170,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Asking the user with input()",
+            picture: "/lessons/python-first-programs/lesson-2-3.jpg",
+            alt: "A teenager typing an answer into a program that asks a question",
             text: [
               `So far your programs have done the same thing every time. input() lets a program ask the user for data while it is running. It displays a prompt, waits for the user to type something and press Enter, and then gives back what they typed.`,
               `You almost always store the result in a variable: name = input("What is your name? "). The string in the brackets is the prompt. Leaving a space at the end of the prompt stops the user's answer from being squashed against the question.`,
@@ -237,6 +249,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "Four basic data types",
+            picture: "/lessons/python-first-programs/lesson-3-1.jpg",
+            alt: "Four trays holding four different kinds of object, like data types",
             text: [
               "Every value in Python has a data type, which tells the computer what kind of data it is and what can be done with it. In this unit you will use four basic types.",
               `A string (str) is text, such as "Hello" or "SW1A 1AA". An integer (int) is a whole number with no decimal point, such as 7, 0 or -12. A float is a number with a decimal point, such as 3.5 or -0.25. A Boolean (bool) can only be one of two values, True or False, written with capital letters and no quotation marks.`,
@@ -246,6 +260,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Why input() causes surprises",
+            picture: "/lessons/python-first-programs/lesson-3-2.jpg",
+            alt: "A puzzled teenager at a laptop showing two values joined instead of added",
             text: [
               `input() always returns a string, even if the user types digits. If someone types 14 in answer to age = input("How old are you? "), the variable age holds "14", a string, not the number 14.`,
               `That matters because + does different things to different types. With two numbers it adds: 5 + 3 gives 8. With two strings it concatenates: "5" + "3" gives "53". So a program that asks for two numbers and adds them with input() alone will join them instead of adding them.`,
@@ -255,6 +271,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Casting: converting between types",
+            picture: "/lessons/python-first-programs/lesson-3-3.jpg",
+            alt: "A machine converting paper shapes into wooden blocks",
             text: [
               `Converting a value from one data type to another is called casting. int() converts to an integer, float() converts to a float and str() converts to a string. So int("14") gives the number 14, and str(14) gives the string "14".`,
               `The usual way to get a number from the user is to wrap input() inside int(): age = int(input("How old are you? ")). Python works from the inside out: input() gets the string, then int() converts it to a whole number and stores it in age.`,
@@ -341,6 +359,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "The arithmetic operators",
+            picture: "/lessons/python-first-programs/lesson-4-1.jpg",
+            alt: "A teenager at a laptop beside a large calculator",
             text: [
               "An operator is a symbol that tells Python to carry out an operation on values. Python's arithmetic operators are + for addition, - for subtraction, * for multiplication and / for division. Notice that multiplication uses an asterisk, *, not the letter x, because x could be a variable name.",
               "There is also ** for exponentiation (raising to a power). For example, 2 ** 3 means 2 to the power of 3, which is 2 × 2 × 2 = 8. And 5 ** 2 means 5 squared, which is 25.",
@@ -350,6 +370,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Integer division and modulus",
+            picture: "/lessons/python-first-programs/lesson-4-2.jpg",
+            alt: "Sweets shared into equal groups with some left over",
             text: [
               "Two more operators are extremely useful. Integer division, //, divides and throws away any remainder (for positive numbers, it rounds down to the nearest whole number). Modulus, %, gives just the remainder after division.",
               "For example, 17 // 5 gives 3, because 5 goes into 17 three whole times. 17 % 5 gives 2, because there are 2 left over. Together they tell you the whole answer: 17 divided by 5 is 3 remainder 2.",
@@ -359,6 +381,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Order of operations",
+            picture: "/lessons/python-first-programs/lesson-4-3.jpg",
+            alt: "Nesting bowls stacked inside each other beside a laptop",
             text: [
               "Python follows the same order of operations as maths, often remembered as BIDMAS: Brackets first, then Indices (powers), then Division and Multiplication, then Addition and Subtraction. Python treats //, % and / with the same priority as multiplication.",
               "So 2 + 3 * 4 gives 14, not 20, because the multiplication happens first. If you want the addition first, use brackets: (2 + 3) * 4 gives 20.",
@@ -445,6 +469,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "Selection and comparison operators",
+            picture: "/lessons/python-first-programs/lesson-5-1.jpg",
+            alt: "A balance scale comparing two piles of blocks",
             text: [
               "So far your programs have run every line in sequence. Selection lets a program choose which lines to run, depending on a condition. A condition is a question that is either True or False, the two Boolean values you met in lesson 3.",
               "Conditions are usually built with comparison operators: == (equal to), != (not equal to), < (less than), > (greater than), <= (less than or equal to) and >= (greater than or equal to). For example, age >= 13 is True if age holds 13 or more.",
@@ -454,6 +480,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "if and else",
+            picture: "/lessons/python-first-programs/lesson-5-2.jpg",
+            alt: "A park path splitting in two at a signpost",
             text: [
               "An if statement starts with the keyword if, then the condition, then a colon. The lines that should run when the condition is True go underneath, indented by four spaces. That indented group of lines is called a block.",
               `For example, the first line might be if score >= 50: and the indented line below it print("You passed!"). If score is 50 or more, the message is displayed. If not, Python skips the indented block and carries on with the next unindented line.`,
@@ -463,6 +491,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "More choices with elif",
+            picture: "/lessons/python-first-programs/lesson-5-3.jpg",
+            alt: "A railway track dividing into three branches",
             text: [
               "Sometimes there are more than two possibilities. elif, short for 'else if', lets you test another condition when the earlier ones were False. You can have as many elif parts as you need, between the if and the else.",
               `Imagine a grading program. The first line is if mark >= 70: with print("Grade A") indented below. Next comes elif mark >= 50: with print("Grade B"). Finally, else: with print("Grade C"). Each keyword line ends with a colon and each print is indented underneath.`,
@@ -553,6 +583,8 @@ export const pythonFirstPrograms: LessonUnit = {
         cards: [
           {
             heading: "Three kinds of error",
+            picture: "/lessons/python-first-programs/lesson-6-1.jpg",
+            alt: "A teenager inspecting code with a magnifying glass",
             text: [
               "Every programmer writes bugs, all the time. What makes someone a good programmer is how calmly and systematically they find and fix them. Errors fall into three broad kinds.",
               "A syntax error breaks the rules of the language, like a spelling or grammar mistake. Python spots it before running anything and refuses to start. Typical causes are a missing bracket or quotation mark, a missing colon after if or else, using = where == was needed, or misspelling a keyword.",
@@ -562,6 +594,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Reading error messages",
+            picture: "/lessons/python-first-programs/lesson-6-2.jpg",
+            alt: "A laptop screen with one line of code out of alignment",
             text: [
               "When Python finds an error, it shows a message called a traceback. It can look alarming, but it is trying to help. Start at the bottom: the last line names the type of error and gives a short description. Just above it, Python tells you the line number where it noticed the problem.",
               "Indentation errors are common in Python. An IndentationError means the spaces at the start of a line are wrong: for example, the line after an if is not indented, or one line in a block has more spaces than the others. Lines in the same block must line up exactly.",
@@ -571,6 +605,8 @@ export const pythonFirstPrograms: LessonUnit = {
           },
           {
             heading: "Testing and tracing",
+            picture: "/lessons/python-first-programs/lesson-6-3.jpg",
+            alt: "A teenager filling in a trace table on paper beside a rubber duck",
             text: [
               "Testing means running a program with chosen data to check it works. Good testers use three kinds of test data. Normal data is the typical input you expect. Boundary data sits right at the edge of a condition, such as exactly 50 when the test is mark >= 50. Erroneous data is input that should be rejected, such as a word when a number is expected.",
               "Boundary data is especially good at catching bugs. If a program should award a pass for 50 or more, testing with 49, 50 and 51 will quickly show whether you wrote > when you meant >=.",

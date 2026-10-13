@@ -34,6 +34,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "Acids in everyday life",
+            picture: "/lessons/acids-and-alkalis/lesson-1-1.jpg",
+            alt: "Lemons, vinegar, yoghurt and fizzy water on a kitchen counter",
             text: [
               "Acids are a family of substances that share a set of properties. Many of the acids you meet every day are found in food, and you know them by their sour taste. Lemons, limes and oranges contain citric acid. Vinegar is a dilute solution of ethanoic acid (sometimes called acetic acid). Sour milk and yoghurt contain lactic acid, and fizzy drinks contain carbonic acid, made when carbon dioxide dissolves in water.",
               "Your own body makes acids too. Your stomach produces hydrochloric acid, which helps to digest food and kills many of the microbes you swallow. Your muscles make lactic acid when you exercise hard. Nettle and ant stings contain methanoic acid.",
@@ -43,6 +45,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Bases and alkalis",
+            picture: "/lessons/acids-and-alkalis/lesson-1-2.jpg",
+            alt: "Soap, toothpaste and bicarbonate of soda on a shelf",
             text: [
               "The chemical opposites of acids are called bases. A base is any substance that can react with an acid and cancel out its acidity. This reaction is called neutralisation, and you will study it in lesson 5. Many metal oxides, metal hydroxides and metal carbonates are bases.",
               "An alkali is a base that dissolves in water. All alkalis are bases, but not all bases are alkalis. For example, copper oxide is a base but it does not dissolve in water, so it is not an alkali. Sodium hydroxide dissolves well in water, so it is both a base and an alkali.",
@@ -52,6 +56,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Concentrated and dilute",
+            picture: "/lessons/acids-and-alkalis/lesson-1-3.jpg",
+            alt: "A glass of strong squash next to a glass of watered-down squash",
             text: [
               "Most of the acids and alkalis we use are dissolved in water to make solutions. The concentration of a solution tells you how much of the substance is dissolved in a certain volume of water. A concentrated solution has a lot of acid or alkali particles in a small volume. A dilute solution has fewer particles spread through more water.",
               "You can dilute a solution by adding more water. This spreads the same number of acid particles through a larger volume, so the solution becomes less hazardous. Vinegar is a dilute solution: only about 4 to 8 per cent of it is ethanoic acid, and the rest is mostly water. That is why you can safely sprinkle it on chips.",
@@ -170,6 +176,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "Hazard symbols",
+            picture: "/lessons/acids-and-alkalis/lesson-2-1.jpg",
+            alt: "Red-bordered diamond hazard pictograms",
             text: [
               "A hazard is anything that could cause harm. Chemicals that are hazardous carry warning pictograms on their containers. In the UK, as in most of the world, these follow the Globally Harmonised System (GHS): a black symbol on a white background inside a diamond with a red border. They replaced the older orange square symbols, which you may still see on old bottles or in old textbooks.",
               "The corrosive symbol shows liquid dripping from two test tubes onto a hand and onto a surface, eating into both. You will find it on concentrated acids, oven cleaner, drain cleaner and some limescale removers. The exclamation mark warns that a substance is harmful or an irritant: it may irritate skin or eyes, or be harmful if swallowed. Many household cleaners carry it.",
@@ -179,6 +187,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Never mix cleaning products",
+            picture: "/lessons/acids-and-alkalis/lesson-2-2.jpg",
+            alt: "Cleaning products kept closed and separate in a locked cupboard",
             text: [
               "Some of the most dangerous chemistry happens by accident at home. Mixing cleaning products can cause reactions that release toxic gases. The most common example is bleach. If bleach is mixed with an acidic cleaner, such as some toilet cleaners or limescale removers, it releases chlorine gas. If it is mixed with a cleaner that contains ammonia, it releases gases called chloramines.",
               "These gases attack the lining of the nose, throat and lungs, causing coughing, breathing difficulty and in serious cases lasting damage. People have been seriously harmed by mixing products in small, poorly ventilated bathrooms, thinking that two cleaners would work better than one.",
@@ -188,6 +198,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Risks and risk assessments",
+            picture: "/lessons/acids-and-alkalis/lesson-2-3.jpg",
+            alt: "A teenager in safety glasses pouring vinegar while a grown-up watches",
             text: [
               "Scientists separate two ideas. A hazard is something that could cause harm. A risk is the chance that harm will actually happen, together with how serious it would be. A risk assessment lists the hazards in a practical, the risks they pose, and the control measures that reduce those risks.",
               "For example, in an experiment with vinegar the hazard is that the acid could splash into your eyes. The risk is fairly low, because vinegar is dilute, but it would sting and could irritate the eye. The control measures are to wear eye protection (safety glasses if you have them, or ordinary glasses), work at a table rather than holding things at face height, and use small amounts.",
@@ -300,6 +312,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "A scale from 0 to 14",
+            picture: "/lessons/acids-and-alkalis/lesson-3-1.jpg",
+            alt: "A rainbow strip showing the colours of the pH scale",
             text: [
               "Scientists measure how acidic or alkaline a solution is using the pH scale. For the solutions you will meet, the scale runs from 0 to 14. A solution with a pH of exactly 7 is neutral: it is neither acidic nor alkaline. Pure water has a pH of 7.",
               "A solution with a pH below 7 is acidic. The lower the number, the more acidic it is. A solution with a pH above 7 is alkaline, and the higher the number, the more alkaline it is. So pH 1 is very acidic, pH 6 is slightly acidic, pH 8 is slightly alkaline and pH 13 is very alkaline.",
@@ -309,6 +323,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "pH values of everyday substances",
+            picture: "/lessons/acids-and-alkalis/lesson-3-2.jpg",
+            alt: "Everyday substances placed along the pH colour strip",
             text: [
               "Your stomach acid has a pH of around 1 to 2, which is acidic enough to break down food and kill many bacteria. Lemon juice has a pH of about 2, vinegar about 2.5 to 3, and cola about 2.5. Orange juice is around 3.5 to 4, black coffee about 5, and milk about 6.5, which is only very slightly acidic.",
               "Pure water is 7, and human blood is very slightly alkaline at about 7.4. Your body works hard to keep it in a narrow range. Bicarbonate of soda solution is about 8 to 9, toothpaste is often around 8 to 9, and soap usually 9 to 10.",
@@ -318,6 +334,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Measuring pH",
+            picture: "/lessons/acids-and-alkalis/lesson-3-3.jpg",
+            alt: "A teenager measuring pH with an electronic probe",
             text: [
               "There are two main ways to measure pH. The first is to use universal indicator, a mixture of several dyes that turns a different colour at different pH values. It comes as a liquid or as paper strips. You add it to a solution, then compare the colour with a chart.",
               "Universal indicator is red for strongly acidic solutions (pH 0 to 2), orange and yellow for weakly acidic solutions (pH 3 to 6), green for neutral (pH 7), blue for weakly alkaline solutions (pH 8 to 10) and dark blue to purple for strongly alkaline solutions (pH 11 to 14).",
@@ -426,6 +444,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "What is an indicator?",
+            picture: "/lessons/acids-and-alkalis/lesson-4-1.jpg",
+            alt: "Red and blue litmus paper changing colour",
             text: [
               "An indicator is a substance that changes colour depending on whether it is in an acidic, neutral or alkaline solution. Indicators let us classify solutions safely, without tasting or touching them.",
               "Indicators work because their molecules have a slightly different structure in acidic and alkaline conditions. When the number of hydrogen ions changes, the molecule gains or loses hydrogen ions, and that change in structure changes which colours of light it absorbs. So we see a different colour.",
@@ -435,6 +455,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Natural indicators",
+            picture: "/lessons/acids-and-alkalis/lesson-4-2.jpg",
+            alt: "Red cabbage, blueberries, beetroot, red onion and turmeric",
             text: [
               "Many plants contain natural indicators. Litmus itself comes from lichens, organisms made of a fungus and an alga living together. Red cabbage, blackberries, blueberries, red onions, beetroot and many red and purple flowers contain coloured pigments called anthocyanins, which change colour with pH.",
               "Red cabbage is one of the best natural indicators because it shows a whole range of colours, a little like universal indicator. Its juice is red or pink in acidic solutions, purple in neutral solutions, and blue, then green, then yellow as solutions become more strongly alkaline.",
@@ -444,6 +466,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Making red cabbage indicator",
+            picture: "/lessons/acids-and-alkalis/lesson-4-3.jpg",
+            alt: "A teenager straining purple red cabbage indicator into a jar",
             text: [
               "You can make red cabbage indicator at home. Chop a few red cabbage leaves into small pieces and put them in a heatproof jug or bowl. A grown-up pours freshly boiled water over them, just enough to cover. The hot water breaks open the plant cells and the purple anthocyanins dissolve into it. This is called extraction.",
               "After about 15 minutes, once the liquid has cooled down, strain it through a sieve into a clean jug or jar. The deep purple liquid is your indicator. Throw away or compost the cabbage. The indicator keeps for a few days in the fridge in a labelled container.",
@@ -571,6 +595,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "Acid + base → salt + water",
+            picture: "/lessons/acids-and-alkalis/lesson-5-1.jpg",
+            alt: "Pink indicator turning purple as an alkali is added",
             text: [
               "When an acid reacts with a base, the two cancel each other out. This reaction is called neutralisation. If exactly the right amounts react, the solution becomes neutral, with a pH of 7. Adding an alkali to an acid makes the pH rise towards 7; adding an acid to an alkali makes it fall towards 7.",
               "At the level of particles, the hydrogen ions (H⁺) from the acid react with the hydroxide ions (OH⁻) from the alkali to make water molecules. The general word equation is: acid + alkali → salt + water.",
@@ -580,6 +606,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Naming salts",
+            picture: "/lessons/acids-and-alkalis/lesson-5-2.jpg",
+            alt: "Blue copper sulfate crystals beside white salt crystals",
             text: [
               "The name of a salt has two parts. The first part comes from the metal in the base or alkali. The second part comes from the acid. Hydrochloric acid makes salts called chlorides. Sulfuric acid makes sulfates. Nitric acid makes nitrates. Ethanoic acid, in vinegar, makes ethanoates. Citric acid makes citrates.",
               "So, sulfuric acid + potassium hydroxide → potassium sulfate + water. Nitric acid + sodium hydroxide → sodium nitrate + water. Hydrochloric acid + calcium hydroxide → calcium chloride + water.",
@@ -589,6 +617,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Neutralisation in everyday life",
+            picture: "/lessons/acids-and-alkalis/lesson-5-3.jpg",
+            alt: "A farmer spreading lime on a field, with blue and pink hydrangeas",
             text: [
               "Indigestion and heartburn can happen when the stomach makes too much hydrochloric acid, or when acid rises into the food pipe. Indigestion tablets contain bases such as calcium carbonate, magnesium hydroxide or sodium hydrogencarbonate, which neutralise the extra acid. They are medicines, so they should only be taken as directed and never used in experiments without a grown-up's permission.",
               "Farmers and gardeners test the pH of their soil because most crops grow best in soil that is roughly neutral, about pH 6 to 7. If the soil is too acidic, they spread lime (calcium carbonate, or calcium hydroxide made from it) to neutralise it. Some plants show soil pH for you: hydrangeas often have blue flowers in acidic soil and pink flowers in alkaline soil.",
@@ -708,6 +738,8 @@ export const acidsAndAlkalis: LessonUnit = {
         cards: [
           {
             heading: "Acid + carbonate → salt + water + carbon dioxide",
+            picture: "/lessons/acids-and-alkalis/lesson-6-1.jpg",
+            alt: "Foam overflowing a glass as vinegar reacts with bicarbonate of soda",
             text: [
               "Carbonates are compounds that contain carbon and oxygen bonded together with a metal. Common examples are calcium carbonate (in chalk, limestone, marble and eggshells), sodium carbonate (washing soda) and sodium hydrogencarbonate, which is the chemical name for bicarbonate of soda.",
               "Carbonates are bases, so they neutralise acids. But unlike metal hydroxides, they also make a gas. The general word equation is: acid + metal carbonate → salt + water + carbon dioxide. The carbon dioxide is what makes the mixture fizz. Scientists call this fizzing effervescence.",
@@ -717,6 +749,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Testing for carbon dioxide",
+            picture: "/lessons/acids-and-alkalis/lesson-6-2.jpg",
+            alt: "Limewater turning milky as carbon dioxide bubbles through it",
             text: [
               "Carbon dioxide is a colourless gas with no smell, so you can't identify it just by looking. The standard laboratory test uses limewater, a solution of calcium hydroxide. The gas is bubbled through the limewater. If the gas is carbon dioxide, the limewater turns milky, or cloudy.",
               "The cloudiness is caused by a new solid: carbon dioxide reacts with the calcium hydroxide to make tiny particles of calcium carbonate, which do not dissolve. Limewater is a lab chemical and is an irritant to the eyes, so this test is done in school rather than at home.",
@@ -726,6 +760,8 @@ export const acidsAndAlkalis: LessonUnit = {
           },
           {
             heading: "Carbonates in everyday life",
+            picture: "/lessons/acids-and-alkalis/lesson-6-3.jpg",
+            alt: "A rain-worn limestone statue and a risen cake",
             text: [
               "Baking powder is a mixture of sodium hydrogencarbonate and a dry, powdered acid, such as cream of tartar. While the powder stays dry, nothing happens. When liquid is added, the acid and the carbonate can react, making bubbles of carbon dioxide that get trapped in the cake mixture and make it rise. Heat in the oven makes the bubbles expand and sets the cake around them.",
               "Rain is naturally slightly acidic, because carbon dioxide from the air dissolves in it to make carbonic acid. Pollution from burning fossil fuels can make rain more acidic still, which is called acid rain. Acid rain reacts with limestone and marble, which are made of calcium carbonate, so old statues and buildings slowly wear away. Over thousands of years, slightly acidic rainwater also dissolves limestone underground, forming caves.",

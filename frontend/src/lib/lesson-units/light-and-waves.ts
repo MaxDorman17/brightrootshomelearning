@@ -33,6 +33,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "Waves carry energy, not stuff",
+            picture: "/lessons/light-and-waves/lesson-1-1.jpg",
+            alt: "Ripples spreading across a pond around a floating leaf",
             text: [
               "A wave is a disturbance that transfers energy from one place to another without transferring matter. Drop a stone into a pond and ripples spread outwards, but a leaf floating on the surface only bobs up and down; it is not carried to the edge. The energy travels, the water mostly stays where it is.",
               "Physicists sort waves into two families. Mechanical waves, such as sound, water waves and seismic waves from earthquakes, need a medium (a solid, liquid or gas) to travel through, because they pass from particle to particle. Electromagnetic waves, such as light, do not need a medium at all. That is why sunlight can cross the near-empty vacuum of space but sound cannot.",
@@ -41,6 +43,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Transverse and longitudinal",
+            picture: "/lessons/light-and-waves/lesson-1-2.jpg",
+            alt: "Two teenagers making waves along a stretched slinky spring and a rope",
             text: [
               "In a transverse wave, the vibrations are at right angles (perpendicular) to the direction the energy travels. Shake one end of a rope up and down and humps travel along it sideways. Ripples on water behave in a similar way, and all electromagnetic waves, including light, are transverse.",
               "In a longitudinal wave, the vibrations are parallel to the direction the energy travels. Push and pull one end of a slinky spring along its length and you will see bunched-up regions called compressions and stretched-out regions called rarefactions travelling down the spring. Sound is a longitudinal wave: a loudspeaker cone pushes air particles together and pulls them apart, sending compressions and rarefactions through the air to your ear.",
@@ -50,6 +54,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Measuring a wave",
+            picture: "/lessons/light-and-waves/lesson-1-3.jpg",
+            alt: "A regular wave with evenly spaced crests and troughs",
             text: [
               "The amplitude of a wave is the maximum distance a point moves from its rest (undisturbed) position. On a diagram of a transverse wave, it is measured from the middle line to the top of a crest, not from crest to trough. A bigger amplitude means more energy: a louder sound or a brighter light.",
               "The wavelength is the distance from one point on a wave to the same point on the next wave, for example crest to crest or compression to compression. Its symbol is the Greek letter lambda (λ) and it is measured in metres.",
@@ -170,6 +176,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "Luminous and non-luminous",
+            picture: "/lessons/light-and-waves/lesson-2-1.jpg",
+            alt: "Light passing through clear glass, glowing through frosted glass and blocked by wood",
             text: [
               "A luminous object gives out its own light: the Sun and other stars, flames, light bulbs and screens. A non-luminous object does not; we see it only because light from a luminous source bounces off it and into our eyes. The Moon is non-luminous. Moonlight is sunlight reflected from the Moon's rocky surface.",
               "When light reaches a material, three things can happen. It can be transmitted (pass through), reflected (bounce off) or absorbed (taken in, usually warming the material). Most materials do a mixture of all three.",
@@ -178,6 +186,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Straight lines and ray diagrams",
+            picture: "/lessons/light-and-waves/lesson-2-2.jpg",
+            alt: "A teenager looking into a homemade pinhole camera",
             text: [
               "In a uniform material, light travels in straight lines. You can see this in a sunbeam through a dusty window or a torch beam in fog: the edges are sharp and straight. The sharp edges of shadows are more evidence; if light curved round objects easily, shadows would be fuzzy blobs.",
               "Physicists model light with rays: straight lines with an arrow showing the direction the light travels. A ray diagram is a model, not a picture. Real light spreads out in all directions from a source, but we draw just the few rays we need to explain what is happening. Always use a ruler, and always put the arrows on.",
@@ -187,6 +197,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "The fastest thing there is",
+            picture: "/lessons/light-and-waves/lesson-2-3.jpg",
+            alt: "Lightning flashing over distant hills at dusk",
             text: [
               "Light travels through a vacuum at about 300,000 kilometres per second (3 × 10⁸ m/s). Nothing carries energy or information faster. In one second, light could travel round the Earth about seven and a half times.",
               "Light is slightly slower in air, and noticeably slower in water (about 225,000 km/s) and glass (about 200,000 km/s). This change of speed between materials causes refraction, which you will study in lesson 4.",
@@ -303,6 +315,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "The law of reflection",
+            picture: "/lessons/light-and-waves/lesson-3-1.jpg",
+            alt: "A torch beam reflecting off a small mirror next to a protractor",
             text: [
               "When light hits a smooth, shiny surface such as a mirror, it bounces off in a predictable way. To describe it, physicists draw the normal: a dashed line at right angles (90°) to the surface at the point where the ray hits.",
               "The ray arriving at the mirror is the incident ray, and the angle between it and the normal is the angle of incidence (i). The ray leaving the mirror is the reflected ray, and the angle between it and the normal is the angle of reflection (r).",
@@ -312,6 +326,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Specular and diffuse reflection",
+            picture: "/lessons/light-and-waves/lesson-3-2.jpg",
+            alt: "A lake with a mirror-like reflection beside matt white paper",
             text: [
               "When parallel rays hit a very smooth surface such as a mirror, still water or polished metal, every ray meets the surface at the same angle, so they all reflect at the same angle and stay parallel. This is specular reflection, and it produces a clear image.",
               "Most surfaces, such as paper, skin, wood and painted walls, look smooth but are rough on a microscopic scale. Parallel rays hit tiny bumps facing in many different directions. Each ray still obeys the law of reflection, but the normals point every which way, so the reflected rays scatter in all directions. This is diffuse reflection, and it produces no image.",
@@ -320,6 +336,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Images in a plane mirror",
+            picture: "/lessons/light-and-waves/lesson-3-3.jpg",
+            alt: "A teenager raising a hand in front of a full-length mirror",
             text: [
               "A plane mirror is a flat mirror. When you look into one, your brain assumes light has travelled to your eye in a straight line, so it traces the reflected rays straight backwards. They seem to come from a point behind the mirror. That is where you see the image.",
               "The image in a plane mirror is the same size as the object, the same distance behind the mirror as the object is in front, and upright. It is also laterally inverted: left and right appear swapped, which is why the word AMBULANCE is printed backwards on the front of ambulances, so drivers read it correctly in their mirrors.",
@@ -437,6 +455,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "Why light bends",
+            picture: "/lessons/light-and-waves/lesson-4-1.jpg",
+            alt: "A beam of light bending as it passes through a glass block",
             text: [
               "Refraction is the change in direction of light as it passes from one transparent material into another at an angle. It happens because light travels at different speeds in different materials: fastest in a vacuum, almost as fast in air, slower in water and slower still in glass.",
               "Picture a toy car rolling at an angle from a smooth floor onto a carpet. One front wheel reaches the carpet first and slows down while the other is still moving quickly, so the car swings round. A wavefront of light does the same thing at the boundary between air and glass.",
@@ -446,6 +466,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Refraction in everyday life",
+            picture: "/lessons/light-and-waves/lesson-4-2.jpg",
+            alt: "A pencil that looks broken in a glass of water",
             text: [
               "Put a pencil in a glass of water and look from the side: it seems bent or broken at the surface. Light from the underwater part of the pencil bends away from the normal as it leaves the water, and your brain traces it back in a straight line to a place where the pencil isn't.",
               "For the same reason, swimming pools and ponds look shallower than they really are. Light from the bottom bends away from the normal as it leaves the water, so the bottom appears raised. This misjudgement has led to accidents, which is one reason never to dive into water you don't know.",
@@ -454,6 +476,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Convex and concave lenses",
+            picture: "/lessons/light-and-waves/lesson-4-3.jpg",
+            alt: "A magnifying glass focusing an upside-down image of a window onto paper",
             text: [
               "A lens is a shaped piece of transparent material that refracts light to form an image. A convex (converging) lens is thicker in the middle than at the edges. It bends parallel rays inwards so they meet at a point called the principal focus or focal point. The distance from the centre of the lens to the focal point is the focal length.",
               "A fatter, more curved convex lens bends light more strongly, so it has a shorter focal length. Convex lenses are used in magnifying glasses, cameras, projectors and the human eye. Used close to an object, a convex lens makes a magnified, upright, virtual image; used to focus light from a distant object, it makes a real, inverted image that can be caught on a screen.",
@@ -570,6 +594,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "Inside the eye",
+            picture: "/lessons/light-and-waves/lesson-5-1.jpg",
+            alt: "A close-up of an eye showing the iris, pupil and cornea",
             text: [
               "Your eye is a fluid-filled ball about 2.5 cm across. Light enters through the cornea, the clear, curved window at the front. The cornea does most of the refracting, bending light inwards as it enters the eye.",
               "Behind the cornea is the iris, the coloured ring of muscle, with a hole in the middle called the pupil. The pupil looks black because light goes in but very little comes back out. In bright light the iris makes the pupil smaller to protect the retina; in dim light it widens the pupil to let more light in. This is a reflex: it happens automatically, without you deciding.",
@@ -579,6 +605,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "From light to sight",
+            picture: "/lessons/light-and-waves/lesson-5-2.jpg",
+            alt: "A cutaway model eye with an upside-down image forming at the back",
             text: [
               "The cornea and lens together act as a converging lens system, focusing light from an object onto the retina. Just as in a pinhole camera, rays from the top of the object land at the bottom of the retina, so the image on the retina is real, inverted and much smaller than the object.",
               "We don't see the world upside down because the brain processes the signals from the retina. Seeing is not just the eye recording a picture: the brain combines information from both eyes, fills in the blind spot and compares what it sees with what it expects. That is why optical illusions can trick us.",
@@ -588,6 +616,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Short sight, long sight and protecting your eyes",
+            picture: "/lessons/light-and-waves/lesson-5-3.jpg",
+            alt: "A teenager trying on glasses at an optician's",
             text: [
               "In short sight (myopia), a person sees near objects clearly but distant objects look blurred. The eyeball is too long, or the lens and cornea refract too strongly, so light from distant objects focuses in front of the retina. A concave lens in glasses or contact lenses spreads the rays out slightly first, so they focus on the retina.",
               "In long sight (hyperopia), distant objects are clear but near objects are blurred. The eyeball is too short, or the eye refracts too weakly, so light from near objects would focus behind the retina. A convex lens adds extra converging power so the rays focus on the retina. Many people become longer-sighted with age as the eye's lens becomes stiffer.",
@@ -703,6 +733,8 @@ export const lightAndWaves: LessonUnit = {
         cards: [
           {
             heading: "Splitting white light",
+            picture: "/lessons/light-and-waves/lesson-6-1.jpg",
+            alt: "A rainbow over green fields after rain",
             text: [
               "In 1666 Isaac Newton let a narrow beam of sunlight into a darkened room and passed it through a glass prism. A band of colours appeared on the opposite wall. He then used a second prism to recombine the colours into white light, showing that the prism was not adding colour to the light; white light is a mixture of colours all along.",
               "The band of colours is called the visible spectrum. In order it runs red, orange, yellow, green, blue, indigo, violet, a sequence often remembered as 'Richard Of York Gave Battle In Vain'. In reality the colours blend smoothly with no sharp edges.",
@@ -712,6 +744,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "Filters and coloured objects",
+            picture: "/lessons/light-and-waves/lesson-6-2.jpg",
+            alt: "Objects lit by a red torch in a dark room",
             text: [
               "A coloured filter transmits light of its own colour and absorbs the rest. Shine white light through a red filter and only red light comes out; the other colours have been absorbed, not changed into red. Shine that red light at a blue filter and nothing gets through, because the blue filter absorbs red.",
               "Opaque objects have colour because they reflect some colours and absorb others. A green leaf in white light reflects green and absorbs most other colours. A white object reflects all colours equally; a black object absorbs nearly all of them, which is why dark clothes warm up quickly in sunshine.",
@@ -721,6 +755,8 @@ export const lightAndWaves: LessonUnit = {
           },
           {
             heading: "The electromagnetic spectrum",
+            picture: "/lessons/light-and-waves/lesson-6-3.jpg",
+            alt: "A band of waves getting shorter from one end to the other",
             text: [
               "Visible light is only a small part of a much bigger family called the electromagnetic (EM) spectrum. All EM waves are transverse, can travel through a vacuum, and travel at the same speed in a vacuum: about 300,000 km/s. They differ in wavelength and frequency.",
               "In order of increasing frequency and decreasing wavelength, the spectrum runs: radio waves, microwaves, infrared, visible light, ultraviolet, X-rays and gamma rays. Radio waves can have wavelengths of many metres or even kilometres; gamma rays have wavelengths smaller than an atom. Higher frequency means each wave carries more energy.",

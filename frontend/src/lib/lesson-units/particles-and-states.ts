@@ -34,6 +34,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "Everything is made of particles",
+            picture: "/lessons/particles-and-states/lesson-1-1.jpg",
+            alt: "A teenager examining salt grains through a magnifying glass, with tiny particles imagined above them.",
             text: [
               "All matter, from the air you breathe to the chair you are sitting on, is made of particles far too small to see. A single grain of salt contains roughly a billion billion of them. Depending on the substance, these particles may be atoms, molecules (groups of atoms joined together) or ions, but at KS3 we usually call them all 'particles'.",
               "The particle model is a scientific model: a simplified picture that helps us explain and predict how materials behave. It makes three key claims. First, all matter is made of tiny particles. Second, the particles are always moving. Third, there are forces of attraction between particles, which are strongest when the particles are close together.",
@@ -43,6 +45,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Solids, liquids and gases",
+            picture: "/lessons/particles-and-states/lesson-1-2.jpg",
+            alt: "Particle arrangements of a solid, a liquid and a gas shown as spheres in three boxes.",
             text: [
               "In a solid, the particles are packed closely together in a regular, fixed arrangement, often a repeating pattern called a lattice. Strong forces of attraction hold each particle in place, so the particles cannot move from place to place. They do still move: they vibrate about fixed positions.",
               "In a liquid, the particles are still close together, almost touching, but they are arranged randomly. The forces of attraction are weaker than in a solid, so the particles can slide past one another and move around. They have more energy than the particles in the same substance as a solid.",
@@ -52,6 +56,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Using the model to explain properties",
+            picture: "/lessons/particles-and-states/lesson-1-3.jpg",
+            alt: "A teenager pressing the plunger of a sealed medicine syringe.",
             text: [
               "Solids have a fixed shape and a fixed volume because their particles are held in fixed positions by strong forces. They cannot be compressed (squashed) noticeably, because the particles are already touching.",
               "Liquids have a fixed volume but take the shape of their container. They can flow because the particles can move past each other. Like solids, liquids are very hard to compress, because their particles are already close together. That is why car brakes use a liquid to pass on a push.",
@@ -160,6 +166,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "Six changes of state",
+            picture: "/lessons/particles-and-states/lesson-2-1.jpg",
+            alt: "An ice cube melting, a misted window and fog flowing from dry ice.",
             text: [
               "A change of state happens when a substance changes from one state to another. There are six to learn. Melting is solid to liquid, and freezing is liquid to solid. Evaporating or boiling turn a liquid into a gas, and condensing turns a gas into a liquid.",
               "Two more changes skip the liquid state altogether. Sublimation is when a solid turns straight into a gas. Solid carbon dioxide, known as dry ice, sublimes at −78 °C, which is why it makes a cold fog instead of a puddle. On a cold, dry, sunny day, snow and frost can also slowly sublime. The reverse, gas straight to solid, is called deposition: frost forming on a window on a freezing night is water vapour depositing as ice.",
@@ -169,6 +177,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Energy in, energy out",
+            picture: "/lessons/particles-and-states/lesson-2-2.jpg",
+            alt: "A teenager cooling down after a run on a sunny, breezy day.",
             text: [
               "Melting, evaporating, boiling and sublimation all need energy to be transferred to the substance, usually by heating. The energy lets the particles move more and overcome some or all of the forces of attraction holding them together.",
               "Freezing, condensing and deposition all transfer energy away from the substance to the surroundings. As the particles lose energy they slow down, and the forces of attraction pull them closer together into a more ordered arrangement.",
@@ -178,6 +188,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Evaporating is not the same as boiling",
+            picture: "/lessons/particles-and-states/lesson-2-3.jpg",
+            alt: "A puddle drying in the sun beside a pan of boiling water.",
             text: [
               "Evaporation happens at any temperature, but only at the surface of a liquid. Particles in a liquid have a range of energies. A few at the surface have enough energy to break away from the others and escape into the air as a gas. That is how puddles dry up on a cool day.",
               "Boiling happens only at one temperature, the boiling point, and it happens throughout the liquid. Bubbles of vapour form inside the liquid, rise and burst at the surface. Water boils at 100 °C at normal sea-level air pressure.",
@@ -280,6 +292,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "Melting and boiling points",
+            picture: "/lessons/particles-and-states/lesson-3-1.jpg",
+            alt: "A pot of water boiling on a camping stove at a snowy mountain summit.",
             text: [
               "The melting point of a substance is the temperature at which it melts (and, the other way, freezes). The boiling point is the temperature at which it boils (and condenses). Every pure substance has its own fixed melting and boiling points, so they can be used to identify a substance.",
               "Water melts at 0 °C and boils at 100 °C. Ethanol, the alcohol in hand gel, melts at −114 °C and boils at 78 °C. Oxygen boils at −183 °C, which is why it is a gas in our air. Iron melts at 1538 °C and table salt at 801 °C.",
@@ -289,6 +303,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Predicting the state",
+            picture: "/lessons/particles-and-states/lesson-3-2.jpg",
+            alt: "A gritting lorry spreading salt on an icy road.",
             text: [
               "If you know a substance's melting and boiling points, you can predict its state at any temperature. Below the melting point it is a solid. Between the melting point and the boiling point it is a liquid. Above the boiling point it is a gas.",
               "Take ethanol at room temperature, about 20 °C. Its melting point is −114 °C, and 20 °C is above that, so it is not a solid. Its boiling point is 78 °C, and 20 °C is below that, so it is not a gas. It must be a liquid.",
@@ -298,6 +314,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Reading a heating curve",
+            picture: "/lessons/particles-and-states/lesson-3-3.jpg",
+            alt: "A teenager recording the temperature of melting ice and drawing a graph.",
             text: [
               "A heating curve is a graph of temperature (on the y-axis) against time (on the x-axis) as a substance is heated steadily. Imagine heating ice from −20 °C until it becomes steam at 120 °C.",
               "At first the line slopes upwards: the ice warms up as its particles vibrate faster. Then, at 0 °C, the line goes flat even though heating continues. The energy is being used to overcome the forces holding the particles in their fixed positions, not to make them move faster. Once all the ice has melted, the line slopes upwards again as the water warms.",
@@ -399,6 +417,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "What is diffusion?",
+            picture: "/lessons/particles-and-states/lesson-4-1.jpg",
+            alt: "Deodorant spray spreading out across a bedroom.",
             text: [
               "Diffusion is the spreading out and mixing of particles from an area where they are at a high concentration to an area where they are at a lower concentration. It happens on its own, without stirring or blowing, because particles are always moving.",
               "Think of someone spraying deodorant in one corner of a room. At first, the deodorant particles are concentrated near the can. They move randomly, colliding with air particles and changing direction millions of times a second. Over time, more of them end up spreading away from the crowded area than coming back, until they are evenly mixed. That is why you smell it across the room a little later.",
@@ -408,6 +428,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Why diffusion is faster in some cases",
+            picture: "/lessons/particles-and-states/lesson-4-2.jpg",
+            alt: "Food colouring spreading faster in warm water than in cold water.",
             text: [
               "Diffusion is fastest in gases, because gas particles move quickly and have lots of space to move into. It is much slower in liquids, because the particles are close together and keep bumping into each other. A drop of food colouring in still water can take hours to spread through a glass.",
               "In solids, diffusion is so slow that we usually ignore it, because the particles are fixed in place and can only vibrate.",
@@ -417,6 +439,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Evidence for moving particles",
+            picture: "/lessons/particles-and-states/lesson-4-3.jpg",
+            alt: "An antique microscope with a view of specks moving in zigzag paths.",
             text: [
               "If particles are too small to see, how do we know they are moving? In 1827 the Scottish botanist Robert Brown looked through a microscope at tiny particles released from pollen grains floating in water. He saw them jiggling about constantly in random, zigzag paths, even though the water was still.",
               "This random jiggling is now called Brownian motion. In 1905 Albert Einstein explained it mathematically: the visible specks are being struck unevenly from all sides by the much smaller, invisible water molecules, which are themselves moving randomly. A few years later the French scientist Jean Perrin carried out careful experiments that confirmed Einstein's predictions.",
@@ -519,6 +543,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "What causes gas pressure?",
+            picture: "/lessons/particles-and-states/lesson-5-1.jpg",
+            alt: "A teenager blowing up a balloon, with particles bouncing off the inside.",
             text: [
               "Gas particles move quickly in all directions. When they hit the walls of their container, they push on it and bounce off. Each collision exerts a tiny force. Billions upon billions of collisions every second, spread over the whole surface, add up to a steady push that we call gas pressure.",
               "Pressure is the force acting on each unit of area. It is measured in pascals (Pa), where one pascal is one newton on one square metre. Tyre pressures are often given in bar or psi; one bar is 100,000 Pa.",
@@ -528,6 +554,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Temperature, volume and pressure",
+            picture: "/lessons/particles-and-states/lesson-5-2.jpg",
+            alt: "A plastic bottle crumpled after being in the freezer.",
             text: [
               "If a gas is heated in a closed container that cannot change size, the particles gain energy and move faster. They hit the walls more often and harder, so the pressure increases. This is why aerosol cans carry a warning not to heat them, and why tyre pressure is slightly higher after a long drive.",
               "If a gas is cooled, the particles slow down, hit the walls less often and less hard, and the pressure falls. Put an empty, sealed plastic bottle in the freezer and it partly crumples: the pressure inside drops, so the air pressure outside is now greater and pushes it in.",
@@ -537,6 +565,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Expansion and contraction",
+            picture: "/lessons/particles-and-states/lesson-5-3.jpg",
+            alt: "A steel bridge with a close-up of its expansion joint.",
             text: [
               "Most substances expand (take up more space) when heated and contract when cooled. When a substance is heated, its particles move or vibrate more, so they push each other slightly further apart. The particles do not get bigger: the spaces between them do.",
               "Solids expand only a little, but it matters. Bridges are built with expansion joints, gaps that let the metal and concrete grow in summer without cracking. Railway tracks and overhead power lines are designed with the same problem in mind. A stuck metal jar lid can often be loosened by running it under hot water, because the metal expands more than the glass.",
@@ -640,6 +670,8 @@ export const particlesAndStates: LessonUnit = {
         cards: [
           {
             heading: "What is density?",
+            picture: "/lessons/particles-and-states/lesson-6-1.jpg",
+            alt: "A teenager measuring the volume of a stone by displacement in a measuring jug.",
             text: [
               "Density tells us how much mass is packed into a certain volume. A brick and a sponge of the same size have the same volume, but the brick has much more mass, so it is denser. A common mistake is to think density is the same as heaviness: a huge log can be heavier than a small pebble, yet the pebble is denser.",
               "Density is calculated with the equation: density = mass ÷ volume. In science lessons mass is often measured in grams (g) and volume in cubic centimetres (cm³), so density is in grams per cubic centimetre (g/cm³). One cubic centimetre is the same as one millilitre. In physics you will also see kilograms per cubic metre (kg/m³).",
@@ -649,6 +681,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Density and particles",
+            picture: "/lessons/particles-and-states/lesson-6-2.jpg",
+            alt: "A density column of coloured liquid layers with a floating cork.",
             text: [
               "Pure water has a density of 1.0 g/cm³. Some others: cork about 0.24, cooking oil about 0.92, aluminium 2.7, iron 7.9 and gold 19.3 g/cm³. Air is only about 0.0012 g/cm³.",
               "The particle model explains why gases are so much less dense than solids and liquids. The same mass of particles is spread over a far larger volume, because the particles are far apart. Steam is roughly a thousand times less dense than liquid water.",
@@ -658,6 +692,8 @@ export const particlesAndStates: LessonUnit = {
           },
           {
             heading: "Conservation of mass",
+            picture: "/lessons/particles-and-states/lesson-6-3.jpg",
+            alt: "Kitchen scales with water and salt, beside a bag holding a melting ice cube.",
             text: [
               "In any physical change, such as melting, freezing, evaporating or dissolving, the total mass stays the same. This is called conservation of mass. It happens because particles are not created or destroyed; they are just rearranged.",
               "If 100 g of ice melts, you get 100 g of water. If you dissolve 10 g of salt in 200 g of water, the solution has a mass of 210 g. The salt has not vanished: its particles have spread out between the water particles, so you can no longer see it.",

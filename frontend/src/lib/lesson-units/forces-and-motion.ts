@@ -33,6 +33,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "What forces do",
+            picture: "/lessons/forces-and-motion/lesson-1-1.jpg",
+            alt: "A teenager pulling a force meter attached to a bag of apples",
             text: [
               "A force is a push or a pull that acts on an object because of its interaction with another object. Forces always come from an interaction between two things: your foot and a football, the Earth and the Moon, a tyre and the road. You cannot have a force on its own.",
               "Forces cannot be seen, but their effects can. A force can make a stationary object start moving, make a moving object speed up or slow down, change the direction an object is travelling in, or change an object's shape by squashing, stretching, bending or twisting it.",
@@ -42,6 +44,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Contact and non-contact forces",
+            picture: "/lessons/forces-and-motion/lesson-1-2.jpg",
+            alt: "Pushing a box, a fridge magnet and a balloon lifting hair",
             text: [
               "Contact forces act only when two objects are touching. Friction acts between two surfaces sliding, or trying to slide, over each other. Air resistance and water resistance, together called drag, act on objects moving through a fluid. Tension is the pulling force in a stretched rope, string or spring. A normal contact force (often called the reaction force) is the push of a surface back on an object resting on it, such as a table pushing up on a book. Upthrust is the upward push of a liquid or gas on an object in it.",
               "Non-contact forces act across a distance, through a field, without the objects touching. Gravitational force (weight) pulls any two masses towards each other. Magnetic force acts between magnets and on magnetic materials such as iron, nickel and cobalt. Electrostatic force acts between electrically charged objects, which is why a rubbed balloon can lift your hair.",
@@ -50,6 +54,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Drawing force diagrams",
+            picture: "/lessons/forces-and-motion/lesson-1-3.jpg",
+            alt: "A free-body sketch of a box with force arrows on squared paper",
             text: [
               "A force has both a size and a direction, so physicists represent it with an arrow. The direction of the arrow shows the direction of the force, and the length of the arrow shows its size: a 20 N force is drawn twice as long as a 10 N force. Each arrow starts on the object and is labelled with the name of the force and its size.",
               "To keep diagrams clear, the object is often drawn as a simple box or dot. This is called a free-body diagram: it shows only the forces acting on that one object, not the forces it exerts on other things.",
@@ -169,6 +175,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "Adding forces together",
+            picture: "/lessons/forces-and-motion/lesson-2-1.jpg",
+            alt: "Teenagers in a tug of war in a park",
             text: [
               "Most objects have several forces acting on them at once. The resultant force is the single force that would have the same effect as all of them together. Working it out is the key to predicting how an object will move.",
               "When forces act along the same line, add those pointing the same way and subtract those pointing the opposite way. If two people push a car forwards with 300 N and 200 N, the forward force is 500 N. If friction pushes backwards with 150 N, the resultant force is 500 − 150 = 350 N forwards.",
@@ -178,6 +186,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Balanced forces",
+            picture: "/lessons/forces-and-motion/lesson-2-2.jpg",
+            alt: "A car on a motorway and a spacecraft coasting in space",
             text: [
               "When the forces on an object cancel each other out, the resultant force is zero and the forces are balanced. Balanced forces do not change how an object is moving.",
               "This leads to an idea that surprises many people. If an object is stationary and the forces on it are balanced, it stays stationary. But if an object is already moving and the forces become balanced, it carries on moving at the same speed in a straight line. It does not need an overall force to keep going.",
@@ -186,6 +196,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Unbalanced forces",
+            picture: "/lessons/forces-and-motion/lesson-2-3.jpg",
+            alt: "A teenage girl setting off on her bicycle",
             text: [
               "When the resultant force is not zero, the forces are unbalanced, and the object's motion changes. A resultant force in the direction of motion makes an object speed up. A resultant force against the direction of motion makes it slow down. A resultant force at an angle to the motion makes it change direction.",
               "Any change of speed or direction is called acceleration. Physicists say that a resultant force causes acceleration, and the bigger the resultant force, the bigger the acceleration. A heavier object needs a bigger resultant force to accelerate by the same amount. (At GCSE this becomes Newton's second law, F = m × a.)",
@@ -308,6 +320,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "Calculating speed",
+            picture: "/lessons/forces-and-motion/lesson-3-1.jpg",
+            alt: "A sprinter on a running track with a stopwatch in the foreground",
             text: [
               "Speed tells you how far something travels in a certain amount of time. It is calculated with the equation: speed = distance ÷ time. In science, distance is usually measured in metres (m), time in seconds (s), and speed in metres per second (m/s).",
               "For example, a sprinter who runs 100 m in 12.5 s has an average speed of 100 ÷ 12.5 = 8 m/s. In 2009, Usain Bolt ran 100 m in 9.58 s, an average of about 10.4 m/s. For comparison, a brisk walk is about 1.5 m/s and sound travels through air at about 340 m/s.",
@@ -317,6 +331,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Average speed and instantaneous speed",
+            picture: "/lessons/forces-and-motion/lesson-3-2.jpg",
+            alt: "A car speedometer seen from the driver's seat",
             text: [
               "Very few objects travel at exactly the same speed for a whole journey. A car speeds up, slows down for junctions and stops at traffic lights. The equation speed = distance ÷ time gives the average speed over the whole journey.",
               "The speed at one particular moment is called the instantaneous speed. A car's speedometer shows instantaneous speed. Speed cameras on motorways that time a car between two points measure average speed instead.",
@@ -325,6 +341,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Distance-time graphs",
+            picture: "/lessons/forces-and-motion/lesson-3-3.jpg",
+            alt: "A hand-drawn distance-time graph on graph paper",
             text: [
               "A distance-time graph shows how far an object has travelled from its starting point as time goes on. Time goes on the horizontal x-axis and distance on the vertical y-axis.",
               "The shape of the line tells the story of the journey. A horizontal (flat) line means the distance is not changing, so the object is stationary. A straight sloping line means the object is travelling at a constant speed. The steeper the line, the faster the object is moving. A curved line means the speed is changing: curving upwards and getting steeper means speeding up; flattening out means slowing down.",
@@ -438,6 +456,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "Mass is not the same as weight",
+            picture: "/lessons/forces-and-motion/lesson-4-1.jpg",
+            alt: "Kitchen scales with a bag of flour next to bathroom scales",
             text: [
               "In everyday life, people say they 'weigh' 50 kilograms. In science, that is not quite right, because mass and weight are different quantities with different units.",
               "Mass is the amount of matter (stuff) in an object. It is measured in kilograms (kg) or grams (g). An object's mass is the same wherever it is: on Earth, on the Moon or floating in space. Mass also tells you how hard it is to get an object moving or to stop it, which is why a full shopping trolley is harder to push than an empty one.",
@@ -447,6 +467,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Gravitational field strength",
+            picture: "/lessons/forces-and-motion/lesson-4-2.jpg",
+            alt: "An astronaut bounding across the Moon with Earth in the sky",
             text: [
               "Every object with mass attracts every other object with mass. This is gravity. The force is tiny for small objects, but enormous for something as massive as a planet. The bigger the masses, and the closer together they are, the stronger the gravitational force.",
               "Around every planet, moon and star is a gravitational field: a region where masses feel a force. Gravitational field strength, g, tells you how many newtons of weight each kilogram of mass experiences. It is measured in newtons per kilogram (N/kg).",
@@ -456,6 +478,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Calculating weight",
+            picture: "/lessons/forces-and-motion/lesson-4-3.jpg",
+            alt: "A teenager weighing a tin on kitchen scales with a calculator",
             text: [
               "Weight is calculated with the equation: weight = mass × gravitational field strength, or W = m × g. Weight is in newtons, mass must be in kilograms, and g is in N/kg.",
               "Worked example: a 60 kg student on Earth has a weight of 60 × 10 = 600 N. On the Moon, the same student weighs 60 × 1.6 = 96 N. Their mass is still 60 kg in both places.",
@@ -556,6 +580,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "What causes friction?",
+            picture: "/lessons/forces-and-motion/lesson-5-1.jpg",
+            alt: "Two rough surfaces with tiny peaks interlocking, magnified",
             text: [
               "Friction is a force that opposes motion between two surfaces that are sliding, or trying to slide, across each other. It always acts in the opposite direction to the movement, or the attempted movement.",
               "Even surfaces that feel smooth are rough when magnified. Under a microscope, a polished metal surface has tiny peaks and troughs. When two surfaces touch, these bumps catch and interlock, and some tiny bonds form between the surfaces. A force is needed to drag the bumps past each other, and that resistance is friction.",
@@ -565,6 +591,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Useful and unwanted friction",
+            picture: "/lessons/forces-and-motion/lesson-5-2.jpg",
+            alt: "Tyre treads, studded football boots and an oiled bike chain",
             text: [
               "Without friction, everyday life would be impossible. You could not walk, because your shoes would slip backwards on the ground. Car tyres grip the road, brakes slow vehicles down, knots stay tied, and screws and nails stay in wood, all thanks to friction.",
               "Engineers increase friction where grip is needed. Tyres have treads, which channel water away so the rubber can grip the road in the rain. Football boots have studs, climbing shoes use soft, sticky rubber, and grit is spread on icy roads in winter.",
@@ -573,6 +601,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Drag, streamlining and terminal velocity",
+            picture: "/lessons/forces-and-motion/lesson-5-3.jpg",
+            alt: "A skydiver in free fall and another under an open parachute",
             text: [
               "Drag is the resistive force on an object moving through a fluid, which is any liquid or gas. In air it is called air resistance; in water, water resistance. The object has to push the fluid out of the way, and the fluid pushes back. Drag gets bigger as speed increases, and it is larger for objects with a large front surface area.",
               "Streamlining means shaping an object so the fluid flows smoothly around it, reducing drag. A streamlined shape is usually rounded at the front and tapered at the back, like a dolphin, a falcon diving or a racing car. Cyclists crouch low and wear tight clothing for the same reason. Sometimes drag is wanted: a parachute has a huge surface area to make drag very large.",
@@ -691,6 +721,8 @@ export const forcesAndMotion: LessonUnit = {
         cards: [
           {
             heading: "Stretching and squashing",
+            picture: "/lessons/forces-and-motion/lesson-6-1.jpg",
+            alt: "A spring, a stretched rubber band and squashed modelling clay",
             text: [
               "When forces act on an object, they can change its shape as well as its motion. To stretch a spring, you need two forces pulling in opposite directions; to compress (squash) it, two forces pushing inwards. If you hang a spring from a hook and attach a mass, the hook pulls up and the weight pulls down.",
               "A stretched or squashed spring exerts a force back on whatever is stretching or squashing it. This is the spring's tension (when stretched) or its push (when compressed). The force is what makes a trampoline bounce you upwards or a pogo stick spring back.",
@@ -700,6 +732,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Hooke's law",
+            picture: "/lessons/forces-and-motion/lesson-6-2.jpg",
+            alt: "A spring hanging from a hook with a weight beside a ruler",
             text: [
               "In the 17th century, the English scientist Robert Hooke investigated springs. In 1678 he published his finding that the extension of a spring is directly proportional to the force applied to it. This is now called Hooke's law. Doubling the force doubles the extension; tripling the force triples it.",
               "As an equation, Hooke's law is F = k × e, where F is the force in newtons, e is the extension in metres, and k is the spring constant in newtons per metre (N/m). The spring constant tells you how stiff the spring is: a stiff spring has a large k and stretches very little, while a soft spring has a small k and stretches a lot.",
@@ -709,6 +743,8 @@ export const forcesAndMotion: LessonUnit = {
           },
           {
             heading: "Force-extension graphs and the limit of proportionality",
+            picture: "/lessons/forces-and-motion/lesson-6-3.jpg",
+            alt: "An overstretched coil spring toy next to an undamaged one",
             text: [
               "When you plot a graph of force (x-axis) against extension (y-axis) for a spring, the first part is a straight line through the origin. A straight line through the origin is the graph of direct proportion, so this shows the spring obeys Hooke's law.",
               "If you keep adding force, the line eventually starts to curve. The point where it stops being straight is called the limit of proportionality. Beyond it, extension is no longer proportional to force, and Hooke's law no longer applies.",

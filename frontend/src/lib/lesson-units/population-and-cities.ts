@@ -34,6 +34,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "From one billion to eight",
+            picture: "/lessons/population-and-cities/lesson-1-1.jpg",
+            alt: "A vast crowd of people seen from above in a public square",
             text: [
               "For most of human history the world's population grew very slowly. Disease, famine and war kept death rates high, and although families had many children, a large share of them died young. It took until roughly 1800 (most estimates say around 1804) for the population to reach 1 billion.",
               "After that, growth sped up dramatically. The population reached about 2 billion by 1927, 3 billion by around 1960, 4 billion by 1974, 5 billion by 1987, 6 billion by 1999 and 7 billion by 2011. The United Nations marked 15 November 2022 as the day the world passed 8 billion. Notice how the gap between each billion shrank from more than a century to about 12 years or less.",
@@ -43,6 +45,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Births, deaths and natural increase",
+            picture: "/lessons/population-and-cities/lesson-1-2.jpg",
+            alt: "A nurse checking a baby at a clinic while the mother watches",
             text: [
               "Two key measures explain population change. The birth rate is the number of live births per 1,000 people in a year. The death rate is the number of deaths per 1,000 people in a year. If the birth rate is higher than the death rate, the population grows; the difference between them is the natural increase. For example, a birth rate of 30 and a death rate of 10 gives a natural increase of 20 per 1,000, or 2% a year.",
               "The rapid growth of the last two centuries happened mainly because death rates fell before birth rates did. Clean water supplies, sewers, better food production, vaccinations and antibiotics meant far more babies survived childhood and adults lived longer. Birth rates stayed high for a while, so the gap between births and deaths widened.",
@@ -52,6 +56,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Where in the world are people?",
+            picture: "/lessons/population-and-cities/lesson-1-3.jpg",
+            alt: "Earth at night with bright city lights and dark empty regions",
             text: [
               "The world's population is very unevenly spread. Population distribution describes how people are spread across an area. Roughly 6 in every 10 people on Earth live in Asia. India and China each have more than 1.4 billion people, and United Nations estimates suggest India overtook China as the most populous country in 2023.",
               "Population density measures how crowded a place is: the number of people divided by the land area, usually given as people per square kilometre (km²). Bangladesh has roughly 1,300 people per km², the UK about 280, and Canada only about 4 (approximate figures for the early 2020s). A country can have a large population but a low density if it is very big, like Canada or Australia.",
@@ -149,6 +155,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "Reading a population pyramid",
+            picture: "/lessons/population-and-cities/lesson-2-1.jpg",
+            alt: "A teenager drawing a pyramid-shaped bar chart at a desk",
             text: [
               "A population pyramid is a special kind of bar chart that shows the structure of a population: how many people there are of each age and sex. Each horizontal bar stands for an age group, usually five years wide (0 to 4, 5 to 9, 10 to 14 and so on), with the youngest at the bottom and the oldest at the top.",
               "Males are shown on the left of the central line and females on the right. The horizontal axis shows either the number of people or, more often, the percentage of the total population, which makes it easier to compare countries of different sizes.",
@@ -158,6 +166,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Shapes tell stories",
+            picture: "/lessons/population-and-cities/lesson-2-2.jpg",
+            alt: "Three population pyramid shapes: wide-based, column and top-heavy",
             text: [
               "A pyramid with a wide base and narrow top shows a youthful population: high birth rates, and a relatively short life expectancy. Niger, in West Africa, is an example. In the early 2020s its median age (the age of the person exactly in the middle) was only about 15, and nearly half of the population was under 15 (approximate figures).",
               "A pyramid with straighter sides, more like a column or beehive, shows lower birth rates and longer lives. The UK has this shape. Its median age is about 40, and roughly 1 in 5 people are 65 or over (approximate, early 2020s). There is a noticeable bulge of people born in the baby booms after the Second World War and in the 1960s.",
@@ -167,6 +177,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "The demographic transition model",
+            picture: "/lessons/population-and-cities/lesson-2-3.jpg",
+            alt: "A village growing into a town and then a modern city",
             text: [
               "The demographic transition model (DTM) is a theory that describes how birth rates, death rates and total population change as a country develops. It was based mainly on what happened in Europe and North America over the last 250 years, and it has five stages.",
               "Stage 1: birth and death rates are both high and fluctuating, so the population stays low and steady. No country is in this stage today. Stage 2: death rates fall quickly thanks to better food, water and healthcare, while birth rates stay high, so the population grows rapidly. Stage 3: birth rates fall as well, so growth slows. Stage 4: birth and death rates are both low and the population is roughly stable; the UK is usually placed here. Stage 5: the birth rate falls below the death rate and the population begins to decline, as in Japan and Italy.",
@@ -263,6 +275,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "Types of migration",
+            picture: "/lessons/population-and-cities/lesson-3-1.jpg",
+            alt: "Travellers with luggage and a family greeting relatives at a station",
             text: [
               "Migration is the movement of people from one place to another to live, either for a period of time or permanently. People have always migrated, and almost every family in Britain has a migration story somewhere in its history.",
               "Internal migration happens within a country, such as moving from a village to a city. International migration crosses a national border. From the point of view of the country being left, a person is an emigrant; from the point of view of the country they arrive in, the same person is an immigrant. Net migration is the number of immigrants minus the number of emigrants.",
@@ -272,6 +286,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Push and pull factors",
+            picture: "/lessons/population-and-cities/lesson-3-2.jpg",
+            alt: "A dry farm on one side and a busy city street on the other, joined by a road",
             text: [
               "Geographers explain migration using push factors and pull factors. Push factors are the things that make people want to leave a place, such as a lack of jobs, poverty, conflict, persecution, natural hazards, drought or poor services. Pull factors are the things that attract people to a new place, such as jobs, higher wages, safety, education, healthcare, or family members who already live there.",
               "Push and pull factors can be grouped as economic (jobs and wages), social (family, education, healthcare), political (war, freedom, government policy) and environmental (climate, hazards, the quality of farmland).",
@@ -281,6 +297,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "The effects of migration",
+            picture: "/lessons/population-and-cities/lesson-3-3.jpg",
+            alt: "Hospital staff from different backgrounds chatting in a corridor",
             text: [
               "Migration affects both the place people leave (the origin) and the place they move to (the destination). In origin areas, money sent home by migrants, called remittances, can pay for food, housing and schooling. The World Bank estimated that remittances to low- and middle-income countries were over 600 billion US dollars in 2023 (approximate), more than these countries received in foreign aid.",
               "Origin areas can also lose out. When young, skilled people leave, this 'brain drain' can leave shortages of doctors, nurses or teachers, and villages can be left with an older population.",
@@ -382,6 +400,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "An urban world",
+            picture: "/lessons/population-and-cities/lesson-4-1.jpg",
+            alt: "A young woman arriving by bus at the edge of a big city",
             text: [
               "Urbanisation is the increase in the proportion of a country's people who live in towns and cities (urban areas) rather than the countryside (rural areas). It is about the share of people, not just the number: a city can grow while the country becomes no more urban, if the countryside grows just as fast.",
               "Britain was one of the first countries to urbanise. During the Industrial Revolution, people moved from farms to work in factories, mills and mines, and by the 1851 census more than half the people of England and Wales lived in towns. Most high-income countries are now around 80% urban or more.",
@@ -391,6 +411,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Megacities",
+            picture: "/lessons/population-and-cities/lesson-4-2.jpg",
+            alt: "An aerial view of a megacity stretching to the horizon",
             text: [
               "A megacity is an urban area with a population of over 10 million people. In 1950 there were only two: New York and Tokyo. By 2018 the United Nations counted 33, and more are expected. Most megacities today are in Asia, with others in Africa (such as Lagos, Cairo and Kinshasa) and Latin America (such as São Paulo and Mexico City).",
               "Tokyo has long been counted as the largest megacity, with around 37 million people in its wider urban area. However, newer UN estimates that use a different way of drawing city boundaries rank Jakarta and Dhaka ahead of it. City populations depend heavily on where the boundary is drawn, so always check what area a figure refers to.",
@@ -400,6 +422,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Opportunities and challenges",
+            picture: "/lessons/population-and-cities/lesson-4-3.jpg",
+            alt: "A colourful hillside informal settlement with a city skyline behind",
             text: [
               "Cities bring opportunities. They concentrate jobs, businesses, universities, hospitals and culture, and people in cities usually have better access to electricity, clean water and education than people in rural areas. Cities generate a large share of most countries' wealth.",
               "Very rapid growth can outpace a city's ability to provide housing, water, sanitation, transport and jobs. Many new arrivals build homes themselves on land they do not legally own, creating informal settlements (sometimes called slums or shanty towns). UN-Habitat estimates that roughly 1 billion people live in informal settlements or slums worldwide (approximate, early 2020s).",
@@ -505,6 +529,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "London: a global city",
+            picture: "/lessons/population-and-cities/lesson-5-1.jpg",
+            alt: "Tower Bridge and office towers beside the River Thames in London",
             text: [
               "London is the UK's capital and largest city, with a population of about 8.8 million at the 2021 census. It was founded by the Romans as Londinium almost 2,000 years ago. Its population peaked at about 8.6 million in 1939, fell to under 7 million by the 1980s as people moved to the suburbs and beyond, and has grown again since, a clear example of re-urbanisation.",
               "London is a global city: a place with worldwide influence in finance, business, government, culture and education. Its location on the River Thames, its history as a port and trading centre, and its excellent transport links, including Heathrow, one of the world's busiest airports, helped it grow.",
@@ -514,6 +540,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Lagos: a fast-growing megacity",
+            picture: "/lessons/population-and-cities/lesson-5-2.jpg",
+            alt: "Buses, a lagoon bridge, towers and stilt houses in Lagos",
             text: [
               "Lagos is Nigeria's largest city and one of the fastest-growing cities in the world. It sits on the coast of West Africa, spread around a large lagoon, islands and creeks. Estimates of its population vary widely, from around 15 million to over 20 million, partly because Nigeria has not held a full census since 2006 and partly because sources draw the city's boundary differently.",
               "Lagos was Nigeria's capital until 1991, when the government moved to Abuja, but it remains the country's commercial heart. It has major ports, including the Lekki Deep Sea Port opened in 2023, a booming technology scene and a huge film industry, often called Nollywood. Nigeria, with roughly 230 million people (approximate, mid-2020s), has the largest population in Africa, and many young Nigerians move to Lagos for work and opportunity.",
@@ -523,6 +551,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Comparing cities fairly",
+            picture: "/lessons/population-and-cities/lesson-5-3.jpg",
+            alt: "Two teenagers comparing photographs of two city streets",
             text: [
               "When geographers compare cities, they use the same indicators for each, such as population, growth rate, income, access to services and transport. The UK is classed by the World Bank as a high-income country and Nigeria as a lower-middle-income country, so average incomes are very different. But averages hide variation within each city.",
               "Both cities contain great wealth and serious poverty. Lagos has luxury apartments, international businesses and wealthy suburbs such as Ikoyi and Victoria Island. London has people sleeping rough and families in overcrowded temporary housing. Both cities attract migrants because of the opportunities they offer, and both struggle to provide enough affordable homes.",
@@ -627,6 +657,8 @@ export const populationAndCities: LessonUnit = {
         cards: [
           {
             heading: "What is a sustainable city?",
+            picture: "/lessons/population-and-cities/lesson-6-1.jpg",
+            alt: "A green neighbourhood with trees, solar panels, cyclists and a tram",
             text: [
               "Sustainable development was defined in the 1987 Brundtland Report as development that 'meets the needs of the present without compromising the ability of future generations to meet their own needs'. A sustainable city is one that gives its people a good quality of life now while using resources carefully and protecting the environment for the future.",
               "Sustainability is often described as having three parts. Environmental sustainability means reducing pollution, waste and carbon emissions and protecting green space. Social sustainability means good housing, healthcare, education and safety for everyone, and involving residents in decisions. Economic sustainability means providing jobs and a strong economy that can last.",
@@ -636,6 +668,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Strategies that work",
+            picture: "/lessons/population-and-cities/lesson-6-2.jpg",
+            alt: "A plant-covered tower beside a bus lane and tube-shaped bus station",
             text: [
               "Transport is often the biggest target. Curitiba in Brazil built one of the world's first bus rapid transit systems in the 1970s, with dedicated bus lanes and tube-shaped stations where passengers pay before boarding, making buses almost as quick as a metro at a fraction of the cost. London introduced a congestion charge in 2003 and an Ultra Low Emission Zone (ULEZ) in 2019, expanded to cover all London boroughs in 2023. Copenhagen is famous for cycling, with a very large share of journeys to work and school made by bike.",
               "Green space and urban greening help cool cities, absorb rainwater, support wildlife and improve people's health. Singapore requires new developments to replace greenery lost on the ground with green roofs, walls and sky gardens. Many UK cities now plant street trees and create pocket parks.",
@@ -645,6 +679,8 @@ export const populationAndCities: LessonUnit = {
           },
           {
             heading: "Better cities for everyone",
+            picture: "/lessons/population-and-cities/lesson-6-3.jpg",
+            alt: "Cable cars gliding over colourful hillside homes",
             text: [
               "A city cannot be truly sustainable if many of its people are left behind. In rapidly growing cities, one approach is in-situ upgrading: improving informal settlements where they are, with clean water, drains, paved paths, electricity and secure ownership of homes, rather than demolishing them and moving residents far away.",
               "Medellín in Colombia is often cited as an example. From 2004, it built cable cars (the Metrocable) linking poor hillside neighbourhoods to the city's metro, along with libraries, parks and outdoor escalators. Journeys to work that once took hours became much shorter, although researchers debate how much the schemes reduced poverty overall.",

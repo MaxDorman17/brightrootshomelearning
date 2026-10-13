@@ -31,6 +31,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "Reading the relief of the UK",
+            picture: "/lessons/uk-landscapes/lesson-1-1.jpg",
+            alt: "Rugged mountains in the foreground give way to flat farmland and plains",
             text: [
               "Relief means the shape and height of the land: its hills, mountains, valleys and plains. Geographers describe relief using altitude, which is height above sea level. In Great Britain, the Ordnance Survey measures height from the average sea level recorded at Newlyn in Cornwall between 1915 and 1921, so every spot height on an OS map is compared with that one fixed level.",
               "Each country of the UK has its own highest point. Ben Nevis in the Scottish Highlands is the highest in the UK at 1,345 m. Yr Wyddfa (Snowdon) in Eryri is the highest in Wales at 1,085 m, Scafell Pike in the Lake District is the highest in England at 978 m, and Slieve Donard in the Mourne Mountains is the highest in Northern Ireland at 850 m. By world standards these are modest mountains, but they are steep, exposed and often dangerous in bad weather.",
@@ -40,6 +42,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "The Tees–Exe line",
+            picture: "/lessons/uk-landscapes/lesson-1-2.jpg",
+            alt: "A teenager studies a relief model of an island with a line dividing high and low land",
             text: [
               "If you look at a relief map of Great Britain, a clear pattern appears. Most of the high land is in the north and west; most of the low land is in the south and east. Geographers summarise this with the Tees–Exe line, an imaginary line drawn from the mouth of the River Tees in north-east England to the mouth of the River Exe in Devon.",
               "The main reason for the pattern is geology. North and west of the line, the rocks are mostly older and harder: igneous rocks such as granite, metamorphic rocks such as slate and schist, and tough older sedimentary rocks such as Carboniferous limestone and gritstone. These resist erosion, so they stand up as uplands like the Highlands, the Southern Uplands, the Lake District, the Pennines, Eryri and Dartmoor. South and east of the line, the rocks are mostly younger and softer sedimentary rocks such as chalk and clay, which form lower, gentler landscapes.",
@@ -49,6 +53,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Why relief matters",
+            picture: "/lessons/uk-landscapes/lesson-1-3.jpg",
+            alt: "Rain clouds pile up over western mountains while the land beyond stays dry and sunny",
             text: [
               "Relief shapes climate. The UK's prevailing winds blow from the south-west, bringing moist air off the Atlantic Ocean. When this air meets high ground in the west, it is forced to rise. As it rises it cools, the water vapour condenses into cloud, and rain falls. This is relief (or orographic) rainfall. By the time the air sinks down the eastern side, it has lost much of its moisture and warms up again, creating a drier rain shadow.",
               "The data show the effect clearly. Fort William, at the foot of Ben Nevis, gets roughly 2,000 mm of rain a year, and parts of the Lake District get over 3,000 mm. Cambridge, in the lowland east, gets only about 560 mm. Temperature also falls with height, by roughly 6 to 7 °C for every 1,000 m, so summits are much colder and windier than the valleys below them.",
@@ -166,6 +172,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "Igneous rocks: made from molten rock",
+            picture: "/lessons/uk-landscapes/lesson-2-1.jpg",
+            alt: "Hexagonal basalt columns along a rocky coast, with a speckled granite boulder",
             text: [
               "Igneous rocks form when molten rock cools and solidifies. Molten rock underground is called magma; when it reaches the surface it is called lava. Igneous rocks are made of interlocking crystals, which makes them hard and generally impermeable, meaning water cannot pass through the rock itself (though it can run along cracks called joints).",
               "How quickly the molten rock cools controls the size of the crystals. Intrusive igneous rocks cool slowly, deep underground, so their crystals have time to grow large enough to see. Granite is the classic example: you can spot pale quartz, pink or white feldspar and dark mica. Dartmoor, the Cairngorms, the Mourne Mountains and the Isle of Arran are all built largely of granite.",
@@ -175,6 +183,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Sedimentary rocks: layers of time",
+            picture: "/lessons/uk-landscapes/lesson-2-2.jpg",
+            alt: "Layered white chalk cliffs above the sea and a fossil shell in limestone",
             text: [
               "Sedimentary rocks form from sediment: fragments of other rocks, or the shells and skeletons of living things. The process has several stages. Rock is weathered and eroded, the pieces are transported by rivers, wind, ice or the sea, then deposited in layers, usually under water. Over millions of years the layers are compacted by the weight above and cemented together by minerals. The layers are called strata, and sedimentary rocks are the only kind likely to contain fossils.",
               "Chalk is made from the microscopic shells of plankton that settled on the floor of a warm sea between about 100 and 66 million years ago. It forms the White Cliffs of Dover, the Seven Sisters and the rolling hills of the South Downs. Carboniferous limestone, about 350 million years old, formed from shells and coral in shallow tropical seas when the land that is now Britain lay near the equator. It forms the Yorkshire Dales, the White Peak in the Peak District and the Mendip Hills.",
@@ -184,6 +194,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Metamorphic rocks and the rock cycle",
+            picture: "/lessons/uk-landscapes/lesson-2-3.jpg",
+            alt: "A terraced slate quarry on a mountainside with split slate and a banded gneiss boulder",
             text: [
               "Metamorphic rocks are existing rocks that have been changed by intense heat, pressure, or both, without melting. This usually happens deep in the crust when continents collide and mountains are pushed up. Much of the Scottish Highlands and north Wales was folded and squeezed in such a collision between about 490 and 390 million years ago, in a mountain-building event called the Caledonian orogeny.",
               "Mudstone and shale become slate, which splits into thin, flat sheets. North-west Wales was once the world's leading slate producer, and its slate landscape became a UNESCO World Heritage Site in 2021. Limestone becomes marble. With even more heat and pressure, slate becomes schist and then gneiss, with minerals arranged in bands. The Lewisian gneiss of the Outer Hebrides and north-west Highlands is around 3 billion years old, among the oldest rock in Europe.",
@@ -305,6 +317,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "Weathering: breaking rock where it stands",
+            picture: "/lessons/uk-landscapes/lesson-3-1.jpg",
+            alt: "Ice filling cracks in a rock face, with angular scree below a crag",
             text: [
               "Weathering is the breakdown of rock in situ, which means in its original place. Nothing carries it away. Erosion is different: it is the wearing away and removal of rock by a moving force such as a river, a glacier, waves or the wind. Weathering often prepares rock for erosion by loosening it first.",
               "Mechanical (physical) weathering breaks rock into smaller pieces without changing its chemistry. In the UK the most important type is freeze-thaw weathering. Rainwater seeps into a crack in the rock. At night the temperature drops below 0 °C and the water freezes; as it turns to ice it expands by about 9%, pushing on the sides of the crack. In the day the ice melts and the water seeps deeper. After many cycles, pieces break off. Piles of these angular fragments, called scree, lie beneath crags in mountain areas, such as the great screes that drop into Wast Water in the Lake District.",
@@ -314,6 +328,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Erosion and mass movement",
+            picture: "/lessons/uk-landscapes/lesson-3-2.jpg",
+            alt: "A slumped muddy hillside, a leaning fence and a deeply eroded walking path",
             text: [
               "Once rock is weakened, it can be eroded and transported. The four main agents of erosion are rivers, ice, the sea and the wind. Each picks up loose material and uses it to wear away more rock, then carries it away and eventually deposits it somewhere else, often to become future sedimentary rock.",
               "Gravity also moves material downhill directly. This is called mass movement. It can be very slow, like soil creep, where soil particles edge downslope a few millimetres a year (look for curved tree trunks or leaning walls). It can also be sudden, like rockfalls from cliffs, or slumping and landslides, where saturated soil or soft rock such as clay slides down a curved surface after heavy rain.",
@@ -323,6 +339,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "How geology shapes the landscape",
+            picture: "/lessons/uk-landscapes/lesson-3-3.jpg",
+            alt: "A limestone pavement of blocks and cracks above a curved limestone cliff",
             text: [
               "Different rocks respond differently to weathering and erosion, so each creates its own kind of landscape. Where hard and soft rocks lie side by side, the softer rock is worn away faster and the harder rock is left standing as hills, ridges or headlands. This is called differential erosion.",
               "Granite: on Dartmoor, granite was intruded around 280 million years ago. Its joints were weathered deep underground, and when the softer surrounding material was later stripped away, blocks of solid granite were left standing as tors, such as Haytor. Because granite is impermeable, Dartmoor is covered in boggy moorland and peat, and its valleys hold reservoirs.",
@@ -446,6 +464,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "Britain under ice",
+            picture: "/lessons/uk-landscapes/lesson-4-1.jpg",
+            alt: "An ice sheet flowing between dark peaks with a valley glacier heading to the sea",
             text: [
               "For the last 2.6 million years or so, the Earth's climate has swung between cold glacial periods, when ice sheets spread, and warmer interglacials like today. The most recent glacial period in Britain is often called the Devensian. At its peak, roughly 27,000 to 20,000 years ago, an ice sheet covered almost all of Scotland, Northern Ireland, Wales and northern England, and was well over a kilometre thick in places above the Scottish Highlands.",
               "The ice melted back as the climate warmed. There was one last cold snap, about 12,900 to 11,700 years ago, when small glaciers formed again in the Highlands and in the corries of the Lake District and Eryri. Since then, Britain has been ice-free, but the landscape is still shaped by what the ice did.",
@@ -455,6 +475,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Erosion by ice: corries, arêtes and pyramidal peaks",
+            picture: "/lessons/uk-landscapes/lesson-4-2.jpg",
+            alt: "A mountain corrie with a small lake, a knife-edged ar\u00eate and a pointed peak",
             text: [
               "Glaciers erode in two main ways. Plucking happens when meltwater freezes onto the rock beneath and around the glacier; as the ice moves on, it tears loose blocks away. Abrasion happens when rocks frozen into the base of the glacier scrape over the bedrock like sandpaper, smoothing it and leaving scratches called striations.",
               "A corrie is an armchair-shaped hollow high on a mountainside. In Scotland it is called a corrie (from the Gaelic coire), in Wales a cwm, and elsewhere a cirque. Corries usually face north or north-east, where the slope gets less sun, so snow lasts longer. The snow builds up in a hollow and turns to ice. Plucking and freeze-thaw steepen the back wall, while the ice moves in a rotational slip, abrading and deepening the floor. A ridge of rock or moraine called a lip forms at the front. When the ice melts, a small lake called a tarn may fill the hollow, such as Red Tarn below Helvellyn or Llyn Idwal in Cwm Idwal, Eryri.",
@@ -464,6 +486,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Glacial troughs and deposition",
+            picture: "/lessons/uk-landscapes/lesson-4-3.jpg",
+            alt: "A U-shaped valley with a ribbon lake and a waterfall from a hanging valley",
             text: [
               "Valley glaciers flowing from the corries took over existing river valleys. Rivers carve narrow V-shaped valleys with interlocking spurs, but the much larger and more powerful ice deepened, widened and straightened them into U-shaped valleys, also called glacial troughs, with steep sides and flat floors. The ends of the spurs were sliced off, leaving truncated spurs. Examples include Glen Coe in the Highlands, Nant Ffrancon in Eryri and Great Langdale in the Lake District.",
               "Smaller side glaciers did not erode as deeply as the main glacier, so when the ice melted their valleys were left 'hanging' above the main valley floor. Streams now plunge from these hanging valleys as waterfalls. Where the glacier carved a deeper section into softer or more jointed rock, a long, narrow ribbon lake formed after the ice melted. Windermere, about 18 km long, is the largest natural lake in England. Many of the sea lochs of western Scotland are glacial troughs that were flooded by the sea as sea level rose.",
@@ -588,6 +612,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "Waves and coastal processes",
+            picture: "/lessons/uk-landscapes/lesson-5-1.jpg",
+            alt: "Atlantic waves crashing on rocks, with a long sandy spit curving out to sea",
             text: [
               "Waves are made by wind blowing over the surface of the sea. Their size depends on the wind's strength, how long it blows, and the fetch, which is the distance of open water it blows over. Coasts in south-west England, western Wales, western Scotland and the north coast of Northern Ireland face the Atlantic, with a fetch of thousands of kilometres, so they receive some of the most powerful waves in Europe.",
               "Geographers describe two types of wave. Destructive waves are tall, steep and frequent, with a strong backwash (the water running back down the beach) that drags material away; they erode coasts, especially in storms. Constructive waves are low and gentle, with a strong swash (the water running up the beach) that pushes material onto the shore; they build beaches.",
@@ -597,6 +623,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Headlands, bays and retreating cliffs",
+            picture: "/lessons/uk-landscapes/lesson-5-2.jpg",
+            alt: "A chalk headland between two sandy bays, with a wave-cut platform at low tide",
             text: [
               "Where bands of hard and soft rock meet the sea at right angles, the coast is called discordant. The softer rock, such as clay or sand, is eroded faster and forms bays. The harder rock, such as chalk or limestone, resists erosion and is left jutting out as headlands. Once formed, headlands take the full force of the waves, while bays become sheltered, so beaches build up in them. The coast near Swanage in Dorset is a classic example: Studland Bay and Swanage Bay are cut into softer sands and clays, with the chalk headland of Ballard Down between them.",
               "Where the rock bands run parallel to the coast, it is concordant. A short way along the Dorset coast, at Lulworth Cove, the sea broke through a narrow band of hard Portland limestone, then rapidly eroded the softer rocks behind it into an almost circular cove.",
@@ -606,6 +634,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Caves, arches, stacks and stumps",
+            picture: "/lessons/uk-landscapes/lesson-5-3.jpg",
+            alt: "A sea arch beside a tall stack and a low stump, with seabirds flying",
             text: [
               "Headlands are eroded too, and in a recognisable sequence. Waves attack weaknesses such as joints and faults in the rock. Hydraulic action and abrasion widen a crack until it becomes a cave.",
               "If the cave is eroded right through the headland, or two caves on opposite sides meet, an arch forms. Durdle Door in Dorset is a famous limestone arch, and the Green Bridge of Wales in Pembrokeshire is another.",
@@ -721,6 +751,8 @@ export const ukLandscapes: LessonUnit = {
         cards: [
           {
             heading: "What national parks are for",
+            picture: "/lessons/uk-landscapes/lesson-6-1.jpg",
+            alt: "Teenage walkers crossing moorland towards a rocky summit past sheep and a stone wall",
             text: [
               "There are 15 national parks in the UK: 10 in England (counting the Broads, which has equivalent status), 3 in Wales and 2 in Scotland. Northern Ireland has none, although it has protected Areas of Outstanding Natural Beauty such as the Mourne and the Causeway Coast and Glens, and there has been a long debate about creating a Mourne national park.",
               "The movement for national parks grew from a demand for public access to the countryside. On 24 April 1932, several hundred walkers took part in the mass trespass on Kinder Scout in the Peak District, then closed to the public as a private grouse moor; five were jailed. After the Second World War, the National Parks and Access to the Countryside Act 1949 was passed, and the Peak District became the first national park in 1951, followed the same year by the Lake District, Snowdonia (Eryri) and Dartmoor. Scotland's two parks are more recent: Loch Lomond and The Trossachs (2002) and the Cairngorms (2003), which is the UK's largest.",
@@ -730,6 +762,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Land use and conflict",
+            picture: "/lessons/uk-landscapes/lesson-6-2.jpg",
+            alt: "A national park valley with a reservoir, a quarry, hill farms and a stone village",
             text: [
               "National parks contain many land uses: hill farming (mostly sheep), forestry, reservoirs, quarrying, military training, tourism and housing, alongside conservation projects such as peat bog restoration and woodland planting. Because space is limited and many groups want different things, conflicts arise. The people and groups with an interest in a decision are called stakeholders.",
               "Water supply is one example. In the 1930s the valley of Mardale in the Lake District was flooded to create Haweswater reservoir for Manchester, and the village of Mardale Green was lost beneath the water. The Peak District's Ladybower reservoir also drowned two villages in the 1940s. Reservoirs provide water to millions of people, but they change landscapes and communities for ever.",
@@ -739,6 +773,8 @@ export const ukLandscapes: LessonUnit = {
           },
           {
             heading: "Tourism: benefits, pressures and management",
+            picture: "/lessons/uk-landscapes/lesson-6-3.jpg",
+            alt: "Traffic in a busy lakeside village while workers repair an eroded footpath above",
             text: [
               "Tourism brings huge benefits. The Lake District, which became a UNESCO World Heritage Site in 2017, has around 40,000 residents but receives an estimated 18 million or so visitors a year. Tourism is its biggest employer, supporting hotels, cafés, outdoor centres, shops and transport, and visitor spending helps fund conservation.",
               "But visitors are not spread evenly. They crowd into honeypot sites, places that attract large numbers of people, such as Bowness-on-Windermere and Keswick in the Lake District, Malham Cove in the Yorkshire Dales, Castleton in the Peak District and the summit of Yr Wyddfa, which is climbed or reached by train by hundreds of thousands of people a year. The pressures include traffic congestion and illegal parking on narrow roads, litter, noise, disturbance to wildlife, wildfires started by barbecues or campfires on dry moorland, and footpath erosion, where trampling kills vegetation and rain washes away the soil, widening paths into deep scars.",

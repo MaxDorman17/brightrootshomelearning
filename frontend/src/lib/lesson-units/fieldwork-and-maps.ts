@@ -34,6 +34,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "The National Grid",
+            picture: "/lessons/fieldwork-and-maps/lesson-1-1.jpg",
+            alt: "A gridded walking map and compass on a table",
             text: [
               "Ordnance Survey, Britain's national mapping agency, was founded in 1791. Its maps of Great Britain all sit on one shared system of squares called the National Grid. Because every map uses the same grid, a grid reference points to one place only, wherever you are reading it.",
               "The grid starts from a 'false origin' south-west of the Isles of Scilly, so that every place in Great Britain has positive numbers. The country is divided into 100 km by 100 km squares, and each one is named by two letters, such as SU around Southampton, SK around Nottingham or NT around Edinburgh. Inside those big squares, the familiar 1 km grid lines are numbered from 00 to 99.",
@@ -43,6 +45,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "From four figures to eight",
+            picture: "/lessons/fieldwork-and-maps/lesson-1-2.jpg",
+            alt: "A phone showing a location pin beside a paper map",
             text: [
               "Each extra pair of digits in a grid reference makes it ten times more precise. A four-figure reference names a 1 km square. A six-figure reference splits each side of that square into tenths, pinpointing a spot to the nearest 100 m. An eight-figure reference splits each tenth into ten again, giving a position to the nearest 10 m.",
               "The rule never changes: eastings first ('along the corridor'), then northings ('up the stairs'), and the digits are split exactly in half. In SK 2475 3631, the easting is 2475 and the northing is 3631. You would never write the two halves mixed together.",
@@ -52,6 +56,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Scale, distance and area",
+            picture: "/lessons/fieldwork-and-maps/lesson-1-3.jpg",
+            alt: "Measuring a winding route on a map with string and a ruler",
             text: [
               "A ratio scale such as 1:50,000 is also called a representative fraction: one unit on the map represents 50,000 of the same units on the ground. To convert, multiply the map distance by the scale, then change the units. On a 1:50,000 map, 1 cm stands for 50,000 cm, which is 500 m, so 2 cm stand for 1 km. On a 1:25,000 map, 1 cm stands for 250 m, so 4 cm stand for 1 km.",
               "To find a real distance, measure in centimetres, then multiply. A footpath measuring 7 cm on a 1:25,000 map is 7 × 250 = 1,750 m, or 1.75 km. You can also work backwards: a 3 km walk would measure 6 cm on a 1:50,000 map.",
@@ -128,6 +134,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "Ways of showing relief",
+            picture: "/lessons/fieldwork-and-maps/lesson-2-1.jpg",
+            alt: "A triangulation pillar on a hilltop above a valley",
             text: [
               "Relief means the shape and height of the land. Mapmakers have tried many ways to show it on a flat sheet. Older maps used hachures, short lines drawn down the slope, thicker where it was steeper. Some modern maps use hill shading, as if light were falling from the north-west, or layer colouring, with green for lowland shading into browns for high ground.",
               "Ordnance Survey maps mainly use contour lines: lines joining points of equal height above mean sea level. In Great Britain, 'sea level' is a fixed reference called Ordnance Datum Newlyn, based on the average sea level measured at Newlyn in Cornwall between 1915 and 1921.",
@@ -137,6 +145,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Reading landforms from contour patterns",
+            picture: "/lessons/fieldwork-and-maps/lesson-2-2.jpg",
+            alt: "An aerial view of a valley, ridge and col",
             text: [
               "Spacing tells you steepness. Contours bunched tightly together mean the height changes fast over a short distance: a steep slope or cliff. Widely spaced contours mean a gentle slope, and few or no contours mean flat land such as a floodplain. A concave slope has contours closer together near the top; a convex slope has them closer near the bottom.",
               "Shapes tell you the landform. Closed rings with heights increasing inwards show a hill or summit. Where contours form V shapes with the point aiming uphill, usually with a stream in the bottom, you are looking at a valley. Where the V shapes point downhill, the land is a spur: a ridge of high ground sticking out from a hillside.",
@@ -146,6 +156,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Cross-sections and gradient",
+            picture: "/lessons/fieldwork-and-maps/lesson-2-3.jpg",
+            alt: "Drawing a cross-section of a hill on graph paper",
             text: [
               "A cross-section is a side view of the land along a line, as if you had sliced through it. To draw one, lay the straight edge of a strip of paper along the line on the map. Mark and label every place where a contour crosses the edge, with its height. Then draw axes on graph paper, with distance along the bottom and height up the side, and plot each mark at its height. Join the points with a smooth curve, never with straight zigzags.",
               "Choose a sensible vertical scale. If you use the same scale for height as for distance, most British hills look almost flat; geographers usually exaggerate the vertical scale and say so, for example 'vertical exaggeration × 5'.",
@@ -222,6 +234,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "A grid for the whole planet",
+            picture: "/lessons/fieldwork-and-maps/lesson-3-1.jpg",
+            alt: "A globe showing lines of latitude and longitude",
             text: [
               "The National Grid works for Great Britain because the country is small enough to treat as flat. To locate places anywhere on a round Earth, geographers use a different system: latitude and longitude, measured as angles in degrees (°) from the centre of the Earth.",
               "Lines of latitude, also called parallels, run east to west around the globe. They measure how far north or south a place is from the Equator, which is 0°. The North Pole is 90°N and the South Pole is 90°S. Important parallels include the Tropic of Cancer (about 23.4°N), the Tropic of Capricorn (about 23.4°S), the Arctic Circle (about 66.6°N) and the Antarctic Circle (about 66.6°S).",
@@ -231,6 +245,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Reading and writing coordinates",
+            picture: "/lessons/fieldwork-and-maps/lesson-3-2.jpg",
+            alt: "A teenager comparing a globe with an atlas",
             text: [
               "A coordinate gives latitude first, then longitude. London is at about 51.5°N, 0.1°W. Edinburgh is about 56.0°N, 3.2°W, Cardiff about 51.5°N, 3.2°W and Belfast about 54.6°N, 5.9°W. Notice that Cardiff and London have almost the same latitude, but Cardiff is further west.",
               "For more precision each degree can be split into 60 minutes (′), and each minute into 60 seconds (″), so 51° 30′ N is the same as 51.5°N. Phones and online maps usually show decimal degrees instead, where south and west are often written as negative numbers: London might appear as 51.5074, −0.1278.",
@@ -239,6 +255,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Longitude, time and GPS",
+            picture: "/lessons/fieldwork-and-maps/lesson-3-3.jpg",
+            alt: "Satellites orbiting the Earth",
             text: [
               "The Earth turns 360° in about 24 hours, which is 15° every hour. That link between longitude and time made the Prime Meridian the starting point for world time zones. In 1884 the International Meridian Conference in Washington DC agreed to use Greenwich as 0°, partly because most of the world's shipping already used British charts based on it.",
               "For centuries, sailors could find their latitude from the height of the Sun or the Pole Star, but longitude was much harder, because it depends on knowing the exact time at home. In the 1700s the clockmaker John Harrison built marine chronometers accurate enough to solve the problem at sea.",
@@ -315,6 +333,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "What is GIS?",
+            picture: "/lessons/fieldwork-and-maps/lesson-4-1.jpg",
+            alt: "Transparent map layers stacked like a GIS",
             text: [
               "A geographical information system (GIS) is a computer system for capturing, storing, analysing and displaying data that is linked to a location. Every piece of data has coordinates, so the computer can draw it on a map and compare it with other data for the same place.",
               "GIS stores information as layers, like transparent sheets stacked on top of each other. One layer might show roads, another rivers, another flood risk, another houses, another schools. Switching layers on and off, or combining them, lets you ask questions that a single paper map cannot answer, such as 'Which schools lie in areas at high risk of flooding?'",
@@ -324,6 +344,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Spatial thinking before computers",
+            picture: "/lessons/fieldwork-and-maps/lesson-4-2.jpg",
+            alt: "A Victorian street water pump in London",
             text: [
               "The idea of layering data on a map is older than computers. A famous example comes from Soho, London, in 1854, when an outbreak of cholera, a serious disease spread by contaminated water, caused many deaths in a few days. The doctor John Snow marked each case on a street map.",
               "His map showed the cases clustered around a public water pump on Broad Street. Snow used it, alongside other evidence, to persuade local officials to remove the pump's handle, and the outbreak declined. Historians point out that it was already slowing, but Snow's work became an important early example of using maps to find patterns and test an explanation.",
@@ -332,6 +354,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Using digital maps well",
+            picture: "/lessons/fieldwork-and-maps/lesson-4-3.jpg",
+            alt: "Exploring a flood map on a laptop",
             text: [
               "Many GIS tools are free in a web browser. Satellite and 3D views such as Google Earth let you fly over landscapes and measure distances. OpenStreetMap is a free map made by volunteers worldwide. Official flood maps are published by the Environment Agency in England, Natural Resources Wales, SEPA in Scotland and the Department for Infrastructure in Northern Ireland, and census data can be mapped down to small local areas.",
               "Digital maps have big advantages over paper: they can be updated quickly, zoomed to any scale, searched, layered and shared. They can show change over time, for example by comparing satellite images of a coastline or a growing city across several decades.",
@@ -408,6 +432,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "The enquiry process",
+            picture: "/lessons/fieldwork-and-maps/lesson-5-1.jpg",
+            alt: "Planning a fieldwork enquiry at a kitchen table",
             text: [
               "Fieldwork means collecting information first-hand, out in the real world, rather than only reading about it. In secondary school and at GCSE, fieldwork follows an enquiry process: a sequence of stages that turns curiosity into evidence and conclusions.",
               "The stages are: ask a question; make a hypothesis or prediction; plan methods and a risk assessment; collect data; present it; analyse it to describe and explain patterns; reach a conclusion; and evaluate the whole investigation. The process is a cycle, because a good evaluation often leads to a new, sharper question.",
@@ -417,6 +443,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Hypotheses and data",
+            picture: "/lessons/fieldwork-and-maps/lesson-5-2.jpg",
+            alt: "A busy town high street",
             text: [
               "A hypothesis is a statement you can test with evidence. It should state a relationship clearly, for example: 'Traffic flow will be greater on roads closer to the town centre.' You then collect data to support or reject it. Rejecting a hypothesis is not failure; it is a valid result. A null hypothesis states that there is no relationship, such as 'There is no difference in traffic flow between the centre and the edge of town.'",
               "Primary data is data you collect yourself: traffic counts, pedestrian counts, environmental quality scores, questionnaires, field sketches and photographs. Secondary data has been collected by someone else: census figures, maps, council reports, crime statistics or flood data. Strong enquiries usually use both.",
@@ -425,6 +453,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Methods, sampling and risk",
+            picture: "/lessons/fieldwork-and-maps/lesson-5-3.jpg",
+            alt: "A teenager and parent checking a fieldwork plan before going out",
             text: [
               "You can never measure everything, so you take a sample. In random sampling, sites are chosen by chance, such as using random numbers to choose grid squares, which reduces bias. In systematic sampling, sites are evenly spaced, such as every 200 m along a road from the centre. In stratified sampling, you make sure each group or area is represented in proportion, such as surveying sites in residential, shopping and industrial areas.",
               "Methods must be fair and repeatable. That means the same equipment, the same time of day, the same length of count and the same scoring criteria at every site. Write the method down precisely so someone else could repeat it. A pilot survey, a quick trial run, helps you spot problems before the real thing.",
@@ -501,6 +531,8 @@ export const fieldworkAndMaps: LessonUnit = {
         cards: [
           {
             heading: "Collecting data in the field",
+            picture: "/lessons/fieldwork-and-maps/lesson-6-1.jpg",
+            alt: "Doing a traffic count from a safe pavement",
             text: [
               "On the day, follow your method exactly. For a traffic count, stand somewhere safe with a clear view, start a timer, and tally each vehicle by type for the full time. Record the date, time, weather and anything unusual, such as roadworks or a school run, because these may explain odd results later.",
               "An environmental quality survey (EQS) turns judgements into numbers. You score several criteria, such as litter, noise, greenery and the condition of buildings, on a bipolar scale from −2 (very poor) to +2 (very good), then add them up for a total score at each site. Because scoring is partly subjective, write clear descriptions of what each score means before you start, and if possible ask two people to score each site and take the average.",
@@ -509,6 +541,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Presenting data",
+            picture: "/lessons/fieldwork-and-maps/lesson-6-2.jpg",
+            alt: "Hand-drawn bar, line and scatter graphs",
             text: [
               "Choose the graph that suits the data. A bar chart compares separate categories, such as the number of each vehicle type. A divided bar or pie chart shows proportions of a whole. A line graph shows continuous change, such as traffic across a day. A scatter graph tests a relationship between two variables, such as distance from the centre and EQS score.",
               "Geographers also present data on maps. Proportional symbols, such as circles or bars drawn larger where the value is larger, can be placed at each site on a base map. A choropleth map shades areas from light to dark by value. Annotated photos and field sketches add explanation.",
@@ -517,6 +551,8 @@ export const fieldworkAndMaps: LessonUnit = {
           },
           {
             heading: "Analysing, concluding and evaluating",
+            picture: "/lessons/fieldwork-and-maps/lesson-6-3.jpg",
+            alt: "Looking for an anomaly in fieldwork results",
             text: [
               "Analysis means describing patterns using data, then explaining them. Use summary statistics: the mean (add up and divide by the number of values), the median (the middle value when they are put in order), the mode (the most common value) and the range (largest minus smallest). Quote figures: 'Traffic fell from 142 vehicles at site 1 to 18 at site 5.' Point out anomalies, results that don't fit the pattern, and suggest reasons.",
               "A conclusion answers the enquiry question and states whether the evidence supports or rejects the hypothesis. Be honest about how strong the evidence is. A correlation does not prove cause: busier roads and lower EQS scores might both be caused by being closer to the centre.",

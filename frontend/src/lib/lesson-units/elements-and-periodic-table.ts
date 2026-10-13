@@ -42,6 +42,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "Atoms: the building blocks",
+            picture: "/lessons/elements-and-periodic-table/lesson-1-1.jpg",
+            alt: "A teenager looking at a grain of sand through a magnifying glass, with a zoomed-in view of tiny atoms",
             text: [
               "Everything around you, from the air in your lungs to the screen you are reading, is made of atoms. An atom is the smallest particle of an element that can exist. Atoms are almost unimaginably small: a typical atom is about 0.1 nanometres across, which means roughly ten million of them would fit side by side across a single millimetre.",
               "The idea of atoms is very old. Around 2,400 years ago the Greek thinker Democritus argued that if you kept cutting something in half, you would eventually reach a piece that could not be cut. He called it 'atomos', meaning 'uncuttable'. His idea was a guess, because he had no way to test it.",
@@ -51,6 +53,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "What is an element?",
+            picture: "/lessons/elements-and-periodic-table/lesson-1-2.jpg",
+            alt: "Pure elements on a table: gold, copper wire, graphite, sulfur and a helium balloon",
             text: [
               "An element is a substance made of only one type of atom. Gold, oxygen, carbon and iron are all elements. Because every atom in a lump of pure gold is a gold atom, gold cannot be broken down into anything simpler by chemical reactions.",
               "There are 118 known elements. About 94 of them occur naturally on Earth; the rest have been made by scientists in laboratories, often lasting only a fraction of a second before they break apart.",
@@ -60,6 +64,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Chemical symbols",
+            picture: "/lessons/elements-and-periodic-table/lesson-1-3.jpg",
+            alt: "A nineteenth-century chemist sorting tiles and jars of metals by candlelight",
             text: [
               "Chemists all over the world use the same shorthand for elements: a chemical symbol of one or two letters. The first letter is always a capital and any second letter is always lower case. So Co is cobalt, but CO means carbon and oxygen joined together. Getting the capital wrong changes the meaning completely.",
               "Many symbols are easy to guess from the English name: H for hydrogen, O for oxygen, C for carbon, N for nitrogen, Ca for calcium and Cl for chlorine.",
@@ -186,6 +192,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "When elements join",
+            picture: "/lessons/elements-and-periodic-table/lesson-2-1.jpg",
+            alt: "Two kinds of atoms drifting together and bonding into clusters",
             text: [
               "A compound is a substance made of two or more different elements chemically bonded together. Water is a compound of hydrogen and oxygen; carbon dioxide is a compound of carbon and oxygen; table salt, sodium chloride, is a compound of sodium and chlorine.",
               "Compounds form in chemical reactions. The atoms of the elements are rearranged and held together by chemical bonds. Because bonds have to be broken to get the elements back, a compound can only be separated into its elements by another chemical reaction, not by simple methods like filtering or evaporating.",
@@ -194,6 +202,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Reading a formula",
+            picture: "/lessons/elements-and-periodic-table/lesson-2-2.jpg",
+            alt: "Ball-and-stick models of water and carbon dioxide being built on a desk",
             text: [
               "A chemical formula uses symbols and small numbers to show which elements are in a compound and in what ratio. The small number, called a subscript, sits just after and below the symbol it belongs to. If there is no number, there is one atom of that element.",
               "H₂O means two hydrogen atoms bonded to one oxygen atom. CO₂ means one carbon atom bonded to two oxygen atoms. CH₄ (methane, the main gas in natural gas) has one carbon and four hydrogen atoms. NH₃ (ammonia) has one nitrogen and three hydrogens.",
@@ -203,6 +213,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "New substance, new properties",
+            picture: "/lessons/elements-and-periodic-table/lesson-2-3.jpg",
+            alt: "Cube-shaped salt crystals beside chips, with a model of a salt lattice above",
             text: [
               "A compound usually has completely different properties from the elements that made it. Sodium is a soft, silvery metal that reacts violently with water. Chlorine is a pale green, poisonous gas. Yet together they make sodium chloride, the harmless white crystals you sprinkle on chips.",
               "Hydrogen is a gas that burns explosively, and oxygen is the gas that things need to burn. Joined together as water, they make a liquid we use to put fires out.",
@@ -327,6 +339,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "What is a mixture?",
+            picture: "/lessons/elements-and-periodic-table/lesson-3-1.jpg",
+            alt: "A teenager using a magnet to pull paper clips out of a jar of sand and salt",
             text: [
               "A mixture contains two or more substances that are not chemically bonded together. Each substance keeps its own properties, and they can be present in any proportion. Sand and salt, air, sea water, muesli and orange squash are all mixtures.",
               "Air is a good example. It is about 78% nitrogen, 21% oxygen and nearly 1% argon, with small amounts of carbon dioxide and water vapour. The gases are jumbled together but not joined. The nitrogen in air behaves exactly like pure nitrogen.",
@@ -335,6 +349,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Spotting the difference",
+            picture: "/lessons/elements-and-periodic-table/lesson-3-2.jpg",
+            alt: "A jumble of loose particles beside neat bonded clusters, comparing a mixture and a compound",
             text: [
               "Mixtures and compounds can look alike, so chemists compare them in four ways. First, bonding: a compound's elements are chemically bonded, a mixture's substances are not. Second, proportions: a compound always has a fixed ratio, like H₂O, whereas a mixture can have any amount of each part; you can make squash weak or strong.",
               "Third, properties: a compound has new properties that are different from its elements, but each part of a mixture keeps its own properties. Fourth, separation: a mixture can be separated by physical methods, but a compound needs a chemical reaction.",
@@ -344,6 +360,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Iron, sulfur and iron sulfide",
+            picture: "/lessons/elements-and-periodic-table/lesson-3-3.jpg",
+            alt: "A dish of iron and sulfur mixture next to a dish of dark iron sulfide, with a magnet",
             text: [
               "A classic school demonstration shows the difference clearly. Iron filings are grey and magnetic. Sulfur is a yellow powder that is not magnetic. Stir them together and you have a mixture: you can still see grey and yellow bits, and a magnet pulls the iron straight out.",
               "In a laboratory, a teacher heats the mixture in a fume cupboard. It glows red hot and keeps glowing even when the heat is removed, because the reaction itself gives out energy. When it cools, a new substance is left: iron sulfide, FeS, a dark grey-black solid.",
@@ -471,6 +489,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "Three smaller particles",
+            picture: "/lessons/elements-and-periodic-table/lesson-4-1.jpg",
+            alt: "An atom with a tiny nucleus of protons and neutrons and electrons in the space around it",
             text: [
               "Dalton thought atoms could not be split, but around 1900 scientists discovered that atoms are made of even smaller subatomic particles: protons, neutrons and electrons.",
               "At the centre of every atom is a tiny, dense nucleus containing protons and neutrons. Protons have a positive charge (+1) and neutrons have no charge. Both have a relative mass of 1. Around the nucleus move electrons, which have a negative charge (−1) and are so light that their mass is usually treated as almost zero: about 1/2000 of a proton.",
@@ -480,6 +500,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Atomic number and mass number",
+            picture: "/lessons/elements-and-periodic-table/lesson-4-2.jpg",
+            alt: "A pea on the centre spot of an empty stadium, showing how small a nucleus is compared with an atom",
             text: [
               "The number of protons in an atom's nucleus is its atomic number, and it decides which element the atom is. Every atom with 1 proton is hydrogen, every atom with 6 protons is carbon, and every atom with 79 protons is gold. Change the number of protons and you have a different element.",
               "The mass number is the total number of protons and neutrons in the nucleus. To find the number of neutrons, subtract the atomic number from the mass number. A typical carbon atom has a mass number of 12 and an atomic number of 6, so it has 6 protons, 6 neutrons and 6 electrons.",
@@ -489,6 +511,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Electron shells and the story of discovery",
+            picture: "/lessons/elements-and-periodic-table/lesson-4-3.jpg",
+            alt: "An early twentieth-century laboratory with gold foil apparatus and scientists watching",
             text: [
               "Electrons are arranged in energy levels, or shells, around the nucleus. In the simple model used at KS3, the first shell holds up to 2 electrons and the second and third shells hold up to 8 each, for the first 20 elements. Shells fill from the inside out.",
               "So a sodium atom, with 11 electrons, has the arrangement 2, 8, 1. Chlorine, with 17, is 2, 8, 7. Argon, with 18, is 2, 8, 8. The electrons in the outer shell matter most, because they decide how an element reacts.",
@@ -600,6 +624,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "Groups and periods",
+            picture: "/lessons/elements-and-periodic-table/lesson-5-1.jpg",
+            alt: "A teenager tracing a column on a large wall chart of coloured squares",
             text: [
               "The periodic table arranges all 118 elements in order of increasing atomic number, from hydrogen (1) in the top left to oganesson (118) at the bottom right. It is arranged so that elements with similar properties line up together.",
               "The vertical columns are called groups. Elements in the same group have the same number of electrons in their outer shell, which is why they react in similar ways. For the main groups, the group number tells you that number: every group 1 element has 1 outer electron, and every group 7 element has 7.",
@@ -609,6 +635,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Metals and non-metals",
+            picture: "/lessons/elements-and-periodic-table/lesson-5-2.jpg",
+            alt: "Shiny copper, steel and aluminium compared with dull sulfur and charcoal",
             text: [
               "A zig-zag 'staircase' line on the right-hand side of the table divides the metals from the non-metals. More than three-quarters of the elements are metals, found to the left of the line. The non-metals are to the right, along with hydrogen, which sits on its own at the top.",
               "Metals are usually shiny, good conductors of heat and electricity, malleable (can be hammered into shape) and ductile (can be drawn into wires). Most have high melting points and are solid at room temperature; mercury is the exception.",
@@ -618,6 +646,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Mendeleev's bold gaps",
+            picture: "/lessons/elements-and-periodic-table/lesson-5-3.jpg",
+            alt: "Mendeleev laying out cards in rows on a table and leaving gaps",
             text: [
               "By the 1860s about 63 elements were known, and chemists were trying to find patterns in them. In 1869 the Russian chemist Dmitri Mendeleev wrote each element's properties on a card and arranged them, rather like a game of patience, in order of atomic mass, starting a new row whenever the properties began to repeat.",
               "Mendeleev's genius was in what he refused to do. Where the next known element did not fit the pattern, he left a gap, arguing that an undiscovered element belonged there. He even swapped a few elements, such as tellurium and iodine, out of mass order so that they sat with the elements they resembled.",
@@ -740,6 +770,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
         cards: [
           {
             heading: "The alkali metals",
+            picture: "/lessons/elements-and-periodic-table/lesson-6-1.jpg",
+            alt: "A soft silvery metal being cut with a knife, with metal pieces stored under oil",
             text: [
               "Group 1 contains lithium (Li), sodium (Na), potassium (K), rubidium (Rb), caesium (Cs) and francium (Fr). Hydrogen sits above them in many tables but is not an alkali metal. All group 1 atoms have one electron in their outer shell.",
               "The alkali metals are unusual metals. They are soft enough to cut with a knife, and a freshly cut surface is shiny but quickly turns dull as it reacts with oxygen in the air. They have low densities: lithium, sodium and potassium all float on water. They also have low melting points that decrease down the group: lithium melts at 181 °C, sodium at 98 °C and potassium at 63 °C.",
@@ -748,6 +780,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "Reacting with water",
+            picture: "/lessons/elements-and-periodic-table/lesson-6-2.jpg",
+            alt: "A tiny metal ball skimming across water behind a safety screen, with a lilac flame",
             text: [
               "Teachers often demonstrate group 1 metals reacting with water, using a tiny piece behind a safety screen. Each one reacts to make a metal hydroxide and hydrogen gas. For sodium: sodium + water → sodium hydroxide + hydrogen. The hydroxide dissolves to make an alkaline solution, which is how the group got its name.",
               "The reactions get more vigorous down the group. Lithium floats and fizzes steadily. Sodium fizzes rapidly, melts into a shiny silver ball and skims across the surface. Potassium reacts so fast that the hydrogen catches fire with a lilac flame, often with a small crack. Rubidium and caesium react explosively, so they are not used in schools.",
@@ -757,6 +791,8 @@ export const elementsAndPeriodicTable: LessonUnit = {
           },
           {
             heading: "The noble gases",
+            picture: "/lessons/elements-and-periodic-table/lesson-6-3.jpg",
+            alt: "Glowing neon-style lights on a street at night and teenagers holding helium balloons",
             text: [
               "Group 0 contains helium (He), neon (Ne), argon (Ar), krypton (Kr), xenon (Xe) and radon (Rn). They are all colourless gases at room temperature, and they exist as single atoms rather than molecules.",
               "The noble gases are extremely unreactive, or inert. Their atoms have a full outer shell of electrons (2 for helium, 8 for the others), which is a very stable arrangement, so they have no tendency to gain, lose or share electrons. Argon makes up nearly 1% of the air, yet nobody noticed it until Lord Rayleigh and William Ramsay identified it in 1894; Ramsay then discovered most of the rest of the group within a few years.",

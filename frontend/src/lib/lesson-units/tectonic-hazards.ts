@@ -34,6 +34,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "The layers of the Earth",
+            picture: "/lessons/tectonic-hazards/lesson-1-1.jpg",
+            alt: "A cutaway globe showing the Earth's crust, mantle, outer core and inner core",
             text: [
               "The Earth is about 6,370 kilometres from its surface to its centre, and it is made of layers, a little like the layers of a peach. On the outside is the crust, a thin skin of solid rock. Under the crust is the mantle, then the outer core, and at the very centre the inner core.",
               "The crust comes in two kinds. Continental crust, which makes up the land, is usually 30 to 50 kilometres thick and can reach about 70 kilometres under high mountains. It is old and relatively light (less dense). Oceanic crust, under the oceans, is only about 5 to 10 kilometres thick, but it is younger and denser, made mainly of a dark rock called basalt.",
@@ -43,6 +45,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "How do we know what is inside?",
+            picture: "/lessons/tectonic-hazards/lesson-1-2.jpg",
+            alt: "A teenager studying seismic wave traces on a laptop beside a globe",
             text: [
               "Nobody has ever drilled through the crust. The deepest hole ever drilled, the Kola Superdeep Borehole in Russia, reached just over 12 kilometres, which is less than 0.2% of the way to the centre of the Earth.",
               "Instead, geologists use seismic waves, the vibrations that travel through the Earth after an earthquake. These waves change speed and direction when they pass from one material into another. Seismometers all over the world record when and where the waves arrive.",
@@ -51,6 +55,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Plates and convection currents",
+            picture: "/lessons/tectonic-hazards/lesson-1-3.jpg",
+            alt: "Rigid plates resting on convection currents in the mantle",
             text: [
               "The crust and the rigid top part of the mantle together form the lithosphere. The lithosphere is broken into large pieces called tectonic plates, which fit together like a cracked eggshell. There are seven major plates, such as the Pacific Plate and the Eurasian Plate, and many smaller ones. The UK sits on the Eurasian Plate.",
               "Beneath the lithosphere is a softer, partly molten part of the upper mantle called the asthenosphere. The plates rest on it and move very slowly, usually a few centimetres a year, roughly the speed your fingernails grow.",
@@ -165,6 +171,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "Alfred Wegener's big idea",
+            picture: "/lessons/tectonic-hazards/lesson-2-1.jpg",
+            alt: "An early twentieth-century scientist studying a globe",
             text: [
               "In 1912 a German scientist called Alfred Wegener put forward a bold idea: the continents had once been joined together in one giant supercontinent, which he called Pangaea (meaning 'all lands'). Over millions of years, he argued, the continents had slowly drifted apart to where they are today. He called this continental drift and set it out in his book The Origin of Continents and Oceans in 1915.",
               "Wegener was a meteorologist and polar explorer, not a geologist, and his idea went against what most scientists believed at the time. Many thought the continents were fixed, and that similar animals on different continents had crossed long-lost 'land bridges' that had since sunk.",
@@ -173,6 +181,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "The evidence",
+            picture: "/lessons/tectonic-hazards/lesson-2-2.jpg",
+            alt: "A teenager fitting paper cut-outs of South America and Africa together beside fossils",
             text: [
               "The jigsaw fit: the east coast of South America and the west coast of Africa fit together remarkably well, especially if you use the edge of the continental shelf under the sea rather than the coastline.",
               "Fossils: remains of Mesosaurus, a small freshwater reptile, are found in both Brazil and southern Africa. It could not have swum across a salty ocean. Fossils of a fern-like plant called Glossopteris are found in South America, Africa, India, Australia and Antarctica.",
@@ -182,6 +192,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "From drift to plate tectonics",
+            picture: "/lessons/tectonic-hazards/lesson-2-3.jpg",
+            alt: "A research ship above a mid-ocean ridge with mirrored bands on the sea floor",
             text: [
               "Wegener's evidence was strong, but his theory had one big weakness: he could not explain what force could move whole continents. His suggestions, such as the spin of the Earth, were shown to be far too weak, so most geologists rejected his idea for decades.",
               "After the Second World War, scientists mapped the ocean floor using sonar. They found an enormous underwater mountain range running down the middle of the Atlantic: the Mid-Atlantic Ridge. In 1962 the American geologist Harry Hess proposed sea-floor spreading: new crust forms at the ridges, where magma rises, and moves outwards on both sides.",
@@ -298,6 +310,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "Constructive boundaries",
+            picture: "/lessons/tectonic-hazards/lesson-3-1.jpg",
+            alt: "Two cliffs pulling apart at a rift valley in Iceland",
             text: [
               "A plate boundary, or plate margin, is where two plates meet. Most earthquakes and volcanoes happen along plate boundaries, because this is where the plates push, pull and grind against each other.",
               "At a constructive (or divergent) boundary, two plates move apart. As they separate, pressure on the mantle beneath is released and some of the hot rock melts to form magma, which rises to fill the gap. It cools to form new crust, so crust is being 'constructed'.",
@@ -307,6 +321,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Destructive boundaries",
+            picture: "/lessons/tectonic-hazards/lesson-3-2.jpg",
+            alt: "An ocean plate sinking beneath a continent with a volcano above",
             text: [
               "At a destructive (or convergent) boundary, two plates move towards each other. Where oceanic crust meets continental crust, the denser oceanic plate is forced down underneath. This is called subduction, and the area where it happens is a subduction zone. A deep ocean trench forms where the plate bends down.",
               "As the oceanic plate sinks into the hot mantle, it melts and releases water, forming magma that rises through the continental crust. This creates chains of explosive volcanoes and fold mountains. The Andes in South America formed where the Nazca Plate is subducted beneath the South American Plate. Japan lies above a subduction zone where the Pacific Plate sinks beneath the plate Japan sits on.",
@@ -316,6 +332,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Conservative boundaries",
+            picture: "/lessons/tectonic-hazards/lesson-3-3.jpg",
+            alt: "A straight fault line cutting across dry hills with an offset stream",
             text: [
               "At a conservative (or transform) boundary, two plates slide past each other, either in opposite directions or in the same direction at different speeds. Crust is neither created nor destroyed, so it is 'conserved'.",
               "The plates do not slide smoothly. Friction makes them stick, pressure builds up, and then the rocks suddenly slip, sending out seismic waves. Conservative boundaries can have powerful, shallow earthquakes, but there are no volcanoes because no magma is created.",
@@ -445,6 +463,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "Two kinds of volcano",
+            picture: "/lessons/tectonic-hazards/lesson-4-1.jpg",
+            alt: "A gentle shield volcano beside a steep composite volcano",
             text: [
               "A volcano forms where magma reaches the surface through a vent. Once it erupts, magma is called lava. How a volcano behaves depends mainly on its magma, especially how viscous (thick and sticky) it is and how much gas it contains.",
               "Shield volcanoes have gentle slopes and a wide base. They are made of runny basalt lava, which is low in silica and flows a long way before it cools. Gas escapes easily, so eruptions are fairly frequent but usually gentle. They are found at constructive boundaries, such as in Iceland, and over hotspots: Mauna Loa in Hawaii is the largest active volcano on Earth.",
@@ -454,6 +474,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Volcanic hazards",
+            picture: "/lessons/tectonic-hazards/lesson-4-2.jpg",
+            alt: "An ash plume drifting over an airport with grounded planes",
             text: [
               "Lava flows are usually slow enough for people to walk away from, but they destroy buildings, roads and farmland in their path. Pyroclastic flows are far more dangerous: avalanches of hot gas, ash and rock that rush down the slopes at over 100 kilometres per hour, often hotter than 500°C.",
               "Ash clouds can travel thousands of kilometres. Ash makes breathing difficult, collapses roofs when it builds up, damages crops, and can stop aircraft engines. In 2010, ash from Eyjafjallajökull in Iceland closed much of Europe's airspace for several days, cancelling around 100,000 flights.",
@@ -463,6 +485,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Why live near a volcano?",
+            picture: "/lessons/tectonic-hazards/lesson-4-3.jpg",
+            alt: "Vineyards and orchards on the fertile slopes of a volcano",
             text: [
               "Roughly 800 million people around the world live within 100 kilometres of an active volcano. That can seem surprising, but there are good reasons.",
               "Fertile soil: volcanic ash breaks down into soils rich in minerals, which are excellent for farming. The slopes of Mount Etna in Sicily are covered in vineyards, orchards and olive groves, and much of Indonesia's rice is grown on volcanic soils.",
@@ -579,6 +603,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "What causes an earthquake?",
+            picture: "/lessons/tectonic-hazards/lesson-5-1.jpg",
+            alt: "Seismic waves spreading from a focus underground to the epicentre above",
             text: [
               "An earthquake is a sudden shaking of the ground. Most are caused by the movement of tectonic plates. As plates move, friction can make them stick. Stress builds up in the rocks, sometimes for hundreds of years, until the rocks suddenly break or slip along a fault (a crack in the crust). The stored energy is released as seismic waves.",
               "The point underground where the rocks slip is called the focus (or hypocentre). The point on the surface directly above it is the epicentre. Shaking is usually strongest near the epicentre and weakens with distance. Shallow-focus earthquakes, close to the surface, tend to cause more damage than deep ones of the same size.",
@@ -588,6 +614,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Measuring earthquakes",
+            picture: "/lessons/tectonic-hazards/lesson-5-2.jpg",
+            alt: "A teenager watching a homemade seismometer draw wavy lines",
             text: [
               "Earthquakes are recorded by seismometers, which detect the vibrations. The record they produce is called a seismogram: a line that wiggles more strongly the harder the ground shakes.",
               "The Richter scale, developed by Charles Richter in 1935, measures an earthquake's magnitude: the size of the seismic waves. Today scientists mostly use the moment magnitude scale, which works better for very large earthquakes, but the numbers are similar and news reports often still say 'Richter scale'.",
@@ -597,6 +625,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Tsunamis and prediction",
+            picture: "/lessons/tectonic-hazards/lesson-5-3.jpg",
+            alt: "A coastal town with an uphill evacuation path and a warning buoy",
             text: [
               "When an earthquake happens under the sea, especially at a subduction zone, the sea floor can be suddenly pushed up, lifting the whole column of water above it. This creates a tsunami: a series of waves that can cross an ocean at the speed of a jet aircraft. In deep water the waves may be less than a metre high, but as they reach shallow water near the coast they slow down and grow much taller.",
               "A warning sign of a tsunami can be the sea drawing back a long way from the shore. Anyone who sees this, or feels a strong earthquake at the coast, should move to high ground immediately rather than wait for an official warning.",
@@ -724,6 +754,8 @@ export const tectonicHazards: LessonUnit = {
         cards: [
           {
             heading: "Japan, 11 March 2011",
+            picture: "/lessons/tectonic-hazards/lesson-6-1.jpg",
+            alt: "A Japanese coastal town being rebuilt behind a sea wall",
             text: [
               "Japan is one of the world's richest countries, and one of the most earthquake-prone. It lies where four plates meet. On 11 March 2011, the Pacific Plate suddenly slipped beneath the plate Japan sits on, about 70 kilometres off the north-east coast of the Tōhoku region. The result was a magnitude 9.0 earthquake (some measurements give 9.1), the most powerful ever recorded in Japan.",
               "Japan's strict building codes worked well: most buildings withstood several minutes of intense shaking, and the early warning system stopped high-speed trains and sent alerts to phones and television. The far greater danger was the tsunami that followed. Waves reached the coast within about 30 minutes to an hour, and in some places the water ran up to around 40 metres above sea level, overtopping sea walls.",
@@ -733,6 +765,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Haiti, 12 January 2010",
+            picture: "/lessons/tectonic-hazards/lesson-6-2.jpg",
+            alt: "A Caribbean hillside neighbourhood being rebuilt",
             text: [
               "Haiti, on the Caribbean island of Hispaniola, was then the poorest country in the Americas. On 12 January 2010, a magnitude 7.0 earthquake struck on a fault close to the boundary between the Caribbean and North American plates. Its epicentre was only about 25 kilometres from the capital, Port-au-Prince, and its focus was shallow, about 13 kilometres deep.",
               "Many buildings were made of poorly built concrete without steel reinforcement, and building codes were not enforced. Vast numbers of homes, schools and hospitals collapsed, along with the Presidential Palace and the main port. Around 1.5 million people were left homeless, many living for months or years in tented camps.",
@@ -742,6 +776,8 @@ export const tectonicHazards: LessonUnit = {
           },
           {
             heading: "Why the difference? Prediction, protection and planning",
+            picture: "/lessons/tectonic-hazards/lesson-6-3.jpg",
+            alt: "Teenagers practising an earthquake drill under classroom desks",
             text: [
               "Japan's earthquake released roughly 1,000 times more energy than Haiti's, yet far fewer people died. The main reason is not the physical hazard but a country's vulnerability: how well people, buildings and services can resist and recover. Wealth, governance, building standards and preparation all matter.",
               "Prediction: earthquakes cannot be predicted precisely, but hazards can be monitored. Japan has a dense network of seismometers, tsunami warning buoys and an early warning system. Haiti had very little monitoring. For volcanoes, scientists measure ground swelling, small earthquakes and gas emissions to forecast eruptions.",

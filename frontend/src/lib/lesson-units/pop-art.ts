@@ -30,6 +30,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "Art made from everyday life",
+            picture: "/lessons/pop-art/lesson-1-1.jpg",
+            alt: "A teenager sorting magazine cut-outs and packaging into piles on a kitchen table",
             text: [
               "Pop art is an art movement that began in the mid-1950s and was at its height in the 1960s. Pop artists took their subjects and their images from popular culture, sometimes called mass culture: adverts, packaging, comics, magazines, film stars, television and pop music. These were things almost everyone saw every day, rather than the grand historical, religious or mythological subjects that had long been treated as 'proper' art.",
               "The name is usually credited to the British critic Lawrence Alloway, who used the phrase 'popular art' and then 'pop art' in the mid-1950s for the mass-produced images of advertising and entertainment. Only later did the term come to mean the fine art that artists made in response to those images.",
@@ -39,6 +41,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Born in Britain",
+            picture: "/lessons/pop-art/lesson-1-2.jpg",
+            alt: "A 1950s group looking at projected magazine images in a London meeting room",
             text: [
               "Pop art did not begin in America, as many people assume, but in London. In the early 1950s a small group of artists, architects and writers met at the Institute of Contemporary Arts (the ICA). They became known as the Independent Group. Members included the artists Richard Hamilton and Eduardo Paolozzi, the architects Alison and Peter Smithson, and the critic Lawrence Alloway.",
               "Britain at the time was still recovering from the Second World War. Food rationing did not fully end until 1954, and many towns still had bomb sites. To the Independent Group, American magazines full of shiny cars, fridges, film stars and science fiction looked astonishingly glamorous. They wanted to study this new visual world seriously instead of looking down on it.",
@@ -48,6 +52,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Booming in America",
+            picture: "/lessons/pop-art/lesson-1-3.jpg",
+            alt: "A 1950s American suburb with big cars, a television and a supermarket",
             text: [
               "After 1945 the United States enjoyed a long economic boom. Wages rose, families moved to new suburbs, and people bought cars, washing machines and televisions in huge numbers. By 1960 most American homes had a television, and advertising had become a vast industry. Supermarkets put thousands of brightly packaged products side by side on their shelves.",
               "In the early 1960s, a group of New York artists began making art from this world: Andy Warhol, Roy Lichtenstein, Claes Oldenburg, James Rosenquist (who had worked as a painter of giant advertising billboards) and Tom Wesselmann. Jasper Johns and Robert Rauschenberg, who used flags, targets, newspaper and everyday objects in the late 1950s, are often seen as forerunners. By 1962 pop art was appearing in major New York galleries and in the newspapers.",
@@ -138,6 +144,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "A small collage that started a movement",
+            picture: "/lessons/pop-art/lesson-2-1.jpg",
+            alt: "A cut-paper collage of a 1950s living room with odd changes of scale",
             text: [
               "Richard Hamilton (1922 to 2011) was a British painter, printmaker and teacher, and is often called the 'father of pop art'. In 1956 he made a small collage, only about 26 cm by 25 cm, for the catalogue and poster of the 'This Is Tomorrow' exhibition at the Whitechapel Gallery. Its title is a question that sounds like an advertising slogan: 'Just what is it that makes today's homes so different, so appealing?'",
               "Hamilton built the picture from photographs cut out of mainly American magazines. It shows a modern living room. A bodybuilder poses in the middle holding a giant lollipop with the word 'POP' on it. A glamorous woman sits on the sofa. Around them are the new must-have products of the 1950s: a television, a tape recorder, a tinned ham on the table, and a vacuum cleaner whose hose stretches all the way up the stairs.",
@@ -147,6 +155,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "'Popular, transient, expendable...'",
+            picture: "/lessons/pop-art/lesson-2-2.jpg",
+            alt: "Cut-up car and appliance adverts on a designer's desk",
             text: [
               "In 1957 Hamilton wrote a letter to his friends the architects Alison and Peter Smithson in which he tried to define pop art. He listed its qualities: popular (designed for a mass audience), transient (short-term), expendable (easily forgotten), low cost, mass produced, young (aimed at youth), witty, gimmicky, glamorous and big business. He also included 'sexy' on the list, reflecting how adverts used glamour to sell.",
               "Notice that this list describes popular culture itself, such as adverts, packaging and pop records, rather than fine art. Hamilton's idea was that artists should take this throwaway material seriously and make lasting, thoughtful art from it.",
@@ -156,6 +166,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "How to analyse a pop collage",
+            picture: "/lessons/pop-art/lesson-2-3.jpg",
+            alt: "A teenager studying a collage with a magnifying glass",
             text: [
               "A useful way to analyse any artwork is to look at four areas. Content: what is shown, and what is it about? Form: how are the formal elements (line, shape, colour, tone, texture, pattern, composition and scale) used? Process: how was it made, and with what materials? Mood: what feeling or atmosphere does it create, and how does it make you respond?",
               "In Hamilton's collage the process is the message. By cutting out images and placing them side by side, he creates juxtaposition: unexpected combinations that make us see each thing afresh. Scale is deliberately strange too. The lollipop is enormous, the vacuum hose snakes up an entire staircase, and a whole planet becomes a ceiling.",
@@ -242,6 +254,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "From adverts to art",
+            picture: "/lessons/pop-art/lesson-3-1.jpg",
+            alt: "A row of painted food tins on a gallery shelf",
             text: [
               "Andy Warhol (1928 to 1987) is probably the most famous pop artist of all. He was born Andrew Warhola in Pittsburgh, Pennsylvania, to parents who had emigrated from what is now Slovakia. He studied commercial art at the Carnegie Institute of Technology, then moved to New York in 1949, where he became a very successful illustrator, especially of shoe adverts for magazines.",
               "Around 1960 to 1961 Warhol began making paintings of the things he saw in adverts and comics. In 1962 he showed 32 canvases of tins of Campbell's soup, one for each flavour then sold, at the Ferus Gallery in Los Angeles. They were displayed in a row on a narrow shelf, a little like products in a shop.",
@@ -251,6 +265,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "The power of repetition",
+            picture: "/lessons/pop-art/lesson-3-2.jpg",
+            alt: "A squeegee pulling ink across a screen-printing frame beside repeated prints",
             text: [
               "Warhol's most recognisable technique is repetition: the same image repeated again and again in rows and grids. In 1962 he began using screen printing (also called silkscreen printing), a commercial method for printing posters and packaging. A photograph is transferred onto a fine mesh screen, which blocks the ink everywhere except where the image should be. Ink is then pushed through the mesh onto the canvas with a rubber blade called a squeegee.",
               "Screen printing let Warhol produce the same image many times, quickly, and in different colours. He did not hide the flaws: smudges, gaps, uneven ink and colours that do not quite line up (called misregistration) are all part of the look. Each repeat is slightly different, even though the image is the same.",
@@ -260,6 +276,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Fame, sameness and business",
+            picture: "/lessons/pop-art/lesson-3-3.jpg",
+            alt: "A 1960s artist's studio with foil walls and stacks of repeated prints",
             text: [
               "Warhol was interested in the way consumer culture can make everyone equal. In his 1975 book 'The Philosophy of Andy Warhol' he pointed out that a Coke is a Coke: the President, a film star and a person on the street corner all drink exactly the same one, and no amount of money can buy a better one.",
               "He was equally fascinated by fame. The phrase 'In the future, everyone will be world-famous for 15 minutes' appeared in the catalogue of a 1968 exhibition of his work and is still quoted today, often in discussions of reality TV and social media.",
@@ -341,6 +359,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "Comics on canvas",
+            picture: "/lessons/pop-art/lesson-4-1.jpg",
+            alt: "A teenager looking up at a large comic-style painting of an explosion shape",
             text: [
               "Roy Lichtenstein (1923 to 1997) was born in New York City. He served in the US Army in Europe during the Second World War, then studied and taught art. Through the 1950s he painted in several styles, including Abstract Expressionism, without great success.",
               "In 1961 he painted 'Look Mickey', showing Donald Duck and Mickey Mouse from a children's book, in the flat, outlined style of a printed cartoon. The story often told is that one of his sons pointed at a comic and challenged him to paint something as good. Whether or not that is exactly true, the painting marked a sudden change. His first solo exhibition at the Leo Castelli Gallery in New York, in 1962, sold out.",
@@ -350,6 +370,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Ben-Day dots and how printing works",
+            picture: "/lessons/pop-art/lesson-4-2.jpg",
+            alt: "A close-up of red, yellow and blue printed dots",
             text: [
               "Comics in the mid-20th century were printed cheaply on poor paper using a small number of inks. To make lighter tints and extra colours, printers used patterns of tiny dots. A process for this was invented in 1879 by an American illustrator and printer, Benjamin Day, so the dots are known as Ben-Day dots.",
               "The trick relies on optical mixing. When small dots of colour are close together, your eye blends them at a distance. Red dots spaced out on white paper read as pink; blue and yellow dots together can read as green. Halftone printing, used for photographs in newspapers, works in a similar way, using dots of different sizes to create darker and lighter tones. Screens today use pixels on the same principle.",
@@ -359,6 +381,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Copy or create?",
+            picture: "/lessons/pop-art/lesson-4-3.jpg",
+            alt: "A small comic drawing beside a large painted version with enlarged dots",
             text: [
               "Lichtenstein's work was controversial from the start. In 1964 the American magazine Life ran an article asking whether he was 'the worst artist in the U.S.'. Critics said he was simply copying cheap comics.",
               "Defenders point out that he changed his sources a great deal. He chose a single frame and cropped it, simplified the drawing, removed details, adjusted the composition so it balanced, limited the colours, and enlarged everything to the scale of a large history painting. In his view, he was making the images more unified and intense.",
@@ -445,6 +469,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "Peter Blake: a collector's eye",
+            picture: "/lessons/pop-art/lesson-5-1.jpg",
+            alt: "A denim jacket covered in badges among postcards and tickets",
             text: [
               "Peter Blake was born in 1932 in Dartford, Kent, and studied at the Royal College of Art in London in the 1950s. He is often called the 'godfather of British pop art'. He was knighted in 2002.",
               "Blake loved popular entertainment: fairgrounds, wrestlers, circus performers, old music hall, comics, film stars and, especially, pop music. He was also a passionate collector of ephemera, the throwaway printed items of everyday life such as postcards, badges, tickets, sweet wrappers and magazine pictures.",
@@ -454,6 +480,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Making the Sgt. Pepper sleeve",
+            picture: "/lessons/pop-art/lesson-5-2.jpg",
+            alt: "A 1960s photo studio set with cardboard cut-out figures and a flower bed",
             text: [
               "In 1967 the Beatles released the album 'Sgt. Pepper's Lonely Hearts Club Band'. The idea was that the Beatles were performing as an imaginary band. Peter Blake designed the cover with the American-born artist Jann Haworth, who was then his wife. It was photographed by Michael Cooper.",
               "The cover was not made on a computer, or even as a cut-and-paste collage on paper. It was a real set, built in Cooper's London studio and photographed in a single shot. The four Beatles stand in colourful military-style costumes in front of a crowd of dozens of famous people: writers, film stars, musicians, comedians, scientists and others, many chosen by the Beatles themselves.",
@@ -463,6 +491,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Collage before and beyond pop",
+            picture: "/lessons/pop-art/lesson-5-3.jpg",
+            alt: "A teenager building a layered square collage and a shoebox tableau",
             text: [
               "Collage was not invented by pop artists. In 1912 the Cubist artists Pablo Picasso and Georges Braque began gluing newspaper, wallpaper and printed labels into their pictures. In the years after the First World War, Dada artists in Berlin, such as Hannah Höch, used photomontage to make sharp, satirical comments on politics and society.",
               "Pop artists used collage in their own way. Instead of hiding the source material, they celebrated it: the glossy magazine photograph, the advert, the fan picture. Collage was the natural method for an art about mass media, because the raw material was mass media.",
@@ -554,6 +584,8 @@ export const popArt: LessonUnit = {
         cards: [
           {
             heading: "Consumer culture as a subject",
+            picture: "/lessons/pop-art/lesson-6-1.jpg",
+            alt: "Giant soft sculptures of a hamburger and a light switch in a gallery",
             text: [
               "Across this unit, one subject keeps returning: consumer culture. Pop artists painted, printed and sculpted the products, brands, celebrities and adverts of a new age of mass consumption. In 1961 Claes Oldenburg opened 'The Store' in a shop front in New York, where he made and sold brightly painted plaster sculptures of food and clothes. Later he made giant soft sculptures of everyday things, such as hamburgers and light switches.",
               "Tom Wesselmann's 'Still Life' series placed real advertising images of food and drink into painted kitchens, updating one of the oldest genres in art. Traditional still life paintings had often carried hidden messages about wealth and the shortness of life; pop still lifes show the packaged supermarket goods of a new era.",
@@ -563,6 +595,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "The pop artist's toolkit",
+            picture: "/lessons/pop-art/lesson-6-2.jpg",
+            alt: "Paints, cotton buds, a stencil, a printing block and cut-outs laid out on a table",
             text: [
               "You now have a toolkit of pop techniques. Bold, flat colour, often using primary colours or strong complementary contrasts (red and green, blue and orange, yellow and purple). Repetition in rows and grids, as Warhol used. Ben-Day dots and halftone patterns, as Lichtenstein used. Collage and photomontage, as Hamilton, Paolozzi and Blake used.",
               "Other tools include changes of scale (making something tiny enormous, as Oldenburg did), thick outlines, words and onomatopoeia, everyday subjects, and irony. A strong piece rarely uses all of these. It usually combines two or three techniques chosen because they suit the idea.",
@@ -572,6 +606,8 @@ export const popArt: LessonUnit = {
           },
           {
             heading: "Evaluating your work",
+            picture: "/lessons/pop-art/lesson-6-3.jpg",
+            alt: "A teenager looking at their finished pop artwork on a wall at home",
             text: [
               "Professional artists often write an artist statement: a short text explaining what their work is about, how it was made and what influenced it. Writing one helps you think clearly about your own choices and is a key skill for GCSE and National 5.",
               "A good statement covers four things. Intention: what you were trying to say or explore. Influences: which artists you looked at and what you took from them. Process: which materials and techniques you used and why. Reflection: what worked well, what you would change, and what you learned.",

@@ -39,6 +39,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "The building blocks of life",
+            picture: "/lessons/cells-and-organisms/lesson-1-1.jpg",
+            alt: "Living things each made up of tiny cells",
             text: [
               "Every living organism, from an oak tree to a whale to the bacteria on your skin, is made of one or more cells. A cell is the smallest unit that can carry out all seven life processes: movement, respiration, sensitivity, growth, reproduction, excretion and nutrition (MRS GREN). That is why biologists call the cell the basic unit of life.",
               "Some organisms consist of a single cell. These are unicellular organisms, and that one cell must do everything needed to stay alive. Most of the organisms you can see without help are multicellular: they are built from many cells working together. Scientists estimate that an adult human body contains roughly 30 trillion cells, made of more than 200 different types.",
@@ -48,6 +50,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "How cells were discovered",
+            picture: "/lessons/cells-and-organisms/lesson-1-2.jpg",
+            alt: "An early scientist looking at cork through a brass microscope",
             text: [
               "Cells are far too small to see with the naked eye, so nobody knew they existed until microscopes were invented. In 1665 the English scientist Robert Hooke published a book called Micrographia, full of detailed drawings of what he saw through his microscope. Looking at a thin slice of cork, he saw rows of tiny empty boxes. They reminded him of the small rooms monks lived in, called cells, so he used that word.",
               "Hooke was actually looking at the dead cell walls of cork bark: the living contents had long gone. A few years later, in the 1670s, the Dutch cloth merchant Antonie van Leeuwenhoek made his own tiny, powerful single-lens microscopes. He was the first person to see living single-celled organisms swimming in pond water, which he called 'animalcules', and he also observed bacteria, sperm cells and red blood cells.",
@@ -57,6 +61,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "How small is a cell?",
+            picture: "/lessons/cells-and-organisms/lesson-1-3.jpg",
+            alt: "A grain of rice, a hair and a grain of salt with tiny blood cells for scale",
             text: [
               "Cells are usually measured in micrometres. A micrometre (symbol µm) is one thousandth of a millimetre, so 1 mm = 1000 µm. The full stop at the end of this sentence is roughly 300 to 500 µm across.",
               "A typical animal cell, such as a cell from the lining of your cheek, is about 10 to 30 µm across. Plant cells are often larger, commonly 10 to 100 µm. A red blood cell is about 7 to 8 µm, and most bacteria are only 1 to 5 µm long, so hundreds could line up across a single millimetre.",
@@ -162,6 +168,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "Inside an animal cell",
+            picture: "/lessons/cells-and-organisms/lesson-2-1.jpg",
+            alt: "An animal cell with a nucleus, cytoplasm and mitochondria",
             text: [
               "Although cells come in many shapes, most animal cells contain the same basic structures. Each structure has a job, called its function. Learning a structure together with its function is the key to this topic.",
               "The nucleus controls the activities of the cell. It contains genetic material, DNA, arranged into chromosomes. DNA carries the instructions for making the cell and everything it does. The cell membrane is a thin, flexible layer around the outside of the cell. It holds the cell together and controls which substances enter and leave.",
@@ -171,6 +179,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Inside a plant cell",
+            picture: "/lessons/cells-and-organisms/lesson-2-2.jpg",
+            alt: "A plant cell with a cell wall, vacuole and chloroplasts",
             text: [
               "Plant cells have a nucleus, cell membrane, cytoplasm and mitochondria too, doing the same jobs as in animal cells. Plants respire all the time, day and night, just as animals do. But plant cells also have three extra structures.",
               "The cell wall surrounds the cell membrane. It is made of a tough material called cellulose. It strengthens the cell and supports it, keeping its shape. Unlike the membrane, the cell wall is fully permeable: water and dissolved substances pass through it freely.",
@@ -180,6 +190,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Comparing the two",
+            picture: "/lessons/cells-and-organisms/lesson-2-3.jpg",
+            alt: "An animal cell and a plant cell side by side",
             text: [
               "Both animal and plant cells have a nucleus, cell membrane, cytoplasm and mitochondria. Only plant cells have a cell wall, a permanent vacuole and (in green parts) chloroplasts. Some animal cells have small, temporary vacuoles, but never a large permanent one.",
               "Shape is another difference. Animal cells have no wall, so they are often irregular or rounded and can change shape. Plant cells usually look like regular boxes, fitting tightly together, because of their rigid walls.",
@@ -309,6 +321,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "The light microscope",
+            picture: "/lessons/cells-and-organisms/lesson-3-1.jpg",
+            alt: "A light microscope with a slide on the stage",
             text: [
               "A light microscope uses light and glass lenses to produce a magnified image of a specimen. Light passes up through a thin specimen placed on a glass slide, then through two lenses before reaching your eye.",
               "The main parts are: the eyepiece lens, which you look through; the objective lenses, usually three of different strengths on a rotating nosepiece; the stage, a flat platform where the slide sits, held by clips; the light source or mirror underneath; and two focusing knobs. The coarse focus knob moves the stage a long way to bring the image roughly into focus; the fine focus knob makes small adjustments to sharpen it.",
@@ -318,6 +332,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Calculating magnification",
+            picture: "/lessons/cells-and-organisms/lesson-3-2.jpg",
+            alt: "A teenager comparing a cell drawing with a magnified view on a phone",
             text: [
               "Total magnification on a microscope is found by multiplying the magnifications of the two lenses: total magnification = eyepiece magnification × objective magnification. So a ×10 eyepiece with a ×40 objective gives a total magnification of ×400.",
               "You can also work out magnification from a drawing or photograph: magnification = image size ÷ actual size. Both sizes must be in the same units. If a cell that is really 0.02 mm wide appears 20 mm wide in a photograph, the magnification is 20 ÷ 0.02 = ×1000.",
@@ -327,6 +343,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Preparing a specimen, at home or in the lab",
+            picture: "/lessons/cells-and-organisms/lesson-3-3.jpg",
+            alt: "Peeling thin onion skin to look at its cells",
             text: [
               "A specimen must be very thin so that light can pass through it. Onion skin is ideal because the thin, see-through layer on the inside of each onion layer, called the epidermis, is just one cell thick. It can be peeled off with tweezers.",
               "Cells are mostly colourless, so scientists add a stain to make structures visible. In a school lab, iodine solution stains onion cell nuclei and the starch in cells, and methylene blue is used for cheek cells. At home, a drop of diluted food colouring can make cell walls easier to see.",
@@ -451,6 +469,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "Specialised animal cells",
+            picture: "/lessons/cells-and-organisms/lesson-4-1.jpg",
+            alt: "Red blood cell, nerve cell, sperm cell and egg cell",
             text: [
               "In a multicellular organism, cells divide up the work. Most cells become specialised: they develop a particular structure that suits one function. Biologists say the cell is adapted to its function. When answering questions on specialised cells, always link a feature to how it helps the cell do its job.",
               "A red blood cell carries oxygen. It has no nucleus, leaving more room for haemoglobin, the red protein that binds to oxygen. Its biconcave disc shape (dented on both sides) gives a large surface area for oxygen to move in and out quickly, and it is small and flexible enough to squeeze through narrow capillaries.",
@@ -460,6 +480,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Specialised plant cells",
+            picture: "/lessons/cells-and-organisms/lesson-4-2.jpg",
+            alt: "Palisade cells in a leaf and root hairs in soil",
             text: [
               "Plants have specialised cells too. A root hair cell absorbs water and mineral ions from the soil. It has a long, thin extension that sticks out into the soil, giving it a large surface area for absorption. It has no chloroplasts, because it is underground in the dark.",
               "Palisade cells are found near the upper surface of a leaf. They are tall, column-shaped cells packed with chloroplasts, so they can absorb as much light as possible for photosynthesis. Their position near the top of the leaf means they receive the most light.",
@@ -469,6 +491,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "From cells to organisms",
+            picture: "/lessons/cells-and-organisms/lesson-4-3.jpg",
+            alt: "From muscle cell to tissue, heart, circulatory system and a whole person",
             text: [
               "In a multicellular organism, specialised cells are arranged in a hierarchy called the levels of organisation: cell → tissue → organ → organ system → organism.",
               "A tissue is a group of similar cells working together to carry out a particular function, for example muscle tissue, which contracts. An organ is made of several different tissues working together, for example the heart, which contains muscle tissue, nerve tissue and connective tissue. An organ system is a group of organs working together, such as the circulatory system (the heart, blood vessels and blood) or the digestive system (the stomach, intestines, liver and more). All the organ systems working together make up the organism.",
@@ -593,6 +617,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "One cell, every job",
+            picture: "/lessons/cells-and-organisms/lesson-5-1.jpg",
+            alt: "Single-celled organisms in a drop of pond water",
             text: [
               "A unicellular organism is a complete living thing made of just one cell. Unlike the specialised cells in your body, which depend on each other, that one cell must carry out all seven life processes by itself: it must move, respire, sense its surroundings, grow, reproduce, excrete waste and obtain nutrition.",
               "Unicellular organisms are found almost everywhere: in ponds, oceans, soil, the air, and in and on other organisms. There are far more of them on Earth than there are multicellular organisms. Being small has advantages: substances can enter and leave a tiny cell quickly by diffusion across its membrane, and many can reproduce very quickly.",
@@ -602,6 +628,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Amoeba and euglena",
+            picture: "/lessons/cells-and-organisms/lesson-5-2.jpg",
+            alt: "An amoeba engulfing food beside a euglena",
             text: [
               "Amoeba lives in fresh water such as ponds. It has a nucleus, cytoplasm and a cell membrane but no fixed shape. It moves by pushing out parts of its cytoplasm, called pseudopodia ('false feet'), and flowing into them. It feeds by surrounding a smaller organism with its pseudopodia and engulfing it into a food vacuole, where it is digested. It reproduces by dividing in two.",
               "Amoeba also has a contractile vacuole. Water keeps entering the cell from the pond, so the contractile vacuole collects the excess and squeezes it out, stopping the cell from bursting.",
@@ -611,6 +639,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Yeast and bacteria",
+            picture: "/lessons/cells-and-organisms/lesson-5-3.jpg",
+            alt: "Yeast inflating a balloon beside bread dough and yoghurt",
             text: [
               "Yeast is a single-celled fungus. Its cells have a nucleus, cytoplasm, a membrane and a cell wall (though not made of cellulose), but no chloroplasts, so it must take in food such as sugar. Yeast reproduces asexually by budding: a small bud grows out of the parent cell and breaks off as a new cell.",
               "When yeast has little or no oxygen, it carries out anaerobic respiration, also called fermentation: glucose → ethanol + carbon dioxide. Bakers use the carbon dioxide gas to make bread rise, and brewers use the ethanol, a type of alcohol. With plenty of oxygen yeast can also respire aerobically.",
@@ -735,6 +765,8 @@ export const cellsAndOrganisms: LessonUnit = {
         cards: [
           {
             heading: "What is diffusion?",
+            picture: "/lessons/cells-and-organisms/lesson-6-1.jpg",
+            alt: "Food colouring diffusing through still water",
             text: [
               "Diffusion is the net movement of particles from an area of higher concentration to an area of lower concentration. It happens in gases and liquids because their particles are constantly moving in random directions and bumping into each other.",
               "Imagine opening a bottle of perfume in the corner of a room. At first, all the scent particles are near the bottle, where their concentration is high. As they move randomly, more of them spread into the rest of the room, where there were none. Eventually the particles are evenly spread out. They still keep moving, but there is no longer any net movement in one direction.",
@@ -744,6 +776,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "Diffusion in living things",
+            picture: "/lessons/cells-and-organisms/lesson-6-2.jpg",
+            alt: "Oxygen diffusing from air sacs into blood capillaries",
             text: [
               "Cells depend on diffusion to get the substances they need and to remove waste. Small molecules such as oxygen, carbon dioxide, water and glucose can pass through the cell membrane. Larger molecules, such as starch and proteins, cannot pass through. Because the membrane lets some substances through but not others, it is described as partially permeable.",
               "Respiring cells use up oxygen, so the concentration of oxygen inside them is lower than in the blood around them. Oxygen therefore diffuses into the cells. Respiration also produces carbon dioxide, which builds up inside the cells and diffuses out into the blood.",
@@ -753,6 +787,8 @@ export const cellsAndOrganisms: LessonUnit = {
           },
           {
             heading: "What affects the rate of diffusion?",
+            picture: "/lessons/cells-and-organisms/lesson-6-3.jpg",
+            alt: "Food colouring spreading in cold, room-temperature and warm water",
             text: [
               "Temperature: at a higher temperature, particles have more energy and move faster, so they diffuse faster. This is why a tea bag colours hot water much more quickly than cold water.",
               "Concentration gradient: the bigger the difference in concentration, the faster diffusion happens. Your blood keeps flowing past the alveoli, carrying oxygen away, which keeps the gradient steep.",

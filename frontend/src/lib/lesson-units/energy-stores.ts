@@ -34,6 +34,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "What is energy?",
+            picture: "/lessons/energy-stores/lesson-1-1.jpg",
+            alt: "A teenager lifting an apple above a kitchen table",
             text: [
               "Energy is one of the most important ideas in science, but it is also one of the slipperiest. You cannot see, touch or pour energy. Instead, physicists think of energy as a quantity that we can keep track of, a bit like money in a set of bank accounts. Whenever anything happens, from a ball rolling to a star shining, energy moves from one account to another.",
               "Energy is measured in joules (J). One joule is a small amount: it is roughly the energy needed to lift an apple one metre off the ground. Because everyday amounts are often much bigger, we also use kilojoules (kJ, 1,000 joules) and megajoules (MJ, 1,000,000 joules).",
@@ -43,6 +45,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "The energy stores",
+            picture: "/lessons/energy-stores/lesson-1-2.jpg",
+            alt: "A stretched elastic band, a hot mug, a banana, a spinning top and a book on a high shelf",
             text: [
               "The kinetic store is energy an object has because it is moving. The faster it moves and the greater its mass, the more energy is in its kinetic store. A lorry on the motorway has a huge kinetic store; a parked lorry has none.",
               "The gravitational potential store is energy an object has because of its height above the ground (strictly, its position in a gravitational field). Lifting a bag onto a shelf fills its gravitational potential store. The heavier the object and the higher it is lifted, the more energy is stored.",
@@ -52,6 +56,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "How energy is transferred",
+            picture: "/lessons/energy-stores/lesson-1-3.jpg",
+            alt: "A teenager switching on a torch in a dim room",
             text: [
               "Energy moves between stores along four main pathways. Mechanically: when a force moves an object, such as your hand pushing a door or gravity pulling a falling ball, energy is transferred. Scientists call this 'doing work'. Electrically: when an electric current flows, it carries energy from a battery or power station to a device.",
               "By heating: energy is transferred from a hotter object to a cooler one, by conduction through solids, or by convection in liquids and gases. By radiation: energy is carried by waves, such as light and infrared radiation from the Sun or a fire. Sound waves also carry energy away from vibrating objects, and that energy soon spreads out into the surroundings.",
@@ -187,6 +193,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "Energy cannot be created or destroyed",
+            picture: "/lessons/energy-stores/lesson-2-1.jpg",
+            alt: "A Victorian scientist watching a falling weight turn a paddle wheel in water",
             text: [
               "The law of conservation of energy is one of the most important rules in all of science. It states that energy cannot be created or destroyed; it can only be transferred from one store to another. In any event, the total amount of energy before is exactly the same as the total amount of energy afterwards.",
               "This law was worked out in the 1840s by several scientists, including James Prescott Joule, an English brewer and physicist from Salford. In a famous experiment, he used a falling weight to turn a paddle wheel in a container of water. He showed that the water warmed up by an amount that matched the energy lost from the weight's gravitational potential store. The unit of energy is named after him.",
@@ -196,6 +204,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Following energy through a journey",
+            picture: "/lessons/energy-stores/lesson-2-2.jpg",
+            alt: "A toy car rolling down a book ramp beside a swinging pendulum",
             text: [
               "Think about a toy car released at the top of a ramp. At the top, it is still and has energy in its gravitational potential store. As it rolls down, gravity does work on it, and energy is transferred from the gravitational potential store to the kinetic store. The car gets faster as it gets lower.",
               "If there were no friction or air resistance at all, every joule lost from the gravitational potential store would end up in the kinetic store. In reality, some energy is transferred by friction between the wheels and axles and between the car and the ramp, and by air resistance. This warms the car, the ramp and the air very slightly.",
@@ -205,6 +215,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Where does the energy go?",
+            picture: "/lessons/energy-stores/lesson-2-3.jpg",
+            alt: "A tennis ball bouncing lower and lower on a hard floor",
             text: [
               "If energy is conserved, why does a bouncing ball bounce lower each time, and why does a pendulum eventually stop? The energy has not vanished. Each time the ball hits the floor it squashes and stretches, making a sound and warming up slightly. Air resistance also acts on it as it moves.",
               "These processes transfer energy to the thermal store of the ball, the floor and the air around them. The energy spreads out among a huge number of particles, so the temperature rise is far too small to notice. Scientists say the energy has been dissipated.",
@@ -348,6 +360,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "Useful and wasted energy",
+            picture: "/lessons/energy-stores/lesson-3-1.jpg",
+            alt: "A warm laptop, phone charger and filament bulb on a desk",
             text: [
               "Every device is designed to transfer energy to a particular store. A kettle should transfer energy to the thermal store of the water; a fan should transfer energy to the kinetic store of its blades and the air. Energy that ends up where we want it is called useful energy.",
               "No real device is perfect. Some energy always ends up in stores we did not want, most often the thermal store of the device and its surroundings. A laptop gets warm, a car engine gets hot, and a phone charger feels warm to the touch. This is called wasted energy.",
@@ -357,6 +371,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Sankey diagrams",
+            picture: "/lessons/energy-stores/lesson-3-2.jpg",
+            alt: "Thick flowing arrows splitting into a wide stream and a narrower one",
             text: [
               "A Sankey diagram is a picture of where energy goes. It is drawn as a thick arrow that starts on the left with the total energy supplied. The arrow then splits: the useful energy carries straight on to the right, and the wasted energy bends away, usually downwards.",
               "The key rule is that the width of each arrow is proportional to the amount of energy it represents. If 100 J goes in and 25 J comes out as useful light, the light arrow must be a quarter of the width of the input arrow. The widths of the output arrows always add up to the width of the input arrow, because energy is conserved.",
@@ -366,6 +382,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Calculating efficiency",
+            picture: "/lessons/energy-stores/lesson-3-3.jpg",
+            alt: "A teenager oiling the chain of an upside-down bicycle",
             text: [
               "Efficiency tells us what fraction of the energy supplied to a device is transferred usefully. It is calculated with this equation: efficiency = (useful energy output ÷ total energy input) × 100. The answer is a percentage.",
               "For example, a lamp is supplied with 200 J of energy and gives out 40 J as light. Its efficiency = (40 ÷ 200) × 100 = 20%. The other 160 J, or 80%, is wasted, mostly by heating the lamp and the room.",
@@ -493,6 +511,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "What is power?",
+            picture: "/lessons/energy-stores/lesson-4-1.jpg",
+            alt: "A kettle, toaster and microwave on a kitchen worktop",
             text: [
               "Power is the rate at which energy is transferred: in other words, how much energy is transferred every second. It is measured in watts (W), named after the Scottish engineer James Watt, who greatly improved the steam engine in the 1760s and 1770s. One watt means one joule of energy transferred every second.",
               "The equation is: power = energy transferred ÷ time, or P = E ÷ t, with energy in joules and time in seconds. If a lamp transfers 600 J in 60 seconds, its power is 600 ÷ 60 = 10 W. Rearranged, energy transferred = power × time.",
@@ -502,6 +522,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Kilowatt-hours",
+            picture: "/lessons/energy-stores/lesson-4-2.jpg",
+            alt: "A smart meter display glowing on a kitchen shelf",
             text: [
               "Joules are far too small for measuring household energy use: a kettle transfers hundreds of thousands of joules each time it boils. So electricity companies use a much bigger unit called the kilowatt-hour (kWh).",
               "One kilowatt-hour is the energy transferred by a 1 kW appliance running for one hour. To calculate it, use: energy transferred (kWh) = power (kW) × time (hours). A 2 kW heater on for 3 hours transfers 2 × 3 = 6 kWh. Remember to change watts into kilowatts and minutes into hours first: a 500 W appliance is 0.5 kW, and 30 minutes is 0.5 hours.",
@@ -511,6 +533,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Working out the cost",
+            picture: "/lessons/energy-stores/lesson-4-3.jpg",
+            alt: "A teenager and a parent reading the label on an unplugged appliance",
             text: [
               "Electricity companies charge a price for each kilowatt-hour, often called a 'unit'. The equation is: cost = energy transferred (kWh) × price per kWh. In recent years, UK household electricity has cost very roughly 25p to 30p per kWh, though the exact price depends on the supplier, the tariff and the time. Your home's bill shows the real figure.",
               "For example, a 3 kW kettle boiling for 4 minutes (which is 4 ÷ 60 of an hour) transfers 3 × 0.067 = about 0.2 kWh. At 25p per kWh, that costs about 5p. A 2 kW tumble dryer running for 1.5 hours transfers 3 kWh, costing 75p at the same price.",
@@ -624,6 +648,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "Food as a chemical store",
+            picture: "/lessons/energy-stores/lesson-5-1.jpg",
+            alt: "A teenager eating breakfast cereal in morning sunlight",
             text: [
               "Food is a chemical store of energy. Almost all of that energy came originally from the Sun: plants use light to make glucose by photosynthesis, storing energy in its chemical bonds. When we eat plants, or animals that ate plants, we take in that stored energy.",
               "Our cells release energy from food by respiration. In aerobic respiration, glucose reacts with oxygen to produce carbon dioxide and water: glucose + oxygen → carbon dioxide + water. This reaction happens in tiny structures inside cells called mitochondria, and it goes on all the time, even while you sleep.",
@@ -633,6 +659,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Reading a food label",
+            picture: "/lessons/energy-stores/lesson-5-2.jpg",
+            alt: "A teenager studying the side of a cereal box in the kitchen",
             text: [
               "In the UK, packaged foods must show their energy content on the nutrition label, usually per 100 g (or 100 ml) and often per portion as well. The energy is given in two units: kilojoules (kJ), the scientific unit, and kilocalories (kcal), an older unit that is still widely used.",
               "One kilocalorie is about 4.2 kilojoules. So a snack with 250 kcal contains about 250 × 4.2 = 1,050 kJ. When people talk about 'Calories' with a capital C, or 'calories' in everyday speech, they almost always mean kilocalories.",
@@ -642,6 +670,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Different nutrients, different amounts of energy",
+            picture: "/lessons/energy-stores/lesson-5-3.jpg",
+            alt: "Nuts, cheese, cucumber, bread and yoghurt on a wooden board",
             text: [
               "The three main energy-providing nutrients in food are carbohydrates, fats and proteins. Gram for gram, they do not hold the same amount of energy. Carbohydrates and proteins each provide about 17 kJ per gram, while fats provide about 37 kJ per gram, more than twice as much.",
               "This explains why foods high in fat, such as butter, oils, nuts and cheese, have a high energy content per 100 g, while foods with lots of water and fibre, such as fruit and vegetables, have a much lower one. Cucumber, which is about 95% water, contains only around 50 to 70 kJ per 100 g.",
@@ -771,6 +801,8 @@ export const energyStores: LessonUnit = {
         cards: [
           {
             heading: "How electricity is generated",
+            picture: "/lessons/energy-stores/lesson-6-1.jpg",
+            alt: "A huge turbine and generator inside a power station",
             text: [
               "Most electricity is produced by a generator: a coil of wire that spins near magnets. Spinning the coil transfers energy electrically to the wires of the National Grid. What differs between power stations is how they make the generator spin.",
               "In a thermal power station, a fuel is used to heat water into high-pressure steam. The steam pushes on the blades of a turbine, a bit like wind turning a windmill, and the turbine spins the generator. Coal, oil, gas, biomass and nuclear power stations all work this way, though nuclear stations heat the water using the energy released when uranium atoms split, rather than by burning anything.",
@@ -780,6 +812,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Non-renewable resources",
+            picture: "/lessons/energy-stores/lesson-6-2.jpg",
+            alt: "Cooling towers releasing clouds of water vapour over countryside",
             text: [
               "A non-renewable resource is one that will run out, because it is being used much faster than it can be replaced. The fossil fuels (coal, oil and natural gas) formed over millions of years from the remains of ancient plants and sea organisms, buried and squeezed under layers of rock. Once we burn them, they are gone for any human timescale.",
               "Fossil fuel power stations have important advantages. They can produce large amounts of electricity reliably, day and night, whatever the weather, and gas power stations can be switched on quickly when demand rises, for example when millions of people boil a kettle at half-time in a big football match.",
@@ -789,6 +823,8 @@ export const energyStores: LessonUnit = {
           },
           {
             heading: "Renewable resources",
+            picture: "/lessons/energy-stores/lesson-6-3.jpg",
+            alt: "Offshore wind turbines at sea with solar panels on a hillside",
             text: [
               "A renewable resource is one that is naturally replaced and will not run out. Renewable resources for electricity include wind, solar, hydroelectric (water flowing from a reservoir behind a dam), tidal, wave, geothermal (heat from hot rocks underground) and biomass (burning plant material such as wood pellets, which is replaced as new plants grow).",
               "Most renewables release no carbon dioxide while generating electricity, and their 'fuel' is free. The UK is one of the best places in Europe for wind power, and offshore wind farms in the North Sea now generate a large share of the country's electricity.",

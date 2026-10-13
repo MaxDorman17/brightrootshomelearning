@@ -34,6 +34,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "Land, loyalty and the feudal system",
+            picture: "/lessons/medieval-life/lesson-1-1.jpg",
+            alt: "A lord on horseback overlooking his manor and village",
             text: [
               "Medieval England was a farming society. Around 1300 there were perhaps five million people in England (historians' estimates range from about four to six million), and roughly nine out of ten lived in the countryside. Land was the main source of wealth and power, so whoever controlled land controlled people.",
               "Historians often use the term 'feudal system' to describe how land and loyalty were linked. In theory, the king owned all the land. He granted large estates to barons and bishops in return for loyalty and knights for his army. They in turn granted land to knights, and at the bottom were the peasants, who worked the land. Each layer owed service to the one above.",
@@ -43,6 +45,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Life on the manor",
+            picture: "/lessons/medieval-life/lesson-1-2.jpg",
+            alt: "Peasants ploughing strip fields with oxen",
             text: [
               "Peasants were not all the same. Free peasants paid rent and could leave the manor. Unfree peasants, called villeins or serfs, were bound to the manor. They had to work on the lord's demesne for a set number of days, often two or three days a week, and needed the lord's permission to leave, to marry off a daughter (a fee called merchet) or to sell an animal. When a villein died, the lord could claim the family's best animal, a payment called a heriot.",
               "Many villages used an open-field system. Two or three huge fields surrounded the village, each divided into long strips. A family's strips were scattered across all the fields, so good and poor soil was shared out. Crops were rotated: one field might grow wheat or rye, another barley, oats, peas or beans, and one was left fallow (resting) each year to recover.",
@@ -52,6 +56,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Towns, charters and guilds",
+            picture: "/lessons/medieval-life/lesson-1-3.jpg",
+            alt: "A busy medieval market street with craft stalls",
             text: [
               "Towns grew rapidly between about 1100 and 1300. London was by far the largest, with perhaps 70,000 to 80,000 people around 1300; most towns had only a few thousand. They grew up at river crossings, ports, crossroads and around castles and cathedrals, and their weekly markets and yearly fairs connected them to the surrounding villages.",
               "Many towns bought a charter from the king or their lord. A charter was a written document granting rights, such as holding a market, collecting tolls and running their own courts. People who held full rights in a town were called burgesses. A popular saying held that 'town air makes you free': by custom, a villein who lived in a chartered town for a year and a day could claim his freedom.",
@@ -138,6 +144,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "One Church across Christendom",
+            picture: "/lessons/medieval-life/lesson-2-1.jpg",
+            alt: "Villagers gathered inside a medieval parish church",
             text: [
               "In medieval England almost everyone was a Christian and belonged to one Church, led by the Pope in Rome. The whole of Catholic western Europe, known as Christendom, shared the same beliefs, services and language of worship, Latin. (There were also Jewish communities in England until Edward I expelled them in 1290.)",
               "The Church was organised as a hierarchy. Below the Pope came archbishops (in England, of Canterbury and York), then bishops, each responsible for a large area called a diocese, and then parish priests. A parish was the area served by one church, usually a single village or a district of a town. The parish church was often the largest and only stone building in a village.",
@@ -147,6 +155,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Heaven, hell and purgatory",
+            picture: "/lessons/medieval-life/lesson-2-2.jpg",
+            alt: "Pilgrims walking towards a distant cathedral",
             text: [
               "The Church taught that after death each soul would be judged. The saved went to heaven and the damned to hell. Most people expected to spend time first in purgatory, a place where souls were cleansed of their sins before they could enter heaven. These beliefs were sincerely held and shaped daily life.",
               "To reduce time in purgatory, people tried to live well, confess their sins to a priest, and take part in the sacraments, the Church's seven holy rites, including baptism, confession, Mass and the last rites before death. The wealthy left money for priests to say Masses for their souls after they died, and paid for chantry chapels for this purpose.",
@@ -156,6 +166,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Wealth, law and influence",
+            picture: "/lessons/medieval-life/lesson-2-3.jpg",
+            alt: "Peasants carrying grain to an abbey tithe barn",
             text: [
               "The Church was enormously wealthy. Every household was expected to pay a tithe, one tenth of its produce or income, to the parish church. People also paid fees for services such as burials, and the Church owned huge estates: some historians estimate it held around a quarter of the land in England. Bishops and abbots were among the richest landowners in the country.",
               "The Church had its own courts, which dealt with matters such as marriage, wills and moral offences. Clergy accused of crimes could claim 'benefit of clergy' and be tried in a church court, where punishments were usually lighter. Proving you were clergy often meant reading a verse of the Bible aloud, so anyone who could read could try to claim it.",
@@ -245,6 +257,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "The theory of the four humours",
+            picture: "/lessons/medieval-life/lesson-3-1.jpg",
+            alt: "A medieval book with a four-part humours diagram",
             text: [
               "The most important medical theory in medieval Europe came from ancient Greece. The physician Hippocrates (around 460 to 370 BC) and later Galen (AD 129 to around 216), a Greek doctor working in the Roman Empire, taught that the body contained four liquids, or humours: blood, phlegm, yellow bile and black bile.",
               "Good health meant the humours were in balance. Illness was caused by having too much or too little of one. Each humour was linked to a season, an element and a set of qualities: blood was hot and moist and linked to spring; phlegm was cold and moist, linked to winter; yellow bile was hot and dry, linked to summer; black bile was cold and dry, linked to autumn.",
@@ -254,6 +268,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Healers and treatments",
+            picture: "/lessons/medieval-life/lesson-3-2.jpg",
+            alt: "A nun caring for a patient in a monastery infirmary",
             text: [
               "Medieval people had several kinds of healer. Physicians were trained at universities over many years and were expensive, so only the wealthy used them. They diagnosed patients by examining urine against a colour chart, taking the pulse and consulting astrological charts. Barber-surgeons performed bloodletting, pulled teeth and set broken bones. Apothecaries mixed and sold remedies.",
               "Most people never saw a physician. They relied on household remedies, local wise women, or the infirmaries and hospitals run by monks and nuns, which cared for the sick and the poor. Women did a large share of everyday healing and almost all midwifery.",
@@ -263,6 +279,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "God, the stars and bad air",
+            picture: "/lessons/medieval-life/lesson-3-3.jpg",
+            alt: "A physician studying the stars with an astrolabe",
             text: [
               "Medieval people believed illness could have several causes at once, and they did not see these as contradictory. Many believed that God sent disease as a punishment for sin or as a test of faith. The response was prayer, confession, fasting and pilgrimage. Some people also believed in the 'royal touch': that the king's touch could cure scrofula, a disease of the glands in the neck.",
               "Astrology was a respected part of medicine. Physicians believed the movements of the planets and stars affected the body and the humours, so they checked astrological charts before treatment. Chaucer's 'Doctor of Physic' in the Canterbury Tales is described as skilled in astronomy, meaning what we would now call astrology.",
@@ -348,6 +366,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "A pandemic travels west",
+            picture: "/lessons/medieval-life/lesson-4-1.jpg",
+            alt: "Ships arriving at a small English harbour in 1348",
             text: [
               "The Black Death was a pandemic, a disease outbreak that spread across many countries. Genetic evidence published in 2022 suggests the outbreak began in central Asia, in what is now Kyrgyzstan, in the late 1330s. It travelled west along trade routes, including the Silk Roads that linked China, Persia and the Black Sea.",
               "In 1346 it reached Caffa, a trading port in Crimea run by merchants from Genoa. Italian ships then carried it into the Mediterranean, and it arrived in Messina in Sicily in October 1347. Over the next months it spread through Italy, France and Spain, following the busiest trading routes by sea, river and road.",
@@ -357,6 +377,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Explaining the pestilence: then and now",
+            picture: "/lessons/medieval-life/lesson-4-2.jpg",
+            alt: "Townspeople holding herbs to their faces to ward off bad air",
             text: [
               "People at the time used the ideas they had. Many believed the plague was God's punishment for sin, so they prayed, confessed and joined religious processions. Groups of flagellants, who whipped themselves in public as a form of penance, travelled through parts of Europe, though they had little impact in England. In 1348 the medical faculty of the University of Paris blamed a conjunction (alignment) of Saturn, Jupiter and Mars in 1345, which they said had corrupted the air.",
               "Miasma was the most common medical explanation, so people carried sweet-smelling herbs, burned fires to purify the air and avoided bad smells. Physicians recommended bloodletting and careful diet. In some parts of Europe, Jewish communities were falsely accused of poisoning wells and were violently persecuted, despite the Pope condemning these accusations. Historians see this as a terrible example of how fear can turn people against a minority who are wrongly blamed.",
@@ -366,6 +388,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "How many died?",
+            picture: "/lessons/medieval-life/lesson-4-3.jpg",
+            alt: "A clerk writing records on parchment rolls",
             text: [
               "Nobody counted the dead at the time, so historians have to estimate. Most now agree that between about a third and a half of the population of England died between 1348 and 1350, perhaps around two million people. Some historians, such as Ole Benedictow, argue the figure was higher, up to 60 per cent. Across Europe, estimates usually range from a third to a half of the population.",
               "How do historians reach these figures? They use sources such as manor court rolls, which record when tenants died and land passed to heirs, and bishops' registers, which record how many new priests were appointed to replace those who had died. Priests' deaths are useful because records of them were kept carefully. Tax records and the 1377 poll tax also help to estimate population.",
@@ -454,6 +478,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "A world short of workers",
+            picture: "/lessons/medieval-life/lesson-5-1.jpg",
+            alt: "A wheat field at harvest with very few workers",
             text: [
               "The most immediate economic effect of the Black Death was a severe labour shortage. With perhaps a third to a half of the population gone, there were far fewer people to plough, sow and harvest, but the land was still there. Chroniclers described crops rotting in the fields because there was nobody to gather them.",
               "This changed the balance of power between lords and peasants. Labourers who survived could demand higher wages, and lords competed for workers. Some peasants left their manors, without permission, to work for whoever paid most. Lords who had relied on villeins' labour services found it harder to enforce them.",
@@ -463,6 +489,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "The government fights back",
+            picture: "/lessons/medieval-life/lesson-5-2.jpg",
+            alt: "A labourer standing before an official in a medieval court",
             text: [
               "Landowners, who dominated Parliament and the king's government, tried to stop wages rising. In 1349, while the plague was still raging, Edward III issued the Ordinance of Labourers. It ordered that wages should be kept at the levels of 1346, before the plague, and that able-bodied people must accept work when offered.",
               "In 1351 Parliament passed the Statute of Labourers, which repeated these rules and set out punishments, including fines, the stocks and imprisonment, for workers who demanded more or employers who paid more. Thousands of cases were brought to court over the following decades, which shows both that the law was enforced and that it was widely broken.",
@@ -472,6 +500,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Long-term change and interpretations",
+            picture: "/lessons/medieval-life/lesson-5-3.jpg",
+            alt: "Sheep grazing on hills where strip fields once were",
             text: [
               "Plague did not disappear after 1350. It returned in 1361 to 1362, a wave that seems to have hit children especially hard, and again in 1369 and many times over the next three centuries. These repeated outbreaks kept the population low for more than a hundred years, so the labour shortage lasted.",
               "Over the long term, serfdom declined. By around 1500, very few people in England were still villeins. Real wages (what wages could actually buy) rose, and many ordinary people ate better, with more meat and ale, in the 1400s than their ancestors had around 1300. The Victorian historian James Thorold Rogers called the 1400s a 'golden age' for the English labourer.",
@@ -561,6 +591,8 @@ export const medievalLife: LessonUnit = {
         cards: [
           {
             heading: "Why 1381?",
+            picture: "/lessons/medieval-life/lesson-6-1.jpg",
+            alt: "Villagers listening to a priest preaching on the green",
             text: [
               "The Peasants' Revolt had long-term and short-term causes. In the long term, many peasants resented serfdom and the labour services they still owed, especially as they knew their labour was now valuable. The Statute of Labourers, enforced for thirty years, made that resentment sharper.",
               "Ideas mattered too. A radical priest named John Ball preached that all people were equal in God's eyes, asking: 'When Adam delved and Eve span, who was then the gentleman?' In other words, when Adam dug and Eve spun in the Garden of Eden, there were no lords. The Church authorities had imprisoned him for his preaching.",
@@ -570,6 +602,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Ten days in June",
+            picture: "/lessons/medieval-life/lesson-6-2.jpg",
+            alt: "The young King Richard II facing a crowd of rebels",
             text: [
               "The rising spread rapidly through Essex and Kent. In Kent the rebels chose Wat Tyler as their leader and freed John Ball from prison in Maidstone. They attacked the houses of unpopular officials and burned manorial records, which recorded their unfree status and their obligations, a clear sign of what they wanted to destroy.",
               "On 13 June 1381 rebels from Kent and Essex entered London, with help from some Londoners. They burned the Savoy Palace, the luxurious home of John of Gaunt. On 14 June Richard II met one group at Mile End and agreed to their demands, including the end of serfdom, issuing charters of freedom. That same day, rebels entered the Tower of London and executed Archbishop Sudbury and the Treasurer, Robert Hales.",
@@ -579,6 +613,8 @@ export const medievalLife: LessonUnit = {
           },
           {
             heading: "Sources, interpretations and results",
+            picture: "/lessons/medieval-life/lesson-6-3.jpg",
+            alt: "A monk writing a chronicle in an abbey scriptorium",
             text: [
               "Almost all our accounts of the revolt were written by people hostile to the rebels. Thomas Walsingham, a monk of St Albans Abbey, whose own abbey had been challenged by its townspeople during the revolt, described the rebels as a mob of wild peasants. The French chronicler Jean Froissart, who was not in England at the time, wrote a dramatic account for an aristocratic audience. The Anonimalle Chronicle, written in French by an unknown author, seems to include eyewitness detail from London.",
               "None of these writers were peasants, and the rebels' own voices survive mainly through short letters attributed to John Ball, quoted by hostile chroniclers. Historians therefore read the sources critically, asking who wrote them, when, for whom and why, and compare them with records such as court cases from after the revolt.",

@@ -34,6 +34,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "The computer as a system",
+            picture: "/lessons/how-computers-work/lesson-1-1.jpg",
+            alt: "A teenager typing, with light flowing from keyboard to laptop to speakers",
             text: [
               "A computer is a machine that takes in data, processes it by following a set of stored instructions, and produces a result. Whether it is a supercomputer forecasting the weather or the chip inside a microwave, every computer can be described with the same model: input, process, output and storage.",
               "Input is data going into the system, for example a key press, a mouse click, a touch on a screen, a sound picked up by a microphone or a reading from a temperature sensor. Processing is what the computer does with that data: calculating, comparing, sorting or deciding. Output is the result the system sends back out, such as an image on a screen, sound from a speaker, a printed page or a motor turning.",
@@ -43,6 +45,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Input and output devices",
+            picture: "/lessons/how-computers-work/lesson-1-2.jpg",
+            alt: "Input and output devices laid out on a desk",
             text: [
               "Hardware that lets data into or out of a computer is often called a peripheral. Common input devices include keyboards, mice, touchscreens, microphones, webcams, scanners, game controllers and sensors. Sensors are especially important: they measure something in the physical world, such as light, temperature, motion, pressure or moisture, and turn it into data.",
               "Output devices include monitors, speakers, headphones, printers, projectors and actuators. An actuator is a component that makes something physically happen, such as a motor, a valve, a buzzer or a light.",
@@ -52,6 +56,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Computers everywhere: embedded systems",
+            picture: "/lessons/how-computers-work/lesson-1-3.jpg",
+            alt: "A teenager using a microwave, with a washing machine and thermostat nearby",
             text: [
               "Most computers in the world are not laptops or phones. They are embedded systems: small computers built inside a larger device to do one dedicated job. Washing machines, microwaves, central heating thermostats, car engines, traffic lights, fitness trackers and digital cameras all contain them.",
               "Take a central heating thermostat. The input is a temperature sensor and the buttons used to set the target temperature. The process is a comparison: is the room colder than the target? The output is a signal that switches the boiler on or off. The target temperature and timer settings are kept in storage so they are not lost overnight.",
@@ -137,6 +143,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "The central processing unit",
+            picture: "/lessons/how-computers-work/lesson-2-1.jpg",
+            alt: "A processor chip on a motherboard",
             text: [
               "The central processing unit, or CPU, is the part of a computer that carries out the instructions in a program. It is often called the 'brain' of the computer, although it does not think: it follows very simple instructions, one after another, at enormous speed.",
               "A modern CPU is a single chip of silicon, about the size of a postage stamp, containing billions of tiny electronic switches called transistors. It sits on the motherboard, the main circuit board that connects all the parts of the computer together.",
@@ -146,6 +154,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Fetch, decode, execute",
+            picture: "/lessons/how-computers-work/lesson-2-2.jpg",
+            alt: "Three glowing stations joined in a repeating loop above a circuit board",
             text: [
               "In almost all modern computers, a program's instructions and its data are both stored in main memory (RAM). This idea, called the stored program concept, is part of what is known as the von Neumann architecture, after the mathematician John von Neumann, who described it in 1945.",
               "To run a program, the CPU repeats three steps, over and over, billions of times a second. This is the fetch-decode-execute cycle. First, fetch: the CPU copies the next instruction from memory. A register called the program counter holds the memory address of that instruction, and once it has been fetched, the program counter goes up by one so it points at the next instruction.",
@@ -155,6 +165,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "What makes a CPU fast?",
+            picture: "/lessons/how-computers-work/lesson-2-3.jpg",
+            alt: "A heat sink and fan inside a desktop computer",
             text: [
               "The CPU has a clock that sends out a steady pulse, and each pulse lets the CPU take a step forward. Clock speed is measured in hertz (Hz), meaning cycles per second. A 3 GHz (gigahertz) processor has a clock that ticks 3 billion times every second.",
               "Clock speed is not the only thing that matters. Many CPUs have several cores. Each core is a separate processing unit that can carry out its own fetch-decode-execute cycle, so a quad-core processor can work on four streams of instructions at the same time, if the software is written to share out the work.",
@@ -244,6 +256,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "Main memory: RAM and ROM",
+            picture: "/lessons/how-computers-work/lesson-3-1.jpg",
+            alt: "A memory stick being fitted into a computer",
             text: [
               "Main memory, sometimes called primary memory, is memory the CPU can access directly. The largest part is RAM (random access memory). When you open a program or a file, it is copied from storage into RAM, because the CPU can read and write RAM far faster than a hard drive or SSD.",
               "RAM is volatile: it needs power to keep its contents. When the computer is switched off, everything in RAM is lost. That is why you lose unsaved work in a power cut, and why saving copies your work from RAM to storage.",
@@ -253,6 +267,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Secondary storage",
+            picture: "/lessons/how-computers-work/lesson-3-2.jpg",
+            alt: "A hard disk drive, solid state drive, USB stick and disc",
             text: [
               "Secondary storage keeps programs and data permanently, until they are deliberately deleted. It is non-volatile and holds far more than RAM, but it is slower. There are three main types.",
               "Magnetic storage, such as a hard disk drive (HDD), records data as tiny magnetised areas on spinning metal platters, read by a moving head. It is cheap for large amounts of data but has moving parts, so it can be damaged by knocks. Solid state storage, such as an SSD, a USB memory stick or the memory card in a camera, stores data in flash memory chips with no moving parts. It is faster, quieter, lighter and tougher, but costs more per gigabyte.",
@@ -262,6 +278,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Bits, bytes and beyond",
+            picture: "/lessons/how-computers-work/lesson-3-3.jpg",
+            alt: "A teenager turning over binary dot cards",
             text: [
               "Computers store all data in binary, as patterns of 1s and 0s, because their circuits are made of switches that are either on or off. A single binary digit, 1 or 0, is called a bit. A group of 4 bits is a nibble, and a group of 8 bits is a byte, which is enough to store one character of text such as the letter A.",
               "Each extra bit doubles the number of patterns: 1 bit gives 2 patterns, 2 bits give 4, 3 bits give 8, and 8 bits give 256. That is why a byte can store any whole number from 0 to 255.",
@@ -346,6 +364,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "Hardware and software",
+            picture: "/lessons/how-computers-work/lesson-4-1.jpg",
+            alt: "A teenager holding a motherboard and a tablet",
             text: [
               "Hardware is the physical parts of a computer system: anything you could, in principle, touch. The CPU, RAM, motherboard, storage drives, power supply, keyboard, screen and cables are all hardware.",
               "Software is the programs that run on the hardware: sets of instructions, stored as binary data, that tell the hardware what to do. You cannot touch software, though you can touch the drive it is stored on.",
@@ -355,6 +375,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "System software and application software",
+            picture: "/lessons/how-computers-work/lesson-4-2.jpg",
+            alt: "A laptop showing colourful app windows",
             text: [
               "Software is usually divided into two kinds. Application software (apps) lets users carry out tasks: word processors, web browsers, games, photo editors, music players and messaging apps are all applications.",
               "System software runs and looks after the computer itself, so that applications have something to run on. The most important piece of system software is the operating system. Utility programs are system software too: they do maintenance jobs such as virus scanning, backing up files, compressing data and defragmenting a hard disk.",
@@ -364,6 +386,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "What an operating system does",
+            picture: "/lessons/how-computers-work/lesson-4-3.jpg",
+            alt: "A conductor figure directing data inside a computer",
             text: [
               "An operating system (OS) is the software that manages the computer's hardware and provides a platform for applications to run on. Examples include Windows, macOS, Linux and ChromeOS on computers, and Android and iOS on phones and tablets.",
               "The OS manages memory, deciding which parts of RAM each program can use and moving data in and out of virtual memory. It manages the processor, switching rapidly between programs so that many seem to run at once; this is called multitasking. It manages peripherals using small programs called device drivers, which translate between the OS and a particular printer, mouse or graphics card.",
@@ -449,6 +473,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "Switches and Boolean logic",
+            picture: "/lessons/how-computers-work/lesson-5-1.jpg",
+            alt: "A row of light switches and bulbs, some on and some off",
             text: [
               "Inside every CPU are billions of transistors. A transistor acts as a tiny electronic switch: a small electrical signal turns it on or off. On and off can stand for 1 and 0, or for true and false.",
               "Transistors are wired together to make logic gates. A logic gate takes one or more binary inputs and produces a single binary output according to a fixed rule. Every calculation a computer does, from adding numbers to deciding whether you have won a game, is built from huge numbers of these gates.",
@@ -458,6 +484,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "AND, OR and NOT",
+            picture: "/lessons/how-computers-work/lesson-5-2.jpg",
+            alt: "Logic gate shapes joined on a circuit board",
             text: [
               "An AND gate has two inputs, A and B. Its output is 1 only when A AND B are both 1. Its truth table reads: 0 and 0 gives 0; 0 and 1 gives 0; 1 and 0 gives 0; 1 and 1 gives 1. In everyday life: a microwave only heats if the door is closed AND the start button is pressed.",
               "An OR gate also has two inputs. Its output is 1 when A OR B is 1, or both. Its truth table: 0 and 0 gives 0; 0 and 1 gives 1; 1 and 0 gives 1; 1 and 1 gives 1. In everyday life: a car's interior light comes on if the driver's door OR the passenger's door is open.",
@@ -467,6 +495,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Combining gates",
+            picture: "/lessons/how-computers-work/lesson-5-3.jpg",
+            alt: "A teenager drawing a logic circuit, with coins beside the page",
             text: [
               "Gates become really powerful when the output of one is used as the input to another. Take the expression Q = NOT (A AND B). First work out A AND B, then put that result through a NOT gate. The output is 1 in every case except when both A and B are 1. This combination is so useful it has its own name: a NAND gate.",
               "When working out a combined circuit, give each in-between result its own column in the truth table. For Q = (A OR B) AND C you would have columns for A, B, C, then A OR B, then Q. With three inputs there are eight possible combinations, because each extra input doubles the number of rows.",
@@ -551,6 +581,8 @@ export const howComputersWork: LessonUnit = {
         cards: [
           {
             heading: "Babbage and Lovelace",
+            picture: "/lessons/how-computers-work/lesson-6-1.jpg",
+            alt: "A woman in Victorian dress studying a brass calculating engine",
             text: [
               "In the early 1800s, 'computers' were people: clerks who worked out tables of numbers by hand for navigation, engineering and banking. Their tables were full of mistakes. Charles Babbage (1791 to 1871), an English mathematician, believed a machine could do the job without errors.",
               "From 1822 Babbage designed the Difference Engine, a mechanical calculator made of brass gears that could produce mathematical tables automatically. Only part of it was built in his lifetime. Then, from the 1830s, he designed something far more ambitious: the Analytical Engine. It would have had a 'mill' to do calculations and a 'store' to hold numbers, which are similar ideas to a CPU and memory, and it would have been programmed using punched cards, borrowed from the Jacquard loom used to weave patterns in silk. It was never built.",
@@ -560,6 +592,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "Alan Turing",
+            picture: "/lessons/how-computers-work/lesson-6-2.jpg",
+            alt: "A wartime cipher machine on a wooden desk",
             text: [
               "Alan Turing (1912 to 1954) was an English mathematician whose ideas underpin all of computer science. In 1936, aged 24, he published a paper describing an imaginary machine that reads and writes symbols on a long tape, following a table of rules. Now called a Turing machine, it showed what any computer could, in principle, calculate, and that some problems can never be solved by any step-by-step method.",
               "During the Second World War, Turing worked at Bletchley Park in Buckinghamshire, the British codebreaking centre. Building on earlier work by Polish mathematicians, including Marian Rejewski, he played a leading part in breaking messages encrypted by the German Enigma machine. He designed the Bombe, an electromechanical machine that searched for the daily Enigma settings. Historians believe the intelligence from Bletchley Park helped shorten the war.",
@@ -569,6 +603,8 @@ export const howComputersWork: LessonUnit = {
           },
           {
             heading: "From valves to microchips",
+            picture: "/lessons/how-computers-work/lesson-6-3.jpg",
+            alt: "A valve, a transistor and a microchip side by side",
             text: [
               "Turing did not work alone, and computing has many inventors. At Bletchley Park, the engineer Tommy Flowers built Colossus, which was working by 1944 to break a different German cipher, known as Lorenz. Colossus is regarded as the first programmable electronic digital computer, though it was kept secret for decades.",
               "Early electronic computers used thousands of glass valves (vacuum tubes) as switches. They filled whole rooms, used huge amounts of power and often broke down. In 1948 the Manchester Baby became the first computer to run a program stored in its own electronic memory, putting the stored program concept into practice.",
