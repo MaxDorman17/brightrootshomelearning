@@ -1,19 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import UnitCard from "@/components/lessons/UnitCard";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { comingIn, searchUnits, subjectBySlug, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
+import { comingIn, pageSubject, searchUnits, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
 
-/** One subject's Bright Roots lessons, grouped by age range. */
-export default function LessonSubjectPage() {
+export default function LessonSubjectPageWrapper() {
+  return (
+    <Suspense>
+      <LessonSubjectPage />
+    </Suspense>
+  );
+}
+
+/**
+ * One subject's Bright Roots lessons, grouped by age range. `?ages=7-9` (from the Seedlings,
+ * Saplings and Teens menus) shows just that age range.
+ */
+function LessonSubjectPage() {
   const router = useRouter();
   const params = useParams<{ subject: string }>();
-  const subject = subjectBySlug(params.subject);
+  const subject = pageSubject(params.subject);
+  const agesParam = useSearchParams().get("ages");
+  // "7-9" in the address, "7 to 9" in the units.
+  const onlyAges = agesParam ? agesParam.replace("-", " to ") : null;
   const [role, setRole] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
@@ -42,7 +56,8 @@ export default function LessonSubjectPage() {
   const isChild = role === "child";
   const units = unitsIn(subject);
   const allAges = Array.from(new Set(units.map((u) => u.ages)));
-  const found = searchUnits(units, query);
+  const shown = onlyAges ? units.filter((u) => u.ages === onlyAges) : units;
+  const found = searchUnits(shown, query);
   const byAge = new Map<string, { unit: LessonUnit; lessons?: Set<string> }[]>();
   for (const f of found) byAge.set(f.unit.ages, [...(byAge.get(f.unit.ages) ?? []), f]);
   const searching = query.trim().length > 0;
@@ -73,19 +88,57 @@ export default function LessonSubjectPage() {
             </p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{subject.name}</h1>
             <p className="mt-2 text-brand-earth">{subject.blurb}</p>
-            {allAges.length > 1 && (
+            {(allAges.length > 1 || onlyAges) && (
               <nav className="mt-4 flex flex-wrap gap-2" aria-label="Age ranges">
+                {onlyAges && (
+                  <Link href={`/lessons/subject/${subject.slug}`} className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-earth hover:text-brand-sage">
+                    All ages
+                  </Link>
+                )}
                 {allAges.map((a) => (
-                  <a key={a} href={`#ages-${a.replace(/\s+/g, "-")}`} className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-earth hover:text-brand-sage">
+                  <Link
+                    key={a}
+                    href={`/lessons/subject/${subject.slug}?ages=${a.replace(" to ", "-")}`}
+                    aria-current={a === onlyAges ? "page" : undefined}
+                    className={`rounded-full px-3 py-1 text-sm font-bold ${a === onlyAges ? "bg-brand-sage text-white" : "bg-brand-cream text-brand-earth hover:text-brand-sage"}`}
+                  >
                     Ages {a}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             )}
           </div>
         </header>
 
-        {units.length > 0 && (
+        {onlyAges && shown.length === 0 && (
+          <div className="brand-card mb-8 p-6">
+            <p className="text-lg font-extrabold text-brand-charcoal">
+              {subject.name} lessons for ages {onlyAges} are on their way.
+            </p>
+            <p className="mt-1 text-brand-earth">
+              {units.length > 0 ? (
+                <Link href={`/lessons/subject/${subject.slug}`} className="font-bold text-brand-sage underline">
+                  See the {subject.name} lessons for other ages
+                </Link>
+              ) : (
+                <Link href="/lessons" className="font-bold text-brand-sage underline">
+                  See all Bright Roots Lessons
+                </Link>
+              )}
+              {subject.slug === "maths" && (
+                <>
+                  {" or "}
+                  <Link href={`/worksheets?subject=Maths&ages=${agesParam}`} className="font-bold text-brand-sage underline">
+                    try the Maths worksheets
+                  </Link>
+                </>
+              )}
+              .
+            </p>
+          </div>
+        )}
+
+        {shown.length > 0 && (
           <div className="mb-8">
             <label htmlFor="lesson-search" className="sr-only">
               Search {subject.name} lessons
@@ -99,7 +152,7 @@ export default function LessonSubjectPage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder={`Search ${subject.name} lessons, e.g. "${units[0].short.toLowerCase()}"`}
+                placeholder={`Search ${subject.name} lessons, e.g. "${shown[0].short.toLowerCase()}"`}
                 className="w-full rounded-2xl border-2 border-brand-cream bg-white py-3 pl-11 pr-4 text-brand-charcoal shadow-sm outline-none focus:border-brand-sage"
               />
             </div>
@@ -130,7 +183,7 @@ export default function LessonSubjectPage() {
           </section>
         ))}
 
-        {units.length === 0 && <p className="mb-10 text-brand-earth">The first {subject.name} lessons are on their way.</p>}
+        {units.length === 0 && !onlyAges && <p className="mb-10 text-brand-earth">The first {subject.name} lessons are on their way.</p>}
 
         {coming.length > 0 && !searching && (
           <section>
