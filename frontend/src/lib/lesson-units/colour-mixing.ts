@@ -30,6 +30,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "A world full of colour",
+            picture: "/lessons/colour-mixing/lesson-1-1.jpg",
+            alt: "A child looking around a playroom full of colourful toys and clothes",
             text: [
               "Look around you. Colours are everywhere!",
               "Your clothes, your toys and your food all have colours. Which colours can you see right now?",
@@ -37,6 +39,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Three special colours",
+            picture: "/lessons/colour-mixing/lesson-1-2.jpg",
+            alt: "Blobs of red, yellow and blue paint on white paper",
             text: [
               "Red, yellow and blue are very special colours. They are called the primary colours.",
               "Primary means first. Artists start with these three colours.",
@@ -45,6 +49,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Spot the primary colours",
+            picture: "/lessons/colour-mixing/lesson-1-3.jpg",
+            alt: "A red bus, a yellow duck and a blue sea",
             text: [
               "A red bus. A yellow duck. A blue sea.",
               "Primary colours are bright and bold. You will spot them all over the place.",
@@ -115,6 +121,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "Colour magic",
+            picture: "/lessons/colour-mixing/lesson-2-1.jpg",
+            alt: "A child watching red and yellow paint mix into orange",
             text: [
               "When you mix two primary colours, you make a brand new colour!",
               "The new colours are called secondary colours. Secondary means second.",
@@ -122,6 +130,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Three new colours",
+            picture: "/lessons/colour-mixing/lesson-2-2.jpg",
+            alt: "Paint swirls making orange, green and purple",
             text: [
               "Red and yellow make orange.",
               "Yellow and blue make green.",
@@ -130,6 +140,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "A little at a time",
+            picture: "/lessons/colour-mixing/lesson-2-3.jpg",
+            alt: "A child rinsing a paintbrush in a jar of water",
             text: [
               "Mix slowly. Add a little bit, then stir.",
               "More yellow makes a yellowy green. More blue makes a bluey green.",
@@ -209,6 +221,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "Add white",
+            picture: "/lessons/colour-mixing/lesson-3-1.jpg",
+            alt: "A child adding white paint to red to make pink",
             text: [
               "Add a little white paint to a colour. It gets lighter!",
               "Red and white make pink. Blue and white make a soft sky blue.",
@@ -217,6 +231,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Add black",
+            picture: "/lessons/colour-mixing/lesson-3-2.jpg",
+            alt: "A brush adding a dot of black to blue paint",
             text: [
               "Add a tiny bit of black paint to a colour. It gets darker!",
               "Black is very strong. Just a tiny dot is enough.",
@@ -225,6 +241,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "So many blues",
+            picture: "/lessons/colour-mixing/lesson-3-3.jpg",
+            alt: "Painted squares from pale blue to dark blue",
             text: [
               "With one blue, some white and a little black, you can make lots of blues.",
               "Pale blue like a summer sky. Dark blue like the night.",
@@ -297,6 +315,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "Warm colours",
+            picture: "/lessons/colour-mixing/lesson-4-1.jpg",
+            alt: "A sunny beach in warm red, orange and yellow",
             text: [
               "Red, orange and yellow are warm colours.",
               "They make us think of hot things, like the sun and a cosy fire.",
@@ -304,6 +324,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Cool colours",
+            picture: "/lessons/colour-mixing/lesson-4-2.jpg",
+            alt: "A calm sea scene in cool blue, green and purple",
             text: [
               "Blue, green and purple are cool colours.",
               "They make us think of cold or calm things, like the sea, ice and shady trees.",
@@ -311,6 +333,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Colours and feelings",
+            picture: "/lessons/colour-mixing/lesson-4-3.jpg",
+            alt: "One child bouncing by warm balloons and one resting on cool cushions",
             text: [
               "Warm colours can feel bright, happy and full of energy.",
               "Cool colours can feel calm, quiet and peaceful.",
@@ -382,6 +406,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "Nature's colours",
+            picture: "/lessons/colour-mixing/lesson-5-1.jpg",
+            alt: "A meadow with green grass, blue sky, mud and stones",
             text: [
               "Nature is full of colours. Green grass, blue sky, brown mud and grey stones.",
               "There are lots of different greens, too. Light greens, dark greens and yellowy greens!",
@@ -389,6 +415,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Bright flowers",
+            picture: "/lessons/colour-mixing/lesson-5-2.jpg",
+            alt: "A bee and a butterfly on bright flowers",
             text: [
               "Many flowers have bright colours, like red, yellow and purple.",
               "The bright colours help bees and butterflies find the flowers.",
@@ -397,6 +425,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Colours change",
+            picture: "/lessons/colour-mixing/lesson-5-3.jpg",
+            alt: "An autumn tree and a green frog on a leaf",
             text: [
               "In autumn, many leaves change from green to red, orange, yellow and brown.",
               "Some animals have colours that help them hide. A green frog is hard to spot on a green leaf.",
@@ -468,6 +498,8 @@ export const colourMixing: LessonUnit = {
         cards: [
           {
             heading: "Meet Piet Mondrian",
+            picture: "/lessons/colour-mixing/lesson-6-1.jpg",
+            alt: "An old-fashioned painter painting a windmill by a river",
             text: [
               "Piet Mondrian was an artist. He was born in the Netherlands a long time ago, more than 150 years ago.",
               "When he was young, he painted trees, rivers and windmills.",
@@ -475,6 +507,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Lines and blocks",
+            picture: "/lessons/colour-mixing/lesson-6-2.jpg",
+            alt: "A painting of black lines with red, yellow and blue boxes",
             text: [
               "Later, Mondrian made a new kind of picture.",
               "He painted thick, straight black lines going across and up and down.",
@@ -483,6 +517,8 @@ export const colourMixing: LessonUnit = {
           },
           {
             heading: "Just a few colours",
+            picture: "/lessons/colour-mixing/lesson-6-3.jpg",
+            alt: "A child drawing straight lines with a ruler and colouring boxes",
             text: [
               "Mondrian chose the primary colours: red, yellow and blue.",
               "He moved the lines and colours around until the picture felt just right.",

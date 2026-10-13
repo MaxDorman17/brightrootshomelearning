@@ -30,6 +30,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "A map is a picture of a place",
+            picture: "/lessons/maps-and-directions/lesson-1-1.jpg",
+            alt: "A child and a grown-up looking at a park map on a sign",
             text: [
               "A map is a special picture of a place. It shows where things are.",
               "Maps help us find our way. There are maps of rooms, parks, towns and even the whole world.",
@@ -37,6 +39,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "A bird's-eye view",
+            picture: "/lessons/maps-and-directions/lesson-1-2.jpg",
+            alt: "A bird flying above a village, looking down at roofs and treetops",
             text: [
               "Imagine you are a bird flying high above your home. You look straight down.",
               "You would see the tops of things: roofs, treetops and the tops of cars.",
@@ -45,6 +49,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Tops, not sides",
+            picture: "/lessons/maps-and-directions/lesson-1-3.jpg",
+            alt: "A table from the side with legs, and from above as a rectangle",
             text: [
               "From the side, a table has legs. From above, you only see the flat top.",
               "So on a map, a table looks like a rectangle. A round rug looks like a circle.",
@@ -115,6 +121,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "Little pictures called symbols",
+            picture: "/lessons/maps-and-directions/lesson-2-1.jpg",
+            alt: "A simple park map with tree, pond and swing symbols",
             text: [
               "Maps are too small to draw everything in full. So map makers use little pictures called symbols.",
               "A symbol is a simple drawing that stands for something. A tiny tree can mean a wood. A blue blob can mean a pond.",
@@ -122,6 +130,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "The key tells you what they mean",
+            picture: "/lessons/maps-and-directions/lesson-2-2.jpg",
+            alt: "A girl pointing at the key on a hand-drawn map",
             text: [
               "A map has a box called a key. The key shows each symbol and says what it means.",
               "If you see a symbol and don't know it, look in the key. It unlocks the map, just like a real key!",
@@ -129,6 +139,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Symbols all around us",
+            picture: "/lessons/maps-and-directions/lesson-2-3.jpg",
+            alt: "A boy looking at a green fire exit symbol above a door",
             text: [
               "You see symbols every day. A picture of a person on a toilet door. A green running man over a fire exit.",
               "Good symbols are simple and easy to draw. Anyone can understand them quickly.",
@@ -199,6 +211,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "Where is it?",
+            picture: "/lessons/maps-and-directions/lesson-3-1.jpg",
+            alt: "A cup next to a plate, a teddy near them and a hill far away",
             text: [
               "We use special words to say where things are. These are called position words.",
               "Near means close by. Far means a long way away.",
@@ -207,6 +221,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "In front of and behind",
+            picture: "/lessons/maps-and-directions/lesson-3-2.jpg",
+            alt: "One child in front of a chair and another hiding behind it",
             text: [
               "In front of means before something, where you can see it. Behind means at the back.",
               "Stand behind a chair. Now stand in front of it. Can you feel the difference?",
@@ -214,6 +230,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Left and right",
+            picture: "/lessons/maps-and-directions/lesson-3-3.jpg",
+            alt: "A girl holding up her hands to find her left hand",
             text: [
               "Hold up both hands with the backs of your hands facing you. Point one finger up and stick your thumb out to the side. Your left hand makes the letter L.",
               "Left and right can be tricky. Even grown-ups mix them up sometimes!",
@@ -285,6 +303,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "What are directions?",
+            picture: "/lessons/maps-and-directions/lesson-4-1.jpg",
+            alt: "Footprints across a room from the sofa to a toy box",
             text: [
               "Directions tell someone how to get from one place to another.",
               "They are like little steps. Do one, then the next, then the next.",
@@ -292,6 +312,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Direction words",
+            picture: "/lessons/maps-and-directions/lesson-4-2.jpg",
+            alt: "A boy walking forwards with an arrow showing a right turn",
             text: [
               "Forwards means go the way you are facing. Backwards means go the other way.",
               "Turn left and turn right mean change the way you are facing.",
@@ -300,6 +322,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Giving good directions",
+            picture: "/lessons/maps-and-directions/lesson-4-3.jpg",
+            alt: "A grown-up pretending to be a robot while a girl gives directions",
             text: [
               "Good directions are clear and in the right order. Say how many steps, too.",
               "For example: walk 3 steps forwards. Turn right. Walk 2 steps. Stop at the door.",
@@ -370,6 +394,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "The four compass points",
+            picture: "/lessons/maps-and-directions/lesson-5-1.jpg",
+            alt: "Children standing on the four points of a big playground compass",
             text: [
               "There are four main directions. They are North, East, South and West.",
               "They are called the compass points. They stay the same wherever you are standing.",
@@ -377,6 +403,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Never Eat Shredded Wheat",
+            picture: "/lessons/maps-and-directions/lesson-5-2.jpg",
+            alt: "A bowl of shredded wheat next to a compass on a table",
             text: [
               "North is at the top. Then go round like the hands of a clock: East, South, West.",
               "Here is a trick to remember: Never Eat Shredded Wheat. N for North, E for East, S for South, W for West.",
@@ -384,6 +412,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "A compass",
+            picture: "/lessons/maps-and-directions/lesson-5-3.jpg",
+            alt: "A boy holding a compass on a grassy hill",
             text: [
               "A compass is a tool with a needle that points North.",
               "Sailors, walkers and explorers use a compass so they don't get lost.",
@@ -454,6 +484,8 @@ export const mapsAndDirections: LessonUnit = {
         cards: [
           {
             heading: "Treasure maps",
+            picture: "/lessons/maps-and-directions/lesson-6-1.jpg",
+            alt: "A treasure map with a palm tree, a rock and a red X",
             text: [
               "A treasure map shows where something is hidden. A big X marks the spot!",
               "It has symbols, like a tree or a rock, so you know where to go.",
@@ -461,6 +493,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Following a treasure map",
+            picture: "/lessons/maps-and-directions/lesson-6-2.jpg",
+            alt: "A girl with a map finding treasure under a cushion",
             text: [
               "First, find where you are on the map. Then look for the X.",
               "Use the symbols and directions to get there, step by step.",
@@ -469,6 +503,8 @@ export const mapsAndDirections: LessonUnit = {
           },
           {
             heading: "Story maps",
+            picture: "/lessons/maps-and-directions/lesson-6-3.jpg",
+            alt: "A story map of a path from a cottage through the woods to Grandma's cottage",
             text: [
               "Some stories have a journey in them. You can draw a map of it.",
               "In Little Red Riding Hood, she walks from her home, through the woods, to Grandma's cottage.",

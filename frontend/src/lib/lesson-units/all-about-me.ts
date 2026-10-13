@@ -30,6 +30,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "There is only one you",
+            picture: "/lessons/all-about-me/lesson-1-1.jpg",
+            alt: "A girl smiling at her reflection in a mirror",
             text: [
               "There is nobody in the whole world exactly like you.",
               "You have your own face, your own voice and your own laugh. That makes you special.",
@@ -37,6 +39,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Things I like and things I can do",
+            picture: "/lessons/all-about-me/lesson-1-2.jpg",
+            alt: "A boy building a block tower and a girl painting",
             text: [
               "You have things you like. Maybe a colour, a game, a food or an animal.",
               "You have things you are good at too. Maybe jumping, building, helping or making people laugh.",
@@ -45,6 +49,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Everyone is different",
+            picture: "/lessons/all-about-me/lesson-1-3.jpg",
+            alt: "Six different children waving together in a park",
             text: [
               "People have different hair, skin, eyes and sizes. People like different things too.",
               "Being different is a good thing. It would be boring if we were all the same!",
@@ -114,6 +120,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "We all have feelings",
+            picture: "/lessons/all-about-me/lesson-2-1.jpg",
+            alt: "A grown-up and two children on a sofa showing different feelings",
             text: [
               "Feelings are what is happening inside us. Everyone has them, grown-ups too.",
               "Feelings can change a lot, even in one day.",
@@ -121,6 +129,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Feeling words",
+            picture: "/lessons/all-about-me/lesson-2-2.jpg",
+            alt: "Paper plates with happy, sad, angry, scared, worried and excited faces",
             text: [
               "Here are some feeling words: happy, sad, angry, scared, worried and excited.",
               "You might feel happy playing with a friend. You might feel sad if your toy breaks.",
@@ -129,6 +139,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "All feelings are OK",
+            picture: "/lessons/all-about-me/lesson-2-3.jpg",
+            alt: "A grown-up gently hugging a sad young child",
             text: [
               "There are no bad feelings. It is OK to feel sad or angry sometimes.",
               "Saying the name of a feeling helps other people understand you.",
@@ -198,6 +210,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "Feelings in faces",
+            picture: "/lessons/all-about-me/lesson-3-1.jpg",
+            alt: "Three faces: smiling, crying and frowning",
             text: [
               "Our faces show how we feel.",
               "A happy face often has a big smile. A sad face might have a wobbly mouth or tears. An angry face might frown.",
@@ -205,6 +219,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Feelings in bodies",
+            picture: "/lessons/all-about-me/lesson-3-2.jpg",
+            alt: "A boy jumping for joy and a girl stamping her foot",
             text: [
               "We feel feelings in our bodies too.",
               "When you are excited, you might want to jump. When you are worried, you might get a funny feeling in your tummy.",
@@ -213,6 +229,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Look for clues",
+            picture: "/lessons/all-about-me/lesson-3-3.jpg",
+            alt: "A child with a magnifying glass looking kindly at a sad friend",
             text: [
               "Faces and bodies give us clues about how someone feels.",
               "If we look carefully, we can guess how a friend feels. Then we can ask them.",
@@ -282,6 +300,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "Big feelings",
+            picture: "/lessons/all-about-me/lesson-4-1.jpg",
+            alt: "A child with a storm cloud shrinking into a small white cloud",
             text: [
               "Sometimes a feeling gets really big. You might want to shout, cry or hide.",
               "That happens to everyone. There are things we can do to help a big feeling get smaller.",
@@ -289,6 +309,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Slow breathing and counting",
+            picture: "/lessons/all-about-me/lesson-4-2.jpg",
+            alt: "A girl smelling a flower and blowing out a pretend candle",
             text: [
               "Try 'smell the flower, blow out the candle'. Breathe in slowly through your nose. Blow out slowly through your mouth.",
               "You can also count slowly to ten. Slow breathing and counting help your body feel calm.",
@@ -296,6 +318,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "A calm corner",
+            picture: "/lessons/all-about-me/lesson-4-3.jpg",
+            alt: "A child resting in a cosy calm corner with cushions and a teddy",
             text: [
               "A calm corner is a cosy, quiet place to go when feelings get big.",
               "It might have a cushion, a soft toy and a book. You can rest there until you feel better.",
@@ -365,6 +389,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "Talking helps",
+            picture: "/lessons/all-about-me/lesson-5-1.jpg",
+            alt: "A child talking to a grown-up who is listening",
             text: [
               "When you have a big feeling, talking about it can help.",
               "Telling someone how you feel can make a worry feel smaller.",
@@ -372,6 +398,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "People I trust",
+            picture: "/lessons/all-about-me/lesson-5-2.jpg",
+            alt: "A child surrounded by trusted grown-ups",
             text: [
               "Someone you trust is a person who is kind, listens and helps you.",
               "It might be a mum, dad, carer, grandparent or another grown-up you know well.",
@@ -379,6 +407,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "How to start",
+            picture: "/lessons/all-about-me/lesson-5-3.jpg",
+            alt: "A boy asking his grandparent to listen",
             text: [
               "You can say, 'I feel sad because...' or 'Can I tell you something?'",
               "If the first person is busy, try again later or ask another grown-up you trust. Keep telling until someone helps.",
@@ -449,6 +479,8 @@ export const allAboutMe: LessonUnit = {
         cards: [
           {
             heading: "Noticing feelings",
+            picture: "/lessons/all-about-me/lesson-6-1.jpg",
+            alt: "A child noticing another child sitting alone on a bench",
             text: [
               "Other people have feelings too, just like you.",
               "Look at faces and bodies for clues. Is someone sitting alone? Do they look sad?",
@@ -456,6 +488,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Ways to be kind",
+            picture: "/lessons/all-about-me/lesson-6-2.jpg",
+            alt: "Two children sharing crayons and colouring together",
             text: [
               "Being kind means doing nice things for others.",
               "You can share, take turns, help, say something nice, or ask, 'Are you OK?'",
@@ -464,6 +498,8 @@ export const allAboutMe: LessonUnit = {
           },
           {
             heading: "Kindness feels good",
+            picture: "/lessons/all-about-me/lesson-6-3.jpg",
+            alt: "Two happy children holding hands and skipping in a park",
             text: [
               "Being kind makes other people feel happy. It can make you feel happy too!",
               "You can be kind to yourself as well. Say, 'I can do it!' when things are tricky.",

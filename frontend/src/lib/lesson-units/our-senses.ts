@@ -35,6 +35,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "Your amazing body",
+            picture: "/lessons/our-senses/lesson-1-1.jpg",
+            alt: "Two children touching their toes while playing a body parts game",
             text: [
               "Your body has lots of parts. Your head sits on your neck. Your arms hang from your shoulders.",
               "Your arms bend at your elbows. Your legs bend at your knees. You have fingers on your hands and toes on your feet.",
@@ -43,6 +45,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Five senses",
+            picture: "/lessons/our-senses/lesson-1-2.jpg",
+            alt: "A child at a table with a book, a bell, a teddy, a flower and a strawberry",
             text: [
               "Your body has five special ways to find out about the world. We call them the five senses.",
               "They are seeing, hearing, touching, smelling and tasting. Each one uses a different part of your body.",
@@ -50,6 +54,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Seeing with your eyes",
+            picture: "/lessons/our-senses/lesson-1-3.jpg",
+            alt: "A child looking closely at a ladybird on a leaf",
             text: [
               "You see with your eyes. They show you colours, shapes and things moving.",
               "Your eyes need light to see. In the dark, it is hard to see anything at all.",
@@ -129,6 +135,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "Hearing with your ears",
+            picture: "/lessons/our-senses/lesson-2-1.jpg",
+            alt: "A child cupping their ear to listen to a bird on a fence",
             text: [
               "You hear with your ears. You have two, one on each side of your head.",
               "Your ears catch sounds all day long: voices, birds, cars, music and more.",
@@ -136,6 +144,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Loud and quiet",
+            picture: "/lessons/our-senses/lesson-2-2.jpg",
+            alt: "A child banging a drum next to a grown-up whispering to another child",
             text: [
               "Some sounds are loud, like a drum or a fire engine. Some sounds are quiet, like a whisper or a ticking clock.",
               "When a sound is far away, it sounds quieter. As it comes closer, it gets louder.",
@@ -143,6 +153,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Look after your ears",
+            picture: "/lessons/our-senses/lesson-2-3.jpg",
+            alt: "A child covering their ears as a noisy road sweeper goes by",
             text: [
               "Very loud sounds can hurt your ears. If something is too loud, cover your ears or move away.",
               "Never put anything inside your ears. Your ears are clever and look after themselves.",
@@ -216,6 +228,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "Feeling with your skin",
+            picture: "/lessons/our-senses/lesson-3-1.jpg",
+            alt: "A child's hand stroking a fluffy kitten",
             text: [
               "You feel things with your skin. Skin covers your whole body, from your head to your toes.",
               "Your fingertips are extra good at feeling. That is why we often touch things with our hands.",
@@ -223,6 +237,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Lots of ways things feel",
+            picture: "/lessons/our-senses/lesson-3-2.jpg",
+            alt: "A child reaching for a teddy, a stone, a pine cone, a sponge and a spoon",
             text: [
               "Things can feel soft, like a teddy, or hard, like a stone. They can be smooth, like a spoon, or rough, like a brick.",
               "Some things feel bumpy, some feel fluffy, and some feel squishy.",
@@ -230,6 +246,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Hot and cold",
+            picture: "/lessons/our-senses/lesson-3-3.jpg",
+            alt: "A child holding an ice cube and pulling a cold face",
             text: [
               "Your skin can feel hot and cold too. An ice cube feels cold. A warm bath feels warm.",
               "Your skin tells you when something is too hot, so you can pull away. Never touch an oven, a kettle or a hot pan.",
@@ -304,6 +322,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "Smelling with your nose",
+            picture: "/lessons/our-senses/lesson-4-1.jpg",
+            alt: "A child sniffing the air as a grown-up brings in warm toast",
             text: [
               "You smell with your nose. When you sniff, you breathe in tiny bits of smell from the air.",
               "Your nose can find out about things you cannot see, like toast cooking in another room.",
@@ -311,6 +331,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Nice smells and nasty smells",
+            picture: "/lessons/our-senses/lesson-4-2.jpg",
+            alt: "One child smelling flowers and another holding their nose by old socks",
             text: [
               "Some smells are lovely, like flowers, fresh bread or an orange.",
               "Some smells are nasty, like a smelly bin or old socks. People like different smells, and that is fine.",
@@ -318,6 +340,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Smells that keep us safe",
+            picture: "/lessons/our-senses/lesson-4-3.jpg",
+            alt: "A child sniffing a milk carton and wrinkling their nose",
             text: [
               "Your nose helps keep you safe. Food that has gone bad often smells horrid, which tells you not to eat it.",
               "If you smell smoke or burning, tell a grown-up straight away.",
@@ -391,6 +415,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "Tasting with your tongue",
+            picture: "/lessons/our-senses/lesson-5-1.jpg",
+            alt: "A child sticking their tongue out at a mirror",
             text: [
               "You taste with your tongue, inside your mouth. Look in a mirror and you will see it is covered in tiny bumps.",
               "Those bumps help you taste your food.",
@@ -398,6 +424,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Sweet, salty and sour",
+            picture: "/lessons/our-senses/lesson-5-2.jpg",
+            alt: "A child making a sour face after tasting a lemon slice",
             text: [
               "Foods have different tastes. Honey and strawberries taste sweet. Crisps taste salty. Lemons taste sour.",
               "Some foods taste bitter, like dark chocolate. Lots of children don't like bitter tastes, and that is OK.",
@@ -405,6 +433,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Your nose helps you taste",
+            picture: "/lessons/our-senses/lesson-5-3.jpg",
+            alt: "A child holding their nose while biting an apple slice",
             text: [
               "Your nose and tongue work together. When you have a cold and a blocked nose, food tastes of less.",
               "Only taste things a grown-up says are safe to eat. Never taste things you find.",
@@ -485,6 +515,8 @@ export const ourSenses: LessonUnit = {
         cards: [
           {
             heading: "All five together",
+            picture: "/lessons/our-senses/lesson-6-1.jpg",
+            alt: "Three children in a meadow looking, listening and touching tree bark",
             text: [
               "You have five senses: seeing, hearing, touching, smelling and tasting.",
               "You use your eyes, ears, skin, nose and tongue. Most of the time, they all work together.",
@@ -492,6 +524,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Senses at breakfast",
+            picture: "/lessons/our-senses/lesson-6-2.jpg",
+            alt: "A child biting crunchy toast at the breakfast table",
             text: [
               "Think about eating toast. You see it go golden. You smell it cooking. You hear the crunch.",
               "You feel it warm in your hands, and you taste it on your tongue. That is all five senses at once!",
@@ -499,6 +533,8 @@ export const ourSenses: LessonUnit = {
           },
           {
             heading: "Going on a senses walk",
+            picture: "/lessons/our-senses/lesson-6-3.jpg",
+            alt: "A grown-up and a child on a park path, the child pointing at a bird",
             text: [
               "On a senses walk, you go slowly and notice things. What can you see, hear, smell and touch?",
               "Stay with your grown-up the whole time. Outside, we don't taste anything. We save tasting for safe food at home.",

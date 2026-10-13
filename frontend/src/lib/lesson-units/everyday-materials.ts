@@ -30,6 +30,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "What is an object?",
+            picture: "/lessons/everyday-materials/lesson-1-1.jpg",
+            alt: "A child holding a cup and a shoe beside a chair and a teddy",
             text: [
               "An object is a thing. You can touch it, hold it or use it.",
               "A cup is an object. A chair is an object. Your shoe is an object too!",
@@ -37,6 +39,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "What is a material?",
+            picture: "/lessons/everyday-materials/lesson-1-2.jpg",
+            alt: "A child pointing at a wooden chair and a plastic cup",
             text: [
               "A material is the stuff an object is made of.",
               "A chair might be made of wood. A cup might be made of plastic.",
@@ -45,6 +49,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Same object, different materials",
+            picture: "/lessons/everyday-materials/lesson-1-3.jpg",
+            alt: "A metal spoon, a wooden spoon and a plastic spoon in a row",
             text: [
               "A spoon can be made of metal, wood or plastic. It is still a spoon!",
               "One material can make lots of objects too. Wood can make a table, a spoon and a pencil.",
@@ -115,6 +121,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "Meet the materials",
+            picture: "/lessons/everyday-materials/lesson-2-1.jpg",
+            alt: "A child counting beside eight different materials",
             text: [
               "Today we will meet eight materials: wood, plastic, glass, metal, water, rock, fabric and paper.",
               "Let's say them together, and count them on our fingers!",
@@ -122,6 +130,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Where do they come from?",
+            picture: "/lessons/everyday-materials/lesson-2-2.jpg",
+            alt: "A tree, a sheep, rocks, rain and sand outdoors",
             text: [
               "Wood comes from trees. Paper is made from wood!",
               "Rock comes from the ground. Water falls from the sky as rain.",
@@ -130,6 +140,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Spot them at home",
+            picture: "/lessons/everyday-materials/lesson-2-3.jpg",
+            alt: "A living room with a window, a pan, a jumper, a book and toy bricks",
             text: [
               "A window is glass. A pan is metal. A jumper is fabric.",
               "A book is paper. A toy brick might be plastic or wood.",
@@ -202,6 +214,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "Hard or soft?",
+            picture: "/lessons/everyday-materials/lesson-3-1.jpg",
+            alt: "A child pressing a soft cushion and holding a hard rock",
             text: [
               "Press a material with your finger. Does it squish down? Then it is soft.",
               "A cushion and a sponge are soft. A rock and a metal spoon are hard.",
@@ -209,6 +223,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Rough or smooth?",
+            picture: "/lessons/everyday-materials/lesson-3-2.jpg",
+            alt: "A child stroking rough tree bark near a smooth glass jar",
             text: [
               "Stroke it gently with your fingers. Is it bumpy or scratchy? That is rough.",
               "Is it flat and even, like a window? That is smooth.",
@@ -217,6 +233,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Shiny or dull?",
+            picture: "/lessons/everyday-materials/lesson-3-3.jpg",
+            alt: "A child seeing their reflection in a shiny spoon beside a dull sock",
             text: [
               "Shiny things catch the light and sparkle. Some are so shiny you can see yourself!",
               "Dull things don't shine. A metal spoon is shiny. A woolly sock is dull.",
@@ -289,6 +307,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "Can you see through it?",
+            picture: "/lessons/everyday-materials/lesson-4-1.jpg",
+            alt: "A child looking through a window next to a wooden door",
             text: [
               "Some materials let you see right through them. We say they are see-through.",
               "A window is see-through. So is clear plastic, like some water bottles.",
@@ -297,6 +317,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Waterproof",
+            picture: "/lessons/everyday-materials/lesson-4-2.jpg",
+            alt: "A child with an umbrella in the rain beside soggy paper",
             text: [
               "Waterproof means water can't get through.",
               "Wellies, raincoats and umbrellas are waterproof. Plastic and metal keep water out.",
@@ -305,6 +327,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Testing like a scientist",
+            picture: "/lessons/everyday-materials/lesson-4-3.jpg",
+            alt: "A child dripping water onto foil held over a teddy",
             text: [
               "Scientists don't just guess. They test!",
               "First, say what you think will happen. Then try it and look carefully.",
@@ -384,6 +408,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "Changing shape",
+            picture: "/lessons/everyday-materials/lesson-5-1.jpg",
+            alt: "Children stretching, twisting and bending",
             text: [
               "You can change the shape of some objects with your hands.",
               "You can squash them, bend them, twist them or stretch them.",
@@ -392,6 +418,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Bendy or stiff?",
+            picture: "/lessons/everyday-materials/lesson-5-2.jpg",
+            alt: "A child bending a sock next to a stiff wooden spoon",
             text: [
               "A bendy material is easy to bend. A sock, a sheet of paper and a strip of foil are bendy.",
               "A stiff material won't bend easily. A wooden spoon and a rock are stiff.",
@@ -399,6 +427,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Does it go back?",
+            picture: "/lessons/everyday-materials/lesson-5-3.jpg",
+            alt: "A child stretching an elastic band near a sponge and play dough",
             text: [
               "Stretch an elastic band, then let go. It springs back!",
               "Squash a sponge and let go. It springs back too.",
@@ -472,6 +502,8 @@ export const everydayMaterials: LessonUnit = {
         cards: [
           {
             heading: "The Three Little Pigs",
+            picture: "/lessons/everyday-materials/lesson-6-1.jpg",
+            alt: "Three pigs beside a straw house, a stick house and a brick house",
             text: [
               "Three little pigs each built a house. One used straw. One used sticks. One used bricks.",
               "The wolf huffed and puffed. The straw house fell down! The stick house fell down too!",
@@ -480,6 +512,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Choosing the best material",
+            picture: "/lessons/everyday-materials/lesson-6-2.jpg",
+            alt: "A window, an umbrella and a pillow",
             text: [
               "Every job needs the right material.",
               "A window needs to be see-through, so we use glass. An umbrella needs to be waterproof, so we use plastic or waterproof fabric.",
@@ -488,6 +522,8 @@ export const everydayMaterials: LessonUnit = {
           },
           {
             heading: "Silly materials",
+            picture: "/lessons/everyday-materials/lesson-6-3.jpg",
+            alt: "A child laughing at a soggy paper umbrella",
             text: [
               "What if we used the wrong material? A paper umbrella would go soggy. A glass pillow would be hard, and it could break!",
               "When you choose a material, ask: what does it need to be like?",
