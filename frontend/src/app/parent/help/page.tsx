@@ -267,7 +267,7 @@ const GUIDES: { group: string; guides: Guide[] }[] = [
         emoji: "🖨️",
         title: "Print the week",
         intro: "A paper copy for the fridge or a folder.",
-        steps: [<>Go to <L href="/parent/print">Plan, then Print Week</L>, choose the week and child, and print.</>],
+        steps: [<>Open the <L href="/parent">Planner</L>, go to the week, press Print Week, and print.</>],
       },
     ],
   },

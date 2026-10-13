@@ -224,6 +224,13 @@ export const LESSON_SUBJECTS: LessonSubject[] = [
 ];
 
 export const subjectBySlug = (slug: string) => LESSON_SUBJECTS.find((s) => s.slug === slug);
+/** Subjects in the menus that have no Bright Roots lessons yet. Their pages say the lessons are on the way. */
+export const PLANNED_SUBJECTS: LessonSubject[] = [
+  { slug: "maths", name: "Maths", emoji: "🔢", color: "#2F5D3A", blurb: "Numbers, shapes and measuring, a step at a time." },
+  { slug: "english", name: "English", emoji: "✏️", color: "#8A5A2B", blurb: "Reading, writing, spelling and grammar." },
+];
+/** The subject for a /lessons/subject page, including the planned ones. */
+export const pageSubject = (slug: string) => subjectBySlug(slug) ?? PLANNED_SUBJECTS.find((s) => s.slug === slug);
 export const subjectOf = (unit: LessonUnit) => LESSON_SUBJECTS.find((s) => s.name === unit.subject);
 export const unitsIn = (subject: LessonSubject) => UNITS.filter((u) => u.subject === subject.name);
 export const comingIn = (subject: LessonSubject) => COMING_UNITS.filter((c) => c.subject === subject.name);

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { getMakeItems, getShoppingCount, MakeKind } from "@/lib/api";
@@ -17,8 +17,18 @@ import { isNew } from "@/lib/newContent";
  * The Cookbook, Craft Corner, P.E. or Outdoors: browse, search and filter.
  * `audience` picks the younger activities (the Saplings menu) or the 11 to 16 ones (the Teens menu).
  */
-export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKind; audience?: Audience }) {
+export default function MakeLibrary(props: { kind: MakeKind; audience?: Audience }) {
+  return (
+    <Suspense>
+      <Library {...props} />
+    </Suspense>
+  );
+}
+
+function Library({ kind, audience = "young" }: { kind: MakeKind; audience?: Audience }) {
   const router = useRouter();
+  // The Seedlings menu opens these pages at ?age=little and the Saplings menu at ?age=junior.
+  const ageParam = useSearchParams().get("age");
   const info = KIND_INFO[kind];
   const teen = audience === "teen";
   // Little Roots (ages 3 to 4) has no teen version.
@@ -45,7 +55,6 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
       router.replace(teenTab.path);
       return;
     }
-    if (!teen && (fromUrl === "little" || fromUrl === "junior")) setAge(fromUrl);
     const r = getRole() || "";
     setRole(r);
     getMakeItems(kind)
@@ -57,6 +66,12 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
         .catch(() => {});
     }
   }, [kind, router, audience, teen, teenTab]);
+
+  useEffect(() => {
+    if (teen) return;
+    setAge(ageParam === "little" || ageParam === "junior" ? ageParam : "");
+    setCategory("");
+  }, [ageParam, teen]);
 
   const categories = useMemo(
     () =>
@@ -97,7 +112,15 @@ export default function MakeLibrary({ kind, audience = "young" }: { kind: MakeKi
           art={{ recipe: "shopping", craft: "lessons", pe: "pe", outdoor: "wellies", life: "account", little: "children" }[kind]}
           tint={{ recipe: 1, craft: 4, pe: 0, outdoor: 0, life: 3, little: 2 }[kind]}
         >
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen ? "Teens · ages 11 to 16" : little ? "Ages 3 to 4 · with a grown-up" : "Saplings · ages 5 to 10"}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{teen
+                ? "Teens · ages 11 to 16"
+                : little
+                  ? "Ages 3 to 4 · with a grown-up"
+                  : age === "little"
+                    ? "Seedlings · ages 3 to 6"
+                    : age === "junior"
+                      ? "Saplings · ages 7 to 10"
+                      : "Seedlings and Saplings · ages 3 to 10"}</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
               
               {teen && teenTab ? teenTab.name : info.name}

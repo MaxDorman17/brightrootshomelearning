@@ -264,10 +264,23 @@ function AddPanel({ folder, onDone }: { folder: string; onDone: () => void }) {
   );
 }
 
-export default function ResourceLibrary({ isParent }: { isParent: boolean }) {
+/**
+ * The resource folders. With `folder`, just that one folder, as at the top of a subject's lessons page;
+ * a child sees nothing there until a grown-up has added something they can see.
+ */
+export default function ResourceLibrary({
+  isParent,
+  folder: onlyFolder,
+  aliases = [],
+}: {
+  isParent: boolean;
+  folder?: string;
+  /** Other names a family might give that folder's subject on their timetable, e.g. "RE" for Religious Education. */
+  aliases?: string[];
+}) {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [items, setItems] = useState<Item[]>([]);
-  const [current, setCurrent] = useState<string | null>(null);
+  const [current, setCurrent] = useState<string | null>(onlyFolder ?? null);
   const [loaded, setLoaded] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [newFolder, setNewFolder] = useState("");
@@ -277,15 +290,23 @@ export default function ResourceLibrary({ isParent }: { isParent: boolean }) {
     const res = await getResources();
     setFolders(res.data.folders);
     setItems(res.data.items);
+    if (onlyFolder) {
+      // Use the family's own folder for this subject, whatever they called it.
+      const names = [onlyFolder, ...aliases].map((n) => n.toLowerCase());
+      const theirs = (res.data.folders as Folder[]).find((f) => names.includes(f.name.toLowerCase()));
+      setCurrent(theirs ? theirs.name : onlyFolder);
+    }
     setLoaded(true);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onlyFolder, aliases.join("|")]);
 
   useEffect(() => {
     load().catch(() => setLoaded(true));
+    if (onlyFolder) return;
     // Opened from a lesson: /child/resources?folder=Maths
     const folder = new URLSearchParams(window.location.search).get("folder");
     if (folder) setCurrent(folder);
-  }, [load]);
+  }, [load, onlyFolder]);
 
   const folderItems = items.filter((i) => i.folder === current);
   const currentFolder = folders.find((f) => f.name === current);
@@ -324,6 +345,7 @@ export default function ResourceLibrary({ isParent }: { isParent: boolean }) {
   };
 
   if (!loaded) return <p className="text-sm text-[#6E5A46]">Loading resources...</p>;
+  if (onlyFolder && !isParent && folderItems.length === 0) return null;
 
   if (current === null) {
     return (
@@ -365,12 +387,12 @@ export default function ResourceLibrary({ isParent }: { isParent: boolean }) {
     <div className="brand-card p-5 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <button onClick={() => setCurrent(null)} className="text-sm font-bold text-brand-sage hover:underline">← All folders</button>
-          <h2 className="text-lg font-extrabold text-brand-charcoal">📂 {current}</h2>
+          {!onlyFolder && <button onClick={() => setCurrent(null)} className="text-sm font-bold text-brand-sage hover:underline">← All folders</button>}
+          <h2 className="text-lg font-extrabold text-brand-charcoal">📂 {onlyFolder ? `${current} resources` : current}</h2>
         </div>
         {isParent && (
           <div className="flex flex-wrap items-center gap-3">
-            {currentFolder?.is_custom && (
+            {currentFolder?.is_custom && !onlyFolder && (
               <>
                 <button onClick={renameFolder} className="text-xs font-bold text-[#6E5A46] hover:underline">Rename folder</button>
                 <button onClick={removeFolder} className="text-xs font-bold text-[#A64F42] hover:underline">Remove folder</button>

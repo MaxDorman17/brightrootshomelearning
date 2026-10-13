@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import ComicPicture from "@/components/comics/ComicPicture";
@@ -12,9 +12,21 @@ import { comic as comicFont } from "@/lib/fonts";
 import { isNew } from "@/lib/newContent";
 import NewEveryMonth, { NewBadge } from "@/components/NewEveryMonth";
 
-/** Saplings comics: ten heroes, each with a short comic that teaches one thing. */
-export default function ComicsPage() {
+export default function ComicsPageWrapper() {
+  return (
+    <Suspense>
+      <ComicsPage />
+    </Suspense>
+  );
+}
+
+/**
+ * Ten heroes, each with a short comic that teaches one thing. The same comics sit in the Seedlings
+ * menu (?for=seedlings) and the Saplings menu.
+ */
+function ComicsPage() {
   const router = useRouter();
+  const seedlings = useSearchParams().get("for") === "seedlings";
   useEffect(() => {
     if (!isAuthenticated()) router.replace("/login");
   }, [router]);
@@ -24,7 +36,7 @@ export default function ComicsPage() {
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <PageHero art="comics" tint={3}>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">Saplings · ages 5 to 10</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage">{seedlings ? "Seedlings · ages 5 to 7" : "Saplings · ages 7 to 11"}</p>
           <h1 className={`${comicFont.className} mt-1 text-4xl tracking-wide text-brand-charcoal sm:text-5xl`}>Comics</h1>
           <p className="mt-2 max-w-xl text-sm text-brand-earth/70">
             Meet ten heroes who make learning fun. Read a comic together, then try the quick quiz and something to do at home.

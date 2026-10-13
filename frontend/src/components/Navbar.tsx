@@ -1,7 +1,7 @@
 "use client";
 
 import { STORE_OPEN } from "@/lib/store";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { serif } from "@/lib/fonts";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -38,10 +38,13 @@ const BELL_SEEN_KEY = "bell_seen";
 
 // `short` is shown instead of `label` on the desktop bar below 2xl, where space is tight.
 type NavLink = { href: string; label: string; short?: string };
-type NavGroup = { label: string; short?: string; items: NavLink[] };
+// A group is a dropdown; a group inside a group opens to the side (or folds open on a phone).
+// `stage` hides a whole group when no child is at that stage.
+type NavGroup = { label: string; short?: string; items: NavEntry[]; stage?: "young" | "teen" };
 type NavEntry = NavLink | NavGroup;
 
 const isGroup = (entry: NavEntry): entry is NavGroup => "items" in entry;
+const entryKey = (entry: NavEntry) => (isGroup(entry) ? `group:${entry.label}` : `${entry.label}:${entry.href}`);
 
 // Coding holds one family's own content, so it only shows when the family has that
 // subject on their timetable.
@@ -49,25 +52,105 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
   "/coding": (subjects) => subjects.some((s) => /comput|coding|programming/i.test(s)),
 };
 
-// The Saplings pages (ages 5 to 10). Hidden when no child is set to Saplings or Both.
-const YOUNG_PAGES = ["/worksheets", "/make/comics", "/make/cookbook", "/make/crafts", "/make/colouring", "/make/life-skills", "/make/pe", "/make/outdoors"];
+// The younger activity pages (ages 5 to 11). Hidden when no child is set to Saplings or Both.
+const YOUNG_PAGES = ["/make/comics", "/make/cookbook", "/make/crafts", "/make/colouring", "/make/life-skills", "/make/pe", "/make/outdoors"];
 // The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
-const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
+const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/outdoors?age=little", "/make/new?kind=little"];
 
+// The subjects in the Seedlings, Saplings and Teens menus. `lesson` is the Bright Roots Lessons subject
+// (lib/lessons.ts) and `sheet` the worksheet subject (lib/worksheets.ts).
+const SUBJECTS = [
+  { label: "Maths", lesson: "maths", sheet: "Maths" },
+  { label: "English", lesson: "english", sheet: "English" },
+  { label: "Science", lesson: "science", sheet: "Science" },
+  { label: "History", lesson: "history", sheet: "History" },
+  { label: "Geography", lesson: "geography", sheet: "Geography" },
+  { label: "R.E.", lesson: "re", sheet: "RE" },
+  { label: "Art & Design", lesson: "art", sheet: "Art & Design" },
+  { label: "Wellbeing", lesson: "rshe", sheet: "Wellbeing" },
+];
+const lessonsFor = (subject: string, ages: string) => `/lessons/subject/${subject}?ages=${ages}`;
+const agesLabel = (ages: string) => `Ages ${ages}`;
+
+// The make-and-do pages for each stage, after the subjects. Seedlings opens the shared pages at the
+// 3 to 6 activities and Saplings at the 7 to 10 ones (components/make/common.tsx, inAgeBand).
+type Activities = { pe: string; outdoors: string; lifeSkills: string; cook: string; craft: string; comics: string; extra?: NavLink[] };
+const SEEDLINGS_ACTIVITIES: Activities = {
+  pe: "/make/pe?age=little",
+  outdoors: "/make/outdoors?age=little",
+  lifeSkills: "/make/life-skills?age=little",
+  cook: "/make/cookbook?age=little",
+  craft: "/make/crafts?age=little",
+  comics: "/make/comics?for=seedlings",
+};
+const SAPLINGS_ACTIVITIES: Activities = {
+  pe: "/make/pe?age=junior",
+  outdoors: "/make/outdoors?age=junior",
+  lifeSkills: "/make/life-skills?age=junior",
+  cook: "/make/cookbook?age=junior",
+  craft: "/make/crafts?age=junior",
+  comics: "/make/comics",
+};
+const TEEN_ACTIVITIES: Activities = {
+  pe: "/teens/pe",
+  outdoors: "/teens/outdoors",
+  lifeSkills: "/teens/life-skills",
+  cook: "/teens/cooking",
+  craft: "/teens/projects",
+  comics: "/teens/comics",
+  extra: [{ href: "/teens/exams", label: "Exams" }],
+};
+
+/**
+ * One stage's menu: the subjects in the order families asked for, with P.E. and Outdoors after R.E.
+ * and the make-and-do pages last. A stage with more than one age range gives each subject a menu of its ages.
+ */
+function stageMenu(label: string, ages: string[], activities: Activities, stage: NavGroup["stage"]): NavGroup {
+  const subject = (s: (typeof SUBJECTS)[number]): NavEntry =>
+    ages.length === 1
+      ? { href: lessonsFor(s.lesson, ages[0]), label: s.label }
+      : { label: s.label, items: ages.map((a) => ({ href: lessonsFor(s.lesson, a), label: agesLabel(a) })) };
+  const subjects = SUBJECTS.map(subject);
+  return {
+    label,
+    stage,
+    items: [
+      ...subjects.slice(0, 6),
+      { href: activities.pe, label: "P.E." },
+      { href: activities.outdoors, label: "Outdoors" },
+      ...subjects.slice(6),
+      { href: activities.lifeSkills, label: "Life Skills" },
+      { href: activities.cook, label: "Cook Book" },
+      { href: activities.craft, label: "Craft Book" },
+      { href: activities.comics, label: "Comics" },
+      ...(activities.extra ?? []),
+    ],
+  };
+}
+
+const WORKSHEET_AGES = ["5-7", "7-9", "9-11", "11-14"];
+
+// The grown-up's bar. Home is the logo.
 const PARENT_NAV: NavEntry[] = [
-  { href: "/parent/dashboard", label: "Home" },
   {
     label: "Plan",
     items: [
       { href: "/parent", label: "Planner" },
       { href: "/parent/timetable", label: "Timetable" },
       { href: "/parent/lessons", label: "My Lessons" },
-      { href: "/parent/oak", label: "Oak Lessons" },
-      { href: "/lessons", label: "Bright Roots Lessons" },
-      { href: "/units", label: "Units" },
-      { href: "/parent/extra-work", label: "Extra Work" },
-      { href: "/parent/resources", label: "Resources" },
-      { href: "/parent/print", label: "Print Week" },
+      {
+        label: "Progress",
+        items: [
+          { href: "/parent/results", label: "Test Results" },
+          { href: "/parent/progress", label: "Review & Feedback" },
+          { href: "/parent/report", label: "Reports" },
+          { href: "/parent/council-report", label: "Council Reports" },
+          { href: "/parent/journal", label: "Journal" },
+          { href: "/moments", label: "Moments & Photos" },
+          { href: "/clubs", label: "Clubs & Activities" },
+          { href: "/moments?tab=trips", label: "Trips & Days Out" },
+        ],
+      },
     ],
   },
   {
@@ -79,19 +162,16 @@ const PARENT_NAV: NavEntry[] = [
       { href: "/languages", label: "Languages" },
       { href: "/make/topics", label: "Topic Packs" },
       { href: "/make/colouring", label: "Colouring" },
-    ],
-  },
-  {
-    label: "Progress",
-    items: [
-      { href: "/parent/results", label: "Test Results" },
-      { href: "/parent/progress", label: "Review & Feedback" },
-      { href: "/parent/report", label: "Reports" },
-      { href: "/parent/council-report", label: "Council Report" },
-      { href: "/parent/journal", label: "Journal" },
-      { href: "/moments", label: "Moments & Photos" },
-      { href: "/clubs", label: "Clubs & Activities" },
-      { href: "/moments?tab=trips", label: "Trips & days out" },
+      {
+        label: "Worksheets",
+        items: [
+          { href: "/worksheets", label: "All worksheets" },
+          ...SUBJECTS.map((s) => ({
+            label: s.label,
+            items: WORKSHEET_AGES.map((a) => ({ href: `/worksheets?subject=${encodeURIComponent(s.sheet)}&ages=${a}`, label: agesLabel(a) })),
+          })),
+        ],
+      },
     ],
   },
   // Ages 3 to 4: short activities a grown-up does with the child. Not in the children's menus.
@@ -100,35 +180,13 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/little-roots", label: "Activities" },
       { href: "/make/little-roots/getting-started", label: "Getting started" },
+      { href: "/make/outdoors?age=little", label: "Outdoors" },
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
-  // Saplings, ages 5 to 10: the younger cooking, crafts, life skills, P.E. and outdoors.
-  {
-    label: "Saplings",
-    items: [
-      { href: "/worksheets", label: "Worksheets" },
-      { href: "/make/comics", label: "Comics" },
-      { href: "/make/cookbook", label: "Cookbook" },
-      { href: "/make/crafts", label: "Craft Corner" },
-      { href: "/make/life-skills", label: "Life Skills" },
-      { href: "/make/pe", label: "P.E." },
-      { href: "/make/outdoors", label: "Outdoors" },
-    ],
-  },
-  // Ages 11 to 16: the same kinds of activity, written for teenagers.
-  {
-    label: "Teens",
-    items: [
-      { href: "/teens", label: "Teen Corner" },
-      { href: "/teens/cooking", label: "Cooking" },
-      { href: "/teens/projects", label: "Projects" },
-      { href: "/teens/pe", label: "P.E." },
-      { href: "/teens/outdoors", label: "Outdoors" },
-      { href: "/teens/life-skills", label: "Life skills" },
-      { href: "/teens/exams", label: "Exams" },
-    ],
-  },
+  stageMenu("Seedlings", ["5-7"], SEEDLINGS_ACTIVITIES, "young"),
+  stageMenu("Saplings", ["7-9", "9-11"], SAPLINGS_ACTIVITIES, "young"),
+  stageMenu("Teens", ["11-14"], TEEN_ACTIVITIES, "teen"),
   // Its own menu so families who need it don't have to hunt for it. The sections live in lib/sen.ts.
   {
     label: "SEN Support",
@@ -218,12 +276,15 @@ export default function Navbar() {
   const [role, setRole] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  // The menus open inside the open dropdown, one per level.
+  const [openSub, setOpenSub] = useState<string[]>([]);
   const [subjects, setSubjects] = useState<string[] | null>(null);
   // Which activity pages suit this child, or this parent's children ("young", "teen", "both"). Everything until loaded.
   const [levels, setLevels] = useState<string[]>(["both"]);
   const [notifOpen, setNotifOpen] = useState(false);
-  // On the Moments page, the Trips tab belongs to the Active menu.
-  const [onTrips, setOnTrips] = useState(false);
+  // The page's query string, so links like /moments?tab=trips or a subject's age range light up.
+  // Read from the window rather than useSearchParams, which would make every page need a Suspense boundary.
+  const [search, setSearch] = useState("");
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -306,6 +367,7 @@ export default function Navbar() {
         !menusRef.current.contains(target)
       ) {
         setOpenMenu(null);
+        setOpenSub([]);
       }
 
       if (
@@ -316,10 +378,19 @@ export default function Navbar() {
       }
     };
 
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenMenu(null);
+        setOpenSub([]);
+      }
+    };
+
     document.addEventListener("mousedown", handler);
+    document.addEventListener("keydown", onKey);
 
     return () => {
       document.removeEventListener("mousedown", handler);
+      document.removeEventListener("keydown", onKey);
     };
   }, []);
 
@@ -359,14 +430,37 @@ export default function Navbar() {
       : "/child";
 
   useEffect(() => {
-    const check = () => setOnTrips(window.location.pathname === "/moments" && window.location.search.includes("tab=trips"));
+    const check = () => setSearch(window.location.search);
     check();
     window.addEventListener("moments-tab-changed", check);
-    return () => window.removeEventListener("moments-tab-changed", check);
+    window.addEventListener("popstate", check);
+    return () => {
+      window.removeEventListener("moments-tab-changed", check);
+      window.removeEventListener("popstate", check);
+    };
   }, [pathname]);
 
+  const onTrips = pathname === "/moments" && search.includes("tab=trips");
+
+  // A link with a query string is active when the page has every one of its values.
+  const queryMatches = (href: string) => {
+    const [path, query] = href.split("?");
+    if (pathname !== path) return false;
+    const have = new URLSearchParams(search);
+    return Array.from(new URLSearchParams(query)).every(([key, value]) => have.get(key) === value);
+  };
+
+  // Following a link closes the menus. Moving between two age ranges of one subject keeps the same
+  // path, so the new query string is noted here too.
+  const followed = (href: string) => {
+    setOpenMenu(null);
+    setOpenSub([]);
+    setMobileOpen(false);
+    setSearch(href.includes("?") ? `?${href.split("?")[1]}` : "");
+  };
+
   const isActive = (href: string) =>
-    (href === "/moments?tab=trips" && onTrips) ||
+    (href.includes("?") && queryMatches(href)) ||
     (pathname === href && !(href === "/moments" && onTrips)) ||
     (ALSO_ACTIVE[href] ?? []).includes(pathname) ||
     (href === "/make/comics" && pathname.startsWith("/make/comics/")) ||
@@ -390,20 +484,99 @@ export default function Navbar() {
     return !rule || (subjects !== null && rule(subjects));
   };
 
+  // Drops the links and stages this family doesn't need, then any menu left empty.
+  const prune = (entries: NavEntry[]): NavEntry[] =>
+    entries.flatMap((entry): NavEntry[] => {
+      if (!isGroup(entry)) return visible(entry) ? [entry] : [];
+      if ((entry.stage === "young" && !showYoung) || (entry.stage === "teen" && !showTeen)) return [];
+      const items = prune(entry.items);
+      return items.length ? [{ ...entry, items }] : [];
+    });
+
   const baseNav = role === "parent" ? PARENT_NAV : role === "child" ? CHILD_NAV : [];
-  const nav: NavEntry[] = baseNav
-    .map((entry) => {
-      if (!isGroup(entry)) return entry;
-      let items = entry.items.filter(visible);
-      // The site owner also gets the newsletter tools.
-      if (entry.label === "Family" && isAdmin) items = [...items, { href: "/admin/newsletter", label: "Newsletter (owner)" }, { href: "/admin/backups", label: "Backups (owner)" }, { href: "/admin/free-accounts", label: "Free accounts (owner)" }, { href: "/admin/colouring", label: "Colouring uploads (owner)" }];
-      return { ...entry, items };
-    })
-    .filter((entry) => !isGroup(entry) || entry.items.length > 0);
+  const nav: NavEntry[] = prune(baseNav).map((entry) =>
+    // The site owner also gets the newsletter tools.
+    isGroup(entry) && entry.label === "Family" && isAdmin
+      ? { ...entry, items: [...entry.items, { href: "/admin/newsletter", label: "Newsletter (owner)" }, { href: "/admin/backups", label: "Backups (owner)" }, { href: "/admin/free-accounts", label: "Free accounts (owner)" }, { href: "/admin/colouring", label: "Colouring uploads (owner)" }] }
+      : entry
+  );
   // The Store: only the site owner sees it until it opens (lib/store.ts).
   if (role === "parent" && (STORE_OPEN || isAdmin)) nav.push({ href: "/store", label: STORE_OPEN ? "Store" : "Store (owner)" });
 
-  const groupActive = (group: NavGroup) => group.items.some((item) => isActive(item.href));
+  const groupActive = (group: NavGroup): boolean => group.items.some((item) => (isGroup(item) ? groupActive(item) : isActive(item.href)));
+
+  // Opens the menu `key` at `depth` inside the open dropdown, closing anything deeper.
+  const openAt = (depth: number, key: string | null) => setOpenSub((path) => [...path.slice(0, depth), ...(key ? [key] : [])]);
+
+  // A dropdown's rows. A row that is itself a menu opens to the right on hover, a tap or a key press.
+  const desktopRows = (items: NavEntry[], depth: number): ReactNode =>
+    items.map((item) => {
+      const key = entryKey(item);
+      if (!isGroup(item)) {
+        return (
+          <Link
+            key={key}
+            href={item.href}
+            onClick={() => followed(item.href)}
+            onPointerEnter={(e) => e.pointerType === "mouse" && openAt(depth, null)}
+            className={`block whitespace-nowrap px-4 py-2.5 text-sm font-semibold hover:bg-brand-cream ${
+              isActive(item.href) ? "bg-brand-tint text-brand-sage" : "text-brand-charcoal"
+            }`}
+          >
+            {item.label}
+          </Link>
+        );
+      }
+      const open = openSub[depth] === key;
+      return (
+        <div key={key} className="relative" onPointerEnter={(e) => e.pointerType === "mouse" && openAt(depth, key)}>
+          <button
+            type="button"
+            onClick={() => openAt(depth, key)}
+            aria-expanded={open}
+            className={`flex w-full items-center justify-between gap-3 whitespace-nowrap px-4 py-2.5 text-left text-sm font-semibold hover:bg-brand-cream ${
+              open ? "bg-brand-cream" : ""
+            } ${groupActive(item) ? "text-brand-sage" : "text-brand-charcoal"}`}
+          >
+            {item.label}
+            <span aria-hidden="true" className="text-[10px]">▸</span>
+          </button>
+          {open && (
+            <div className="absolute left-full top-0 -mt-1.5 ml-1 min-w-[11rem] rounded-2xl border border-brand-softsage/20 bg-brand-white py-1.5 shadow-lg">
+              {desktopRows(item.items, depth + 1)}
+            </div>
+          )}
+        </div>
+      );
+    });
+
+  // On a phone, every menu folds open in place. The one holding the current page starts open.
+  const mobileItems = (items: NavEntry[], nested: boolean): ReactNode => (
+    <div className="grid grid-cols-2 gap-2">
+      {items.map((item) =>
+        isGroup(item) ? (
+          <details key={entryKey(item)} open={groupActive(item)} className={`col-span-2 rounded-xl ${nested ? "bg-brand-white" : "bg-brand-cream"}`}>
+            <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold text-brand-charcoal [&::-webkit-details-marker]:hidden">
+              {item.label}
+              <span aria-hidden="true" className="text-[10px] transition-transform [details[open]>summary>&]:rotate-180">▾</span>
+            </summary>
+            <div className="px-2 pb-2">{mobileItems(item.items, !nested)}</div>
+          </details>
+        ) : (
+          <Link
+            key={entryKey(item)}
+            href={item.href}
+            onClick={() => followed(item.href)}
+            className={`rounded-xl px-3 py-2.5 text-sm font-bold ${
+              isActive(item.href) ? "bg-brand-sage text-white" : nested ? "bg-brand-white text-brand-charcoal" : "bg-brand-cream text-brand-charcoal"
+            }`}
+          >
+            {item.label}
+          </Link>
+        )
+      )}
+    </div>
+  );
 
   return (
     <>
@@ -434,7 +607,10 @@ export default function Navbar() {
                   isGroup(entry) ? (
                     <div key={entry.label} className="relative">
                       <button
-                        onClick={() => setOpenMenu((value) => (value === entry.label ? null : entry.label))}
+                        onClick={() => {
+                          setOpenMenu((value) => (value === entry.label ? null : entry.label));
+                          setOpenSub([]);
+                        }}
                         aria-expanded={openMenu === entry.label}
                         className={`flex items-center gap-1 whitespace-nowrap rounded-xl px-2 py-2 text-sm font-bold transition-colors xl:px-3 ${
                           groupActive(entry) || openMenu === entry.label
@@ -454,19 +630,9 @@ export default function Navbar() {
                       </button>
 
                       {openMenu === entry.label && (
-                        <div className="absolute left-0 top-full mt-2 w-56 overflow-hidden rounded-2xl border border-brand-softsage/20 bg-brand-white shadow-lg">
-                          {entry.items.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={() => setOpenMenu(null)}
-                              className={`block px-4 py-3 text-sm font-semibold hover:bg-brand-cream ${
-                                isActive(item.href) ? "bg-brand-tint text-brand-sage" : "text-brand-charcoal"
-                              }`}
-                            >
-                              {item.label}
-                            </Link>
-                          ))}
+                        // Not overflow-hidden: the menus inside open out to the side.
+                        <div className="absolute left-0 top-full mt-2 w-56 rounded-2xl border border-brand-softsage/20 bg-brand-white py-1.5 shadow-lg">
+                          {desktopRows(entry.items, 0)}
                         </div>
                       )}
                     </div>
@@ -636,31 +802,21 @@ export default function Navbar() {
           {mobileOpen && (
             // The bar is stuck to the top of the screen, so a long menu scrolls inside itself (4rem is the bar's height).
             <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-brand-softsage/15 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 lg:hidden">
-              <div className="space-y-3">
-                {nav.map((entry) => {
-                  const links = isGroup(entry) ? entry.items : [entry];
-                  return (
-                    <div key={isGroup(entry) ? entry.label : entry.href}>
-                      {isGroup(entry) && (
-                        <p className="mb-1.5 px-1 text-[11px] font-extrabold uppercase tracking-wider text-brand-earth/60">{entry.label}</p>
-                      )}
-                      <div className="grid grid-cols-2 gap-2">
-                        {links.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            onClick={() => setMobileOpen(false)}
-                            className={`rounded-xl px-3 py-2.5 text-sm font-bold ${
-                              isActive(item.href) ? "bg-brand-sage text-white" : "bg-brand-cream text-brand-charcoal"
-                            }`}
-                          >
-                            {item.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="space-y-2">
+                {nav.map((entry) =>
+                  isGroup(entry) ? (
+                    // Each menu folds, so the list stays short enough to find things in.
+                    <details key={entryKey(entry)} open={groupActive(entry)}>
+                      <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-1 py-2 text-[11px] font-extrabold uppercase tracking-wider text-brand-earth/70 [&::-webkit-details-marker]:hidden">
+                        {entry.label}
+                        <span aria-hidden="true" className="text-xs transition-transform [details[open]>summary>&]:rotate-180">▾</span>
+                      </summary>
+                      <div className="pb-2">{mobileItems(entry.items, false)}</div>
+                    </details>
+                  ) : (
+                    <div key={entryKey(entry)}>{mobileItems([entry], false)}</div>
+                  )
+                )}
               </div>
 
               <button

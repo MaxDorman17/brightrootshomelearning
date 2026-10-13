@@ -5,7 +5,7 @@ import { isAuthenticated, getRole } from "@/lib/auth";
 import { getWeekEntries, getTimetable, getChildren } from "@/lib/api";
 import { PlannerEntry, Child } from "@/types";
 import { useMounted } from "@/lib/useMounted";
-import { format, addDays, startOfWeek } from "date-fns";
+import { format, addDays, parseISO, startOfWeek } from "date-fns";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 
@@ -52,6 +52,12 @@ export default function PrintPage() {
 
   useEffect(() => {
     if (!isAuthenticated() || getRole() !== "parent") { router.replace("/login"); return; }
+    // Opened from the planner's Print Week button: start on the week and child it was showing.
+    const params = new URLSearchParams(window.location.search);
+    const week = params.get("week");
+    if (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) setWeekStart(startOfWeek(parseISO(week), { weekStartsOn: 1 }));
+    const child = Number(params.get("child"));
+    if (child) setSelectedChildId(child);
     getChildren().then(res => setChildren(res.data)).catch(() => {});
   }, [router]);
 
@@ -86,12 +92,15 @@ export default function PrintPage() {
         <Navbar />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+          <a href="/parent" className="mb-4 inline-block text-sm text-brand-earth hover:text-brand-sage print:hidden">
+            ← Back to the planner
+          </a>
           <div className="mb-6">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
               <div>
                 <PageHero art="print" tint={0}>
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-softsage mb-2">
-                  More
+                  Planner
                 </p>
                 <h1 className="text-3xl font-extrabold text-brand-charcoal sm:text-4xl">Print Week</h1>
                 <p className="text-sm sm:text-base text-[#6E5A46] mt-2 max-w-2xl">

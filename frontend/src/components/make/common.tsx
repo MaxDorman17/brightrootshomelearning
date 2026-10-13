@@ -59,8 +59,8 @@ export const KIND_FAMILY: Record<MakeKind, MakeKind[]> = {
 export type AgeBand = "little" | "junior" | "teen";
 
 export const AGE_BANDS: { id: AgeBand; label: string }[] = [
-  { id: "little", label: "Little ones (3–6)" },
-  { id: "junior", label: "Juniors (7–10)" },
+  { id: "little", label: "Seedlings (3–6)" },
+  { id: "junior", label: "Saplings (7–10)" },
   { id: "teen", label: "Teens (11–16)" },
 ];
 
@@ -69,7 +69,8 @@ export function inAgeBand(item: { age_from: number | null }, band: AgeBand | "")
   if (!band) return true;
   const age = item.age_from ?? 3;
   if (band === "little") return age <= 6;
-  if (band === "junior") return age >= 4 && age <= 10;
+  // Seedlings has everything up to 6, so Saplings starts at 7.
+  if (band === "junior") return age >= 7 && age <= 10;
   return age >= 10;
 }
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import PlanSheets from "@/components/worksheets/PlanSheets";
@@ -17,11 +17,26 @@ type Mine = Record<string, SheetProgress>;
 
 const AGES = [...new Set(WORKSHEETS.map((w) => w.ages))].sort();
 
+/** Whether a sheet's ages ("6 to 8") share any years with a menu's age range ("7-9"). */
+const overlaps = (sheetAges: string, range: string) => {
+  const [a, b] = sheetAges.split(" to ").map(Number);
+  const [c, d] = range.split("-").map(Number);
+  return a < d && c < b;
+};
+
 /**
  * The worksheets. However many there are, a child sees one sheet to do next and the topics tucked
  * away underneath; a grown-up gets the whole library to browse by age, topic or a search.
  */
-export default function WorksheetsPage() {
+export default function WorksheetsPageWrapper() {
+  return (
+    <Suspense>
+      <WorksheetsPage />
+    </Suspense>
+  );
+}
+
+function WorksheetsPage() {
   const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
   const [mine, setMine] = useState<Mine>({});
@@ -156,13 +171,21 @@ function ForChild({ mine }: { mine: Mine }) {
   );
 }
 
-/** The whole library, narrowed by age or a search. */
+/**
+ * The whole library, narrowed by age or a search. The Learn menu's Worksheets links add
+ * `?subject=Maths&ages=7-9` to start on one subject and age range.
+ */
 function ForGrownUp() {
+  const params = useSearchParams();
+  const onlySubject = params.get("subject");
+  const onlyAges = params.get("ages");
   const [age, setAge] = useState("");
   const [query, setQuery] = useState("");
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = (set: WorksheetSet, sheet: Worksheet) =>
     (!age || sheet.ages === age) &&
+    (!onlySubject || sheet.subject.toLowerCase() === onlySubject.toLowerCase()) &&
+    (!onlyAges || overlaps(sheet.ages, onlyAges)) &&
     words.every((word) => `${sheet.title} ${sheet.topic} ${set.title} ${sheet.subject}`.toLowerCase().includes(word));
   const sets = WORKSHEET_SETS.map((set) => ({ set, sheets: set.sheets.filter((sheet) => matches(set, sheet)) })).filter((s) => s.sheets.length);
   const pill = (on: boolean) =>
@@ -170,8 +193,18 @@ function ForGrownUp() {
       on ? "border-brand-sage bg-brand-sage text-white" : "border-brand-line bg-white text-brand-earth hover:border-brand-softsage"
     }`;
 
+  const narrowedTo = [onlySubject, onlyAges && `ages ${onlyAges.replace("-", " to ")}`].filter(Boolean).join(", ");
+
   return (
     <>
+      {narrowedTo && (
+        <p className="mb-4 text-sm text-brand-earth">
+          Showing <span className="font-bold text-brand-charcoal">{narrowedTo}</span>.{" "}
+          <Link href="/worksheets" className="font-bold text-brand-sage underline">
+            Show every worksheet
+          </Link>
+        </p>
+      )}
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex flex-wrap gap-2" role="group" aria-label="Choose an age">
           <button type="button" aria-pressed={!age} onClick={() => setAge("")} className={pill(!age)}>
@@ -197,7 +230,9 @@ function ForGrownUp() {
 
       {sets.length === 0 ? (
         <p className="mt-6 rounded-2xl border border-brand-line bg-white p-6 text-sm text-brand-earth">
-          Nothing matches that yet. Try a different word, or choose All ages.
+          {narrowedTo && !age && words.length === 0
+            ? `There aren't any worksheets for ${narrowedTo} yet. They're on their way.`
+            : "Nothing matches that yet. Try a different word, or choose All ages."}
         </p>
       ) : (
         sets.map(({ set, sheets }) => (
