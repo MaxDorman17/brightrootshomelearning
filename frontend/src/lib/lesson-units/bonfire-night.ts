@@ -30,6 +30,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "A very long time ago",
+            picture: "/lessons/bonfire-night/lesson-1-1.jpg",
+            alt: "A candle-lit room from long ago with people in old-fashioned clothes",
             text: [
               "This story happened more than 400 years ago. That is a very, very long time!",
               "Nobody alive today was there. Not your grown-ups, not your grandparents, not even their grandparents.",
@@ -38,6 +40,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "King James",
+            picture: "/lessons/bonfire-night/lesson-1-2.jpg",
+            alt: "King James I wearing a crown and fine clothes",
             text: [
               "In 1605 the king of England was called King James. We call him King James the First.",
               "He was the king of Scotland too. He wore fine clothes and lived in big palaces.",
@@ -45,6 +49,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Parliament",
+            picture: "/lessons/bonfire-night/lesson-1-3.jpg",
+            alt: "The old Parliament buildings beside the River Thames",
             text: [
               "Parliament is a big building in London. Important people meet there to make the rules for the country.",
               "King James went to Parliament on special days. People still meet in Parliament today.",
@@ -115,6 +121,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "Some unhappy men",
+            picture: "/lessons/bonfire-night/lesson-2-1.jpg",
+            alt: "The plotters whispering around a candle-lit table",
             text: [
               "Some men were unhappy with King James. They did not like the way he ran the country.",
               "They made a secret plan to get rid of the king. A secret plan like this is called a plot.",
@@ -123,6 +131,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "The secret plan",
+            picture: "/lessons/bonfire-night/lesson-2-2.jpg",
+            alt: "Guy Fawkes guarding barrels in a cellar",
             text: [
               "The plotters hid barrels of gunpowder in a cellar under Parliament. Gunpowder can make a very big bang.",
               "They wanted to blow up Parliament when the king was there. That was a very wrong thing to plan.",
@@ -131,6 +141,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Caught!",
+            picture: "/lessons/bonfire-night/lesson-2-3.jpg",
+            alt: "Guards with lanterns finding Guy Fawkes in the cellar",
             text: [
               "But someone sent a letter warning about the plan. The king's men searched under Parliament.",
               "Late at night they found Guy Fawkes with the gunpowder. The plan was stopped, and no one was hurt.",
@@ -205,6 +217,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "The fifth of November",
+            picture: "/lessons/bonfire-night/lesson-3-1.jpg",
+            alt: "People in an old London street cheering at night",
             text: [
               "Guy Fawkes was caught on the fifth of November in 1605.",
               "When people in London heard the king was safe, they were very glad.",
@@ -212,6 +226,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Happy bonfires",
+            picture: "/lessons/bonfire-night/lesson-3-2.jpg",
+            alt: "Crowds around bonfires in old London",
             text: [
               "To show they were happy, people lit bonfires in the streets of London that night.",
               "The next year, a new rule said people should remember the day every year. And so they did!",
@@ -220,6 +236,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "A rhyme to remember",
+            picture: "/lessons/bonfire-night/lesson-3-3.jpg",
+            alt: "Guards in red uniforms searching a cellar with lanterns",
             text: [
               "There is an old rhyme about it. \"Remember, remember, the fifth of November, gunpowder, treason and plot.\"",
               "Treason means a plan against the king or the country.",
@@ -292,6 +310,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "Fireworks and bonfires",
+            picture: "/lessons/bonfire-night/lesson-4-1.jpg",
+            alt: "Families watching a bonfire and fireworks in a park",
             text: [
               "Today, many people go to watch a big bonfire and fireworks on or near the fifth of November.",
               "Fireworks fizz, whizz and bang. They fill the dark sky with colour.",
@@ -300,6 +320,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Warm and cosy",
+            picture: "/lessons/bonfire-night/lesson-4-2.jpg",
+            alt: "Children in warm hats eating toffee apples and baked potatoes",
             text: [
               "It is cold in November, so people wrap up in hats, scarves and gloves.",
               "Some people eat warm food, like baked potatoes, soup or sausages. Some eat sticky toffee apples or a ginger cake called parkin.",
@@ -307,6 +329,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Where it happens",
+            picture: "/lessons/bonfire-night/lesson-4-3.jpg",
+            alt: "Fireworks glowing over towns and hills at night",
             text: [
               "Bonfire Night is a big night in England.",
               "In Scotland, Wales and Northern Ireland, some people have fireworks too, but it is not as big a night.",
@@ -378,6 +402,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "Fireworks are for grown-ups",
+            picture: "/lessons/bonfire-night/lesson-5-1.jpg",
+            alt: "A child and a grown-up standing back behind a rope at a display",
             text: [
               "Fireworks are very hot and very fast. Only grown-ups light them.",
               "Stand well back with your grown-up and watch. At a display, stay behind the rope or fence.",
@@ -386,6 +412,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Sparklers",
+            picture: "/lessons/bonfire-night/lesson-5-2.jpg",
+            alt: "A gloved child holding a sparkler at arm's length with a grown-up",
             text: [
               "Sparklers are fun, but they get very hot. Always hold one with a grown-up, and wear gloves.",
               "Hold it out at arm's length, away from your face and other people. Have just one at a time.",
@@ -394,6 +422,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Happy pets and quiet ears",
+            picture: "/lessons/bonfire-night/lesson-5-3.jpg",
+            alt: "A child in ear defenders watching fireworks from a window with a cat",
             text: [
               "Bangs can be loud. If you don't like the noise, you can cover your ears or wear ear defenders.",
               "Lots of pets don't like bangs. Keep them cosy indoors. Stay well back from bonfires too.",
@@ -465,6 +495,8 @@ export const bonfireNight: LessonUnit = {
         cards: [
           {
             heading: "Fireworks without the bang",
+            picture: "/lessons/bonfire-night/lesson-6-1.jpg",
+            alt: "A child holding up a painted firework picture",
             text: [
               "We can make fireworks that are totally safe. We make them with art!",
               "Fireworks burst into shapes like stars, circles, fountains and long, falling trails.",
@@ -472,6 +504,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Bright on dark",
+            picture: "/lessons/bonfire-night/lesson-6-2.jpg",
+            alt: "Bright painted fireworks with glitter on black paper",
             text: [
               "Fireworks look brightest in a dark sky. So we use dark paper, like black or dark blue.",
               "Then we add bright colours: pink, yellow, green, orange and silver.",
@@ -480,6 +514,8 @@ export const bonfireNight: LessonUnit = {
           },
           {
             heading: "Ways to make them",
+            picture: "/lessons/bonfire-night/lesson-6-3.jpg",
+            alt: "A child blowing paint through a straw to make firework art",
             text: [
               "You can draw fireworks with chalk on dark paper, or on the ground outside with a grown-up.",
               "You can dab paint with a fork, or splat it with a straw. Blow gently and watch it spread out like a firework!",

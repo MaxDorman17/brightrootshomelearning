@@ -35,6 +35,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "What is a line?",
+            picture: "/lessons/lines-and-shapes/lesson-1-1.jpg",
+            alt: "A child's hand drawing a long pencil line on paper",
             text: [
               "A line is a mark you make by moving your pencil.",
               "Put your pencil down. Move it along. Lift it up. You made a line!",
@@ -42,6 +44,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "So many lines",
+            picture: "/lessons/lines-and-shapes/lesson-1-2.jpg",
+            alt: "A page of straight, wavy, zigzag, curly and dotted crayon lines",
             text: [
               "Lines can be straight, like a stick. They can be wavy, like the sea.",
               "Lines can be zigzag, like a lightning bolt. They can be curly, like a pig's tail.",
@@ -50,6 +54,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Thick and thin",
+            picture: "/lessons/lines-and-shapes/lesson-1-3.jpg",
+            alt: "A boy comparing a thick crayon line and a thin pencil line",
             text: [
               "Press hard, or use a big crayon, for a thick line. Press gently, or use a sharp pencil, for a thin line.",
               "Artists use thick and thin lines to make their pictures exciting.",
@@ -143,6 +149,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "Lines can show feelings",
+            picture: "/lessons/lines-and-shapes/lesson-2-1.jpg",
+            alt: "A calm wavy drawing next to an excited zigzag drawing",
             text: [
               "Lines can look calm, or busy, or excited.",
               "Soft, wavy lines look calm and sleepy. Sharp zigzag lines look fast and excited.",
@@ -150,6 +158,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Listen and draw",
+            picture: "/lessons/lines-and-shapes/lesson-2-2.jpg",
+            alt: "A girl drawing swirly lines while listening to music",
             text: [
               "When music is slow and quiet, try long, gentle, wavy lines.",
               "When music is fast and loud, try quick zigzags and dots. Let your pencil dance!",
@@ -157,6 +167,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "No right or wrong",
+            picture: "/lessons/lines-and-shapes/lesson-2-3.jpg",
+            alt: "A grown-up and child comparing their music drawings",
             text: [
               "Everyone hears music in their own way. Your lines will be different from mine.",
               "That is fine. Artists choose lines to show how they feel.",
@@ -238,6 +250,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "Lines make shapes",
+            picture: "/lessons/lines-and-shapes/lesson-3-1.jpg",
+            alt: "A triangle, square and circle drawn in crayon",
             text: [
               "Join lines up and you make a shape.",
               "Three straight sides make a triangle. Four equal sides make a square. A round line that joins up makes a circle.",
@@ -245,6 +259,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Shape hunt",
+            picture: "/lessons/lines-and-shapes/lesson-3-2.jpg",
+            alt: "A child pointing at a round plate, a book and triangle sandwiches",
             text: [
               "Shapes are everywhere! A plate is a circle. A book is a rectangle.",
               "A window might be a square. A slice of sandwich cut corner to corner is a triangle.",
@@ -252,6 +268,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Shapes make pictures",
+            picture: "/lessons/lines-and-shapes/lesson-3-3.jpg",
+            alt: "A house and a lollipop drawn from simple shapes",
             text: [
               "Artists put shapes together to make pictures.",
               "A square and a triangle make a house. A circle and a rectangle make a lollipop. What can you make?",
@@ -339,6 +357,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "What is a pattern?",
+            picture: "/lessons/lines-and-shapes/lesson-4-1.jpg",
+            alt: "Paper circles and squares in a repeating pattern",
             text: [
               "A pattern is something that repeats again and again.",
               "Circle, square, circle, square. That is a pattern!",
@@ -346,6 +366,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Patterns with lines",
+            picture: "/lessons/lines-and-shapes/lesson-4-2.jpg",
+            alt: "A paper strip with a wavy and zigzag line pattern",
             text: [
               "You can make patterns with lines too. Try zigzag, wavy, zigzag, wavy.",
               "Or try thick, thin, thick, thin.",
@@ -353,6 +375,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Patterns everywhere",
+            picture: "/lessons/lines-and-shapes/lesson-4-3.jpg",
+            alt: "Stripy socks, a checked tea towel, a spotty mug and a toy zebra",
             text: [
               "Look for patterns on clothes, wrapping paper and tiles.",
               "A zebra has a pattern of stripes. Stripes are lines in a row.",
@@ -439,6 +463,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "Be a looking artist",
+            picture: "/lessons/lines-and-shapes/lesson-5-1.jpg",
+            alt: "A boy looking closely at his teddy before drawing it",
             text: [
               "Artists look very carefully before they draw.",
               "They look, then draw a little. Then they look again.",
@@ -446,6 +472,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Find the shapes",
+            picture: "/lessons/lines-and-shapes/lesson-5-2.jpg",
+            alt: "A teddy next to a drawing of it made from circles and an oval",
             text: [
               "Look at a teddy. Its head is a circle. Its ears are small circles too.",
               "Its tummy might be an oval, like an egg. Finding the shapes helps you start.",
@@ -453,6 +481,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Add the lines",
+            picture: "/lessons/lines-and-shapes/lesson-5-3.jpg",
+            alt: "A girl adding eyes and buttons to her teddy drawing",
             text: [
               "Now look for lines. Is the fur curly? Is there a zigzag stitch?",
               "Look for little things too, like eyes, buttons and a nose. Add them last.",
@@ -535,6 +565,8 @@ export const linesAndShapes: LessonUnit = {
         cards: [
           {
             heading: "Meet Paul Klee",
+            picture: "/lessons/lines-and-shapes/lesson-6-1.jpg",
+            alt: "A violin beside a sketchbook of lines and shapes",
             text: [
               "Paul Klee was an artist. You say his name 'Clay'.",
               "He was born in Switzerland a long time ago, in 1879. He loved music and played the violin.",
@@ -542,6 +574,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "Taking a line for a walk",
+            picture: "/lessons/lines-and-shapes/lesson-6-2.jpg",
+            alt: "One long wandering pencil line drawn without lifting",
             text: [
               "Paul Klee said drawing is like taking a line for a walk.",
               "Put your pencil down and let it wander. Round and round, up and down. Don't lift it until the walk is over!",
@@ -549,6 +583,8 @@ export const linesAndShapes: LessonUnit = {
           },
           {
             heading: "A castle made of shapes",
+            picture: "/lessons/lines-and-shapes/lesson-6-3.jpg",
+            alt: "A child's castle drawing made of bright squares, rectangles and triangles",
             text: [
               "One of his paintings is called 'Castle and Sun'. It is made of squares, rectangles and triangles in bright colours.",
               "Up in the sky there is a round sun. Simple shapes make a whole castle!",

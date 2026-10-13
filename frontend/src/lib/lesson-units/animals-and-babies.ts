@@ -30,6 +30,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "Mammals",
+            picture: "/lessons/animals-and-babies/lesson-1-1.jpg",
+            alt: "A boy stroking a dog, with a cow and a horse in a field",
             text: [
               "Mammals have hair or fur on their bodies.",
               "Mammal babies drink milk from their mums.",
@@ -38,6 +40,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Birds",
+            picture: "/lessons/animals-and-babies/lesson-1-2.jpg",
+            alt: "A robin, a duck and a hen standing on the grass",
             text: [
               "Birds have feathers, two wings and a beak.",
               "Birds lay eggs with hard shells.",
@@ -46,6 +50,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Fish",
+            picture: "/lessons/animals-and-babies/lesson-1-3.jpg",
+            alt: "Goldfish and a salmon swimming in clear water",
             text: [
               "Fish live in water. They have fins to help them swim.",
               "Most fish have scales on their skin. They breathe under water with gills.",
@@ -117,6 +123,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "Reptiles",
+            picture: "/lessons/animals-and-babies/lesson-2-1.jpg",
+            alt: "A lizard, a tortoise and a snake on sunny rocks",
             text: [
               "Reptiles have dry skin covered in scales.",
               "Most reptiles lay eggs on land.",
@@ -125,6 +133,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Amphibians",
+            picture: "/lessons/animals-and-babies/lesson-2-2.jpg",
+            alt: "A frog, a toad and a newt by a pond",
             text: [
               "Amphibians have smooth, damp skin. They have no scales.",
               "They start their lives in water. When they grow up, they can live on land too.",
@@ -133,6 +143,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Five animal groups",
+            picture: "/lessons/animals-and-babies/lesson-2-3.jpg",
+            alt: "A girl with a magnifying glass looking at five different animals",
             text: [
               "Now you know five animal groups: mammals, birds, fish, reptiles and amphibians.",
               "Scientists sort animals by looking closely at their bodies.",
@@ -203,6 +215,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "Herbivores eat plants",
+            picture: "/lessons/animals-and-babies/lesson-3-1.jpg",
+            alt: "A rabbit eating a carrot and a sheep eating grass",
             text: [
               "A herbivore only eats plants.",
               "Cows and sheep munch grass. Rabbits nibble leaves and carrots.",
@@ -210,6 +224,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Carnivores eat meat",
+            picture: "/lessons/animals-and-babies/lesson-3-2.jpg",
+            alt: "A lion resting under a tree with an owl above",
             text: [
               "A carnivore eats meat. Meat comes from other animals.",
               "Lions, tigers, sharks and owls are carnivores.",
@@ -218,6 +234,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Omnivores eat both",
+            picture: "/lessons/animals-and-babies/lesson-3-3.jpg",
+            alt: "A bear eating berries and a pig eating vegetables",
             text: [
               "An omnivore eats plants and meat.",
               "Pigs and bears are omnivores. Many people are omnivores too.",
@@ -290,6 +308,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "All animals have babies",
+            picture: "/lessons/animals-and-babies/lesson-4-1.jpg",
+            alt: "A cow and her calf in a field, watched by a girl and her mum",
             text: [
               "All animals have babies.",
               "The babies grow up into adults. Then the adults can have babies of their own.",
@@ -298,6 +318,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Baby animal names",
+            picture: "/lessons/animals-and-babies/lesson-4-2.jpg",
+            alt: "A lamb, a kitten, a chick and a lion cub on the grass",
             text: [
               "Lots of baby animals have special names.",
               "A baby cow is a calf. A baby sheep is a lamb. A baby cat is a kitten.",
@@ -306,6 +328,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Just like mum, or not?",
+            picture: "/lessons/animals-and-babies/lesson-4-3.jpg",
+            alt: "A sheep with its lamb, and a frog with tadpoles in a pond",
             text: [
               "Many babies look like small adults. A lamb looks like a little sheep.",
               "Some babies look very different. A tadpole has a tail and no legs. It looks nothing like a frog yet!",
@@ -377,6 +401,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "A life cycle",
+            picture: "/lessons/animals-and-babies/lesson-5-1.jpg",
+            alt: "A hen, an egg and a chick arranged in a circle",
             text: [
               "A life cycle shows how an animal grows and changes.",
               "It goes round and round like a circle. Adults have babies, and the babies grow into adults.",
@@ -384,6 +410,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Egg to chicken",
+            picture: "/lessons/animals-and-babies/lesson-5-2.jpg",
+            alt: "A chick hatching from an egg in a nest",
             text: [
               "A hen lays an egg. She sits on it to keep it warm.",
               "After about three weeks, a fluffy chick pecks its way out. This is called hatching.",
@@ -392,6 +420,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Tadpole to frog",
+            picture: "/lessons/animals-and-babies/lesson-5-3.jpg",
+            alt: "Frogspawn, tadpoles and a frog in a pond",
             text: [
               "A frog lays lots of jelly eggs in a pond. This is called frogspawn.",
               "A tadpole wriggles out of each egg. It has a tail for swimming.",
@@ -463,6 +493,8 @@ export const animalsAndBabies: LessonUnit = {
         cards: [
           {
             heading: "What we all need",
+            picture: "/lessons/animals-and-babies/lesson-6-1.jpg",
+            alt: "A boy breathing fresh air in a garden with water and an apple",
             text: [
               "All animals need food, water and air to stay alive.",
               "People are animals too, so we need them as well.",
@@ -471,6 +503,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "A safe place",
+            picture: "/lessons/animals-and-babies/lesson-6-2.jpg",
+            alt: "A bird in its nest and a rabbit in its burrow",
             text: [
               "Animals also need shelter. Shelter is a safe place to rest and keep warm.",
               "A bird has a nest. A rabbit has a burrow. You have a home.",
@@ -478,6 +512,8 @@ export const animalsAndBabies: LessonUnit = {
           },
           {
             heading: "Caring for pets",
+            picture: "/lessons/animals-and-babies/lesson-6-3.jpg",
+            alt: "A girl filling a dog's water bowl",
             text: [
               "A pet needs us to look after it every day.",
               "Pets need the right food, fresh water, a clean, cosy bed and lots of kindness.",

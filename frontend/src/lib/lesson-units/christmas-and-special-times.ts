@@ -35,6 +35,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "What is a special time?",
+            picture: "/lessons/christmas-and-special-times/lesson-1-1.jpg",
+            alt: "A family dressed up for a party with balloons and special food",
             text: [
               "A special time is a day that is not like other days. It feels different and exciting.",
               "We might dress up, eat special food or see people we love.",
@@ -42,6 +44,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Birthdays",
+            picture: "/lessons/christmas-and-special-times/lesson-1-2.jpg",
+            alt: "A child blowing out candles on a birthday cake as the family claps",
             text: [
               "A birthday is a special time for one person. It shows how much they have grown.",
               "We might have a cake with candles. We sing and give cards and presents.",
@@ -49,6 +53,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Family celebrations",
+            picture: "/lessons/christmas-and-special-times/lesson-1-3.jpg",
+            alt: "A family gathered around a new baby",
             text: [
               "Families celebrate lots of things. A new baby. A wedding. Moving to a new home.",
               "Every family has its own special times. Some families also have special times that belong to their religion.",
@@ -137,6 +143,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "What is harvest?",
+            picture: "/lessons/christmas-and-special-times/lesson-2-1.jpg",
+            alt: "A farmer picking apples in an autumn orchard with baskets of vegetables",
             text: [
               "Harvest is when farmers pick the food they have grown. It happens at the end of summer and in autumn.",
               "Apples, potatoes, wheat and pumpkins are all picked at harvest time.",
@@ -144,6 +152,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Harvest festival",
+            picture: "/lessons/christmas-and-special-times/lesson-2-2.jpg",
+            alt: "Children singing in a church decorated with harvest food",
             text: [
               "Christians believe God made the world and gives us good things to eat.",
               "At harvest festival, Christians say thank you to God. They sing songs and say prayers in church or at school.",
@@ -151,6 +161,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Sharing with others",
+            picture: "/lessons/christmas-and-special-times/lesson-2-3.jpg",
+            alt: "Two children carrying a box of food to a collection table",
             text: [
               "Christians often bring tins and packets of food to harvest festival.",
               "The food is given to people who need it, like a food bank. Saying thank you and sharing go together.",
@@ -231,6 +243,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "Waiting for something special",
+            picture: "/lessons/christmas-and-special-times/lesson-3-1.jpg",
+            alt: "A child waiting eagerly at a frosty window",
             text: [
               "Waiting can be hard! Think about waiting for your birthday.",
               "Before Christmas there is a special time of waiting. It is called Advent.",
@@ -238,6 +252,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "What is Advent?",
+            picture: "/lessons/christmas-and-special-times/lesson-3-2.jpg",
+            alt: "A family in church beside an Advent wreath with one candle lit",
             text: [
               "Advent starts four Sundays before Christmas. Advent means 'coming'.",
               "Christians get ready to remember the birth of Jesus. They believe Jesus is God's Son.",
@@ -245,6 +261,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Calendars and candles",
+            picture: "/lessons/christmas-and-special-times/lesson-3-3.jpg",
+            alt: "A child opening a door on an Advent calendar",
             text: [
               "An Advent calendar has a little door for each day. It helps us count down to Christmas.",
               "Some Christians light an Advent wreath. It has four candles, one for each Sunday. Many wreaths have a fifth candle in the middle for Christmas Day.",
@@ -323,6 +341,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "Mary and the angel",
+            picture: "/lessons/christmas-and-special-times/lesson-4-1.jpg",
+            alt: "An angel visiting Mary in her home",
             text: [
               "The Christmas story is in the Bible, the Christians' holy book.",
               "An angel called Gabriel visited a young woman called Mary. He said, 'You will have a baby. He will be God's Son. Call him Jesus.'",
@@ -331,6 +351,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "A baby in Bethlehem",
+            picture: "/lessons/christmas-and-special-times/lesson-4-2.jpg",
+            alt: "Mary and Joseph with baby Jesus in a manger in a stable",
             text: [
               "Mary and Joseph went on a long journey to a town called Bethlehem.",
               "The town was busy. There was no room for them to stay. Baby Jesus was born, and Mary laid him in a manger, a box for animals' food.",
@@ -338,6 +360,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Shepherds and wise men",
+            picture: "/lessons/christmas-and-special-times/lesson-4-3.jpg",
+            alt: "Shepherds on a hillside and wise men following a bright star",
             text: [
               "Angels told some shepherds on a hill the happy news. The shepherds hurried to see the baby.",
               "Later, wise men followed a bright star. They brought gifts of gold, frankincense and myrrh.",
@@ -416,6 +440,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "What is a symbol?",
+            picture: "/lessons/christmas-and-special-times/lesson-5-1.jpg",
+            alt: "A child pointing at a heart shape and a decorated Christmas tree",
             text: [
               "A symbol is a thing that stands for something else. A red heart can stand for love.",
               "At Christmas we see lots of symbols. Each one helps Christians remember part of the Christmas story.",
@@ -423,6 +449,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Star and light",
+            picture: "/lessons/christmas-and-special-times/lesson-5-2.jpg",
+            alt: "A star on top of a Christmas tree with candles and fairy lights",
             text: [
               "A star on top of a tree reminds Christians of the star the wise men followed.",
               "Christians call Jesus 'the light of the world'. Candles and fairy lights remind them that Jesus brings light and hope.",
@@ -430,6 +458,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Crib and gifts",
+            picture: "/lessons/christmas-and-special-times/lesson-5-3.jpg",
+            alt: "A nativity crib with Mary, Joseph, baby Jesus and animals beside gifts",
             text: [
               "A crib is a small model of the Christmas story. It shows baby Jesus in the manger, with Mary, Joseph and the animals.",
               "Gifts remind Christians of the wise men's gifts. They also believe Jesus was God's gift to the world.",
@@ -513,6 +543,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
         cards: [
           {
             heading: "Lots of special times",
+            picture: "/lessons/christmas-and-special-times/lesson-6-1.jpg",
+            alt: "Children together holding a candle, a clay lamp and a candlestick",
             text: [
               "Christmas is a special time for Christians. People of other religions have their own special times too.",
               "Two of them are Diwali and Hanukkah. Like Christmas, they both use light.",
@@ -520,6 +552,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Diwali",
+            picture: "/lessons/christmas-and-special-times/lesson-6-2.jpg",
+            alt: "A family lighting diya lamps at Diwali beside rangoli patterns",
             text: [
               "Diwali is the festival of lights. Hindus and Sikhs celebrate it in autumn.",
               "People light little clay lamps called diyas. They share sweets, see family and watch fireworks.",
@@ -527,6 +561,8 @@ export const christmasAndSpecialTimes: LessonUnit = {
           },
           {
             heading: "Hanukkah",
+            picture: "/lessons/christmas-and-special-times/lesson-6-3.jpg",
+            alt: "A family lighting candles on a Hanukkah menorah",
             text: [
               "Hanukkah is a Jewish festival in winter. It lasts for eight nights.",
               "Families light candles on a special candlestick called a menorah. They add one more candle each night. They eat food cooked in oil, like doughnuts and potato pancakes.",

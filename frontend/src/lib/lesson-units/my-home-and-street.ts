@@ -35,6 +35,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "My home has an address",
+            picture: "/lessons/my-home-and-street/lesson-1-1.jpg",
+            alt: "A child at a front door as a postal worker waves",
             text: [
               "Every home has an address. An address tells people where your home is.",
               "It helps the post, friends and family find you.",
@@ -42,6 +44,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "The parts of an address",
+            picture: "/lessons/my-home-and-street/lesson-1-2.jpg",
+            alt: "A child and grown-up looking at an envelope at the kitchen table",
             text: [
               "An address has a house number or name. Then comes the street name, and the name of the town or village.",
               "At the end is a postcode. A postcode is a mix of letters and numbers.",
@@ -50,6 +54,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Who can I tell?",
+            picture: "/lessons/my-home-and-street/lesson-1-3.jpg",
+            alt: "A child and parent talking to a kind police officer",
             text: [
               "Your address is special. Only tell it to grown-ups you trust, like your family or teacher.",
               "If you are ever lost, tell a police officer or a person working in a shop.",
@@ -126,6 +132,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "Houses and bungalows",
+            picture: "/lessons/my-home-and-street/lesson-2-1.jpg",
+            alt: "A two-storey house next to a bungalow",
             text: [
               "Some people live in a house. Most houses have stairs and an upstairs.",
               "A bungalow is a home with all its rooms on one floor. There are no stairs.",
@@ -133,6 +141,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Flats",
+            picture: "/lessons/my-home-and-street/lesson-2-2.jpg",
+            alt: "A tall block of flats with children waving from windows",
             text: [
               "A flat is a home inside a bigger building. Lots of families live in the same building.",
               "Some flats are high up. You might take a lift or the stairs to get home.",
@@ -140,6 +150,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Farmhouses and houseboats",
+            picture: "/lessons/my-home-and-street/lesson-2-3.jpg",
+            alt: "A farmhouse with sheep and a houseboat on a canal",
             text: [
               "A farmhouse is a home on a farm. It may have fields and animals all around it.",
               "A houseboat is a boat that people live on. It floats on a river or canal.",
@@ -221,6 +233,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "My neighbourhood",
+            picture: "/lessons/my-home-and-street/lesson-3-1.jpg",
+            alt: "A neighbourhood with homes, a school, a park and shops",
             text: [
               "Your neighbourhood is the area all around your home.",
               "It has the streets, places and people near where you live.",
@@ -228,6 +242,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Places we go",
+            picture: "/lessons/my-home-and-street/lesson-3-2.jpg",
+            alt: "Children on swings in a park near a shop and a school",
             text: [
               "A neighbourhood might have shops where we buy food. It might have a park to play in and a school to learn in.",
               "Some places are big, like a supermarket. Some are small, like a corner shop.",
@@ -235,6 +251,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Things in the street",
+            picture: "/lessons/my-home-and-street/lesson-3-3.jpg",
+            alt: "A child posting a letter in a red post box by a bus stop",
             text: [
               "Look for a red post box. We post letters in it.",
               "Look for a bus stop. People wait there to catch a bus.",
@@ -320,6 +338,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "Made by people",
+            picture: "/lessons/my-home-and-street/lesson-4-1.jpg",
+            alt: "Houses, a road, a shop and a bridge built by people",
             text: [
               "Some things around us were made by people. Houses, roads, shops and bridges were all built by people.",
               "Geographers call these human features.",
@@ -327,6 +347,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Made by nature",
+            picture: "/lessons/my-home-and-street/lesson-4-2.jpg",
+            alt: "Hills, a river, rocks and the sea made by nature",
             text: [
               "Some things were made by nature. Hills, rivers, the sea, rocks and the sky were not built by people.",
               "Geographers call these physical features.",
@@ -334,6 +356,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Look around",
+            picture: "/lessons/my-home-and-street/lesson-4-3.jpg",
+            alt: "A child looking out at a town with a river and a hill",
             text: [
               "Look out of a window. Can you see something people made? Can you see something nature made?",
               "Most places have both. A town has roads and houses. It may also have a river and a hill.",
@@ -418,6 +442,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "Like a bird in the sky",
+            picture: "/lessons/my-home-and-street/lesson-5-1.jpg",
+            alt: "A bird flying high over rooftops and trees",
             text: [
               "Imagine you are a bird flying high. You look down at the ground.",
               "You see the tops of houses, trees and cars. This is called a bird's-eye view.",
@@ -425,6 +451,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Things look different from above",
+            picture: "/lessons/my-home-and-street/lesson-5-2.jpg",
+            alt: "A plate and a book on a table seen from above",
             text: [
               "From the side, a table has legs. From above, you only see the flat top.",
               "From above, a round plate looks like a circle. A book looks like a rectangle.",
@@ -432,6 +460,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "A map is a picture from above",
+            picture: "/lessons/my-home-and-street/lesson-5-3.jpg",
+            alt: "A child drawing a map of their bedroom",
             text: [
               "A map shows a place from a bird's-eye view. It shows where things are.",
               "You can make a map of your bedroom. Draw your bed, door and window as simple shapes.",
@@ -503,6 +533,8 @@ export const myHomeAndStreet: LessonUnit = {
         cards: [
           {
             heading: "Going on a feature walk",
+            picture: "/lessons/my-home-and-street/lesson-6-1.jpg",
+            alt: "A child and grown-up spotting features on a walk",
             text: [
               "Let's go on a walk with a grown-up. We will be geographers!",
               "Look for things people made, like a post box or a bus stop. Look for things nature made, like a hill or a puddle.",
@@ -510,6 +542,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Safe on the pavement",
+            picture: "/lessons/my-home-and-street/lesson-6-2.jpg",
+            alt: "A child holding a grown-up's hand on the pavement",
             text: [
               "Always walk with a grown-up. Hold their hand near roads.",
               "Walk on the pavement, away from the edge. The edge of the pavement is called the kerb.",
@@ -517,6 +551,8 @@ export const myHomeAndStreet: LessonUnit = {
           },
           {
             heading: "Stop, look, listen, think",
+            picture: "/lessons/my-home-and-street/lesson-6-3.jpg",
+            alt: "A child and grown-up looking and listening at a zebra crossing",
             text: [
               "To cross a road, find a safe place, like a crossing. Stop at the kerb.",
               "Look all around and listen for traffic. When there is nothing coming, walk straight across.",

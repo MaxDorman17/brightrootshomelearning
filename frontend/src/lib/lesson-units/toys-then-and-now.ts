@@ -30,6 +30,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "Toys we love",
+            picture: "/lessons/toys-then-and-now/lesson-1-1.jpg",
+            alt: "A child hugging a favourite teddy bear on a bedroom rug",
             text: [
               "Everyone has a favourite toy. It might be soft and cuddly. It might be fast, or fun to build with.",
               "What is your favourite toy? Can you say why you like it?",
@@ -37,6 +39,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Sorting toys",
+            picture: "/lessons/toys-then-and-now/lesson-1-2.jpg",
+            alt: "A child sorting toys into cuddly, push and building piles",
             text: [
               "We can sort toys into groups. Some toys we push or pull, like a toy car.",
               "Some toys we cuddle, like a teddy. Some toys we build with, like bricks.",
@@ -45,6 +49,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Toys change",
+            picture: "/lessons/toys-then-and-now/lesson-1-3.jpg",
+            alt: "A baby rattle and soft book next to toys for older children",
             text: [
               "When you were a baby, you played with rattles and soft books. Now you play with different toys.",
               "Toys change as we grow. Toys have changed over a long, long time too. That is what we will find out about.",
@@ -113,6 +119,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "Toy detectives",
+            picture: "/lessons/toys-then-and-now/lesson-2-1.jpg",
+            alt: "A child looking at an old teddy through a magnifying glass",
             text: [
               "A detective looks for clues. We can be toy detectives.",
               "We look closely at a toy to work out if it is old or new.",
@@ -120,6 +128,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Clues it is old",
+            picture: "/lessons/toys-then-and-now/lesson-2-2.jpg",
+            alt: "A worn teddy with bald patches and a wooden horse with chipped paint",
             text: [
               "An old toy might be worn or scratched. The paint might be faded or chipped.",
               "A teddy might be bald in places from lots of cuddles.",
@@ -128,6 +138,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Clues it is new",
+            picture: "/lessons/toys-then-and-now/lesson-2-3.jpg",
+            alt: "A shiny new toy robot with lights, a toy car and a battery",
             text: [
               "A new toy often looks bright and clean. Lots of new toys are made of plastic.",
               "Some new toys need batteries. Some have screens, lights or sounds.",
@@ -199,6 +211,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "When grown-ups were small",
+            picture: "/lessons/toys-then-and-now/lesson-3-1.jpg",
+            alt: "A grandmother and child looking at an old photo album",
             text: [
               "Your grown-ups were children once! Your grandparents were children a long time ago, maybe 50 or 60 years ago.",
               "They can remember what toys they played with. We can ask them.",
@@ -206,6 +220,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Grandparents' toys",
+            picture: "/lessons/toys-then-and-now/lesson-3-2.jpg",
+            alt: "Marbles, a yo-yo, a skipping rope, toy cars and a board game from long ago",
             text: [
               "Many grandparents played with skipping ropes, marbles, yo-yos and toy cars.",
               "They had dolls, board games and building bricks too. There were no tablets or games on phones.",
@@ -214,6 +230,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Asking good questions",
+            picture: "/lessons/toys-then-and-now/lesson-3-3.jpg",
+            alt: "A child asking a grandfather questions about his old toy car",
             text: [
               "When we ask someone questions to find out about their life, it is called an interview.",
               "Good questions: What was your favourite toy? What was it made of? Where did you play?",
@@ -286,6 +304,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "Long, long ago",
+            picture: "/lessons/toys-then-and-now/lesson-4-1.jpg",
+            alt: "Victorian children playing in a street long ago",
             text: [
               "Long before your grandparents were born, Queen Victoria was queen. The people who lived then are called Victorians.",
               "That was more than 100 years ago. Nobody alive today was a Victorian child.",
@@ -293,6 +313,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Victorian toys",
+            picture: "/lessons/toys-then-and-now/lesson-4-2.jpg",
+            alt: "Victorian children with a hoop and stick, a spinning top and a rag doll",
             text: [
               "Victorian children played with spinning tops. Some tops were kept spinning with a little whip.",
               "They rolled big hoops along with a stick. They played with marbles and skipping ropes.",
@@ -301,6 +323,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Rich and poor",
+            picture: "/lessons/toys-then-and-now/lesson-4-3.jpg",
+            alt: "A wooden rocking horse, Noah's ark, peg doll and rag doll in a Victorian nursery",
             text: [
               "Rich children might have a wooden rocking horse, a dolls' house or a wooden Noah's ark with animals.",
               "Poor children had very few toys. Families often made toys at home from wood, pegs and old cloth.",
@@ -373,6 +397,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "Toys long ago",
+            picture: "/lessons/toys-then-and-now/lesson-5-1.jpg",
+            alt: "Old toys made of wood, tin, cloth, china and clay",
             text: [
               "Long ago, most toys were made of wood, metal or cloth.",
               "Some dolls had faces made of china. Marbles were made of clay or glass.",
@@ -380,6 +406,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Toys now",
+            picture: "/lessons/toys-then-and-now/lesson-5-2.jpg",
+            alt: "Modern toys made of plastic, wood and cloth on a play mat",
             text: [
               "Today lots of toys are made of plastic. Plastic is light, bright and easy to shape.",
               "Some toys now have batteries, lights, sounds or screens.",
@@ -388,6 +416,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Same and different",
+            picture: "/lessons/toys-then-and-now/lesson-5-3.jpg",
+            alt: "An old leather ball and cloth doll next to a plastic ball and doll",
             text: [
               "A ball long ago might be made of leather or rubber. Now it might be plastic.",
               "A doll long ago might be cloth or wood. Now it is often plastic.",
@@ -459,6 +489,8 @@ export const toysThenAndNow: LessonUnit = {
         cards: [
           {
             heading: "Cup and ball",
+            picture: "/lessons/toys-then-and-now/lesson-6-1.jpg",
+            alt: "A child catching a foil ball in a homemade paper cup and ball",
             text: [
               "A cup and ball is a very old toy. Victorian children played with it.",
               "A ball is tied to a cup with string. You swing the ball up and try to catch it in the cup.",
@@ -467,6 +499,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "A timeline",
+            picture: "/lessons/toys-then-and-now/lesson-6-2.jpg",
+            alt: "A child beside a paper timeline of toy drawings on the floor",
             text: [
               "A timeline puts things in order of when they happened.",
               "The oldest thing goes at one end. The newest thing goes at the other end.",
@@ -474,6 +508,8 @@ export const toysThenAndNow: LessonUnit = {
           },
           {
             heading: "Toys in order",
+            picture: "/lessons/toys-then-and-now/lesson-6-3.jpg",
+            alt: "A Victorian hoop and rag doll, a toy car and marbles, and a tablet in a row",
             text: [
               "First, Victorian children played with hoops and rag dolls.",
               "Then, your grandparents played with marbles and toy cars.",

@@ -30,6 +30,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "Four seasons",
+            picture: "/lessons/autumn-and-winter/lesson-1-1.jpg",
+            alt: "The same tree in spring, summer, autumn and winter",
             text: [
               "A year is split into four parts. We call them seasons.",
               "The four seasons are spring, summer, autumn and winter.",
@@ -38,6 +40,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Round and round",
+            picture: "/lessons/autumn-and-winter/lesson-1-2.jpg",
+            alt: "A seasons wheel with spring, summer, autumn and winter pictures",
             text: [
               "The seasons always come in the same order. Spring, then summer, then autumn, then winter.",
               "After winter, spring comes again. Round and round, every year!",
@@ -45,6 +49,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "What is each season like?",
+            picture: "/lessons/autumn-and-winter/lesson-1-3.jpg",
+            alt: "A boy watching autumn leaves fall from a window",
             text: [
               "In spring, flowers pop up and baby animals are born. In summer, it is warmer and the days are long.",
               "In autumn, leaves fall from many trees. In winter, it is cold and the days are short.",
@@ -115,6 +121,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "Leaves change colour",
+            picture: "/lessons/autumn-and-winter/lesson-2-1.jpg",
+            alt: "A girl walking through colourful autumn leaves",
             text: [
               "In autumn, lots of leaves change from green to yellow, orange, red and brown.",
               "Then they fall off the trees. Crunch, crunch, under your feet!",
@@ -123,6 +131,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Seeds and conkers",
+            picture: "/lessons/autumn-and-winter/lesson-2-2.jpg",
+            alt: "A child's hands holding conkers and acorns",
             text: [
               "Autumn is when many trees drop their seeds. Acorns come from oak trees. Conkers come from horse chestnut trees.",
               "Conkers are shiny and fun to collect. But never eat a conker. Conkers can make you poorly.",
@@ -131,6 +141,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Shorter days",
+            picture: "/lessons/autumn-and-winter/lesson-2-3.jpg",
+            alt: "A parent and child walking home as it gets dark early",
             text: [
               "In autumn the days get shorter. It gets dark earlier in the evening.",
               "It gets colder too. We start to need our coats again.",
@@ -201,6 +213,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "Hedgehogs hibernate",
+            picture: "/lessons/autumn-and-winter/lesson-3-1.jpg",
+            alt: "A hedgehog asleep in a nest of leaves",
             text: [
               "Winter is hard for animals. It is cold and there is not much food.",
               "In autumn, hedgehogs eat lots and get fat. Then they make a cosy nest of leaves.",
@@ -209,6 +223,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Swallows fly away",
+            picture: "/lessons/autumn-and-winter/lesson-3-2.jpg",
+            alt: "Swallows flying across the sky",
             text: [
               "Swallows are birds. In summer they live here and eat flying insects.",
               "In autumn, there are not many insects. So swallows fly all the way to Africa, where it is warm.",
@@ -217,6 +233,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Squirrels store food",
+            picture: "/lessons/autumn-and-winter/lesson-3-3.jpg",
+            alt: "A squirrel burying an acorn",
             text: [
               "Squirrels do not hibernate. In autumn they collect nuts and acorns.",
               "They bury them in the ground to dig up later, when food is hard to find.",
@@ -287,6 +305,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "Frost and ice",
+            picture: "/lessons/autumn-and-winter/lesson-4-1.jpg",
+            alt: "Frost on grass, a bench and a car on a cold morning",
             text: [
               "When it is very cold, water freezes. It goes hard and turns into ice.",
               "On a cold, clear night, water in the air freezes onto grass, cars and windows. This sparkly white coat is called frost.",
@@ -295,6 +315,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Snow",
+            picture: "/lessons/autumn-and-winter/lesson-4-2.jpg",
+            alt: "Two children catching snowflakes in a park",
             text: [
               "Snow is made of tiny bits of ice that fall from the clouds. They are called snowflakes.",
               "Snow only falls when it is very cold. When it gets warmer, the snow melts back into water.",
@@ -302,6 +324,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Short winter days",
+            picture: "/lessons/autumn-and-winter/lesson-4-3.jpg",
+            alt: "A low winter Sun over snowy rooftops",
             text: [
               "In winter, the Sun comes up late and goes down early. So the days are short and the nights are long.",
               "That is because our part of the Earth leans away from the Sun in winter. The Sun stays low in the sky.",
@@ -374,6 +398,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "The weather changes",
+            picture: "/lessons/autumn-and-winter/lesson-5-1.jpg",
+            alt: "Windows showing sunny, cloudy, rainy, windy and snowy weather",
             text: [
               "The weather is what it is like outside. Sunny, cloudy, rainy, windy or snowy.",
               "The weather can change every day. Sometimes it changes in one day!",
@@ -381,6 +407,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Weather symbols",
+            picture: "/lessons/autumn-and-winter/lesson-5-2.jpg",
+            alt: "Weather symbols for sun, cloud, rain, snow and wind",
             text: [
               "A symbol is a little picture that means something.",
               "A yellow sun means sunny. A grey cloud means cloudy. A cloud with drops means rainy. A snowflake means snowy. Wavy lines mean windy.",
@@ -389,6 +417,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Keeping a weather diary",
+            picture: "/lessons/autumn-and-winter/lesson-5-3.jpg",
+            alt: "A girl drawing the weather in her diary",
             text: [
               "A weather diary is where you draw the weather every day.",
               "Look out of the window at the same time each day. Draw the symbol for what you see.",
@@ -461,6 +491,8 @@ export const autumnAndWinter: LessonUnit = {
         cards: [
           {
             heading: "Cold and frosty",
+            picture: "/lessons/autumn-and-winter/lesson-6-1.jpg",
+            alt: "A boy in a warm coat, hat, scarf and gloves",
             text: [
               "In cold weather, we wear warm clothes. A thick coat, a woolly hat, a scarf and gloves.",
               "Lots of layers help too. A vest, a top and a jumper keep you snug.",
@@ -468,6 +500,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Wet and rainy",
+            picture: "/lessons/autumn-and-winter/lesson-6-2.jpg",
+            alt: "A girl in a raincoat and wellies jumping in a puddle",
             text: [
               "When it rains, we wear a raincoat and wellies. They keep the water out.",
               "Clothes that keep the water out are called waterproof. Then we can jump in puddles and stay dry!",
@@ -475,6 +509,8 @@ export const autumnAndWinter: LessonUnit = {
           },
           {
             heading: "Hot and sunny",
+            picture: "/lessons/autumn-and-winter/lesson-6-3.jpg",
+            alt: "A child in summer clothes getting sun cream on",
             text: [
               "In hot weather, we wear thin, cool clothes like shorts and a T-shirt.",
               "A sun hat and sun cream help keep our skin safe from the Sun.",
