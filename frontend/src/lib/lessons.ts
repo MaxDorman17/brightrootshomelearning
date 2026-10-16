@@ -1,5 +1,7 @@
 import type { Question } from "@/lib/worksheets";
-import { planSheets } from "@/lib/api";
+import { getFamilySubjects, planSheets } from "@/lib/api";
+import { PLANNED_TOPICS, type PlannedTopic } from "@/lib/curriculum-plan";
+import type { Term, TermSlug } from "@/lib/terms";
 import { romansLessons } from "@/lib/lesson-units/romans";
 import { kitchenScience } from "@/lib/lesson-units/kitchen-science";
 import { rivers } from "@/lib/lesson-units/rivers";
@@ -128,6 +130,8 @@ export type LessonUnit = {
   cover?: string;
   /** The topic pack that goes with this unit, if there is one. */
   topicPack?: string;
+  /** The seasonal term it is taught in (lib/terms.ts). Left out, it is Autumn Exploration, like the first units. */
+  term?: TermSlug;
   lessons: BrLesson[];
 };
 
@@ -235,6 +239,31 @@ export const subjectOf = (unit: LessonUnit) => LESSON_SUBJECTS.find((s) => s.nam
 export const unitsIn = (subject: LessonSubject) => UNITS.filter((u) => u.subject === subject.name);
 export const comingIn = (subject: LessonSubject) => COMING_UNITS.filter((c) => c.subject === subject.name);
 
+/** The term a unit is taught in. */
+export const unitTerm = (unit: LessonUnit): TermSlug => unit.term ?? "autumn";
+
+/** The age ranges in the Seedlings, Saplings and Teens menus, as "7-9" in an address and "7 to 9" in the units. */
+export const STAGE_AGES: { ages: string; stage: string }[] = [
+  { ages: "5 to 7", stage: "Seedlings" },
+  { ages: "7 to 9", stage: "Saplings" },
+  { ages: "9 to 11", stage: "Saplings" },
+  { ages: "11 to 14", stage: "Teens" },
+];
+export const agesFromParam = (param: string | null) => (param ? param.replace("-", " to ") : null);
+export const agesParam = (ages: string) => ages.replace(" to ", "-");
+
+/** The subjects in the order the menus list them, by their unit `subject` name. */
+export const SUBJECT_ORDER = ["Maths", "English", "Science", "History", "Geography", "Religious Education", "Art & Design", "RSHE (PSHE)", "Computing"];
+export const subjectSlugFor = (name: string) => [...LESSON_SUBJECTS, ...PLANNED_SUBJECTS].find((s) => s.name === name)?.slug;
+
+/** The built units for one age range in one term, in menu order. */
+export const unitsForTerm = (ages: string, term: Term) =>
+  UNITS.filter((u) => u.ages === ages && unitTerm(u) === term.slug).sort((a, b) => SUBJECT_ORDER.indexOf(a.subject) - SUBJECT_ORDER.indexOf(b.subject));
+
+/** The curriculum topics still to be written for one age range in one term, optionally for one subject. */
+export const plannedFor = (ages: string, term: Term, subject?: string): PlannedTopic[] =>
+  (PLANNED_TOPICS[ages]?.[term.slug] ?? []).filter((t) => !subject || t.subject === subject);
+
 /** Where a unit is listed: its subject's page, scrolled to the unit. */
 export const unitLink = (unit: LessonUnit) => {
   const subject = subjectOf(unit);
@@ -307,3 +336,28 @@ export const planUnit = (unit: LessonUnit) => (day: string, childIds: number[], 
     day,
     childIds
   );
+
+/**
+ * Puts several units into the planner at once, for "Plan this term". Each subject's units go in one after another
+ * on the days that subject is on the timetable (under the family's own name for it), so they don't land on the same days.
+ */
+export const planTerm = (units: LessonUnit[], ownName: (subject: string, timetable: string[]) => string) => async (day: string, childIds: number[]) => {
+  const timetable = await getFamilySubjects()
+    .then((res) => res.data.subjects)
+    .catch(() => [] as string[]);
+  const subjects = [...new Set(units.map((u) => u.subject))];
+  let planned = 0;
+  let first_day = "";
+  let last_day = "";
+  for (const subject of subjects) {
+    const filed = ownName(subject, timetable);
+    const lessons = units
+      .filter((u) => u.subject === subject)
+      .flatMap((u) => u.lessons.map((l, i) => ({ kind: "lesson" as const, slug: l.slug, title: plannerTitle(u, i + 1), subject: filed, intro: "", minutes: l.minutes })));
+    const res = await planSheets(lessons, day, childIds);
+    planned += res.data.planned;
+    if (!first_day || res.data.first_day < first_day) first_day = res.data.first_day;
+    if (res.data.last_day > last_day) last_day = res.data.last_day;
+  }
+  return { data: { planned, first_day, last_day } };
+};

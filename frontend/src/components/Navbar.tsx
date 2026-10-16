@@ -102,7 +102,7 @@ const TEEN_ACTIVITIES: Activities = {
 };
 
 /**
- * One stage's menu: the subjects in the order families asked for, with P.E. and Outdoors after R.E.
+ * One stage's menu: This term, then the subjects in the order families asked for, with P.E. and Outdoors after R.E.
  * and the make-and-do pages last. A stage with more than one age range gives each subject a menu of its ages.
  */
 function stageMenu(label: string, ages: string[], activities: Activities, stage: NavGroup["stage"]): NavGroup {
@@ -111,10 +111,16 @@ function stageMenu(label: string, ages: string[], activities: Activities, stage:
       ? { href: lessonsFor(s.lesson, ages[0]), label: s.label }
       : { label: s.label, items: ages.map((a) => ({ href: lessonsFor(s.lesson, a), label: agesLabel(a) })) };
   const subjects = SUBJECTS.map(subject);
+  // This season's topics in every subject (lib/terms.ts).
+  const thisTerm: NavEntry =
+    ages.length === 1
+      ? { href: `/lessons/term?ages=${ages[0]}`, label: "This term" }
+      : { label: "This term", items: ages.map((a) => ({ href: `/lessons/term?ages=${a}`, label: agesLabel(a) })) };
   return {
     label,
     stage,
     items: [
+      thisTerm,
       ...subjects.slice(0, 6),
       { href: activities.pe, label: "P.E." },
       { href: activities.outdoors, label: "Outdoors" },

@@ -7,8 +7,10 @@ import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import UnitCard from "@/components/lessons/UnitCard";
 import ResourceLibrary from "@/components/ResourceLibrary";
+import ComingTopics from "@/components/lessons/ComingTopics";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { comingIn, pageSubject, searchUnits, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
+import { agesFromParam, comingIn, pageSubject, plannedFor, searchUnits, unitTerm, unitsIn, yearsFor, type LessonUnit } from "@/lib/lessons";
+import { currentTerm, termsFrom } from "@/lib/terms";
 
 /** Other names families give these subjects, so the right Resources folder shows. */
 const FOLDER_ALIASES: Record<string, string[]> = {
@@ -30,7 +32,7 @@ export default function LessonSubjectPageWrapper() {
 
 /**
  * One subject's Bright Roots lessons, grouped by age range. `?ages=7-9` (from the Seedlings,
- * Saplings and Teens menus) shows just that age range.
+ * Saplings and Teens menus) shows just that age range, grouped by term with this term first.
  */
 function LessonSubjectPage() {
   const router = useRouter();
@@ -38,7 +40,7 @@ function LessonSubjectPage() {
   const subject = pageSubject(params.subject);
   const agesParam = useSearchParams().get("ages");
   // "7-9" in the address, "7 to 9" in the units.
-  const onlyAges = agesParam ? agesParam.replace("-", " to ") : null;
+  const onlyAges = agesFromParam(agesParam);
   const [role, setRole] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
@@ -72,6 +74,13 @@ function LessonSubjectPage() {
   for (const f of found) byAge.set(f.unit.ages, [...(byAge.get(f.unit.ages) ?? []), f]);
   const searching = query.trim().length > 0;
   const coming = comingIn(subject);
+  const now = currentTerm();
+  // One age range, not searching: the year by term, this term first.
+  const byTerm = onlyAges && !searching
+    ? termsFrom(now)
+        .map((term) => ({ term, units: shown.filter((u) => unitTerm(u) === term.slug), planned: plannedFor(onlyAges, term, subject.name) }))
+        .filter((t) => t.units.length > 0 || t.planned.length > 0)
+    : null;
 
   return (
     <div className="min-h-screen">
@@ -112,6 +121,19 @@ function LessonSubjectPage() {
               </Link>
             )}
           </section>
+        )}
+
+        {onlyAges && (
+          <Link
+            href={`/lessons/term?ages=${agesParam}`}
+            className="mb-8 flex items-center gap-3 rounded-2xl bg-brand-cream px-4 py-3 font-bold text-brand-charcoal hover:bg-brand-softsage/30"
+          >
+            <span aria-hidden>{now.emoji}</span>
+            <span className="flex-1">
+              It&apos;s {now.name}. See this term&apos;s topics in every subject for ages {onlyAges}
+            </span>
+            <span className="text-brand-sage">→</span>
+          </Link>
         )}
 
         {onlyAges && shown.length === 0 && (
@@ -173,7 +195,26 @@ function LessonSubjectPage() {
           </div>
         )}
 
-        {Array.from(byAge.entries()).map(([ages, list]) => (
+        {byTerm?.map(({ term, units: termUnits, planned }) => (
+          <section key={term.slug} id={term.slug} className="mb-10 scroll-mt-20">
+            <h2 className="mb-4 flex flex-wrap items-baseline gap-x-3 text-2xl font-extrabold text-brand-charcoal">
+              <span>
+                <span aria-hidden>{term.emoji} </span>
+                {term.name}
+              </span>
+              <span className="text-base font-bold text-brand-earth/70">{term.months}</span>
+              {term === now && <span className="rounded-full bg-brand-sage px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider text-white">This term</span>}
+            </h2>
+            <div className="space-y-6">
+              {termUnits.map((unit) => (
+                <UnitCard key={unit.slug} unit={unit} isChild={isChild} />
+              ))}
+              <ComingTopics topics={planned} term={term} isNow={term === now} />
+            </div>
+          </section>
+        ))}
+
+        {!byTerm && Array.from(byAge.entries()).map(([ages, list]) => (
           <section key={ages} id={`ages-${ages.replace(/\s+/g, "-")}`} className="mb-10 scroll-mt-20">
             <h2 className="mb-4 text-2xl font-extrabold text-brand-charcoal">
               Ages {ages}
@@ -189,7 +230,7 @@ function LessonSubjectPage() {
 
         {units.length === 0 && !onlyAges && <p className="mb-10 text-brand-earth">The first {subject.name} lessons are on their way.</p>}
 
-        {coming.length > 0 && !searching && (
+        {coming.length > 0 && !searching && !onlyAges && (
           <section>
             <h2 className="text-2xl font-extrabold text-brand-charcoal">Coming soon</h2>
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
