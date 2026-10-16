@@ -7,13 +7,17 @@ import Navbar from "@/components/Navbar";
 import Emoji from "@/components/Emoji";
 import { LittleCard, LittleTopicActivities, useLittleItems } from "@/components/make/LittleTopic";
 import { isAuthenticated } from "@/lib/auth";
-import { LITTLE_AREA_PAGES, LITTLE_PLAN } from "@/lib/little-roots-plan";
+import { LITTLE_AREA_PAGES, LITTLE_EXTRA_PAGES, LITTLE_PLAN, RHYMES, littleTermSection } from "@/lib/little-roots-plan";
 import { currentTerm, termsFrom } from "@/lib/terms";
 
-/** One Little Roots area of learning (Talk, Early maths...): its topic for each term, this term first, then the family's own. */
+/**
+ * One Little Roots area of learning (Talk, Early maths...): its topic for each term, this term first, then the family's own.
+ * Rhymes and songs and Outdoors use the same page, with each term's rhymes or outdoor activities.
+ */
 export default function LittleAreaPage() {
   const router = useRouter();
-  const area = LITTLE_AREA_PAGES.find((a) => a.slug === useParams<{ area: string }>().area);
+  const slug = useParams<{ area: string }>().area;
+  const area = [...LITTLE_AREA_PAGES, ...LITTLE_EXTRA_PAGES].find((a) => a.slug === slug);
   const items = useLittleItems();
   const now = currentTerm();
 
@@ -35,9 +39,15 @@ export default function LittleAreaPage() {
     );
   }
 
-  const planned = new Set(Object.values(LITTLE_PLAN).flatMap((p) => p.topics.flatMap((t) => t.activities.map((a) => a.slug))));
+  const planned = new Set(Object.values(LITTLE_PLAN).flatMap((p) => [...p.topics.flatMap((t) => t.activities), ...p.rhymes].map((a) => a.slug)));
   // Activities in this area that aren't in the plan: the family's own, and any extras.
   const others = Object.values(items ?? {}).filter((i) => i.category === area.name && !planned.has(i.slug ?? ""));
+  const intro =
+    area.name === RHYMES
+      ? "Four rhymes and songs each term, to say, sing and act out together."
+      : slug === "outdoors"
+        ? "The activities from every area that are best done outside, term by term."
+        : "";
 
   return (
     <div className="min-h-screen">
@@ -52,6 +62,7 @@ export default function LittleAreaPage() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-sage">Little Roots · ages 3 to 4</p>
             <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">{area.name}</h1>
+            {intro && <p className="mt-1 text-brand-earth">{intro}</p>}
           </div>
         </header>
 
@@ -69,8 +80,8 @@ export default function LittleAreaPage() {
         ) : (
           <div className="space-y-10">
             {termsFrom(now).map((term) => {
-              const topic = LITTLE_PLAN[term.slug].topics.find((t) => t.area === area.name);
-              if (!topic) return null;
+              const topic = littleTermSection(slug, term.slug);
+              if (!topic || topic.activities.length === 0) return null;
               return (
                 <section key={term.slug} id={term.slug} className="scroll-mt-20">
                   <h2 className="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-2xl font-extrabold text-brand-charcoal">
@@ -100,6 +111,12 @@ export default function LittleAreaPage() {
                   ))}
                 </div>
               </section>
+            )}
+            {slug === "outdoors" && (
+              <Link href="/make/outdoors?age=little" className="flex items-center gap-3 rounded-2xl border-2 border-brand-line bg-white px-4 py-3 font-bold text-brand-charcoal hover:border-brand-softsage">
+                <span className="flex-1">Ready for more? Bug trails, dens and nature walks for ages 5 and up are in Seedlings Outdoors</span>
+                <span className="text-brand-sage">→</span>
+              </Link>
             )}
           </div>
         )}

@@ -70,3 +70,34 @@ export const LITTLE_PLAN: Record<TermSlug, { topics: LittleTopic[]; rhymes: Litt
     rhymes: [{ title: "Sandy toes song", slug: "little-sandy-toes-song" }, { title: "Row to the island", slug: "little-row-to-the-island" }, { title: "Sunshine wake-up", slug: "little-sunshine-wake-up" }, { title: "Five little fishes splashing", slug: "little-five-little-fishes-splashing" }],
   },
 };
+
+/** The activities in each term's plan that are best done outside, for the Outdoors page. */
+const OUTDOOR_SLUGS = new Set([
+  "little-sound-walk", "little-leaf-pile-jumps", "little-water-painting", "little-leaf-faces", "little-bark-rubbings",
+  "little-minibeast-hunt", "little-autumn-treasure-basket",
+  "little-name-in-the-snow", "little-ice-treasures", "little-winter-bird-watch",
+  "little-mud-pie-mark-making", "little-puddle-jumps", "little-kick-the-ball", "little-worm-hunt", "little-spring-walk",
+  "little-weather-watching",
+  "little-picnic-chatter", "little-number-hunt-in-the-garden", "little-listening-walk-in-the-park",
+  "little-egg-and-spoon-race", "little-running-races", "little-parachute-play", "little-chalk-murals", "little-wet-sand-dry-sand",
+]);
+
+/** The Rhymes and songs and Outdoors pages, which sit beside the areas in the menu and look like them. */
+export const LITTLE_EXTRA_PAGES = [
+  { name: RHYMES, slug: "rhymes-and-songs", emoji: "🎵" },
+  { name: "Outdoors", slug: "outdoors", emoji: "🌳" },
+];
+
+/** What a Little Roots page (an area, Rhymes and songs, or Outdoors) has for one term. */
+export function littleTermSection(pageSlug: string, term: TermSlug): { title: string; summary: string; activities: LittleActivity[] } | null {
+  const plan = LITTLE_PLAN[term];
+  if (pageSlug === "rhymes-and-songs") {
+    return { title: "Rhymes to learn", summary: "Short rhymes and songs to say, sing and act out together.", activities: plan.rhymes };
+  }
+  if (pageSlug === "outdoors") {
+    const activities = plan.topics.flatMap((t) => t.activities).filter((a) => OUTDOOR_SLUGS.has(a.slug));
+    return { title: "Out and about", summary: "Activities from every area that are best in the garden, the park or on a walk.", activities };
+  }
+  const area = LITTLE_AREA_PAGES.find((a) => a.slug === pageSlug);
+  return plan.topics.find((t) => t.area === area?.name) ?? null;
+}
