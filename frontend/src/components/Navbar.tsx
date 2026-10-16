@@ -23,7 +23,7 @@ import Emoji from "@/components/Emoji";
 import TimerBadge from "@/components/TimerBadge";
 import { AvatarChoice } from "@/lib/avatar";
 import { SEN_SECTIONS } from "@/lib/senSections";
-import { LITTLE_AREA_PAGES, RHYMES } from "@/lib/little-roots-plan";
+import { LITTLE_AREA_PAGES, LITTLE_EXTRA_PAGES } from "@/lib/little-roots-plan";
 
 interface BellItem {
   key: string;
@@ -56,7 +56,7 @@ const OPTIONAL_PAGES: Record<string, (subjects: string[]) => boolean> = {
 // The younger activity pages (ages 5 to 11). Hidden when no child is set to Seedlings, Saplings or Everything.
 const YOUNG_PAGES = ["/make/comics", "/make/cookbook", "/make/crafts", "/make/colouring", "/make/life-skills", "/make/pe", "/make/outdoors"];
 // The Little Roots pages (ages 3 to 4). Hidden when every child is set to Teens.
-const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/outdoors?age=little", "/make/new?kind=little"];
+const LITTLE_PAGES = ["/make/little-roots", "/make/little-roots/getting-started", "/make/new?kind=little"];
 
 // The subjects in the Seedlings, Saplings and Teens menus. `lesson` is the Bright Roots Lessons subject
 // (lib/lessons.ts) and `sheet` the worksheet subject (lib/worksheets.ts).
@@ -187,9 +187,8 @@ const PARENT_NAV: NavEntry[] = [
     items: [
       { href: "/make/little-roots/term", label: "This term" },
       ...LITTLE_AREA_PAGES.map((a) => ({ href: `/make/little-roots/area/${a.slug}`, label: a.name })),
-      { href: `/make/little-roots?category=${encodeURIComponent(RHYMES)}`, label: "Rhymes and songs" },
-      { href: "/make/outdoors?age=little", label: "Outdoors" },
-      { href: "/make/little-roots", label: "All activities" },
+      ...LITTLE_EXTRA_PAGES.map((a) => ({ href: `/make/little-roots/area/${a.slug}`, label: a.name })),
+      { href: "/make/little-roots", label: "Search all activities" },
       { href: "/make/little-roots/getting-started", label: "Getting started" },
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
