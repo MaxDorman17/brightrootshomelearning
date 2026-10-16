@@ -8,6 +8,7 @@ import { OAK_SCHEME, schemeOf } from "@/lib/schemes";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Emoji from "@/components/Emoji";
+import BrightRootsTopicsCard, { BrightRootsTopicsPrint, useBrightRootsTopics } from "@/components/BrightRootsTopicsReport";
 import { format, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, subWeeks, addDays, eachDayOfInterval } from "date-fns";
 
 const TIMETABLE_SUBJECTS = [
@@ -237,6 +238,15 @@ export default function ReportPage() {
     if (period === "month") return isWithinInterval(d, { start: startOfMonth(now), end: endOfMonth(now) });
     return true;
   });
+
+  const inPeriod = (iso: string) => {
+    const now = new Date();
+    if (period === "week") return isWithinInterval(parseISO(iso), { start: startOfWeek(now, { weekStartsOn: 1 }), end: endOfWeek(now, { weekStartsOn: 1 }) });
+    if (period === "month") return isWithinInterval(parseISO(iso), { start: startOfMonth(now), end: endOfMonth(now) });
+    return true;
+  };
+  // Bright Roots topics in the planner this period, with their term and quiz average.
+  const brightRootsTopics = useBrightRootsTopics(filtered, selectedChildId ? [selectedChildId] : children.map(c => c.id), inPeriod);
 
   const timetable = filtered.filter(e => !e.is_extra);
   const extra = filtered.filter(e => e.is_extra);
@@ -701,6 +711,8 @@ export default function ReportPage() {
                 )}
               </section>
 
+              <BrightRootsTopicsPrint topics={brightRootsTopics} />
+
               <section className="mb-6">
                 <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-3">
                   Oak Quiz Results
@@ -998,6 +1010,8 @@ export default function ReportPage() {
                     </div>
                   </div>
                 </div>
+
+                <BrightRootsTopicsCard topics={brightRootsTopics} className="" />
                 {activeCard}
                 {languagesCard}
               </div>
@@ -1254,6 +1268,8 @@ export default function ReportPage() {
                 </div>
               </div>
             )}
+
+            {tab === "progress" && <BrightRootsTopicsCard topics={brightRootsTopics} />}
 
             {/* Extra work summary */}
             {tab === "progress" && extra.length > 0 && (
