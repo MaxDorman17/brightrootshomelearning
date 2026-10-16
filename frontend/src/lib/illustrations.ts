@@ -65,6 +65,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   "📤": "share",
   "🖨": "printer",
   "🌱": "sprout",
+  "🍂": "autumn-tree",
   "🔑": "key",
   "🌳": "oak-tree",
   "👋": "wave",

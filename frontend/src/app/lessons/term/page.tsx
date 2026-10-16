@@ -86,8 +86,8 @@ function TermPage() {
             {stage.stage} · ages {ages}
             {yearsFor(ages) && ` · ${yearsFor(ages)}`}
           </p>
-          <h1 className="mt-1 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
-            <span aria-hidden>{term.emoji} </span>
+          <h1 className="mt-1 flex items-center gap-3 text-3xl font-extrabold text-brand-charcoal sm:text-4xl">
+            <Emoji e={term.emoji} className="h-12 w-12 text-4xl" />
             {term.name}
           </h1>
           <p className="mt-1 text-brand-earth">
@@ -118,10 +118,11 @@ function TermPage() {
               key={t.slug}
               href={termLink(t.slug)}
               aria-current={t === term ? "page" : undefined}
-              className={`rounded-full px-4 py-2 text-sm font-bold transition-colors ${
+              className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-colors ${
                 t === term ? "bg-brand-sage text-white" : "border-2 border-brand-line bg-white text-brand-earth hover:border-brand-softsage"
               }`}
             >
+              <Emoji e={t.emoji} className="h-6 w-6 text-lg" />
               {t.name}
               {t === now && t !== term && " (now)"}
             </Link>
