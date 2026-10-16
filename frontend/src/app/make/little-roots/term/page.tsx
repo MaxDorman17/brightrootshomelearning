@@ -8,7 +8,7 @@ import Emoji from "@/components/Emoji";
 import LittleWeek from "@/components/make/LittleWeek";
 import { LittleTopicActivities, PlanLittleTerm, useLittleItems } from "@/components/make/LittleTopic";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { LITTLE_AREA_PAGES, LITTLE_PLAN } from "@/lib/little-roots-plan";
+import { LITTLE_AREA_PAGES, LITTLE_EXTRAS, LITTLE_PLAN } from "@/lib/little-roots-plan";
 import { TERMS, currentTerm, termBySlug } from "@/lib/terms";
 
 export default function LittleTermPageWrapper() {
@@ -19,7 +19,8 @@ export default function LittleTermPageWrapper() {
   );
 }
 
-/** Little Roots "This term": the weekly set, then each area's topic for the term. `?term=winter` shows another term. */
+/** Little Roots "This term": the weekly set, each area's topic, the rhymes, then P.E., outdoors, life skills, cooking
+ * and crafts. `?term=winter` shows another term. */
 function LittleTermPage() {
   const router = useRouter();
   const now = currentTerm();
@@ -111,6 +112,24 @@ function LittleTermPage() {
                 <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">Rhymes and songs</p>
                 <h2 className="mb-3 text-xl font-extrabold text-brand-charcoal">This term&apos;s rhymes</h2>
                 <LittleTopicActivities activities={plan.rhymes} items={items} comingLabel={comingLabel} />
+              </section>
+            )}
+            {LITTLE_EXTRAS[term.slug].length > 0 && (
+              <section>
+                <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">More for this term</p>
+                <h2 className="text-xl font-extrabold text-brand-charcoal">P.E., outdoors, life skills, cooking and crafts</h2>
+                <p className="mb-3 text-sm text-brand-earth">Extra activities to fit in around the week, whenever you have time.</p>
+                <div className="space-y-5">
+                  {LITTLE_EXTRAS[term.slug].map((extra) => (
+                    <div key={extra.kind}>
+                      <h3 className="mb-2 flex items-center gap-2 font-extrabold text-brand-charcoal">
+                        <Emoji e={extra.emoji} className="h-6 w-6 text-lg" />
+                        {extra.kind}
+                      </h3>
+                      <LittleTopicActivities activities={extra.activities} items={items} comingLabel={comingLabel} />
+                    </div>
+                  ))}
+                </div>
               </section>
             )}
           </div>

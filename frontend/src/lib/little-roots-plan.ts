@@ -71,6 +71,40 @@ export const LITTLE_PLAN: Record<TermSlug, { topics: LittleTopic[]; rhymes: Litt
   },
 };
 
+/** More for each term, beside the areas: P.E., outdoors, life skills, cooking and crafts, three of each. */
+export type LittleExtra = { kind: string; emoji: string; activities: LittleActivity[] };
+
+export const LITTLE_EXTRAS: Record<TermSlug, LittleExtra[]> = {
+  autumn: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Leaf catching", slug: "little-leaf-catching" }, { title: "Follow the leader walk", slug: "little-follow-the-leader-walk" }, { title: "Ball rolling to a friend", slug: "little-ball-rolling-to-a-friend" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Conker and acorn collecting", slug: "little-conker-and-acorn-collecting" }, { title: "Puddle walk in wellies", slug: "little-puddle-walk-in-wellies" }, { title: "Autumn colour hunt", slug: "little-autumn-colour-hunt" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Putting on my coat", slug: "little-putting-on-my-coat" }, { title: "Tidy-up time song", slug: "little-tidy-up-time-song" }, { title: "Laying the table", slug: "little-laying-the-table" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Apple crumble stirring", slug: "little-apple-crumble-stirring" }, { title: "Pumpkin soup helper", slug: "little-pumpkin-soup-helper" }, { title: "Spread your own toast", slug: "little-spread-your-own-toast" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Leaf crowns", slug: "little-leaf-crowns" }, { title: "Pine cone animals", slug: "little-pine-cone-animals" }, { title: "Paper plate owls", slug: "little-paper-plate-owls" }] },
+  ],
+  winter: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Snowball (sock) throwing", slug: "little-snowball-sock-throwing" }, { title: "Musical statues", slug: "little-musical-statues" }, { title: "Teddy yoga", slug: "little-teddy-yoga" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Frost and ice hunt", slug: "little-frost-and-ice-hunt" }, { title: "Feeding the birds", slug: "little-feeding-the-birds" }, { title: "Torch walk at dusk", slug: "little-torch-walk-at-dusk" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Zipping and buttons", slug: "little-zipping-and-buttons" }, { title: "Wrapping a present", slug: "little-wrapping-a-present" }, { title: "Pairing socks", slug: "little-pairing-socks" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Decorating biscuits", slug: "little-decorating-biscuits" }, { title: "Porridge toppings", slug: "little-porridge-toppings" }, { title: "Fruit kebabs", slug: "little-fruit-kebabs" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Handprint snowmen", slug: "little-handprint-snowmen" }, { title: "Paper chains", slug: "little-paper-chains" }, { title: "Pine cone bird feeders", slug: "little-pine-cone-bird-feeders" }] },
+  ],
+  spring: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Bunny hop races", slug: "little-bunny-hop-races" }, { title: "Bubble chasing", slug: "little-bubble-chasing" }, { title: "Crawling tunnels", slug: "little-crawling-tunnels" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Planting a pot", slug: "little-planting-a-pot" }, { title: "Puddle jumping", slug: "little-puddle-jumping" }, { title: "Spot the first flowers", slug: "little-spot-the-first-flowers" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Watering plants", slug: "little-watering-plants" }, { title: "Brushing my teeth", slug: "little-brushing-my-teeth" }, { title: "Helping with the laundry", slug: "little-helping-with-the-laundry" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Cress egg heads", slug: "little-cress-egg-heads" }, { title: "Easy pancakes", slug: "little-easy-pancakes" }, { title: "Rainbow fruit salad", slug: "little-rainbow-fruit-salad" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Egg box caterpillars", slug: "little-egg-box-caterpillars" }, { title: "Tissue paper flowers", slug: "little-tissue-paper-flowers" }, { title: "Handprint chicks", slug: "little-handprint-chicks" }] },
+  ],
+  summer: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Mini sports day", slug: "little-mini-sports-day" }, { title: "Water balloon catch", slug: "little-water-balloon-catch" }, { title: "Hopscotch for beginners", slug: "little-hopscotch-for-beginners" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Paddling pool play", slug: "little-paddling-pool-play" }, { title: "Picnic in the park", slug: "little-picnic-in-the-park" }, { title: "Sand pit digging", slug: "little-sand-pit-digging" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Putting on sun cream", slug: "little-putting-on-sun-cream" }, { title: "Packing my bag", slug: "little-packing-my-bag" }, { title: "Pouring my own drink", slug: "little-pouring-my-own-drink" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Fruit ice lollies", slug: "little-fruit-ice-lollies" }, { title: "Sandwich making", slug: "little-sandwich-making" }, { title: "Strawberry yoghurt pots", slug: "little-strawberry-yoghurt-pots" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Shell necklaces", slug: "little-shell-necklaces" }, { title: "Paper boats", slug: "little-paper-boats" }, { title: "Sun catchers", slug: "little-sun-catchers" }] },
+  ],
+};
+
 /** The activities in each term's plan that are best done outside, for the Outdoors page. */
 const OUTDOOR_SLUGS = new Set([
   "little-sound-walk", "little-leaf-pile-jumps", "little-water-painting", "little-leaf-faces", "little-bark-rubbings",
@@ -95,7 +129,8 @@ export function littleTermSection(pageSlug: string, term: TermSlug): { title: st
     return { title: "Rhymes to learn", summary: "Short rhymes and songs to say, sing and act out together.", activities: plan.rhymes };
   }
   if (pageSlug === "outdoors") {
-    const activities = plan.topics.flatMap((t) => t.activities).filter((a) => OUTDOOR_SLUGS.has(a.slug));
+    const outdoorExtras = LITTLE_EXTRAS[term].filter((e) => e.kind === "Outdoors").flatMap((e) => e.activities);
+    const activities = [...plan.topics.flatMap((t) => t.activities).filter((a) => OUTDOOR_SLUGS.has(a.slug)), ...outdoorExtras];
     return { title: "Out and about", summary: "Activities from every area that are best in the garden, the park or on a walk.", activities };
   }
   const area = LITTLE_AREA_PAGES.find((a) => a.slug === pageSlug);
