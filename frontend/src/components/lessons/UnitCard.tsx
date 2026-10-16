@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Emoji from "@/components/Emoji";
 import PlanSheets from "@/components/worksheets/PlanSheets";
-import { lessonLink, planUnit, type LessonUnit } from "@/lib/lessons";
+import { lessonLink, planUnit, unitTerm, type LessonUnit } from "@/lib/lessons";
+import { termBySlug } from "@/lib/terms";
 import { packBySlug, packCover } from "@/lib/topics";
 
 /**
@@ -28,7 +29,7 @@ export default function UnitCard({ unit, isChild, only }: { unit: LessonUnit; is
         </div>
         <div className="min-w-0 flex-1 p-5">
           <p className="text-xs font-bold uppercase tracking-wider" style={{ color: unit.color }}>
-            {unit.subject} · ages {unit.ages} · {unit.lessons.length} lessons, about {minutes} minutes each
+            {unit.subject} · ages {unit.ages} · {termBySlug(unitTerm(unit))?.name} · {unit.lessons.length} lessons, about {minutes} minutes each
           </p>
           <h2 className="mt-1 text-2xl font-extrabold text-brand-charcoal">{unit.title}</h2>
           <p className="mt-1 text-sm text-brand-earth">{unit.summary}</p>

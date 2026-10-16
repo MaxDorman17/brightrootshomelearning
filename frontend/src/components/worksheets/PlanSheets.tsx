@@ -29,7 +29,7 @@ const ALSO_CALLED: Record<string, string[]> = {
 };
 
 /** The family's own name for a subject, if their timetable has one; otherwise the name as given. */
-function ownNameFor(subject: string, timetable: string[]): string {
+export function ownNameFor(subject: string, timetable: string[]): string {
   const wanted = [plain(subject), ...(ALSO_CALLED[plain(subject)] ?? [])];
   for (const name of wanted) {
     const found = timetable.find((t) => plain(t) === name);
@@ -51,6 +51,7 @@ export default function PlanSheets({
   what,
   label = "Add to planner",
   className = "",
+  spread,
 }: {
   /** Worksheets to plan. Leave out when `plan` is given. */
   sheets?: Worksheet[];
@@ -65,6 +66,8 @@ export default function PlanSheets({
   what: string;
   label?: string;
   className?: string;
+  /** How several are spread over the days, when it isn't one subject's timetable days. */
+  spread?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [kids, setKids] = useState<Child[]>([]);
@@ -171,9 +174,9 @@ export default function PlanSheets({
                 {howMany > 1 && (
                   <p className="mt-1.5 text-xs text-brand-earth/80">
                     {howMany} {noun}, in order,{" "}
-                    {onTimetable
+                    {spread ?? (onTimetable
                       ? `on the days ${theSubject} is on your timetable. Days off, and days that already have ${theSubject}, are skipped.`
-                      : `one each weekday, as ${theSubject || "this subject"} is not on your timetable. Days off are skipped.`}{" "}
+                      : `one each weekday, as ${theSubject || "this subject"} is not on your timetable. Days off are skipped.`)}{" "}
                     You can move them in the planner afterwards.
                   </p>
                 )}
