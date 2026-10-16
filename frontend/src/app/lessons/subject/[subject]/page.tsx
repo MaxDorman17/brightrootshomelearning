@@ -128,7 +128,7 @@ function LessonSubjectPage() {
             href={`/lessons/term?ages=${agesParam}`}
             className="mb-8 flex items-center gap-3 rounded-2xl bg-brand-cream px-4 py-3 font-bold text-brand-charcoal hover:bg-brand-softsage/30"
           >
-            <span aria-hidden>{now.emoji}</span>
+            <Emoji e={now.emoji} className="h-8 w-8 text-2xl" />
             <span className="flex-1">
               It&apos;s {now.name}. See this term&apos;s topics in every subject for ages {onlyAges}
             </span>
@@ -198,8 +198,8 @@ function LessonSubjectPage() {
         {byTerm?.map(({ term, units: termUnits, planned }) => (
           <section key={term.slug} id={term.slug} className="mb-10 scroll-mt-20">
             <h2 className="mb-4 flex flex-wrap items-baseline gap-x-3 text-2xl font-extrabold text-brand-charcoal">
-              <span>
-                <span aria-hidden>{term.emoji} </span>
+              <span className="flex items-center gap-2">
+                <Emoji e={term.emoji} className="h-9 w-9 text-3xl" />
                 {term.name}
               </span>
               <span className="text-base font-bold text-brand-earth/70">{term.months}</span>
