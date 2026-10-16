@@ -23,6 +23,7 @@ import Emoji from "@/components/Emoji";
 import TimerBadge from "@/components/TimerBadge";
 import { AvatarChoice } from "@/lib/avatar";
 import { SEN_SECTIONS } from "@/lib/senSections";
+import { LITTLE_AREA_PAGES, RHYMES } from "@/lib/little-roots-plan";
 
 interface BellItem {
   key: string;
@@ -180,13 +181,16 @@ const PARENT_NAV: NavEntry[] = [
       },
     ],
   },
-  // Ages 3 to 4: short activities a grown-up does with the child. Not in the children's menus.
+  // Ages 3 to 4: short activities a grown-up does with the child, by term and area of learning. Not in the children's menus.
   {
     label: "Little Roots",
     items: [
-      { href: "/make/little-roots", label: "Activities" },
-      { href: "/make/little-roots/getting-started", label: "Getting started" },
+      { href: "/make/little-roots/term", label: "This term" },
+      ...LITTLE_AREA_PAGES.map((a) => ({ href: `/make/little-roots/area/${a.slug}`, label: a.name })),
+      { href: `/make/little-roots?category=${encodeURIComponent(RHYMES)}`, label: "Rhymes and songs" },
       { href: "/make/outdoors?age=little", label: "Outdoors" },
+      { href: "/make/little-roots", label: "All activities" },
+      { href: "/make/little-roots/getting-started", label: "Getting started" },
       { href: "/make/new?kind=little", label: "Add your own" },
     ],
   },
@@ -485,7 +489,7 @@ export default function Navbar() {
   const visible = (link: NavLink) => {
     if (link.href.startsWith("/teens") && !showTeen) return false;
     if (YOUNG_PAGES.includes(link.href) && !showYoung && !showSeedling) return false;
-    if (LITTLE_PAGES.includes(link.href) && !showLittle) return false;
+    if ((LITTLE_PAGES.includes(link.href) || link.href.startsWith("/make/little-roots")) && !showLittle) return false;
     const rule = OPTIONAL_PAGES[link.href];
     // Until the timetable has loaded, keep optional pages hidden rather than flashing them.
     return !rule || (subjects !== null && rule(subjects));

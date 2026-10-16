@@ -28,7 +28,10 @@ export default function MakeLibrary(props: { kind: MakeKind; audience?: Audience
 function Library({ kind, audience = "young" }: { kind: MakeKind; audience?: Audience }) {
   const router = useRouter();
   // The Seedlings menu opens these pages at ?age=little and the Saplings menu at ?age=junior.
-  const ageParam = useSearchParams().get("age");
+  const params = useSearchParams();
+  const ageParam = params.get("age");
+  // The Little Roots menu opens Rhymes and songs at ?category=.
+  const categoryParam = params.get("category");
   const info = KIND_INFO[kind];
   const teen = audience === "teen";
   // Little Roots (ages 3 to 4) has no teen version.
@@ -70,8 +73,8 @@ function Library({ kind, audience = "young" }: { kind: MakeKind; audience?: Audi
   useEffect(() => {
     if (teen) return;
     setAge(ageParam === "little" || ageParam === "junior" ? ageParam : "");
-    setCategory("");
-  }, [ageParam, teen]);
+    setCategory(categoryParam ?? "");
+  }, [ageParam, categoryParam, teen]);
 
   const categories = useMemo(
     () =>
