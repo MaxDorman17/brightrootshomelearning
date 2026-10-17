@@ -83,9 +83,9 @@ export const LITTLE_EXTRAS: Record<TermSlug, LittleExtra[]> = {
     { kind: "Crafts", emoji: "✂️", activities: [{ title: "Leaf crowns", slug: "little-leaf-crowns" }, { title: "Pine cone animals", slug: "little-pine-cone-animals" }, { title: "Paper plate owls", slug: "little-paper-plate-owls" }] },
   ],
   winter: [
-    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Snowball (sock) throwing", slug: "little-snowball-sock-throwing" }, { title: "Musical statues", slug: "little-musical-statues" }, { title: "Teddy yoga", slug: "little-teddy-yoga" }] },
-    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Frost and ice hunt", slug: "little-frost-and-ice-hunt" }, { title: "Feeding the birds", slug: "little-feeding-the-birds" }, { title: "Torch walk at dusk", slug: "little-torch-walk-at-dusk" }] },
-    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Zipping and buttons", slug: "little-zipping-and-buttons" }, { title: "Wrapping a present", slug: "little-wrapping-a-present" }, { title: "Pairing socks", slug: "little-pairing-socks" }] },
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Snowball (sock) throwing", slug: "little-snowball-sock-throwing" }, { title: "Tightrope walking", slug: "little-tightrope-walking" }, { title: "Teddy yoga", slug: "little-teddy-yoga" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Frost and ice hunt", slug: "little-frost-and-ice-hunt" }, { title: "Animal tracks", slug: "little-animal-tracks" }, { title: "Torch walk at dusk", slug: "little-torch-walk-at-dusk" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Zipping and buttons", slug: "little-zipping-and-buttons" }, { title: "Wrapping a present", slug: "little-wrapping-a-present" }, { title: "Putting on socks and shoes", slug: "little-putting-on-socks-and-shoes" }] },
     { kind: "Cooking", emoji: "🍳", activities: [{ title: "Decorating biscuits", slug: "little-decorating-biscuits" }, { title: "Porridge toppings", slug: "little-porridge-toppings" }, { title: "Fruit kebabs", slug: "little-fruit-kebabs" }] },
     { kind: "Crafts", emoji: "✂️", activities: [{ title: "Handprint snowmen", slug: "little-handprint-snowmen" }, { title: "Paper chains", slug: "little-paper-chains" }, { title: "Pine cone bird feeders", slug: "little-pine-cone-bird-feeders" }] },
   ],
