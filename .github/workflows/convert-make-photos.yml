@@ -1,0 +1,37 @@
+name: Convert make photos
+
+# When pictures (PNG, JPEG or WebP) are pushed into frontend/public/make-photos,
+# turn them into 900 x 900 JPGs named after the activity and commit them back.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/public/make-photos/*.png"
+      - "frontend/public/make-photos/*.PNG"
+      - "frontend/public/make-photos/*.jpeg"
+      - "frontend/public/make-photos/*.webp"
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+      - run: python scripts/convert_make_photos.py
+      - name: Commit the JPGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A frontend/public/make-photos
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Convert new activity pictures to 900x900 JPGs"
+            git push
+          fi
