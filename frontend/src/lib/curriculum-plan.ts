@@ -10,14 +10,6 @@ export type PlannedTopic = { subject: string; title: string };
 export const PLANNED_TOPICS: Record<string, Record<TermSlug, PlannedTopic[]>> = {
   "5 to 7": {
     autumn: [
-      { subject: "Maths", title: "Counting and numbers to 20" },
-      { subject: "Maths", title: "Sorting and patterns" },
-      { subject: "Maths", title: "Adding and taking away" },
-      { subject: "Maths", title: "Doubles, bonds and fact families" },
-      { subject: "Maths", title: "Number stories and problem solving" },
-      { subject: "Maths", title: "Where is it? Position words" },
-      { subject: "Maths", title: "Length and height in centimetres" },
-      { subject: "Maths", title: "Before, after and the calendar" },
       { subject: "English", title: "Sounds, letters and handwriting" },
       { subject: "English", title: "Show, tell and listen" },
       { subject: "English", title: "Two letters, one sound" },

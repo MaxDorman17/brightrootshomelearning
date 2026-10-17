@@ -68,6 +68,14 @@ import { identityAndMentalHealth } from "@/lib/lesson-units/identity-and-mental-
 import { religionInTheUk } from "@/lib/lesson-units/religion-in-the-uk";
 import { ancientEgypt } from "@/lib/lesson-units/ancient-egypt";
 import { lightAndShadows } from "@/lib/lesson-units/light-and-shadows";
+import { countingTo20 } from "@/lib/lesson-units/counting-to-20";
+import { sortingAndPatterns } from "@/lib/lesson-units/sorting-and-patterns";
+import { addingAndTakingAwayUnit } from "@/lib/lesson-units/adding-and-taking-away";
+import { doublesAndBonds } from "@/lib/lesson-units/doubles-and-bonds";
+import { numberStories } from "@/lib/lesson-units/number-stories";
+import { positionWords } from "@/lib/lesson-units/position-words";
+import { lengthAndHeight } from "@/lib/lesson-units/length-and-height";
+import { beforeAfterCalendar } from "@/lib/lesson-units/before-after-and-the-calendar";
 
 /**
  * Bright Roots lessons: lessons a child does on screen, step by step, in the same way as an Oak lesson. Written for
@@ -205,6 +213,14 @@ export const UNITS: LessonUnit[] = [
   pythonFirstPrograms,
   identityAndMentalHealth,
   religionInTheUk,
+  countingTo20,
+  sortingAndPatterns,
+  addingAndTakingAwayUnit,
+  doublesAndBonds,
+  numberStories,
+  positionWords,
+  lengthAndHeight,
+  beforeAfterCalendar,
 ];
 
 export const COMING_UNITS: ComingUnit[] = [
