@@ -8,8 +8,8 @@ import Emoji from "@/components/Emoji";
 import LittleWeek from "@/components/make/LittleWeek";
 import { LittleTopicActivities, PlanLittleTerm, useLittleItems } from "@/components/make/LittleTopic";
 import { getRole, isAuthenticated } from "@/lib/auth";
-import { LITTLE_AREA_PAGES, LITTLE_EXTRAS, LITTLE_PLAN } from "@/lib/little-roots-plan";
-import { TERMS, currentTerm, termBySlug } from "@/lib/terms";
+import { LITTLE_AREA_PAGES, LITTLE_YEARS, littleExtras, littlePlan, littleYear } from "@/lib/little-roots-plan";
+import { TERMS, type Term, currentTerm, termBySlug } from "@/lib/terms";
 
 export default function LittleTermPageWrapper() {
   return (
@@ -20,11 +20,13 @@ export default function LittleTermPageWrapper() {
 }
 
 /** Little Roots "This term": the weekly set, each area's topic, the rhymes, then P.E., outdoors, life skills, cooking
- * and crafts. `?term=winter` shows another term. */
+ * and crafts. `?term=winter` shows another term, and `?year=b` shows Year B. */
 function LittleTermPage() {
   const router = useRouter();
   const now = currentTerm();
-  const term = termBySlug(useSearchParams().get("term")) ?? now;
+  const params = useSearchParams();
+  const term = termBySlug(params.get("term")) ?? now;
+  const year = littleYear(params.get("year"));
   const isNow = term === now;
   const items = useLittleItems();
   const [role, setRole] = useState("");
@@ -37,7 +39,14 @@ function LittleTermPage() {
     setRole(getRole() || "");
   }, [router]);
 
-  const plan = LITTLE_PLAN[term.slug];
+  const plan = littlePlan(year, term.slug);
+  const extras = littleExtras(year, term.slug);
+  const yearInfo = LITTLE_YEARS.find((y) => y.slug === year)!;
+  // A link to this page for another term or year, leaving out whatever is the default.
+  const pageHref = (t: Term, y: string) => {
+    const query = [t !== now && `term=${t.slug}`, y === "b" && "year=b"].filter(Boolean).join("&");
+    return `/make/little-roots/term${query ? `?${query}` : ""}`;
+  };
   const comingLabel = isNow ? "Still being written for this term" : `Coming in ${term.startMonth}`;
 
   return (
@@ -58,6 +67,9 @@ function LittleTermPage() {
             {term.months}
             {isNow ? ", this term." : "."} One topic for each area of learning, six short activities each.
           </p>
+          <p className="mt-1 text-sm text-brand-earth/80">
+            <span className="font-bold text-brand-charcoal">{yearInfo.name}:</span> {yearInfo.blurb}
+          </p>
           {role === "parent" && items && (
             <div className="mt-4">
               <PlanLittleTerm topics={plan.topics} items={items} term={term} isNow={isNow} />
@@ -65,11 +77,26 @@ function LittleTermPage() {
           )}
         </header>
 
+        <nav aria-label="Years" className="mb-3 flex flex-wrap gap-2">
+          {LITTLE_YEARS.map((y) => (
+            <Link
+              key={y.slug}
+              href={pageHref(term, y.slug)}
+              aria-current={y.slug === year ? "page" : undefined}
+              className={`rounded-full px-4 py-2 text-sm font-extrabold transition-colors ${
+                y.slug === year ? "bg-brand-charcoal text-white" : "border-2 border-brand-line bg-white text-brand-earth hover:border-brand-softsage"
+              }`}
+            >
+              {y.name}
+            </Link>
+          ))}
+        </nav>
+
         <nav aria-label="Terms" className="mb-6 flex flex-wrap gap-2">
           {TERMS.map((t) => (
             <Link
               key={t.slug}
-              href={t === now ? "/make/little-roots/term" : `/make/little-roots/term?term=${t.slug}`}
+              href={pageHref(t, year)}
               aria-current={t === term ? "page" : undefined}
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-colors ${
                 t === term ? "bg-brand-sage text-white" : "border-2 border-brand-line bg-white text-brand-earth hover:border-brand-softsage"
@@ -114,13 +141,13 @@ function LittleTermPage() {
                 <LittleTopicActivities activities={plan.rhymes} items={items} comingLabel={comingLabel} />
               </section>
             )}
-            {LITTLE_EXTRAS[term.slug].length > 0 && (
+            {extras.length > 0 && (
               <section>
                 <p className="text-xs font-bold uppercase tracking-wider text-brand-softsage">More for this term</p>
                 <h2 className="text-xl font-extrabold text-brand-charcoal">P.E., outdoors, life skills, cooking and crafts</h2>
                 <p className="mb-3 text-sm text-brand-earth">Extra activities to fit in around the week, whenever you have time.</p>
                 <div className="space-y-5">
-                  {LITTLE_EXTRAS[term.slug].map((extra) => (
+                  {extras.map((extra) => (
                     <div key={extra.kind}>
                       <h3 className="mb-2 flex items-center gap-2 font-extrabold text-brand-charcoal">
                         <Emoji e={extra.emoji} className="h-6 w-6 text-lg" />

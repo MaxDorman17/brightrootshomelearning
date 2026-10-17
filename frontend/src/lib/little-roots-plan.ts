@@ -2,6 +2,7 @@
  * The Little Roots plan (ages 3 to 4): one topic of six activities per area of learning each term, and the
  * rhymes for the term. `slug` is the activity's slug once it is built (backend make_starters_little.py);
  * a slug that has no activity yet shows as "coming". Made from the Bright Roots curriculum plan.
+ * There are two years, so a child who has done Year A meets new activities in Year B.
  */
 import type { TermSlug } from "@/lib/terms";
 
@@ -19,6 +20,14 @@ export const LITTLE_AREA_PAGES = [
   { name: "Feelings and friends", slug: "feelings-and-friends", emoji: "💛" },
 ];
 export const RHYMES = "Rhymes and songs";
+
+export type LittleYear = "a" | "b";
+export const LITTLE_YEARS: { slug: LittleYear; name: string; blurb: string }[] = [
+  { slug: "a", name: "Year A", blurb: "The first year: talking, counting, first sounds, moving, making, nature and feelings." },
+  { slug: "b", name: "Year B", blurb: "The second year, for 4 going on 5: blending sounds, numbers to ten and beyond, pencil and scissor skills, and getting ready for school." },
+];
+/** `?year=b` picks Year B; anything else is Year A. */
+export const littleYear = (value?: string | null): LittleYear => (value === "b" ? "b" : "a");
 
 export const LITTLE_PLAN: Record<TermSlug, { topics: LittleTopic[]; rhymes: LittleActivity[] }> = {
   autumn: {
@@ -71,7 +80,7 @@ export const LITTLE_PLAN: Record<TermSlug, { topics: LittleTopic[]; rhymes: Litt
   },
 };
 
-/** More for each term, beside the areas: P.E., outdoors, life skills, cooking and crafts, three of each. */
+/** More for each term, beside the areas: P.E., outdoors, life skills, cooking and crafts (three of each in Year A, four in Year B). */
 export type LittleExtra = { kind: string; emoji: string; activities: LittleActivity[] };
 
 export const LITTLE_EXTRAS: Record<TermSlug, LittleExtra[]> = {
@@ -114,7 +123,91 @@ const OUTDOOR_SLUGS = new Set([
   "little-weather-watching",
   "little-picnic-chatter", "little-number-hunt-in-the-garden",
   "little-egg-and-spoon-race", "little-running-races", "little-parachute-play", "little-chalk-murals", "little-wet-sand-dry-sand",
+  "little-acorn-number-line", "little-leaf-number-match", "little-skipping-steps", "little-throw-at-a-target", "little-natural-paintbrushes",
 ]);
+
+/** Year B, the second year (usually 4 going on 5): the same areas, stretching further towards school. */
+export const LITTLE_PLAN_B: Record<TermSlug, { topics: LittleTopic[]; rhymes: LittleActivity[] }> = {
+  autumn: {
+    topics: [
+      { area: "Talk", title: "Show me, tell me", summary: "Children explain what they are doing, answer how and why questions and listen to longer instructions.", activities: [{ title: "Feely bag describing", slug: "little-feely-bag-describing" }, { title: "Tell it in order", slug: "little-tell-it-in-order" }, { title: "Why, why, why?", slug: "little-why-why-why" }, { title: "My weekend news", slug: "little-my-weekend-news" }, { title: "Three-step instructions", slug: "little-three-step-instructions" }, { title: "Autumn story map", slug: "little-autumn-story-map" }] },
+      { area: "Early maths", title: "Numbers to ten", summary: "Children count objects to ten, see small amounts without counting and find one less.", activities: [{ title: "Acorn number line", slug: "little-acorn-number-line" }, { title: "How many without counting?", slug: "little-how-many-without-counting" }, { title: "Leaf number match", slug: "little-leaf-number-match" }, { title: "Ten in the bed", slug: "little-ten-in-the-bed" }, { title: "Find one less", slug: "little-find-one-less" }, { title: "Dice dot spotting", slug: "little-dice-dot-spotting" }] },
+      { area: "Letters and sounds", title: "Sound detectives", summary: "Children hear and say their first letter sounds and start to blend them into short words.", activities: [{ title: "Snake sounds s-s-s", slug: "little-snake-sounds-s-s-s" }, { title: "Sound pebbles", slug: "little-sound-pebbles" }, { title: "Blend it to find it", slug: "little-blend-it-to-find-it" }, { title: "Pick up the sound", slug: "little-pick-up-the-sound" }, { title: "Story time questions", slug: "little-story-time-questions" }, { title: "Tracing my name", slug: "little-tracing-my-name" }] },
+      { area: "Moving", title: "Busy hands and feet", summary: "Children build the hand strength for holding a pencil and scissors alongside skipping, aiming and stepping.", activities: [{ title: "Scissor snipping", slug: "little-scissor-snipping" }, { title: "Pencil grip games", slug: "little-pencil-grip-games" }, { title: "Threading pasta", slug: "little-threading-pasta" }, { title: "Skipping steps", slug: "little-skipping-steps" }, { title: "Throw at a target", slug: "little-throw-at-a-target" }, { title: "Tiptoe and stomp", slug: "little-tiptoe-and-stomp" }] },
+      { area: "Creating", title: "Harvest makers", summary: "Children print, build and perform using autumn produce and natural materials.", activities: [{ title: "Vegetable printing", slug: "little-vegetable-printing" }, { title: "Seed mosaics", slug: "little-seed-mosaics" }, { title: "Natural paintbrushes", slug: "little-natural-paintbrushes" }, { title: "Pinch pots", slug: "little-pinch-pots" }, { title: "Harvest song making", slug: "little-harvest-song-making" }, { title: "Scarecrow role play", slug: "little-scarecrow-role-play" }] },
+      { area: "The world around us", title: "Then and now", summary: "Children compare their lives with the past through family stories, old toys and photos.", activities: [{ title: "Old toys, new toys", slug: "little-old-toys-new-toys" }, { title: "When Grandad was little", slug: "little-when-grandad-was-little" }, { title: "Baby me, big me", slug: "little-baby-me-big-me" }, { title: "Washing day long ago", slug: "little-washing-day-long-ago" }, { title: "Bonfire night stories", slug: "little-bonfire-night-stories" }, { title: "Harvest thank you", slug: "little-harvest-thank-you" }] },
+      { area: "Feelings and friends", title: "My big feelings", summary: "Children name stronger feelings and learn simple ways to calm down and talk things through.", activities: [{ title: "Feelings thermometer", slug: "little-feelings-thermometer" }, { title: "Worried and brave", slug: "little-worried-and-brave" }, { title: "Volcano breathing", slug: "little-volcano-breathing" }, { title: "What could we do?", slug: "little-what-could-we-do" }, { title: "Feelings colours", slug: "little-feelings-colours" }, { title: "Talking it through", slug: "little-talking-it-through" }] },
+    ],
+    rhymes: [{ title: "Crunchy leaf march", slug: "little-crunchy-leaf-march" }, { title: "Ten conkers in a row", slug: "little-ten-conkers-in-a-row" }, { title: "Scarecrow, scarecrow, turn around", slug: "little-scarecrow-scarecrow-turn-around" }, { title: "Busy squirrel's buried treat", slug: "little-busy-squirrel-s-buried-treat" }],
+  },
+  winter: {
+    topics: [
+      { area: "Talk", title: "Once upon a winter", summary: "Children make up and act out stories, learn short poems and ask good questions.", activities: [{ title: "Story stones", slug: "little-story-stones" }, { title: "Winter puppet show", slug: "little-winter-puppet-show" }, { title: "Change the ending", slug: "little-change-the-ending" }, { title: "Learn a little poem", slug: "little-learn-a-little-poem" }, { title: "Riddle time", slug: "little-riddle-time" }, { title: "My favourite book", slug: "little-my-favourite-book" }] },
+      { area: "Early maths", title: "Number friends", summary: "Children find the parts that make five, spot doubles and share things fairly.", activities: [{ title: "Five frame fill", slug: "little-five-frame-fill" }, { title: "Parts of five", slug: "little-parts-of-five" }, { title: "Double the spots", slug: "little-double-the-spots" }, { title: "Sharing the biscuits", slug: "little-sharing-the-biscuits" }, { title: "Odd and even socks", slug: "little-odd-and-even-socks" }, { title: "Present box take away", slug: "little-present-box-take-away" }] },
+      { area: "Letters and sounds", title: "Word builders", summary: "Children blend sounds to read tiny words and begin to write their name and simple labels.", activities: [{ title: "Sound talk robot", slug: "little-sound-talk-robot" }, { title: "Blend and pick", slug: "little-blend-and-pick" }, { title: "Sh and ch sounds", slug: "little-sh-and-ch-sounds" }, { title: "Writing my name", slug: "little-writing-my-name" }, { title: "Labels for presents", slug: "little-labels-for-presents" }, { title: "Reading tiny words", slug: "little-reading-tiny-words" }] },
+      { area: "Moving", title: "Winter wigglers", summary: "Children stay active indoors with crawling, balancing and cutting and pinching games.", activities: [{ title: "Crab walk races", slug: "little-crab-walk-races" }, { title: "Balloon keep-up", slug: "little-balloon-keep-up" }, { title: "Sock skating", slug: "little-sock-skating" }, { title: "Copy my dance", slug: "little-copy-my-dance" }, { title: "Pegs and tweezers", slug: "little-pegs-and-tweezers" }, { title: "Pillow mountain climb", slug: "little-pillow-mountain-climb" }] },
+      { area: "Creating", title: "Frosty creations", summary: "Children create winter scenes, sculptures and music and perform for the family.", activities: [{ title: "Snow scene collage", slug: "little-snow-scene-collage" }, { title: "Starry night painting", slug: "little-starry-night-painting" }, { title: "Tin foil sculptures", slug: "little-tin-foil-sculptures" }, { title: "Jingle bells band", slug: "little-jingle-bells-band" }, { title: "Shadow puppet theatre", slug: "little-shadow-puppet-theatre" }, { title: "Ice crystal printing", slug: "little-ice-crystal-printing" }] },
+      { area: "The world around us", title: "Celebrations near and far", summary: "Children learn how families in Scotland and around the world celebrate in winter.", activities: [{ title: "Christmas around the world", slug: "little-christmas-around-the-world" }, { title: "Hogmanay and first footing", slug: "little-hogmanay-and-first-footing" }, { title: "Lunar New Year dragon", slug: "little-lunar-new-year-dragon" }, { title: "Burns Night ceilidh", slug: "little-burns-night-ceilidh" }, { title: "Birthday traditions", slug: "little-birthday-traditions" }, { title: "Every family is different", slug: "little-every-family-is-different" }] },
+      { area: "Feelings and friends", title: "Looking after me", summary: "Children learn healthy habits for teeth, food, sleep and getting ready on their own.", activities: [{ title: "Blowing my nose", slug: "little-blowing-my-nose" }, { title: "A healthy plate", slug: "little-a-healthy-plate" }, { title: "Sleep and rest", slug: "little-sleep-and-rest" }, { title: "Doing it myself", slug: "little-doing-it-myself" }, { title: "Drinking water", slug: "little-drinking-water" }, { title: "Keeping warm and well", slug: "little-keeping-warm-and-well" }] },
+    ],
+    rhymes: [{ title: "Frosty finger tap", slug: "little-frosty-finger-tap" }, { title: "Little robin on the gate", slug: "little-little-robin-on-the-gate" }, { title: "Wrap up warm", slug: "little-wrap-up-warm" }, { title: "Five snowmen melting", slug: "little-five-snowmen-melting" }],
+  },
+  spring: {
+    topics: [
+      { area: "Talk", title: "Curious questions", summary: "Children ask and answer questions, explain their ideas and take turns in a conversation.", activities: [{ title: "What if...?", slug: "little-what-if" }, { title: "Interview a grown-up", slug: "little-interview-a-grown-up" }, { title: "Explain your drawing", slug: "little-explain-your-drawing" }, { title: "Spring news report", slug: "little-spring-news-report" }, { title: "Talk partners", slug: "little-talk-partners" }, { title: "Sort it and say why", slug: "little-sort-it-and-say-why" }] },
+      { area: "Early maths", title: "Shape and space", summary: "Children build with solid shapes, use position words and make longer patterns.", activities: [{ title: "Building with solid shapes", slug: "little-building-with-solid-shapes" }, { title: "Shape jigsaw animals", slug: "little-shape-jigsaw-animals" }, { title: "Over, under, behind", slug: "little-over-under-behind" }, { title: "Treasure map steps", slug: "little-treasure-map-steps" }, { title: "Roll it or stack it", slug: "little-roll-it-or-stack-it" }, { title: "Pattern snakes", slug: "little-pattern-snakes" }] },
+      { area: "Letters and sounds", title: "First writing", summary: "Children write simple labels, lists and captions using the sounds they know.", activities: [{ title: "My shopping list", slug: "little-my-shopping-list" }, { title: "Seed packet labels", slug: "little-seed-packet-labels" }, { title: "Silly sentences", slug: "little-silly-sentences" }, { title: "Letter shape rhymes", slug: "little-letter-shape-rhymes" }, { title: "Caption the picture", slug: "little-caption-the-picture" }, { title: "Read and draw", slug: "little-read-and-draw" }] },
+      { area: "Moving", title: "Ready, steady, ride", summary: "Children build balance and control on wheels and with balls and ropes.", activities: [{ title: "Scooter steering", slug: "little-scooter-steering" }, { title: "Balance bike glide", slug: "little-balance-bike-glide" }, { title: "Bounce and catch", slug: "little-bounce-and-catch" }, { title: "Jump with two feet", slug: "little-jump-with-two-feet" }, { title: "Rope snake jumps", slug: "little-rope-snake-jumps" }, { title: "Follow the chalk trail", slug: "little-follow-the-chalk-trail" }] },
+      { area: "Creating", title: "Artists and music makers", summary: "Children look at famous art, paint what they see and make up music and dance.", activities: [{ title: "Sunflowers like Van Gogh", slug: "little-sunflowers-like-van-gogh" }, { title: "Painting to music", slug: "little-painting-to-music" }, { title: "Flower still life", slug: "little-flower-still-life" }, { title: "Make up a dance", slug: "little-make-up-a-dance" }, { title: "Ribbon weaving", slug: "little-ribbon-weaving" }, { title: "Clay minibeasts", slug: "little-clay-minibeasts" }] },
+      { area: "The world around us", title: "Little life cycles", summary: "Children watch how frogs, butterflies, chicks and plants grow and change.", activities: [{ title: "Frogspawn to frog", slug: "little-frogspawn-to-frog" }, { title: "Caterpillar to butterfly", slug: "little-caterpillar-to-butterfly" }, { title: "Egg to chick", slug: "little-egg-to-chick" }, { title: "Seed to plant", slug: "little-seed-to-plant" }, { title: "Parts of a plant", slug: "little-parts-of-a-plant" }, { title: "How have I grown?", slug: "little-how-have-i-grown" }] },
+      { area: "Feelings and friends", title: "Friends and fair play", summary: "Children practise playing fairly, sorting out fall-outs and including everyone.", activities: [{ title: "Playing fair", slug: "little-playing-fair" }, { title: "Making up after a fall-out", slug: "little-making-up-after-a-fall-out" }, { title: "Listening to my friend", slug: "little-listening-to-my-friend" }, { title: "Working as a team", slug: "little-working-as-a-team" }, { title: "Everyone can play", slug: "little-everyone-can-play" }, { title: "Kind words", slug: "little-kind-words" }] },
+    ],
+    rhymes: [{ title: "Tadpole wiggle", slug: "little-tadpole-wiggle" }, { title: "Blossom on the breeze", slug: "little-blossom-on-the-breeze" }, { title: "Ladybird, count your spots", slug: "little-ladybird-count-your-spots" }, { title: "The puddle-hopping duck", slug: "little-the-puddle-hopping-duck" }],
+  },
+  summer: {
+    topics: [
+      { area: "Talk", title: "Big school chatter", summary: "Children practise speaking in a group, asking for help and telling a story in full sentences.", activities: [{ title: "What's in my school bag?", slug: "little-what-s-in-my-school-bag" }, { title: "Asking the teacher", slug: "little-asking-the-teacher" }, { title: "Talking in a group", slug: "little-talking-in-a-group" }, { title: "My best book", slug: "little-my-best-book" }, { title: "Say it in a sentence", slug: "little-say-it-in-a-sentence" }, { title: "Tell a summer story", slug: "little-tell-a-summer-story" }] },
+      { area: "Early maths", title: "Measure and money", summary: "Children compare lengths and weights, count beyond ten and use pennies in play.", activities: [{ title: "Longest snail trail", slug: "little-longest-snail-trail" }, { title: "Pebble scales", slug: "little-pebble-scales" }, { title: "Seaside shop pennies", slug: "little-seaside-shop-pennies" }, { title: "Filling buckets", slug: "little-filling-buckets" }, { title: "My day in order", slug: "little-my-day-in-order" }, { title: "Counting to twenty", slug: "little-counting-to-twenty" }] },
+      { area: "Letters and sounds", title: "Little readers", summary: "Children read short words and sentences and write postcards, lists and their first book.", activities: [{ title: "Reading a label", slug: "little-reading-a-label" }, { title: "Sound out the sign", slug: "little-sound-out-the-sign" }, { title: "Postcard writing", slug: "little-postcard-writing" }, { title: "Story questions", slug: "little-story-questions" }, { title: "Fishing for words", slug: "little-fishing-for-words" }, { title: "My first book", slug: "little-my-first-book" }] },
+      { area: "Moving", title: "Summer ball games", summary: "Children catch, dribble and strike balls and play simple games with rules.", activities: [{ title: "Catch with two hands", slug: "little-catch-with-two-hands" }, { title: "Dribble the ball", slug: "little-dribble-the-ball" }, { title: "Bat and balloon", slug: "little-bat-and-balloon" }, { title: "Relay race", slug: "little-relay-race" }, { title: "Follow the rules game", slug: "little-follow-the-rules-game" }, { title: "Dance party", slug: "little-dance-party" }] },
+      { area: "Creating", title: "Seaside studio", summary: "Children sculpt, paint and play out seaside scenes with natural and recycled materials.", activities: [{ title: "Sand sculptures", slug: "little-sand-sculptures" }, { title: "Shell mobiles", slug: "little-shell-mobiles" }, { title: "Seaside soundscape", slug: "little-seaside-soundscape" }, { title: "Wave weaving", slug: "little-wave-weaving" }, { title: "Lighthouse models", slug: "little-lighthouse-models" }, { title: "Beach caf\u00e9 role play", slug: "little-beach-caf-role-play" }] },
+      { area: "The world around us", title: "Places near and far", summary: "Children draw simple maps, compare places and learn to care for the environment.", activities: [{ title: "Our street map", slug: "little-our-street-map" }, { title: "Farm or city?", slug: "little-farm-or-city" }, { title: "Hot places, cold places", slug: "little-hot-places-cold-places" }, { title: "Spin the globe", slug: "little-spin-the-globe" }, { title: "Beach clean-up", slug: "little-beach-clean-up" }, { title: "Journey to the coast", slug: "little-journey-to-the-coast" }] },
+      { area: "Feelings and friends", title: "Off to big school", summary: "Children build the confidence and self-care skills they need for starting school.", activities: [{ title: "Excited and nervous", slug: "little-excited-and-nervous" }, { title: "Making new friends", slug: "little-making-new-friends" }, { title: "Lining up and listening", slug: "little-lining-up-and-listening" }, { title: "Toilet on my own", slug: "little-toilet-on-my-own" }, { title: "Lunchbox practice", slug: "little-lunchbox-practice" }, { title: "My all about me book", slug: "little-my-all-about-me-book" }] },
+    ],
+    rhymes: [{ title: "Bucket and spade", slug: "little-bucket-and-spade" }, { title: "Ten little crabs scuttling", slug: "little-ten-little-crabs-scuttling" }, { title: "Ice lolly drip drop", slug: "little-ice-lolly-drip-drop" }, { title: "My new school shoes", slug: "little-my-new-school-shoes" }],
+  },
+};
+
+export const LITTLE_EXTRAS_B: Record<TermSlug, LittleExtra[]> = {
+  autumn: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Conker obstacle trail", slug: "little-conker-obstacle-trail" }, { title: "Crunchy leaf stomp dance", slug: "little-crunchy-leaf-stomp-dance" }, { title: "Hoop rolling", slug: "little-hoop-rolling" }, { title: "Bear crawls", slug: "little-bear-crawls" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Mushroom spotting walk", slug: "little-mushroom-spotting-walk" }, { title: "Stick and twig sorting", slug: "little-stick-and-twig-sorting" }, { title: "Wind and kite day", slug: "little-wind-and-kite-day" }, { title: "Hedgehog house building", slug: "little-hedgehog-house-building" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Hanging up my coat", slug: "little-hanging-up-my-coat" }, { title: "Sorting the recycling", slug: "little-sorting-the-recycling" }, { title: "Choosing my clothes", slug: "little-choosing-my-clothes" }, { title: "Carrying a tray", slug: "little-carrying-a-tray" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Apple slices with a safe knife", slug: "little-apple-slices-with-a-safe-knife" }, { title: "Baked potato toppings", slug: "little-baked-potato-toppings" }, { title: "Pear and oat muffins", slug: "little-pear-and-oat-muffins" }, { title: "Vegetable soup chopping", slug: "little-vegetable-soup-chopping" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Acorn cap people", slug: "little-acorn-cap-people" }, { title: "Leaf lanterns", slug: "little-leaf-lanterns" }, { title: "Stick rafts", slug: "little-stick-rafts" }, { title: "Hedgehog paper rolls", slug: "little-hedgehog-paper-rolls" }] },
+  ],
+  winter: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Sock ball skittles", slug: "little-sock-ball-skittles" }, { title: "Animal yoga flow", slug: "little-animal-yoga-flow" }, { title: "Balloon tennis", slug: "little-balloon-tennis" }, { title: "Hallway hopscotch", slug: "little-hallway-hopscotch" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Animal tracks in snow or mud", slug: "little-animal-tracks-in-snow-or-mud" }, { title: "Icicle and frost search", slug: "little-icicle-and-frost-search" }, { title: "Winter tree shapes", slug: "little-winter-tree-shapes" }, { title: "Star spotting on a clear night", slug: "little-star-spotting-on-a-clear-night" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Putting on wellies", slug: "little-putting-on-wellies" }, { title: "Hanging up the washing with pegs", slug: "little-hanging-up-the-washing-with-pegs" }, { title: "Wiping the table", slug: "little-wiping-the-table" }, { title: "Sorting the cutlery", slug: "little-sorting-the-cutlery" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Cheese scones", slug: "little-cheese-scones" }, { title: "Warm fruit crumble cups", slug: "little-warm-fruit-crumble-cups" }, { title: "Hot chocolate stirring", slug: "little-hot-chocolate-stirring" }, { title: "Clementine faces", slug: "little-clementine-faces" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Lolly stick stars", slug: "little-lolly-stick-stars" }, { title: "Cotton wool polar bears", slug: "little-cotton-wool-polar-bears" }, { title: "Paper snowflakes", slug: "little-paper-snowflakes" }, { title: "Sock snowmen", slug: "little-sock-snowmen" }] },
+  ],
+  spring: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Skipping rope wiggles", slug: "little-skipping-rope-wiggles" }, { title: "Frog jump races", slug: "little-frog-jump-races" }, { title: "Kite running", slug: "little-kite-running" }, { title: "Target rolling", slug: "little-target-rolling" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Frogspawn pond visit", slug: "little-frogspawn-pond-visit" }, { title: "Blossom tree picnic", slug: "little-blossom-tree-picnic" }, { title: "Bird nest spotting", slug: "little-bird-nest-spotting" }, { title: "Planting wildflower seeds", slug: "little-planting-wildflower-seeds" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Pouring water into a jug", slug: "little-pouring-water-into-a-jug" }, { title: "Feeding a pet or bird", slug: "little-feeding-a-pet-or-bird" }, { title: "Matching shoes to feet", slug: "little-matching-shoes-to-feet" }, { title: "Folding towels", slug: "little-folding-towels" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Hot cross bun spreading", slug: "little-hot-cross-bun-spreading" }, { title: "Pizza face toast", slug: "little-pizza-face-toast" }, { title: "Carrot and cheese muffins", slug: "little-carrot-and-cheese-muffins" }, { title: "Spring vegetable dips", slug: "little-spring-vegetable-dips" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Paper plate frogs", slug: "little-paper-plate-frogs" }, { title: "Pressed flower cards", slug: "little-pressed-flower-cards" }, { title: "Coffee filter butterflies", slug: "little-coffee-filter-butterflies" }, { title: "Painted plant pots", slug: "little-painted-plant-pots" }] },
+  ],
+  summer: [
+    { kind: "P.E.", emoji: "🤸", activities: [{ title: "Sprinkler dodging", slug: "little-sprinkler-dodging" }, { title: "Hula hoop fun", slug: "little-hula-hoop-fun" }, { title: "Rounders for beginners", slug: "little-rounders-for-beginners" }, { title: "Balance on the line", slug: "little-balance-on-the-line" }] },
+    { kind: "Outdoors", emoji: "🌳", activities: [{ title: "Rock pool dipping", slug: "little-rock-pool-dipping" }, { title: "Butterfly count", slug: "little-butterfly-count" }, { title: "Den building in the woods", slug: "little-den-building-in-the-woods" }, { title: "Shadow tracing", slug: "little-shadow-tracing" }] },
+    { kind: "Life skills", emoji: "🧺", activities: [{ title: "Opening snack packets", slug: "little-opening-snack-packets" }, { title: "Putting my shoes on the right feet", slug: "little-putting-my-shoes-on-the-right-feet" }, { title: "Crossing the road safely", slug: "little-crossing-the-road-safely" }, { title: "Hanging up my towel", slug: "little-hanging-up-my-towel" }] },
+    { kind: "Cooking", emoji: "🍳", activities: [{ title: "Watermelon stars", slug: "little-watermelon-stars" }, { title: "Banana and berry smoothies", slug: "little-banana-and-berry-smoothies" }, { title: "Picnic wraps", slug: "little-picnic-wraps" }, { title: "Cucumber and mint dip", slug: "little-cucumber-and-mint-dip" }] },
+    { kind: "Crafts", emoji: "✂️", activities: [{ title: "Pebble pets", slug: "little-pebble-pets" }, { title: "Paper windmills", slug: "little-paper-windmills" }, { title: "Crab claw handprints", slug: "little-crab-claw-handprints" }, { title: "Cardboard tube binoculars", slug: "little-cardboard-tube-binoculars" }] },
+  ],
+};
 
 /** The Rhymes and songs and Outdoors pages, which sit beside the areas in the menu and look like them. */
 export const LITTLE_EXTRA_PAGES = [
@@ -122,14 +215,19 @@ export const LITTLE_EXTRA_PAGES = [
   { name: "Outdoors", slug: "outdoors", emoji: "🌳" },
 ];
 
-/** What a Little Roots page (an area, Rhymes and songs, or Outdoors) has for one term. */
-export function littleTermSection(pageSlug: string, term: TermSlug): { title: string; summary: string; activities: LittleActivity[] } | null {
-  const plan = LITTLE_PLAN[term];
+/** One year's plan for a term. */
+export const littlePlan = (year: LittleYear, term: TermSlug) => (year === "b" ? LITTLE_PLAN_B : LITTLE_PLAN)[term];
+/** One year's P.E., outdoors, life skills, cooking and crafts for a term. */
+export const littleExtras = (year: LittleYear, term: TermSlug) => (year === "b" ? LITTLE_EXTRAS_B : LITTLE_EXTRAS)[term];
+
+/** What a Little Roots page (an area, Rhymes and songs, or Outdoors) has for one term of one year. */
+export function littleTermSection(pageSlug: string, term: TermSlug, year: LittleYear = "a"): { title: string; summary: string; activities: LittleActivity[] } | null {
+  const plan = littlePlan(year, term);
   if (pageSlug === "rhymes-and-songs") {
     return { title: "Rhymes to learn", summary: "Short rhymes and songs to say, sing and act out together.", activities: plan.rhymes };
   }
   if (pageSlug === "outdoors") {
-    const outdoorExtras = LITTLE_EXTRAS[term].filter((e) => e.kind === "Outdoors").flatMap((e) => e.activities);
+    const outdoorExtras = littleExtras(year, term).filter((e) => e.kind === "Outdoors").flatMap((e) => e.activities);
     const activities = [...plan.topics.flatMap((t) => t.activities).filter((a) => OUTDOOR_SLUGS.has(a.slug)), ...outdoorExtras];
     return { title: "Out and about", summary: "Activities from every area that are best in the garden, the park or on a walk.", activities };
   }
